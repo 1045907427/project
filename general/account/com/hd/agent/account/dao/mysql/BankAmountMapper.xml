@@ -1,0 +1,1102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.account.dao.BankAmountMapper" >
+	<sql id="bankAmountBegin_Column_List" >
+	    id, businessdate, status, adduserid, addusername, adddeptid, adddeptname, addtime, 
+	    modifyuserid, modifyusername, modifytime, audituserid, auditusername, audittime, 
+	    stopuserid, stopusername, stoptime, closetime, bankid, amount
+	</sql>
+	<insert id="addBankAmountBegin" parameterType="com.hd.agent.account.model.BankAmountBegin" >
+	    insert into t_account_bankamount_begin
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="id != null" >
+	        id,
+	      </if>
+	      <if test="businessdate != null" >
+	        businessdate,
+	      </if>
+	      <if test="status != null" >
+	        status,
+	      </if>
+	      <if test="adduserid != null" >
+	        adduserid,
+	      </if>
+	      <if test="addusername != null" >
+	        addusername,
+	      </if>
+	      <if test="adddeptid != null" >
+	        adddeptid,
+	      </if>
+	      <if test="adddeptname != null" >
+	        adddeptname,
+	      </if>
+	      <if test="1==1" >
+	        addtime,
+	      </if>
+	      <if test="modifyuserid != null" >
+	        modifyuserid,
+	      </if>
+	      <if test="modifyusername != null" >
+	        modifyusername,
+	      </if>
+	      <if test="modifytime != null" >
+	        modifytime,
+	      </if>
+	      <if test="bankid != null" >
+	        bankid,
+	      </if>
+	      <if test="amount != null" >
+	        amount,
+	      </if>
+	      <if test="remark != null" >
+	        remark,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="id != null" >
+	        #{id},
+	      </if>
+	      <if test="businessdate != null" >
+	        #{businessdate},
+	      </if>
+	      <if test="status != null" >
+	        #{status},
+	      </if>
+	      <if test="adduserid != null" >
+	        #{adduserid},
+	      </if>
+	      <if test="addusername != null" >
+	        #{addusername},
+	      </if>
+	      <if test="adddeptid != null" >
+	        #{adddeptid},
+	      </if>
+	      <if test="adddeptname != null" >
+	        #{adddeptname},
+	      </if>
+	      <if test="1==1" >
+	        now(),
+	      </if>
+	      <if test="modifyuserid != null" >
+	        #{modifyuserid},
+	      </if>
+	      <if test="modifyusername != null" >
+	        #{modifyusername},
+	      </if>
+	      <if test="modifytime != null" >
+	        #{modifytime},
+	      </if>
+	      <if test="bankid != null" >
+	        #{bankid},
+	      </if>
+	      <if test="amount != null" >
+	        #{amount},
+	      </if>
+	      <if test="remark != null" >
+	        #{remark},
+	      </if>
+	    </trim>
+	  </insert>
+	  <update id="editBankAmountBegin" parameterType="com.hd.agent.account.model.BankAmountBegin">
+	  	update t_account_bankamount_begin
+	    <set >
+	      <if test="businessdate != null" >
+	        businessdate = #{businessdate},
+	      </if>
+	      <if test="status != null" >
+	        status = #{status},
+	      </if>
+	      <if test="modifyuserid != null" >
+	        modifyuserid = #{modifyuserid},
+	      </if>
+	      <if test="modifyusername != null" >
+	        modifyusername = #{modifyusername},
+	      </if>
+	      <if test="1==1" >
+	        modifytime = now(),
+	      </if>
+	      <if test="audituserid != null" >
+	        audituserid = #{audituserid},
+	      </if>
+	      <if test="auditusername != null" >
+	        auditusername = now(),
+	      </if>
+	      <if test="audittime != null" >
+	        audittime = #{audittime},
+	      </if>
+	      <if test="closetime != null" >
+	        closetime = #{closetime},
+	      </if>
+	      <if test="bankid != null" >
+	        bankid = #{bankid},
+	      </if>
+	      <if test="amount != null" >
+	        amount = #{amount},
+	      </if>
+	      <if test="remark != null" >
+	        remark = #{remark},
+	      </if>
+	    </set>
+	    where id = #{id}
+	  </update>
+	  <select id="getBankAmountBeginByID" parameterType="java.lang.String" resultType="com.hd.agent.account.model.BankAmountBegin">
+	  	select <include refid="bankAmountBegin_Column_List"/> from t_account_bankamount_begin
+	  	where id=#{id}
+	  </select>
+	  <delete id="deleteBankAmountBegin" parameterType="java.lang.String">
+	  	delete from t_account_bankamount_begin where id=#{id}
+	  </delete>
+	  <select id="showBankAmountBeginList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.account.model.BankAmountBegin">
+	  	select <include refid="bankAmountBegin_Column_List"/>
+	  	from t_account_bankamount_begin
+	  	<trim prefix="where" prefixOverrides="and|or" >
+		  <include refid="common.Page_dataSql"/>
+	      <if test="condition.businessdate1 != null" >
+	         and businessdate >= #{condition.businessdate1}
+	      </if>
+	      <if test="condition.businessdate2 != null" >
+	        <![CDATA[and businessdate <= #{condition.businessdate2} ]]>
+	      </if>
+	      <if test="condition.bankid!= null" >
+	         and bankid=#{condition.bankid}
+	      </if>
+	      <if test="condition.status != null" >
+	         and status=#{condition.status}
+	      </if>
+	    </trim>
+	    <include refid="common.Page_limit" />
+	  </select>
+	  <select id="showBankAmountBeginCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+	  	select count(1)	from t_account_bankamount_begin
+	  	<trim prefix="where" prefixOverrides="and|or" >
+		  <include refid="common.Page_dataSql"/>
+	      <if test="condition.businessdate1 != null" >
+	         and businessdate >= #{condition.businessdate1}
+	      </if>
+	      <if test="condition.businessdate2 != null" >
+	        <![CDATA[and businessdate <= #{condition.businessdate2} ]]>
+	      </if>
+	      <if test="condition.bankid!= null" >
+	         and bankid=#{condition.bankid}
+	      </if>
+	      <if test="condition.status != null" >
+	         and status=#{condition.status}
+	      </if>
+	    </trim>
+	  </select>
+	  <update id="auditBankAmountBegin" parameterType="java.lang.String">
+	  	update t_account_bankamount_begin t
+	  	set t.status='3',t.audituserid=#{userid},t.auditusername=#{username},t.audittime=now()
+	  	where t.id=#{id}
+	  </update>
+	  <update id="oppauditBankAmountBegin" parameterType="java.lang.String">
+	  	update t_account_bankamount_begin t
+	  	set t.status='2',t.audituserid='',t.auditusername='',t.audittime=null
+	  	where t.id=#{id}
+	  </update>
+	  <update id="closeBankAmountBegin" parameterType="java.lang.String">
+	  	update t_account_bankamount_begin t
+	  	set t.status='4',t.closetime=now()
+	  	where t.id=#{id}
+	  </update>
+	  <!-- 银行账户金额 -->
+	  <select id="getBankAmountByBankid" parameterType="java.lang.String" resultType="com.hd.agent.account.model.BankAmount">
+	  	select t.bankid,t.amount,t.addtime,t.modifytime from t_account_bankamount t where t.bankid=#{bankid}
+	  </select>
+	  <insert id="addBankAmount" parameterType="com.hd.agent.account.model.BankAmount" >
+	    insert into t_account_bankamount
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="bankid != null" >
+	        bankid,
+	      </if>
+	      <if test="amount != null" >
+	        amount,
+	      </if>
+	      <if test="1==1" >
+	        addtime,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="bankid != null" >
+	        #{bankid},
+	      </if>
+	      <if test="amount != null" >
+	        #{amount},
+	      </if>
+	      <if test="1==1" >
+	        now(),
+	      </if>
+	    </trim>
+	  </insert>
+	  <update id="updateBankAmount" parameterType="com.hd.agent.account.model.BankAmountBegin">
+	  	update t_account_bankamount
+	    <set >
+	      <if test="amount != null" >
+	        amount = #{amount},
+	      </if>
+	      <if test="1==1" >
+	        modifytime = now(),
+	      </if>
+	    </set>
+	    where bankid = #{bankid}
+	  </update>
+	  <update id="updateBankAmountByChange">
+	  	update t_account_bankamount 
+	  	set amount=amount +#{amount},modifytime = now()
+	  	where bankid = #{bankid}
+	  </update>
+	  <!-- 银行账户金额变更日志 -->
+	  <insert id="addBankAmountLog" parameterType="com.hd.agent.account.model.BankAmountLog" >
+	    insert into t_account_bankamount_log
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="id != null" >
+	        id,
+	      </if>
+	      <if test="bankid != null" >
+	        bankid,
+	      </if>
+	      <if test="billtype != null" >
+	        billtype,
+	      </if>
+	      <if test="billid != null" >
+	        billid,
+	      </if>
+	      <if test="inamount != null" >
+	        inamount,
+	      </if>
+	      <if test="outamount != null" >
+	        outamount,
+	      </if>
+	      <if test="balanceamount != null" >
+	        balanceamount,
+	      </if>
+	      <if test="remark != null" >
+	        remark,
+	      </if>
+	      <if test="adduserid != null" >
+	        adduserid,
+	      </if>
+	      <if test="addusername != null" >
+	        addusername,
+	      </if>
+	      <if test="adddeptid != null" >
+	        adddeptid,
+	      </if>
+	      <if test="adddeptname != null" >
+	        adddeptname,
+	      </if>
+	      <if test="1==1" >
+	        addtime,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="id != null" >
+	        #{id},
+	      </if>
+	      <if test="bankid != null" >
+	        #{bankid},
+	      </if>
+	      <if test="billtype != null" >
+	        #{billtype},
+	      </if>
+	      <if test="billid != null" >
+	        #{billid},
+	      </if>
+	      <if test="inamount != null" >
+	        #{inamount},
+	      </if>
+	      <if test="outamount != null" >
+	        #{outamount},
+	      </if>
+	      <if test="balanceamount != null" >
+	        #{balanceamount},
+	      </if>
+	      <if test="remark != null" >
+	        #{remark},
+	      </if>
+	      <if test="adduserid != null" >
+	        #{adduserid},
+	      </if>
+	      <if test="addusername != null" >
+	        #{addusername},
+	      </if>
+	      <if test="adddeptid != null" >
+	        #{adddeptid},
+	      </if>
+	      <if test="adddeptname != null" >
+	        #{adddeptname},
+	      </if>
+	      <if test="1==1" >
+	        now(),
+	      </if>
+	    </trim>
+	  </insert>
+	  
+	  <!-- 银行账户其他业务单 -->
+	  <insert id="addBankAmountOthers" parameterType="com.hd.agent.account.model.BankAmountOthers" >
+	    insert into t_account_bankamount_others
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="id != null" >
+	        id,
+	      </if>
+	      <if test="businessdate != null" >
+	        businessdate,
+	      </if>
+	      <if test="status != null" >
+	        status,
+	      </if>
+	      <if test="adduserid != null" >
+	        adduserid,
+	      </if>
+	      <if test="addusername != null" >
+	        addusername,
+	      </if>
+	      <if test="adddeptid != null" >
+	        adddeptid,
+	      </if>
+	      <if test="adddeptname != null" >
+	        adddeptname,
+	      </if>
+	      <if test="1==1" >
+	        addtime,
+	      </if>
+	      <if test="modifyuserid != null" >
+	        modifyuserid,
+	      </if>
+	      <if test="modifyusername != null" >
+	        modifyusername,
+	      </if>
+	      <if test="modifytime != null" >
+	        modifytime,
+	      </if>
+	      <if test="audituserid != null" >
+	        audituserid,
+	      </if>
+	      <if test="auditusername != null" >
+	        auditusername,
+	      </if>
+	      <if test="audittime != null" >
+	        audittime,
+	      </if>
+	      <if test="closetime != null" >
+	        closetime,
+	      </if>
+	      <if test="bankid != null" >
+	        bankid,
+	      </if>
+	      <if test="deptid != null" >
+	        deptid,
+	      </if>
+	      <if test="lendtype != null" >
+	        lendtype,
+	      </if>
+	      <if test="oaid != null" >
+	        oaid,
+	      </if>
+	      <if test="billid != null" >
+	        billid,
+	      </if>
+	      <if test="billtype != null" >
+	        billtype,
+	      </if>
+	      <if test="amount != null" >
+	        amount,
+	      </if>
+	      <if test="upamount != null" >
+	        upamount,
+	      </if>
+	      <if test="oppid != null" >
+	        oppid,
+	      </if>
+	      <if test="oppname != null" >
+	        oppname,
+	      </if>
+	      <if test="oppbank != null" >
+	        oppbank,
+	      </if>
+	      <if test="oppbankno != null" >
+	        oppbankno,
+	      </if>
+	      <if test="invoiceid != null" >
+	        invoiceid,
+	      </if>
+	      <if test="invoiceamount != null" >
+	        invoiceamount,
+	      </if>
+	      <if test="invoicetype != null" >
+	        invoicetype,
+	      </if>
+	      <if test="invoicedate != null" >
+	        invoicedate,
+	      </if>
+	      <if test="remark != null" >
+	        remark,
+	      </if>
+			<if test="oatype != null" >
+				oatype,
+			</if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="id != null" >
+	        #{id},
+	      </if>
+	      <if test="businessdate != null" >
+	        #{businessdate},
+	      </if>
+	      <if test="status != null" >
+	        #{status},
+	      </if>
+	      <if test="adduserid != null" >
+	        #{adduserid},
+	      </if>
+	      <if test="addusername != null" >
+	        #{addusername},
+	      </if>
+	      <if test="adddeptid != null" >
+	        #{adddeptid},
+	      </if>
+	      <if test="adddeptname != null" >
+	        #{adddeptname},
+	      </if>
+	      <if test="1==1" >
+	        now(),
+	      </if>
+	      <if test="modifyuserid != null" >
+	        #{modifyuserid},
+	      </if>
+	      <if test="modifyusername != null" >
+	        #{modifyusername},
+	      </if>
+	      <if test="modifytime != null" >
+	        now(),
+	      </if>
+	      <if test="audituserid != null" >
+	        #{audituserid},
+	      </if>
+	      <if test="auditusername != null" >
+	        #{auditusername},
+	      </if>
+	      <if test="audittime != null" >
+	        now(),
+	      </if>
+	      <if test="closetime != null" >
+	        now(),
+	      </if>
+	      <if test="bankid != null" >
+	        #{bankid},
+	      </if>
+	      <if test="deptid != null" >
+	        #{deptid},
+	      </if>
+	      <if test="lendtype != null" >
+	        #{lendtype},
+	      </if>
+	      <if test="oaid != null" >
+	        #{oaid},
+	      </if>
+	      <if test="billid != null" >
+	        #{billid},
+	      </if>
+	      <if test="billtype != null" >
+	        #{billtype},
+	      </if>
+	      <if test="amount != null" >
+	        #{amount},
+	      </if>
+	      <if test="upamount != null" >
+	        #{upamount},
+	      </if>
+	      <if test="oppid != null" >
+	        #{oppid},
+	      </if>
+	      <if test="oppname != null" >
+	        #{oppname},
+	      </if>
+	      <if test="oppbank != null" >
+	        #{oppbank},
+	      </if>
+	      <if test="oppbankno != null" >
+	        #{oppbankno},
+	      </if>
+	      <if test="invoiceid != null" >
+	        #{invoiceid},
+	      </if>
+	      <if test="invoiceamount != null" >
+	        #{invoiceamount},
+	      </if>
+	      <if test="invoicetype != null" >
+	        #{invoicetype},
+	      </if>
+	      <if test="invoicedate != null" >
+	        #{invoicedate},
+	      </if>
+	      <if test="remark != null" >
+	        #{remark},
+	      </if>
+			<if test="oatype != null" >
+				#{oatype},
+			</if>
+	    </trim>
+	  </insert>
+	  <delete id="delteBankAmountOthersByBillid" parameterType="java.lang.String">
+	  	delete from t_account_bankamount_others where billid=#{billid}
+	  </delete>
+	  <select id="getBankAmountOthersByBillid" parameterType="java.lang.String" resultType="com.hd.agent.account.model.BankAmountOthers">
+	  	select id, businessdate, status, adduserid, addusername, adddeptid, adddeptname, addtime, 
+		   modifyuserid, modifyusername, modifytime, audituserid, auditusername, audittime, 
+		   closetime, bankid, deptid, lendtype, oaid, billid, billtype, amount, upamount, oppid, 
+		   oppname, oppbank, oppbankno, invoiceid, invoiceamount, invoicetype, invoicedate
+		from t_account_bankamount_others where billid=#{billid}
+	  </select>
+	  <select id="getBankAmountOthersByID" parameterType="java.lang.String" resultType="com.hd.agent.account.model.BankAmountOthers">
+	  	select id, businessdate, status,remark, adduserid, addusername, adddeptid, adddeptname, addtime, 
+		   modifyuserid, modifyusername, modifytime, audituserid, auditusername, audittime, 
+		   closetime, bankid, deptid, lendtype, oaid, billid, billtype, amount, upamount, oppid, 
+		   oppname, oppbank, oppbankno, invoiceid, invoiceamount, invoicetype, invoicedate
+		from t_account_bankamount_others where id=#{id}
+	  </select>
+	  <select id="showBankAmountOthersList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.account.model.BankAmountOthers">
+	  	select id, businessdate, status, adduserid, addusername, adddeptid, adddeptname, addtime, 
+		   modifyuserid, modifyusername, modifytime, audituserid, auditusername, audittime, 
+		   closetime, bankid, deptid, lendtype, oaid, billid, billtype, amount, upamount, oppid, 
+		   oppname, oppbank, oppbankno, invoiceid, invoiceamount, invoicetype, invoicedate,remark
+		from t_account_bankamount_others
+		<trim prefix="where" prefixOverrides="and|or" >
+	      <include refid="common.Page_dataSql"/>
+	      <if test="condition.oaid != null" >
+	         and oaid like '%${condition.oaid}%'
+	      </if>
+	      <if test="condition.billid != null" >
+	         and billid like '%${condition.billid}%'
+	      </if>
+	      <if test="condition.billtype != null" >
+	         and billtype = #{condition.billtype}
+	      </if>
+	      <if test="condition.oppid != null" >
+	         and oppid like '%${condition.oppid}%'
+	      </if>
+	      <if test="condition.oppname != null" >
+	         and oppname like '%${condition.oppname}%'
+	      </if>
+	      <if test="condition.oppbank != null" >
+	         and oppbank like '%${condition.oppbank}%'
+	      </if>
+	      <if test="condition.oppbankno != null" >
+	         and oppbankno like '%${condition.oppbankno}%}'
+	      </if>
+	      <if test="condition.invoiceid != null" >
+	         and invoiceid like '%${condition.invoiceid}%}'
+	      </if>
+	      <if test="condition.invoicetype != null" >
+	         and invoicetype = #{condition.invoicetype}
+	      </if>
+	      <if test="condition.businessdate1 != null" >
+	         and businessdate >= #{condition.businessdate1}
+	      </if>
+	      <if test="condition.businessdate2 != null" >
+	        <![CDATA[and businessdate <= #{condition.businessdate2} ]]>
+	      </if>
+	      <if test="condition.status != null" >
+	         and status = #{condition.status}
+	      </if>
+	      <if test="condition.bankid != null" >
+	         and bankid = #{condition.bankid}
+	      </if>
+	      <if test="condition.deptid != null" >
+	         and deptid like '${condition.deptid}%'
+	      </if>
+	      <if test="condition.lendtype != null" >
+	         and lendtype = #{condition.lendtype}
+	      </if>
+	      <if test="condition.remark != null" >
+	         and remark = #{condition.remark}
+	      </if>
+	    </trim>
+        <if test="condition.isPageLimit == null">
+              <include refid="common.Page_limit" />
+        </if>
+	  </select>
+	  <select id="showBankAmountOthersCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+	  	select count(1) 
+	  	from t_account_bankamount_others
+		<trim prefix="where" prefixOverrides="and|or" >
+	      <include refid="common.Page_dataSql"/>
+	      <if test="condition.oaid != null" >
+	         and oaid like '%${condition.oaid}%'
+	      </if>
+	      <if test="condition.billid != null" >
+	         and billid like '%${condition.billid}%'
+	      </if>
+	      <if test="condition.billtype != null" >
+	         and billtype = #{condition.billtype}
+	      </if>
+	      <if test="condition.oppid != null" >
+	         and oppid like '%${condition.oppid}%'
+	      </if>
+	      <if test="condition.oppname != null" >
+	         and oppname like '%${condition.oppname}%'
+	      </if>
+	      <if test="condition.oppbank != null" >
+	         and oppbank like '%${condition.oppbank}%'
+	      </if>
+	      <if test="condition.oppbankno != null" >
+	         and oppbankno like '%${condition.oppbankno}%}'
+	      </if>
+	      <if test="condition.invoiceid != null" >
+	         and invoiceid like '%${condition.invoiceid}%}'
+	      </if>
+	      <if test="condition.invoicetype != null" >
+	         and invoicetype = #{condition.invoicetype}
+	      </if>
+	      <if test="condition.businessdate1 != null" >
+	         and businessdate >= #{condition.businessdate1}
+	      </if>
+	      <if test="condition.businessdate2 != null" >
+	        <![CDATA[and businessdate <= #{condition.businessdate2} ]]>
+	      </if>
+	      <if test="condition.status != null" >
+	         and status = #{condition.status}
+	      </if>
+	      <if test="condition.bankid != null" >
+	         and bankid = #{condition.bankid}
+	      </if>
+	      <if test="condition.deptid != null" >
+	         and deptid like '${condition.deptid}%'
+	      </if>
+	      <if test="condition.lendtype != null" >
+	         and lendtype = #{condition.lendtype}
+	      </if>
+	      <if test="condition.remark != null" >
+	         and remark = #{condition.remark}
+	      </if>
+	    </trim>
+	  </select>
+	  <select id="showBankAmountOthersSum" parameterType="com.hd.agent.common.util.PageMap" resultType="map">
+	  	select sum(if(lendtype='1',amount,0)) as amount1,sum(if(lendtype='1',0,amount)) as amount2,sum(if(lendtype='1',amount,-amount)) as amount
+	  	from t_account_bankamount_others
+		<trim prefix="where" prefixOverrides="and|or" >
+	      <include refid="common.Page_dataSql"/>
+	      <if test="condition.oaid != null" >
+	         and oaid like '%${condition.oaid}%'
+	      </if>
+	      <if test="condition.billid != null" >
+	         and billid like '%${condition.billid}%'
+	      </if>
+	      <if test="condition.billtype != null" >
+	         and billtype = #{condition.billtype}
+	      </if>
+	      <if test="condition.oppid != null" >
+	         and oppid like '%${condition.oppid}%'
+	      </if>
+	      <if test="condition.oppname != null" >
+	         and oppname like '%${condition.oppname}%'
+	      </if>
+	      <if test="condition.oppbank != null" >
+	         and oppbank like '%${condition.oppbank}%'
+	      </if>
+	      <if test="condition.oppbankno != null" >
+	         and oppbankno like '%${condition.oppbankno}%}'
+	      </if>
+	      <if test="condition.invoiceid != null" >
+	         and invoiceid like '%${condition.invoiceid}%}'
+	      </if>
+	      <if test="condition.invoicetype != null" >
+	         and invoicetype = #{condition.invoicetype}
+	      </if>
+	      <if test="condition.businessdate1 != null" >
+	         and businessdate >= #{condition.businessdate1}
+	      </if>
+	      <if test="condition.businessdate2 != null" >
+	        <![CDATA[and businessdate <= #{condition.businessdate2} ]]>
+	      </if>
+	      <if test="condition.status != null" >
+	         and status = #{condition.status}
+	      </if>
+	      <if test="condition.bankid != null" >
+	         and bankid = #{condition.bankid}
+	      </if>
+	      <if test="condition.deptid != null" >
+	         and deptid like '${condition.deptid}%'
+	      </if>
+	      <if test="condition.lendtype != null" >
+	         and lendtype = #{condition.lendtype}
+	      </if>
+	      <if test="condition.remark != null" >
+	         and remark = #{condition.remark}
+	      </if>
+	    </trim>
+	  </select>
+	  <update id="editBankAmountOthers" parameterType="com.hd.agent.account.model.BankAmountOthers" >
+	    update t_account_bankamount_others
+	    <set >
+	      <if test="businessdate != null" >
+	        businessdate = #{businessdate},
+	      </if>
+	      <if test="status != null" >
+	        status = #{status},
+	      </if>
+	      <if test="modifyuserid != null" >
+	        modifyuserid = #{modifyuserid},
+	      </if>
+	      <if test="modifyusername != null" >
+	        modifyusername = #{modifyusername},
+	      </if>
+	      <if test="1==1" >
+	        modifytime = now(),
+	      </if>
+	      <if test="audituserid != null" >
+	        audituserid = #{audituserid},
+	      </if>
+	      <if test="auditusername != null" >
+	        auditusername = #{auditusername},
+	      </if>
+	      <if test="audittime != null" >
+	        audittime = #{audittime},
+	      </if>
+	      <if test="closetime != null" >
+	        closetime = #{closetime},
+	      </if>
+	      <if test="bankid != null" >
+	        bankid = #{bankid},
+	      </if>
+	      <if test="deptid != null" >
+	        deptid = #{deptid},
+	      </if>
+	      <if test="lendtype != null" >
+	        lendtype = #{lendtype},
+	      </if>
+	      <if test="oaid != null" >
+	        oaid = #{oaid},
+	      </if>
+	      <if test="billid != null" >
+	        billid = #{billid},
+	      </if>
+	      <if test="billtype != null" >
+	        billtype = #{billtype},
+	      </if>
+	      <if test="amount != null" >
+	        amount = #{amount},
+	      </if>
+	      <if test="upamount != null" >
+	        upamount = #{upamount},
+	      </if>
+	      <if test="oppid != null" >
+	        oppid = #{oppid},
+	      </if>
+	      <if test="oppname != null" >
+	        oppname = #{oppname},
+	      </if>
+	      <if test="oppbank != null" >
+	        oppbank = #{oppbank},
+	      </if>
+	      <if test="oppbankno != null" >
+	        oppbankno = #{oppbankno},
+	      </if>
+	      <if test="invoiceid != null" >
+	        invoiceid = #{invoiceid},
+	      </if>
+	      <if test="invoiceamount != null" >
+	        invoiceamount = #{invoiceamount},
+	      </if>
+	      <if test="invoicetype != null" >
+	        invoicetype = #{invoicetype},
+	      </if>
+	      <if test="invoicedate != null" >
+	        invoicedate = #{invoicedate},
+	      </if>
+	      <if test="remark != null" >
+	        remark = #{remark},
+	      </if>
+	    </set>
+	    where id = #{id}
+	  </update>
+	  <update id="auditBankAmountOthers" parameterType="java.lang.String">
+	  	update t_account_bankamount_others t
+	  	set t.status='3',t.audituserid=#{userid},t.auditusername=#{username},t.audittime=now()
+	  	where t.id=#{id}
+	  </update>
+	  <update id="oppauditBankAmountOthers" parameterType="java.lang.String">
+	  	update t_account_bankamount_others t
+	  	set t.status='2',t.audituserid='',t.auditusername='',t.audittime=null
+	  	where t.id=#{id}
+	  </update>
+	  <delete id="deleteBankAmountOthers" parameterType="java.lang.String">
+	  	delete from t_account_bankamount_others where id=#{id}
+	  </delete>
+	  <update id="closeBankAmountOthers" parameterType="java.lang.String">
+	  	update t_account_bankamount_others t
+	  	set t.status='4',t.closetime=now()
+	  	where t.id=#{id}
+	  </update>
+	  
+	  <select id="showBankAmountList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.account.model.BankAmount">
+	  	select t.id as bankid,t.name as bankname,t.bankdeptid as deptid,t1.amount from t_base_finance_bank t
+		LEFT JOIN t_account_bankamount t1 on t.id=t1.bankid
+		<trim prefix="where" prefixOverrides="and|or" >
+	      <include refid="common.Page_dataSql"/>
+	      <if test="condition.deptid != null" >
+	         and t.bankdeptid like '${condition.deptid}%'
+	      </if>
+	      <if test="condition.bankid != null" >
+	         and bankid = #{condition.bankid}
+	      </if>
+	    </trim>
+		  <if test="condition.isflag == null">
+			  <include refid="common.Page_limit"/>
+		  </if>
+	  </select>
+		<select id="showBankAmountListCount" parameterType="com.hd.agent.common.util.PageMap" resultType="java.lang.Integer">
+			SELECT count(1) FROM (
+				select t.id as bankid,t.name as bankname,t.bankdeptid as deptid,t1.amount from t_base_finance_bank t
+				LEFT JOIN t_account_bankamount t1 on t.id=t1.bankid
+				<trim prefix="where" prefixOverrides="and|or" >
+					<include refid="common.Page_dataSql"/>
+					<if test="condition.deptid != null" >
+						and t.bankdeptid like '${condition.deptid}%'
+					</if>
+					<if test="condition.bankid != null" >
+						and bankid = #{condition.bankid}
+					</if>
+				</trim>
+			)z
+		</select>
+		<select id="showBankAmountListSum" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.account.model.BankAmount">
+			SELECT '合计' as bankid, sum(z.amount) as amount from(
+				select t.id as bankid,t.name as bankname,t.bankdeptid as deptid,t1.amount from t_base_finance_bank t
+				LEFT JOIN t_account_bankamount t1 on t.id=t1.bankid
+				<trim prefix="where" prefixOverrides="and|or" >
+					<include refid="common.Page_dataSql"/>
+					<if test="condition.deptid != null" >
+						and t.bankdeptid like '${condition.deptid}%'
+					</if>
+					<if test="condition.bankid != null" >
+						and bankid = #{condition.bankid}
+					</if>
+				</trim>
+			)z
+		</select>
+	  
+	  <select id="showBankAmountLogList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.account.model.BankAmountLog">
+	  	select id, bankid, billtype, billid, inamount, outamount, balanceamount, remark, adduserid, 
+    	addusername, adddeptid, adddeptname, addtime
+    	from t_account_bankamount_log
+    	<trim prefix="where" prefixOverrides="and|or" >
+	      <if test="condition.businessdate1 != null" >
+              <![CDATA[ and str_to_date(addtime, '%Y-%m-%d') >= str_to_date(#{condition.businessdate1}, '%Y-%m-%d') ]]>
+	      </if>
+	      <if test="condition.businessdate2 != null" >
+              <![CDATA[ and str_to_date(addtime, '%Y-%m-%d') <= str_to_date(#{condition.businessdate2}, '%Y-%m-%d') ]]>
+          </if>
+	      <if test="condition.bankid != null" >
+	         and bankid = #{condition.bankid}
+	      </if>
+          <if test="condition.billtype != null" >
+             and billtype = #{condition.billtype}
+          </if>
+	    </trim>
+		  <if test="condition.isflag == null" >
+			  <include refid="common.Page_limit" />
+		  </if>
+	  </select>
+	  <select id="showBankAmountLogCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+	  	select count(1)
+    	from t_account_bankamount_log
+    	<trim prefix="where" prefixOverrides="and|or" >
+            <if test="condition.businessdate1 != null" >
+                <![CDATA[ and str_to_date(addtime, '%Y-%m-%d') >= str_to_date(#{condition.businessdate1}, '%Y-%m-%d') ]]>
+            </if>
+            <if test="condition.businessdate2 != null" >
+                <![CDATA[ and str_to_date(addtime, '%Y-%m-%d') <= str_to_date(#{condition.businessdate2}, '%Y-%m-%d') ]]>
+            </if>
+	      <if test="condition.bankid != null" >
+	         and bankid = #{condition.bankid}
+	      </if>
+          <if test="condition.billtype != null" >
+              and billtype = #{condition.billtype}
+          </if>
+	    </trim>
+	  </select>
+	  <delete id="deleteBankAmountOthersByOaId" parameterType="java.lang.String">
+	  	delete from t_account_bankamount_others where oaid = #{oaid }
+	  </delete>
+	<select id="selectBankAmountOthersForOA" parameterType="java.util.Map" resultType="com.hd.agent.account.model.BankAmountOthers">
+		SELECT
+			id,
+			businessdate,
+			status,
+			adduserid,
+			addusername,
+			adddeptid,
+			adddeptname,
+			addtime,
+			modifyuserid,
+			modifyusername,
+			modifytime,
+			audituserid,
+			auditusername,
+			audittime,
+			closetime,
+			bankid,
+			deptid,
+			lendtype,
+			oaid,
+			billid,
+			billtype,
+			amount,
+			upamount,
+			oppid,
+			oppname,
+			oppbank,
+			oppbankno,
+			invoiceid,
+			invoiceamount,
+			invoicetype,
+			invoicedate
+		FROM
+			t_account_bankamount_others
+		<trim prefix="where" prefixOverrides="and">
+			<if test="oaid != null">
+				and oaid = #{oaid }
+			</if>
+			<if test="lendtype != null">
+				and lendtype = #{lendtype }
+			</if>
+            <if test="billtype != null">
+                and billtype = #{billtype }
+            </if>
+		</trim>
+		order by addtime desc, id desc
+	</select>
+	<insert id="addDeptAmount" parameterType="com.hd.agent.account.model.DeptAmount" >
+	    insert into t_account_deptamount
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="deptid != null" >
+	        deptid,
+	      </if>
+	      <if test="amount != null" >
+	        amount,
+	      </if>
+	      <if test="1==1" >
+	        addtime,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="deptid != null" >
+	        #{deptid},
+	      </if>
+	      <if test="amount != null" >
+	        #{amount},
+	      </if>
+	      <if test="1==1" >
+	        now(),
+	      </if>
+	    </trim>
+	</insert>
+	<update id="updateDeptAmountChange" parameterType="java.lang.String">
+		update t_account_deptamount 
+	  	set amount=amount +#{amount},modifytime = now()
+	  	where deptid = #{deptid}
+	</update>
+	<insert id="addDeptAmountLog" parameterType="com.hd.agent.account.model.DeptAmountLog" >
+	    insert into t_account_deptamount_log
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="id != null" >
+	        id,
+	      </if>
+	      <if test="deptid != null" >
+	        deptid,
+	      </if>
+	      <if test="bankid != null" >
+	        bankid,
+	      </if>
+	      <if test="billtype != null" >
+	        billtype,
+	      </if>
+	      <if test="billid != null" >
+	        billid,
+	      </if>
+	      <if test="inamount != null" >
+	        inamount,
+	      </if>
+	      <if test="outamount != null" >
+	        outamount,
+	      </if>
+	      <if test="balanceamount != null" >
+	        balanceamount,
+	      </if>
+	      <if test="remark != null" >
+	        remark,
+	      </if>
+	      <if test="adduserid != null" >
+	        adduserid,
+	      </if>
+	      <if test="addusername != null" >
+	        addusername,
+	      </if>
+	      <if test="adddeptid != null" >
+	        adddeptid,
+	      </if>
+	      <if test="adddeptname != null" >
+	        adddeptname,
+	      </if>
+	      <if test="1==1" >
+	        addtime,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="id != null" >
+	        #{id},
+	      </if>
+	      <if test="deptid != null" >
+	        #{deptid},
+	      </if>
+	      <if test="bankid != null" >
+	        #{bankid},
+	      </if>
+	      <if test="billtype != null" >
+	        #{billtype},
+	      </if>
+	      <if test="billid != null" >
+	        #{billid},
+	      </if>
+	      <if test="inamount != null" >
+	        #{inamount},
+	      </if>
+	      <if test="outamount != null" >
+	        #{outamount},
+	      </if>
+	      <if test="balanceamount != null" >
+	        #{balanceamount},
+	      </if>
+	      <if test="remark != null" >
+	        #{remark},
+	      </if>
+	      <if test="adduserid != null" >
+	        #{adduserid},
+	      </if>
+	      <if test="addusername != null" >
+	        #{addusername},
+	      </if>
+	      <if test="adddeptid != null" >
+	        #{adddeptid},
+	      </if>
+	      <if test="adddeptname != null" >
+	        #{adddeptname},
+	      </if>
+	      <if test="1==1" >
+	        now(),
+	      </if>
+	    </trim>
+	  </insert>
+	  <select id="getDeptAmountByDeptid" parameterType="java.lang.String" resultType="com.hd.agent.account.model.DeptAmount">
+	  	select deptid, amount, addtime, modifytime from t_account_deptamount where deptid=#{deptid}
+	  </select>
+    <select id="selectBankAmountOthersByOaid" parameterType="java.lang.String" resultType="com.hd.agent.account.model.BankAmountOthers">
+	  	select id, businessdate, status, adduserid, addusername, adddeptid, adddeptname, addtime,
+		   modifyuserid, modifyusername, modifytime, audituserid, auditusername, audittime,
+		   closetime, bankid, deptid, lendtype, oaid, billid, billtype, amount, upamount, oppid,
+		   oppname, oppbank, oppbankno, invoiceid, invoiceamount, invoicetype, invoicedate, oatype
+		from t_account_bankamount_others where oaid=#{oaid}
+		order by addtime desc, id desc
+    </select>
+</mapper>

@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.oa.dao.OaDelegateMapper" >
+  <resultMap id="BaseResultMap" type="com.hd.agent.oa.model.OaDelegate" >
+      <id column="id" jdbcType="VARCHAR" property="id" />
+      <result column="status" jdbcType="VARCHAR" property="status" />
+      <result column="businessdate" jdbcType="VARCHAR" property="businessdate" />
+      <result column="remark" jdbcType="VARCHAR" property="remark" />
+      <result column="adduserid" jdbcType="VARCHAR" property="adduserid" />
+      <result column="addusername" jdbcType="VARCHAR" property="addusername" />
+      <result column="adddeptid" jdbcType="VARCHAR" property="adddeptid" />
+      <result column="adddeptname" jdbcType="VARCHAR" property="adddeptname" />
+      <result column="addtime" jdbcType="TIMESTAMP" property="addtime" />
+      <result column="modifyuserid" jdbcType="VARCHAR" property="modifyuserid" />
+      <result column="modifyusername" jdbcType="VARCHAR" property="modifyusername" />
+      <result column="modifytime" jdbcType="TIMESTAMP" property="modifytime" />
+      <result column="printtimes" jdbcType="INTEGER" property="printtimes" />
+      <result column="oaid" jdbcType="VARCHAR" property="oaid" />
+      <result column="definitionkey" jdbcType="VARCHAR" property="definitionkey" />
+      <result column="all" jdbcType="VARCHAR" property="all" />
+      <result column="userid" jdbcType="VARCHAR" property="userid" />
+      <result column="delegateuserid" jdbcType="VARCHAR" property="delegateuserid" />
+      <result column="begindate" jdbcType="VARCHAR" property="begindate" />
+      <result column="enddate" jdbcType="VARCHAR" property="enddate" />
+      <result column="remain" jdbcType="VARCHAR" property="remain" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, status, businessdate, remark, adduserid, addusername, adddeptid, adddeptname,
+    addtime, modifyuserid, modifyusername, modifytime, printtimes, oaid, definitionkey,
+    userid, delegateuserid, begindate, enddate, remain
+  </sql>
+  <select id="selectOaDelegate" resultMap="BaseResultMap" parameterType="java.lang.String" >
+      select <include refid="Base_Column_List" />
+      from t_oa_delegate
+      where id = #{id}
+  </select>
+  <delete id="deleteOaDelegate" parameterType="java.lang.String" >
+      delete from t_oa_delegate
+      where id = #{id}
+  </delete>
+  <insert id="insertOaDelegate" parameterType="com.hd.agent.oa.model.OaDelegate" >
+      insert into t_oa_delegate
+      <trim prefix="(" suffix=")" suffixOverrides=",">
+          <if test="id != null">
+              id,
+          </if>
+          <if test="status != null">
+              status,
+          </if>
+          <if test="businessdate != null">
+              businessdate,
+          </if>
+          <if test="remark != null">
+              remark,
+          </if>
+          <if test="adduserid != null">
+              adduserid,
+          </if>
+          <if test="addusername != null">
+              addusername,
+          </if>
+          <if test="adddeptid != null">
+              adddeptid,
+          </if>
+          <if test="adddeptname != null">
+              adddeptname,
+          </if>
+          addtime,
+          <if test="modifyuserid != null">
+              modifyuserid,
+          </if>
+          <if test="modifyusername != null">
+              modifyusername,
+          </if>
+          <if test="modifytime != null">
+              modifytime,
+          </if>
+          <if test="printtimes != null">
+              printtimes,
+          </if>
+          <if test="oaid != null">
+              oaid,
+          </if>
+          <if test="definitionkey != null">
+              definitionkey,
+          </if>
+          <if test="userid != null">
+              userid,
+          </if>
+          <if test="delegateuserid != null">
+              delegateuserid,
+          </if>
+          <if test="begindate != null">
+              begindate,
+          </if>
+          <if test="enddate != null">
+              enddate,
+          </if>
+          <if test="remain != null">
+              remain,
+          </if>
+      </trim>
+      <trim prefix="values (" suffix=")" suffixOverrides=",">
+          <if test="id != null">
+              #{id},
+          </if>
+          <if test="status != null">
+              #{status},
+          </if>
+          <if test="businessdate != null">
+              #{businessdate},
+          </if>
+          <if test="remark != null">
+              #{remark},
+          </if>
+          <if test="adduserid != null">
+              #{adduserid},
+          </if>
+          <if test="addusername != null">
+              #{addusername},
+          </if>
+          <if test="adddeptid != null">
+              #{adddeptid},
+          </if>
+          <if test="adddeptname != null">
+              #{adddeptname},
+          </if>
+          now(),
+          <if test="modifyuserid != null">
+              #{modifyuserid},
+          </if>
+          <if test="modifyusername != null">
+              #{modifyusername},
+          </if>
+          <if test="modifytime != null">
+              #{modifytime},
+          </if>
+          <if test="printtimes != null">
+              #{printtimes},
+          </if>
+          <if test="oaid != null">
+              #{oaid},
+          </if>
+          <if test="definitionkey != null">
+              #{definitionkey},
+          </if>
+          <if test="userid != null">
+              #{userid},
+          </if>
+          <if test="delegateuserid != null">
+              #{delegateuserid},
+          </if>
+          <if test="begindate != null">
+              #{begindate},
+          </if>
+          <if test="enddate != null">
+              #{enddate},
+          </if>
+          <if test="remain != null">
+              #{remain},
+          </if>
+      </trim>
+  </insert>
+  <update id="updateOaDelegate" parameterType="com.hd.agent.oa.model.OaDelegate" >
+      update t_oa_delegate
+      <set>
+          <if test="id != null">
+              id = #{id},
+          </if>
+          <if test="status != null">
+              status = #{status},
+          </if>
+          <if test="businessdate != null">
+              businessdate = #{businessdate},
+          </if>
+          <if test="remark != null">
+              remark = #{remark},
+          </if>
+          <if test="modifyuserid != null">
+              modifyuserid = #{modifyuserid},
+          </if>
+          <if test="modifyusername != null">
+              modifyusername = #{modifyusername},
+          </if>
+          modifytime = now(),
+          <if test="printtimes != null">
+              printtimes = #{printtimes},
+          </if>
+          <if test="oaid != null">
+              oaid = #{oaid},
+          </if>
+          <if test="definitionkey != null">
+              definitionkey = #{definitionkey},
+          </if>
+          <if test="userid != null">
+              userid = #{userid},
+          </if>
+          <if test="delegateuserid != null">
+              delegateuserid = #{delegateuserid},
+          </if>
+          <if test="begindate != null">
+              begindate = #{begindate},
+          </if>
+          <if test="enddate != null">
+              enddate = #{enddate},
+          </if>
+          <if test="remain != null">
+              remain = #{remain},
+          </if>
+      </set>
+      where id = #{id }
+  </update>
+</mapper>

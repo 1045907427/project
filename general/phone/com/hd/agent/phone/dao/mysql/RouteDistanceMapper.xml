@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.phone.dao.RouteDistanceMapper" >
+  <resultMap id="BaseResultMap" type="com.hd.agent.phone.model.RouteDistance" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="userid" property="userid" jdbcType="VARCHAR" />
+    <result column="distance" property="distance" jdbcType="INTEGER" />
+    <result column="adddate" property="adddate" jdbcType="VARCHAR" />
+    <result column="addtime" property="addtime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, userid, distance, adddate, addtime
+  </sql>
+  <select id="getDistance" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_phone_route_distance
+    where id = #{id}
+  </select>
+  <select id="getDistanceDetailCount" resultType="java.lang.Integer" parameterType="java.lang.String">
+  	select count(1) from t_phone_route_distance where userid=#{0} and adddate=#{1}
+  </select>
+  <select id="getDistanceList" resultMap="BaseResultMap" parameterType="com.hd.agent.common.util.PageMap">
+  	select t.id, t.userid, t.distance, t.adddate, t.addtime , p.*
+  	from t_phone_route_distance t
+    left join t_base_personnel p on p.id = t.userid
+  	<trim prefix="where" prefixOverrides="and|or">
+  		<if test="condition.adddate != null" >
+         and t.adddate = #{condition.adddate}
+      	</if>
+      	<if test="condition.userid != null" >
+         and t.userid = #{condition.userid}
+      	</if>
+        <include refid="common.Page_dataSql"/>
+  	</trim>
+  	order by t.adddate desc,t.userid asc
+	<include refid="common.Page_LimitOnly"/>
+  </select>
+  <select id="getDistanceCount" resultType="java.lang.Integer" parameterType="com.hd.agent.common.util.PageMap">
+  	select count(1) from t_phone_route_distance 
+  	<trim prefix="where" prefixOverrides="and|or">
+  		<if test="condition.adddate != null" >
+         and adddate = #{condition.adddate}
+      	</if>
+      	<if test="condition.userid != null" >
+         and userid = #{condition.userid}
+      	</if>
+  	</trim>
+  </select>
+  <delete id="deleteDistance" parameterType="java.lang.String" >
+    delete from t_phone_route_distance
+    where id = #{id}
+  </delete>
+  <insert id="addDistance" parameterType="com.hd.agent.phone.model.RouteDistance" >
+    insert into t_phone_route_distance
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userid != null" >
+        userid,
+      </if>
+      <if test="distance != null" >
+        distance,
+      </if>
+      <if test="adddate != null" >
+        adddate,
+      </if>
+        addtime,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userid != null" >
+        #{userid},
+      </if>
+      <if test="distance != null" >
+        #{distance},
+      </if>
+      <if test="adddate != null" >
+        #{adddate},
+      </if>
+        now(),
+    </trim>
+  </insert>
+  <update id="updateDistance" parameterType="com.hd.agent.phone.model.RouteDistance" >
+    update t_phone_route_distance
+    <set >
+      <if test="userid != null" >
+        userid = #{userid},
+      </if>
+      <if test="distance != null" >
+        distance = #{distance},
+      </if>
+      <if test="adddate != null" >
+        adddate = #{adddate},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  <select id="getRouteReportList" parameterType="com.hd.agent.common.util.PageMap" resultMap="BaseResultMap">
+ 	select t.id, t.userid, t.distance, t.adddate, t.addtime , p.*
+    from t_phone_route_distance t
+    left join t_base_personnel p on p.id = t.userid
+  	<trim prefix="where" prefixOverrides="and|or">
+  		<if test="condition.businessdate != null" >
+         and t.adddate like concat(#{condition.businessdate},'%')
+      	</if>
+      	<if test="condition.userid != null" >
+         and t.userid = #{condition.userid}
+      	</if>
+        <include refid="common.Page_dataSql"/>
+  	</trim>
+  	order by t.userid
+  </select>
+  <select id="getRouteReportCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  	select count(1) from (
+  		select <include refid="Base_Column_List" /> from t_phone_route_distance
+	  	<trim prefix="where" prefixOverrides="and|or">
+	  		<if test="condition.businessdate != null" >
+	         and adddate like concat(#{condition.businessdate},'%') 
+	      	</if>
+	      	<if test="condition.userid != null" >
+	         and userid = #{condition.userid}
+	      	</if>
+	  	</trim>
+  	)z
+  </select>
+</mapper>

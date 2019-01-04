@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.system.dao.SyncMapper">
+    <select id="selectTableNames" resultType="java.lang.String">
+        SELECT table_name FROM information_schema.TABLES t
+        WHERE t.TABLE_SCHEMA = #{tableSchema} and t.TABLE_NAME like CONCAT(#{tablePrefix},'%');
+    </select>
+    <select id="selectTableColumn" resultType="java.util.Map">
+        select column_name,data_type from information_schema.columns where table_schema=#{tableSchema} and table_name =#{tableName} order by ORDINAL_POSITION
+    </select>
+    <select id="selectCount" parameterType="String" resultType="java.lang.Integer">
+        ${value}
+    </select>
+    <select id="selectList" parameterType="String" resultType="java.util.LinkedHashMap">
+        ${value}
+    </select>
+    <delete id="deleteSql">
+        ${value}
+    </delete>
+    <insert id="insert">
+        ${value}
+    </insert>
+    <insert id="insertList">
+        replace into ${tableName} ${columnSql} values
+        <foreach collection="list" item="item" separator=",">
+            ${itemSql}
+        </foreach>
+    </insert>
+    <select id="selectBusinessdateList" resultType="java.util.LinkedHashMap">
+        <![CDATA[select * from ${tableName} where businessdate >= #{businessdate1} and businessdate <= #{businessdate2}]]>
+    </select>
+    <select id="selectBusinessdateDetailList" resultType="java.util.LinkedHashMap">
+        <![CDATA[select * from ${detailTableName} where ${parentKey} in (select id from ${tableName} where businessdate >= #{businessdate1} and businessdate <= #{businessdate2})]]>
+    </select>
+    <delete id="deleteBusinessdateDetailList">
+        <![CDATA[delete from ${detailTableName} where ${parentKey} in (select id from ${tableName} where businessdate >= #{businessdate1} and businessdate <= #{businessdate2})]]>
+    </delete>
+    <!--<select id="selectBaseBomDetail">
+        select * from t_base_bom_detail
+    </select>
+    <insert id="insertBaseBomDetail">
+        replace into t_base_bom_detail (id,billid,remark,goodsid,type,unitnum,auxnum,auxremainder) values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.id},#{item.billid},#{item.remark}#{item.goodsid},#{item.type},#{item.unitnum},#{item.auxnum}#{item.auxremainder})
+        </foreach>
+    </insert>-->
+</mapper>

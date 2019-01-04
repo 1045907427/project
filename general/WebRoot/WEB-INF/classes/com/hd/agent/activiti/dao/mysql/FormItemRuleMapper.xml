@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.activiti.dao.FormItemRuleMapper" >
+  <resultMap id="BaseResultMap" type="com.hd.agent.activiti.model.FormItemRule" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="unkey" property="unkey" jdbcType="VARCHAR" />
+    <result column="itemid" property="itemid" jdbcType="VARCHAR" />
+    <result column="itemname" property="itemname" jdbcType="VARCHAR" />
+    <result column="definitionkey" property="definitionkey" jdbcType="VARCHAR" />
+    <result column="definitionid" property="definitionid" jdbcType="VARCHAR" />
+    <result column="taskkey" property="taskkey" jdbcType="VARCHAR" />
+    <result column="writable" property="writable" jdbcType="INTEGER" />
+    <result column="visible" property="visible" jdbcType="INTEGER" />
+    <result column="required" property="required" jdbcType="INTEGER" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="adduserid" property="adduserid" jdbcType="VARCHAR" />
+    <result column="addusername" property="addusername" jdbcType="VARCHAR" />
+    <result column="adddeptid" property="adddeptid" jdbcType="VARCHAR" />
+    <result column="adddeptname" property="adddeptname" jdbcType="VARCHAR" />
+    <result column="adddate" property="adddate" jdbcType="TIMESTAMP" />
+    <result column="modifyuserid" property="modifyuserid" jdbcType="VARCHAR" />
+    <result column="modifyusername" property="modifyusername" jdbcType="VARCHAR" />
+    <result column="modifytime" property="modifytime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, unkey, itemid, itemname, definitionkey, taskkey, writable, visible, remark, adduserid, 
+    addusername, adddeptid, adddeptname, adddate, modifyuserid, modifyusername, modifytime, required, definitionid
+  </sql>
+  <insert id="insertItemRuleForInit" parameterType="com.hd.agent.activiti.model.FormItemRule" >
+    insert into t_act_form_itemrule
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="unkey != null" >
+        unkey,
+      </if>
+      <if test="itemid != null" >
+        itemid,
+      </if>
+      <if test="itemname != null" >
+        itemname,
+      </if>
+      <if test="definitionkey != null" >
+        definitionkey,
+      </if>
+      <if test="definitionid != null" >
+          definitionid,
+      </if>
+      <if test="taskkey != null" >
+        taskkey,
+      </if>
+      <if test="writable != null" >
+        writable,
+      </if>
+      <if test="visible != null" >
+        visible,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="adduserid != null" >
+        adduserid,
+      </if>
+      <if test="addusername != null" >
+        addusername,
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid,
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname,
+      </if>
+      adddate,
+      <if test="modifyuserid != null" >
+        modifyuserid,
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername,
+      </if>
+      <if test="modifytime != null" >
+        modifytime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="unkey != null" >
+        #{unkey},
+      </if>
+      <if test="itemid != null" >
+        #{itemid},
+      </if>
+      <if test="itemname != null" >
+        #{itemname},
+      </if>
+      <if test="definitionkey != null" >
+        #{definitionkey},
+      </if>
+      <if test="definitionid != null" >
+        #{definitionid},
+      </if>
+      <if test="taskkey != null" >
+        #{taskkey},
+      </if>
+      <if test="writable != null" >
+        #{writable},
+      </if>
+      <if test="visible != null" >
+        #{visible},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+      <if test="adduserid != null" >
+        #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        #{adddeptname},
+      </if>
+      now(),
+      <if test="modifyuserid != null" >
+        #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        #{modifyusername},
+      </if>
+      <if test="modifytime != null" >
+        #{modifytime},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateItemRule" parameterType="java.util.Map">
+      update t_act_form_itemrule
+      set
+      <trim prefix="set" suffixOverrides=",">
+          <if test="writable != null">
+              writable = #{writable },
+          </if>
+          <if test="visible != null">
+              visible = #{visible },
+          </if>
+          <if test="visible != null">
+              required = #{required },
+          </if>
+      </trim>
+      <trim prefix="where" prefixOverrides="and">
+          <if test="unkey != null">
+              and unkey = #{unkey },
+          </if>
+          <if test="itemname != null">
+              and itemname = #{itemname },
+          </if>
+          <if test="definitionkey != null">
+              and definitionkey = #{definitionkey },
+          </if>
+          <if test="definitionid != null">
+              and definitionid = #{definitionid },
+          </if>
+          <choose>
+              <when test="taskkey != null">
+                  and taskkey = #{taskkey },
+              </when>
+              <otherwise>
+                  and(taskkey is null or taskkey = '')
+              </otherwise>
+          </choose>
+      </trim>
+  </update>
+    <select id="selectItemRule" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" />
+        from t_act_form_itemrule
+        <trim prefix="where" prefixOverrides="and">
+            <if test="unkey != null">
+                and unkey = #{unkey }
+            </if>
+            <choose>
+                <when test="itemname != null">
+                    and itemname = #{itemname }
+                </when>
+                <otherwise>
+                    and(itemname is null or itemname = '')
+                </otherwise>
+            </choose>
+            <if test="definitionkey != null">
+                and definitionkey = #{definitionkey }
+            </if>
+            <if test="definitionid != null">
+                and definitionid = #{definitionid }
+            </if>
+            <choose>
+                <when test="taskkey != null">
+                    and taskkey = #{taskkey }
+                </when>
+                <otherwise>
+                    and(taskkey is null or taskkey = '')
+                </otherwise>
+            </choose>
+        </trim>
+    </select>
+    <select id="selectItemRuleList" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" />
+        from t_act_form_itemrule
+        <trim prefix="where" prefixOverrides="and">
+            <if test="unkey != null">
+                and unkey = #{unkey }
+            </if>
+            <if test="itemid != null">
+                and itemid = #{itemid }
+            </if>
+            <if test="itemname != null">
+                and itemname = #{itemname }
+            </if>
+            <if test="definitionkey != null">
+                and definitionkey = #{definitionkey }
+            </if>
+            <if test="definitionid != null">
+                and definitionid = #{definitionid }
+            </if>
+            <choose>
+                <when test="taskkey != null">
+                    and taskkey = #{taskkey }
+                </when>
+                <otherwise>
+                    and(taskkey is null or taskkey = '')
+                </otherwise>
+            </choose>
+        </trim>
+    </select>
+    <update id="setFormItemRule" parameterType="java.util.Map">
+        update t_act_form_itemrule
+        <trim prefix="set" suffixOverrides=",">
+            ${col } = #{val }
+        </trim>
+        <trim prefix="where" prefixOverrides="and">
+            <if test="definitionkey != null">
+                and definitionkey = #{definitionkey }
+            </if>
+            <if test="definitionid != null">
+                and definitionid = #{definitionid }
+            </if>
+            <if test="taskkey != null">
+                and taskkey = #{taskkey }
+            </if>
+            <if test="unkey != null">
+                and unkey = #{unkey }
+            </if>
+            <if test="itemid != null">
+                and itemid = #{itemid }
+            </if>
+        </trim>
+    </update>
+    <delete id="deleteFormItemRuleByUnkey" parameterType="java.lang.String">
+        delete from t_act_form_itemrule where unkey = #{unkey }
+    </delete>
+    <delete id="deleteNoneExistItemRule" parameterType="java.lang.String">
+      delete from t_act_form_itemrule
+      where unkey = #{unkey }
+        and itemid not in (select itemid from t_act_form_item where unkey = #{unkey})
+    </delete>
+    <!--
+    权限控制在js中实现
+    <insert id="addDefaultItemRule" parameterType="com.hd.agent.activiti.model.FormItemRule">
+        insert into t_act_form_itemrule(unkey, itemid, itemname, definitionkey, taskkey, adduserid, addusername, adddeptid, adddeptname, adddate)
+        values(select #{unkey }, #{itemid }, #{itemname }, #{definitionkey }, taskkey. #{adduserid }, #{addusername }, #{adddeptid }, #{adddeptname }, now() from t_act_form_item t1, t_act_form_itemrule t2 where t1.unkey = t2.unkey and t1.unkey = #{t1.unkey } and t1.itemid not in(select t3.itemid from t_act_form_itemrule t3 where t3.t_act_form_itemrule = #{t_act_form_itemrule } and t1.) )
+    </insert>
+    -->
+    <insert id="doCloneOldVerson2NewVersion" parameterType="java.util.Map">
+        delete from t_act_form_itemrule where definitionid = #{newdefinitionid };
+
+        insert into t_act_form_itemrule (unkey, itemid, itemname, definitionkey, taskkey, writable, visible, remark, required, definitionid)
+        (select unkey, itemid, itemname, definitionkey, taskkey, writable, visible, remark, required, #{newdefinitionid } from t_act_form_itemrule where definitionid = #{olddefinitionid});
+
+        update t_act_form_itemrule
+        set
+        adduserid = #{adduserid },
+        addusername = #{addusername },
+        adddeptid = #{adddeptid },
+        adddeptname = #{adddeptname },
+        adddate = now()
+        where definitionid = #{newdefinitionid }
+    </insert>
+</mapper>

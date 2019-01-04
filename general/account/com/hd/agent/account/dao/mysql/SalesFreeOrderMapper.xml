@@ -1,0 +1,820 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.account.dao.SalesFreeOrderMapper" >
+  	<insert id="addSalesFreeOrder" parameterType="com.hd.agent.account.model.SalesFreeOrder" >
+	    insert into t_account_sales_freeorder
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="id != null" >
+	        id,
+	      </if>
+	      <if test="businessdate != null" >
+	        businessdate,
+	      </if>
+	      <if test="status != null" >
+	        status,
+	      </if>
+	      <if test="remark != null" >
+	        remark,
+	      </if>
+	      <if test="adduserid != null" >
+	        adduserid,
+	      </if>
+	      <if test="addusername != null" >
+	        addusername,
+	      </if>
+	      <if test="adddeptid != null" >
+	        adddeptid,
+	      </if>
+	      <if test="adddeptname != null" >
+	        adddeptname,
+	      </if>
+	      <if test="1==1" >
+	        addtime,
+	      </if>
+	      <if test="customerid != null" >
+	        customerid,
+	      </if>
+	      <if test="applyid != null" >
+	        applyid,
+	      </if>
+	      <if test="applydeptid != null" >
+	        applydeptid,
+	      </if>
+	      <if test="freetype != null" >
+	        freetype,
+	      </if>
+	      <if test="orderid != null" >
+	        orderid,
+	      </if>
+	      <if test="pastduereasonid != null" >
+	        pastduereasonid,
+	      </if>
+	      <if test="overreason != null" >
+	        overreason,
+	      </if>
+	      <if test="commitmentamount != null" >
+	        commitmentamount,
+	      </if>
+	      <if test="commitmentdate != null" >
+	        commitmentdate,
+	      </if>
+	      <if test="saleamount != null" >
+	        saleamount,
+	      </if>
+	      <if test="unpassamount != null" >
+	        unpassamount,
+	      </if>
+	      <if test="totalpassamount != null" >
+	        totalpassamount,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="id != null" >
+	        #{id},
+	      </if>
+	      <if test="businessdate != null" >
+	        #{businessdate},
+	      </if>
+	      <if test="status != null" >
+	        #{status},
+	      </if>
+	      <if test="remark != null" >
+	        #{remark},
+	      </if>
+	      <if test="adduserid != null" >
+	        #{adduserid},
+	      </if>
+	      <if test="addusername != null" >
+	        #{addusername},
+	      </if>
+	      <if test="adddeptid != null" >
+	        #{adddeptid},
+	      </if>
+	      <if test="adddeptname != null" >
+	        #{adddeptname},
+	      </if>
+	      <if test="1==1" >
+	        now(),
+	      </if>
+	      <if test="customerid != null" >
+	        #{customerid},
+	      </if>
+	      <if test="applyid != null" >
+	        #{applyid},
+	      </if>
+	      <if test="applydeptid != null" >
+	        #{applydeptid},
+	      </if>
+	      <if test="freetype != null" >
+	        #{freetype},
+	      </if>
+	      <if test="orderid != null" >
+	        #{orderid},
+	      </if>
+	      <if test="pastduereasonid != null" >
+	        #{pastduereasonid},
+	      </if>
+	      <if test="overreason != null" >
+	        #{overreason},
+	      </if>
+	      <if test="commitmentamount != null" >
+	        #{commitmentamount},
+	      </if>
+	      <if test="commitmentdate != null" >
+	        #{commitmentdate},
+	      </if>
+	      <if test="saleamount != null" >
+	        #{saleamount},
+	      </if>
+	      <if test="unpassamount != null" >
+	        #{unpassamount},
+	      </if>
+	      <if test="totalpassamount != null" >
+	        #{totalpassamount},
+	      </if>
+	    </trim>
+  	</insert>
+  	<update id="editSalesFreeOrder" parameterType="com.hd.agent.account.model.SalesFreeOrder">
+  		update t_account_sales_freeorder
+  		<set>
+	      <if test="businessdate != null" >
+	        businessdate = #{businessdate},
+	      </if>
+	      <if test="status != null" >
+	        status = #{status},
+	      </if>
+	      <if test="remark != null" >
+	        remark = #{remark},
+	      </if>
+	      <if test="modifyuserid != null" >
+	        modifyuserid = #{modifyuserid},
+	      </if>
+	      <if test="modifyusername != null" >
+	        modifyusername = #{modifyusername},
+	      </if>
+	      <if test="1==1" >
+	        modifytime = now(),
+	      </if>
+	      <if test="customerid != null" >
+	        customerid = #{customerid},
+	      </if>
+	      <if test="applyid != null" >
+	        applyid = #{applyid},
+	      </if>
+	      <if test="applydeptid != null" >
+	        applydeptid = #{applydeptid},
+	      </if>
+	      <if test="freetype != null" >
+	        freetype = #{freetype},
+	      </if>
+	      <if test="orderid != null" >
+	        orderid = #{orderid},
+	      </if>
+	      <if test="pastduereasonid != null" >
+	        pastduereasonid = #{pastduereasonid},
+	      </if>
+	      <if test="overreason != null" >
+	        overreason = #{overreason},
+	      </if>
+	      <if test="commitmentamount != null" >
+	        commitmentamount = #{commitmentamount},
+	      </if>
+	      <if test="commitmentdate != null" >
+	        commitmentdate = #{commitmentdate},
+	      </if>
+	      <if test="saleamount != null" >
+	        saleamount = #{saleamount},
+	      </if>
+	      <if test="unpassamount != null" >
+	        unpassamount = #{unpassamount},
+	      </if>
+	      <if test="totalpassamount != null" >
+	        totalpassamount = #{totalpassamount},
+	      </if>
+  		</set>
+  		where id = #{id}
+  	</update>
+  	<update id="auditSalesFreeOrder" parameterType="com.hd.agent.account.model.SalesFreeOrder">
+  		update t_account_sales_freeorder
+  			set status = '3',
+  				audituserid = #{audituserid},
+  				auditusername = #{auditusername},
+  				audittime = now()
+  		where id = #{id}
+  	</update>
+  	<update id="auditSalesFreeOrderBatch">
+  		<foreach collection="list" index="index" item="item">
+			update t_account_sales_freeorder
+  			set status = '3',
+  				audituserid = #{item.audituserid},
+  				auditusername = #{item.auditusername},
+  				audittime = now()
+  		where id = #{item.id};
+		</foreach>
+  	</update>
+  	<update id="oppauditSalesFreeOrderBatch">
+  		update t_account_sales_freeorder
+  			set status = '2'
+  		where id in
+		<foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+  	</update>
+  	<delete id="deleteSalesFreeOrder">
+  		delete from t_account_sales_freeorder
+  		where id in
+  		<foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+  	</delete>
+	<select id="getSalesFreeOrderCount" parameterType="java.util.Map" resultType="int">
+		select count(1) from t_account_sales_freeorder
+		where businessdate = #{businessdate} and customerid = #{customerid}
+			and status = '2'
+	</select>
+	<select id="getSalesFreeOrder" parameterType="java.util.Map" resultType="com.hd.agent.account.model.SalesFreeOrder">
+		select * from t_account_sales_freeorder
+		where businessdate = #{businessdate} and customerid = #{customerid}
+			and status = '2' order by businessdate desc limit 1
+	</select>
+	<select id="getSalesFreeOrderByID" parameterType="java.lang.String" resultType="com.hd.agent.account.model.SalesFreeOrder">
+		select * from t_account_sales_freeorder where id = #{id}
+	</select>
+	<select id="getSalesFreeOrderList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.account.model.SalesFreeOrder">
+		select id,businessdate,status,remark,adduserid,addusername,adddeptid,adddeptname,addtime,modifyuserid,modifyusername,modifytime,
+			audituserid,auditusername,audittime,stopuserid,stopusername,stoptime,closetime,customerid,applyid,applydeptid,freetype,orderid,pastduereasonid,
+			overreason,commitmentamount,commitmentdate,saleamount,unpassamount,totalpassamount
+		from t_account_sales_freeorder
+		<trim prefix="where" prefixOverrides="and|or">
+		  <if test="condition.businessdate1 != null">
+			 and businessdate >= #{condition.businessdate1}
+		  </if>
+		  <if test="condition.businessdate2 != null">
+			 <![CDATA[and businessdate <= #{condition.businessdate2}]]>
+		  </if>
+		  <if test="condition.status != null" >
+         	and status = #{condition.status}
+      	  </if>
+		  <if test="condition.freetype != null" >
+	         and freetype = #{condition.freetype}
+	      </if>
+	      <if test="condition.customerid != null" >
+	         and customerid = #{condition.customerid}
+	      </if>
+		  <if test="condition.commitmentdate1 != null">
+			 and commitmentdate >= #{condition.commitmentdate1}
+		  </if>
+		  <if test="condition.commitmentdate2 != null">
+			 <![CDATA[and commitmentdate <= #{condition.commitmentdate2}]]>
+		  </if>
+	    </trim>
+		<if test="condition.isflag == null">
+			<include refid="common.Page_limit"/>
+		</if>
+	</select>
+	<select id="getSalesFreeOrderListCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+		select count(1) from (
+			select id,businessdate,status,remark,adduserid,addusername,adddeptid,adddeptname,addtime,modifyuserid,modifyusername,modifytime,
+				audituserid,auditusername,audittime,stopuserid,stopusername,stoptime,closetime,customerid,applyid,applydeptid,freetype,orderid,pastduereasonid,
+				overreason,commitmentamount,commitmentdate,saleamount,unpassamount,totalpassamount
+			from t_account_sales_freeorder
+			<trim prefix="where" prefixOverrides="and|or">
+			  <if test="condition.businessdate1 != null">
+				 and businessdate >= #{condition.businessdate1}
+			  </if>
+			  <if test="condition.businessdate2 != null">
+				 <![CDATA[and businessdate <= #{condition.businessdate2}]]>
+			  </if>
+			  <if test="condition.status != null" >
+	         	and status = #{condition.status}
+	      	  </if>
+			  <if test="condition.freetype != null" >
+		         and freetype = #{condition.freetype}
+		      </if>
+		      <if test="condition.customerid != null" >
+		         and customerid = #{condition.customerid}
+		      </if>
+			  <if test="condition.commitmentdate1 != null">
+				 and commitmentdate >= #{condition.commitmentdate1}
+			  </if>
+			  <if test="condition.commitmentdate2 != null">
+				 <![CDATA[and commitmentdate <= #{condition.commitmentdate2}]]>
+			  </if>
+		    </trim>
+		)z
+	</select>
+	
+	<!-- 添加客户应收款超账期原因 -->
+  	<insert id="addCustomerReceivablePastDueReason" parameterType="com.hd.agent.account.model.ReceivablePastDueReason">
+  		insert into t_account_receivablepastdue_reason
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="customerid != null" >
+	        customerid,
+	      </if>
+	      <if test="saleamount != null" >
+	        saleamount,
+	      </if>
+	      <if test="unpassamount != null" >
+	        unpassamount,
+	      </if>
+	      <if test="totalpassamount != null" >
+	        totalpassamount,
+	      </if>
+	      <if test="overreason != null" >
+	        overreason,
+	      </if>
+	      <if test="commitmentamount != null" >
+	        commitmentamount,
+	      </if>
+	      <if test="commitmentdate != null" >
+	        commitmentdate,
+	      </if>
+	      <if test="1 == 1" >
+	        state,
+	      </if>
+	      <if test="adduserid != null" >
+	        adduserid,
+	      </if>
+	      <if test="addusername != null" >
+	        addusername,
+	      </if>
+	      <if test="1 == 1" >
+	        addtime,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="customerid != null" >
+	        #{customerid},
+	      </if>
+	      <if test="saleamount != null" >
+	        #{saleamount},
+	      </if>
+	      <if test="unpassamount != null" >
+	        #{unpassamount},
+	      </if>
+	      <if test="totalpassamount != null" >
+	        #{totalpassamount},
+	      </if>
+	      <if test="overreason != null" >
+	        #{overreason},
+	      </if>
+	      <if test="commitmentamount != null" >
+	        #{commitmentamount},
+	      </if>
+	      <if test="commitmentdate != null" >
+	        #{commitmentdate},
+	      </if>
+	      <if test="1 == 1" >
+	        '1',
+	      </if>
+	      <if test="adduserid != null" >
+	        #{adduserid},
+	      </if>
+	      <if test="addusername != null" >
+	        #{addusername},
+	      </if>
+	      <if test="1 == 1" >
+	        now(),
+	      </if>
+	    </trim>
+  	</insert>
+  	<select id="getCustomerReceivablePastDueReason" parameterType="java.lang.String" resultType="com.hd.agent.account.model.ReceivablePastDueReason">
+  		select * from t_account_receivablepastdue_reason
+  		where state = '1' and customerid = #{customerid}
+  	</select>
+  	<select id="getCustomerReceivablePastDueReasonChangenum" parameterType="java.lang.String" resultType="int">
+  		select count(1) from t_account_receivablepastdue_reason where customerid = #{customerid} and (state = '0' or state = '1')
+  	</select>
+  	<update id="oneClearReceivablePastDueReason">
+		UPDATE t_account_receivablepastdue_reason 
+			SET state = '2'
+		WHERE state = '1' or state = '0'
+  	</update>
+  	<update id="editCustomerReceivablePastDueReason" parameterType="java.lang.String">
+  		update t_account_receivablepastdue_reason
+  		set state = '0'
+  		where customerid = #{customerid}
+  	</update>
+  	<select id="getHistoryCustomerReceivablePastDueReasonList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.account.model.ReceivablePastDueReason">
+  		select customerid,saleamount,unpassamount,totalpassamount,overreason,commitmentamount,commitmentdate
+  		from t_account_receivablepastdue_reason
+  		where customerid = #{condition.customerid}
+  		ORDER BY commitmentdate
+  		<include refid="common.Page_limit"/>
+  	</select>
+  	<select id="getHistoryCustomerReceivablePastDueReasonCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  		select count(1) from (
+  			select customerid,saleamount,unpassamount,totalpassamount,overreason,commitmentamount,commitmentdate
+	  		from t_account_receivablepastdue_reason
+	  		where customerid = #{condition.customerid}
+	  		ORDER BY commitmentdate
+  		)z
+  	</select>
+  	<!-- 根据承诺到款日期时间段获取不重复的客户编码集 -->
+  	<select id="getReceivablePastDueReasonByMap" parameterType="java.util.Map" resultType="com.hd.agent.account.model.ReceivablePastDueReason">
+  		select DISTINCT t.customerid from t_account_receivablepastdue_reason t
+  		left join t_base_sales_customer t1 on t.customerid = t1.id
+  		<trim prefix="where" prefixOverrides="and|or">
+  			<if test="customerid != null">
+  				and FIND_IN_SET(t.customerid,#{customerid})
+			</if>
+  			<if test="commitmentdate1 != null">
+				and t.commitmentdate >= #{commitmentdate1}
+			</if>
+			<if test="commitmentdate2 != null">
+				<![CDATA[and t.commitmentdate <= #{commitmentdate2}]]>
+			</if>
+			<if test="salesarea != null">
+				and FIND_IN_SET(t1.salesarea,#{salesarea})
+			</if>
+			<if test="payeeid != null">
+				and FIND_IN_SET(t1.payeeid,#{payeeid})
+			</if>
+			<if test="1 == 1">
+				and t.state = '1'
+			</if>
+  		</trim>
+  	</select>
+
+	<sql id="ReceivablePassDueReasonCommon_sql">
+		(
+		select t.customerid,t.pcustomerid,t.salesarea,t.salesdept,t.salesuser,c.payeeid,
+		t1.goodsid AS goodsid,t1.brandid,t1.branduser,t1.branddept,
+		0 as beginamount,t1.taxamount AS saleamount, t1.notaxamount AS salenotaxamount, 0 as returnamount, 0 as pushamount,
+		0 as costamount,if((t1.duefromdate='' or t1.duefromdate >= '${condition.today}'),t1.taxamount,0) as
+		unpassamount,
+		if(<![CDATA[t1.duefromdate<>'' and t1.duefromdate < '${condition.today}']]>,t1.taxamount,0) as totalpassamount
+		${condition.column}
+		from t_storage_saleout t
+		RIGHT JOIN t_storage_saleout_detail t1 on t1.saleoutid=t.id
+		LEFT JOIN t_base_sales_customer c ON c.id = t.customerid
+		where ${condition.query_sql}
+		and t1.iswriteoff='0' and t.status in('3','4')
+		UNION ALL
+		SELECT t.customerid,t.pcustomerid,t.salesarea,t.salesdept,t.salesuser,c.payeeid,
+		t1.goodsid,t1.brandid,t1.branduser,t1.branddept,
+		0 as beginamount,-t1.taxamount AS saleamount,-t1.notaxamount AS salenotaxamount,if(t.sourcetype='1',-t1.taxamount,0) AS
+		returnamount,0 as pushamount,
+		-t1.unitnum*t1.costprice as costamount,if((t1.duefromdate='' or t1.duefromdate >=
+		'${condition.today}'),-t1.taxamount,0) as unpassamount,
+		if(<![CDATA[t1.duefromdate<>'' and t1.duefromdate < '${condition.today}']]>,-t1.taxamount,0) as totalpassamount
+		${condition.column}
+		FROM t_storage_salereject_enter t
+		RIGHT JOIN t_storage_salereject_enter_detail t1 ON t1.salerejectid = t.id
+		LEFT JOIN t_base_sales_customer c ON c.id = t.customerid
+		where ${condition.query_sql}
+		and t.ischeck='1' and t1.iswriteoff='0' and t.status in('3','4')
+		UNION ALL
+		SELECT
+		t.customerid,t.pcustomerid,t.salesarea,t.salesdept,t.salesuser,c.payeeid,
+		t.brandid AS goodsid,t.brandid,t.branduser,t.branddept,
+		0 as beginamount,t.amount AS saleamount, 0 AS salenotaxamount, 0 as returnamount, t.amount as pushamount,
+		0 as costamount,t.amount as unpassamount , 0 as totalpassamount
+		${condition.column}
+		FROM t_account_customer_push_balance t
+		LEFT JOIN t_base_sales_customer c ON c.id = t.customerid
+		WHERE ${condition.query_sql_push}
+		and t.iswriteoff='0' and t.status in('3','4')
+		UNION ALL
+		select t.customerid,t.pcustomerid,t.salesarea,t.salesdept,t.salesuser,c.payeeid,
+		'QC' AS goodsid,'QC' as brandid,'QC' as branduser,'QC'as branddept,
+		t.amount as beginamount,t.amount AS saleamount, 0 AS salenotaxamount, 0 as returnamount, 0 as pushamount,
+		0 as costamount,if((t.duefromdate='' or t.duefromdate >= '${condition.today}'),t.amount,0) as unpassamount,
+		if(<![CDATA[t.duefromdate<>'' and t.duefromdate < '${condition.today}']]>,t.amount,0) as totalpassamount
+		${condition.column}
+		from t_account_begin_amount t
+		LEFT JOIN t_base_sales_customer c ON c.id = t.customerid
+		where ${condition.query_sql_begin} and t.iswriteoff='0' and t.status = '3'
+		<if test="condition.isAll == 1">
+			UNION ALL
+			SELECT t.* FROM (
+			SELECT c.id as customerid,c.pid as pcustomerid,c.salesarea,c.salesdeptid as salesdept,c.salesuserid as salesuser,c.payeeid,
+			'' as goodsid,'' as brandid,'' as branduser,'' as branddept,
+			0 AS beginamount,0 as saleamount,0 as salenotaxamount,0 as returnamount,0 as pushamount,
+			0 as costamount,0 as unpassamount,0 as totalpassamount
+			${condition.column}
+			from t_base_sales_customer c where <![CDATA[c.state <> '2' and c.state <> '0']]> ) t
+			LEFT JOIN t_base_sales_customer c ON t.customerid = c.id
+			where ${condition.query_sql_push}
+		</if>
+		${condition.pass_sql}
+		)
+	</sql>
+	<sql id="BaseReceivablePassDueReasonListData_sql">
+		SELECT
+		z.customerid,z.pcustomerid,z.salesarea,z.salesdept,z.salesuser,z.goodsid,z.brandid,z.branduser,z.branddept,z.payeeid,
+		SUM(z.beginamount) as beginamount, SUM(z.saleamount) as saleamount,SUM(z.salenotaxamount) as salenotaxamount,SUM(z.returnamount) as returnamount,SUM(z.pushamount) as pushamount,
+		SUM(z.costamount) as costamount,SUM(z.unpassamount) as unpassamount,SUM(z.totalpassamount) as totalpassamount,SUM(z.commitmentamount) as commitmentamount,
+		MAX(z.commitmentdate) as commitmentdate,MAX(z.overreason) as overreason,MAX(z.addtime) as addtime,SUM(z.amount) as amount
+		${condition.column_sum}
+		from(
+		SELECT
+		t.customerid,t.pcustomerid,t.salesarea,t.salesdept,t.salesuser,t.goodsid,t.brandid,t.branduser,t.branddept,t.payeeid,
+		t.beginamount,t.saleamount,t.salenotaxamount,t.returnamount,t.pushamount,t.costamount,t.unpassamount,t.totalpassamount,
+		s.commitmentamount,s.commitmentdate,s.overreason,s.addtime,0 as amount
+		${condition.column_reson}
+		from(
+		select
+		z.customerid,z.pcustomerid,z.salesarea,z.salesdept,z.salesuser,z.goodsid,z.brandid,z.branduser,z.branddept,z.payeeid,
+		SUM(z.beginamount) as beginamount,sum(z.saleamount) as saleamount,sum(z.salenotaxamount) as salenotaxamount,
+		sum(z.returnamount) as returnamount,sum(z.pushamount) as pushamount,
+		sum(z.costamount) as costamount,sum(z.unpassamount) as unpassamount ,sum(z.totalpassamount) as totalpassamount
+		${condition.column_sum}
+		FROM <include refid="ReceivablePassDueReasonCommon_sql"/> z
+		<trim prefix="where" prefixOverrides="and|or" >
+			<if test="dataSql  != '' ">
+				${dataSql}
+			</if>
+			<if test="1 == 1">
+				and ${condition.query_sql_z}
+			</if>
+		</trim>
+		<choose>
+			<when test="condition.ispastdue == 0 ">
+				<choose>
+					<when test="condition.groupcols == ''">
+						group by customerid,goodsid
+					</when>
+					<otherwise>
+						group by ${condition.groupcols}
+					</otherwise>
+				</choose>
+			</when>
+			<otherwise>
+				<choose>
+					<when test="condition.groupcols == ''">
+						<![CDATA[group by  customerid,goodsid HAVING sum(z.totalpassamount) <> 0]]>
+					</when>
+					<otherwise>
+						<![CDATA[group by  ${condition.groupcols} HAVING sum(z.totalpassamount) <> 0]]>
+					</otherwise>
+				</choose>
+			</otherwise>
+		</choose>
+		) t
+		LEFT JOIN t_account_receivablepastdue_reason s on t.customerid = s.customerid AND s.state = '1'
+		WHERE ${condition.reason_sql}
+		UNION ALL
+		SELECT t.* FROM (
+			SELECT p.id as customerid,c.pid as pcustomerid,c.salesarea,c.salesdeptid as salesdept,c.salesuserid as salesuser,'' as goodsid,'' as brandid,'' as branduser,'' as branddept,c.payeeid,
+			0 AS beginamount,0 as saleamount,0 as salenotaxamount,0 as returnamount,0 as pushamount,0 as costamount,0 as unpassamount,0 as totalpassamount,
+			0 as commitmentamount,'' as commitmentdate,'' as overreason,null as addtime,p.amount
+			${condition.column}
+			from t_account_customer_capital p
+			LEFT JOIN t_base_sales_customer c ON p.id = c.id
+			where p.amount != 0
+		) t
+		LEFT JOIN t_base_sales_customer c ON t.customerid = c.id
+		LEFT JOIN t_account_receivablepastdue_reason s on t.customerid = s.customerid AND s.state = '1'
+		WHERE ${condition.reason_sql}
+		)z
+		where ${dataSql}
+		<if test="condition.groupcolsall  != 'all' " >
+			<choose>
+				<when test="condition.groupcols == ''">
+					group by customerid,goodsid
+				</when>
+				<otherwise>
+					group by ${condition.groupcols}
+				</otherwise>
+			</choose>
+		</if>
+	</sql>
+    <sql id="CSTBranduserReceivablePassDueReasonListData_sql">
+        SELECT
+        z.customerid,z.pcustomerid,z.salesarea,z.salesdept,z.salesuser,z.goodsid,z.brandid,z.branduser,z.branddept,z.payeeid,
+        SUM(z.beginamount) as beginamount, SUM(z.saleamount) as saleamount,SUM(z.salenotaxamount) as salenotaxamount,SUM(z.returnamount) as returnamount,SUM(z.pushamount) as pushamount,
+        SUM(z.costamount) as costamount,SUM(z.unpassamount) as unpassamount,SUM(z.totalpassamount) as totalpassamount,SUM(z.commitmentamount) as commitmentamount,
+        MAX(z.commitmentdate) as commitmentdate,MAX(z.overreason) as overreason,MAX(z.addtime) as addtime,SUM(z.amount) as amount
+        ${condition.column_sum}
+        from(
+        SELECT
+        t.customerid,t.pcustomerid,t.salesarea,t.salesdept,t.salesuser,t.goodsid,t.brandid,t.branduser,t.branddept,t.payeeid,
+        t.beginamount,t.saleamount,t.salenotaxamount,t.returnamount,t.pushamount,t.costamount,t.unpassamount,t.totalpassamount,
+        s.commitmentamount,s.commitmentdate,s.overreason,s.addtime,t.amount
+        ${condition.column_reson}
+        from(
+        select
+        z.customerid,z.pcustomerid,z.salesarea,z.salesdept,z.salesuser,z.goodsid,z.brandid,z.branduser,z.branddept,z.payeeid,
+		SUM(z.beginamount) as beginamount,sum(z.saleamount) as saleamount,sum(z.salenotaxamount) as salenotaxamount,
+        sum(z.returnamount) as returnamount,sum(z.pushamount) as pushamount,
+        sum(z.costamount) as costamount,sum(z.unpassamount) as unpassamount ,sum(z.totalpassamount) as totalpassamount,p.amount
+        ${condition.column_sum}
+        FROM <include refid="ReceivablePassDueReasonCommon_sql"/> z
+		LEFT JOIN t_account_customer_capital p on p.id = z.customerid <![CDATA[and p.amount <> 0]]>
+		<trim prefix="where" prefixOverrides="and|or" >
+			<if test="dataSql  != '' ">
+				${dataSql}
+			</if>
+			<if test="1 == 1">
+				and ${condition.query_sql_z}
+			</if>
+		</trim>
+		<choose>
+			<when test="condition.ispastdue == 0 ">
+				<choose>
+					<when test="condition.groupcols == ''">
+						group by customerid,goodsid
+					</when>
+					<otherwise>
+						group by ${condition.groupcols}
+					</otherwise>
+				</choose>
+			</when>
+			<otherwise>
+				<choose>
+					<when test="condition.groupcols == ''">
+						<![CDATA[group by  customerid,goodsid HAVING sum(z.totalpassamount) <> 0]]>
+					</when>
+					<otherwise>
+						<![CDATA[group by  ${condition.groupcols} HAVING sum(z.totalpassamount) <> 0]]>
+					</otherwise>
+				</choose>
+			</otherwise>
+		</choose>
+            ) t
+            LEFT JOIN t_account_receivablepastdue_reason s on t.customerid = s.customerid AND s.state = '1'
+            WHERE ${condition.reason_sql}
+        )z
+        where ${dataSql}
+        <if test="condition.groupcolsall  != 'all' " >
+            <choose>
+                <when test="condition.groupcols == ''">
+                    group by customerid,goodsid
+                </when>
+                <otherwise>
+                    group by ${condition.groupcols}
+                </otherwise>
+            </choose>
+        </if>
+    </sql>
+	<select id="showBaseReceivablePassDueReasonListData" parameterType="com.hd.agent.common.util.PageMap" resultType="java.util.Map">
+		<choose>
+			<when test="condition.iscustomersql == true">
+				<include refid="BaseReceivablePassDueReasonListData_sql"/>
+			</when>
+			<when test="condition.iscstbrandusersql == true">
+				<include refid="CSTBranduserReceivablePassDueReasonListData_sql"/>
+			</when>
+			<otherwise>
+				<include refid="BaseReceivablePassDueReasonListData_sql"/>
+			</otherwise>
+		</choose>
+        <if test="condition.orderstr  != '' " >
+            order by
+            ${condition.orderstr}
+        </if>
+        <if test="condition.isflag == null and condition.groupcols != 'all'">
+            LIMIT #{startNum},#{rows}
+        </if>
+  	</select>
+  	<select id="showBaseReceivablePassDueReasonListCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  		select count(1) from (
+		<choose>
+			<when test="condition.iscustomersql == true">
+				<include refid="BaseReceivablePassDueReasonListData_sql"/>
+			</when>
+			<when test="condition.iscstbrandusersql == true">
+				<include refid="CSTBranduserReceivablePassDueReasonListData_sql"/>
+			</when>
+			<otherwise>
+				<include refid="BaseReceivablePassDueReasonListData_sql"/>
+			</otherwise>
+		</choose>
+  		)co
+  	</select>
+  	<select id="getSalesFreeOrderCountByCustomeridAndDate" parameterType="java.lang.String" resultType="int">
+  		select count(1) from t_account_sales_freeorder t
+  		where t.commitmentdate>=#{businessdate} and t.freetype='1' and t.customerid=#{customerid} and (t.status='3' or t.status='4')
+  	</select>
+	<sql id="SupplierPassDueReasonCommon_sql">
+		(
+		select t.supplierid,t.supplierdeptid,t.brandid,
+		0 as beginamount,t.actingmatamount AS saleamount,
+		0 as costamount,if((t.duefromdate='' or t.duefromdate >= '${condition.today}'),t.remainderamount,0) as
+		unpassamount,
+		if(<![CDATA[t.duefromdate<>'' and t.duefromdate < '${condition.today}']]>,t.remainderamount,0) as totalpassamount
+		${condition.column}
+		from t_js_matcostsinput t
+		LEFT JOIN t_base_buy_supplier c ON c.id = t.supplierid
+		where ${condition.query_sql}
+		 AND t.billtype='1' AND t.iswriteoff='0'
+		<if test="condition.businessdate1  != null " >
+			AND t.businessdate>=#{condition.businessdate1}
+		</if>
+		<if test="condition.businessdate2  != null " >
+			<![CDATA[and businessdate <= #{condition.businessdate2}]]>
+		</if>
+
+		UNION ALL
+
+		select t.supplierid,t.supplierdeptid,t.brandid,
+		<if test="condition.businessdate1  != null " >
+			actingmatamount as beginamount,
+		</if>
+		<if test="condition.businessdate1 == null " >
+			0 as beginamount,
+		</if>
+		0 AS saleamount,
+		0 as costamount,0 as unpassamount,0 as totalpassamount
+		${condition.column}
+		from t_js_matcostsinput t
+		LEFT JOIN t_base_buy_supplier c ON c.id = t.supplierid
+		where ${condition.query_sql} AND t.billtype='1' AND t.iswriteoff='0'
+		<if test="condition.businessdate1  != null " >
+			<![CDATA[and businessdate < #{condition.businessdate1}]]>
+		</if>
+
+		${condition.pass_sql}
+		)
+	</sql>
+	<sql id="SupplierReceivablePastDueReasonList_sql">
+		SELECT
+		z.supplierid,z.supplierdeptid,z.brandid,
+		SUM(z.beginamount) as beginamount, SUM(z.saleamount) as saleamount,
+		SUM(z.costamount) as costamount,SUM(z.unpassamount) as unpassamount,SUM(z.totalpassamount) as totalpassamount,
+		SUM(z.amount) as amount
+		${condition.column_sum}
+		from(
+		SELECT
+		y.supplierid,y.supplierdeptid,y.brandid,
+		y.beginamount,y.saleamount,y.costamount,y.unpassamount,y.totalpassamount,
+		0 as amount
+ 		${condition.column_reson}
+		from(
+		select
+		z.supplierid,z.supplierdeptid,z.brandid,
+		SUM(z.beginamount) as beginamount,sum(z.saleamount) as saleamount,
+		sum(z.costamount) as costamount,sum(z.unpassamount) as unpassamount ,sum(z.totalpassamount) as totalpassamount
+		${condition.column_sum}
+		FROM <include refid="SupplierPassDueReasonCommon_sql"/> z
+		<trim prefix="where" prefixOverrides="and|or" >
+			<if test="dataSql  != '' ">
+				${dataSql}
+			</if>
+			<if test="1 == 1">
+				and ${condition.query_sql_z}
+			</if>
+		</trim>
+		<choose>
+			<when test="condition.ispastdue == 0 ">
+				<choose>
+					<when test="condition.groupcols == ''">
+						group by supplierid
+					</when>
+					<otherwise>
+						group by ${condition.groupcols}
+					</otherwise>
+				</choose>
+			</when>
+			<otherwise>
+				<choose>
+					<when test="condition.groupcols == ''">
+						<![CDATA[group by  supplierid HAVING sum(z.totalpassamount) <> 0]]>
+					</when>
+					<otherwise>
+						<![CDATA[group by  ${condition.groupcols} HAVING sum(z.totalpassamount) <> 0]]>
+					</otherwise>
+				</choose>
+			</otherwise>
+		</choose>
+		) y
+		)z
+		where 1=1
+		<if test="dataSql  != null and dataSql  != '' ">
+			AND ${dataSql}
+		</if>
+		<if test="condition.groupcolsall  != 'all' " >
+			<choose>
+				<when test="condition.groupcols == ''">
+					group by supplierid
+				</when>
+				<otherwise>
+					group by ${condition.groupcols}
+				</otherwise>
+			</choose>
+		</if>
+	</sql>
+	<select id="showSupplierReceivablePastDueReasonList" parameterType="com.hd.agent.common.util.PageMap" resultType="map">
+		<include refid="SupplierReceivablePastDueReasonList_sql"/>
+		<if test="condition.orderstr  != '' " >
+			order by
+			${condition.orderstr}
+		</if>
+		<if test="condition.isflag == null and condition.groupcols != 'all'">
+			LIMIT #{startNum},#{rows}
+		</if>
+	</select>
+	<select id="showSupplierReceivablePastDueReasonCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+		select count(1) from (
+		<include refid="SupplierReceivablePastDueReasonList_sql"/>
+		)co
+	</select>
+	<select id="getSupplierPassDueListDataRS" parameterType="com.hd.agent.common.util.PageMap" resultType="java.util.Map">
+		SELECT t.beginday,t.endday,t.seq FROM t_report_paymentdays_set t WHERE t.adduserid=#{condition.sysuserid}
+		<if test="condition.type != null" >
+			and t.type = #{condition.type}
+		</if>
+		ORDER BY t.seq ASC
+	</select>
+</mapper>

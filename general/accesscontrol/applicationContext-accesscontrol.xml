@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+	
+	<!-- dao配置 -->
+	<bean id="accessControlMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.accesscontrol.dao.AccessControlMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="sysUserMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.accesscontrol.dao.SysUserMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="dataruleMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.accesscontrol.dao.DataruleMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+     <bean id="personnelMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.basefiles.dao.PersonnelMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="userAuthorityMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.accesscontrol.dao.UserAuthorityMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+	<!-- service配置 -->
+	<bean id="securityService" parent="baseTransactionProxy">
+    	<property name="target" ref="securityServiceImpl"></property>   
+    </bean>
+    <bean id="securityServiceImpl" class="com.hd.agent.accesscontrol.service.impl.SercurityServiceImpl" parent="baseServiceImpl">
+    	<property name="accessControlMapper" ref="accessControlMapper"></property>
+    	<property name="sysUserMapper" ref="sysUserMapper"></property>
+    	<property name="sessionRegistry" ref="sessionRegistry"></property>
+    </bean>
+    
+    <bean id="sysUserService" parent="baseTransactionProxy">
+    	<property name="target" ref="sysUserServiceImpl"></property>   
+    </bean>
+    <bean id="sysUserServiceImpl" class="com.hd.agent.accesscontrol.service.impl.SysUserServiceImpl" parent="baseServiceImpl">
+    	<property name="sysUserMapper" ref="sysUserMapper"></property>
+    	<property name="userAuthorityMapper" ref="userAuthorityMapper"></property>
+    	<property name="personnelMapper" ref="personnelMapper"></property>
+    	<property name="departMentMapper" ref="departMentMapper"></property>
+    	<property name="workJobMapper" ref="workJobMapper"></property>
+    </bean>
+    
+    <bean id="dataAccessService" parent="baseTransactionProxy">
+    	<property name="target" ref="dataAccessServiceImpl"></property>   
+    </bean>
+    <bean id="dataAccessServiceImpl" class="com.hd.agent.accesscontrol.service.impl.DataAccessServiceImpl">
+    	<property name="dataruleMapper" ref="dataruleMapper"></property>
+    </bean>
+    <bean id="personnelService" parent="baseTransactionProxy">
+    	<property name="target" ref="personnelServiceImpl"></property>   
+    </bean>
+    <bean id="personnelServiceImpl" class="com.hd.agent.basefiles.service.impl.PersonnelServiceImpl" parent="filesLevelServiceImpl">
+    	<property name="personnelMapper" ref="personnelMapper"></property>
+    	<property name="departMentMapper" ref="departMentMapper"></property>
+    </bean>
+    <!-- action配置-->
+    <bean id="indexAction" class="com.hd.agent.accesscontrol.action.IndexAction" scope="prototype" parent="baseAction">
+    	<property name="sysUserService" ref="sysUserService"></property>
+    	<property name="securityService" ref="securityService"></property>
+    </bean>
+    <bean id="accessControlAction" class="com.hd.agent.accesscontrol.action.AccessControlAction" scope="prototype" parent="baseAction">
+    	<property name="securityService" ref="securityService"></property>
+    	<property name="dataDictionaryService" ref="dataDictionaryService"></property>
+    </bean>
+    <bean id="dataAccessAction" class="com.hd.agent.accesscontrol.action.DataAccessAction" scope="prototype" parent="baseAction">
+    	<property name="dataAccessService" ref="dataAccessService"></property>
+    </bean>
+    <bean id="sysUserAction" class="com.hd.agent.accesscontrol.action.SysUserAction" scope="prototype" parent="filesLevleAction">
+    	<property name="sysUserService" ref="sysUserService"></property>
+    	<property name="sessionRegistry" ref="sessionRegistry"></property>
+    	<property name="personnelService" ref="personnelService"></property>
+    	<property name="departMentService" ref="departMentService"></property>
+    	<property name="securityService" ref="securityService"></property>
+    	<property name="workJobService" ref="workJobService"></property>
+    </bean>
+</beans>

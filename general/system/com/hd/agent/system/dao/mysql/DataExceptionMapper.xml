@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.system.dao.DataExceptionMapper" >
+	
+	<cache type="org.mybatis.caches.ehcache.EhcacheCache"></cache>
+	
+	<insert id="addDataException" parameterType="com.hd.agent.system.model.DataException">
+		<selectKey resultType="java.lang.String" keyProperty="id" order="BEFORE" >
+	      select uuid_short()
+	    </selectKey>
+		insert into t_sys_dataexception
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	        id,
+	      <if test="name != null" >
+	        name,
+	      </if>
+	      <if test="mtable != null" >
+	        mtable,
+	      </if>
+	      <if test="mcolumn != null" >
+	        mcolumn,
+	      </if>
+	      <if test="rtable != null" >
+	        rtable,
+	      </if>
+	      <if test="rcolumn != null" >
+	        rcolumn,
+	      </if>
+	      <if test="mrelatecolumn != null" >
+	        mrelatecolumn,
+	      </if>
+	      <if test="rrelatecolumn != null" >
+	        rrelatecolumn,
+	      </if>
+	      <if test="type != null" >
+	        type,
+	      </if>
+	      <if test="val != null" >
+	        val,
+	      </if>
+	      <if test="normalup != null" >
+	        normalup,
+	      </if>
+	      <if test="normaldown != null" >
+	        normaldown,
+	      </if>
+	      <if test="exceptionup != null" >
+	        exceptionup,
+	      </if>
+	      <if test="exceptiondown != null" >
+	        exceptiondown,
+	      </if>
+	      <if test="exremind != null" >
+	        exremind,
+	      </if>
+	      <if test="state != null" >
+	        state,
+	      </if>
+	      <if test="1==1" >
+	        addtime,
+	      </if>
+	      <if test="adduserid != null" >
+	        adduserid,
+	      </if>
+	      <if test="modifytime != null" >
+	        modifytime,
+	      </if>
+	      <if test="modifyuserid != null" >
+	        modifyuserid,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	        #{id},
+	      <if test="name != null" >
+	        #{name},
+	      </if>
+	      <if test="mtable != null" >
+	        #{mtable},
+	      </if>
+	      <if test="mcolumn != null" >
+	        #{mcolumn},
+	      </if>
+	      <if test="rtable != null" >
+	        #{rtable},
+	      </if>
+	      <if test="rcolumn != null" >
+	        #{rcolumn},
+	      </if>
+	      <if test="mrelatecolumn != null" >
+	        #{mrelatecolumn},
+	      </if>
+	      <if test="rrelatecolumn != null" >
+	        #{rrelatecolumn},
+	      </if>
+	      <if test="type != null" >
+	        #{type},
+	      </if>
+	      <if test="val != null" >
+	        #{val},
+	      </if>
+	      <if test="normalup != null" >
+	        #{normalup},
+	      </if>
+	      <if test="normaldown != null" >
+	        #{normaldown},
+	      </if>
+	      <if test="exceptionup != null" >
+	        #{exceptionup},
+	      </if>
+	      <if test="exceptiondown != null" >
+	        #{exceptiondown},
+	      </if>
+	      <if test="exremind != null" >
+	        #{exremind},
+	      </if>
+	      <if test="state != null" >
+	        #{state},
+	      </if>
+	      <if test="1==1" >
+	        now(),
+	      </if>
+	      <if test="adduserid != null" >
+	        #{adduserid},
+	      </if>
+	      <if test="modifytime != null" >
+	        #{modifytime},
+	      </if>
+	      <if test="modifyuserid != null" >
+	        #{modifyuserid},
+	      </if>
+	    </trim>
+	</insert>
+	
+	<select id="showDataExceptionList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.system.model.DataException" useCache="false">
+		select id, name, mtable, mcolumn, rtable, rcolumn, mrelatecolumn, rrelatecolumn, type, val, 
+	    normalup, normaldown, exceptionup, exceptiondown, exremind, state, addtime, adduserid, 
+	    modifytime, modifyuserid from t_sys_dataexception
+	    <trim prefix="where" prefixOverrides="and|or" >
+	      <if test="condition.name != null" >
+	         and name like CONCAT('%',#{condition.name},'%')
+	      </if>
+	      <if test="condition.mtable != null" >
+	         and mtable = #{condition.mtable}
+	      </if>
+	      <if test="condition.mcolumn != null" >
+	         and mcolumn = #{condition.mcolumn}
+	      </if>
+	      <if test="condition.state != null" >
+	         and state = #{condition.state}
+	      </if>
+	    </trim>
+	    <include refid="common.Page_limit" />
+	</select>
+	
+	<select id="showDataExceptionCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int" useCache="false">
+		select count(1) from t_sys_dataexception
+		<trim prefix="where" prefixOverrides="and|or" >
+	      <if test="condition.name != null" >
+	         and name like CONCAT('%',#{condition.name},'%')
+	      </if>
+	      <if test="condition.mtable != null" >
+	         and mtable = #{condition.mtable}
+	      </if>
+	      <if test="condition.mcolumn != null" >
+	         and mcolumn = #{condition.mcolumn}
+	      </if>
+	      <if test="condition.state != null" >
+	         and state = #{condition.state}
+	      </if>
+	    </trim>
+	</select>
+	
+	<insert id="addDataExceptionOperate" parameterType="com.hd.agent.system.model.DataExceptionOperate">
+		 <selectKey resultType="java.lang.String" keyProperty="id" order="BEFORE" >
+	      select uuid_short()
+	    </selectKey>
+		 insert into t_sys_dataexception_operate
+	    <trim prefix="(" suffix=")" suffixOverrides=",">
+	        id,
+	      <if test="dataexceptionid != null">
+	        dataexceptionid,
+	      </if>
+	      <if test="menu != null">
+	        menu,
+	      </if>
+	      <if test="button != null">
+	        button,
+	      </if>
+	      <if test="url != null">
+	        url,
+	      </if>
+	      <if test="state != null">
+	        state,
+	      </if>
+	      <if test="1==1">
+	        addtime,
+	      </if>
+	      <if test="adduserid != null">
+	        adduserid,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides=",">
+	        #{id},
+	      <if test="dataexceptionid != null">
+	        #{dataexceptionid},
+	      </if>
+	      <if test="menu != null">
+	        #{menu},
+	      </if>
+	      <if test="button != null">
+	        #{button},
+	      </if>
+	      <if test="url != null">
+	        #{url},
+	      </if>
+	      <if test="state != null">
+	        #{state},
+	      </if>
+	      <if test="1==1">
+	        now(),
+	      </if>
+	      <if test="adduserid != null">
+	        #{adduserid},
+	      </if>
+	    </trim>
+	</insert>
+	
+	<select id="showDataExceptionOperateList" parameterType="java.lang.String" resultType="com.hd.agent.system.model.DataExceptionOperate" useCache="false">
+		select id, dataexceptionid, menu, button, url, state, addtime, adduserid
+		from t_sys_dataexception_operate where dataexceptionid=#{dataExceptionID}
+	</select>
+	<delete id="deleteDataExceptionOperate" parameterType="java.lang.String">
+		delete from t_sys_dataexception_operate where id = #{id}
+	</delete>
+	<delete id="deleteDataException" parameterType="java.lang.String">
+		delete from t_sys_dataexception where id = #{id}
+	</delete>
+	<delete id="deleteOperateBydataExceptionID" parameterType="java.lang.String">
+		delete from t_sys_dataexception_operate where dataexceptionid=#{dataExceptionID}
+	</delete>
+	<select id="showDataExceptionInfo" parameterType="java.lang.String" resultType="com.hd.agent.system.model.DataException" useCache="false">
+		select id, name, mtable, mcolumn, rtable, rcolumn, mrelatecolumn, rrelatecolumn, type, val, 
+	    normalup, normaldown, exceptionup, exceptiondown, exremind, state, addtime, adduserid, 
+	    modifytime, modifyuserid from t_sys_dataexception
+	    where id = #{id}
+	</select>
+	<update id="editDataException" parameterType="com.hd.agent.system.model.DataException">
+		update t_sys_dataexception
+	    <set>
+	      <if test="name != null">
+	        name = #{name},
+	      </if>
+	      <if test="mtable != null">
+	        mtable = #{mtable},
+	      </if>
+	      <if test="mcolumn != null">
+	        mcolumn = #{mcolumn},
+	      </if>
+	      <if test="rtable != null">
+	        rtable = #{rtable},
+	      </if>
+	      <if test="rcolumn != null">
+	        rcolumn = #{rcolumn},
+	      </if>
+	      <if test="mrelatecolumn != null">
+	        mrelatecolumn = #{mrelatecolumn},
+	      </if>
+	      <if test="rrelatecolumn != null">
+	        rrelatecolumn = #{rrelatecolumn},
+	      </if>
+	      <if test="type != null">
+	        type = #{type},
+	      </if>
+	      <if test="val != null">
+	        val = #{val},
+	      </if>
+	      <if test="normalup != null">
+	        normalup = #{normalup},
+	      </if>
+	      <if test="normaldown != null">
+	        normaldown = #{normaldown},
+	      </if>
+	      <if test="exceptionup != null">
+	        exceptionup = #{exceptionup},
+	      </if>
+	      <if test="exceptiondown != null">
+	        exceptiondown = #{exceptiondown},
+	      </if>
+	      <if test="exremind != null">
+	        exremind = #{exremind},
+	      </if>
+	      <if test="state != null">
+	        state = #{state},
+	      </if>
+	      <if test="1==1">
+	        modifytime = now(),
+	      </if>
+	      <if test="modifyuserid != null">
+	        modifyuserid = #{modifyuserid},
+	      </if>
+	    </set>
+	    where id = #{id}
+	</update>
+	<update id="setDataExceptionState" parameterType="java.lang.String">
+		update t_sys_dataexception set state =#{state} where id=#{id}
+	</update>
+	<select id="getDataExceptionByURL" parameterType="java.lang.String" resultType="com.hd.agent.system.model.DataException" useCache="true">
+		select t.id, t.name,t.mtable, t.mcolumn, t.rtable, t.rcolumn, t.mrelatecolumn, t.rrelatecolumn, t.type, t.val, 
+	    t.normalup, t.normaldown, t.exceptionup, t.exceptiondown, t.exremind, t.state, t.addtime, t.adduserid, 
+	    t.modifytime, t.modifyuserid from t_sys_dataexception t,t_sys_dataexception_operate t1
+	    where t.id=t1.dataexceptionid and t.state='1' and t1.url=#{url}
+	</select>
+</mapper>

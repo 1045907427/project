@@ -1,0 +1,640 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.basefiles.dao.DistributionRuleMapper" >
+    <resultMap id="BaseResultMap" type="com.hd.agent.basefiles.model.DistributionRule" >
+        <id column="id" property="id" jdbcType="VARCHAR" />
+        <result column="businessdate" property="businessdate" jdbcType="VARCHAR" />
+        <result column="state" property="state" jdbcType="VARCHAR" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="adduserid" property="adduserid" jdbcType="VARCHAR" />
+        <result column="addusername" property="addusername" jdbcType="VARCHAR" />
+        <result column="adddeptid" property="adddeptid" jdbcType="VARCHAR" />
+        <result column="adddeptname" property="adddeptname" jdbcType="VARCHAR" />
+        <result column="addtime" property="addtime" jdbcType="TIMESTAMP" />
+        <result column="modifyuserid" property="modifyuserid" jdbcType="VARCHAR" />
+        <result column="modifyusername" property="modifyusername" jdbcType="VARCHAR" />
+        <result column="modifytime" property="modifytime" jdbcType="TIMESTAMP" />
+        <result column="openuserid" property="openuserid" jdbcType="VARCHAR" />
+        <result column="openusername" property="openusername" jdbcType="VARCHAR" />
+        <result column="opentime" property="opentime" jdbcType="TIMESTAMP" />
+        <result column="closeuserid" property="closeuserid" jdbcType="VARCHAR" />
+        <result column="closeusername" property="closeusername" jdbcType="VARCHAR" />
+        <result column="closetime" property="closetime" jdbcType="TIMESTAMP" />
+        <result column="customertype" property="customertype" jdbcType="VARCHAR" />
+        <result column="goodsruletype" property="goodsruletype" jdbcType="VARCHAR" />
+        <result column="customerid" property="customerid" jdbcType="VARCHAR" />
+        <result column="pcustomerid" property="pcustomerid" jdbcType="VARCHAR" />
+        <result column="customersort" property="customersort" jdbcType="VARCHAR" />
+        <result column="promotionsort" property="promotionsort" jdbcType="VARCHAR" />
+        <result column="salesarea" property="salesarea" jdbcType="VARCHAR" />
+        <result column="creditrating" property="creditrating" jdbcType="VARCHAR" />
+        <result column="canceltype" property="canceltype" jdbcType="VARCHAR" />
+        <result column="canbuy" property="canbuy" jdbcType="CHAR" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+        id, businessdate, state, remark, adduserid, addusername, adddeptid, adddeptname,
+        addtime, modifyuserid, modifyusername, modifytime, openuserid, openusername, opentime,
+        closeuserid, closeusername, closetime, customertype, goodsruletype, customerid, pcustomerid,
+        customersort, promotionsort, salesarea, creditrating, canceltype, canbuy
+    </sql>
+    <sql id="Detail_Column_List" >
+        id, ruleid, goodsid, brandid, goodssort, goodstype, supplierid
+    </sql>
+    <select id="selectDistributionRule" resultMap="BaseResultMap" parameterType="java.lang.String" >
+        select
+        <include refid="Base_Column_List" />
+        from t_base_sales_distribution_rule
+        where id = #{id}
+    </select>
+    <delete id="deleteDistributionRule" parameterType="java.lang.String" >
+        delete from t_base_sales_distribution_rule
+        where id = #{id}
+    </delete>
+    <insert id="insertDistributionRule" parameterType="com.hd.agent.basefiles.model.DistributionRule" >
+        insert into t_base_sales_distribution_rule
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="businessdate != null" >
+                businessdate,
+            </if>
+            <if test="state != null" >
+                state,
+            </if>
+            <if test="remark != null" >
+                remark,
+            </if>
+            <if test="adduserid != null" >
+                adduserid,
+            </if>
+            <if test="addusername != null" >
+                addusername,
+            </if>
+            <if test="adddeptid != null" >
+                adddeptid,
+            </if>
+            <if test="adddeptname != null" >
+                adddeptname,
+            </if>
+            addtime,
+            <if test="modifyuserid != null" >
+                modifyuserid,
+            </if>
+            <if test="modifyusername != null" >
+                modifyusername,
+            </if>
+            <if test="modifytime != null" >
+                modifytime,
+            </if>
+            <if test="openuserid != null" >
+                openuserid,
+            </if>
+            <if test="openusername != null" >
+                openusername,
+            </if>
+            <if test="opentime != null" >
+                opentime,
+            </if>
+            <if test="closeuserid != null" >
+                closeuserid,
+            </if>
+            <if test="closeusername != null" >
+                closeusername,
+            </if>
+            <if test="closetime != null" >
+                closetime,
+            </if>
+            <if test="customertype != null" >
+                customertype,
+            </if>
+            <if test="goodsruletype != null" >
+                goodsruletype,
+            </if>
+            <if test="customerid != null" >
+                customerid,
+            </if>
+            <if test="pcustomerid != null" >
+                pcustomerid,
+            </if>
+            <if test="customersort != null" >
+                customersort,
+            </if>
+            <if test="promotionsort != null" >
+                promotionsort,
+            </if>
+            <if test="salesarea != null" >
+                salesarea,
+            </if>
+            <if test="creditrating != null" >
+                creditrating,
+            </if>
+            <if test="canceltype != null" >
+                canceltype,
+            </if>
+            <if test="canbuy != null" >
+                canbuy,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id},
+            </if>
+            <if test="businessdate != null" >
+                #{businessdate},
+            </if>
+            <if test="state != null" >
+                #{state},
+            </if>
+            <if test="remark != null" >
+                #{remark},
+            </if>
+            <if test="adduserid != null" >
+                #{adduserid},
+            </if>
+            <if test="addusername != null" >
+                #{addusername},
+            </if>
+            <if test="adddeptid != null" >
+                #{adddeptid},
+            </if>
+            <if test="adddeptname != null" >
+                #{adddeptname},
+            </if>
+            now(),
+            <if test="modifyuserid != null" >
+                #{modifyuserid},
+            </if>
+            <if test="modifyusername != null" >
+                #{modifyusername},
+            </if>
+            <if test="modifytime != null" >
+                #{modifytime},
+            </if>
+            <if test="openuserid != null" >
+                #{openuserid},
+            </if>
+            <if test="openusername != null" >
+                #{openusername},
+            </if>
+            <if test="opentime != null" >
+                #{opentime},
+            </if>
+            <if test="closeuserid != null" >
+                #{closeuserid},
+            </if>
+            <if test="closeusername != null" >
+                #{closeusername},
+            </if>
+            <if test="closetime != null" >
+                #{closetime},
+            </if>
+            <if test="customertype != null" >
+                #{customertype},
+            </if>
+            <if test="goodsruletype != null" >
+                #{goodsruletype},
+            </if>
+            <if test="customerid != null" >
+                #{customerid},
+            </if>
+            <if test="pcustomerid != null" >
+                #{pcustomerid},
+            </if>
+            <if test="customersort != null" >
+                #{customersort},
+            </if>
+            <if test="promotionsort != null" >
+                #{promotionsort},
+            </if>
+            <if test="salesarea != null" >
+                #{salesarea},
+            </if>
+            <if test="creditrating != null" >
+                #{creditrating},
+            </if>
+            <if test="canceltype != null" >
+                #{canceltype},
+            </if>
+            <if test="canbuy != null" >
+                #{canbuy},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateDistributionRule" parameterType="com.hd.agent.basefiles.model.DistributionRule" >
+        update t_base_sales_distribution_rule
+        <set >
+            <if test="businessdate != null" >
+                businessdate = #{businessdate},
+            </if>
+            <if test="state != null" >
+                state = #{state},
+            </if>
+            <if test="remark != null" >
+                remark = #{remark},
+            </if>
+            <if test="modifyuserid != null" >
+                modifyuserid = #{modifyuserid},
+            </if>
+            <if test="modifyusername != null" >
+                modifyusername = #{modifyusername},
+            </if>
+            modifytime = now(),
+            <if test="openuserid != null" >
+                openuserid = #{openuserid},
+            </if>
+            <if test="openusername != null" >
+                openusername = #{openusername},
+            </if>
+            <if test="opentime != null" >
+                opentime = #{opentime},
+            </if>
+            <if test="closeuserid != null" >
+                closeuserid = #{closeuserid},
+            </if>
+            <if test="closeusername != null" >
+                closeusername = #{closeusername},
+            </if>
+            <if test="closetime != null" >
+                closetime = #{closetime},
+            </if>
+            <if test="customertype != null" >
+                customertype = #{customertype},
+            </if>
+            <if test="goodsruletype != null" >
+                goodsruletype = #{goodsruletype},
+            </if>
+            <if test="customerid != null" >
+                customerid = #{customerid},
+            </if>
+            <if test="pcustomerid != null" >
+                pcustomerid = #{pcustomerid},
+            </if>
+            <if test="customersort != null" >
+                customersort = #{customersort},
+            </if>
+            <if test="promotionsort != null" >
+                promotionsort = #{promotionsort},
+            </if>
+            <if test="salesarea != null" >
+                salesarea = #{salesarea},
+            </if>
+            <if test="creditrating != null" >
+                creditrating = #{creditrating},
+            </if>
+            <if test="canceltype != null" >
+                canceltype = #{canceltype},
+            </if>
+            <if test="canbuy != null" >
+                canbuy = #{canbuy},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <insert id="insertDistributionRuleDetail" parameterType="com.hd.agent.basefiles.model.DistributionRuleDetail">
+        insert into t_base_sales_distribution_rule_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="ruleid != null">
+                ruleid,
+            </if>
+            <if test="goodsid != null">
+                goodsid,
+            </if>
+            <if test="brandid != null">
+                brandid,
+            </if>
+            <if test="goodssort != null">
+                goodssort,
+            </if>
+            <if test="goodstype != null">
+                goodstype,
+            </if>
+            <if test="supplierid != null">
+                supplierid,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="ruleid != null">
+                #{ruleid},
+            </if>
+            <if test="goodsid != null">
+                #{goodsid},
+            </if>
+            <if test="brandid != null">
+                #{brandid},
+            </if>
+            <if test="goodssort != null">
+                #{goodssort},
+            </if>
+            <if test="goodstype != null">
+                #{goodstype},
+            </if>
+            <if test="supplierid != null">
+                #{supplierid},
+            </if>
+        </trim>
+    </insert>
+    <delete id="deleteDistributionRuleDetailByRuleid" parameterType="java.lang.String">
+        delete from t_base_sales_distribution_rule_detail where ruleid = #{ruleid }
+    </delete>
+    <sql id="selectDistributionRulePageData_condition">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="condition.startdate != null">
+                and t1.businessdate <![CDATA[ >= ]]> #{condition.startdate }
+            </if>
+            <if test="condition.enddate != null">
+                and t1.businessdate <![CDATA[ <= ]]> #{condition.enddate }
+            </if>
+            <if test="condition.state != null">
+                and t1.state = #{condition.state }
+            </if>
+            <if test="condition.customerids != null">
+                <foreach collection="condition.customerids" item="customerid" open="and (" close=")" separator="or">
+                    (FIND_IN_SET(#{customerid}, t1.customerid))
+                </foreach>
+            </if>
+            <if test="condition.pcustomerids != null">
+                <foreach collection="condition.pcustomerids" item="pcustomerid" open="and (" close=")" separator="or">
+                    (FIND_IN_SET(#{pcustomerid}, t1.pcustomerid))
+                </foreach>
+            </if>
+            <if test="condition.customersorts != null">
+                <foreach collection="condition.customersorts" item="customersort" open="and (" close=")" separator="or">
+                    (FIND_IN_SET(#{customersort}, t1.customersort))
+                </foreach>
+            </if>
+            <if test="condition.promotionsorts != null">
+                <foreach collection="condition.promotionsorts" item="promotionsort" open="and (" close=")" separator="or">
+                    (FIND_IN_SET(#{promotionsort}, t1.promotionsort))
+                </foreach>
+            </if>
+            <if test="condition.salesareas != null">
+                <foreach collection="condition.salesareas" item="salesarea" open="and (" close=")" separator="or">
+                    (FIND_IN_SET(#{salesarea}, t1.salesarea))
+                </foreach>
+            </if>
+            <if test="condition.creditratings != null">
+                <foreach collection="condition.creditratings" item="creditrating" open="and (" close=")" separator="or">
+                    (FIND_IN_SET(#{creditrating}, t1.creditrating))
+                </foreach>
+            </if>
+            <if test="condition.canceltypes != null">
+                <foreach collection="condition.canceltypes" item="canceltype" open="and (" close=")" separator="or">
+                    (FIND_IN_SET(#{canceltype}, t1.canceltype))
+                </foreach>
+            </if>
+            <if test="condition.customertype != null">
+                and t1.customertype = #{condition.customertype }
+            </if>
+            <if test="condition.goodsids != null">
+                and exists(select 1 from t_base_sales_distribution_rule_detail t2 where t2.ruleid = t1.id and FIND_IN_SET(t2.goodsid, #{condition.goodsids}))
+            </if>
+            <if test="condition.brandids != null">
+                and exists(select 1 from t_base_sales_distribution_rule_detail t2 where t2.ruleid = t1.id and FIND_IN_SET(t2.brandid, #{condition.brandids}))
+            </if>
+            <if test="condition.goodssorts != null">
+                and exists(select 1 from t_base_sales_distribution_rule_detail t2 where t2.ruleid = t1.id and FIND_IN_SET(t2.goodssort, #{condition.goodssorts}))
+            </if>
+            <if test="condition.goodstypes != null">
+                and exists(select 1 from t_base_sales_distribution_rule_detail t2 where t2.ruleid = t1.id and FIND_IN_SET(t2.goodstype, #{condition.goodstypes}))
+            </if>
+            <if test="condition.supplierids != null">
+                and exists(select 1 from t_base_sales_distribution_rule_detail t2 where t2.ruleid = t1.id and FIND_IN_SET(t2.supplierid, #{condition.supplierids}))
+            </if>
+            <if test="condition.goodsruletype != null">
+                and t1.goodsruletype = #{condition.goodsruletype }
+            </if>
+        </trim>
+    </sql>
+    <select id="selectDistributionRuleList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.basefiles.model.DistributionRule">
+        select <include refid="Base_Column_List"/>
+        from t_base_sales_distribution_rule t1
+        <include refid="selectDistributionRulePageData_condition"/>
+        order by id desc
+        <include refid="common.Page_limit"/>
+    </select>
+    <select id="selectDistributionRuleTotalCount" parameterType="com.hd.agent.common.util.PageMap" resultType="java.lang.Integer">
+        select count(1)
+        from t_base_sales_distribution_rule t1
+        <include refid="selectDistributionRulePageData_condition"/>
+    </select>
+    <select id="selectDistributionRuleDetailListByRuleid" parameterType="java.lang.String" resultType="com.hd.agent.basefiles.model.DistributionRuleDetail">
+        select <include refid="Detail_Column_List"/>
+        from t_base_sales_distribution_rule_detail
+        where ruleid = #{ruleid }
+        order by goodsid, brandid, goodssort, goodstype, supplierid
+    </select>
+    <update id="enableDistributionRule" parameterType="java.util.Map">
+        update t_base_sales_distribution_rule
+        <set>
+            state = '1', openuserid = #{openuserid }, openusername = #{openusername }, opentime = now()
+        </set>
+        where id = #{id}
+    </update>
+    <update id="disableDistributionRule" parameterType="java.util.Map">
+        update t_base_sales_distribution_rule
+        <set>
+            state = '0', closeuserid = #{closeuserid }, closeusername = #{closeusername }, closetime = now()
+        </set>
+        where id = #{id}
+    </update>
+    <select id="selectDistributionRuleIdByCustomer" parameterType="java.util.Map" resultType="com.hd.agent.basefiles.model.DistributionRule">
+        select <include refid="Base_Column_List" />
+        from t_base_sales_distribution_rule r
+        <trim prefixOverrides="and|or" prefix="where">
+            and r.state = '1'
+            and r.canbuy = #{canbuy }
+            and (
+            <if test="customerid != null">
+                find_in_set(#{customerid }, r.customerid)
+            </if>
+            <if test="pcustomerid != null">
+                or find_in_set(#{pcustomerid }, r.pcustomerid)
+            </if>
+            <if test="customersort != null">
+                or find_in_set(#{customersort }, r.customersort)
+            </if>
+            <if test="salesarea != null">
+                or find_in_set(#{salesarea }, r.salesarea)
+            </if>
+            <if test="creditrating != null">
+                or find_in_set(#{creditrating }, r.creditrating)
+            </if>
+            <if test="canceltype != null">
+                or find_in_set(#{canceltype }, r.canceltype)
+            </if>
+            <if test="promotionsort != null">
+                or find_in_set(#{promotionsort }, r.promotionsort)
+            </if>
+            )
+        </trim>
+    </select>
+    <select id="selectRelatedGoodsidByCustomer" parameterType="java.util.Map" resultType="String">
+        select goodsid
+        from t_base_sales_distribution_rule r left join t_base_sales_distribution_rule_detail rd on r.id = rd.ruleid
+        <trim prefixOverrides="and|or" prefix="where">
+            and r.state = '1'
+            and (
+            <if test="customerid != null">
+                find_in_set(#{customerid }, r.customerid)
+            </if>
+            <if test="pcustomerid != null">
+                or find_in_set(#{pcustomerid }, r.pcustomerid)
+            </if>
+            <if test="customersort != null">
+                or find_in_set(#{customersort }, r.customersort)
+            </if>
+            <if test="salesarea != null">
+                or find_in_set(#{salesarea }, r.salesarea)
+            </if>
+            <if test="creditrating != null">
+                or find_in_set(#{creditrating }, r.creditrating)
+            </if>
+            <if test="canceltype != null">
+                or find_in_set(#{canceltype }, r.canceltype)
+            </if>
+            <if test="promotionsort != null">
+                or find_in_set(#{promotionsort }, r.promotionsort)
+            </if>
+            )
+            and goodsid is not NULL
+            and goodsid != ''
+        </trim>
+    </select>
+    <select id="selectRelatedBrandidByCustomer" parameterType="java.util.Map" resultType="String">
+        select brandid
+        from t_base_sales_distribution_rule r left join t_base_sales_distribution_rule_detail rd on r.id = rd.ruleid
+        <trim prefixOverrides="and|or" prefix="where">
+            and r.state = '1'
+            and (
+            <if test="customerid != null">
+                find_in_set(#{customerid }, r.customerid)
+            </if>
+            <if test="pcustomerid != null">
+                or find_in_set(#{pcustomerid }, r.pcustomerid)
+            </if>
+            <if test="customersort != null">
+                or find_in_set(#{customersort }, r.customersort)
+            </if>
+            <if test="salesarea != null">
+                or find_in_set(#{salesarea }, r.salesarea)
+            </if>
+            <if test="creditrating != null">
+                or find_in_set(#{creditrating }, r.creditrating)
+            </if>
+            <if test="canceltype != null">
+                or find_in_set(#{canceltype }, r.canceltype)
+            </if>
+            <if test="promotionsort != null">
+                or find_in_set(#{promotionsort }, r.promotionsort)
+            </if>
+            )
+            and brandid is not NULL
+            and brandid != ''
+        </trim>
+    </select>
+    <select id="selectRelatedGoodssortByCustomer" parameterType="java.util.Map" resultType="String">
+        select goodssort
+        from t_base_sales_distribution_rule r left join t_base_sales_distribution_rule_detail rd on r.id = rd.ruleid
+        <trim prefixOverrides="and|or" prefix="where">
+            and r.state = '1'
+            and (
+            <if test="customerid != null">
+                find_in_set(#{customerid }, r.customerid)
+            </if>
+            <if test="pcustomerid != null">
+                or find_in_set(#{pcustomerid }, r.pcustomerid)
+            </if>
+            <if test="customersort != null">
+                or find_in_set(#{customersort }, r.customersort)
+            </if>
+            <if test="salesarea != null">
+                or find_in_set(#{salesarea }, r.salesarea)
+            </if>
+            <if test="creditrating != null">
+                or find_in_set(#{creditrating }, r.creditrating)
+            </if>
+            <if test="canceltype != null">
+                or find_in_set(#{canceltype }, r.canceltype)
+            </if>
+            <if test="promotionsort != null">
+                or find_in_set(#{promotionsort }, r.promotionsort)
+            </if>
+            )
+            and goodssort is not NULL
+            and goodssort != ''
+        </trim>
+    </select>
+    <select id="selectRelatedGoodstypeByCustomer" parameterType="java.util.Map" resultType="String">
+        select goodstype
+        from t_base_sales_distribution_rule r left join t_base_sales_distribution_rule_detail rd on r.id = rd.ruleid
+        <trim prefixOverrides="and|or" prefix="where">
+            and r.state = '1'
+            and (
+            <if test="customerid != null">
+                find_in_set(#{customerid }, r.customerid)
+            </if>
+            <if test="pcustomerid != null">
+                or find_in_set(#{pcustomerid }, r.pcustomerid)
+            </if>
+            <if test="customersort != null">
+                or find_in_set(#{customersort }, r.customersort)
+            </if>
+            <if test="salesarea != null">
+                or find_in_set(#{salesarea }, r.salesarea)
+            </if>
+            <if test="creditrating != null">
+                or find_in_set(#{creditrating }, r.creditrating)
+            </if>
+            <if test="canceltype != null">
+                or find_in_set(#{canceltype }, r.canceltype)
+            </if>
+            <if test="promotionsort != null">
+                or find_in_set(#{promotionsort }, r.promotionsort)
+            </if>
+            )
+            and goodstype is not NULL
+            and goodstype != ''
+        </trim>
+    </select>
+    <select id="selectRelatedSupplieridByCustomer" parameterType="java.util.Map" resultType="String">
+        select supplierid
+        from t_base_sales_distribution_rule r left join t_base_sales_distribution_rule_detail rd on r.id = rd.ruleid
+        <trim prefixOverrides="and|or" prefix="where">
+            and r.state = '1'
+            and (
+            <if test="customerid != null">
+                find_in_set(#{customerid }, r.customerid)
+            </if>
+            <if test="pcustomerid != null">
+                or find_in_set(#{pcustomerid }, r.pcustomerid)
+            </if>
+            <if test="customersort != null">
+                or find_in_set(#{customersort }, r.customersort)
+            </if>
+            <if test="salesarea != null">
+                or find_in_set(#{salesarea }, r.salesarea)
+            </if>
+            <if test="creditrating != null">
+                or find_in_set(#{creditrating }, r.creditrating)
+            </if>
+            <if test="canceltype != null">
+                or find_in_set(#{canceltype }, r.canceltype)
+            </if>
+            <if test="promotionsort != null">
+                or find_in_set(#{promotionsort }, r.promotionsort)
+            </if>
+            )
+            and supplierid is not NULL
+            and supplierid != ''
+        </trim>
+    </select>
+    <select id="getAllDistributionRuleList" resultType="com.hd.agent.basefiles.model.DistributionRule">
+        select
+        <include refid="Base_Column_List" />
+        from t_base_sales_distribution_rule where state='1'
+        <if test="date != null">
+            and (addtime>#{date} or modifytime>=#{date} or opentime>#{date})
+        </if>
+    </select>
+</mapper>

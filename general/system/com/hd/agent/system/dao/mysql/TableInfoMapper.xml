@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.system.dao.TableInfoMapper">
+	<!-- 缓存 -->
+	<cache type="org.mybatis.caches.ehcache.EhcacheCache" />
+
+	<sql id="Base_Column_List">
+		id,tablename,tabledescname, tabletype, usehistory, useversion, adddate,addsignname,
+		adduserid,modifydate,modifysignname,modifyuserid, remark, moduletype,createmethod,state,datasource,usetreelist,refertreecol,useautoencoded,isdatarule
+	</sql>
+	<sql id="PageList_Where_Clause">
+		<trim prefix="where" prefixOverrides="and|or" >
+	      <if test="condition.tablename != null" >
+	         and tablename  like CONCAT('%',#{condition.tablename},'%')
+	      </if>
+	      <if test="condition.tabledescname != null" >
+	         and tabledescname  like CONCAT('%',#{condition.tabledescname},'%')
+	      </if>
+	      <if test="condition.tabletype != null" >
+	         and tabletype = #{condition.tabletype}
+	      </if>
+	      <if test="condition.usehistory != null" >
+	         and usehistory = #{condition.usehistory}
+	      </if>
+	      <if test="condition.useversion != null" >
+	         and useversion = #{condition.useversion}
+	      </if>
+	      <if test="condition.adddate != null" >
+	         and adddate = #{condition.adddate}
+	      </if>
+	      <if test="condition.addsignname != null" >
+	         and addsignname like CONCAT('%',#{condition.addsignname},'%')
+	      </if>
+	      <if test="condition.adduserid != null" >
+	         and adduserid = #{condition.adduserid}
+	      </if>
+	      <if test="condition.modifydate != null" >
+	         and modifydate = #{condition.modifydate}
+	      </if>
+	      <if test="condition.modifysignname != null" >
+	         and modifysignname like CONCAT('%',#{condition.modifysignname},'%')
+	      </if>
+	      <if test="condition.modifyuserid != null" >
+	         and modifyuserid = #{condition.modifyuserid}
+	      </if>
+	      <if test="condition.remark != null" >
+	         and remark like CONCAT('%',#{condition.remark},'%')
+	      </if>
+	      <if test="condition.moduletype != null" >
+	         and moduletype = #{condition.moduletype}
+	      </if>
+	      <if test="condition.state != null" >
+	         and state = #{condition.state}
+	      </if>
+	      <if test="condition.createmethod != null" >
+	         and createmethod = #{condition.createmethod}
+	      </if>
+	      <if test="condition.datasource != null" >
+	         and datasource = #{condition.datasource}
+	      </if>
+	      <if test="condition.usetreelist != null" >
+	         and usetreelist = #{condition.usetreelist}
+	      </if>
+	      <if test="condition.refertreecol != null" >
+	         and refertreecol = #{condition.refertreecol}
+	      </if>
+	      <if test="condition.useautoencoded != null" >
+	         and useautoencoded = #{condition.useautoencoded}
+	      </if>
+            <if test="condition.isdatarule != null" >
+                and isdatarule = #{condition.isdatarule}
+            </if>
+	    </trim>
+	</sql>
+	<select id="getTableInfoList" resultType="com.hd.agent.system.model.TableInfo">
+		select
+		<include refid="Base_Column_List" />
+		from t_sys_tableinfo
+	</select>
+	<select id="getTableInfoListBy" resultType="com.hd.agent.system.model.TableInfo" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from t_sys_tableinfo
+		<trim prefix="where" prefixOverrides="and|or" >
+	      <if test="tablename != null" >
+	         tablename=#{tablename}
+	      </if>	      
+	      <if test="tabletype != null" >
+	         and tabletype = #{tabletype}
+	      </if>
+	      <if test="usehistory!= null" >
+	         and usehistory = #{tabletype}
+	      </if>
+	      <if test="useversion != null" >
+	         and useversion = #{useversion}
+	      </if>
+	      <if test="moduletype != null" >
+	         and moduletype = #{moduletype}
+	      </if>
+	      <if test="state != null" >
+	         and state = #{state}
+	      </if>
+	      <if test="createmethod != null" >
+	         and createmethod = #{createmethod}
+	      </if>
+	      <if test="datasource != null" >
+	         and datasource = #{datasource}
+	      </if>
+	      <if test="useautoencoded != null" >
+	         and useautoencoded = #{useautoencoded}
+	      </if>
+	      <if test="usetreelist != null" >
+	         and usetreelist = #{usetreelist}
+	      </if>
+	      <if test="refertreecol != null" >
+	         and refertreecol = #{refertreecol}
+	      </if>
+	      <if test="useautoencoded != null" >
+	         and useautoencoded = #{useautoencoded}
+	      </if>
+          <if test="isdatarule != null" >
+                and isdatarule = #{isdatarule}
+          </if>
+	    </trim>
+	</select>
+	<select id="getTableInfoPageList"  parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.system.model.TableInfo" useCache="false">
+		select * from (
+			SELECT
+			tinfo.id,tablename,tabledescname, tabletype, usehistory, useversion, ADDDATE,addsignname,
+			adduserid,modifydate,modifysignname,modifyuserid, remark, moduletype,scode.codename moduletypename ,createmethod,
+            tinfo.state,tinfo.datasource,tinfo.usetreelist,tinfo.refertreecol,tinfo.useautoencoded,tinfo.isdatarule
+			FROM t_sys_tableinfo tinfo LEFT JOIN (SELECT * FROM  t_sys_code WHERE TYPE='module') scode  ON tinfo.moduletype=scode.code
+		) AS tableinfo
+		<include refid="PageList_Where_Clause"/>
+		<include refid="common.Page_limit" />
+	</select>
+	<select id="getTableInfoCount" parameterType="com.hd.agent.common.util.PageMap"
+		resultType="int" useCache="false">
+		select count(1) from t_sys_tableinfo		
+		<include refid="PageList_Where_Clause"/>
+	</select>
+	<select id="getTableInfoCountBy" parameterType="java.lang.String"
+		resultType="int" useCache="false">
+		select count(1) from t_sys_tableinfo
+		where tablename = lower(#{tablename})			
+	</select>
+	<select id="showTableInfo" parameterType="java.lang.Integer"
+		resultType="com.hd.agent.system.model.TableInfo">
+		select
+		<include refid="Base_Column_List" />
+		from t_sys_tableinfo
+		where tablename=#{tablename}
+	</select>
+	<insert id="addTableInfo" parameterType="com.hd.agent.system.model.TableInfo">
+		insert into t_sys_tableinfo
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="tablename != null">
+				tablename,
+      		</if>
+			<if test="tabledescname != null">
+				tabledescname,
+      		</if>
+			<if test="tabletype != null">
+				tabletype,
+      		</if>
+			<if test="usehistory != null">
+				usehistory,
+      		</if>
+			<if test="useversion != null">
+				useversion,
+      		</if>
+			<if test="1==1">
+				adddate,
+      		</if>
+	        <if test="addsignname != null" >
+	            addsignname,
+	        </if>
+			<if test="adduserid != null">
+				adduserid,
+      		</if>
+			<if test="1==1">
+				modifydate,
+      		</if>
+      		<if test="modifysignname != null" >
+        		modifysignname,
+      		</if>
+			<if test="modifyuserid != null">
+				modifyuserid,
+      		</if>
+			<if test="remark != null">
+				remark,
+      		</if>
+			<if test="moduletype != null">
+				moduletype,
+      		</if>
+			<if test="createmethod != null">
+				createmethod,
+      		</if>
+			<if test="state != null">
+				state,
+      		</if>
+			<if test="datasource != null">
+				datasource,
+      		</if>
+			<if test="usetreelist != null">
+				usetreelist,
+      		</if>
+			<if test="refertreecol != null">
+				refertreecol,
+      		</if>
+			<if test="useautoencoded != null">
+				useautoencoded,
+      		</if>
+            <if test="isdatarule != null">
+                isdatarule,
+            </if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="tablename != null">
+				#{tablename},
+      		</if>
+			<if test="tabledescname != null">
+				#{tabledescname},
+      		</if>
+			<if test="tabletype != null">
+				#{tabletype},
+      		</if>
+			<if test="usehistory != null">
+				#{usehistory},
+      		</if>
+			<if test="useversion != null">
+				#{useversion},
+      		</if>
+			<if test="1==1">
+				now(),
+      		</if>
+      		<if test="addsignname != null" >
+        		#{addsignname},
+      		</if>
+			<if test="adduserid != null">
+				#{adduserid},
+      		</if>
+			<if test="1==1">
+				now(),
+      		</if>
+      		<if test="modifysignname != null" >
+        		#{modifysignname},
+      		</if>
+			<if test="modifyuserid != null">
+				#{modifyuserid},
+      		</if>
+			<if test="remark != null">
+				#{remark},
+      		</if>
+			<if test="moduletype != null">
+				#{moduletype},
+      		</if>
+			<if test="createmethod != null">
+				#{createmethod},
+      		</if>
+			<if test="state != null">
+				#{state},
+      		</if>
+			<if test="datasource != null">
+				#{datasource},
+      		</if>
+			<if test="usetreelist != null">
+				#{usetreelist},
+      		</if>
+			<if test="refertreecol != null">
+				#{refertreecol},
+      		</if>
+      		<if test="useautoencoded != null">
+				#{useautoencoded},
+      		</if>
+            <if test="isdatarule != null">
+                #{isdatarule},
+            </if>
+		</trim>
+	</insert>
+	<update id="updateTableInfo" parameterType="com.hd.agent.system.model.TableInfo">
+		update t_sys_tableinfo
+		<set>
+			<if test="tablename != null">
+				tablename = #{tablename},
+      		</if>
+			<if test="tabledescname != null">
+				tabledescname = #{tabledescname},
+      		</if>
+			<if test="tabletype != null">
+				tabletype = #{tabletype},
+      		</if>
+			<if test="usehistory != null">
+				usehistory = #{usehistory},
+      		</if>
+			<if test="useversion != null">
+				useversion = #{useversion},
+      		</if>
+			<if test="1==1">
+				modifydate = now(),
+      		</if>
+      		<if test="modifysignname != null" >
+        		modifysignname = #{modifysignname},
+      		</if>
+			<if test="modifyuserid != null">
+				modifyuserid = #{modifyuserid},
+      		</if>
+			<if test="remark != null">
+				remark = #{remark},
+      		</if>
+			<if test="moduletype != null">
+				moduletype = #{moduletype},
+      		</if>
+			<if test="createmethod != null">
+				createmethod = #{createmethod},
+      		</if>
+			<if test="state != null">
+				state = #{state},
+      		</if>
+			<if test="datasource != null">
+				datasource = #{datasource},
+      		</if>
+			<if test="usetreelist != null">
+				usetreelist = #{usetreelist},
+      		</if>
+			<if test="refertreecol != null">
+				refertreecol = #{refertreecol},
+      		</if>
+			<if test="useautoencoded != null">
+				useautoencoded = #{useautoencoded},
+      		</if>
+            <if test="isdatarule != null">
+                isdatarule = #{isdatarule},
+            </if>
+		</set>
+		where tablename = #{oldtablename}
+	</update>
+	<delete id="deleteTableInfo" parameterType="java.lang.String">
+		delete from
+		t_sys_tableinfo
+		where tablename = #{tablename}
+  	</delete>
+  	<select id="getDBUnimportTableList" parameterType="java.util.Map" resultType="com.hd.agent.system.model.TableInfo" useCache="false">
+  		SELECT dbtable.table_name tablename,dbtable.table_comment tabledescname FROM information_schema.tables dbtable
+  		WHERE 
+  			(NOT EXISTS (select tablename from t_sys_tableinfo tinfo where tinfo.tablename=dbtable.table_name ))
+  			AND dbtable.table_schema=database() and table_type='BASE TABLE'  and dbtable.table_name like 't_%'
+  			and (dbtable.table_name not like '%_h' or dbtable.table_name not like '%_v' )
+  		<if test="selecttablelist !=null "> 
+			and dbtable.table_name in 
+	       <foreach collection="selecttablelist" item="item" open="("  separator="," close=")">  
+	       	#{item}  
+	      </foreach>
+		</if> 
+  	</select>
+</mapper>

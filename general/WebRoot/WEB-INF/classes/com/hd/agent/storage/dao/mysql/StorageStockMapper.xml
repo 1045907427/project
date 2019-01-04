@@ -1,0 +1,1162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.storage.dao.StorageStockMapper">
+
+    <sql id="costAccountReport_where">
+        <trim prefix="where" prefixOverrides="and|or">
+            AND t.status IN ('3','4')
+            <if test="condition.businessdate != null">
+                AND  <![CDATA[ t.businessdate>=#{condition.businessdate}]]>
+            </if>
+            <if test="condition.businessdate1 != null">
+                AND  <![CDATA[ t.businessdate<=#{condition.businessdate1}]]>
+            </if>
+            <if test="condition.goodsid != null">
+                AND find_in_set(t1.goodsid,#{condition.goodsid})
+            </if>
+            <if test="condition.brandid != null">
+                AND find_in_set(g.brand,#{condition.brandid})
+            </if>
+            <if test="condition.goodssort != null">
+                AND find_in_set(g.defaultsort,#{condition.goodssort})
+            </if>
+            <if test="condition.storagetype != null">
+                AND s.isaloneaccount=#{condition.storagetype}
+            </if>
+        </trim>
+    </sql>
+    <!--期初数据查询条件-->
+    <sql id="initCostAccountReport_where">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="condition.businessdate != null">
+                AND  <![CDATA[ t.businessdate<#{condition.businessdate}]]>
+            </if>
+            <if test="condition.goodsid != null">
+                AND find_in_set(t1.goodsid,#{condition.goodsid})
+            </if>
+            <if test="condition.brandid != null">
+                AND find_in_set(g.brand,#{condition.brandid})
+            </if>
+            <if test="condition.goodssort != null">
+                AND find_in_set(g.defaultsort,#{condition.goodssort})
+            </if>
+            <if test="condition.storagetype != null">
+                AND s.isaloneaccount=#{condition.storagetype}
+            </if>
+             AND t.status in ('3','4')
+        </trim>
+    </sql>
+    <sql id="getGoodsWaveChange_sql">
+        SELECT t.goodsid,t.storageid,ifnull(max(t.costprice),0) as highestcostprice,ifnull(min(t.costprice),0) as lowestcostprice,
+        ifnull(max(t.realcostprice),0) as highestrealcostprice,ifnull(min(t.realcostprice),0) as lowestrealcostprice
+        FROM (
+        SELECT t1.goodsid,t.storageid ,t1.realcostprice, t1.costprice
+        FROM t_storage_saleout t
+        RIGHT JOIN t_storage_saleout_detail t1 ON t.id=t1.saleoutid
+        LEFT JOIN t_base_storage_info s ON s.id=t.storageid
+        left join t_base_goods_info g on t1.goodsid=g.id
+        <include refid="costAccountReport_where"/>
+        UNION ALL
+        SELECT t1.goodsid,t.storageid,t1.realcostprice, t1.costprice
+        FROM t_storage_salereject_enter t
+        RIGHT JOIN t_storage_salereject_enter_detail t1 ON t.id=t1.salerejectid
+        LEFT JOIN t_base_storage_info s ON s.id=t.storageid
+        left join t_base_goods_info g on t1.goodsid=g.id
+        <include refid="costAccountReport_where"/> AND t.ischeck='1'
+        )t GROUP BY t.storageid,t.goodsid
+
+    </sql>
+
+    <sql id="getAbnormalBillReport_sql">
+        <!--发货单有期初结算数据-->
+        SELECT t1.goodsid,(CASE WHEN s.isaloneaccount='1' THEN t.storageid ELSE '' END) as storageid,
+        0 as innum,0 as intaxamount,0 as innotaxamount,
+        t1.unitnum as outnum,t1.costprice*t1.unitnum as outtaxamount,t1.notaxamount as outnotaxamount,
+        0  as initunitnum,0 as inittaxamount,0 as initnotaxamount,
+        g.name as goodsname,(CASE WHEN s.isaloneaccount='1' THEN s.name ELSE '汇总' END) as storagename,t1.costprice,g.highestbuyprice,
+        t3.highestcostprice as highestcostprice,t3.lowestcostprice as lowestcostprice,
+        <choose>
+            <when test="condition.pricetype == 1">
+                ifnull(if((t3.highestrealcostprice+t3.lowestrealcostprice)=0,0,(t3.highestrealcostprice-t3.lowestrealcostprice)/((t3.highestrealcostprice+t3.lowestrealcostprice)/2)),0) as waverange,
+            </when>
+            <otherwise>
+                ifnull(if((t3.highestcostprice+t3.lowestcostprice)=0,0,(t3.highestcostprice-t3.lowestcostprice)/((t3.highestcostprice+t3.lowestcostprice)/2)),0) as waverange,
+            </otherwise>
+        </choose>
+        t3.highestrealcostprice as highestrealcostprice,t3.lowestrealcostprice as lowestrealcostprice,'1' as abnormaltype
+        FROM t_storage_saleout t
+        RIGHT JOIN t_storage_saleout_detail t1 ON t.id=t1.saleoutid
+        LEFT JOIN t_base_storage_info s ON s.id=t.storageid
+        left join t_base_goods_info g on t1.goodsid=g.id
+        LEFT JOIN (<include refid="getGoodsWaveChange_sql"/>) t3 ON t3.storageid=t.storageid AND t3.goodsid=t1.goodsid
+
+        <include refid="costAccountReport_where"/>
+        <if test="condition.waverange != null and condition.waverange!=0">
+            <choose>
+                <when test="condition.pricetype == 1">
+                    <![CDATA[ AND ifnull(if((t3.highestrealcostprice+t3.lowestrealcostprice)=0,0,(t3.highestrealcostprice-t3.lowestrealcostprice)/((t3.highestrealcostprice+t3.lowestrealcostprice)/2)),0)<CONVERT(#{condition.waverange},SIGNED)/100]]>
+                </when>
+                <otherwise>
+                    <![CDATA[ AND ifnull(if((t3.highestcostprice+t3.lowestcostprice)=0,0,(t3.highestcostprice-t3.lowestcostprice)/((t3.highestcostprice+t3.lowestcostprice)/2)),0)<CONVERT(#{condition.waverange},SIGNED)/100]]>
+                </otherwise>
+            </choose>
+        </if>
+        <if test="condition.storageid != null">
+            AND (find_in_set(t.storageid,#{condition.storageid}) OR (s.isaloneaccount='0' AND ''=#{condition.storageid}))
+        </if>
+
+        UNION ALL
+
+        <!--销售退货有期初结算数据-->
+        SELECT t1.goodsid,(CASE WHEN s.isaloneaccount='1' THEN t.storageid ELSE '' END) as storageid,
+        0 as innum,0 as intaxamount,0 as innotaxamount,
+        -t1.unitnum as outnum,-t1.costprice*t1.unitnum as outtaxamount,-t1.notaxamount as outnotaxamount,
+
+        0  as initunitnum,0 as inittaxamount,0 as initnotaxamount,
+
+        g.name as goodsname,(CASE WHEN s.isaloneaccount='1' THEN s.name ELSE '汇总' END) as storagename,t1.costprice,g.highestbuyprice,
+        t3.highestcostprice as highestcostprice,t3.lowestcostprice as lowestcostprice,
+        <choose>
+            <when test="condition.pricetype == 1">
+                ifnull(if((t3.highestrealcostprice+t3.lowestrealcostprice)=0,0,(t3.highestrealcostprice-t3.lowestrealcostprice)/((t3.highestrealcostprice+t3.lowestrealcostprice)/2)),0) as waverange,
+            </when>
+            <otherwise>
+                ifnull(if((t3.highestcostprice+t3.lowestcostprice)=0,0,(t3.highestcostprice-t3.lowestcostprice)/((t3.highestcostprice+t3.lowestcostprice)/2)),0) as waverange,
+            </otherwise>
+        </choose>
+
+        t3.highestrealcostprice as highestrealcostprice,t3.lowestrealcostprice as lowestrealcostprice,'1' as abnormaltype
+        FROM t_storage_salereject_enter t
+        RIGHT JOIN t_storage_salereject_enter_detail t1 ON t.id=t1.salerejectid
+        LEFT JOIN t_base_storage_info s ON s.id=t.storageid
+        left join t_base_goods_info g on t1.goodsid=g.id
+        LEFT JOIN (<include refid="getGoodsWaveChange_sql"/>) t3 ON t3.storageid=t.storageid AND t3.goodsid=t1.goodsid
+        <include refid="costAccountReport_where"/> AND t.ischeck='1'
+        <if test="condition.waverange != null and condition.waverange!=0">
+            <choose>
+                <when test="condition.pricetype == 1">
+                    <![CDATA[ AND ifnull(if((t3.highestrealcostprice+t3.lowestrealcostprice)=0,0,(t3.highestrealcostprice-t3.lowestrealcostprice)/((t3.highestrealcostprice+t3.lowestrealcostprice)/2)),0)<CONVERT(#{condition.waverange},SIGNED)/100]]>
+                </when>
+                <otherwise>
+                    <![CDATA[ AND ifnull(if((t3.highestcostprice+t3.lowestcostprice)=0,0,(t3.highestcostprice-t3.lowestcostprice)/((t3.highestcostprice+t3.lowestcostprice)/2)),0)<CONVERT(#{condition.waverange},SIGNED)/100]]>
+                </otherwise>
+            </choose>
+        </if>
+        <if test="condition.storageid != null">
+            AND (find_in_set(t.storageid,#{condition.storageid}) OR (s.isaloneaccount='0' AND ''=#{condition.storageid}))
+        </if>
+        <!--取业务日期与审核日期不一致的-->
+        <!--<if test="condition.isdiffdate == 1 and (condition.waverange ==null or condition.waverange ==0)">-->
+        <!--<if test="condition.isdiffdate == 1 or condition.waverange ==0">-->
+            UNION ALL
+            <!--采购进货有结算期初数据的商品-->
+            SELECT t1.goodsid,(CASE WHEN s.isaloneaccount='1' THEN t.storageid ELSE '' END) as storageid,
+            t1.unitnum as innum,t1.taxamount as intaxamount,t1.notaxamount as innotaxamount,
+            0 as outnum,0 as outtaxamount,0 as outnotaxamount,
+            0  as initunitnum,0 as inittaxamount,0 as initnotaxamount,
+
+            g.name as goodsname,(CASE WHEN s.isaloneaccount='1' THEN s.name ELSE '汇总' END) as storagename,t1.addcostprice as costprice,
+            g.highestbuyprice,NULL as highestcostprice,NULL as lowestcostprice,NULL as waverange,
+            NULL as highestrealcostprice,NULL as lowestrealcostprice,if(t.businessdate!=date_format(t.audittime,'%Y-%m-%d'),1,0) as abnormaltype
+            from t_purchase_arrivalorder t
+            RIGHT JOIN t_purchase_arrivalorder_detail t1 ON t.id=t1.orderid
+            LEFT JOIN t_base_storage_info s ON s.id=t.storageid
+            left join t_base_goods_info g on t1.goodsid=g.id
+            <trim prefix="where" prefixOverrides="and|or">
+                <if test="condition.businessdate != null">
+                    AND  <![CDATA[ t.businessdate>=#{condition.businessdate}]]>
+                </if>
+                <if test="condition.businessdate1 != null">
+                    AND  <![CDATA[ t.businessdate<=#{condition.businessdate1}]]>
+                </if>
+
+                <if test="condition.goodsid != null">
+                    AND find_in_set(t1.goodsid,#{condition.goodsid})
+                </if>
+                <if test="condition.brandid != null">
+                    AND find_in_set(g.brand,#{condition.brandid})
+                </if>
+                <if test="condition.goodssort != null">
+                    AND find_in_set(g.defaultsort,#{condition.goodssort})
+                </if>
+                <if test="condition.storageid != null">
+                    AND (find_in_set(t.storageid,#{condition.storageid}) OR (s.isaloneaccount='0' AND ''=#{condition.storageid}))
+                </if>
+
+                <if test="condition.storagetype != null">
+                    AND s.isaloneaccount=#{condition.storagetype}
+                </if>
+            </trim>
+
+            UNION ALL
+
+            <!--采购退货出库有期初结算数据-->
+            SELECT t1.goodsid,(CASE WHEN s.isaloneaccount='1' THEN t.storageid ELSE '' END) as storageid,
+            -t1.unitnum as innum, -t1.taxamount as intaxamount, -t1.notaxamount as innotaxamount,
+            0 as outnum,0 as outtaxamount,0 as outnotaxamount,
+            0  as initunitnum,0 as inittaxamount,0 as initnotaxamount,
+
+            g.name as goodsname,(CASE WHEN s.isaloneaccount='1' THEN s.name ELSE '汇总' END) as storagename,t1.addcostprice as costprice,
+            g.highestbuyprice,NULL as highestcostprice,NULL as lowestcostprice,NULL as waverange,
+            NULL as highestrealcostprice,NULL as lowestrealcostprice,if(t.businessdate!=date_format(t.audittime,'%Y-%m-%d'),1,0) as abnormaltype
+            FROM t_storage_purchasereject_out t
+            RIGHT JOIN t_storage_purchasereject_out_detail t1 ON t.id=t1.orderid
+            LEFT JOIN t_base_storage_info s ON s.id=t.storageid
+            left join t_base_goods_info g on t1.goodsid=g.id
+            <include refid="costAccountReport_where"/> AND t.ischeck='1'
+            <if test="condition.storageid != null">
+                AND (find_in_set(t.storageid,#{condition.storageid}) OR (s.isaloneaccount='0' AND ''=#{condition.storageid}))
+            </if>
+
+            UNION ALL
+
+            <!--其它入库有期初结算数据-->
+            SELECT t1.goodsid,(CASE WHEN s.isaloneaccount='1' THEN t.storageid ELSE '' END) as storageid,
+            t1.unitnum as innum,t1.taxamount as intaxamount,t1.notaxamount as innotaxamount,
+            0 as outnum,0 as outtaxamount,0 as outnotaxamount,
+            0  as initunitnum,0 as inittaxamount,0 as initnotaxamount,
+            g.name as goodsname,(CASE WHEN s.isaloneaccount='1' THEN s.name ELSE '汇总' END) as storagename,t1.costprice as costprice,
+            g.highestbuyprice,NULL as highestcostprice,NULL as lowestcostprice,NULL as waverange,
+            NULL as highestrealcostprice,NULL as lowestrealcostprice,if(t.businessdate!=date_format(t.audittime,'%Y-%m-%d'),1,0) as abnormaltype
+            FROM t_storage_other_enter t
+            RIGHT JOIN t_storage_other_enter_detail t1 ON t.id=t1.billid
+            LEFT JOIN t_base_storage_info s ON s.id=t.storageid
+            left join t_base_goods_info g on t1.goodsid=g.id
+            <include refid="costAccountReport_where"/>
+            <if test="condition.storageid != null">
+                AND (find_in_set(t.storageid,#{condition.storageid}) OR (s.isaloneaccount='0' AND ''=#{condition.storageid}))
+            </if>
+
+            UNION ALL
+
+            <!--报溢调账单有期初结算数据-->
+            SELECT t1.goodsid,(CASE WHEN s.isaloneaccount='1' THEN t.storageid ELSE '' END) as storageid,
+            t1.adjustnum as innum,t1.amount as intaxamount, t1.amount as innotaxamount,
+            0 as outnum,0 as outtaxamount,0 as outnotaxamount,
+
+            0  as initunitnum,0 as inittaxamount,0 as initnotaxamount,
+
+            g.name as goodsname,(CASE WHEN s.isaloneaccount='1' THEN s.name ELSE '汇总' END) as storagename,t1.price as costprice,
+            g.highestbuyprice,NULL as highestcostprice,NULL as lowestcostprice,NULL as waverange,
+            NULL as highestrealcostprice,NULL as lowestrealcostprice,if(t.businessdate!=date_format(t.audittime,'%Y-%m-%d'),1,0) as abnormaltype
+            FROM t_storage_adjustments t
+            RIGHT JOIN t_storage_adjustments_detail t1 ON t.id=t1.adjustmentsid
+            LEFT JOIN t_base_storage_info s ON s.id=t.storageid
+            left join t_base_goods_info g on t1.goodsid=g.id
+            <include refid="costAccountReport_where"/>
+            AND t.billtype='1'
+            <if test="condition.storageid != null">
+                AND (find_in_set(t.storageid,#{condition.storageid}) OR (s.isaloneaccount='0' AND ''=#{condition.storageid}))
+            </if>
+
+            UNION ALL
+            <!--调拨入库有期初结算数据-->
+            SELECT t1.goodsid,(CASE WHEN s.isaloneaccount='1' THEN t.enterstorageid ELSE '' END) as storageid,
+            t1.unitnum as innum,t1.taxamount as intaxamount,t1.notaxamount as innotaxamount,
+            0 as outnum,0 as outtaxamount,0 as outnotaxamount,
+
+            0  as initunitnum,0 as inittaxamount,0 as initnotaxamount,
+
+            g.name as goodsname,(CASE WHEN s.isaloneaccount='1' THEN s.name ELSE '汇总' END) as storagename,t1.costprice as costprice,
+            g.highestbuyprice,NULL as highestcostprice,NULL as lowestcostprice,NULL as waverange,
+            NULL as highestrealcostprice,NULL as lowestrealcostprice,if(t.businessdate!=date_format(t.audittime,'%Y-%m-%d'),1,0) as abnormaltype
+            FROM t_storage_allocate_out t
+            RIGHT JOIN t_storage_allocate_out_detail t1 ON t.id=t1.billno
+            LEFT JOIN t_base_storage_info s ON s.id=t.enterstorageid
+            left join t_base_goods_info g on t1.goodsid=g.id
+            <include refid="costAccountReport_where"/>
+            <if test="condition.storageid != null">
+                AND (find_in_set(t.enterstorageid,#{condition.storageid}) OR (s.isaloneaccount='0' AND ''=#{condition.storageid}))
+            </if>
+
+            <!--UNION ALL-->
+
+            <!--&lt;!&ndash;成本调整单有期初结算数据&ndash;&gt;-->
+            <!--SELECT t1.goodsid,(CASE WHEN s.isaloneaccount='1' THEN t.storageid ELSE '' END) as storageid,t1.unitnum as-->
+            <!--innum,t1.taxamount as intaxamount,-->
+            <!--t1.notaxamount as innotaxamount,0 as outnum,0 as outtaxamount,0 as outnotaxamount,-->
+            <!--0 as initunitnum,0 as inittaxamount,0 as initnotaxamount,g.name as-->
+            <!--goodsname,(CASE WHEN s.isaloneaccount='1' THEN s.name ELSE '汇总' END) as storagename,t1.costprice-->
+            <!--FROM t_storage_cost_change t-->
+            <!--RIGHT JOIN t_storage_cost_change_detail t1 ON t.id=t1.billid-->
+            <!--LEFT JOIN t_base_storage_info s ON s.id=t.storageid-->
+            <!--left join t_base_goods_info g on t1.goodsid=g.id-->
+            <!--<include refid="costAccountReport_where"/>-->
+            <!--<if test="condition.storageid != null">-->
+            <!--AND find_in_set(t.storageid,#{condition.storageid})-->
+            <!--</if>-->
+
+            UNION ALL
+
+            <!--其它出库有期初结算数据-->
+            SELECT t1.goodsid,(CASE WHEN s.isaloneaccount='1' THEN t.storageid ELSE '' END) as storageid,
+            -t1.unitnum as innum,-t1.taxamount as intaxamount,-t1.notaxamount as innotaxamount,
+            0 as outnum,0 as outtaxamount,0 as outnotaxamount,
+
+            0  as initunitnum,0 as inittaxamount,0 as initnotaxamount,
+
+            g.name asgoodsname,(CASE WHEN s.isaloneaccount='1' THEN s.name ELSE '汇总' END) as storagename,t1.costprice,
+            g.highestbuyprice,NULL as highestcostprice,NULL as lowestcostprice,NULL as waverange,
+            NULL as highestrealcostprice,NULL as lowestrealcostprice,if(t.businessdate!=date_format(t.audittime,'%Y-%m-%d'),1,0) as abnormaltype
+            FROM t_storage_other_out t
+            RIGHT JOIN t_storage_other_out_detail t1 ON t.id=t1.billid
+            LEFT JOIN t_base_storage_info s ON s.id=t.storageid
+            left join t_base_goods_info g on t1.goodsid=g.id
+            <include refid="costAccountReport_where"/>
+            <if test="condition.storageid != null">
+                AND (find_in_set(t.storageid,#{condition.storageid}) OR (s.isaloneaccount='0' AND ''=#{condition.storageid}))
+            </if>
+
+            UNION ALL
+
+            <!--调拨出库有期初结算数据-->
+            SELECT t1.goodsid,(CASE WHEN s.isaloneaccount='1' THEN t.outstorageid ELSE '' END) as storageid,
+            -t1.unitnum as innum, -t1.taxamount as intaxamount,-t1.notaxamount as innotaxamount,
+            0 as outnum,0 as outtaxamount,0 as outnotaxamount,
+
+            0  as initunitnum,0 as inittaxamount,0 as initnotaxamount,
+
+            g.name as goodsname,(CASE WHEN s.isaloneaccount='1' THEN s.name ELSE '汇总' END) as storagename,t1.costprice,
+            g.highestbuyprice,NULL as highestcostprice,NULL as lowestcostprice,NULL as waverange,
+            NULL as highestrealcostprice,NULL as lowestrealcostprice,if(t.businessdate!=date_format(t.audittime,'%Y-%m-%d'),1,0) as abnormaltype
+            FROM t_storage_allocate_out t
+            RIGHT JOIN t_storage_allocate_out_detail t1 ON t.id=t1.billno
+            LEFT JOIN t_base_storage_info s ON s.id=t.outstorageid
+            left join t_base_goods_info g on t1.goodsid=g.id
+            <include refid="costAccountReport_where"/>
+            <if test="condition.storageid != null">
+                AND (find_in_set(t.outstorageid,#{condition.storageid}) OR (s.isaloneaccount='0' AND ''=#{condition.storageid}))
+            </if>
+            UNION ALL
+
+            <!--报损调账有期初结算数据-->
+            SELECT t1.goodsid,(CASE WHEN s.isaloneaccount='1' THEN t.storageid ELSE '' END) as storageid,
+            -t1.adjustnum as innum, -t1.amount as intaxamount, -t1.amount as innotaxamount,
+            0 as outnum,0 as outtaxamount,0 as outnotaxamount,
+
+            0  as initunitnum,0 as inittaxamount,0 as initnotaxamount,
+
+            g.name as goodsname,(CASE WHEN s.isaloneaccount='1' THEN s.name ELSE '汇总' END) as storagename,t1.price as costprice,
+            g.highestbuyprice,NULL as highestcostprice,NULL as lowestcostprice,NULL as waverange,
+            NULL as highestrealcostprice,NULL as lowestrealcostprice,if(t.businessdate!=date_format(t.audittime,'%Y-%m-%d'),1,0) as abnormaltype
+            FROM t_storage_adjustments t
+            RIGHT JOIN t_storage_adjustments_detail t1 ON t.id=t1.adjustmentsid
+            LEFT JOIN t_base_storage_info s ON s.id=t.storageid
+            left join t_base_goods_info g on t1.goodsid=g.id
+            <include refid="costAccountReport_where"/>
+            AND t.billtype='2'
+            <if test="condition.storageid != null">
+                AND (find_in_set(t.storageid,#{condition.storageid}) OR (s.isaloneaccount='0' AND ''=#{condition.storageid}))
+            </if>
+            UNION ALL
+
+            <!--库存初始化有期初结算数据-->
+            SELECT t.goodsid,(CASE WHEN s.isaloneaccount='1' THEN t.storageid ELSE '' END) as storageid,
+            t.unitnum as innum,t.unitamount as intaxamount,t.notaxamount as innotaxamount,
+            0 as outnum,0 as outtaxamount,0 as outnotaxamount,
+
+            0  as initunitnum,0 as inittaxamount,0 as initnotaxamount,
+
+            g.name as goodsname,(CASE WHEN s.isaloneaccount='1' THEN s.name ELSE '汇总' END) as storagename,t.price as costprice,
+            g.highestbuyprice,NULL as highestcostprice,NULL as lowestcostprice,NULL as waverange,
+            NULL as highestrealcostprice,NULL as lowestrealcostprice,if(date_format(t.audittime,'%Y-%m-%d')!=date_format(t.addtime,'%Y-%m-%d'),1,0) as abnormaltype
+            FROM t_storage_stockinit t
+            LEFT JOIN t_base_storage_info s ON s.id=t.storageid
+            left join t_base_goods_info g on t.goodsid=g.id
+            <trim prefix="where" prefixOverrides="and|or">
+            <if test="condition.businessdate != null">
+            AND  <![CDATA[ date_format(t.audittime,'%Y-%m-%d')>=date_format(#{condition.businessdate},'%Y-%m-%d')]]>
+            </if>
+            <if test="condition.businessdate1 != null">
+            AND <![CDATA[ date_format(t.audittime,'%Y-%m-%d')<=date_format(#{condition.businessdate1},'%Y-%m-%d')]]>
+            </if>
+            <if test="condition.goodsid != null">
+            AND find_in_set(t.goodsid,#{condition.goodsid})
+            </if>
+            <if test="condition.brandid != null">
+            AND find_in_set(g.brand,#{condition.brandid})
+            </if>
+            <if test="condition.goodssort != null">
+            AND find_in_set(g.defaultsort,#{condition.goodssort})
+            </if>
+            <if test="condition.storageid != null">
+            AND find_in_set(t.storageid,#{condition.storageid})
+            </if>
+
+                <if test="condition.storagetype != null">
+                    AND s.isaloneaccount=#{condition.storagetype}
+                </if>
+            </trim>
+        <!--</if>-->
+
+    </sql>
+    <sql id="getAbnormalBillReportInitSum_sql">
+        select sum(z.unitnum) as initunitnum,sum(z.taxamount) as inittaxamount,sum(z.notaxamount) as initnotaxamount,z.storageid,z.goodsid from
+        (
+        select sum(-t1.unitnum) as unitnum,sum(-t1.costprice*t1.unitnum) as taxamount,sum(-t1.notaxamount) as notaxamount,t1.goodsid,
+        (CASE WHEN s.isaloneaccount='1' THEN t.storageid ELSE '' END) as storageid from t_storage_saleout t
+        left join t_storage_saleout_detail t1 on t.id=t1.saleoutid
+        LEFT JOIN t_base_storage_info s ON s.id=t.storageid
+        LEFT JOIN t_base_goods_info g ON t1.goodsid=g.id
+        <include refid="initCostAccountReport_where"/>
+        group by t.storageid,t1.goodsid
+
+        UNION ALL
+
+        select sum(t1.unitnum) as unitnum,sum(t1.costprice*t1.unitnum) as taxamount,sum(t1.notaxamount) as notaxamount,t1.goodsid,
+        (CASE WHEN s.isaloneaccount='1' THEN t.storageid ELSE '' END) as storageid from t_storage_salereject_enter t
+        left join t_storage_salereject_enter_detail t1 on t.id=t1.salerejectid
+        LEFT JOIN t_base_storage_info s ON s.id=t.storageid
+        LEFT JOIN t_base_goods_info g ON t1.goodsid=g.id
+        <include refid="initCostAccountReport_where"/>
+        group by t.storageid,t1.goodsid
+
+        UNION ALL
+
+        select sum(t1.unitnum) as unitnum,sum(t1.taxamount) as taxamount,sum(t1.notaxamount) as notaxamount,t1.goodsid,
+        (CASE WHEN s.isaloneaccount='1' THEN t.storageid ELSE '' END) as storageid from t_purchase_arrivalorder t
+        left join t_purchase_arrivalorder_detail t1 on t.id=t1.orderid
+        LEFT JOIN t_base_storage_info s ON s.id=t.storageid
+        LEFT JOIN t_base_goods_info g ON t1.goodsid=g.id
+        <include refid="initCostAccountReport_where"/>
+        group by t.storageid,t1.goodsid
+
+        UNION ALL
+
+        select sum(-t1.unitnum) as unitnum,sum(-t1.taxamount) as taxamount,sum(-t1.notaxamount) as notaxamount,t1.goodsid,
+        (CASE WHEN s.isaloneaccount='1' THEN t.storageid ELSE '' END) as storageid from t_storage_purchasereject_out t
+        left join t_storage_purchasereject_out_detail t1 on t.id=t1.orderid
+        LEFT JOIN t_base_storage_info s ON s.id=t.storageid
+        LEFT JOIN t_base_goods_info g ON t1.goodsid=g.id
+        <include refid="initCostAccountReport_where"/>
+        group by t.storageid,t1.goodsid
+
+        UNION ALL
+
+        select sum(t1.unitnum) as unitnum,sum(t1.taxamount) as taxamount,sum(t1.notaxamount) as notaxamount,t1.goodsid,
+        (CASE WHEN s.isaloneaccount='1' THEN t.storageid ELSE '' END) as storageid from t_storage_other_enter t
+        left join t_storage_other_enter_detail t1 on t.id=t1.billid
+        LEFT JOIN t_base_storage_info s ON s.id=t.storageid
+        LEFT JOIN t_base_goods_info g ON t1.goodsid=g.id
+        <include refid="initCostAccountReport_where"/>
+        group by t.storageid,t1.goodsid
+
+        UNION ALL
+
+        select sum(t1.adjustnum) as unitnum,sum(t1.amount) as taxamount,sum(t1.amount) as notaxamount,t1.goodsid,
+        (CASE WHEN s.isaloneaccount='1' THEN t.storageid ELSE '' END) as storageid from t_storage_adjustments t
+        left join t_storage_adjustments_detail t1 on t.id=t1.adjustmentsid
+        LEFT JOIN t_base_storage_info s ON s.id=t.storageid
+        LEFT JOIN t_base_goods_info g ON t1.goodsid=g.id
+        <include refid="initCostAccountReport_where"/> AND t.billtype='1'
+        group by t.storageid,t1.goodsid
+
+        UNION ALL
+
+        select sum(t1.unitnum) as unitnum,sum(t1.taxamount) as taxamount,sum(t1.notaxamount) as notaxamount,t1.goodsid,
+        (CASE WHEN s.isaloneaccount='1' THEN t.enterstorageid ELSE '' END) as storageid  from t_storage_allocate_out t
+        left join t_storage_allocate_out_detail t1 on t.id=t1.billno
+        LEFT JOIN t_base_storage_info s ON s.id=t.enterstorageid
+        LEFT JOIN t_base_goods_info g ON t1.goodsid=g.id
+        <include refid="initCostAccountReport_where"/>
+        group by t.enterstorageid,t1.goodsid
+
+        UNION ALL
+
+        select sum(-t1.unitnum) as unitnum,sum(-t1.taxamount) as taxamount,sum(-t1.notaxamount) as notaxamount,t1.goodsid,
+        (CASE WHEN s.isaloneaccount='1' THEN t.storageid ELSE '' END) as storageid from t_storage_other_out t
+        left join t_storage_other_out_detail t1 on t.id=t1.billid
+        LEFT JOIN t_base_storage_info s ON s.id=t.storageid
+        LEFT JOIN t_base_goods_info g ON t1.goodsid=g.id
+        <include refid="initCostAccountReport_where"/>
+        group by t.storageid,t1.goodsid
+
+        UNION ALL
+
+        select sum(-t1.unitnum) as unitnum,sum(-t1.taxamount) as taxamount,sum(-t1.notaxamount) as notaxamount,t1.goodsid,
+        (CASE WHEN s.isaloneaccount='1' THEN t.outstorageid ELSE '' END) as storageid  from t_storage_allocate_out t
+        left join t_storage_allocate_out_detail t1 on t.id=t1.billno
+        LEFT JOIN t_base_storage_info s ON s.id=t.outstorageid
+        LEFT JOIN t_base_goods_info g ON t1.goodsid=g.id
+        <include refid="initCostAccountReport_where"/>
+        group by t.outstorageid,t1.goodsid
+
+        UNION ALL
+
+        select sum(-t1.adjustnum) as unitnum,sum(-t1.amount) as taxamount,sum(-t1.amount) as notaxamount,t1.goodsid,
+        (CASE WHEN s.isaloneaccount='1' THEN t.storageid ELSE '' END) as storageid  from t_storage_adjustments t
+        left join t_storage_adjustments_detail t1 on t.id=t1.adjustmentsid
+        LEFT JOIN t_base_storage_info s ON s.id=t.storageid
+        LEFT JOIN t_base_goods_info g ON t1.goodsid=g.id
+       <include refid="initCostAccountReport_where"/> AND t.billtype='2'
+        group by t.storageid,t1.goodsid
+
+        UNION ALL
+
+        select sum(t.unitnum) as unitnum,sum(t.unitamount) as taxamount,sum(t.notaxamount) as notaxamount,t.goodsid,
+        (CASE WHEN s.isaloneaccount='1' THEN t.storageid ELSE '' END) as storageid  from t_storage_stockinit t
+        LEFT JOIN t_base_storage_info s ON s.id=t.storageid
+        LEFT JOIN t_base_goods_info g ON t.goodsid=g.id
+        WHERE t.status in ('3','4')
+        <if test="condition.businessdate != null">
+            AND  <![CDATA[ date_format(t.audittime,'%Y-%m-%d')<date_format(#{condition.businessdate},'%Y-%m-%d')]]>
+        </if>
+        <if test="condition.goodsid != null">
+            AND find_in_set(t.goodsid,#{condition.goodsid})
+        </if>
+        <if test="condition.brandid != null">
+            AND find_in_set(g.brand,#{condition.brandid})
+        </if>
+        <if test="condition.goodssort != null">
+            AND find_in_set(g.defaultsort,#{condition.goodssort})
+        </if>
+        <if test="condition.storagetype != null">
+            AND s.isaloneaccount=#{condition.storagetype}
+        </if>
+        group by t.storageid,t.goodsid
+        ) z group by z.storageid,z.goodsid
+    </sql>
+    <sql id="getAbnormalBillReportLast_sql">
+        SELECT
+        t.goodsid,t.storageid,sum(t.innum) as innum,sum(t.intaxamount) as intaxamount,sum(t.innotaxamount) as innotaxamount,
+        sum(t.outnum) as outnum,sum(t.outtaxamount) as outtaxamount,sum(t.outnotaxamount) as outnotaxamount,
+        ifnull(s.initunitnum,0) as initnum,ifnull(s.inittaxamount,0) as inittaxamount,ifnull(s.initnotaxamount,0) as initnotaxamount,
+        (ifnull(s.initunitnum,0)+sum(t.innum)-sum(t.outnum)) as endnum,
+        if(ifnull(s.initunitnum,0)+ifnull(sum(t.innum),0)!=0,(ifnull(s.inittaxamount,0)+ifnull(sum(t.intaxamount),0))/(ifnull(s.initunitnum,0)+ifnull(sum(t.innum),0)),0) as costprice,
+        if(ifnull(s.initunitnum,0)+ifnull(sum(t.innum),0)!=0,(ifnull(s.initnotaxamount,0)+ifnull(sum(t.innotaxamount),0))/(ifnull(s.initunitnum,0)+ifnull(sum(t.innum),0)),0) as costnotaxprice,
+        ifnull(max(t.highestcostprice),0) as highestcostprice,ifnull(min(t.lowestcostprice),0) as lowestcostprice,
+        max(t.goodsname) as goodsname,if(max(t.storagename) is null ,'汇总',max(t.storagename)) as storagename,max(t.highestbuyprice) as buyprice,
+        ifnull(max(t.waverange),0) as waverange,ifnull(max(t.highestrealcostprice),0) as highestrealcostprice,
+        ifnull(max(t.lowestrealcostprice),0) as lowestrealcostprice,g.highestbuyprice,g.newbuyprice,
+        <!--realendnum，realendamount用来存实际的期末数据，用来计算是否库存成本异常-->
+        (ifnull(s.initunitnum,0)+sum(t.innum)-sum(t.outnum)) as realendnum,
+        (ifnull(s.inittaxamount,0)+sum(t.intaxamount)-sum(t.outtaxamount)) as realendamount,max(t.abnormaltype) as abnormaltype
+        <if test="condition.accounttype == null">
+            ,'' as accounttype
+        </if>
+        <if test="condition.accounttype != null">
+            ,#{condition.accounttype} as accounttype
+        </if>
+        <if test="condition.spricetype == 1">
+            ,ABS(if(ifnull(g.highestbuyprice,0)=0,0,(if(ifnull(s.initunitnum+sum(t.innum),0)!=0,(ifnull(s.inittaxamount,0)+sum(t.intaxamount))/(ifnull(s.initunitnum,0)+sum(t.innum)),0)-g.highestbuyprice)/g.highestbuyprice)) as swaverange
+        </if>
+        <if test="condition.spricetype == 2">
+            ,ABS(if(ifnull(g.newbuyprice,0)=0,0,(if(ifnull(s.initunitnum+sum(t.innum),0)!=0,(ifnull(s.inittaxamount,0)+sum(t.intaxamount))/(ifnull(s.initunitnum,0)+sum(t.innum)),0)-g.newbuyprice)/g.newbuyprice)) as swaverange
+        </if>
+
+        FROM ( <include refid="getAbnormalBillReport_sql"/>) t
+        LEFT JOIN (<include refid="getAbnormalBillReportInitSum_sql"/>) s ON s.storageid=t.storageid AND s.goodsid=t.goodsid
+        LEFT JOIN t_base_goods_info g ON t.goodsid=g.id
+        GROUP BY t.storageid,t.goodsid
+    </sql>
+    <select id="getAbnormalBillReportList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.storage.model.StorageStockSum">
+        SELECT t.* FROM (<include refid="getAbnormalBillReportLast_sql"/>)t
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="condition.sstate1!=null or condition.sstate2!=null or condition.sstate3!=null or condition.sstate4!=null">
+                <trim prefixOverrides="and|or" prefix="and (" suffix=")">
+                    <if test="condition.sstate1==1">
+                        <![CDATA[OR t.realendnum<0 AND t.realendamount<0]]>
+                    </if>
+                    <if test="condition.sstate2==1">
+                        <![CDATA[OR t.realendnum*t.realendamount<0]]>
+                    </if>
+                    <if test="condition.sstate3==1">
+                        <![CDATA[OR t.realendnum!=0 AND t.realendamount=0]]>
+                    </if>
+                    <if test="condition.sstate4==1">
+                        <![CDATA[OR t.realendnum=0 AND t.realendamount!=0]]>
+                    </if>
+                </trim>
+            </if>
+            <if test="condition.sstate1==null and condition.sstate2==null and condition.sstate3==null and condition.sstate4==null">
+                <trim prefixOverrides="and|or" prefix="and (" suffix=")">
+                    <![CDATA[AND (t.realendnum>=0 OR t.realendamount>=0)]]>
+                    <![CDATA[AND (t.realendnum*t.realendamount>=0)]]>
+                    <![CDATA[AND (t.realendnum=0 OR t.realendamount!=0)]]>
+                    <![CDATA[AND (t.realendnum!=0 OR t.realendamount=0)]]>
+                </trim>
+            </if>
+            <if test="condition.isdiffdate ==0">
+                AND t.abnormaltype=#{condition.isdiffdate}
+            </if>
+            <if test="condition.state5!=null and condition.swaverange != null">
+                <![CDATA[AND t.swaverange<=CONVERT(#{condition.swaverange},SIGNED)/100]]>
+            </if>
+        </trim>
+        <if test="condition.ispageflag == null">
+            <include refid="common.Page_limit"/>
+        </if>
+    </select>
+    <select id="getAbnormalBillReportCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+        select count(1) FROM (
+        <include refid="getAbnormalBillReportLast_sql"/>
+        ) t
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="condition.sstate1!=null or condition.sstate2!=null or condition.sstate3!=null or condition.sstate4!=null">
+                <trim prefixOverrides="and|or" prefix="and (" suffix=")">
+                    <if test="condition.sstate1==1">
+                        <![CDATA[OR t.realendnum<0 AND t.realendamount<0]]>
+                    </if>
+                    <if test="condition.sstate2==1">
+                        <![CDATA[OR t.realendnum*t.realendamount<0]]>
+                    </if>
+                    <if test="condition.sstate3==1">
+                        <![CDATA[OR t.realendnum!=0 AND t.realendamount=0]]>
+                    </if>
+                    <if test="condition.sstate4==1">
+                        <![CDATA[OR t.realendnum=0 AND t.realendamount!=0]]>
+                    </if>
+                </trim>
+            </if>
+            <if test="condition.sstate1==null and condition.sstate2==null and condition.sstate3==null and condition.sstate4==null">
+                <trim prefixOverrides="and|or" prefix="and (" suffix=")">
+                    <![CDATA[AND (t.realendnum>=0 OR t.realendamount>=0)]]>
+                    <![CDATA[AND (t.realendnum*t.realendamount>=0)]]>
+                    <![CDATA[AND (t.realendnum=0 OR t.realendamount!=0)]]>
+                    <![CDATA[AND (t.realendnum!=0 OR t.realendamount=0)]]>
+                </trim>
+            </if>
+
+            <if test="condition.isdiffdate ==0">
+                AND t.abnormaltype=#{condition.isdiffdate}
+            </if>
+            <if test="condition.state5!=null and condition.swaverange != null">
+                <![CDATA[AND t.swaverange<=CONVERT(#{condition.swaverange},SIGNED)/100]]>
+            </if>
+        </trim>
+    </select>
+    <insert id="insertCostAccountSum" parameterType="com.hd.agent.storage.model.StorageStockSum">
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+        SELECT LAST_INSERT_ID() AS id
+    </selectKey>
+    insert into t_storage_stocksum
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+        <if test="storageid != null" >
+            storageid,
+        </if>
+        <if test="goodsid != null" >
+            goodsid,
+        </if>
+        <if test="initnum != null" >
+            initnum,
+        </if>
+        <if test="inittaxamount != null" >
+            inittaxamount,
+        </if>
+        <if test="initnotaxamount != null" >
+            initnotaxamount,
+        </if>
+        <if test="innum!=null" >
+            innum,
+        </if>
+        <if test="intaxamount!=null" >
+            intaxamount,
+        </if>
+        <if test="innotaxamount!=null" >
+            innotaxamount,
+        </if>
+        <if test="outnum!=null" >
+            outnum,
+        </if>
+        <if test="outtaxamount!=null" >
+            outtaxamount,
+        </if>
+        <if test="outnotaxamount!=null" >
+            outnotaxamount,
+        </if>
+        <if test="endnum!=null" >
+            endnum,
+        </if>
+        <if test="endtaxamount!=null" >
+            endtaxamount,
+        </if>
+        <if test="endnotaxamount!=null" >
+            endnotaxamount,
+        </if>
+        <if test="costprice!=null" >
+            costprice,
+        </if>
+        <if test="buyprice!=null" >
+            buyprice,
+        </if>
+        <if test="highestcostprice!=null" >
+            highestcostprice,
+        </if>
+        <if test="lowestcostprice!=null" >
+            lowestcostprice,
+        </if>
+        <if test="waverange!=null" >
+            waverange,
+        </if>
+        <if test="adduserid != null" >
+            adduserid,
+        </if>
+        <if test="addusername != null" >
+            addusername,
+        </if>
+        <if test="adddeptid != null" >
+            adddeptid,
+        </if>
+        <if test="adddeptname != null" >
+            adddeptname,
+        </if>
+        <if test="accounttype != null" >
+            accounttype,
+        </if>
+        <if test="1==1" >
+            addtime,
+        </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+        <if test="storageid != null" >
+            #{storageid},
+        </if>
+        <if test="goodsid != null" >
+            #{goodsid},
+        </if>
+        <if test="initnum != null" >
+            #{initnum},
+        </if>
+        <if test="inittaxamount != null" >
+            #{inittaxamount},
+        </if>
+        <if test="initnotaxamount != null" >
+            #{initnotaxamount},
+        </if>
+        <if test="innum!=null" >
+            #{innum},
+        </if>
+        <if test="intaxamount!=null" >
+            #{intaxamount},
+        </if>
+        <if test="innotaxamount!=null" >
+            #{innotaxamount},
+        </if>
+        <if test="outnum!=null" >
+            #{outnum},
+        </if>
+        <if test="outtaxamount!=null" >
+            #{outtaxamount},
+        </if>
+        <if test="outnotaxamount!=null" >
+            #{outnotaxamount},
+        </if>
+        <if test="endnum!=null" >
+            #{endnum},
+        </if>
+        <if test="endtaxamount!=null" >
+            #{endtaxamount},
+        </if>
+        <if test="endnotaxamount!=null" >
+            #{endnotaxamount},
+        </if>
+        <if test="costprice!=null" >
+            #{costprice},
+        </if>
+        <if test="buyprice!=null" >
+            #{buyprice},
+        </if>
+        <if test="highestcostprice!=null" >
+            #{highestcostprice},
+        </if>
+        <if test="lowestcostprice!=null" >
+            #{lowestcostprice},
+        </if>
+        <if test="waverange!=null" >
+            #{waverange},
+        </if>
+        <if test="adduserid != null" >
+            #{adduserid},
+        </if>
+        <if test="addusername != null" >
+            #{addusername},
+        </if>
+        <if test="adddeptid != null" >
+            #{adddeptid},
+        </if>
+        <if test="adddeptname != null" >
+            #{adddeptname},
+        </if>
+        <if test="accounttype != null" >
+            #{accounttype},
+        </if>
+        <if test="1==1" >
+            now(),
+        </if>
+    </trim>
+</insert>
+    <sql id="costAccountDetail_where">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="condition.businessdate != null">
+                AND  <![CDATA[ t.businessdate>=#{condition.businessdate}]]>
+            </if>
+            <if test="condition.businessdate1 != null">
+                AND  <![CDATA[ t.businessdate<=#{condition.businessdate1}]]>
+            </if>
+            AND t.status in ('3','4')
+        </trim>
+    </sql>
+    <sql id="getCostAccountDetail_sql">
+        <!--发货单-->
+        SELECT t1.goodsid,t.storageid,0 as innum,0 as intaxamount,0 as innotaxamount,t1.unitnum as outnum,t1.costprice*t1.unitnum as outtaxamount,t1.notaxamount as outnotaxamount,
+        '发货单' as sourcetype,t1.saleoutid as sourceid,t1.id as sourcedetailid,t1.taxtype,t.businessdate,'1' as inouttype,#{condition.accountid} as accountid,t1.costprice
+        FROM t_storage_saleout t
+        RIGHT JOIN t_storage_saleout_detail t1 ON t.id=t1.saleoutid
+        LEFT JOIN t_base_storage_info s ON s.id=t.storageid
+        LEFT JOIN (<include refid="getGoodsWaveChange_sql"/>) t3 ON t3.storageid=t.storageid AND t3.goodsid=t1.goodsid
+        <include refid="costAccountDetail_where" />
+        <if test="condition.waverange != null and condition.waverange!=0">
+            <![CDATA[ AND ifnull(if((t3.highestcostprice+t3.lowestcostprice)=0,0,(t3.highestcostprice-t3.lowestcostprice)/((t3.lowestcostprice+t3.lowestcostprice)/2)),0)<#{condition.waverange}/100]]>
+        </if>
+        <if test="condition.storageid != null">
+            AND  (t.storageid=#{condition.storageid} OR (s.isaloneaccount='0' AND ''=#{condition.storageid}))
+        </if>
+        <if test="condition.goodsid != null">
+            AND  t1.goodsid=#{condition.goodsid}
+        </if>
+        UNION ALL
+        <!--销售退货入库-->
+        SELECT t1.goodsid,t.storageid,0 as innum,0 as intaxamount,0 as innotaxamount,-t1.unitnum as outnum,-t1.costprice*t1.unitnum as outtaxamount,-t1.notaxamount as outnotaxamount,
+        '销售退货入库' as sourcetype,t1.salerejectid as sourceid,t1.id as sourcedetailid,t1.taxtype,t.businessdate,'1' as inouttype,#{condition.accountid} as accountid,t1.costprice
+        FROM t_storage_salereject_enter t
+        RIGHT JOIN t_storage_salereject_enter_detail t1 ON t.id=t1.salerejectid
+        LEFT JOIN t_base_storage_info s ON s.id=t.storageid
+        LEFT JOIN (<include refid="getGoodsWaveChange_sql"/>) t3 ON t3.storageid=t.storageid AND t3.goodsid=t1.goodsid
+        <include refid="costAccountDetail_where" /> and t.ischeck='1'
+        <if test="condition.waverange != null and condition.waverange!=0">
+            <![CDATA[ AND ifnull(if((t3.highestcostprice+t3.lowestcostprice)=0,0,(t3.highestcostprice-t3.lowestcostprice)/((t3.lowestcostprice+t3.lowestcostprice)/2)),0)<#{condition.waverange}/100]]>
+        </if>
+        <if test="condition.storageid != null">
+            AND  (t.storageid=#{condition.storageid} OR (s.isaloneaccount='0' AND ''=#{condition.storageid}))
+        </if>
+        <if test="condition.goodsid != null">
+            AND  t1.goodsid=#{condition.goodsid}
+        </if>
+        <if test="condition.isdiffdate == 1 or condition.waverange ==0">
+        UNION ALL
+        <!--采购进货-->
+        SELECT t1.goodsid,t.storageid as storageid,t1.unitnum as innum,t1.taxamount as intaxamount,t1.notaxamount as innotaxamount,0 as outnum,0 as outtaxamount,0 as outnotaxamount,
+        '采购进货' as sourcetype,t1.orderid as sourceid,t1.id as sourcedetailid,t1.taxtype,t.businessdate,'1' as inouttype,#{condition.accountid} as accountid,'' as costprice
+        FROM t_purchase_arrivalorder t
+        RIGHT JOIN t_purchase_arrivalorder_detail t1 ON t.id=t1.orderid
+        LEFT JOIN t_base_storage_info s ON s.id=t.storageid
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="condition.businessdate != null">
+                AND  <![CDATA[ t.businessdate>=#{condition.businessdate}]]>
+            </if>
+            <if test="condition.businessdate1 != null">
+                AND  <![CDATA[ t.businessdate<=#{condition.businessdate1}]]>
+            </if>
+
+            <if test="condition.storageid != null">
+                AND  (t.storageid=#{condition.storageid} OR (s.isaloneaccount='0' AND ''=#{condition.storageid}))
+            </if>
+            <if test="condition.goodsid != null">
+                AND  t1.goodsid=#{condition.goodsid}
+            </if>
+        </trim>
+        UNION ALL
+        <!--采购退货出库-->
+        SELECT t1.goodsid,t.storageid,-t1.unitnum as innum,-t1.taxamount as intaxamount,-t1.notaxamount as innotaxamount,0 as outnum,0 as outtaxamount,0 as outnotaxamount,
+        '采购退货' as sourcetype,t1.orderid as sourceid,t1.id as sourcedetailid,t1.taxtype,t.businessdate,'1' as inouttype,#{condition.accountid} as accountid,'' as costprice
+        FROM t_storage_purchasereject_out t
+        RIGHT JOIN t_storage_purchasereject_out_detail t1 ON t.id=t1.orderid
+        LEFT JOIN t_base_storage_info s ON s.id=t.storageid
+        <include refid="costAccountDetail_where" /> and t.ischeck='1'
+        <if test="condition.storageid != null">
+            AND  (t.storageid=#{condition.storageid} OR (s.isaloneaccount='0' AND ''=#{condition.storageid}))
+        </if>
+        <if test="condition.goodsid != null">
+            AND  t1.goodsid=#{condition.goodsid}
+        </if>
+        UNION ALL
+        <!--其它入库-->
+        SELECT t1.goodsid,t.storageid ,t1.unitnum as innum,t1.taxamount as intaxamount,t1.notaxamount as innotaxamount,0 as outnum,0 as outtaxamount,0 as outnotaxamount,
+        '其它入库' as sourcetype,t1.billid as sourceid,t1.id as sourcedetailid,t1.taxtype,t.businessdate,'1' as inouttype,#{condition.accountid} as accountid,'' as costprice
+        FROM t_storage_other_enter t
+        RIGHT JOIN t_storage_other_enter_detail t1 ON t.id=t1.billid
+        LEFT JOIN t_base_storage_info s ON s.id=t.storageid
+        <include refid="costAccountDetail_where" />
+        <if test="condition.storageid != null">
+            AND  (t.storageid=#{condition.storageid} OR (s.isaloneaccount='0' AND ''=#{condition.storageid}))
+        </if>
+        <if test="condition.goodsid != null">
+            AND  t1.goodsid=#{condition.goodsid}
+        </if>
+        UNION ALL
+        <!--报溢调账单-->
+        SELECT t1.goodsid,t.storageid,t1.adjustnum as innum,t1.amount as intaxamount,t1.amount as innotaxamount,0 as outnum,0 as outtaxamount,0 as outnotaxamount,
+        '报溢调账' as sourcetype,t1.adjustmentsid as sourceid,t1.id as sourcedetailid,'' as taxtype,t.businessdate,'1' as inouttype,#{condition.accountid} as accountid,'' as costprice
+        FROM t_storage_adjustments t
+        RIGHT JOIN t_storage_adjustments_detail t1 ON t.id=t1.adjustmentsid
+        LEFT JOIN t_base_storage_info s ON s.id=t.storageid
+        <include refid="costAccountDetail_where" /> AND t.billtype='1'
+        <if test="condition.storageid != null">
+            AND  (t.storageid=#{condition.storageid} OR (s.isaloneaccount='0' AND ''=#{condition.storageid}))
+        </if>
+        <if test="condition.goodsid != null">
+            AND  t1.goodsid=#{condition.goodsid}
+        </if>
+        UNION ALL
+        <!--调拨入库-->
+        SELECT t1.goodsid,t.enterstorageid as storageid,t1.unitnum as innum,t1.taxamount as intaxamount,t1.notaxamount as innotaxamount,0 as outnum,0 as outtaxamount,0 as outnotaxamount,
+        '调拨入库' as sourcetype,t1.billno as sourceid,t1.id as sourcedetailid,t1.taxtype,t.businessdate,'1' as inouttype,#{condition.accountid} as accountid,'' as costprice
+        FROM t_storage_allocate_out t
+        RIGHT JOIN t_storage_allocate_out_detail t1 ON t.id=t1.billno
+        LEFT JOIN t_base_storage_info s ON s.id=t.enterstorageid
+        <include refid="costAccountDetail_where" />
+        <if test="condition.storageid != null">
+            AND  (t.enterstorageid=#{condition.storageid} OR (s.isaloneaccount='0' AND ''=#{condition.storageid}))
+        </if>
+        <if test="condition.goodsid != null">
+            AND  t1.goodsid=#{condition.goodsid}
+        </if>
+        UNION ALL
+        <!--其它出库-->
+        SELECT t1.goodsid,t.storageid,-t1.unitnum as innum,-t1.taxamount as intaxamount,-t1.notaxamount as innotaxamount,0 as outnum,0 as outtaxamount,0 as outnotaxamount,
+        '其它出库' as sourcetype,t1.billid as sourceid,t1.id as sourcedetailid,t1.taxtype,t.businessdate,'2' as inouttype,#{condition.accountid} as accountid,'' as costprice
+        FROM t_storage_other_out t
+        RIGHT JOIN t_storage_other_out_detail t1 ON t.id=t1.billid
+        LEFT JOIN t_base_storage_info s ON s.id=t.storageid
+        <include refid="costAccountDetail_where" />
+        <if test="condition.storageid != null">
+            AND  (t.storageid=#{condition.storageid} OR (s.isaloneaccount='0' AND ''=#{condition.storageid}))
+        </if>
+        <if test="condition.goodsid != null">
+            AND  t1.goodsid=#{condition.goodsid}
+        </if>
+        UNION ALL
+        <!--调拨出库-->
+        SELECT t1.goodsid,t.outstorageid as storageid,-t1.unitnum as innum,-t1.taxamount as intaxamount,-t1.notaxamount as innotaxamount,0 as outnum,0 as outtaxamount,0 as outnotaxamount,
+        '调拨出库' as sourcetype,t1.billno as sourceid,t1.id as sourcedetailid,t1.taxtype,t.businessdate,'2' as inouttype,#{condition.accountid} as accountid,'' as costprice
+        FROM t_storage_allocate_out t
+        RIGHT JOIN t_storage_allocate_out_detail t1 ON t.id=t1.billno
+        LEFT JOIN t_base_storage_info s ON s.id=t.outstorageid
+        <include refid="costAccountDetail_where" />
+        <if test="condition.storageid != null">
+            AND  (t.outstorageid=#{condition.storageid} OR (s.isaloneaccount='0' AND ''=#{condition.storageid}))
+        </if>
+        <if test="condition.goodsid != null">
+            AND  t1.goodsid=#{condition.goodsid}
+        </if>
+
+        UNION ALL
+        <!--报损调账-->
+        SELECT t1.goodsid,t.storageid,-t1.adjustnum as innum,-t1.amount as intaxamount,-t1.amount as innotaxamount,0 as outnum,0 as outtaxamount,0 as outnotaxamount,
+        '报损调账' as sourcetype,t1.adjustmentsid as sourceid,t1.id as sourcedetailid,'' as taxtype,t.businessdate,'2' as inouttype,#{condition.accountid} as accountid,'' as costprice
+        FROM t_storage_adjustments t
+        RIGHT JOIN t_storage_adjustments_detail t1 ON t.id=t1.adjustmentsid
+        LEFT JOIN t_base_storage_info s ON s.id=t.storageid
+        <include refid="costAccountDetail_where" /> AND t.billtype='2'
+        <if test="condition.storageid != null">
+            AND  (t.storageid=#{condition.storageid} OR (s.isaloneaccount='0' AND ''=#{condition.storageid}))
+        </if>
+        <if test="condition.goodsid != null">
+            AND  t1.goodsid=#{condition.goodsid}
+        </if>
+        UNION ALL
+        <!--库存初始化-->
+        SELECT t.goodsid,t.storageid,t.unitnum as innum,t.unitamount as intaxamount,t.notaxamount as innotaxamount,0 as outnum,0 as outtaxamount,0 as outnotaxamount,
+        '库存初始化' as sourcetype,t.id as sourceid,t.id as sourcedetailid,'' as taxtype,date_format(t.audittime,'%Y-%m-%d'),'2' as inouttype,#{condition.accountid} as accountid,'' as costprice
+        FROM t_storage_stockinit t
+        LEFT JOIN t_base_storage_info s ON s.id=t.storageid
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="condition.businessdate != null">
+                AND  <![CDATA[ t.audittime>=date_format(#{condition.businessdate},'%Y-%m-%d')]]>
+            </if>
+            <if test="condition.businessdate1 != null">
+                AND  <![CDATA[ t.audittime<=date_format(#{condition.businessdate1},'%Y-%m-%d')]]>
+            </if>
+            <if test="condition.storageid != null">
+                AND  (t.storageid=#{condition.storageid} OR (s.isaloneaccount='0' AND ''=#{condition.storageid}))
+            </if>
+            <if test="condition.goodsid != null">
+                AND  t.goodsid=#{condition.goodsid}
+            </if>
+
+        </trim>
+        </if>
+    </sql>
+    <select id="getAbnormalBillDetailList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.storage.model.StorageStockDetail">
+        SELECT t.* FROM (<include refid="getCostAccountDetail_sql" />) t
+        <if test="condition.ispageflag == null">
+            <include refid="common.Page_limit"/>
+        </if>
+    </select>
+    <insert id="insertStorageStockDetailList" parameterType="java.util.List">
+        INSERT INTO t_storage_stock_detail(goodsid,storageid,innum,intaxamount,innotaxamount,outnum,outtaxamount,outnotaxamount,
+        sourcetype,sourceid,sourcedetailid,taxtype,businessdate,inouttype,accountid,costprice)
+        select t.goodsid,t.storageid,t.innum,t.intaxamount,t.innotaxamount,t.outnum,t.outtaxamount,t.outnotaxamount,
+        t.sourcetype,t.sourceid,t.sourcedetailid,t.taxtype,t.businessdate,t.inouttype,t.accountid,if(t.costprice='' OR t.costprice is NULL ,0,t.costprice) as costprice
+        FROM ( <include refid="getCostAccountDetail_sql" />) t
+    </insert>
+    <update id="updateStorageAccountDetailCostPrice" parameterType="java.lang.String">
+           UPDATE t_storage_stocksum t,t_storage_stock_detail t1,t_base_storage_info s
+        SET t1.accountprice=t.costprice
+        WHERE t.id=t1.accountid AND t.id=#{accountid} AND t.goodsid=t1.goodsid AND
+        (t.storageid=t1.storageid or(s.isaloneaccount='0' AND t.storageid='')) AND t1.storageid=s.id;
+
+        UPDATE t_storage_stock_detail t1,t_storage_stocksum t2
+        SET t1.outtaxamount=t1.outnum*t1.accountprice
+        WHERE t1.accountid=t2.id  AND t1.accountid=#{accountid} AND t2.accounttype='2';
+    </update>
+    <update id="updateSourceBillCostPrice" parameterType="java.lang.String">
+        <!--更新采购进货单成本价-->
+        UPDATE t_purchase_arrivalorder_detail t, t_storage_stock_detail t1
+        SET t.addcostprice =t1.accountprice
+        WHERE t.orderid=t1.sourceid AND t.id=t1.sourcedetailid
+        AND t1.sourcetype='采购进货' AND t1.accountid=#{accountid};
+        <!--更新采购进货单来源的采购入库单成本价-->
+        UPDATE t_purchase_arrivalorder_detail t, t_storage_stock_detail t1,t_storage_purchase_enter_detail t2
+        SET t2.addcostprice =t1.accountprice
+        WHERE t.orderid=t1.sourceid AND t.id=t1.sourcedetailid AND t.billno=t2.purchaseenterid AND t.billdetailno=t2.id
+        AND t1.sourcetype='采购进货' AND t1.accountid=#{accountid};
+        <!--更新发货单成本价-->
+        UPDATE t_storage_saleout_detail t, t_storage_stock_detail t1
+        SET t.costprice =t1.accountprice
+        WHERE t.saleoutid=t1.sourceid AND t.id=t1.sourcedetailid
+        AND t1.sourcetype='发货单' AND t1.accountid=#{accountid};
+        <!--更新发货通知单成本价-->
+        UPDATE t_storage_saleout_detail t, t_storage_stock_detail t1,t_sales_dispatchbill_detail t2
+        SET t2.costprice =t1.accountprice
+        WHERE t.saleoutid=t1.sourceid AND t.id=t1.sourcedetailid AND t.dispatchbillid=t2.billid AND t.dispatchbilldetailid=t2.id
+        AND t1.sourcetype='发货单' AND t1.accountid=#{accountid};
+        <!--更新退货入库成本价-->
+        UPDATE t_storage_salereject_enter_detail t, t_storage_stock_detail t1
+        SET t.costprice =t1.accountprice
+        WHERE t.salerejectid=t1.sourceid AND t.id=t1.sourcedetailid
+        AND t1.sourcetype='销售退货入库' AND t1.accountid=#{accountid};
+        <!--更新销售回单成本价-->
+        UPDATE t_sales_receipt_detail t, t_storage_stock_detail t1
+        SET t.costprice =t1.accountprice
+        WHERE t.billno=t1.sourceid AND t.billdetailno=t1.sourcedetailid
+        AND t1.sourcetype='发货单' AND t1.accountid=#{accountid};
+        <!--更新销售回单类型销售核销成本价-->
+        UPDATE t_account_sales_invoice_detail t, t_storage_stock_detail t1,t_sales_receipt_detail t2
+        SET t.costprice =t1.accountprice
+        WHERE t.sourceid=t2.billid AND t.sourcedetailid=t2.id AND t2.billno=t1.sourceid AND t2.billdetailno=t1.sourcedetailid
+        AND t1.sourcetype='发货单' AND t1.accountid=#{accountid};
+
+        <!--更新销售退货类型销售核销成本价-->
+        UPDATE t_account_sales_invoice_detail t, t_storage_stock_detail t1,t_storage_salereject_enter_detail t2
+        SET t.costprice =t1.accountprice
+        WHERE t.sourceid=t2.rejectid AND t.sourcedetailid=t2.rejectdetailid AND t2.salerejectid=t1.sourceid AND t2.id=t1.sourcedetailid
+        AND t1.sourcetype='销售退货入库' AND t1.accountid=#{accountid};
+
+        <!--更新销售回单类型销售开票成本价-->
+        UPDATE t_account_sales_invoicebill_detail t, t_storage_stock_detail t1,t_sales_receipt_detail t2
+        SET t.costprice =t1.accountprice
+        WHERE t.sourceid=t2.billid AND t.sourcedetailid=t2.id AND t2.billno=t1.sourceid AND t2.billdetailno=t1.sourcedetailid
+        AND t1.sourcetype='发货单' AND t1.accountid=#{accountid};
+        <!--更新销售退货销售开票成本价-->
+        UPDATE t_account_sales_invoicebill_detail t, t_storage_stock_detail t1,t_storage_salereject_enter_detail t2
+        SET t.costprice =t1.accountprice
+        WHERE t.billno=t2.rejectid AND t.sourcedetailid=t2.rejectdetailid  AND t2.salerejectid=t1.sourceid AND t2.id=t1.sourcedetailid
+        AND t1.sourcetype ='销售退货入库'  AND t1.accountid=#{accountid};
+    </update>
+    <!--更新库存成本价：独立核算仓库更新库存成本价，非独立核算更新商品最新库存价-->
+    <update id="updateStorageSummaryCostprice" parameterType="java.lang.String">
+        <!--更新库存成本价-->
+        UPDATE t_storage_stocksum t,t_storage_summary t1
+        SET t1.costprice=t.costprice WHERE t.storageid=t1.storageid AND t.goodsid=t1.goodsid
+        AND t.id=#{accountid} AND t.costprice is NOT NULL AND t.costprice>0;
+
+        <!--更新库存未分摊金额-->
+        UPDATE t_storage_stocksum t,t_storage_summary t1,t_base_storage_info s
+        SET t1.storageamount=0  WHERE t.storageid=t1.storageid AND t.goodsid=t1.goodsid
+        AND t.id=#{accountid} AND t.storageid=s.id AND s.isaloneaccount='1'
+    </update>
+    <insert id="insertGoodsCostPriceChange" parameterType="java.lang.String">
+        INSERT INTO t_base_goodsinfo_costprice_change(goodsid,costprice,state,billid,addtime,remark)
+        SELECT t.* FROM (
+        SELECT t.goodsid,t.costprice as costprice,'1' as state,t.id as billid,now() as addtime,
+        concat('全月一次平均法成本结算,成本变更,结算编码:',t.id,',成本=(库存期初金额+收入金额)/(库存期初数量+收入数量)=(',t.inittaxamount,'+',t.intaxamount
+        ,')/(',t.initnum,'+',t.innum,')') as remark
+        FROM t_storage_stocksum t
+        WHERE t.id=#{accountid} AND t.storageid='' AND t.costprice IS NOT NULL
+        )t
+    </insert>
+    <delete id="deleteCostAccountDetailByAccountid" parameterType="java.lang.String">
+        DELETE FROM t_storage_stock_detail WHERE accountid=#{accountid}
+    </delete>
+    <delete id="deleteCostAccountSumByAccountid" parameterType="java.lang.String">
+        DELETE FROM t_storage_stocksum WHERE id=#{accountid}
+    </delete>
+    <select id="getCostAccountDetailList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.storage.model.StorageStockDetail">
+        SELECT t.* FROM (<include refid="getCostAccountDetail_sql" />) t
+        <include refid="common.Page_limit"/>
+    </select>
+    <select id="getCostAccountDetailCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+        SELECT count(1) FROM (<include refid="getCostAccountDetail_sql" />) t
+    </select>
+    <select id="getCostAccountDetailSum" parameterType="com.hd.agent.common.util.PageMap" resultType="map">
+        SELECT '合计' as sourceid,sum(t.innum) as innum,sum(t.intaxamount) as intaxamount,sum(t.innotaxamount) as innotaxamount,
+        sum(t.outnum) as outnum,sum(t.outtaxamount) as outtaxamount,sum(t.outnotaxamount) as outtaxamount
+        FROM (<include refid="getCostAccountDetail_sql" />) t
+    </select>
+    <select id="checkBillForAccount" parameterType="map" resultType="map">
+        SELECT
+        (SELECT count(DISTINCT t.id) FROM t_purchase_arrivalorder t LEFT JOIN t_purchase_arrivalorder_detail t1 ON t.id=t1.orderid
+        LEFT JOIN t_base_storage_info s ON t.storageid=s.id
+         WHERE <![CDATA[ t.businessdate>=#{businessdate}]]> AND
+        <![CDATA[ t.businessdate<=#{businessdate1}]]> AND t.status NOT IN ('3','4')
+        AND t1.goodsid=#{goodsid} AND (t.storageid=#{storageid} or(s.isaloneaccount='0' AND #{storageid}=''))) as purchasearrivalordernum,
+
+        (SELECT count(DISTINCT t.id) FROM t_purchase_returnorder t LEFT JOIN t_purchase_returnorder_detail t1 ON t.id=t1.orderid
+        LEFT JOIN t_base_storage_info s ON t.storageid=s.id
+        WHERE <![CDATA[ t.businessdate>=#{businessdate}]]> AND
+        <![CDATA[ t.businessdate<=#{businessdate1}]]> AND t.status NOT IN ('3','4')
+         AND t1.goodsid=#{goodsid} AND (t.storageid=#{storageid} or(s.isaloneaccount='0' AND #{storageid}='')) ) as purchasereturnordernum,
+
+        (SELECT count(DISTINCT t.id) FROM t_storage_other_out t LEFT JOIN t_storage_other_out_detail t1 ON t.id=t1.billid
+        LEFT JOIN t_base_storage_info s ON t.storageid=s.id
+        WHERE <![CDATA[ t.businessdate>=#{businessdate}]]> AND
+        <![CDATA[ t.businessdate<=#{businessdate1}]]> AND t.status NOT IN ('3','4')
+        AND t1.goodsid=#{goodsid} AND (t.storageid=#{storageid} or(s.isaloneaccount='0' AND #{storageid}=''))) as storageotheroutnum,
+
+        (SELECT count(DISTINCT t.id) FROM t_storage_other_enter t LEFT JOIN t_storage_other_enter_detail t1 ON t.id=t1.billid
+        LEFT JOIN t_base_storage_info s ON t.storageid=s.id
+        WHERE <![CDATA[ t.businessdate>=#{businessdate}]]> AND
+        <![CDATA[ t.businessdate<=#{businessdate1}]]> AND t.status NOT IN ('3','4')
+        AND t1.goodsid=#{goodsid} AND (t.storageid=#{storageid} or(s.isaloneaccount='0' AND #{storageid}=''))) as storageotherenternum,
+
+         ( SELECT count(DISTINCT t.id) FROM (
+         SELECT DISTINCT t.id as id FROM t_storage_allocate_out t LEFT JOIN t_storage_allocate_out_detail t1 ON t.id=t1.billno
+         LEFT JOIN t_base_storage_info s ON t.outstorageid=s.id
+        WHERE <![CDATA[ t.businessdate>=#{businessdate}]]> AND
+        <![CDATA[ t.businessdate<=#{businessdate1}]]> AND t.status NOT IN ('3','4')
+         AND t1.goodsid=#{goodsid} AND (t.outstorageid=#{storageid} or(s.isaloneaccount='0' AND #{storageid}=''))
+         UNION ALL
+         SELECT DISTINCT t.id as id FROM t_storage_allocate_out t LEFT JOIN t_storage_allocate_out_detail t1 ON t.id=t1.billno
+         LEFT JOIN t_base_storage_info s ON t.enterstorageid=s.id
+        WHERE <![CDATA[ t.businessdate>=#{businessdate}]]> AND
+        <![CDATA[ t.businessdate<=#{businessdate1}]]> AND t.status NOT IN ('3','4')
+         AND t1.goodsid=#{goodsid} AND (t.enterstorageid=#{storageid} or(s.isaloneaccount='0' AND #{storageid}=''))
+         )t
+         )as storageallocateoutnum,
+
+        (SELECT count(DISTINCT t.id) FROM t_storage_saleout t LEFT JOIN t_storage_saleout_detail t1 ON t.id=t1.saleoutid
+        LEFT JOIN t_base_storage_info s ON t.storageid=s.id
+        WHERE <![CDATA[ t.businessdate>=#{businessdate}]]> AND
+        <![CDATA[ t.businessdate<=#{businessdate1}]]> AND t.status NOT IN ('3','4')
+        AND t1.goodsid=#{goodsid} AND (t.storageid=#{storageid} or(s.isaloneaccount='0' AND #{storageid}=''))) as storagesaleoutnum,
+
+        (SELECT count(DISTINCT t.id) FROM t_sales_rejectbill t LEFT JOIN t_sales_rejectbill_detail t1 ON t.id=t1.billid
+        LEFT JOIN t_base_storage_info s ON t.storageid=s.id
+         WHERE <![CDATA[ t.businessdate>=#{businessdate}]]> AND
+        <![CDATA[ t.businessdate<=#{businessdate1}]]> AND t.status NOT IN ('3','4') AND t.source='9'
+         AND t1.goodsid=#{goodsid} AND (t.storageid=#{storageid} or(s.isaloneaccount='0' AND #{storageid}=''))) as salesrejectbillnum,
+
+        (SELECT count(DISTINCT t.id) FROM t_storage_adjustments t LEFT JOIN t_storage_adjustments_detail t1 ON t.id=t1.adjustmentsid
+        LEFT JOIN t_base_storage_info s ON t.storageid=s.id
+          WHERE <![CDATA[ t.businessdate>=#{businessdate}]]> AND
+        <![CDATA[ t.businessdate<=#{businessdate1}]]> AND t.status NOT IN ('3','4') and t.billtype='1'
+        AND t1.goodsid=#{goodsid} AND (t.storageid=#{storageid} or(s.isaloneaccount='0' AND #{storageid}=''))) as adjustmentsnum,
+
+        (SELECT count(DISTINCT t.id) FROM t_storage_adjustments t LEFT JOIN t_storage_adjustments_detail t1 ON t.id=t1.adjustmentsid
+        LEFT JOIN t_base_storage_info s ON t.storageid=s.id
+        WHERE <![CDATA[ t.businessdate>=#{businessdate}]]> AND
+        <![CDATA[ t.businessdate<=#{businessdate1}]]> AND t.status NOT IN ('3','4') and t.billtype='2'
+         AND t1.goodsid=#{goodsid} AND (t.storageid=#{storageid} or(s.isaloneaccount='0' AND #{storageid}=''))) as lossadjustmentsnum
+    </select>
+</mapper>

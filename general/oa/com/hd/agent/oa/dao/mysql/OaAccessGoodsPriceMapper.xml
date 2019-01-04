@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.oa.dao.OaAccessGoodsPriceMapper" >
+  <resultMap id="BaseResultMap" type="com.hd.agent.oa.model.OaAccessGoodsPrice" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="billid" property="billid" jdbcType="VARCHAR" />
+    <result column="goodsid" property="goodsid" jdbcType="VARCHAR" />
+    <result column="goodsname" property="goodsname" jdbcType="VARCHAR" />
+    <result column="buyprice" property="buyprice" jdbcType="DECIMAL" />
+    <result column="factoryprice" property="factoryprice" jdbcType="DECIMAL" />
+    <result column="myprice" property="myprice" jdbcType="DECIMAL" />
+    <result column="oldprice" property="oldprice" jdbcType="DECIMAL" />
+    <result column="newprice" property="newprice" jdbcType="DECIMAL" />
+    <result column="rate" property="rate" jdbcType="DECIMAL" javaType="java.lang.String"/>
+    <result column="senddetail" property="senddetail" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, billid, goodsid, goodsname, buyprice, factoryprice, myprice, oldprice, newprice, 
+    rate, senddetail, remark
+  </sql>
+  <insert id="insertOaAccessGoodsPrice" parameterType="com.hd.agent.oa.model.OaAccessGoodsPrice">
+  	insert into t_oa_access_goods_price
+  	<trim prefix="(" suffix=")" suffixOverrides=",">
+		<if test="#{billid != null}">
+			billid ,
+		</if>
+		<if test="#{goodsid != null}">
+			goodsid ,
+		</if>
+		<if test="#{goodsname != null}">
+			goodsname ,
+		</if>
+		<if test="#{buyprice != null}">
+			buyprice ,
+		</if>
+		<if test="#{factoryprice != null}">
+			factoryprice ,
+		</if>
+		<if test="#{myprice != null}">
+			myprice ,
+		</if>
+		<if test="#{oldprice != null}">
+			oldprice ,
+		</if>
+		<if test="#{newprice != null}">
+			newprice ,
+		</if>
+		<if test="#{rate != null}">
+			rate ,
+		</if>
+		<if test="#{senddetail != null}">
+			senddetail ,
+		</if>
+		<if test="#{remark != null}">
+			remark ,
+		</if>
+  	</trim>
+  	<trim prefix=" values (" suffix=")" suffixOverrides="," >
+		<if test="#{billid != null}">
+			#{billid },
+		</if>
+		<if test="#{goodsid != null}">
+			#{goodsid },
+		</if>
+		<if test="#{goodsname != null}">
+			#{goodsname },
+		</if>
+		<if test="#{buyprice != null}">
+			#{buyprice },
+		</if>
+		<if test="#{factoryprice != null}">
+			#{factoryprice },
+		</if>
+		<if test="#{myprice != null}">
+			#{myprice },
+		</if>
+		<if test="#{oldprice != null}">
+			#{oldprice },
+		</if>
+		<if test="#{newprice != null}">
+			#{newprice },
+		</if>
+		<if test="#{rate != null}">
+			#{rate },
+		</if>
+		<if test="#{senddetail != null}">
+			#{senddetail },
+		</if>
+		<if test="#{remark != null}">
+			#{remark },
+		</if>
+  	</trim>
+  </insert>
+  <select id="selectOaAccessGoodsPriceList2" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select
+  		<include refid="Base_Column_List"/>
+  	from t_oa_access_goods_price a
+  	where billid = #{billid }
+	order by a.id 
+  </select>
+  <select id="selectOaAccessGoodsPriceList" parameterType="com.hd.agent.common.util.PageMap" resultMap="BaseResultMap">
+  	select
+  		<include refid="Base_Column_List"/>
+  	from t_oa_access_goods_price a
+	<trim prefix="where" prefixOverrides="and|or">
+        a.billid = #{condition.billid }
+	    <include refid="common.Page_querySql"/>
+	  	<include refid="common.Page_dataSql"/>
+	</trim>
+	order by a.id 
+	<include refid="common.Page_limit"/>
+  </select>
+  <select id="selectOaAccessGoodsPriceListCnt" parameterType="com.hd.agent.common.util.PageMap" resultType="java.lang.Integer">
+   	select count(1)
+  	from t_oa_access_goods_price a
+	<trim prefix="where" prefixOverrides="and|or">
+        a.billid = #{condition.billid }
+	    <include refid="common.Page_querySql"/>
+	  	<include refid="common.Page_dataSql"/>
+	</trim>
+  </select>
+  
+  <delete id="deleteOaAccessGoodsPrice" parameterType="java.lang.String">
+  	delete from t_oa_access_goods_price where billid = #{billid }
+  </delete>
+</mapper>

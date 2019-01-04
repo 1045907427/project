@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hd.agent.account.dao.SalesStatementMapper">
+	<sql id="Base_Column_List">
+	    id, customerid, businessdate, billtype, billid, amount, billamount, writeoffamount, 
+	    tailamount, remark, adduserid, addusername, addtime
+	</sql>
+  	<insert id="addSalesStatement" parameterType="com.hd.agent.account.model.SalesStatement">
+	    insert into t_account_sales_statement
+	    <trim prefix="(" suffix=")" suffixOverrides=",">
+	      <if test="id != null">
+	        id,
+	      </if>
+	      <if test="customerid != null">
+	        customerid,
+	      </if>
+	      <if test="businessdate != null">
+	        businessdate,
+	      </if>
+	      <if test="billtype != null">
+	        billtype,
+	      </if>
+	      <if test="billid != null">
+	        billid,
+	      </if>
+	      <if test="amount != null">
+	        amount,
+	      </if>
+	      <if test="billamount != null">
+	        billamount,
+	      </if>
+	      <if test="writeoffamount != null">
+	        writeoffamount,
+	      </if>
+	      <if test="tailamount != null">
+	        tailamount,
+	      </if>
+	      <if test="remark != null">
+	        remark,
+	      </if>
+	      <if test="adduserid != null">
+	        adduserid,
+	      </if>
+	      <if test="addusername != null">
+	        addusername,
+	      </if>
+	      <if test="1==1">
+	        addtime,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides=",">
+	      <if test="id != null">
+	        #{id},
+	      </if>
+	      <if test="customerid != null">
+	        #{customerid},
+	      </if>
+	      <if test="businessdate != null">
+	        #{businessdate},
+	      </if>
+	      <if test="billtype != null">
+	        #{billtype},
+	      </if>
+	      <if test="billid != null">
+	        #{billid},
+	      </if>
+	      <if test="amount != null">
+	        #{amount},
+	      </if>
+	      <if test="billamount != null">
+	        #{billamount},
+	      </if>
+	      <if test="writeoffamount != null">
+	        #{writeoffamount},
+	      </if>
+	      <if test="tailamount != null">
+	        #{tailamount},
+	      </if>
+	      <if test="remark != null">
+	        #{remark},
+	      </if>
+	      <if test="adduserid != null">
+	        #{adduserid},
+	      </if>
+	      <if test="addusername != null">
+	        #{addusername},
+	      </if>
+	      <if test="1==1">
+	        now(),
+	      </if>
+	    </trim>
+	  </insert>
+	  <select id="showSalesStatementList" parameterType="java.lang.String" resultType="com.hd.agent.account.model.SalesStatement">
+	  	select <include refid="Base_Column_List"/>
+	  	from t_account_sales_statement where customerid=#{customerid} order by addtime asc
+	  </select>
+	  <select id="showSalesStatementListPage" parameterType="java.lang.String" resultType="com.hd.agent.account.model.SalesStatement">
+	  	select <include refid="Base_Column_List"/>
+	  	from t_account_sales_statement 
+	  	<trim prefix="where" prefixOverrides="and|or">
+		  <if test="condition.businessdate1 != null">
+			 and businessdate >= #{condition.businessdate1}
+		  </if>
+		  <if test="condition.businessdate2 != null">
+			 <![CDATA[and businessdate <= #{condition.businessdate2}]]>
+		  </if>
+		  <if test="condition.customerid != null" >
+	         and customerid = #{condition.customerid}
+	      </if>
+	      <if test="condition.billid != null">
+	         and billid = #{condition.billid}
+	      </if>
+	    </trim>
+	    order by addtime asc
+	    <include refid="common.Page_limit" />
+	  </select>
+	  <select id="showSalesStatementCount" parameterType="java.lang.String" resultType="int">
+	  	select count(1) from t_account_sales_statement
+	  	<trim prefix="where" prefixOverrides="and|or">
+		  <if test="condition.businessdate1 != null">
+			 and businessdate >= #{condition.businessdate1}
+		  </if>
+		  <if test="condition.businessdate2 != null">
+			 <![CDATA[and businessdate <= #{condition.businessdate2}]]>
+		  </if>
+		  <if test="condition.customerid != null" >
+	         and customerid = #{condition.customerid}
+	      </if>
+	      <if test="condition.billid != null">
+	         and billid = #{condition.billid}
+	      </if>
+	    </trim>
+	  </select>
+	  <delete id="deleteSalesStatement" parameterType="java.lang.String">
+	  	delete from t_account_sales_statement where billid=#{billid} and billtype=#{billtype} and customerid=#{customerid}
+	  </delete>
+	  <insert id="addRelateCollectionOrder" parameterType="com.hd.agent.account.model.CollectionOrderSatement">
+	  	insert into t_account_collection_order_statement
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="id != null" >
+	        id,
+	      </if>
+	      <if test="orderid != null" >
+	        orderid,
+	      </if>
+	      <if test="billid != null" >
+	        billid,
+	      </if>
+	      <if test="billtype != null" >
+	        billtype,
+	      </if>
+	      <if test="orderamount != null" >
+	        orderamount,
+	      </if>
+	      <if test="invoiceamount != null" >
+	        invoiceamount,
+	      </if>
+	      <if test="relateamount != null" >
+	        relateamount,
+	      </if>
+	      <if test="writeoffdate != null" >
+	        writeoffdate,
+	      </if>
+	      <if test="iswrieteoff != null" >
+	        iswrieteoff,
+	      </if>
+	      <if test="1==1" >
+	        addtime,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="id != null" >
+	        #{id},
+	      </if>
+	      <if test="orderid != null" >
+	        #{orderid},
+	      </if>
+	      <if test="billid != null" >
+	        #{billid},
+	      </if>
+	      <if test="billtype != null" >
+	        #{billtype},
+	      </if>
+	      <if test="orderamount != null" >
+	        #{orderamount},
+	      </if>
+	      <if test="invoiceamount != null" >
+	        #{invoiceamount},
+	      </if>
+	      <if test="relateamount != null" >
+	        #{relateamount},
+	      </if>
+	      <if test="writeoffdate != null" >
+	        #{writeoffdate},
+	      </if>
+	      <if test="iswrieteoff != null" >
+	        #{iswrieteoff},
+	      </if>
+	      <if test="1==1" >
+	        now(),
+	      </if>
+	    </trim>
+	  </insert>
+	  <select id="getRelateCollectionOrderListByBillid" parameterType="java.lang.String" resultType="com.hd.agent.account.model.CollectionOrderSatement">
+	  	select id, orderid, billid,billtype,writeoffdate,iswrieteoff, orderamount, invoiceamount, relateamount, addtime
+	  	from t_account_collection_order_statement where billid=#{billid}
+	  </select>
+	  <delete id="deleteRelateCollectionOrderListByBillid" parameterType="java.lang.String">
+	  	delete from t_account_collection_order_statement where billid=#{billid}
+	  </delete>
+	  <select id="getRelateCollectionOrderInvoiceAmount" parameterType="java.lang.String" resultType="java.math.BigDecimal">
+	  	select invoiceamount from t_account_collection_order_statement where billid=#{billid} limit 1
+	  </select>
+	  <select id="showCollectionStatementDetailList" parameterType="java.lang.String" resultType="com.hd.agent.account.model.CollectionOrderSatement">
+  		select * from t_account_collection_order_statement t
+		where t.orderid=#{orderid}
+		order by writeoffdate asc,orderid asc
+  	  </select>
+  	  <select id="getCollectionStatementDetailList" parameterType="java.lang.String" resultType="com.hd.agent.account.model.CollectionOrderSatement">
+  		select * from t_account_collection_order_statement t
+		where t.billid=#{billid} and t.billtype = #{billtype}
+		order by writeoffdate asc,orderid asc
+  	  </select>
+  	  <update id="updateCollectionOrderStatementWritedateByInvoiceid">
+  	  	update t_account_collection_order_statement t
+  	  	set t.writeoffdate=#{writeoffdate},iswrieteoff='1'
+  	  	where billid=#{billid}
+  	  </update>
+  	  <select id="getCollectionStatementDetailListByMap" parameterType="java.util.Map" resultType="com.hd.agent.account.model.CollectionOrderSatement">
+  	  	select t.orderid,t1.customerid, t.billid,t.billtype,t.writeoffdate,t.iswrieteoff, t.orderamount, t.invoiceamount, t.relateamount
+  	  	from t_account_collection_order_statement t
+  	  	left join t_account_collection_order t1 on t.orderid = t1.id
+  	  	<trim prefix="where" prefixOverrides="and|or">
+  	  	  <if test="writeoffdate1 != null">
+			 and writeoffdate >= #{writeoffdate1}
+		  </if>
+		  <if test="writeoffdate2 != null">
+			 <![CDATA[and writeoffdate <= #{writeoffdate2}]]>
+		  </if>
+		  <if test="customerid != null" >
+	         and t1.customerid = #{customerid}
+	      </if>
+	      <if test="bank != null" >
+	         and t1.bank = #{bank}
+	      </if>
+  	  	</trim>
+  	  </select>
+		<select id="getSalesInvoiceRelateAmount" resultType="java.math.BigDecimal">
+			select sum(t.relateamount) from t_account_collection_order_statement t
+			where t.billid =#{billid} and t.billtype='1'
+		</select>
+</mapper>

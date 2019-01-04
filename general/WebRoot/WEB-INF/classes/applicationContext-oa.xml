@@ -1,0 +1,716 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+	<!-- 基础 -->
+	<bean id="baseOaServiceImpl" class="com.hd.agent.oa.service.impl.BaseOaServiceImpl" parent="baseFilesServiceImpl">
+	</bean>
+	<bean id="baseOaService" parent="baseTransactionProxy">
+		<property name="target" ref="baseOaServiceImpl"/>
+	</bean>
+	<bean id="baseOaAction" class="com.hd.agent.oa.action.BaseOaAction" scope="prototype" parent="baseFilesAction">
+		<property name="departMentService" ref="departMentService"/>
+		<property name="sysCodeService" ref="sysCodeService"/>
+		<property name="workService" ref="workService"/>
+		<property name="goodsService" ref="goodsService"/>
+		<property name="baseOaService" ref="baseOaService"/>
+	</bean>
+	<!-- Oa通用Serivce -->
+	<bean id="payServiceImpl" class="com.hd.agent.oa.service.impl.OaPayServiceImpl" parent="baseFilesServiceImpl">
+		<property name="accountForOAService" ref="accountForOAService"/>
+		<property name="deptDailyCostService" ref="deptDailyCostService"/>
+		<property name="deptDailyCostMapper" ref="deptDailyCostMapper"/>
+		<property name="payorderService" ref="payorderService"/>
+		<property name="journalSheetService" ref="journalSheetService"/>
+		<property name="collectionOrderForOaService" ref="collectionOrderForOaService"/>
+		<property name="customerPushBanlanceService" ref="customerPushBanlanceService"/>
+	</bean>
+	<bean id="payService" parent="baseTransactionProxy">
+		<property name="target" ref="payServiceImpl"/>
+	</bean>
+	<bean id="oaBusinessServiceImpl" class="com.hd.agent.oa.service.impl.OaBusinessServiceImpl" parent="baseFilesServiceImpl">
+		<property name="offpriceService" ref="salesOffpriceService"/>
+		<property name="oaOffPriceService" ref="oaOffPriceService"/>
+		<property name="sysCodeService" ref="sysCodeService"/>
+		<property name="customerPushBanlanceService" ref="customerPushBanlanceService"/>
+		<property name="journalSheetService" ref="journalSheetService"/>
+        <property name="workService" ref="workService"/>
+	</bean>
+	<bean id="oaBusinessService" parent="baseTransactionProxy">
+		<property name="target" ref="oaBusinessServiceImpl"/>
+	</bean>
+
+	<!-- 新客户登录单 -->
+	<bean id="oaCustomerMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.hd.agent.oa.dao.OaCustomerMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+	</bean>
+	<bean id="oaCustomerBrandMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.hd.agent.oa.dao.OaCustomerBrandMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+	</bean>
+	<bean id="oaCustomerServiceImpl" class="com.hd.agent.oa.service.impl.OaCustomerServiceImpl" parent="baseFilesServiceImpl">
+		<property name="oaCustomerMapper" ref="oaCustomerMapper"/>
+		<property name="oaCustomerBrandMapper" ref="oaCustomerBrandMapper"/>
+		<property name="processMapper" ref="processMapper"/>
+	</bean>
+	<bean id="oaCustomerService" parent="baseTransactionProxy">
+		<property name="target" ref="oaCustomerServiceImpl"/>
+	</bean>
+	<bean id="oaCustomerAction" class="com.hd.agent.oa.action.OaCustomerAction" scope="prototype" parent="baseOaAction">
+		<property name="oaCustomerService" ref="oaCustomerService"/>
+	</bean>
+	<bean id="oaCustomerEndListener" class="com.hd.agent.oa.listener.OaCustomerExecutionEndListener" >
+		<property name="oaCustomerMapper" ref="oaCustomerMapper"/>
+		<property name="oaCustomerBrandMapper" ref="oaCustomerBrandMapper"/>
+		<property name="baseService" ref="baseServiceImpl"/>
+		<property name="processMapper" ref="processMapper"/>
+		<property name="personnelService" ref="personnelService"/>
+	</bean>
+	<bean id="oaCustomerDataCollector" class="com.hd.agent.oa.listener.OaCustomerDataCollectorListener" parent="taskListener">
+		<property name="oaCustomerService" ref="oaCustomerService"/>
+	</bean>
+
+	<!-- 新品登录 -->
+	<bean id="oaGoodsMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.hd.agent.oa.dao.OaGoodsMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+	</bean>
+	<bean id="oaGoodsDetailMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.hd.agent.oa.dao.OaGoodsDetailMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+	</bean>
+	<bean id="oaGoodsServiceImpl" class="com.hd.agent.oa.service.impl.OaGoodsServiceImpl" parent="baseFilesServiceImpl">
+		<property name="oaGoodsMapper" ref="oaGoodsMapper"/>
+		<property name="oaGoodsDetailMapper" ref="oaGoodsDetailMapper"/>
+		<property name="processMapper" ref="processMapper"/>
+		<property name="goodsMapper" ref="goodsMapper"/>
+		<property name="storageMapper" ref="storageMapper"/>
+		<property name="financeMapper" ref="financeMapper"/>
+	</bean>
+	<bean id="oaGoodsService" parent="baseTransactionProxy">
+		<property name="target" ref="oaGoodsServiceImpl"/>
+	</bean>
+	<bean id="oaGoodsAction" class="com.hd.agent.oa.action.OaGoodsAction" scope="prototype" parent="baseOaAction">
+		<!-- <property name="oaGoodsService" ref="oaGoodsService"/> -->
+		<property name="oaGoodsService" ref="oaGoodsServiceImpl"/>
+	</bean>
+	<bean id="oaGoodsEndListener" class="com.hd.agent.oa.listener.OaGoodsExecutionEndListener" >
+		<property name="oaGoodsMapper" ref="oaGoodsMapper"/>
+		<property name="oaGoodsDetailMapper" ref="oaGoodsDetailMapper"/>
+		<property name="baseService" ref="baseServiceImpl"/>
+		<property name="processMapper" ref="processMapper"/>
+		<property name="baseSysCodeService" ref="sysCodeService"/>
+	</bean>
+	<bean id="oaGoodsDataCollector" class="com.hd.agent.oa.listener.OaGoodsDataCollectorListener" parent="taskListener">
+		<property name="oaGoodsService" ref="oaGoodsService"/>
+	</bean>
+
+	<!-- 客户、特价、通路费用申请单 -->
+	<bean id="oaAccessMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.hd.agent.oa.dao.OaAccessMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+	</bean>
+	<bean id="oaAccessAuditinfoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.hd.agent.oa.dao.OaAccessAuditinfoMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+	</bean>
+	<bean id="oaAccessBrandDiscountMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.hd.agent.oa.dao.OaAccessBrandDiscountMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+	</bean>
+	<bean id="oaAccessGoodsAmountMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.hd.agent.oa.dao.OaAccessGoodsAmountMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+	</bean>
+	<bean id="oaAccessGoodsPriceMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.hd.agent.oa.dao.OaAccessGoodsPriceMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+	</bean>
+	<bean id="oaAccessInvoiceBrandMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.hd.agent.oa.dao.OaAccessInvoiceBrandMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+	</bean>
+	<bean id="oaAccessInvoiceMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.hd.agent.oa.dao.OaAccessInvoiceMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+	</bean>
+	<bean id="oaAccessResultMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.hd.agent.oa.dao.OaAccessResultMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+	</bean>
+	<bean id="oaAccessServiceImpl" class="com.hd.agent.oa.service.impl.OaAccessServiceImpl" parent="baseFilesServiceImpl">
+		<property name="oaAccessAuditinfoMapper" ref="oaAccessAuditinfoMapper"/>
+		<property name="oaAccessBrandDiscountMapper" ref="oaAccessBrandDiscountMapper"/>
+		<property name="oaAccessGoodsAmountMapper" ref="oaAccessGoodsAmountMapper"/>
+		<property name="oaAccessGoodsPriceMapper" ref="oaAccessGoodsPriceMapper"/>
+		<property name="oaAccessInvoiceBrandMapper" ref="oaAccessInvoiceBrandMapper"/>
+		<property name="oaAccessInvoiceMapper" ref="oaAccessInvoiceMapper"/>
+		<property name="oaAccessMapper" ref="oaAccessMapper"/>
+		<property name="oaAccessResultMapper" ref="oaAccessResultMapper"/>
+	</bean>
+	<bean id="oaAccessService" parent="baseTransactionProxy">
+		<property name="target" ref="oaAccessServiceImpl"/>
+	</bean>
+	<bean id="oaAccessToBusinessService" parent="baseTransactionProxy">
+		<property name="target" ref="oaAccessToBusinessServiceImpl"/>
+	</bean>
+	<bean id="oaAccessToBusinessServiceImpl" class="com.hd.agent.oa.service.impl.OaAccessToBusinessServiceImpl" parent="baseFilesServiceImpl">
+		<property name="customerPushBanlanceService" ref="customerPushBanlanceService"/>
+		<property name="offpriceService" ref="salesOffpriceService"/>
+		<property name="journalSheetService" ref="journalSheetService"/>
+		<property name="salesReportService" ref="salesReportService"/>
+	</bean>
+	<bean id="oaAccessAction" class="com.hd.agent.oa.action.OaAccessAction" scope="prototype" parent="baseOaAction">
+		<property name="oaAccessService" ref="oaAccessService"/>
+	</bean>
+	<bean id="oaAccess2Action" class="com.hd.agent.oa.action.OaAccess2Action" scope="prototype" parent="baseOaAction">
+		<property name="oaAccessService" ref="oaAccessService"/>
+	</bean>
+	<bean id="oaAccessExecutionEndListener" class="com.hd.agent.oa.listener.OaAccessExecutionEndListener" >
+		<property name="accessService" ref="oaAccessService"/>
+		<property name="workService" ref="workService"/>
+		<property name="businessService" ref="oaAccessToBusinessService"/>
+	</bean>
+	<bean id="oaAccessListener1" class="com.hd.agent.oa.listener.OaAccessTaskListener1" parent="taskListener">
+		<property name="oaAccessService" ref="oaAccessService"/>
+		<property name="accessBusinessService" ref="oaAccessToBusinessService"/>
+	</bean>
+	<bean id="oaAccessListener2" class="com.hd.agent.oa.listener.OaAccessTaskListener2" parent="taskListener">
+		<property name="oaAccessService" ref="oaAccessService"/>
+		<property name="accessBusinessService" ref="oaAccessToBusinessService"/>
+	</bean>
+	<bean id="oaAccessListener3" class="com.hd.agent.oa.listener.OaAccessTaskListener3" parent="taskListener">
+		<property name="oaAccessService" ref="oaAccessService"/>
+		<property name="accessBusinessService" ref="oaAccessToBusinessService"/>
+	</bean>
+	<bean id="oaAccessListener4" class="com.hd.agent.oa.listener.OaAccessTaskListener4" parent="taskListener">
+		<property name="oaAccessService" ref="oaAccessService"/>
+		<property name="accessBusinessService" ref="oaAccessToBusinessService"/>
+	</bean>
+	<bean id="oaAccessListener5" class="com.hd.agent.oa.listener.OaAccessTaskListener5" parent="taskListener">
+		<property name="oaAccessService" ref="oaAccessService"/>
+		<property name="accessBusinessService" ref="oaAccessToBusinessService"/>
+	</bean>
+	<bean id="oaAccessListener6" class="com.hd.agent.oa.listener.OaAccessTaskListener6" parent="taskListener">
+		<property name="oaAccessService" ref="oaAccessService"/>
+		<property name="accessBusinessService" ref="oaAccessToBusinessService"/>
+	</bean>
+	<bean id="oaAccessListener7" class="com.hd.agent.oa.listener.OaAccessTaskListener7" parent="taskListener">
+		<property name="oaAccessService" ref="oaAccessService"/>
+		<property name="accessBusinessService" ref="oaAccessToBusinessService"/>
+	</bean>
+	<bean id="oaAccessListener8" class="com.hd.agent.oa.listener.OaAccessTaskListener8" parent="taskListener">
+		<property name="oaAccessService" ref="oaAccessService"/>
+		<property name="accessBusinessService" ref="oaAccessToBusinessService"/>
+	</bean>
+	<bean id="oaAccessListener9" class="com.hd.agent.oa.listener.OaAccessTaskListener9" parent="taskListener">
+		<property name="oaAccessService" ref="oaAccessService"/>
+		<property name="accessBusinessService" ref="oaAccessToBusinessService"/>
+	</bean>
+	<bean id="oaAccessListener10" class="com.hd.agent.oa.listener.OaAccessTaskListener10" parent="taskListener">
+		<property name="oaAccessService" ref="oaAccessService"/>
+		<property name="accessBusinessService" ref="oaAccessToBusinessService"/>
+	</bean>
+	<bean id="oaAccessListener11" class="com.hd.agent.oa.listener.OaAccessTaskListener11" parent="taskListener">
+		<property name="oaAccessService" ref="oaAccessService"/>
+		<property name="accessBusinessService" ref="oaAccessToBusinessService"/>
+	</bean>
+	<bean id="oaAccessListener12" class="com.hd.agent.oa.listener.OaAccessTaskListener12" parent="taskListener">
+		<property name="oaAccessService" ref="oaAccessService"/>
+		<property name="accessBusinessService" ref="oaAccessToBusinessService"/>
+	</bean>
+	<bean id="oaAccessListener13" class="com.hd.agent.oa.listener.OaAccessTaskListener13" parent="taskListener">
+		<property name="oaAccessService" ref="oaAccessService"/>
+		<property name="accessBusinessService" ref="oaAccessToBusinessService"/>
+	</bean>
+	<bean id="oaAccessListener14" class="com.hd.agent.oa.listener.OaAccessTaskListener14" parent="taskListener">
+		<property name="oaAccessService" ref="oaAccessService"/>
+		<property name="accessBusinessService" ref="oaAccessToBusinessService"/>
+	</bean>
+	<bean id="oaAccessDataCollector" class="com.hd.agent.oa.listener.OaAccessDataCollectorListener" parent="taskListener">
+		<property name="oaAccessService" ref="oaAccessService"/>
+	</bean>
+
+    <!-- 客户费用支付申请单 -->
+	<bean id="oaCustomerPayMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.hd.agent.oa.dao.OaCustomerPayMapper" />  
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+	</bean>
+	<bean id="oaCustomerPayDetailMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.hd.agent.oa.dao.OaCustomerPayDetailMapper" />  
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+	</bean>
+	<bean id="oaCustomerPayServiceImpl" class="com.hd.agent.oa.service.impl.OaCustomerPayServiceImpl" parent="baseFilesServiceImpl">
+		<property name="oaCustomerPayMapper" ref="oaCustomerPayMapper"/>
+		<property name="oaCustomerPayDetailMapper" ref="oaCustomerPayDetailMapper"/>
+	</bean>
+	<bean id="oaCustomerPayService" parent="baseTransactionProxy">
+		<property name="target" ref="oaCustomerPayServiceImpl"/>
+	</bean>
+	<bean id="oaCustomerPayAction" class="com.hd.agent.oa.action.OaCustomerPayAction" scope="prototype" parent="baseOaAction">
+		<property name="oaCustomerPayService" ref="oaCustomerPayService"/>
+	</bean>
+	<bean id="oaCustomerPayEndListener" class="com.hd.agent.oa.listener.OaCustomerPayExecutionEndListener">
+		<property name="payService" ref="payService"/>
+		<property name="oaCustomerPayService" ref="oaCustomerPayService"/>
+	</bean>
+	<!-- customerpay action for hd -->
+	<bean id="oaCustomerPay2Action" class="com.hd.agent.oa.action.OaCustomerPayAction" scope="prototype" parent="baseOaAction">
+		<property name="oaCustomerPayService" ref="oaCustomerPayService"/>
+	</bean>
+    <bean id="oaCustomerPayListener1" class="com.hd.agent.oa.listener.OaCustomerPayListener1" parent="taskListener">
+		<property name="oaCustomerPayService" ref="oaCustomerPayService"/>
+    </bean>
+    <bean id="oaCustomerPayListener2" class="com.hd.agent.oa.listener.OaCustomerPayListener2" parent="taskListener">
+		<property name="oaCustomerPayService" ref="oaCustomerPayService"/>
+    </bean>
+    <bean id="oaCustomerPayListener3" class="com.hd.agent.oa.listener.OaCustomerPayListener3" parent="taskListener">
+        <property name="oaCustomerPayService" ref="oaCustomerPayService"/>
+    </bean>
+    <bean id="oaCustomerPayListener4" class="com.hd.agent.oa.listener.OaCustomerPayListener4" parent="taskListener">
+        <property name="oaCustomerPayService" ref="oaCustomerPayService"/>
+    </bean>
+	<bean id="oaCustomerPayDataCollector" class="com.hd.agent.oa.listener.OaCustomerPayDataCollectorListener" parent="taskListener">
+		<property name="oaCustomerPayService" ref="oaCustomerPayService"/>
+	</bean>
+
+	<!-- 个人借款 -->
+	<bean id="oaPersonalLoanMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.hd.agent.oa.dao.OaPersonalLoanMapper" />  
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+	</bean>
+	<bean id="oaPersonalLoanServiceImpl" class="com.hd.agent.oa.service.impl.OaPersonalLoanServiceImpl" parent="baseFilesServiceImpl">
+		<property name="oaPersonalLoanMapper" ref="oaPersonalLoanMapper"/>
+	</bean>
+	<bean id="oaPersonalLoanService" parent="baseTransactionProxy">
+		<property name="target" ref="oaPersonalLoanServiceImpl"/>
+	</bean>
+	<bean id="oaPersonalLoanAction" class="com.hd.agent.oa.action.OaPersonalLoanAction" scope="prototype" parent="baseOaAction">
+		<property name="oaPersonalLoanService" ref="oaPersonalLoanService"/>
+	</bean>
+    <bean id="oaPersonalLoanListener1" class="com.hd.agent.oa.listener.OaPersonalLoanListener1" parent="taskListener">
+        <property name="oaPersonalLoanService" ref="oaPersonalLoanService"/>
+    </bean>
+    <bean id="oaPersonalLoanListener2" class="com.hd.agent.oa.listener.OaPersonalLoanListener2" parent="taskListener">
+        <property name="oaPersonalLoanService" ref="oaPersonalLoanService"/>
+    </bean>
+	<bean id="personalLoanEndListener" class="com.hd.agent.oa.listener.OaPersonalLoanExecutionEndListener">
+		<property name="payService" ref="payService"/>
+		<property name="oaPersonalLoanService" ref="oaPersonalLoanService"/>
+	</bean>
+
+    <!-- 预付款申请单 -->
+    <bean id="oaPrepayAction" class="com.hd.agent.oa.action.OaPrepayAction" scope="prototype" parent="baseOaAction">
+        <property name="oaPersonalLoanService" ref="oaPersonalLoanService"/>
+    </bean>
+    <bean id="oaPrepayListener1" class="com.hd.agent.oa.listener.OaPrepayListener1" parent="taskListener">
+        <property name="oaPersonalLoanService" ref="oaPersonalLoanService"/>
+    </bean>
+    <bean id="oaPrepayListener2" class="com.hd.agent.oa.listener.OaPrepayListener2" parent="taskListener">
+        <property name="oaPersonalLoanService" ref="oaPersonalLoanService"/>
+    </bean>
+	<bean id="prepayEndListener" class="com.hd.agent.oa.listener.OaPrepayExecutionEndListener">
+		<property name="payService" ref="payService"/>
+		<property name="oaPersonalLoanService" ref="oaPersonalLoanService"/>
+	</bean>
+
+	<!-- 内部分摊申请单 -->
+	<bean id="oaInnerShareMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.hd.agent.oa.dao.OaInnerShareMapper" />  
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+	</bean>
+	<bean id="oaInnerShareServiceImpl" class="com.hd.agent.oa.service.impl.OaInnerShareServiceImpl" parent="baseFilesServiceImpl">
+		<property name="oaInnerShareMapper" ref="oaInnerShareMapper"/>
+	</bean>
+	<bean id="oaInnerShareService" parent="baseTransactionProxy">
+		<property name="target" ref="oaInnerShareServiceImpl"/>
+	</bean>
+	<bean id="oaInnerShareAction" class="com.hd.agent.oa.action.OaInnerShareAction" scope="prototype" parent="baseOaAction">
+		<property name="oaInnerShareService" ref="oaInnerShareService"/>
+	</bean>
+    <bean id="oaInnerShareListener1" class="com.hd.agent.oa.listener.OaInnerShareListener1" parent="taskListener">
+		<property name="oaInnerShareService" ref="oaInnerShareService"/>
+    </bean>
+    <bean id="oaInnerShareListener2" class="com.hd.agent.oa.listener.OaInnerShareListener2" parent="taskListener">
+		<property name="oaInnerShareService" ref="oaInnerShareService"/>
+    </bean>
+	<bean id="innerShareEndListener" class="com.hd.agent.oa.listener.OaInnerShareExecutionEndListener">
+		<property name="payService" ref="payService"/>
+		<property name="oaInnerShareService" ref="oaInnerShareService"/>
+	</bean>
+
+	<!-- 日常费用支付申请单 -->
+	<bean id="oaDailPayMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.hd.agent.oa.dao.OaDailPayMapper" />  
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+	</bean>
+	<bean id="oaDailPayDetailMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.hd.agent.oa.dao.OaDailPayDetailMapper" />  
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+	</bean>
+	<bean id="oaDailPayServiceImpl" class="com.hd.agent.oa.service.impl.OaDailPayServiceImpl" parent="baseFilesServiceImpl">
+		<property name="oaDailPayMapper" ref="oaDailPayMapper"/>
+		<property name="oaDailPayDetailMapper" ref="oaDailPayDetailMapper"/>
+	</bean>
+	<bean id="oaDailPayService" parent="baseTransactionProxy">
+		<property name="target" ref="oaDailPayServiceImpl"/>
+	</bean>
+	<bean id="oaDailPayAction" class="com.hd.agent.oa.action.OaDailPayAction" scope="prototype" parent="baseOaAction">
+		<property name="oaDailPayService" ref="oaDailPayService"/>
+	</bean>
+    <bean id="oaDailPayListener1" class="com.hd.agent.oa.listener.OaDailPayListener1" parent="taskListener">
+		<property name="oaDailPayService" ref="oaDailPayService"/>
+    </bean>
+    <bean id="oaDailPayListener2" class="com.hd.agent.oa.listener.OaDailPayListener2" parent="taskListener">
+		<property name="oaDailPayService" ref="oaDailPayService"/>
+    </bean>
+	<bean id="dailPayEndListener" class="com.hd.agent.oa.listener.OaDailPayExecutionEndListener">
+		<property name="payService" ref="payService"/>
+		<property name="oaDailPayService" ref="oaDailPayService"/>
+	</bean>
+
+	<!-- 货款支付申请单 -->
+	<bean id="oaSupplierPayMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.oa.dao.OaSupplierPayMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+	<bean id="oaSupplierPayService" parent="baseTransactionProxy">
+    	<property name="target" ref="oaSupplierPayServiceImpl"/>
+    </bean>
+    <bean id="oaSupplierPayServiceImpl" class="com.hd.agent.oa.service.impl.OaSupplierPayServiceImpl" parent="baseFilesServiceImpl">
+    	<property name="oaSupplierPayMapper" ref="oaSupplierPayMapper"/>
+    </bean>
+    <bean id="oaSupplierPayAction" class="com.hd.agent.oa.action.OaSupplierPayAction" scope="prototype" parent="baseOaAction">
+		<property name="oaSupplierPayService" ref="oaSupplierPayService"/>
+    </bean>
+    <bean id="oaSupplierPayListener1" class="com.hd.agent.oa.listener.OaSupplierPayListener1" parent="taskListener">
+		<property name="oaSupplierPayService" ref="oaSupplierPayService"/>
+    </bean>
+    <bean id="oaSupplierPayListener2" class="com.hd.agent.oa.listener.OaSupplierPayListener2" parent="taskListener">
+		<property name="oaSupplierPayService" ref="oaSupplierPayService"/>
+    </bean>
+	<bean id="oaSupplierPayEndListener" class="com.hd.agent.oa.listener.OaSupplierPayExecutionEndListener">
+		<property name="oaSupplierPayService" ref="oaSupplierPayService"/>
+		<property name="payService" ref="payService"/>
+	</bean>
+	<bean id="oaSupplierPayDataCollector" class="com.hd.agent.oa.listener.OaSupplierPayDataCollectorListener" parent="taskListener">
+		<property name="oaSupplierPayService" ref="oaSupplierPayService"/>
+	</bean>
+
+    <!-- 费用冲差支付申请单 -->
+	<bean id="oaExpensePushMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.oa.dao.OaExpensePushMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+	<bean id="oaExpensePushDetailMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.oa.dao.OaExpensePushDetailMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+	<bean id="oaExpensePushService" parent="baseTransactionProxy">
+    	<property name="target" ref="oaExpensePushServiceImpl"/>
+    </bean>
+    <bean id="oaExpensePushServiceImpl" class="com.hd.agent.oa.service.impl.OaExpensePushServiceImpl" parent="baseFilesServiceImpl">
+    	<property name="oaExpensePushMapper" ref="oaExpensePushMapper"/>
+    	<property name="oaExpensePushDetailMapper" ref="oaExpensePushDetailMapper"/>
+    </bean>
+    <bean id="oaExpensePushAction" class="com.hd.agent.oa.action.OaExpensePushAction" scope="prototype" parent="baseOaAction">
+		<property name="oaExpensePushService" ref="oaExpensePushService"/>
+    </bean>
+    <bean id="oaExpensePushListener1" class="com.hd.agent.oa.listener.OaExpensePushListener1" parent="taskListener">
+		<property name="oaExpensePushService" ref="oaExpensePushService"/>
+		<property name="businessService" ref="oaBusinessService"/>
+    </bean>
+    <bean id="oaExpensePushListener2" class="com.hd.agent.oa.listener.OaExpensePushListener2" parent="taskListener">
+		<property name="oaExpensePushService" ref="oaExpensePushService"/>
+		<property name="businessService" ref="oaBusinessService"/>
+    </bean>
+	<bean id="oaExpensePushListener3" class="com.hd.agent.oa.listener.OaExpensePushListener3" parent="taskListener">
+		<property name="oaExpensePushService" ref="oaExpensePushService"/>
+		<property name="businessService" ref="oaBusinessService"/>
+	</bean>
+	<bean id="oaExpensePushListener4" class="com.hd.agent.oa.listener.OaExpensePushListener4" parent="taskListener">
+		<property name="oaExpensePushService" ref="oaExpensePushService"/>
+		<property name="businessService" ref="oaBusinessService"/>
+	</bean>
+	<bean id="oaExpensePushListener5" class="com.hd.agent.oa.listener.OaExpensePushListener5" parent="taskListener">
+		<property name="oaExpensePushService" ref="oaExpensePushService"/>
+		<property name="businessService" ref="oaBusinessService"/>
+	</bean>
+	<bean id="oaExpensePushListener6" class="com.hd.agent.oa.listener.OaExpensePushListener6" parent="taskListener">
+		<property name="oaExpensePushService" ref="oaExpensePushService"/>
+		<property name="businessService" ref="oaBusinessService"/>
+	</bean>
+	<bean id="oaExpensePushEndListener" class="com.hd.agent.oa.listener.OaExpensePushExecutionEndListener">
+		<property name="payService" ref="payService"/>
+		<property name="oaExpensePushService" ref="oaExpensePushService"/>
+		<property name="businessService" ref="oaBusinessService"/>
+	</bean>
+	<bean id="oaExpensePushDataCollector" class="com.hd.agent.oa.listener.OaExpensePushDataCollectorListener" parent="taskListener">
+		<property name="oaExpensePushService" ref="oaExpensePushService"/>
+	</bean>
+
+    <!-- 批量特价申请单 -->
+    <bean id="oaOffPriceMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.hd.agent.oa.dao.OaOffPriceMapper" />
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="oaOffPriceService" parent="baseTransactionProxy">
+        <property name="target" ref="oaOffPriceServiceImpl"/>
+    </bean>
+    <bean id="oaOffPriceServiceImpl" class="com.hd.agent.oa.service.impl.OaOffPriceServiceImpl" parent="baseFilesServiceImpl">
+        <property name="priceMapper" ref="oaOffPriceMapper"/>
+        <property name="salesOrderService" ref="salesOrderService"/>
+    </bean>
+    <bean id="oaOffPriceAction" class="com.hd.agent.oa.action.OaOffPriceAction" scope="prototype" parent="baseOaAction">
+        <property name="oaOffPriceService" ref="oaOffPriceService"/>
+    </bean>
+    <bean id="oaOffPriceListener1" class="com.hd.agent.oa.listener.OaOffPriceListener1" parent="taskListener">
+        <property name="oaOffPriceService" ref="oaOffPriceService"/>
+    </bean>
+    <bean id="oaOffPriceListener2" class="com.hd.agent.oa.listener.OaOffPriceListener2" parent="taskListener">
+        <property name="oaOffPriceService" ref="oaOffPriceService"/>
+    </bean>
+	<bean id="oaOffPriceEndListener" class="com.hd.agent.oa.listener.OaOffPriceExecutionEndListener">
+		<property name="businessService" ref="oaBusinessService"/>
+	</bean>
+	<bean id="oaOffPriceDataCollector" class="com.hd.agent.oa.listener.OaOffPriceDataCollectorListener" parent="taskListener">
+		<property name="oaOffPriceService" ref="oaOffPriceService"/>
+	</bean>
+
+    <!-- 商品调价单 -->
+    <bean id="oaGoodsPriceMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.hd.agent.oa.dao.OaGoodsPriceMapper" />
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="oaGoodsPriceService" parent="baseTransactionProxy">
+        <property name="target" ref="oaGoodsPriceServiceImpl"/>
+    </bean>
+    <bean id="oaGoodsPriceServiceImpl" class="com.hd.agent.oa.service.impl.OaGoodsPriceServiceImpl" parent="baseFilesServiceImpl">
+        <property name="priceMapper" ref="oaGoodsPriceMapper"/>
+    </bean>
+    <bean id="oaGoodsPriceAction" class="com.hd.agent.oa.action.OaGoodsPriceAction" scope="prototype" parent="baseOaAction">
+        <property name="priceService" ref="oaGoodsPriceService"/>
+    </bean>
+    <bean id="oaGoodsPriceListener1" class="com.hd.agent.oa.listener.OaGoodsPriceListener1" parent="taskListener">
+        <property name="oaGoodsPriceService" ref="oaGoodsPriceService"/>
+        <property name="businessService" ref="oaBusinessService"/>
+        <property name="workService" ref="workService"/>
+    </bean>
+	<bean id="oaGoodsPriceDataCollector" class="com.hd.agent.oa.listener.OaGoodsPriceDataCollectorListener" parent="taskListener">
+		<property name="oaGoodsPriceService" ref="oaGoodsPriceService"/>
+	</bean>
+
+	<!-- 客户费用申请单（账扣） -->
+	<bean id="oaCustomerFeeMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.hd.agent.oa.dao.OaCustomerFeeMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+	</bean>
+	<bean id="oaCustomerFeeService" parent="baseTransactionProxy">
+		<property name="target" ref="oaCustomerFeeServiceImpl"/>
+	</bean>
+	<bean id="oaCustomerFeeServiceImpl" class="com.hd.agent.oa.service.impl.OaCustomerFeeServiceImpl" parent="baseFilesServiceImpl">
+		<property name="oaCustomerFeeMapper" ref="oaCustomerFeeMapper"/>
+	</bean>
+	<bean id="oaCustomerFeeAction" class="com.hd.agent.oa.action.OaCustomerFeeAction" scope="prototype" parent="baseOaAction">
+		<property name="oaCustomerFeeService" ref="oaCustomerFeeService"/>
+	</bean>
+	<bean id="oaCustomerFeeEndListener" class="com.hd.agent.oa.listener.OaCustomerFeeExecutionEndListener" >
+		<property name="oaCustomerFeeService" ref="oaCustomerFeeService"/>
+		<property name="payService" ref="payService"/>
+	</bean>
+	<bean id="oaCustomerFeeListener1" class="com.hd.agent.oa.listener.OaCustomerFeeListener1" parent="taskListener">
+		<property name="oaCustomerFeeService" ref="oaCustomerFeeService"/>
+	</bean>
+	<bean id="oaCustomerFeeListener2" class="com.hd.agent.oa.listener.OaCustomerFeeListener2" parent="taskListener">
+		<property name="oaCustomerFeeService" ref="oaCustomerFeeService"/>
+	</bean>
+	<bean id="oaCustomerFeeListener3" class="com.hd.agent.oa.listener.OaCustomerFeeListener3" parent="taskListener">
+		<property name="oaCustomerFeeService" ref="oaCustomerFeeService"/>
+	</bean>
+	<bean id="oaCustomerFeeListener4" class="com.hd.agent.oa.listener.OaCustomerFeeListener4" parent="taskListener">
+		<property name="oaCustomerFeeService" ref="oaCustomerFeeService"/>
+	</bean>
+	<bean id="oaCustomerFeeListener5" class="com.hd.agent.oa.listener.OaCustomerFeeListener5" parent="taskListener">
+		<property name="oaCustomerFeeService" ref="oaCustomerFeeService"/>
+	</bean>
+	<bean id="oaCustomerFeeListener6" class="com.hd.agent.oa.listener.OaCustomerFeeListener6" parent="taskListener">
+		<property name="oaCustomerFeeService" ref="oaCustomerFeeService"/>
+	</bean>
+	<bean id="oaCustomerFeeDataCollector" class="com.hd.agent.oa.listener.OaCustomerFeeDataCollectorListener" parent="taskListener">
+		<property name="oaCustomerFeeService" ref="oaCustomerFeeService"/>
+	</bean>
+
+	<!-- 品牌费用申请单（支付） -->
+	<bean id="oaBrandFeeMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.hd.agent.oa.dao.OaBrandFeeMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+	</bean>
+	<bean id="oaBrandFeeService" parent="baseTransactionProxy">
+		<property name="target" ref="oaBrandFeeServiceImpl"/>
+	</bean>
+	<bean id="oaBrandFeeServiceImpl" class="com.hd.agent.oa.service.impl.OaBrandFeeServiceImpl" parent="baseFilesServiceImpl">
+		<property name="oaBrandFeeMapper" ref="oaBrandFeeMapper"/>
+	</bean>
+	<bean id="oaBrandFeeAction" class="com.hd.agent.oa.action.OaBrandFeeAction" scope="prototype" parent="baseOaAction">
+		<property name="oaBrandFeeService" ref="oaBrandFeeService"/>
+	</bean>
+	<bean id="oaBrandFeeEndListener" class="com.hd.agent.oa.listener.OaBrandFeeExecutionEndListener" >
+		<property name="oaBrandFeeService" ref="oaBrandFeeService"/>
+		<property name="payService" ref="payService"/>
+	</bean>
+	<bean id="oaBrandFeeListener1" class="com.hd.agent.oa.listener.OaBrandFeeListener1" parent="taskListener">
+		<property name="oaBrandFeeService" ref="oaBrandFeeService"/>
+	</bean>
+	<bean id="oaBrandFeeListener2" class="com.hd.agent.oa.listener.OaBrandFeeListener2" parent="taskListener">
+		<property name="oaBrandFeeService" ref="oaBrandFeeService"/>
+	</bean>
+	<bean id="oaBrandFeeListener3" class="com.hd.agent.oa.listener.OaBrandFeeListener3" parent="taskListener">
+		<property name="oaBrandFeeService" ref="oaBrandFeeService"/>
+	</bean>
+	<bean id="oaBrandFeeListener4" class="com.hd.agent.oa.listener.OaBrandFeeListener4" parent="taskListener">
+		<property name="oaBrandFeeService" ref="oaBrandFeeService"/>
+	</bean>
+    <bean id="oaBrandFeeListener5" class="com.hd.agent.oa.listener.OaBrandFeeListener5" parent="taskListener">
+        <property name="oaBrandFeeService" ref="oaBrandFeeService"/>
+    </bean>
+    <bean id="oaBrandFeeListener6" class="com.hd.agent.oa.listener.OaBrandFeeListener6" parent="taskListener">
+        <property name="oaBrandFeeService" ref="oaBrandFeeService"/>
+    </bean>
+	<bean id="oaBrandFeeDataCollector" class="com.hd.agent.oa.listener.OaBrandFeeDataCollectorListener" parent="taskListener">
+		<property name="oaBrandFeeService" ref="oaBrandFeeService"/>
+	</bean>
+    <!-- 工作委托 -->
+    <bean id="oaDelegateMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.hd.agent.oa.dao.OaDelegateMapper" />
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="oaDelegateService" parent="baseTransactionProxy">
+        <property name="target" ref="oaDelegateServiceImpl"/>
+    </bean>
+    <bean id="oaDelegateServiceImpl" class="com.hd.agent.oa.service.impl.OaDelegateServiceImpl" parent="baseFilesServiceImpl">
+        <property name="oaDelegateMapper" ref="oaDelegateMapper"/>
+    </bean>
+    <bean id="oaDelegateAction" class="com.hd.agent.oa.action.OaDelegateAction" scope="prototype" parent="baseOaAction">
+        <property name="oaDelegateService" ref="oaDelegateService"/>
+    </bean>
+    <bean id="oaDelegateEndListener" class="com.hd.agent.oa.listener.OaDelegateExecutionEndListener" >
+        <property name="oaDelegateService" ref="oaDelegateService"/>
+        <property name="businessService" ref="oaBusinessService"/>
+    </bean>
+    <bean id="oaDelegateListener1" class="com.hd.agent.oa.listener.OaDelegateListener1" parent="taskListener">
+        <property name="oaDelegateService" ref="oaDelegateService"/>
+        <property name="businessService" ref="oaBusinessService"/>
+    </bean>
+    <bean id="oaDelegateListener2" class="com.hd.agent.oa.listener.OaDelegateListener2" parent="taskListener">
+        <property name="oaDelegateService" ref="oaDelegateService"/>
+    </bean>
+    <bean id="oaDelegateDataCollector" class="com.hd.agent.oa.listener.OaDelegateDataCollectorListener" parent="taskListener">
+        <property name="oaDelegateService" ref="oaDelegateService"/>
+    </bean>
+
+    <!-- 行政采购付款申请单 -->
+    <bean id="oaPurchasePayMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.hd.agent.oa.dao.OaPurchasePayMapper" />
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="oaPurchasePayService" parent="baseTransactionProxy">
+        <property name="target" ref="oaPurchasePayServiceImpl"/>
+    </bean>
+    <bean id="oaPurchasePayServiceImpl" class="com.hd.agent.oa.service.impl.OaPurchasePayServiceImpl" parent="baseFilesServiceImpl">
+        <property name="oaPurchasePayMapper" ref="oaPurchasePayMapper"/>
+    </bean>
+    <bean id="oaPurchasePayAction" class="com.hd.agent.oa.action.OaPurchasePayAction" scope="prototype" parent="baseOaAction">
+        <property name="oaPurchasePayService" ref="oaPurchasePayService"/>
+    </bean>
+    <bean id="oaPurchasePayListener1" class="com.hd.agent.oa.listener.OaPurchasePayListener1" parent="taskListener">
+        <property name="oaPurchasePayService" ref="oaPurchasePayService"/>
+        <property name="businessService" ref="oaBusinessService"/>
+    </bean>
+    <bean id="oaPurchasePayListener2" class="com.hd.agent.oa.listener.OaPurchasePayListener2" parent="taskListener">
+        <property name="oaPurchasePayService" ref="oaPurchasePayService"/>
+    </bean>
+    <bean id="oaPurchasePayDataCollector" class="com.hd.agent.oa.listener.OaPurchasePayDataCollectorListener" parent="taskListener">
+        <property name="oaPurchasePayService" ref="oaPurchasePayService"/>
+    </bean>
+    <bean id="purchasePayEndListener" class="com.hd.agent.oa.listener.OaPurchasePayExecutionEndListener">
+        <property name="oaPurchasePayService" ref="oaPurchasePayService"/>
+        <property name="payService" ref="payService"/>
+    </bean>
+
+	<!-- 代垫费用申请单 -->
+	<bean id="oaMatcostMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.hd.agent.oa.dao.OaMatcostMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+	</bean>
+	<bean id="oaMatcostService" parent="baseTransactionProxy">
+		<property name="target" ref="oaMatcostServiceImpl"/>
+	</bean>
+	<bean id="oaMatcostServiceImpl" class="com.hd.agent.oa.service.impl.OaMatcostServiceImpl" parent="baseFilesServiceImpl">
+		<property name="oaMatcostMapper" ref="oaMatcostMapper"/>
+	</bean>
+	<bean id="oaMatcostAction" class="com.hd.agent.oa.action.OaMatcostAction" scope="prototype" parent="baseOaAction">
+		<property name="oaMatcostService" ref="oaMatcostService"/>
+	</bean>
+	<bean id="oaMatcostListener1" class="com.hd.agent.oa.listener.OaMatcostListener1" parent="taskListener">
+		<property name="oaMatcostService" ref="oaMatcostService"/>
+		<property name="payService" ref="payService"/>
+	</bean>
+	<bean id="oaMatcostListener2" class="com.hd.agent.oa.listener.OaMatcostListener2" parent="taskListener">
+		<property name="oaMatcostService" ref="oaMatcostService"/>
+		<property name="payService" ref="payService"/>
+	</bean>
+	<bean id="oaMatcostListener3" class="com.hd.agent.oa.listener.OaMatcostListener3" parent="taskListener">
+		<property name="oaMatcostService" ref="oaMatcostService"/>
+		<property name="payService" ref="payService"/>
+	</bean>
+	<bean id="oaMatcostListener4" class="com.hd.agent.oa.listener.OaMatcostListener4" parent="taskListener">
+		<property name="oaMatcostService" ref="oaMatcostService"/>
+		<property name="payService" ref="payService"/>
+	</bean>
+	<bean id="oaMatcostListener5" class="com.hd.agent.oa.listener.OaMatcostListener5" parent="taskListener">
+		<property name="oaMatcostService" ref="oaMatcostService"/>
+		<property name="payService" ref="payService"/>
+	</bean>
+	<bean id="oaMatcostListener6" class="com.hd.agent.oa.listener.OaMatcostListener6" parent="taskListener">
+		<property name="oaMatcostService" ref="oaMatcostService"/>
+        <property name="payService" ref="payService"/>
+	</bean>
+	<bean id="oaMatcostListener7" class="com.hd.agent.oa.listener.OaMatcostListener7" parent="taskListener">
+		<property name="oaMatcostService" ref="oaMatcostService"/>
+		<property name="payService" ref="payService"/>
+	</bean>
+	<bean id="oaMatcostListener8" class="com.hd.agent.oa.listener.OaMatcostListener8" parent="taskListener">
+		<property name="oaMatcostService" ref="oaMatcostService"/>
+		<property name="payService" ref="payService"/>
+	</bean>
+	<bean id="oaMatcostListener9" class="com.hd.agent.oa.listener.OaMatcostListener9" parent="taskListener">
+		<property name="oaMatcostService" ref="oaMatcostService"/>
+		<property name="payService" ref="payService"/>
+	</bean>
+	<bean id="oaMatcostListener10" class="com.hd.agent.oa.listener.OaMatcostListener10" parent="taskListener">
+		<property name="oaMatcostService" ref="oaMatcostService"/>
+		<property name="payService" ref="payService"/>
+	</bean>
+	<bean id="oaMatcostListener11" class="com.hd.agent.oa.listener.OaMatcostListener11" parent="taskListener">
+		<property name="oaMatcostService" ref="oaMatcostService"/>
+		<property name="payService" ref="payService"/>
+	</bean>
+	<bean id="oaMatcostListener12" class="com.hd.agent.oa.listener.OaMatcostListener12" parent="taskListener">
+		<property name="oaMatcostService" ref="oaMatcostService"/>
+		<property name="payService" ref="payService"/>
+	</bean>
+	<bean id="oaMatcostDataCollector" class="com.hd.agent.oa.listener.OaMatcostDataCollectorListener" parent="taskListener">
+		<property name="oaMatcostService" ref="oaMatcostService"/>
+		<property name="payService" ref="payService"/>
+	</bean>
+	<bean id="oaMatcostEndListener" class="com.hd.agent.oa.listener.OaMatcostExecutionEndListener">
+		<property name="oaMatcostService" ref="oaMatcostService"/>
+		<property name="payService" ref="payService"/>
+	</bean>
+
+
+</beans>

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.basefiles.dao.WorkCanlendarMapper" >
+	
+	<insert id="addWorkCalendar" parameterType="com.hd.agent.basefiles.model.WorkCanlendar">
+		insert into t_base_workcanlendar
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="id != null" >
+	        id,
+	      </if>
+	      <if test="name != null" >
+	        name,
+	      </if>
+	      <if test="state != null" >
+	        state,
+	      </if>
+	      <if test="remark != null" >
+	        remark,
+	      </if>
+	      <if test="adduserid != null" >
+	        adduserid,
+	      </if>
+	      <if test="1==1" >
+	        addtime,
+	      </if>
+	      <if test="adddeptid != null" >
+	        adddeptid,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="id != null" >
+	        #{id},
+	      </if>
+	      <if test="name != null" >
+	        #{name},
+	      </if>
+	      <if test="state != null" >
+	        #{state},
+	      </if>
+	      <if test="remark != null" >
+	        #{remark},
+	      </if>
+	      <if test="adduserid != null" >
+	        #{adduserid},
+	      </if>
+	      <if test="1==1" >
+	        now(),
+	      </if>
+	      <if test="adddeptid != null" >
+	        #{adddeptid},
+	      </if>
+	    </trim>
+	</insert>
+	<insert id="addWorkCalendarDetail" parameterType="java.util.List">
+		insert into t_base_workcanlendar_detail ( canlendarid, date,year, iswork)
+    	values 
+    	<foreach collection="list" item="item" index="index" separator=",">
+    		(#{item.canlendarid},#{item.date},#{item.year},#{item.iswork})
+    	</foreach>
+	</insert>
+	<select id="getWorkCalendarList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.basefiles.model.WorkCanlendar">
+		select id, name, state, remark, adduserid, addtime, adddeptid, modifyuserid, modifytime, 
+    	openuserid, opentime, closeuserid, closetime from t_base_workcanlendar
+    	<trim prefix="where" prefixOverrides="and|or" >
+    	  <if test="condition.id != null" >
+	         and id = #{condition.id}
+	      </if>
+	      <if test="condition.name != null" >
+	         and name like CONCAT('%',#{condition.name},'%')
+	      </if>
+	      <if test="condition.sate != null" >
+	         and sate = #{condition.sate}
+	      </if>
+	      <include refid="common.Page_querySql"/>
+	      <include refid="common.Page_dataSql"/>
+	    </trim>
+	     <include refid="common.Page_limit" />
+	</select>
+	<select id="getWorkCalendarCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+		select count(1) from t_base_workcanlendar
+		<trim prefix="where" prefixOverrides="and|or" >
+    	  <if test="condition.id != null" >
+	         and id = #{condition.id}
+	      </if>
+	      <if test="condition.name != null" >
+	         and name like CONCAT('%',#{condition.name},'%')
+	      </if>
+	      <if test="condition.sate != null" >
+	         and sate = #{condition.sate}
+	      </if>
+	      <include refid="common.Page_querySql"/>
+	      <include refid="common.Page_dataSql"/>
+	    </trim>
+	</select>
+	
+	<select id="showWorkCanlendarInfo" parameterType="java.lang.String" resultType="com.hd.agent.basefiles.model.WorkCanlendar">
+		select id, name, state, remark, adduserid, addtime, adddeptid, modifyuserid, modifytime, 
+    	openuserid, opentime, closeuserid, closetime from t_base_workcanlendar
+    	where id=#{id}
+	</select>
+	
+	<select id="getWorkCanlendarRestdayList" parameterType="java.lang.String" resultType="com.hd.agent.basefiles.model.WorkCanlendarDetail">
+		select id, canlendarid, date,year, iswork from t_base_workcanlendar_detail
+		where canlendarid=#{id} and iswork='0'
+	</select>
+	
+	<delete id="deleteWorkCalendar" parameterType="java.lang.String">
+		delete from t_base_workcanlendar where id = #{id}
+	</delete>
+	
+	<delete id="deleteWorkCalendarDetail" parameterType="java.lang.String">
+		delete from t_base_workcanlendar_detail where canlendarid=#{id}
+	</delete>
+	
+	<update id="editWorkCalendar" parameterType="java.util.Map">
+		update t_base_workcanlendar
+	    <set >
+	      <if test="record.id != null" >
+	        id = #{record.id},
+	      </if>
+	      <if test="record.name != null" >
+	        name = #{record.name},
+	      </if>
+	      <if test="record.state != null" >
+	        state = #{record.state},
+	      </if>
+	      <if test="record.remark != null" >
+	        remark = #{record.remark},
+	      </if>
+	      <if test="record.modifyuserid != null" >
+	        modifyuserid = #{record.modifyuserid},
+	      </if>
+	      <if test="1==1" >
+	        modifytime = now(),
+	      </if>
+      	</set>
+      	where id=#{id}
+	</update>
+	<delete id="deleteWorkCalendarDetailByYear" parameterType="java.lang.String">
+		delete from t_base_workcanlendar_detail where canlendarid=#{id} and year = #{year}
+	</delete>
+	<update id="updateWorkCalendarDetail" parameterType="java.lang.String">
+		update t_base_workcanlendar_detail set canlendarid=#{newid} where canlendarid=#{id}
+	</update>
+	<update id="openWorkCalendar" parameterType="java.lang.String">
+		update t_base_workcanlendar set state='1',openuserid=#{userid},opentime=now()
+		where id=#{id}
+	</update>
+	<update id="closeWorkCalendar" parameterType="java.lang.String">
+		update t_base_workcanlendar set state='0',closeuserid=#{userid},closetime=now()
+		where id=#{id}
+	</update>
+	<select id="checkWorkCalendarId" parameterType="java.lang.String" resultType="int">
+		select count(1) from t_base_workcanlendar where id=#{id}
+	</select>
+</mapper>

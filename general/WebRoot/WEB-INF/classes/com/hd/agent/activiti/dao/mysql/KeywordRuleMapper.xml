@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.activiti.dao.KeywordRuleMapper" >
+  <resultMap id="BaseResultMap" type="com.hd.agent.activiti.model.KeywordRule" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="definitionkey" property="definitionkey" jdbcType="VARCHAR" />
+    <result column="definitionid" property="definitionid" jdbcType="VARCHAR" />
+    <result column="definitionset" property="definitionset" jdbcType="VARCHAR" />
+    <result column="definitiontable" property="definitiontable" jdbcType="VARCHAR" />
+    <result column="keyword1" property="keyword1" jdbcType="VARCHAR" />
+    <result column="keyword2" property="keyword2" jdbcType="VARCHAR" />
+    <result column="keyword3" property="keyword3" jdbcType="VARCHAR" />
+    <result column="keyword4" property="keyword4" jdbcType="VARCHAR" />
+    <result column="keyword5" property="keyword5" jdbcType="VARCHAR" />
+    <result column="adduserid" property="adduserid" jdbcType="VARCHAR" />
+    <result column="addtime" property="addtime" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, definitionkey, definitionset, definitiontable, keyword1, keyword2, keyword3, keyword4, keyword5,
+    adduserid, addtime, definitionid
+  </sql>
+  <select id="selectKeywordRuleByDefinitionkey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select <include refid="Base_Column_List" />
+    from t_act_keyword_rule
+    where definitionkey = #{definitionkey} and definitionid = #{definitionid }
+  </select>
+  <delete id="deleteKeywordRuleByDefinitionkey" parameterType="java.lang.String">
+      delete from t_act_keyword_rule
+      where definitionkey = #{definitionkey} and definitionid = #{definitionid }
+  </delete>
+  <insert id="insertKeywordRule" parameterType="com.hd.agent.activiti.model.KeywordRule" >
+    insert into t_act_keyword_rule
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="definitionkey != null" >
+        definitionkey,
+      </if>
+      <if test="definitionid != null" >
+        definitionid,
+      </if>
+      <if test="definitionset != null" >
+        definitionset,
+      </if>
+      <if test="definitiontable != null" >
+        definitiontable,
+      </if>
+      <if test="keyword1 != null" >
+        keyword1,
+      </if>
+      <if test="keyword2 != null" >
+        keyword2,
+      </if>
+      <if test="keyword3 != null" >
+        keyword3,
+      </if>
+      <if test="keyword4 != null" >
+        keyword4,
+      </if>
+      <if test="keyword5 != null" >
+        keyword5,
+      </if>
+      <if test="adduserid != null" >
+        adduserid,
+      </if>
+      addtime,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="definitionkey != null" >
+        #{definitionkey},
+      </if>
+      <if test="definitionid != null" >
+        #{definitionid},
+      </if>
+      <if test="definitionset != null" >
+        #{definitionset},
+      </if>
+      <if test="definitiontable != null" >
+        #{definitiontable},
+      </if>
+      <if test="keyword1 != null" >
+        #{keyword1},
+      </if>
+      <if test="keyword2 != null" >
+        #{keyword2},
+      </if>
+      <if test="keyword3 != null" >
+        #{keyword3},
+      </if>
+      <if test="keyword4 != null" >
+        #{keyword4},
+      </if>
+      <if test="keyword5 != null" >
+        #{keyword5},
+      </if>
+      <if test="adduserid != null" >
+        #{adduserid},
+      </if>
+      now(),
+    </trim>
+  </insert>
+    <insert id="doCloneOldVerson2NewVersion" parameterType="java.util.Map">
+        delete from t_act_keyword_rule where definitionid = #{newdefinitionid };
+
+        insert into t_act_keyword_rule (definitionkey, definitionset, definitiontable, keyword1, keyword2, keyword3, keyword4, keyword5, definitionid)
+        (select definitionkey, definitionset, definitiontable, keyword1, keyword2, keyword3, keyword4, keyword5, #{newdefinitionid } from t_act_keyword_rule where definitionid = #{olddefinitionid});
+
+        update t_act_keyword_rule
+        set
+        adduserid = #{adduserid },
+        addtime = now()
+        where definitionid = #{newdefinitionid }
+    </insert>
+</mapper>

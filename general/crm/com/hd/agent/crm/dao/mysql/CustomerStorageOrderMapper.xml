@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.crm.dao.CustomerStorageOrderMapper" >
+  <resultMap id="ResultMap" type="com.hd.agent.crm.model.CustomerStorageOrder" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="businessdate" property="businessdate" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="adduserid" property="adduserid" jdbcType="VARCHAR" />
+    <result column="addusername" property="addusername" jdbcType="VARCHAR" />
+    <result column="adddeptid" property="adddeptid" jdbcType="VARCHAR" />
+    <result column="adddeptname" property="adddeptname" jdbcType="VARCHAR" />
+    <result column="addtime" property="addtime" jdbcType="TIMESTAMP" />
+    <result column="modifyuserid" property="modifyuserid" jdbcType="VARCHAR" />
+    <result column="modifyusername" property="modifyusername" jdbcType="VARCHAR" />
+    <result column="modifytime" property="modifytime" jdbcType="TIMESTAMP" />
+    <result column="audituserid" property="audituserid" jdbcType="VARCHAR" />
+    <result column="auditusername" property="auditusername" jdbcType="VARCHAR" />
+    <result column="audittime" property="audittime" jdbcType="TIMESTAMP" />
+    <result column="customerid" property="customerid" jdbcType="VARCHAR" />
+    <result column="pcustomerid" property="pcustomerid" jdbcType="VARCHAR" />
+    <result column="customersort" property="customersort" jdbcType="VARCHAR" />
+    <result column="handlerid" property="handlerid" jdbcType="VARCHAR" />
+    <result column="sourceid" property="sourceid" jdbcType="VARCHAR" />
+    <result column="sourcetype" property="sourcetype" jdbcType="CHAR" />
+    <result column="salesarea" property="salesarea" jdbcType="VARCHAR" />
+    <result column="salesdept" property="salesdept" jdbcType="VARCHAR" />
+    <result column="salesuser" property="salesuser" jdbcType="VARCHAR" />
+    <result column="indooruserid" property="indooruserid" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="order_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.businessdate != null" >
+        <![CDATA[ and t.businessdate >= #{condition.businessdate} ]]>
+      </if>
+      <if test="condition.businessdate1 != null" >
+        <![CDATA[ and t.businessdate <= #{condition.businessdate1} ]]>
+      </if>
+      <if test="condition.status != null" >
+         and t.status = #{condition.status}
+      </if>
+      <if test="condition.id != null" >
+        and t.id like concat ('%',#{condition.id} ,'%')
+      </if>
+      <if test="condition.remark != null" >
+         and t.remark = #{condition.remark}
+      </if>
+      <if test="condition.adduserid != null" >
+         and t.adduserid = #{condition.adduserid}
+      </if>
+      <if test="condition.addusername != null" >
+         and t.addusername = #{condition.addusername}
+      </if>
+      <if test="condition.adddeptid != null" >
+         and t.adddeptid = #{condition.adddeptid}
+      </if>
+      <if test="condition.adddeptname != null" >
+         and t.adddeptname = #{condition.adddeptname}
+      </if>
+      <if test="condition.addtime != null" >
+         and t.addtime = #{condition.addtime}
+      </if>
+      <if test="condition.modifyuserid != null" >
+         and t.modifyuserid = #{condition.modifyuserid}
+      </if>
+      <if test="condition.modifyusername != null" >
+         and t.modifyusername = #{condition.modifyusername}
+      </if>
+      <if test="condition.modifytime != null" >
+         and t.modifytime = #{condition.modifytime}
+      </if>
+      <if test="condition.audituserid != null" >
+         and t.audituserid = #{condition.audituserid}
+      </if>
+      <if test="condition.auditusername != null" >
+         and t.auditusername = #{condition.auditusername}
+      </if>
+      <if test="condition.audittime != null" >
+         and t.audittime = #{condition.audittime}
+      </if>
+      <if test="condition.customerid != null" >
+         and t.customerid = #{condition.customerid}
+      </if>
+      <if test="condition.pcustomerid != null" >
+         and t.pcustomerid = #{condition.pcustomerid}
+      </if>
+      <if test="condition.customersort != null" >
+         and t.customersort = #{condition.customersort}
+      </if>
+      <if test="condition.handlerid != null" >
+         and t.handlerid = #{condition.handlerid}
+      </if>
+      <if test="condition.sourceid != null" >
+         and t.sourceid like concat ('%',#{condition.sourceid} ,'%')
+      </if>
+      <if test="condition.sourcetype != null" >
+         and t.sourcetype = #{condition.sourcetype}
+      </if>
+      <if test="condition.salesarea != null" >
+         and t.salesarea = #{condition.salesarea}
+      </if>
+      <if test="condition.salesdept != null" >
+         and t.salesdept = #{condition.salesdept}
+      </if>
+      <if test="condition.salesuser != null" >
+         and t.salesuser = #{condition.salesuser}
+      </if>
+      <if test="condition.indooruserid != null" >
+         and t.indooruserid = #{condition.indooruserid}
+      </if>
+    </trim>
+  </sql>
+  <sql id="CSO_Column_List" >
+    id, businessdate, status, remark, adduserid, addusername, adddeptid, adddeptname, 
+    addtime, modifyuserid, modifyusername, modifytime, audituserid, auditusername, audittime, 
+    customerid, pcustomerid, customersort, handlerid, sourceid, sourcetype, salesarea, 
+    salesdept, salesuser, indooruserid
+  </sql>
+  <select id="getCustomerStorageOrderData"  resultMap="ResultMap" parameterType="com.hd.agent.common.util.PageMap" >
+    select t.*,sum(costtaxamount) as costtaxamount , sum(taxamount) as taxamount from t_crm_customer_storage t
+    LEFT JOIN  t_crm_customer_storage_detail t1 on t.id = t1.orderid
+    <include refid="order_Where_Clause" /> group by t.id
+    <include refid="common.Page_limit"/>
+  </select>
+  <select id="getCustomerStorageOrderDataCount" resultType="java.lang.Integer"  parameterType="com.hd.agent.common.util.PageMap" >
+    select count(*) from (
+        select t.*,sum(costtaxamount) as costtaxamount ,sum(taxamount) as taxamount from t_crm_customer_storage t
+        LEFT JOIN  t_crm_customer_storage_detail t1 on t.id = t1.orderid
+        <include refid="order_Where_Clause" /> group by t.id
+    ) z
+  </select>
+  <select id="getCustomerStorageOrderById" resultMap="ResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="CSO_Column_List" />
+    from t_crm_customer_storage
+    where id = #{id}
+  </select>
+  <delete id="deleteByCustomerStorageOrderId" parameterType="java.lang.String" >
+    delete from t_crm_customer_storage where id = #{id}
+  </delete>
+  <insert id="addCustomerStorageOrder" parameterType="com.hd.agent.crm.model.CustomerStorageOrder" >
+    insert into t_crm_customer_storage
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="businessdate != null" >
+        businessdate,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="adduserid != null" >
+        adduserid,
+      </if>
+      <if test="addusername != null" >
+        addusername,
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid,
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname,
+      </if>
+      <if test="addtime != null" >
+        addtime,
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid,
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername,
+      </if>
+      <if test="modifytime != null" >
+        modifytime,
+      </if>
+      <if test="audituserid != null" >
+        audituserid,
+      </if>
+      <if test="auditusername != null" >
+        auditusername,
+      </if>
+      <if test="audittime != null" >
+        audittime,
+      </if>
+      <if test="customerid != null" >
+        customerid,
+      </if>
+      <if test="pcustomerid != null" >
+        pcustomerid,
+      </if>
+      <if test="customersort != null" >
+        customersort,
+      </if>
+      <if test="handlerid != null" >
+        handlerid,
+      </if>
+      <if test="sourceid != null" >
+        sourceid,
+      </if>
+      <if test="sourcetype != null" >
+        sourcetype,
+      </if>
+      <if test="salesarea != null" >
+        salesarea,
+      </if>
+      <if test="salesdept != null" >
+        salesdept,
+      </if>
+      <if test="salesuser != null" >
+        salesuser,
+      </if>
+      <if test="indooruserid != null" >
+        indooruserid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="businessdate != null" >
+        #{businessdate},
+      </if>
+      <if test="status != null" >
+        #{status},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+      <if test="adduserid != null" >
+        #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        #{adddeptname},
+      </if>
+      <if test="addtime != null" >
+        #{addtime},
+      </if>
+      <if test="modifyuserid != null" >
+        #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        #{modifyusername},
+      </if>
+      <if test="modifytime != null" >
+        #{modifytime},
+      </if>
+      <if test="audituserid != null" >
+        #{audituserid},
+      </if>
+      <if test="auditusername != null" >
+        #{auditusername},
+      </if>
+      <if test="audittime != null" >
+        #{audittime},
+      </if>
+      <if test="customerid != null" >
+        #{customerid},
+      </if>
+      <if test="pcustomerid != null" >
+        #{pcustomerid},
+      </if>
+      <if test="customersort != null" >
+        #{customersort},
+      </if>
+      <if test="handlerid != null" >
+        #{handlerid},
+      </if>
+      <if test="sourceid != null" >
+        #{sourceid},
+      </if>
+      <if test="sourcetype != null" >
+        #{sourcetype},
+      </if>
+      <if test="salesarea != null" >
+        #{salesarea},
+      </if>
+      <if test="salesdept != null" >
+        #{salesdept},
+      </if>
+      <if test="salesuser != null" >
+        #{salesuser},
+      </if>
+      <if test="indooruserid != null" >
+        #{indooruserid},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateCustomerStorageOrder" parameterType="com.hd.agent.crm.model.CustomerStorageOrder" >
+    update t_crm_customer_storage
+    <set >
+      <if test="businessdate != null" >
+        businessdate = #{businessdate},
+      </if>
+      <if test="status != null" >
+        status = #{status},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark},
+      </if>
+      <if test="adduserid != null" >
+        adduserid = #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        addusername = #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid = #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname = #{adddeptname},
+      </if>
+      <if test="addtime != null" >
+        addtime = #{addtime},
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid = #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername = #{modifyusername},
+      </if>
+      <if test="modifytime != null" >
+        modifytime = #{modifytime},
+      </if>
+      <if test="audituserid != null" >
+        audituserid = #{audituserid},
+      </if>
+      <if test="auditusername != null" >
+        auditusername = #{auditusername},
+      </if>
+      <if test="audittime != null" >
+        audittime = #{audittime},
+      </if>
+      <if test="customerid != null" >
+        customerid = #{customerid},
+      </if>
+      <if test="pcustomerid != null" >
+        pcustomerid = #{pcustomerid},
+      </if>
+      <if test="customersort != null" >
+        customersort = #{customersort},
+      </if>
+      <if test="handlerid != null" >
+        handlerid = #{handlerid},
+      </if>
+      <if test="sourceid != null" >
+        sourceid = #{sourceid},
+      </if>
+      <if test="sourcetype != null" >
+        sourcetype = #{sourcetype},
+      </if>
+      <if test="salesarea != null" >
+        salesarea = #{salesarea},
+      </if>
+      <if test="salesdept != null" >
+        salesdept = #{salesdept},
+      </if>
+      <if test="salesuser != null" >
+        salesuser = #{salesuser},
+      </if>
+      <if test="indooruserid != null" >
+        indooruserid = #{indooruserid},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  <select id="getCustomerStorageOrderByKeyid" resultMap="ResultMap" parameterType="java.lang.String">
+    select <include refid="CSO_Column_List" /> from t_crm_customer_storage where keyid=#{keyid}
+  </select>
+  <select id="getStorageOrderListByCustomerid" resultMap="ResultMap" parameterType="java.lang.String">
+    select <include refid="CSO_Column_List" /> from t_crm_customer_storage where customerid=#{customerid} and status = '3'
+  </select>
+</mapper>

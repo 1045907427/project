@@ -1,0 +1,1838 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.storage.dao.StorageSummaryMapper" >
+	<!-- 库存现存量总表 -->
+	<sql id="storageSummary-column">
+    	id, goodsid,brandid,branddept,barcode,storageid,istotalcontrol,issendstorage, existingnum, usablenum, waitnum, transitnum, allotwaitnum, 
+    	allotenternum, projectedusablenum, safenum,costprice,storageamount, unitid, unitname, auxunitid, auxunitname,
+    	addtime, modifytime,version
+  	</sql>
+	<sql id="storageSummary-column_prefix_s">
+		s.id,s.goodsid,s.brandid,s.branddept,s.barcode,s.storageid,s.istotalcontrol,s.issendstorage,s.existingnum,s.usablenum,s.waitnum,s.transitnum,s.allotwaitnum,
+		s.allotenternum,s.projectedusablenum,s.safenum,s.costprice,s.storageamount,s.unitid,s.unitname,s.auxunitid,s.auxunitname,
+		s.addtime,s.modifytime,version
+	</sql>
+	<select id="getStorageSummaryInfoByGoodsid" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.StorageSummary">
+		select <include refid="storageSummary-column"/>
+		from t_storage_summary
+		where goodsid = #{goodsid}
+	</select>
+	<select id="getStorageSummaryInfoByID" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.StorageSummary">
+		select <include refid="storageSummary-column"/>
+		from t_storage_summary
+		where id=#{id}
+	</select>
+	<select id="getStorageSummaryInfoByGoodsidAndStorageid" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.StorageSummary">
+		select <include refid="storageSummary-column"/>
+		from t_storage_summary
+		where goodsid = #{goodsid} and storageid=#{storageid}
+		limit 1
+	</select>
+
+    <select id="getStorageSummaryCountByGoodsid" parameterType="java.lang.String" resultType="int">
+		select count(1) from t_storage_summary where goodsid=#{goodsid}
+	</select>
+	<insert id="addStorageSummary" parameterType="com.hd.agent.storage.model.StorageSummary">
+		insert into t_storage_summary
+	    <trim prefix="(" suffix=")" suffixOverrides=",">
+	        id,
+	      <if test="goodsid != null">
+	        goodsid,
+	      </if>
+	      <if test="brandid != null">
+	        brandid,
+	      </if>
+	      <if test="branddept != null">
+	        branddept,
+	      </if>
+	      <if test="barcode != null">
+	        barcode,
+	      </if>
+	      <if test="storageid != null">
+	        storageid,
+	      </if>
+	      <if test="istotalcontrol != null">
+	        istotalcontrol,
+	      </if>
+	      <if test="issendstorage != null">
+	        issendstorage,
+	      </if>
+	      <if test="existingnum != null">
+	        existingnum,
+	      </if>
+	      <if test="usablenum != null">
+	        usablenum,
+	      </if>
+	      <if test="waitnum != null">
+	        waitnum,
+	      </if>
+	      <if test="transitnum != null">
+	        transitnum,
+	      </if>
+	      <if test="allotwaitnum != null">
+	        allotwaitnum,
+	      </if>
+	      <if test="allotenternum != null">
+	        allotenternum,
+	      </if>
+	      <if test="projectedusablenum != null">
+	        projectedusablenum,
+	      </if>
+	      <if test="safenum != null">
+	        safenum,
+	      </if>
+	      <if test="costprice != null">
+	        costprice,
+	      </if>
+          <if test="storageamount != null">
+            storageamount,
+          </if>
+	      <if test="unitid != null">
+	        unitid,
+	      </if>
+	      <if test="unitname != null">
+	        unitname,
+	      </if>
+	      <if test="auxunitid != null">
+	        auxunitid,
+	      </if>
+	      <if test="auxunitname != null">
+	        auxunitname,
+	      </if>
+	      <if test="1==1">
+	        addtime,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides=",">
+	        #{id},
+	      <if test="goodsid != null">
+	        #{goodsid},
+	      </if>
+	      <if test="brandid != null">
+	        #{brandid},
+	      </if>
+	      <if test="branddept != null">
+	        #{branddept},
+	      </if>
+	      <if test="barcode != null">
+	        #{barcode},
+	      </if>
+	      <if test="storageid != null">
+	        #{storageid},
+	      </if>
+	      <if test="istotalcontrol != null">
+	        #{istotalcontrol},
+	      </if>
+	      <if test="issendstorage != null">
+	        #{issendstorage},
+	      </if>
+	      <if test="existingnum != null">
+	        #{existingnum},
+	      </if>
+	      <if test="usablenum != null">
+	        #{usablenum},
+	      </if>
+	      <if test="waitnum != null">
+	        #{waitnum},
+	      </if>
+	      <if test="transitnum != null">
+	        #{transitnum},
+	      </if>
+	      <if test="allotwaitnum != null">
+	        #{allotwaitnum},
+	      </if>
+	      <if test="allotenternum != null">
+	        #{allotenternum},
+	      </if>
+	      <if test="projectedusablenum != null">
+	        #{projectedusablenum},
+	      </if>
+	      <if test="safenum != null">
+	        #{safenum},
+	      </if>
+	      <if test="costprice != null">
+	        #{costprice},
+	      </if>
+          <if test="storageamount != null">
+            #{storageamount},
+          </if>
+	      <if test="unitid != null">
+	        #{unitid},
+	      </if>
+	      <if test="unitname != null">
+	        #{unitname},
+	      </if>
+	      <if test="auxunitid != null">
+	        #{auxunitid},
+	      </if>
+	      <if test="auxunitname != null">
+	        #{auxunitname},
+	      </if>
+	      <if test="1==1">
+	        now(),
+	      </if>
+	    </trim>
+	</insert>
+	<update id="updateStorageSummary" parameterType="com.hd.agent.storage.model.StorageSummary">
+		update t_storage_summary
+	    <set>
+	      <if test="istotalcontrol != null">
+	        istotalcontrol = #{istotalcontrol},
+	      </if>
+	      <if test="issendstorage != null">
+	        issendstorage = #{issendstorage},
+	      </if>
+	      <if test="existingnum != null">
+	        existingnum = #{existingnum},
+	      </if>
+	      <if test="usablenum != null">
+	        usablenum = #{usablenum},
+	      </if>
+	      <if test="waitnum != null">
+	        waitnum = #{waitnum},
+	      </if>
+	      <if test="transitnum != null">
+	        transitnum = #{transitnum},
+	      </if>
+	      <if test="allotwaitnum != null">
+	        allotwaitnum = #{allotwaitnum},
+	      </if>
+	      <if test="allotenternum != null">
+	        allotenternum = #{allotenternum},
+	      </if>
+	      <if test="projectedusablenum != null">
+	        projectedusablenum = #{projectedusablenum},
+	      </if>
+	      <if test="safenum != null">
+	        safenum = #{safenum},
+	      </if>
+	      <if test="costprice != null">
+	        costprice = #{costprice},
+	      </if>
+          <if test="storageamount != null">
+            storageamount = #{storageamount},
+          </if>
+	      <if test="unitid != null">
+	        unitid = #{unitid},
+	      </if>
+	      <if test="unitname != null">
+	        unitname = #{unitname},
+	      </if>
+	      <if test="auxunitid != null">
+	        auxunitid = #{auxunitid},
+	      </if>
+	      <if test="auxunitname != null">
+	        auxunitname = #{auxunitname},
+	      </if>
+	      <if test="1==1">
+	        modifytime = now(),version=version+1
+	      </if>
+	    </set>
+	    where goodsid = #{goodsid} and storageid=#{storageid} and version=#{version}
+	</update>
+    <update id="updateStorageSummaryAlloteSubtract" parameterType="com.hd.agent.storage.model.StorageSummary">
+        update t_storage_summary
+        set existingnum=existingnum-#{allotnum},allotwaitnum=allotwaitnum-#{allotnum},version=version+1
+        where goodsid = #{goodsid} and storageid=#{storageid} and allotwaitnum=#{allotwaitnum} and version=#{version}
+    </update>
+    <update id="updateStorageSummaryBacthAlloteSubtract" parameterType="com.hd.agent.storage.model.StorageSummary">
+        update t_storage_summary_batch
+        set existingnum=existingnum-#{allotnum},allotwaitnum=allotwaitnum-#{allotnum},batchstate=#{batchstate},version=version+1
+        where id=#{id} and allotwaitnum=#{allotwaitnum} and version=#{version}
+    </update>
+    <update id="updateStorageSummaryAlloteAdd" parameterType="com.hd.agent.storage.model.StorageSummary">
+        update t_storage_summary
+        set existingnum=existingnum+#{allotnum},usablenum = usablenum+#{allotnum},projectedusablenum=projectedusablenum+#{allotnum},version=version+1
+        where goodsid = #{goodsid} and storageid=#{storageid} and existingnum=#{existingnum} and version=#{version}
+    </update>
+	<update id="updateStorageSummaryAlloteAddEnter" parameterType="com.hd.agent.storage.model.StorageSummary">
+        update t_storage_summary
+        set existingnum=existingnum+#{allotnum},usablenum = usablenum+#{allotnum},projectedusablenum=projectedusablenum+#{allotnum},version=version+1,
+        allotenternum=allotenternum-#{allotnum}
+        where goodsid = #{goodsid} and storageid=#{storageid} and existingnum=#{existingnum} and version=#{version}
+    </update>
+
+    <update id="updateStorageSummaryBacthAlloteAdd" parameterType="com.hd.agent.storage.model.StorageSummary">
+        update t_storage_summary_batch
+        set existingnum=existingnum+#{allotnum},usablenum = usablenum+#{allotnum},batchstate='1',version=version+1
+        where id=#{id} and existingnum=#{existingnum} and version=#{version}
+    </update>
+	<update id="updateStorageSummaryWaitAddByGoodsidAndStorageid" parameterType="com.hd.agent.storage.model.StorageSummary">
+		update t_storage_summary
+		set usablenum = usablenum-#{waitnum},waitnum=waitnum+#{waitnum},projectedusablenum=projectedusablenum-#{waitnum},version=version+1
+		where goodsid = #{goodsid} and storageid=#{storageid} and waitnum=#{oldWaitnum} and version=#{version}
+	</update>
+	<update id="updateStorageSummaryBacthWaitAddByID" parameterType="java.lang.String">
+		update t_storage_summary_batch
+		set usablenum = usablenum-#{waitnum},waitnum=waitnum+#{waitnum},version=version+1
+		where id=#{id} and waitnum=#{oldWaitnum} and version=#{version}
+	</update>
+	<update id="updateStorageSummaryWaitBackByGoodsidAndStorageid" parameterType="com.hd.agent.storage.model.StorageSummary">
+		update t_storage_summary
+		set usablenum = usablenum+#{waitnum},waitnum=waitnum-#{waitnum},projectedusablenum=projectedusablenum+#{waitnum},version=version+1
+		where goodsid = #{goodsid} and storageid=#{storageid} and waitnum=#{oldWaitnum} and version=#{version}
+	</update>
+	<update id="updateStorageSummaryBacthWaitBackByID" parameterType="java.lang.String">
+		update t_storage_summary_batch
+		set usablenum = usablenum+#{waitnum},waitnum=waitnum-#{waitnum},version=version+1
+		where id=#{id} and waitnum=#{oldWaitnum} and version=#{version}
+	</update>
+	<update id="updateStorageSummarySendByGoodsidAndStorageid" parameterType="com.hd.agent.storage.model.StorageSummary">
+		update t_storage_summary
+		set existingnum = existingnum-#{waitnum},waitnum=waitnum-#{waitnum},version=version+1
+		where goodsid = #{goodsid} and storageid=#{storageid} and existingnum=#{oldExistingnum} and waitnum=#{oldWaitnum} and version=#{version}
+	</update>
+	<update id="updateStorageSummaryBacthSendByID" parameterType="java.lang.String">
+		update t_storage_summary_batch
+		set existingnum = existingnum-#{waitnum},waitnum=waitnum-#{waitnum},batchstate=#{batchstate},version=version+1
+		where id=#{id} and existingnum=#{oldExistingnum} and waitnum=#{oldWaitnum} and version=#{version}
+	</update>
+	<update id="updateStorageSummarySendBackByGoodsidAndStorageid" parameterType="com.hd.agent.storage.model.StorageSummary">
+		update t_storage_summary
+		set existingnum = existingnum+#{waitnum},waitnum=waitnum+#{waitnum},version=version+1
+		where goodsid = #{goodsid} and storageid=#{storageid} and existingnum=#{oldExistingnum} and waitnum=#{oldWaitnum} and version=#{version}
+	</update>
+	<update id="updateStorageSummaryBacthBackByID" parameterType="java.lang.String">
+		update t_storage_summary_batch
+		set existingnum = existingnum+#{waitnum},waitnum=waitnum+#{waitnum},batchstate='1',version=version+1
+		where id=#{id} and existingnum=#{oldExistingnum} and waitnum=#{oldWaitnum} and version=#{version}
+	</update>
+    <update id="updateStorageSummaryEnterByGoodsidAndStorageid" parameterType="com.hd.agent.storage.model.StorageSummary">
+        update t_storage_summary
+        set existingnum = existingnum+#{enternum},usablenum=usablenum+#{enternum},projectedusablenum=projectedusablenum+#{enternum},version=version+1
+        where goodsid = #{goodsid} and storageid=#{storageid} and existingnum=#{oldExistingnum} and version=#{version}
+    </update>
+    <update id="updateStorageSummaryBacthEnterByID" parameterType="java.lang.String">
+        update t_storage_summary_batch
+        set existingnum = existingnum+#{enternum},usablenum=usablenum+#{enternum},batchstate='1',enterdate=#{enterdate},version=version+1
+        where id=#{id} and existingnum=#{oldExistingnum} and version=#{version}
+    </update>
+    <update id="updateStorageSummaryEnterRollbackByGoodsidAndStorageid" parameterType="com.hd.agent.storage.model.StorageSummary">
+        update t_storage_summary
+        set existingnum = existingnum-#{enternum},usablenum=usablenum-#{enternum},projectedusablenum=projectedusablenum-#{enternum},version=version+1
+        where goodsid = #{goodsid} and storageid=#{storageid} and existingnum=#{oldExistingnum} and version=#{version}
+    </update>
+    <update id="updateStorageSummaryBacthEnterRollbackByID" parameterType="java.lang.String">
+        update t_storage_summary_batch
+        set existingnum = existingnum-#{enternum},usablenum=usablenum-#{enternum},batchstate=#{batchstate},version=version+1
+        where id=#{id} and existingnum=#{oldExistingnum} and version=#{version}
+    </update>
+    <update id="updateStorageSummaryEnterTransitnumByGoodsidAndStorageid" parameterType="com.hd.agent.storage.model.StorageSummary">
+        update t_storage_summary
+        set existingnum = existingnum+#{enternum},usablenum=usablenum+#{enternum},transitnum=transitnum-#{enternum},version=version+1
+        where goodsid = #{goodsid} and storageid=#{storageid} and existingnum=#{oldExistingnum} and version=#{version}
+    </update>
+    <update id="updateStorageSummaryBacthEnterTransitnumByID" parameterType="java.lang.String">
+        update t_storage_summary_batch
+        set existingnum = existingnum+#{enternum},usablenum=usablenum+#{enternum},batchstate='1',enterdate=#{enterdate},version=version+1
+        where id=#{id} and existingnum=#{oldExistingnum} and version=#{version}
+    </update>
+    <update id="updateStorageSummaryEnterTransitnumRollbackByGoodsidAndStorageid" parameterType="com.hd.agent.storage.model.StorageSummary">
+        update t_storage_summary
+        set existingnum = existingnum-#{enternum},usablenum=usablenum-#{enternum},transitnum=transitnum+#{enternum},version=version+1
+        where goodsid = #{goodsid} and storageid=#{storageid} and existingnum=#{oldExistingnum} and version=#{version}
+    </update>
+    <update id="updateStorageSummaryBacthEnterTransitnumRollbackByID" parameterType="java.lang.String">
+        update t_storage_summary_batch
+        set existingnum = existingnum-#{enternum},usablenum=usablenum-#{enternum},batchstate=#{batchstate},version=version+1
+        where id=#{id} and existingnum=#{oldExistingnum} and version=#{version}
+    </update>
+	<select id="showStorageSummaryList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.storage.model.StorageSummary">
+		select <include refid="storageSummary-column"/>
+		from t_storage_summary
+		<trim prefix="where" prefixOverrides="and|or">
+	      <include refid="common.Page_dataSql"/>
+		  <if test="condition.goodsid != null">
+	         and goodsid = #{condition.goodsid}
+	      </if>
+	      <if test="condition.istotalcontrol !=null">
+	        and istotalcontrol = #{condition.istotalcontrol}
+	    </if>
+	    </trim>
+	</select>
+    <sql id="getStorageSummarySumList_sql" >
+        (
+        <![CDATA[
+          select t.goodsid,t.brandid,t.storageid,t.barcode,g.name as goodsname,g.spell,t.existingnum * g.basesaleprice as basesaleamount ,g.state,g.newbuyprice as price,if(${condition.isStorageAccount}='1' and s.isaloneaccount='1',t.costprice,g.newstorageprice) as costprice,t.costprice as storageprice,if(${condition.isStorageAccount}='1' and s.isaloneaccount='1',t.storageamount,0) as storageamount,m.rate as boxnum,t.istotalcontrol,t.issendstorage,g.defaultsupplier as supplierid,
+			t.existingnum,floor(t.existingnum / m.rate) AS existingauxint,MOD (t.existingnum, m.rate) AS existingauxnum,g.newbuyprice * t.existingnum AS existingamount,if(${condition.isStorageAccount}='1' and s.isaloneaccount='1',t.costprice,g.newstorageprice) * t.existingnum AS costamount,
+			t.usablenum,IF (t.usablenum < 0,ceil(t.usablenum / m.rate),floor(t.usablenum / m.rate)) AS usableauxint,MOD (t.usablenum, m.rate) AS usableauxnum,g.newbuyprice * t.usablenum AS usableamount,
+			t.waitnum,IF (t.waitnum > 0,floor(ABS(t.waitnum) / m.rate) ,- floor(ABS(t.waitnum) / m.rate)) AS waitauxint,IF (t.waitnum > 0,ABS(t.waitnum) % m.rate ,- (ABS(t.waitnum) % m.rate)) AS waitauxnum,g.newbuyprice * t.waitnum AS waitamount,
+			t.transitnum,IF (t.transitnum > 0,floor(ABS(t.transitnum) / m.rate) ,- floor(ABS(t.transitnum) / m.rate)) AS transitauxint,IF (t.transitnum > 0,ABS(t.transitnum) % m.rate ,- (ABS(t.transitnum) % m.rate)) AS transitauxnum,g.newbuyprice * t.transitnum AS transitamount,
+			t.allotwaitnum,IF (t.allotwaitnum > 0,floor(ABS(t.allotwaitnum) / m.rate) ,- floor(ABS(t.allotwaitnum) / m.rate)) AS allotwaitauxint,IF (t.allotwaitnum > 0,ABS(t.allotwaitnum) % m.rate ,- (ABS(t.allotwaitnum) % m.rate)) AS allotwaitauxnum,g.newbuyprice * t.allotwaitnum AS allotwaitamount,
+			t.allotenternum,IF (t.allotenternum > 0,floor(ABS(t.allotenternum) / m.rate) ,-floor(ABS(t.allotenternum) / m.rate)) AS allotenterauxint,IF (t.allotenternum > 0,ABS(t.allotenternum) % m.rate ,-(ABS(t.allotenternum) % m.rate)) AS allotenterauxnum,g.newbuyprice * t.allotenternum AS allotenteramount,
+			t.projectedusablenum,IF (t.projectedusablenum < 0,ceil(t.projectedusablenum / m.rate),floor(t.projectedusablenum / m.rate)) AS projectedusableauxint, MOD(t.projectedusablenum, m.rate) AS projectedusableauxnum, g.newbuyprice * t.projectedusablenum AS projectedusableamount,
+			t.safenum, floor(t.safenum / m.rate) AS safeauxint, MOD (t.safenum, m.rate) AS safeauxnum, g.newbuyprice * t.safenum AS safeamount, t.unitid, t.unitname, t.auxunitid, t.auxunitname, c.thisname waresclassname
+           from t_storage_summary t
+           LEFT JOIN t_base_storage_info s on t.storageid=s.id
+           LEFT JOIN t_base_goods_info g on t.goodsid=g.id
+           LEFT JOIN t_base_goods_info_meteringunit m on t.goodsid=m.goodsid and m.isdefault='1'
+           left join t_base_goods_waresclass c on g.defaultsort = c.id
+        ]]>
+        <trim prefix="where" prefixOverrides="and|or">
+            <include refid="common.Page_querySql"/>
+            <include refid="common.Page_dataSql"/>
+            <if test="condition.brandid != null and condition.brandid != ''">
+                and FIND_IN_SET(t.brandid,#{condition.brandid})
+            </if>
+            <if test="condition.goodsid != null and condition.goodsid != ''">
+                and FIND_IN_SET(t.goodsid,#{condition.goodsid})
+            </if>
+            <if test="condition.goodssort != null and condition.goodssort != '' ">
+                and FIND_IN_SET(g.defaultsort,#{condition.goodssort})
+            </if>
+            <if test="condition.storageid != null and condition.storageid != '' ">
+                and FIND_IN_SET(t.storageid,#{condition.storageid})
+            </if>
+            <if test="condition.istotalcontrol != null and ondition.istotalcontrol != '' ">
+                and t.istotalcontrol = #{condition.istotalcontrol}
+            </if>
+            <if test="condition.supplierid != null and condition.supplierid != '' ">
+                and FIND_IN_SET(g.defaultsupplier,#{condition.supplierid})
+            </if>
+			<if test="condition.bstype != null and condition.bstype != '' ">
+				and g.bstype=#{condition.bstype}
+			</if>
+        </trim>
+        )
+    </sql>
+    <select id="getStorageSummarySumList" parameterType="com.hd.agent.common.util.PageMap" resultType="java.util.Map">
+        <![CDATA[
+		SELECT z.goodsid,z.brandid,z.storageid,z.goodsname,z.barcode,z.price,z.costprice,z.storageprice,sum(z.storageamount) as storageamount,z.boxnum,z.spell,z.supplierid,z.state,
+		sum(z.existingnum) as existingnum,sum(basesaleamount) as basesaleamount ,sum(z.existingauxint) as existingauxint,sum(z.existingauxnum) as existingauxnum,CONCAT(sum(z.existingauxint),z.auxunitname,sum(z.existingauxnum),z.unitname) as auxexistingdetail,sum(z.existingamount) as existingamount,sum(z.costamount) as costamount,
+		sum(z.usablenum) as usablenum,if(sum(z.usablenum)<0,-ABS(sum(z.usableauxint)),ABS(sum(z.usableauxint))) as usableauxint,if(sum(z.usablenum)<0,-ABS(sum(z.usableauxnum)),ABS(sum(z.usableauxnum))) as usableauxnum,CONCAT(if(sum(z.usablenum)<0,'-',''),ABS(sum(z.usableauxint)),z.auxunitname,ABS(sum(z.usableauxnum)),z.unitname) as auxusabledetail,sum(z.usableamount) as usableamount,
+		sum(z.waitnum) as waitnum,if(sum(z.waitnum)<0,-ABS(sum(z.waitauxint)),ABS(sum(z.waitauxint))) as waitauxint,if(sum(z.waitnum)<0,-ABS(sum(z.waitauxnum)),ABS(sum(z.waitauxnum))) as waitauxnum,CONCAT(if(sum(z.waitnum)<0,'-',''),ABS(sum(z.waitauxint)),z.auxunitname,ABS(sum(z.waitauxnum)),z.unitname) as auxwaitdetail,sum(z.waitamount) as waitamount,
+		sum(z.transitnum) as transitnum,if(sum(z.transitnum)<0,-ABS(sum(z.transitauxint)),ABS(sum(z.transitauxint))) as transitauxint,if(sum(z.transitnum)<0,-ABS(sum(z.transitauxnum)),ABS(sum(z.transitauxnum))) as transitauxnum,CONCAT(if(sum(z.transitnum)<0,'-',''),ABS(sum(z.transitauxint)),z.auxunitname,ABS(sum(z.transitauxnum)),z.unitname) as auxtransitdetail,sum(z.transitamount) as transitamount,
+		sum(z.allotwaitnum) as allotwaitnum,if(sum(z.allotwaitnum)<0,-ABS(sum(z.allotwaitauxint)),ABS(sum(z.allotwaitauxint))) as allotwaitauxint,if(sum(z.allotwaitnum)<0,-ABS(sum(z.allotwaitauxnum)),ABS(sum(z.allotwaitauxnum))) as allotwaitauxnum,CONCAT(if(sum(z.allotwaitnum)<0,'-',''),ABS(sum(z.allotwaitauxint)),z.auxunitname,ABS(sum(z.allotwaitauxnum)),z.unitname) as auxallotwaitdetail,sum(z.allotwaitamount) as allotwaitamount,
+		sum(z.allotenternum) as allotenternum,if(sum(z.allotenternum)<0,-ABS(sum(z.allotenterauxint)),ABS(sum(z.allotenterauxint))) as allotenterauxint,if(sum(z.allotenternum)<0,-ABS(sum(z.allotenterauxnum)),ABS(sum(z.allotenterauxnum))) as allotenterauxnum,CONCAT(if(sum(z.allotenternum)<0,'-',''),ABS(sum(z.allotenterauxint)),z.auxunitname,ABS(sum(z.allotenterauxnum)),z.unitname) as auxallotenterdetail,sum(z.allotenteramount) as allotenteramount,
+		sum(z.projectedusablenum) as projectedusablenum,if(sum(z.projectedusablenum)<0,-ABS(sum(z.projectedusableauxint)),ABS(sum(z.projectedusableauxint))) as projectedusableauxint,if(sum(z.projectedusablenum)<0,-ABS(sum(z.projectedusableauxnum)),ABS(sum(z.projectedusableauxnum))) as projectedusableauxnum,CONCAT(if(sum(z.projectedusablenum)<0,'-',''),ABS(sum(z.projectedusableauxint)),z.auxunitname,ABS(sum(z.projectedusableauxnum)),z.unitname) as auxprojectedusabledetail,sum(z.projectedusableamount) as projectedusableamount,
+		sum(z.safenum) as safenum,if(sum(z.safenum)<0,-ABS(sum(z.safeauxint)),ABS(sum(z.safeauxint))) as safeauxint,if(sum(z.safenum)<0,-ABS(sum(z.safeauxnum)),ABS(sum(z.safeauxnum))) as safeauxnum,CONCAT(if(sum(z.safenum)<0,'-',''),ABS(sum(z.safeauxint)),z.auxunitname,ABS(sum(z.safeauxnum)),z.unitname) as auxsafedetail,sum(z.safeamount) as safeamount,z.unitid,z.unitname,z.auxunitid,z.auxunitname,waresclassname
+		from
+		]]>
+        <include refid="getStorageSummarySumList_sql" /> z
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="condition.state != null and condition.state != '' ">
+                and z.state =#{condition.state}
+            </if>
+            <if test="condition.existingnum != null and condition.existingnum != '' ">
+                and existingnum != 0 or storageamount!=0
+            </if>
+        </trim>
+        <if test="condition.groupcolall == null">
+            GROUP BY ${condition.groupcols}
+            <if test="condition.isflag == null">
+                <include refid="common.Page_limit" />
+            </if>
+        </if>
+    </select>
+    <select id="getStorageSummarySumCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+        select count(1) FROM
+        (
+        <![CDATA[
+		SELECT z.goodsid,z.brandid,z.storageid,z.goodsname,z.barcode,z.price,z.costprice,z.boxnum,z.spell,z.supplierid,z.state,
+		sum(z.existingnum) as existingnum,sum(basesaleamount) as basesaleamount ,sum(z.existingauxint) as existingauxint,sum(z.existingauxnum) as existingauxnum,CONCAT(sum(z.existingauxint),z.auxunitname,sum(z.existingauxnum),z.unitname) as auxexistingdetail,sum(z.existingamount) as existingamount,sum(z.costamount) as costamount,
+		sum(z.usablenum) as usablenum,if(sum(z.usablenum)<0,-ABS(sum(z.usableauxint)),ABS(sum(z.usableauxint))) as usableauxint,if(sum(z.usablenum)<0,-ABS(sum(z.usableauxnum)),ABS(sum(z.usableauxnum))) as usableauxnum,CONCAT(if(sum(z.usablenum)<0,'-',''),ABS(sum(z.usableauxint)),z.auxunitname,ABS(sum(z.usableauxnum)),z.unitname) as auxusabledetail,sum(z.usableamount) as usableamount,
+		sum(z.waitnum) as waitnum,if(sum(z.waitnum)<0,-ABS(sum(z.waitauxint)),ABS(sum(z.waitauxint))) as waitauxint,if(sum(z.waitnum)<0,-ABS(sum(z.waitauxnum)),ABS(sum(z.waitauxnum))) as waitauxnum,CONCAT(if(sum(z.waitnum)<0,'-',''),ABS(sum(z.waitauxint)),z.auxunitname,ABS(sum(z.waitauxnum)),z.unitname) as auxwaitdetail,sum(z.waitamount) as waitamount,
+		sum(z.transitnum) as transitnum,if(sum(z.transitnum)<0,-ABS(sum(z.transitauxint)),ABS(sum(z.transitauxint))) as transitauxint,if(sum(z.transitnum)<0,-ABS(sum(z.transitauxnum)),ABS(sum(z.transitauxnum))) as transitauxnum,CONCAT(if(sum(z.transitnum)<0,'-',''),ABS(sum(z.transitauxint)),z.auxunitname,ABS(sum(z.transitauxnum)),z.unitname) as auxtransitdetail,sum(z.transitamount) as transitamount,
+		sum(z.allotwaitnum) as allotwaitnum,if(sum(z.allotwaitnum)<0,-ABS(sum(z.allotwaitauxint)),ABS(sum(z.allotwaitauxint))) as allotwaitauxint,if(sum(z.allotwaitnum)<0,-ABS(sum(z.allotwaitauxnum)),ABS(sum(z.allotwaitauxnum))) as allotwaitauxnum,CONCAT(if(sum(z.allotwaitnum)<0,'-',''),ABS(sum(z.allotwaitauxint)),z.auxunitname,ABS(sum(z.allotwaitauxnum)),z.unitname) as auxallotwaitdetail,sum(z.allotwaitamount) as allotwaitamount,
+		sum(z.allotenternum) as allotenternum,if(sum(z.allotenternum)<0,-ABS(sum(z.allotenterauxint)),ABS(sum(z.allotenterauxint))) as allotenterauxint,if(sum(z.allotenternum)<0,-ABS(sum(z.allotenterauxnum)),ABS(sum(z.allotenterauxnum))) as allotenterauxnum,CONCAT(if(sum(z.allotenternum)<0,'-',''),ABS(sum(z.allotenterauxint)),z.auxunitname,ABS(sum(z.allotenterauxnum)),z.unitname) as auxallotenterdetail,sum(z.allotenteramount) as allotenteramount,
+		sum(z.projectedusablenum) as projectedusablenum,if(sum(z.projectedusablenum)<0,-ABS(sum(z.projectedusableauxint)),ABS(sum(z.projectedusableauxint))) as projectedusableauxint,if(sum(z.projectedusablenum)<0,-ABS(sum(z.projectedusableauxnum)),ABS(sum(z.projectedusableauxnum))) as projectedusableauxnum,CONCAT(if(sum(z.projectedusablenum)<0,'-',''),ABS(sum(z.projectedusableauxint)),z.auxunitname,ABS(sum(z.projectedusableauxnum)),z.unitname) as auxprojectedusabledetail,sum(z.projectedusableamount) as projectedusableamount,
+		sum(z.safenum) as safenum,if(sum(z.safenum)<0,-ABS(sum(z.safeauxint)),ABS(sum(z.safeauxint))) as safeauxint,if(sum(z.safenum)<0,-ABS(sum(z.safeauxnum)),ABS(sum(z.safeauxnum))) as safeauxnum,CONCAT(if(sum(z.safenum)<0,'-',''),ABS(sum(z.safeauxint)),z.auxunitname,ABS(sum(z.safeauxnum)),z.unitname) as auxsafedetail,sum(z.safeamount) as safeamount,z.unitid,z.unitname,z.auxunitid,z.auxunitname,waresclassname
+		from
+		]]>
+        <include refid="getStorageSummarySumList_sql" /> z
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="condition.state != null and condition.state != ''">
+                and z.state =#{condition.state}
+            </if>
+            <if test="condition.existingnum != null and condition.existingnum != ''">
+                and existingnum != 0 or storageamount!=0
+            </if>
+        </trim>
+        <if test="condition.groupcolall == null">
+            GROUP BY ${condition.groupcols}
+        </if>
+        ) x
+    </select>
+	<sql id="storageSummaryByStorageList_Where">
+		<if test="condition.brandid != null">
+			and FIND_IN_SET(s.brandid,#{condition.brandid})
+		</if>
+		<if test="condition.goodsid != null">
+			and FIND_IN_SET(s.goodsid,#{condition.goodsid})
+		</if>
+		<if test="condition.goodssort != null and condition.goodssort != '' ">
+			and FIND_IN_SET(g.defaultsort,#{condition.goodssort})
+		</if>
+		<if test="condition.storageid != null">
+			and FIND_IN_SET(s.storageid,#{condition.storageid})
+		</if>
+		<if test="condition.supplierid != null and condition.supplierid != '' ">
+			and FIND_IN_SET(g.defaultsupplier,#{condition.supplierid})
+		</if>
+
+	</sql>
+	<select id="getStorageSummaryByStorageList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.storage.model.StorageSummary">
+		select <include refid="storageSummary-column_prefix_s"/>
+		from t_storage_summary s
+		LEFT JOIN t_base_goods_info g on s.goodsid=g.id
+		<trim prefix="where" prefixOverrides="and|or">
+		  <include refid="common.Page_querySql"/>
+	      <include refid="common.Page_dataSql"/>
+		  <include refid="storageSummaryByStorageList_Where"></include>
+	    </trim>
+	    <if test="condition.isflag == null">
+	    	<include refid="common.Page_limit" />
+	    </if>
+	</select>
+	<select id="getStorageSummaryByStorageCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+		select count(1)
+		from t_storage_summary s
+		LEFT JOIN t_base_goods_info g on s.goodsid=g.id
+		<trim prefix="where" prefixOverrides="and|or">
+		  <include refid="common.Page_querySql"/>
+	      <include refid="common.Page_dataSql"/>
+			<include refid="storageSummaryByStorageList_Where"></include>
+	    </trim>
+	</select>
+	<select id="getStorageSummarySumByGoodsid" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.StorageSummary">
+		select goodsid,brandid,barcode,istotalcontrol,issendstorage,sum(existingnum) as existingnum,sum(usablenum) as usablenum,sum(waitnum) as waitnum,
+		sum(transitnum) as transitnum,sum(allotwaitnum) as allotwaitnum,sum(allotenternum) as allotenternum,
+		sum(projectedusablenum) as projectedusablenum,sum(safenum) as safenum,costprice,unitid,unitname,auxunitid,auxunitname
+		from t_storage_summary where goodsid=#{goodsid} and issendstorage='1'
+	</select>
+    <select id="getStorageSummarySumByGoodsidWithDatarule" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.StorageSummary">
+        select t.goodsid,t.brandid,t.barcode,t.istotalcontrol,t.issendstorage,
+        sum(t.existingnum) as existingnum,sum(if(si.issendusable='1',(t.usablenum+t.transitnum),t.usablenum)) as usablenum,sum(t.waitnum) as waitnum,
+        sum(t.transitnum) as transitnum,sum(t.allotwaitnum) as allotwaitnum,sum(t.allotenternum) as allotenternum,
+        sum(t.projectedusablenum) as projectedusablenum,sum(t.safenum) as safenum,t.costprice,t.unitid,t.unitname,t.auxunitid,t.auxunitname,
+        <![CDATA[GROUP_CONCAT(if(if(si.issendusable='1',(t.usablenum+t.transitnum),t.usablenum)>0,CONCAT(si.name,':',CONCAT(if(if(si.issendusable='1',(t.usablenum+t.transitnum),t.usablenum)<0,'-',''),ABS(if(if(si.issendusable='1',(t.usablenum+t.transitnum),t.usablenum)<0,ceil(if(si.issendusable='1',(t.usablenum+t.transitnum),t.usablenum)/b.rate),floor(if(si.issendusable='1',(t.usablenum+t.transitnum),t.usablenum)/b.rate))),b.auxunitname,if(if(si.issendusable='1',(t.usablenum+t.transitnum),t.usablenum)<0,ceil(mod(if(si.issendusable='1',(t.usablenum+t.transitnum),t.usablenum),b.rate)),mod(if(si.issendusable='1',(t.usablenum+t.transitnum),t.usablenum),b.rate)),c.name)),null)) as remark]]>
+        from t_storage_summary t
+        LEFT JOIN (SELECT t1.goodsid, t1.meteringunitid, t1.mode, t1.rate, t1.isdefault, t2.name AS auxunitname FROM t_base_goods_info_meteringunit t1, t_base_goods_meteringunit t2 WHERE t1.meteringunitid = t2.id) b ON t.goodsid = b.goodsid AND b.isdefault = '1' LEFT JOIN t_base_goods_meteringunit c ON t.unitid = c.id
+        LEFT JOIN t_base_storage_info si on t.storageid = si.id
+        where t.goodsid=#{goodsid}
+        <if test="datasql != null">
+            and ${datasql}
+        </if>
+    </select>
+	<select id="getStorageSummarySumByGoodsidInTotal" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.StorageSummary">
+		select goodsid,brandid,barcode,istotalcontrol,issendstorage,sum(existingnum) as existingnum,sum(usablenum) as usablenum,sum(waitnum) as waitnum,
+		sum(transitnum) as transitnum,sum(allotwaitnum) as allotwaitnum,sum(allotenternum) as allotenternum,
+		sum(projectedusablenum) as projectedusablenum,sum(safenum) as safenum,costprice,unitid,unitname,auxunitid,auxunitname
+		from t_storage_summary where goodsid=#{goodsid} and istotalcontrol='1'
+	</select>
+	<select id="getStorageSummaryTransitnumSumByOutusable" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.StorageSummary">
+		select sum(t.transitnum) as transitnum
+		from t_storage_summary t,t_base_storage_info t1
+		where t.goodsid=#{goodsid} and t.issendstorage='1' and t.storageid=t1.id and t1.issendusable='1'
+	</select>
+    <select id="getStorageSummaryTransitnumSumByOutusableWithDatarule" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.StorageSummary">
+        select sum(t.transitnum) as transitnum
+        from t_storage_summary t,t_base_storage_info t1
+        where t.goodsid=#{goodsid} and t.storageid=t1.id and t1.issendusable='1'
+        <if test="datasql != null">
+            and ${datasql}
+        </if>
+    </select>
+	<select id="getStorageSummarySumByBarcode" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.StorageSummary">
+		select storageid,goodsid,brandid,barcode,istotalcontrol,issendstorage,sum(existingnum) as existingnum,sum(usablenum) as usablenum,sum(waitnum) as waitnum,
+		sum(transitnum) as transitnum,sum(allotwaitnum) as allotwaitnum,sum(allotenternum) as allotenternum,
+		sum(projectedusablenum) as projectedusablenum,sum(safenum) as safenum,costprice,unitid,unitname,auxunitid,auxunitname
+		from t_storage_summary where usablenum>0 and goodsid!=#{goodsid} and barcode=#{barcode} and istotalcontrol='1' and issendstorage='1'
+		group by storageid,goodsid,barcode
+	</select>
+	<select id="getStorageSummarySumByBarcodeInStorageid" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.StorageSummary">
+		select goodsid,storageid,brandid,barcode,istotalcontrol,issendstorage,sum(existingnum) as existingnum,sum(usablenum) as usablenum,sum(waitnum) as waitnum,
+		sum(transitnum) as transitnum,sum(allotwaitnum) as allotwaitnum,sum(allotenternum) as allotenternum,
+		sum(projectedusablenum) as projectedusablenum,sum(safenum) as safenum,costprice,unitid,unitname,auxunitid,auxunitname
+		from t_storage_summary where usablenum>0 and goodsid!=#{goodsid} and barcode=#{barcode} and storageid=#{storageid}
+		group by goodsid,storageid,barcode
+	</select>
+	<delete id="deleteStorageSummary" parameterType="java.lang.String">
+		delete from  t_storage_summary where id=#{id} and goodsid=#{goodsid}
+	</delete>
+	<!-- 批次库存现存量表 -->
+	<sql id="storageSummaryBatch-column">
+	    id, summaryid, goodsid,brandid,branddept,barcode, storageid,storagelocationid, batchno, batchstate, existingnum, usablenum, waitnum, 
+	    allotwaitnum, allotenternum, intinum, sendnum, unitid, unitname, auxunitid, auxunitname, 
+	    price, amount,costprice, produceddate, deadline, enterdate, gooutdate, addtime, modifytime,version
+	</sql>
+	<select id="getStorageSummaryBatchCountByBatchno" parameterType="java.lang.String" resultType="int">
+		select count(1) from t_storage_summary_batch where batchno=#{batchno} and storageid=#{storageid}
+	</select>
+	<insert id="addStorageSummaryBatch" parameterType="com.hd.agent.storage.model.StorageSummaryBatch">
+		insert into t_storage_summary_batch
+	    <trim prefix="(" suffix=")" suffixOverrides=",">
+	      <if test="id != null">
+	        id,
+	      </if>
+	      <if test="summaryid != null">
+	        summaryid,
+	      </if>
+	      <if test="goodsid != null">
+	        goodsid,
+	      </if>
+	      <if test="brandid != null">
+	        brandid,
+	      </if>
+	      <if test="branddept != null">
+	        branddept,
+	      </if>
+	      <if test="barcode != null">
+	        barcode,
+	      </if>
+	      <if test="storageid != null">
+	        storageid,
+	      </if>
+	      <if test="storagelocationid != null">
+	        storagelocationid,
+	      </if>
+	      <if test="batchno != null">
+	        batchno,
+	      </if>
+	      <if test="batchstate != null">
+	        batchstate,
+	      </if>
+	      <if test="existingnum != null">
+	        existingnum,
+	      </if>
+	      <if test="usablenum != null">
+	        usablenum,
+	      </if>
+	      <if test="waitnum != null">
+	        waitnum,
+	      </if>
+	      <if test="allotwaitnum != null">
+	        allotwaitnum,
+	      </if>
+	      <if test="allotenternum != null">
+	        allotenternum,
+	      </if>
+	      <if test="intinum != null">
+	        intinum,
+	      </if>
+	      <if test="sendnum != null">
+	        sendnum,
+	      </if>
+	      <if test="unitid != null">
+	        unitid,
+	      </if>
+	      <if test="unitname != null">
+	        unitname,
+	      </if>
+	      <if test="auxunitid != null">
+	        auxunitid,
+	      </if>
+	      <if test="auxunitname != null">
+	        auxunitname,
+	      </if>
+	      <if test="price != null">
+	        price,
+	      </if>
+	      <if test="amount != null">
+	        amount,
+	      </if>
+	      <if test="costprice != null">
+	        costprice,
+	      </if>
+	      <if test="produceddate != null">
+	        produceddate,
+	      </if>
+	      <if test="deadline != null">
+	        deadline,
+	      </if>
+	      <if test="enterdate != null">
+	        enterdate,
+	      </if>
+	      <if test="gooutdate != null">
+	        gooutdate,
+	      </if>
+	      <if test="1==1">
+	        addtime,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides=",">
+	      <if test="id != null">
+	        #{id},
+	      </if>
+	      <if test="summaryid != null">
+	        #{summaryid},
+	      </if>
+	      <if test="goodsid != null">
+	        #{goodsid},
+	      </if>
+	      <if test="brandid != null">
+	        #{brandid},
+	      </if>
+	      <if test="branddept != null">
+	        #{branddept},
+	      </if>
+	      <if test="barcode != null">
+	        #{barcode},
+	      </if>
+	      <if test="storageid != null">
+	        #{storageid},
+	      </if>
+	      <if test="storagelocationid != null">
+	        #{storagelocationid},
+	      </if>
+	      <if test="batchno != null">
+	        #{batchno},
+	      </if>
+	      <if test="batchstate != null">
+	        #{batchstate},
+	      </if>
+	      <if test="existingnum != null">
+	        #{existingnum},
+	      </if>
+	      <if test="usablenum != null">
+	        #{usablenum},
+	      </if>
+	      <if test="waitnum != null">
+	        #{waitnum},
+	      </if>
+	      <if test="allotwaitnum != null">
+	        #{allotwaitnum},
+	      </if>
+	      <if test="allotenternum != null">
+	        #{allotenternum},
+	      </if>
+	      <if test="intinum != null">
+	        #{intinum},
+	      </if>
+	      <if test="sendnum != null">
+	        #{sendnum},
+	      </if>
+	      <if test="unitid != null">
+	        #{unitid},
+	      </if>
+	      <if test="unitname != null">
+	        #{unitname},
+	      </if>
+	      <if test="auxunitid != null">
+	        #{auxunitid},
+	      </if>
+	      <if test="auxunitname != null">
+	        #{auxunitname},
+	      </if>
+	      <if test="price != null">
+	        #{price},
+	      </if>
+	      <if test="amount != null">
+	        #{amount},
+	      </if>
+	      <if test="costprice != null">
+	        #{costprice},
+	      </if>
+	      <if test="produceddate != null">
+	        #{produceddate},
+	      </if>
+	      <if test="deadline != null">
+	        #{deadline},
+	      </if>
+	      <if test="enterdate != null">
+	        #{enterdate},
+	      </if>
+	      <if test="gooutdate != null">
+	        #{gooutdate},
+	      </if>
+	      <if test="1==1">
+	        now(),
+	      </if>
+	    </trim>
+	</insert>
+	<select id="getStorageSummaryBatchInfoByBatchno" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.StorageSummaryBatch">
+		select <include refid="storageSummaryBatch-column"/>
+		from t_storage_summary_batch where batchno=#{batchno} and storageid=#{storageid} and goodsid=#{goodsid} and batchstate!='2'
+		order by id
+		limit 1
+	</select>
+	<select id="getStorageSummaryBatchInfoByProduceddate" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.StorageSummaryBatch">
+		select <include refid="storageSummaryBatch-column"/>
+		from t_storage_summary_batch where produceddate=#{produceddate} and storageid=#{storageid} and goodsid=#{goodsid} and batchstate!='2'
+		order by id
+		limit 1
+	</select>
+    <select id="getStorageSummaryBatchInfoAllByProduceddate" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.StorageSummaryBatch">
+        select <include refid="storageSummaryBatch-column"/>
+        from t_storage_summary_batch where produceddate=#{produceddate} and storageid=#{storageid} and goodsid=#{goodsid}
+        order by id
+        limit 1
+    </select>
+	<select id="getStorageSummaryBatchByStorageidNew" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.StorageSummaryBatch">
+		select <include refid="storageSummaryBatch-column"/>
+		from t_storage_summary_batch where storageid=#{storageid} and goodsid=#{goodsid} and batchstate!='2'
+		order by produceddate
+		limit 1
+	</select>
+	<select id="getStorageSummaryBatchByStorageidLast" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.StorageSummaryBatch">
+		select <include refid="storageSummaryBatch-column"/>
+		from t_storage_summary_batch where storageid=#{storageid} and goodsid=#{goodsid}
+		order by produceddate desc
+		limit 1
+	</select>
+
+	<select id="showStorageSummaryBatchListByStorageidAndGoodsid" parameterType="com.hd.agent.common.util.PageMap" resultType="java.util.Map">
+		<![CDATA[
+		select t.id,t.summaryid,t.goodsid,t.brandid,t.storageid,t.storagelocationid,t.batchno,t.produceddate,t.deadline,t.barcode,g.name as goodsname,if(${condition.isStorageAccount}='1',t.costprice,g.newstorageprice)  as costprice,m.rate as boxnum,g.defaultsupplier as supplierid,
+		t.existingnum,floor(t.existingnum/m.rate) as existingauxint,mod(t.existingnum,m.rate) as existingauxnum,g.newbuyprice*t.existingnum as existingamount,if(${condition.isStorageAccount}='1',t.costprice,g.newstorageprice) *t.existingnum as costamount,CONCAT(if(t.existingnum<0,'-',''),ABS(floor(t.existingnum/m.rate)),t.auxunitname,ABS(mod(t.existingnum,m.rate)),t.unitname) as auxexistingdetail,
+		t.usablenum,if(t.usablenum<0,ceil(t.usablenum/m.rate),floor(t.usablenum/m.rate)) as usableauxint,mod(t.usablenum,m.rate) as usableauxnum,g.newbuyprice*t.usablenum as usableamount,CONCAT(if(t.usablenum<0,'-',''),ABS(floor(t.usablenum/m.rate)),t.auxunitname,ABS(mod(t.usablenum,m.rate)),t.unitname) as auxusabledetail,
+		t.waitnum,if(t.waitnum>0,floor(ABS(t.waitnum)/m.rate),-floor(ABS(t.waitnum)/m.rate)) as waitauxint,if(t.waitnum>0,floor(ABS(t.waitnum)%m.rate),-floor(ABS(t.waitnum)%m.rate)) as waitauxnum,g.newbuyprice*t.waitnum as waitamount,CONCAT(if(t.waitnum<0,'-',''),ABS(floor(t.waitnum/m.rate)),t.auxunitname,ABS(mod(t.waitnum,m.rate)),t.unitname) as auxwaitnumdetail,
+		t.allotwaitnum,if(t.allotwaitnum>0,floor(ABS(t.allotwaitnum)/m.rate),-floor(ABS(t.allotwaitnum)/m.rate)) as allotwaitauxint,if(t.allotwaitnum>0,floor(ABS(t.allotwaitnum)%m.rate),-floor(ABS(t.allotwaitnum)%m.rate)) as allotwaitauxnum,g.newbuyprice*t.allotwaitnum as allotwaitamount,CONCAT(if(t.allotwaitnum<0,'-',''),ABS(floor(t.allotwaitnum/m.rate)),t.auxunitname,ABS(mod(t.allotwaitnum,m.rate)),t.unitname) as auxallotwaitnumdetail,
+		t.allotenternum,if(t.allotenternum>0,floor(ABS(t.allotenternum)/m.rate),-floor(ABS(t.allotenternum)/m.rate)) as allotenterauxint,if(t.allotenternum>0,floor(ABS(t.allotenternum)%m.rate),-floor(ABS(t.allotenternum)%m.rate)) as allotenterauxnum,g.newbuyprice*t.allotenternum as allotenteramount,CONCAT(if(t.allotenternum<0,'-',''),ABS(floor(t.allotenternum/m.rate)),t.auxunitname,ABS(mod(t.allotenternum,m.rate)),t.unitname) as auxallotenternumdetail
+		from t_storage_summary_batch t
+		inner join t_storage_summary t1 on t.summaryid=t1.id
+		LEFT JOIN t_base_goods_info g on t.goodsid=g.id
+		LEFT JOIN t_base_goods_info_meteringunit m on t.goodsid=m.goodsid and m.isdefault='1'
+		]]>
+		<trim prefix="where" prefixOverrides="and|or">
+		  <include refid="common.Page_dataSql"/>
+	      <if test="condition.goodsid != null">
+	         and t.goodsid = #{condition.goodsid}
+	      </if>
+	      <if test="condition.storageid != null">
+	         and t.storageid = #{condition.storageid}
+	      </if>
+			<if test="condition.showZero != null and condition.showZero != '' ">
+				and t.existingnum != 0
+			</if>
+
+	      <if test="1==1">
+	        and t.batchstate!='2'
+	      </if>
+	    </trim>
+	</select>
+	<select id="getStorageSummaryBatchBySummaryid" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.StorageSummaryBatch">
+		select <include refid="storageSummaryBatch-column"/>
+		from t_storage_summary_batch where summaryid =#{summaryid}
+	</select>
+	<select id="getStorageSummaryBatchByStorageidAndStoragelocationid" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.StorageSummaryBatch">
+		select <include refid="storageSummaryBatch-column"/>
+		from t_storage_summary_batch 
+		where goodsid=#{goodsid} 
+		and storageid =#{storageid}
+		<if test="storagelocationid != null">
+	        and storagelocationid=#{storagelocationid}
+	    </if>
+	    limit 1
+	</select>
+	<select id="getStorageSummaryBatchByStorageidAndBatchno" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.StorageSummaryBatch">
+		select <include refid="storageSummaryBatch-column"/>
+		from t_storage_summary_batch 
+		where goodsid=#{goodsid} 
+		and storageid =#{storageid}
+        and batchno=#{batchno}
+	</select>
+	
+	<update id="updateStorageSummaryBacth" parameterType="com.hd.agent.storage.model.StorageSummaryBatch">
+		update t_storage_summary_batch
+	    <set>
+	      <if test="summaryid != null">
+	        summaryid = #{summaryid},
+	      </if>
+	      <if test="goodsid != null">
+	        goodsid = #{goodsid},
+	      </if>
+	      <if test="brandid != null">
+	        brandid = #{brandid},
+	      </if>
+	      <if test="branddept != null">
+	        branddept = #{branddept},
+	      </if>
+	      <if test="barcode != null">
+	        barcode = #{barcode},
+	      </if>
+	      <if test="storageid != null">
+	        storageid = #{storageid},
+	      </if>
+	      <if test="batchno != null">
+	        batchno = #{batchno},
+	      </if>
+	      <if test="batchstate != null">
+	        batchstate = #{batchstate},
+	      </if>
+	      <if test="existingnum != null">
+	        existingnum = #{existingnum},
+	      </if>
+	      <if test="usablenum != null">
+	        usablenum = #{usablenum},
+	      </if>
+	      <if test="waitnum != null">
+	        waitnum = #{waitnum},
+	      </if>
+	      <if test="allotwaitnum != null">
+	        allotwaitnum = #{allotwaitnum},
+	      </if>
+	      <if test="allotenternum != null">
+	        allotenternum = #{allotenternum},
+	      </if>
+	      <if test="intinum != null">
+	        intinum = #{intinum},
+	      </if>
+	      <if test="sendnum != null">
+	        sendnum = #{sendnum},
+	      </if>
+	      <if test="unitid != null">
+	        unitid = #{unitid},
+	      </if>
+	      <if test="unitname != null">
+	        unitname = #{unitname},
+	      </if>
+	      <if test="auxunitid != null">
+	        auxunitid = #{auxunitid},
+	      </if>
+	      <if test="auxunitname != null">
+	        auxunitname = #{auxunitname},
+	      </if>
+	      <if test="price != null">
+	        price = #{price},
+	      </if>
+	      <if test="amount != null">
+	        amount = #{amount},
+	      </if>
+	      <if test="costprice != null">
+	        costprice = #{costprice},
+	      </if>
+	      <if test="produceddate != null">
+	        produceddate = #{produceddate},
+	      </if>
+	      <if test="deadline != null">
+	        deadline = #{deadline},
+	      </if>
+	      <if test="enterdate != null">
+	        enterdate = #{enterdate},
+	      </if>
+	      <if test="gooutdate != null">
+	        gooutdate = #{gooutdate},
+	      </if>
+	      <if test="1==1">
+	        modifytime = now(),version=version+1
+	      </if>
+	    </set>
+	    where id = #{id} and version=#{version}
+	</update>
+	<delete id="deleteStorageSummaryBatchByID" parameterType="java.lang.String">
+		delete from t_storage_summary_batch
+		where id=#{id}
+	</delete>
+
+	<select id="getStorageSummaryBatchListByMap" parameterType="java.util.Map" resultType="com.hd.agent.storage.model.StorageSummaryBatch">
+		select t.id, t.summaryid, t.goodsid,t.barcode, t.storageid,t.storagelocationid, t.batchno, t.batchstate, t.existingnum, t.usablenum, t.waitnum,
+	    t.allotwaitnum, t.allotenternum, t.intinum, t.sendnum, t.unitid, t.unitname, t.auxunitid, t.auxunitname,
+	    t.price, t.amount,t.costprice, t.produceddate, t.deadline, t.enterdate, t.gooutdate,g.brand
+		from t_storage_summary_batch t
+		inner join t_base_goods_info g on t.goodsid=g.id and g.state='1'
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="1 == 1">
+				<![CDATA[and t.batchstate<>'2' ]]>
+			</if>
+			<if test="storageid != null">
+				and t.storageid=#{storageid}
+			</if>
+			<if test="brands != null">
+				and g.brand in
+				<foreach collection="brands" item="item" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="goodssorts != null">
+				and g.defaultsort in
+				<foreach collection="goodssorts" item="item" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+		</trim>
+		order by g.brand,t.goodsid
+	</select>
+	<select id="getStorageSummaryBatchSumListByMap" parameterType="java.util.Map" resultType="com.hd.agent.storage.model.StorageSummaryBatch">
+		select t.id, t.summaryid, t.goodsid,t.barcode, t.storageid,sum(t.existingnum) as existingnum, sum(t.usablenum), sum(t.waitnum) as waitnum,
+		sum(t.allotwaitnum) as allotwaitnum, sum(t.allotenternum) as allotenternum, t.unitid, t.unitname, t.auxunitid, t.auxunitname
+		from t_storage_summary_batch t
+		inner join t_base_goods_info g on t.goodsid=g.id and g.state='1'
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="1 == 1">
+				<![CDATA[and t.batchstate<>'2' ]]>
+			</if>
+			<if test="storageid != null">
+				and t.storageid=#{storageid}
+			</if>
+			<if test="brands != null">
+				and g.brand in
+				<foreach collection="brands" item="item" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="goodssorts != null">
+				and g.defaultsort in
+				<foreach collection="goodssorts" item="item" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+		</trim>
+		group by t.storageid,t.goodsid
+		order by g.defaultsort,t.goodsid
+	</select>
+
+	<select id="getStorageSummaryBatchListByStorageid" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.StorageSummaryBatch">
+		select t.id, t.summaryid, t.goodsid,t.barcode, t.storageid,t.storagelocationid, t.batchno, t.batchstate, t.existingnum, t.usablenum, t.waitnum, 
+	    t.allotwaitnum, t.allotenternum, t.intinum, t.sendnum, t.unitid, t.unitname, t.auxunitid, t.auxunitname, 
+	    t.price, t.amount,t.costprice, t.produceddate, t.deadline, t.enterdate, t.gooutdate,g.brand
+		from t_storage_summary_batch t 
+		inner join t_base_goods_info g on t.goodsid=g.id and g.state='1'
+		<![CDATA[where t.storageid=#{storageid} and t.batchstate<>'2' ]]>
+		order by g.brand,t.goodsid
+	</select> 
+	<select id="getStorageSummaryBatchSumListByStorageid" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.StorageSummaryBatch">
+		select t.id, t.summaryid, t.goodsid,t.barcode, t.storageid,sum(t.existingnum) as existingnum, sum(t.usablenum) as usablenum, sum(t.waitnum) as waitnum, 
+	    sum(t.allotwaitnum) as allotwaitnum, sum(t.allotenternum) as allotenternum
+		from t_storage_summary_batch t 
+		inner join t_base_goods_info g on t.goodsid=g.id and g.state='1'
+		<![CDATA[where t.storageid=#{storageid} ]]>
+		group by t.storageid,t.goodsid
+		order by g.brand,t.goodsid
+	</select> 
+	
+	<select id="getStorageSummaryBatchListByStorageidAndBrand" resultType="com.hd.agent.storage.model.StorageSummaryBatch">
+		select t.id, t.summaryid, t.goodsid,t.barcode, t.storageid,t.storagelocationid, t.batchno, t.batchstate, t.existingnum, t.usablenum, t.waitnum, 
+	    t.allotwaitnum, t.allotenternum, t.intinum, t.sendnum, t.unitid, t.unitname, t.auxunitid, t.auxunitname, 
+	    t.price, t.amount,t.costprice, t.produceddate, t.deadline, t.enterdate, t.gooutdate,g.brand
+		from t_storage_summary_batch t 
+		inner join t_base_goods_info g on t.goodsid=g.id and g.state='1'
+		where g.brand in
+		<foreach collection="brands" item="item" open="(" separator="," close=")">
+	  		#{item}
+	  	</foreach>
+	  	<![CDATA[ and t.batchstate<>'2' and t.storageid=#{storageid}]]>
+		order by g.brand,t.goodsid
+	</select>
+	<select id="getStorageSummaryBatchSumListByStorageidAndBrand" resultType="com.hd.agent.storage.model.StorageSummaryBatch">
+		select t.id, t.summaryid, t.goodsid,t.barcode, t.storageid,sum(t.existingnum) as existingnum, sum(t.usablenum) as usablenum, sum(t.waitnum) as waitnum, 
+	    sum(t.allotwaitnum) as allotwaitnum, sum(t.allotenternum) as allotenternum, t.auxunitid, t.auxunitname
+		from t_storage_summary_batch t 
+		inner join t_base_goods_info g on t.goodsid=g.id and g.state='1'
+		where g.brand in
+		<foreach collection="brands" item="item" open="(" separator="," close=")">
+	  		#{item}
+	  	</foreach>
+	  	<![CDATA[  and t.storageid=#{storageid}]]>
+	  	group by t.storageid,t.goodsid
+		order by g.brand,t.goodsid
+	</select>
+	
+	<select id="getStorageSummaryBatchListByStorageidAndGoodssorts" resultType="com.hd.agent.storage.model.StorageSummaryBatch">
+		select t.id, t.summaryid, t.goodsid,t.barcode, t.storageid,t.storagelocationid, t.batchno, t.batchstate, t.existingnum, t.usablenum, t.waitnum, 
+	    t.allotwaitnum, t.allotenternum, t.intinum, t.sendnum, t.unitid, t.unitname, t.auxunitid, t.auxunitname,
+	    t.price, t.amount,t.costprice, t.produceddate, t.deadline, t.enterdate, t.gooutdate,g.brand
+		from t_storage_summary_batch t 
+		inner join t_base_goods_info g on t.goodsid=g.id and g.state='1'
+		where g.defaultsort in
+		<foreach collection="goodssorts" item="item" open="(" separator="," close=")">
+	  		#{item}
+	  	</foreach>
+	  	<![CDATA[ and t.batchstate<>'2' and t.storageid=#{storageid}]]>
+		order by g.defaultsort,t.goodsid
+	</select>
+	<select id="getStorageSummaryBatchSumListByStorageidAndGoodssorts" resultType="com.hd.agent.storage.model.StorageSummaryBatch">
+		select t.id, t.summaryid, t.goodsid,t.barcode, t.storageid,sum(t.existingnum) as existingnum, sum(t.usablenum), sum(t.waitnum) as waitnum, 
+	    sum(t.allotwaitnum) as allotwaitnum, sum(t.allotenternum) as allotenternum, t.unitid, t.unitname, t.auxunitid, t.auxunitname
+		from t_storage_summary_batch t 
+		inner join t_base_goods_info g on t.goodsid=g.id and g.state='1'
+		where g.defaultsort in
+		<foreach collection="goodssorts" item="item" open="(" separator="," close=")">
+	  		#{item}
+	  	</foreach>
+	  	<![CDATA[ and t.batchstate<>'2' and t.storageid=#{storageid}]]>
+	  	group by t.storageid,t.goodsid
+		order by g.defaultsort,t.goodsid
+	</select>
+
+	<select id="getStorageSummaryBatchInfoById" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.StorageSummaryBatch">
+		select <include refid="storageSummaryBatch-column"/>
+		from t_storage_summary_batch where id=#{id}
+	</select>
+	<select id="getStorageSummaryBatchByStorageidAndGoodsid" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.StorageSummaryBatch">
+		select <include refid="storageSummaryBatch-column"/>
+		from t_storage_summary_batch where storageid=#{storageid} and goodsid=#{goodsid}
+		order by id
+		limit 1
+	</select>
+	<select id="getStorageSummaryBatchNoBatchnoByStorageidAndGoodsid" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.StorageSummaryBatch">
+		select <include refid="storageSummaryBatch-column"/>
+		from t_storage_summary_batch where storageid=#{storageid} and goodsid=#{goodsid} and (batchno='' or batchno is null)
+	</select>
+	
+	<select id="getSotrageSummaryBatchListByGoodsid" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.StorageSummaryBatch">
+		select <include refid="storageSummaryBatch-column"/>
+		from t_storage_summary_batch where goodsid=#{goodsid}
+	</select>
+	<!-- 库存现存量追踪日志 -->
+	<insert id="addStorageSummaryLog" parameterType="com.hd.agent.storage.model.StorageSummaryLog">
+		insert into t_storage_summary_log
+	    <trim prefix="(" suffix=")" suffixOverrides=",">
+	      <if test="id != null">
+	        id,
+	      </if>
+	      <if test="summarybatchid != null">
+	        summarybatchid,
+	      </if>
+	      <if test="goodsid != null">
+	        goodsid,
+	      </if>
+	      <if test="storageid != null">
+	        storageid,
+	      </if>
+	      <if test="storagelocationid != null">
+	        storagelocationid,
+	      </if>
+	      <if test="batchno != null">
+	        batchno,
+	      </if>
+	      <if test="billmodel != null">
+	        billmodel,
+	      </if>
+	      <if test="billid != null">
+	        billid,
+	      </if>
+	      <if test="unitid != null">
+	        unitid,
+	      </if>
+	      <if test="unitname != null">
+	        unitname,
+	      </if>
+	      <if test="receivenum != null">
+	        receivenum,
+	      </if>
+	      <if test="sendnum != null">
+	        sendnum,
+	      </if>
+	      <if test="begintotalnum != null">
+	        begintotalnum,
+	      </if>
+	      <if test="endtotalnum != null">
+	        endtotalnum,
+	      </if>
+	      <if test="beginstoragenum != null">
+	        beginstoragenum,
+	      </if>
+	      <if test="endstoragenum != null">
+	        endstoragenum,
+	      </if>
+	      <if test="beginbatchnum != null">
+	        beginbatchnum,
+	      </if>
+	      <if test="endbatchnum != null">
+	        endbatchnum,
+	      </if>
+	      <if test="auxunitid != null">
+	        auxunitid,
+	      </if>
+	      <if test="auxunitname != null">
+	        auxunitname,
+	      </if>
+	      <if test="auxreceivenum != null">
+	        auxreceivenum,
+	      </if>
+	      <if test="auxreceivenumdetail != null">
+	        auxreceivenumdetail,
+	      </if>
+	      <if test="auxsendnum != null">
+	        auxsendnum,
+	      </if>
+	      <if test="auxsendnumdetail != null">
+	        auxsendnumdetail,
+	      </if>
+	      <if test="auxbegintotalnum != null">
+	        auxbegintotalnum,
+	      </if>
+	      <if test="auxbegintotalnumdetail != null">
+	        auxbegintotalnumdetail,
+	      </if>
+	      <if test="auxendtotalnum != null">
+	        auxendtotalnum,
+	      </if>
+	      <if test="auxendtotalnumdetail != null">
+	        auxendtotalnumdetail,
+	      </if>
+	      <if test="auxbeginstoragenum != null">
+	        auxbeginstoragenum,
+	      </if>
+	      <if test="auxbeginstoragenumdetail != null">
+	        auxbeginstoragenumdetail,
+	      </if>
+	      <if test="auxendstoragenum != null">
+	        auxendstoragenum,
+	      </if>
+	      <if test="auxendstoragenumdetail != null">
+	        auxendstoragenumdetail,
+	      </if>
+	      <if test="auxbeginbatchnum != null">
+	        auxbeginbatchnum,
+	      </if>
+	      <if test="auxbeginbatchnumdetail != null">
+	        auxbeginbatchnumdetail,
+	      </if>
+	      <if test="auxendbatchnum != null">
+	        auxendbatchnum,
+	      </if>
+	      <if test="auxendbatchnumdetail != null">
+	        auxendbatchnumdetail,
+	      </if>
+	      <if test="remark != null">
+	        remark,
+	      </if>
+	      <if test="addusrid != null">
+	        addusrid,
+	      </if>
+	      <if test="addusername != null">
+	        addusername,
+	      </if>
+	      <if test="1==1">
+	        addtime,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides=",">
+	      <if test="id != null">
+	        #{id},
+	      </if>
+	      <if test="summarybatchid != null">
+	        #{summarybatchid},
+	      </if>
+	      <if test="goodsid != null">
+	        #{goodsid},
+	      </if>
+	      <if test="storageid != null">
+	        #{storageid},
+	      </if>
+	      <if test="storagelocationid != null">
+	        #{storagelocationid},
+	      </if>
+	      <if test="batchno != null">
+	        #{batchno},
+	      </if>
+	      <if test="billmodel != null">
+	        #{billmodel},
+	      </if>
+	      <if test="billid != null">
+	        #{billid},
+	      </if>
+	      <if test="unitid != null">
+	        #{unitid},
+	      </if>
+	      <if test="unitname != null">
+	        #{unitname},
+	      </if>
+	      <if test="receivenum != null">
+	        #{receivenum},
+	      </if>
+	      <if test="sendnum != null">
+	        #{sendnum},
+	      </if>
+	      <if test="begintotalnum != null">
+	        #{begintotalnum},
+	      </if>
+	      <if test="endtotalnum != null">
+	        #{endtotalnum},
+	      </if>
+	      <if test="beginstoragenum != null">
+	        #{beginstoragenum},
+	      </if>
+	      <if test="endstoragenum != null">
+	        #{endstoragenum},
+	      </if>
+	      <if test="beginbatchnum != null">
+	        #{beginbatchnum},
+	      </if>
+	      <if test="endbatchnum != null">
+	        #{endbatchnum},
+	      </if>
+	      <if test="auxunitid != null">
+	        #{auxunitid},
+	      </if>
+	      <if test="auxunitname != null">
+	        #{auxunitname},
+	      </if>
+	      <if test="auxreceivenum != null">
+	        #{auxreceivenum},
+	      </if>
+	      <if test="auxreceivenumdetail != null">
+	        #{auxreceivenumdetail},
+	      </if>
+	      <if test="auxsendnum != null">
+	        #{auxsendnum},
+	      </if>
+	      <if test="auxsendnumdetail != null">
+	        #{auxsendnumdetail},
+	      </if>
+	      <if test="auxbegintotalnum != null">
+	        #{auxbegintotalnum},
+	      </if>
+	      <if test="auxbegintotalnumdetail != null">
+	        #{auxbegintotalnumdetail},
+	      </if>
+	      <if test="auxendtotalnum != null">
+	        #{auxendtotalnum},
+	      </if>
+	      <if test="auxendtotalnumdetail != null">
+	        #{auxendtotalnumdetail},
+	      </if>
+	      <if test="auxbeginstoragenum != null">
+	        #{auxbeginstoragenum},
+	      </if>
+	      <if test="auxbeginstoragenumdetail != null">
+	        #{auxbeginstoragenumdetail},
+	      </if>
+	      <if test="auxendstoragenum != null">
+	        #{auxendstoragenum},
+	      </if>
+	      <if test="auxendstoragenumdetail != null">
+	        #{auxendstoragenumdetail},
+	      </if>
+	      <if test="auxbeginbatchnum != null">
+	        #{auxbeginbatchnum},
+	      </if>
+	      <if test="auxbeginbatchnumdetail != null">
+	        #{auxbeginbatchnumdetail},
+	      </if>
+	      <if test="auxendbatchnum != null">
+	        #{auxendbatchnum},
+	      </if>
+	      <if test="auxendbatchnumdetail != null">
+	        #{auxendbatchnumdetail},
+	      </if>
+	      <if test="remark != null">
+	        #{remark},
+	      </if>
+	      <if test="addusrid != null">
+	        #{addusrid},
+	      </if>
+	      <if test="addusername != null">
+	        #{addusername},
+	      </if>
+	      <if test="1==1">
+	        now(),
+	      </if>
+	    </trim>
+	</insert>
+	<select id="getInitdate" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.StorageSummaryLog">
+	    select storageid,goodsid,existingnum as beginnum,businessdate as auxunitname
+		from t_report_storage_bak 
+		<trim prefix="where" prefixOverrides="and|or">
+		    <if test="1 == 1">
+		        <![CDATA[and businessdate<DATE_ADD(STR_TO_DATE(#{queryinitdate2}, '%Y-%m-%d'),INTERVAL 1 DAY) and businessdate>DATE_ADD(STR_TO_DATE(#{queryinitdate1},'%Y-%m-%d'),INTERVAL 1 DAY)]]>
+		    </if>
+	        <if test="storageid != null" >
+		        and storageid = #{storageid}
+	        </if>
+	        <if test="goodsid != null" >
+	            and FIND_IN_SET(goodsid,#{goodsid})
+	        </if>
+		</trim>
+    </select>
+	<sql id="storageSummaryLogList_sql">
+	   (
+	    select id, summarybatchid, goodsid, storageid, storagelocationid, batchno, billmodel, billid, 
+	    unitid, unitname, receivenum, sendnum, begintotalnum, endtotalnum, beginstoragenum, 
+	    endstoragenum, beginbatchnum, endbatchnum, auxunitid, auxunitname, auxreceivenum, 
+	    auxreceivenumdetail, auxsendnum, auxsendnumdetail, auxbegintotalnum, auxbegintotalnumdetail, 
+	    auxendtotalnum, auxendtotalnumdetail, auxbeginstoragenum, auxbeginstoragenumdetail, 
+	    auxendstoragenum, auxendstoragenumdetail, auxbeginbatchnum, auxbeginbatchnumdetail, 
+	    auxendbatchnum, auxendbatchnumdetail, remark, addusrid, addusername, addtime,date_format(addtime,'%Y-%m-%d')  as businessdate
+	    from t_storage_summary_log
+		<trim prefix="where" prefixOverrides="and|or">
+		  <if test="condition.businessdate1 != null">
+			 and addtime >= STR_TO_DATE(#{condition.businessdate1},'%Y-%m-%d')
+		  </if>
+		  <if test="condition.businessdate2 != null">
+			 <![CDATA[and addtime <= DATE_ADD(STR_TO_DATE(#{condition.businessdate2}, '%Y-%m-%d'),INTERVAL 1 DAY)]]>
+		  </if>
+	      <if test="condition.goodsid != null">
+	         and goodsid = #{condition.goodsid}
+	      </if>
+	      <if test="condition.storageid != null">
+	         and storageid = #{condition.storageid}
+	      </if>
+	      <if test="condition.storagelocationid != null">
+	         and storagelocationid = #{condition.storagelocationid}
+	      </if>
+	      <if test="condition.batchno != null">
+	         and batchno = #{condition.batchno}
+	      </if>
+	      <if test="condition.billmodel != null">
+	         and billmodel = #{condition.billmodel}
+	      </if>
+	      <if test="condition.billid != null">
+	         and billid = #{condition.billid}
+	      </if>
+	      <include refid="common.Page_querySql"/>
+		  <include refid="common.Page_dataSql"/>
+	    </trim>
+	    )
+	</sql>
+	<select id="showStorageSummaryLogList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.storage.model.StorageSummaryLog">
+		select * from (
+		    select z.id,z.businessdate, z.summarybatchid, z.goodsid, z.storageid, z.storagelocationid, z.batchno, z.billmodel, z.billid,
+		        z.unitid, z.unitname, z.receivenum, z.sendnum, z.beginstoragenum as beginnum, z.endstoragenum as endnum, z.beginstoragenum,
+		        z.endstoragenum, z.beginbatchnum, z.endbatchnum, z.auxunitid, z.auxunitname, z.auxreceivenum,
+		        z.auxreceivenumdetail, z.auxsendnum, z.auxsendnumdetail, z.auxbegintotalnum , z.auxbegintotalnumdetail as auxbeginnumdetail,
+		        z.auxendtotalnum, z.auxendtotalnumdetail as auxendnumdetail, z.auxbeginstoragenum, z.auxbeginstoragenumdetail, 
+		        z.auxendstoragenum, z.auxendstoragenumdetail, z.auxbeginbatchnum, z.auxbeginbatchnumdetail, 
+		        z.auxendbatchnum, z.auxendbatchnumdetail, z.remark, z.addusrid, z.addusername, z.addtime
+		    from  <include refid="storageSummaryLogList_sql"/> z 
+		    union all 
+		    select z.id,z.businessdate, z.summarybatchid, z.goodsid, z.storageid, z.storagelocationid, z.batchno,9 as billmodel, z.billid,
+		        z.unitid, z.unitname,sum(z.receivenum) as receivenum, sum(z.sendnum) as sendnum, sum(z.begintotalnum) as begintotalnum,sum(z.endtotalnum) as endtotalnum,sum(z.beginstoragenum) as beginstoragenum,
+		        sum(z.endstoragenum) as endstoragenum,sum(z.beginbatchnum) as beginbatchnum,sum(z.endbatchnum) as endbatchnum, z.auxunitid, z.auxunitname,sum(z.auxreceivenum) as auxreceivenum,
+		        z.auxreceivenumdetail,sum(z.auxsendnum) as auxsendnum, z.auxsendnumdetail,sum(z.auxbegintotalnum) as auxbegintotalnum, z.auxbegintotalnumdetail,
+		        sum(z.auxendtotalnum) as auxendtotalnum, z.auxendtotalnumdetail,sum(z.auxbeginstoragenum) as auxbeginstoragenum, z.auxbeginstoragenumdetail, 
+		        sum(z.auxendstoragenum) as auxendstoragenum, z.auxendstoragenumdetail,sum(z.auxbeginbatchnum) as auxbeginbatchnum, z.auxbeginbatchnumdetail, 
+		        sum(z.auxendbatchnum) as auxendbatchnum, z.auxendbatchnumdetail, z.remark, z.addusrid, z.addusername, max(z.addtime)
+		    from  <include refid="storageSummaryLogList_sql"/> z 
+		    group by z.businessdate
+		)y
+		order by addtime asc,billmodel desc
+	</select>
+	<select id="showStorageSummaryLogCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+		select count(1) from (
+		    select z.id,z.businessdate, z.summarybatchid, z.goodsid, z.storageid, z.storagelocationid, z.batchno, z.billmodel, z.billid,
+		        z.unitid, z.unitname, z.receivenum, z.sendnum, z.begintotalnum, z.endtotalnum, z.beginstoragenum,
+		        z.endstoragenum, z.beginbatchnum, z.endbatchnum, z.auxunitid, z.auxunitname, z.auxreceivenum,
+		        z.auxreceivenumdetail, z.auxsendnum, z.auxsendnumdetail, z.auxbegintotalnum, z.auxbegintotalnumdetail,
+		        z.auxendtotalnum, z.auxendtotalnumdetail, z.auxbeginstoragenum, z.auxbeginstoragenumdetail, 
+		        z.auxendstoragenum, z.auxendstoragenumdetail, z.auxbeginbatchnum, z.auxbeginbatchnumdetail, 
+		        z.auxendbatchnum, z.auxendbatchnumdetail, z.remark, z.addusrid, z.addusername, z.addtime
+		    from  <include refid="storageSummaryLogList_sql"/> z 
+		    union all 
+		    select z.id,z.businessdate, z.summarybatchid, z.goodsid, z.storageid, z.storagelocationid, z.batchno,9 as billmodel, z.billid,
+		        z.unitid, z.unitname,sum(z.receivenum) as receivenum, sum(z.sendnum) as sendnum, sum(z.begintotalnum) as begintotalnum,sum(z.endtotalnum) as endtotalnum,sum(z.beginstoragenum) as beginstoragenum,
+		        sum(z.endstoragenum) as endstoragenum,sum(z.beginbatchnum) as beginbatchnum,sum(z.endbatchnum) as endbatchnum, z.auxunitid, z.auxunitname,sum(z.auxreceivenum) as auxreceivenum,
+		        z.auxreceivenumdetail,sum(z.auxsendnum) as auxsendnum, z.auxsendnumdetail,sum(z.auxbegintotalnum) as auxbegintotalnum, z.auxbegintotalnumdetail,
+		        sum(z.auxendtotalnum) as auxendtotalnum, z.auxendtotalnumdetail,sum(z.auxbeginstoragenum) as auxbeginstoragenum, z.auxbeginstoragenumdetail, 
+		        sum(z.auxendstoragenum) as auxendstoragenum, z.auxendstoragenumdetail,sum(z.auxbeginbatchnum) as auxbeginbatchnum, z.auxbeginbatchnumdetail, 
+		        sum(z.auxendbatchnum) as auxendbatchnum, z.auxendbatchnumdetail, z.remark, z.addusrid, z.addusername, z.addtime
+		    from  <include refid="storageSummaryLogList_sql"/> z 
+		    group by z.businessdate
+		)y
+	</select>
+	<select id="showStorageSummaryLogSum" parameterType="com.hd.agent.common.util.PageMap" resultType="java.util.Map">
+	    select  z.goodsid,z.unitname,z.auxunitname,sum(z.receivenum) as receivenum, sum(z.sendnum) as sendnum, sum(z.begintotalnum) as begintotalnum,sum(z.endtotalnum) as endtotalnum,sum(z.beginstoragenum) as beginstoragenum,
+		        sum(z.endstoragenum) as endstoragenum,sum(z.beginbatchnum) as beginbatchnum,sum(z.endbatchnum) as endbatchnum,  sum(z.auxreceivenum) as auxreceivenum,
+		        sum(z.auxsendnum) as auxsendnum,sum(z.auxbegintotalnum) as auxbegintotalnum,sum(z.auxendtotalnum) as auxendtotalnum,sum(z.auxbeginstoragenum) as auxbeginstoragenum,
+		        sum(z.auxendstoragenum) as auxendstoragenum, sum(z.auxbeginbatchnum) as auxbeginbatchnum,sum(z.auxendbatchnum) as auxendbatchnum
+		from  <include refid="storageSummaryLogList_sql"/> z
+	</select>
+	<select id="getStorageSummaryBatchListByStorageidAndGoodsid" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.StorageSummaryBatch">
+		select <include refid="storageSummaryBatch-column"/>
+		from t_storage_summary_batch where batchstate!='2' and goodsid=#{goodsid} and storageid=#{storageid}
+		order by produceddate
+	</select>
+	<select id="getStorageSummaryBatchListWithoutNoBatchByStorageidAndGoodsid" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.StorageSummaryBatch">
+		select <include refid="storageSummaryBatch-column"/>
+		from t_storage_summary_batch where batchstate!='2' and goodsid=#{goodsid} and storageid=#{storageid} and batchno!='' and batchno is not null and produceddate!='' and produceddate is not null
+		order by produceddate
+	</select>
+	<select id="getStorageSummaryBatchListOrderNums" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.StorageSummaryBatch">
+		select <include refid="storageSummaryBatch-column"/>
+		from t_storage_summary_batch where batchstate!='2' and goodsid=#{goodsid} and storageid=#{storageid}
+		order by usablenum asc
+	</select>
+	<select id="getStorageSummaryBatchListOrderEnterdate" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.StorageSummaryBatch">
+		select <include refid="storageSummaryBatch-column"/>
+		from t_storage_summary_batch where batchstate!='2' and goodsid=#{goodsid} and storageid=#{storageid}
+		order by enterdate asc,usablenum asc
+	</select>
+	<select id="getStorageSummaryListByGoodsWithoutStorageid" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.StorageSummary">
+		select <include refid="storageSummary-column"/>
+		from t_storage_summary
+		where storageid!=#{storageid} and  goodsid = #{goodsid} and issendstorage='1'
+		order by usablenum desc
+	</select>
+	<select id="getStorageGoodsSelectListData" parameterType="com.hd.agent.common.util.PageMap" resultType="java.util.Map">
+		select * from (
+		select t.id as summarybatchid,t.goodsid,t.storageid,t.storagelocationid,t.unitid,t.unitname,t.auxunitid,t.auxunitname,t.existingnum,t.usablenum,t.waitnum,t.allotwaitnum,t.allotenternum,
+		t.batchno,t.produceddate,t.deadline,g.newbuyprice as price,t.amount,t.costprice,
+		g.name as goodsname,g.model,g.brand,g.barcode,g.defaultbuyer,g.defaultsupplier,g.highestbuyprice
+		from t_storage_summary_batch t
+		left join t_base_goods_info g on t.goodsid=g.id
+	  	<trim prefix="where" prefixOverrides="and|or">
+	      	<include refid="common.Page_dataSql"/>
+	      	<if test="condition.id != null" >
+	      		and (g.pinyin like CONCAT('%',#{condition.id},'%') or g.barcode like CONCAT('%',#{condition.id})
+	      		or g.name like CONCAT('%',#{condition.id},'%')
+	      		or g.spell like CONCAT(#{condition.id},'%')
+	         	or g.id like CONCAT(#{condition.id},'%'))
+	      	</if>
+	      	<if test="1==1" >
+	         	and t.batchstate!='2'
+	      	</if>
+	      	<if test="condition.queryAllBySupplier != null" >
+	         	and (g.defaultsupplier = #{condition.queryAllBySupplier} or FIND_IN_SET(#{condition.queryAllBySupplier},g.secondsupplier))
+	      	</if>
+		</trim>
+		) z
+		<trim prefix="where" prefixOverrides="and|or">
+	      	<if test="condition.paramRuleSql != null">and ${condition.paramRuleSql}</if>
+	      	<if test="condition.paramRuleSql == null">and 1=1</if>
+		</trim>
+		order by z.brand,z.goodsid
+		<include refid="common.Page_limit"/>
+	</select>
+	<select id="getStorageGoodsSelectListDataCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+		select count(1) from (
+		select t.id as summarybatchid,t.goodsid,t.storageid,t.storagelocationid,t.unitid,t.unitname,t.auxunitid,t.auxunitname,t.existingnum,t.usablenum,t.waitnum,t.allotwaitnum,t.allotenternum,
+		t.batchno,t.produceddate,t.deadline,g.newbuyprice as price,t.amount,t.costprice,
+		g.name as goodsname,g.model,g.brand,g.barcode,g.defaultbuyer,g.defaultsupplier,g.defaultsaler
+		from t_storage_summary_batch t
+		left join t_base_goods_info g on t.goodsid=g.id
+	  	<trim prefix="where" prefixOverrides="and|or">
+	      	<include refid="common.Page_dataSql"/>
+	      	<if test="condition.id != null" >
+	      		and (g.pinyin like CONCAT('%',#{condition.id},'%') or g.barcode like CONCAT('%',#{condition.id})
+	      		or g.name like CONCAT('%',#{condition.id},'%')
+	      		or g.spell like CONCAT(#{condition.id},'%')
+	         	or g.id like CONCAT(#{condition.id},'%'))
+	      	</if>
+	      	<if test="1==1" >
+	         	and t.batchstate!='2'
+	      	</if>
+	      	<if test="condition.queryAllBySupplier != null" >
+	         	and (g.defaultsupplier = #{condition.queryAllBySupplier} or FIND_IN_SET(#{condition.queryAllBySupplier},g.secondsupplier))
+	      	</if>
+		</trim>
+		) z
+		<trim prefix="where" prefixOverrides="and|or">
+	      	<if test="condition.paramRuleSql != null">and ${condition.paramRuleSql}</if>
+	      	<if test="condition.paramRuleSql == null">and 1=1</if>
+		</trim>
+	</select>
+	<select id="getStorageBrandList" parameterType="java.lang.String" resultType="java.lang.String">
+		select DISTINCT g.brand from t_storage_summary t
+		left join t_base_goods_info g on t.goodsid = g.id
+		<trim prefix="where" prefixOverrides="and|or">
+	      	<if test="storageid != null" >
+	         	and t.storageid = #{storageid}
+	      	</if>
+		</trim>
+	</select>
+	<update id="editStorageSummaryInfoByStorageid" parameterType="java.lang.String">
+		update t_storage_summary set istotalcontrol=#{istotalcontrol}, issendstorage=#{issendstorage}
+		where storageid=#{storageid}
+	</update>
+	<select id="getGoodsStorageLocationInfoList" parameterType="java.lang.String" resultType="map">
+		select t.goodsid,t.isdefault,t.boxnum,ROUND(t1.existingnum/g.rate) as existboxnum
+		from t_base_goods_info_storagelocation t
+		INNER JOIN t_base_goods_info_meteringunit g on t.goodsid=g.goodsid and g.isdefault='1'
+		INNER JOIN t_storage_summary_batch t1 on t.storagelocationid=t1.storagelocationid
+		where  t1.storageid=#{storageid} and t.goodsid=#{goodsid}
+		ORDER BY existboxnum
+	</select>
+	<update id="updateStorageGoodsCostprice">
+		update t_storage_summary
+		set costprice =#{costprice},storageamount=#{storageamount}
+		where goodsid=#{goodsid} and storageid=#{storageid} and existingnum=#{existingnum}
+	</update>
+    <select id="getStorageBatchListHasUsenumByStorageid" resultType="com.hd.agent.storage.model.StorageSummaryBatch">
+        select * from t_storage_summary_batch t where t.storageid=#{storageid}
+        <![CDATA[ and t.batchstate<>'2' and t.usablenum<>0]]>
+        order by t.goodsid asc,t.produceddate asc
+    </select>
+    <select id="getStorageSummaryBatchChangeListInDays" resultType="com.hd.agent.storage.model.StorageSummaryBatch">
+        <choose>
+            <when test="isCheckListUseBatch == 1">
+                select t.id, t.summaryid, t.goodsid,t.barcode, t.storageid,t.storagelocationid, t.batchno, t.batchstate, t.existingnum, t.usablenum, t.waitnum,
+                t.allotwaitnum, t.allotenternum, t.intinum, t.sendnum, t.unitid, t.unitname, t.auxunitid, t.auxunitname,
+                t.price, t.amount,t.costprice, t.produceddate, t.deadline, t.enterdate
+                from t_storage_summary_batch t
+                LEFT JOIN  t_base_goods_info g on t.goodsid=g.id
+                LEFT JOIN t_storage_summary_log t1 on t.storageid=t1.storageid and t.goodsid=t1.goodsid and t.id=t1.summarybatchid
+                where t1.addtime>#{bdate} and t.storageid=#{storageid}
+                <choose>
+                    <when test="split == 1"></when>
+                    <when test="split == 2">
+                        <if test="sid != null" >
+                            and g.brand=#{sid}
+                        </if>
+                        <if test="sid == null" >
+                            and g.brand is null
+                        </if>
+                    </when>
+                    <when test="split == 3">
+                        <if test="sid != null" >
+                            and g.defaultsupplier=#{sid}
+                        </if>
+                        <if test="sid == null" >
+                            and g.defaultsupplier is null
+                        </if>
+                    </when>
+                    <when test="split == 4">
+                        <if test="sid != null" >
+                            and g.defaultsort=#{sid}
+                        </if>
+                        <if test="sid == null" >
+                            and g.defaultsort is null
+                        </if>
+                    </when>
+                </choose>
+                GROUP BY t.id
+                order by t.brandid,t.goodsid
+            </when>
+            <otherwise>
+                select t.storageid,t.goodsid,t.barcode, t.storageid,t.existingnum, t.usablenum, t.waitnum,
+                t.allotwaitnum, t.allotenternum, t.unitid, t.unitname, t.auxunitid, t.auxunitname
+                from t_storage_summary t
+                LEFT JOIN  t_base_goods_info g on t.goodsid=g.id
+                LEFT JOIN t_storage_summary_log t1 on t.storageid=t1.storageid and t.goodsid=t1.goodsid
+                where  t1.addtime>#{bdate} and t.storageid=#{storageid}
+                <choose>
+                    <when test="split == 1"></when>
+                    <when test="split == 2">
+                        <if test="sid != null" >
+                            and g.brand=#{sid}
+                        </if>
+                        <if test="sid == null" >
+                            and g.brand is null
+                        </if>
+                    </when>
+                    <when test="split == 3">
+                        <if test="sid != null" >
+                            and g.defaultsupplier=#{sid}
+                        </if>
+                        <if test="sid == null" >
+                            and g.defaultsupplier is null
+                        </if>
+                    </when>
+                    <when test="split == 4">
+                        <if test="sid != null" >
+                            and g.defaultsort=#{sid}
+                        </if>
+                        <if test="sid == null" >
+                            and g.defaultsort is null
+                        </if>
+                    </when>
+                </choose>
+                group by t.storageid,t.goodsid
+                order by t.brandid,t.goodsid
+            </otherwise>
+        </choose>
+    </select>
+    <select id="getStorageSummaryBatchChangeBrandListInDays" resultType="java.lang.String">
+        select DISTINCT g.brand from t_storage_summary_log t
+        LEFT JOIN t_base_goods_info g on t.goodsid=g.id
+        where t.addtime>#{bdate} and t.storageid=#{storageid}
+    </select>
+    <select id="getStorageSummaryBatchChangeSupplierListInDays" resultType="java.lang.String">
+        select DISTINCT g.defaultsupplier from t_storage_summary_log t
+        LEFT JOIN t_base_goods_info g on t.goodsid=g.id
+        where t.addtime>#{bdate} and t.storageid=#{storageid}
+    </select>
+    <select id="getStorageSummaryBatchChangeGoodsSortListInDays" resultType="java.lang.String">
+        select DISTINCT g.defaultsort from t_storage_summary_log t
+        LEFT JOIN t_base_goods_info g on t.goodsid=g.id
+        where t.addtime>#{bdate} and t.storageid=#{storageid}
+    </select>
+    <select id="getAllStorageSummaryList" resultType="com.hd.agent.storage.model.StorageSummary">
+        select t.* from t_storage_summary t where t.existingnum!=0
+    </select>
+    <select id="getAllStorageSummaryListByDate" resultType="com.hd.agent.storage.model.StorageSummary">
+        select t.storageid,t.goodsid,t.existingnum
+        from t_report_storage_bak t where t.businessdate=#{date} and t.existingnum!=0
+    </select>
+    <select id="getStorageEnterDetailList" resultType="com.hd.agent.storage.model.InventoryEnterDetail">
+        select * from (
+        select t.id as billid,t.id as detailid,t.storageid,t.goodsid,t.unitnum,t.audittime as bustime
+        from t_storage_stockinit t
+        where (t.status='3' or t.status='4') and t.storageid=#{storageid} and t.goodsid=#{goodsid}
+        <![CDATA[and t.audittime<=#{date}]]>
+        UNION ALL
+        select t.id as billid,t1.id as detailid,t.storageid,t1.goodsid,t1.unitnum,t.audittime as bustime
+        from t_storage_purchase_enter t
+        RIGHT JOIN t_storage_purchase_enter_detail t1 on t.id=t1.purchaseenterid
+        WHERE (t.status='3' or t.status='4') and t.storageid=#{storageid} and t1.goodsid=#{goodsid}
+        <![CDATA[and t.audittime<=#{date}]]>
+        UNION ALL
+        select t.id as billid,t1.id as detailid,t.storageid,t1.goodsid,-t1.unitnum,t.audittime as bustime
+        from t_storage_purchasereject_out t
+        RIGHT JOIN t_storage_purchasereject_out_detail t1 on t.id=t1.orderid
+        WHERE (t.status='3' or t.status='4') and t.storageid=#{storageid} and t1.goodsid=#{goodsid}
+        <![CDATA[and t.audittime<=#{date}]]>
+        UNION ALL
+        select t.id as billid,t1.id as detailid,t.storageid,t1.goodsid,t1.unitnum,t.audittime as bustime
+        from t_storage_salereject_enter t
+        RIGHT JOIN t_storage_salereject_enter_detail t1 on t.id=t1.salerejectid
+        WHERE (t.status='3' or t.status='4') and t.storageid=#{storageid} and t1.goodsid=#{goodsid}
+        <![CDATA[and t.audittime<=#{date}]]>
+        UNION ALL
+        select t.id as billid,t1.id as detailid,t.storageid,t1.goodsid,t1.unitnum,t.audittime as bustime
+        from t_storage_other_enter t
+        RIGHT JOIN t_storage_other_enter_detail t1 on t.id=t1.billid
+        WHERE (t.status='3' or t.status='4') and t.storageid=#{storageid} and t1.goodsid=#{goodsid}
+        <![CDATA[and t.audittime<=#{date}]]>
+        UNION ALL
+        select t.id as billid,t1.id as detailid,t.storageid,t1.goodsid,-t1.unitnum,t.audittime as bustime
+        from t_storage_other_out t
+        RIGHT JOIN t_storage_other_out_detail t1 on t.id=t1.billid
+        WHERE (t.status='3' or t.status='4') and t.storageid=#{storageid} and t1.goodsid=#{goodsid}
+        <![CDATA[and t.audittime<=#{date}]]>
+        UNION ALL
+        select t.id as billid,t1.id as detailid,t.storageid,t1.goodsid,t1.adjustnum as unitnum,t.audittime as bustime
+        from t_storage_adjustments t
+        RIGHT JOIN t_storage_adjustments_detail t1 on t.id = t1.adjustmentsid
+        where (t.status='3' or t.status='4' ) and t.billtype='1' and t1.adjustnum>0 and t.storageid=#{storageid} and t1.goodsid=#{goodsid}
+        <![CDATA[and t.audittime<=#{date}]]>
+        UNION ALL
+        select t.id as billid,t1.id as detailid,t.enterstorageid as storageid,t1.goodsid,t1.unitnum,t.audittime as bustime
+        from t_storage_allocate_out t
+        RIGHT JOIN t_storage_allocate_out_detail t1 on t.id=t1.billno
+        where (t.status='3' or t.status='4' ) and t.enterstorageid=#{storageid} and t1.goodsid=#{goodsid}
+        <![CDATA[and t.audittime<=#{date}]]>
+        UNION ALL
+        select t.id as billid,t1.id as detailid,t.storageid as storageid,t1.goodsid,t1.unitnum,t.audittime as bustime
+        from t_storage_delivery_enter t
+        RIGHT JOIN t_storage_delivery_enter_detail t1 on t.id=t1.billid
+        where (t.status='3' or t.status='4' ) and t.storageid=#{storageid} and t1.goodsid=#{goodsid}
+        <![CDATA[and t.audittime<=#{date}]]>
+        ) z
+        order by z.bustime desc
+    </select>
+    <insert id="addInventoryAgeDetail" parameterType="com.hd.agent.storage.model.InventoryEnterDetail">
+        insert into t_report_inventory_age_detail(businessdate,storageid,goodsid,billid,detailid,unitnum,inum,age,bustime,addtime)
+        values(#{businessdate},#{storageid},#{goodsid},#{billid},#{detailid},#{unitnum},#{inum},#{age},#{bustime},now())
+    </insert>
+    <insert id="addInventoryAge">
+        insert into t_report_inventory_age(businessdate,storageid,goodsid,age,unitnum,begindate,addtime)
+        values(#{businessdate},#{storageid},#{goodsid},#{age},#{unitnum},#{begindate},now())
+    </insert>
+    <delete id="deleteInventoryAge">
+        delete from t_report_inventory_age where businessdate=#{date};
+        delete from t_report_inventory_age_detail where businessdate=#{date};
+    </delete>
+    <sql id="getInventoryAgeDataList_sql">
+        select z.businessdate,z.storageid,s.name as storagename,z.goodsid,g.name as goodsname,g.brand as brandid,b.name as brandname,g.defaultsupplier as supplierid,bs.name as suppliername,
+        g.newbuyprice as price,sum(z.age) as age,sum(z.unitnum) as unitnum,sum(z.unitnum*g.newbuyprice) as taxamount,sum(z.unitnum*g.newbuyprice/(1+ft.rate/100)) as notaxamount,
+        max(z.addtime) as addtime,
+        floor(sum(z.unitnum) / m.rate) as auxnum,ABS(MOD (sum(z.unitnum), m.rate)) as auxint, CONCAT(floor(sum(z.unitnum) / m.rate),gm1.name,ABS(MOD (sum(z.unitnum), m.rate)),gm.name) as auxnumdetail
+        ${condition.column_sum}
+        from (
+        select t.businessdate,t.storageid,t.goodsid,t.age as age,t.inum as unitnum, t.addtime
+        ${condition.column_detail}
+        from t_report_inventory_age_detail t
+        <trim prefix="where" prefixOverrides="and|or">
+            <include refid="common.Page_dataSql"/>
+            <if test="condition.storageid != null" >
+                and t.storageid = #{condition.storageid}
+            </if>
+            <if test="condition.goodsid != null" >
+                and t.goodsid = #{condition.goodsid}
+            </if>
+
+            <if test="condition.age1 != null" >
+                and t.age >= #{condition.age1}
+            </if>
+            <if test="condition.age2 != null" >
+                <![CDATA[and t.age <= #{condition.age2}]]>
+            </if>
+            <if test="condition.businessdate != null" >
+                and t.businessdate = #{condition.businessdate}
+            </if>
+        </trim>
+        ) z
+        LEFT JOIN t_base_goods_info g on z.goodsid=g.id
+        LEFT JOIN t_base_storage_info s on z.storageid=s.id
+        LEFT JOIN t_base_goods_brand b on g.brand=b.id
+        LEFT JOIN t_base_buy_supplier bs on g.defaultsupplier =bs.id
+        LEFT JOIN t_base_finance_taxtype ft ON ft.id = g.defaulttaxtype
+        LEFT JOIN t_base_goods_info_meteringunit m on z.goodsid=m.goodsid and m.isdefault='1'
+        LEFT JOIN t_base_goods_meteringunit gm on g.mainunit =gm.id
+        LEFT JOIN t_base_goods_meteringunit gm1 on m.meteringunitid =gm1.id
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="condition.brandid != null" >
+                and g.brand = #{condition.brandid}
+            </if>
+            <if test="condition.supplierid != null" >
+                and g.defaultsupplier = #{condition.supplierid}
+            </if>
+        </trim>
+		<if test="condition.groupcols != null and condition.groupcols != 'all'" >
+			GROUP BY ${condition.groupcols}
+		</if>
+    </sql>
+    <select id="getInventoryAgeDataList" parameterType="com.hd.agent.common.util.PageMap" resultType="map">
+        <include refid="getInventoryAgeDataList_sql"/>
+        <if test="condition.isflag == null" >
+            <include refid="common.Page_limit"/>
+        </if>
+    </select>
+    <select id="getInventoryAgeDataListCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+        select count(1) from(
+        <include refid="getInventoryAgeDataList_sql"/>
+        ) x
+    </select>
+    <select id="getInventoryAgeDataSumList" parameterType="com.hd.agent.common.util.PageMap" resultType="map">
+        select avg(x.age) as age,sum(x.unitnum) as unitnum,sum(x.taxamount) as taxamount,sum(x.notaxamount) as notaxamount,
+        max(x.addtime) as addtime,
+        sum(x.auxnum) as auxnum,sum(x.auxint) as auxint
+        ${condition.column_sum_total}
+        from (
+        <include refid="getInventoryAgeDataList_sql"/>
+        ) x
+    </select>
+    <select id="getInventoryAgeListDataRS"  resultType="java.util.Map">
+        SELECT t.beginday,t.endday,t.seq FROM t_report_paymentdays_set t WHERE t.adduserid=#{userid} and t.type='3' ORDER BY t.seq ASC
+    </select>
+    <select id="showInventoryAgeDetailLogDataList" resultType="map">
+        select t.*,datediff(date_format(t.businessdate,'%Y-%m-%d'),date_format(t.bustime,'%Y-%m-%d')) as days from t_report_inventory_age_detail t
+        <trim prefix="where" prefixOverrides="and|or">
+            <include refid="common.Page_dataSql"/>
+            <if test="condition.storageid != null" >
+                and t.storageid = #{condition.storageid}
+            </if>
+            <if test="condition.goodsid != null" >
+                and t.goodsid = #{condition.goodsid}
+            </if>
+            <if test="condition.businessdate != null" >
+                and t.businessdate = #{condition.businessdate}
+            </if>
+        </trim>
+        <include refid="common.Page_limit"/>
+    </select>
+    <select id="showInventoryAgeDetailLogDataListCount" resultType="int">
+        select count(1) from t_report_inventory_age_detail t
+        <trim prefix="where" prefixOverrides="and|or">
+            <include refid="common.Page_dataSql"/>
+            <if test="condition.storageid != null" >
+                and t.storageid = #{condition.storageid}
+            </if>
+            <if test="condition.goodsid != null" >
+                and t.goodsid = #{condition.goodsid}
+            </if>
+            <if test="condition.businessdate != null" >
+                and t.businessdate = #{condition.businessdate}
+            </if>
+        </trim>
+    </select>
+    <select id="showInventoryAgeDetailLogDataSum" resultType="map">
+        select sum(t.unitnum) as unitnum,sum(t.inum) as inum
+        from t_report_inventory_age_detail t
+        <trim prefix="where" prefixOverrides="and|or">
+            <include refid="common.Page_dataSql"/>
+            <if test="condition.storageid != null" >
+                and t.storageid = #{condition.storageid}
+            </if>
+            <if test="condition.goodsid != null" >
+                and t.goodsid = #{condition.goodsid}
+            </if>
+            <if test="condition.businessdate != null" >
+                and t.businessdate = #{condition.businessdate}
+            </if>
+        </trim>
+    </select>
+    <delete id="deleteInventoryAgeIndays">
+        <![CDATA[
+        delete from t_report_inventory_age where addtime <= date_add(now(), interval -${days} day);
+        delete from t_report_inventory_age_detail where addtime <= date_add(now(), interval -${days} day);
+        ]]>
+    </delete>
+	<update id="updateStorageSummaryAllotEnter">
+		update t_storage_summary
+		set allotenternum=allotenternum+#{allotnum}
+		where goodsid = #{goodsid} and storageid=#{storageid} and version=#{version}
+	</update>
+</mapper>

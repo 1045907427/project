@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd 
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+	
+	<context:property-placeholder location="classpath:config.properties" />
+	<bean name="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		init-method="init" destroy-method="close">
+		<property name="url" value="${jdbc_url}" />
+		<property name="username" value="${jdbc_username}" />
+		<property name="password" value="${jdbc_password}" />
+	
+		<!-- 初始化连接大小 -->
+		<property name="initialSize" value="5" />
+		<!-- 连接池最大使用连接数量 -->
+		<property name="maxActive" value="50" />
+		<!-- 连接池最小空闲 -->
+		<property name="minIdle" value="1" />
+		<!-- 获取连接最大等待时间 -->
+		<property name="maxWait" value="600000" />
+
+		<!-- 
+		<property name="poolPreparedStatements" value="true" />
+		<property name="maxOpenPreparedStatements" value="100" />
+		 -->
+
+		<property name="validationQuery" value="${validationQuery}" />
+		<property name="testOnBorrow" value="false" />
+		<property name="testOnReturn" value="false" />
+		<property name="testWhileIdle" value="true" />
+
+        <property name="removeAbandoned" value="true" />
+        <property name="removeAbandonedTimeout" value="7200" />
+		<!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+		<property name="timeBetweenEvictionRunsMillis" value="60000" />
+		<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+		<property name="minEvictableIdleTimeMillis" value="300000" />
+		<!-- 监控数据库 -->
+		<!-- sql统计功能就不能用
+		<property name="filters" value="stat,log4j" />
+		-->
+		<property name="filters" value="config,log4j" />
+		<property name="connectionProperties" value="config.decrypt=true" />
+        <property name="proxyFilters">
+            <list>
+                <ref bean="log-filter" />
+            </list>
+        </property>
+	</bean>
+    <!-- druid 打印sql日志 -->
+	<bean id="log-filter" class="com.alibaba.druid.filter.logging.Log4jFilter">
+        <property name="statementExecutableSqlLogEnable" value="true" />
+		<property name="statementParameterClearLogEnable" value="false" />
+        <property name="statementCreateAfterLogEnabled" value="false" />
+        <property name="statementCloseAfterLogEnabled" value="false" />
+        <property name="resultSetCloseAfterLogEnabled" value="false" />
+        <property name="resultSetOpenAfterLogEnabled" value="false" />
+	</bean>
+	<!-- 配置SqlSessionFactoryBean -->  
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">  
+        <!-- 参数：数据源 -->  
+        <property name="dataSource" ref="dataSource" />  
+        <!-- 参数：配置实体 -->  
+        <property name="configLocation" value="classpath:MyBatis-Configuration.xml"></property>
+        <property name="mapperLocations" value="classpath:com/hd/agent/*/dao/mysql/*.xml" />
+		<!--<property name="plugins">-->
+			<!--<array>-->
+				<!--<bean id="sqlStatementInterceptor" class="com.hd.agent.common.interceptor.SqlStatementInterceptor" />-->
+			<!--</array>-->
+		<!--</property>-->
+    </bean>
+    <!-- 配置事务 -->  
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">  
+        <property name="dataSource" ref="dataSource" />  
+    </bean>  
+   <!-- 配置事务的传播特性 -->
+	<bean id="baseTransactionProxy" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean" abstract="true">
+	    <property name="transactionManager" ref="transactionManager" />
+	    <property name="transactionAttributes">
+	        <props>
+	            <prop key="add*">PROPAGATION_REQUIRED,-Exception</prop>
+	            <prop key="save*">PROPAGATION_REQUIRED,-Exception</prop>
+	            <prop key="edit*">PROPAGATION_REQUIRED,-Exception</prop>
+	            <prop key="remove*">PROPAGATION_REQUIRED,-Exception</prop>
+	            <prop key="insert*">PROPAGATION_REQUIRED,-Exception</prop>
+	            <prop key="update*">PROPAGATION_REQUIRED,-Exception</prop>
+                <prop key="upload*">PROPAGATION_REQUIRED,-Exception</prop>
+	            <prop key="del*">PROPAGATION_REQUIRED,-Exception</prop>
+	            <prop key="modify*">PROPAGATION_REQUIRED,-Exception</prop>
+	            <prop key="do*">PROPAGATION_REQUIRED,-Exception</prop>
+	            <prop key="set*">PROPAGATION_REQUIRED,-Exception</prop>
+	            <prop key="open*">PROPAGATION_REQUIRED,-Exception</prop>
+	            <prop key="close*">PROPAGATION_REQUIRED,-Exception</prop>
+	            <prop key="disable*">PROPAGATION_REQUIRED,-Exception</prop>
+	            <prop key="enable*">PROPAGATION_REQUIRED,-Exception</prop>
+	            <prop key="start*">PROPAGATION_REQUIRED,-Exception</prop>
+	            <prop key="cancel*">PROPAGATION_REQUIRED,-Exception</prop>
+	            <prop key="pause*">PROPAGATION_REQUIRED,-Exception</prop>
+	            <prop key="isLock*">PROPAGATION_REQUIRED,-Exception</prop>
+	            <prop key="clear*">PROPAGATION_REQUIRED,-Exception</prop>
+	            <prop key="audit*">PROPAGATION_REQUIRED,-Exception</prop>
+	            <prop key="oppaudit*">PROPAGATION_REQUIRED,-Exception</prop>
+	            <prop key="insert*">PROPAGATION_REQUIRED,-Exception</prop>
+	            <prop key="submit*">PROPAGATION_REQUIRED,-Exception</prop>
+	            <prop key="quit*">PROPAGATION_REQUIRED,-Exception</prop>
+                <prop key="rollback*">PROPAGATION_REQUIRED,-Exception</prop>
+				<prop key="import*">PROPAGATION_REQUIRED,-Exception</prop>
+                <!-- 对create*、deploy*、start*、complete*添加事务支持，主要用于activiti、add by limin @2015-05-08 -->
+                <!-- <prop key="create*">PROPAGATION_REQUIRED,-Exception</prop> -->
+                <prop key="deploy*">PROPAGATION_REQUIRED,-Exception</prop>
+                <prop key="start*">PROPAGATION_REQUIRED,-Exception</prop>
+                <prop key="complete*">PROPAGATION_REQUIRED,-Exception</prop>
+	            <prop key="autoCreateSysNumbderForeign">PROPAGATION_REQUIRES_NEW,-Exception</prop>
+	            <!--  <prop key="*">readOnly</prop>-->
+	        </props>
+	    </property>
+	</bean>
+
+	<import resource="classpath:applicationContext-common.xml"/>
+	<import resource="classpath:applicationContext-common-aop.xml"/>
+	<import resource="classpath:applicationContext-security.xml"/>
+	<import resource="classpath:applicationContext-accesscontrol.xml"/>
+	<import resource="classpath:applicationContext-system.xml" />
+	<import resource="classpath:applicationContext-basefiles.xml"/>
+	<import resource="classpath:applicationContext-message.xml"/>
+	<import resource="classpath:applicationContext-activiti.xml"/>
+	<import resource="classpath:applicationContext-hr.xml"/>
+	<import resource="classpath:applicationContext-purchase.xml"/>
+	<import resource="classpath:applicationContext-sales.xml"/>
+	<import resource="classpath:applicationContext-storage.xml"/>
+	<import resource="classpath:applicationContext-journalsheet.xml"/>
+	<import resource="classpath:applicationContext-account.xml"/>
+	<import resource="classpath:applicationContext-phone.xml"/>
+	<import resource="classpath:applicationContext-report.xml"/>
+	<import resource="classpath:applicationContext-oa.xml"/>
+	<import resource="classpath:applicationContext-crm.xml"/>
+    <import resource="classpath:applicationContext-delivery.xml"/>
+	<import resource="classpath:applicationContext-system-timer.xml"/>
+	<!--销售目标-->
+	<import resource="classpath:applicationContext-salestarget.xml"/>
+	<!-- 打印设置 -->
+	<import resource="classpath:applicationContext-agprint.xml"/>
+
+	<!-- 客户端client接口 -->
+	<import resource="classpath:applicationContext-client.xml"/>
+	<!--&lt;!&ndash; 微信 &ndash;&gt;-->
+	<!--<import resource="classpath:applicationContext-wechat.xml"/>-->
+</beans>

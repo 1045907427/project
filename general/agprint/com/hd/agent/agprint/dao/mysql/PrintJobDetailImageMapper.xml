@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.agprint.dao.PrintJobDetailImageMapper" >
+
+  <sql id="PrintJobDetailImage_Column" >
+    id, addtime, jobid, detailid,name,fullpath
+  </sql>
+  <sql id="PrintJobDetailImageWBlob_Column" >
+    id, addtime, jobid, detailid,name,content,fullpath
+  </sql>
+  <sql id="PrintJobDetailImagePageList_Where_Clause">
+    <if test="condition.jobid != null" >
+      and jobid = #{condition.jobid}
+    </if>
+    <if test="condition.detailid != null" >
+      and detailid = #{condition.detailid}
+    </if>
+    <if test="condition.addtime != null" >
+      and addtime = #{condition.addtime}
+    </if>
+  </sql>
+  <select id="getPrintJobDetailImagePageList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.agprint.model.PrintJobDetailImage"  useCache="false">
+    select
+    <include refid="PrintJobDetailImage_Column"/>
+    from t_print_job_detail_image
+    <trim prefix="where" prefixOverrides="and|or">
+      <include refid="PrintJobDetailImagePageList_Where_Clause" />
+    </trim>
+    <include refid="common.Page_limit"/>
+  </select>
+  <select id="getPrintJobDetailImagePageCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int"  useCache="false">
+    select
+    count(*)
+    from t_print_job_detail_image
+    <trim prefix="where" prefixOverrides="and|or">
+      <include refid="PrintJobDetailImagePageList_Where_Clause" />
+    </trim>
+  </select>
+  <select id="getPrintJobDetailImage" resultType="com.hd.agent.agprint.model.PrintJobDetailImage"  parameterType="java.lang.String" >
+    select
+    <include refid="PrintJobDetailImageWBlob_Column" />
+    from t_print_job_detail_image
+    where id = #{id}
+  </select>
+  <insert id="insertPrintJobDetailImage" parameterType="com.hd.agent.agprint.model.PrintJobDetailImage" >
+    <selectKey resultType="java.lang.String" keyProperty="id" order="BEFORE" >
+      select uuid_short()
+    </selectKey>
+    insert into t_print_job_detail_image
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="jobid != null" >
+        jobid,
+      </if>
+      <if test="detailid != null" >
+        detailid,
+      </if>
+      <if test="1==1" >
+        addtime,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="fullpath != null" >
+        fullpath,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="jobid != null" >
+        #{jobid},
+      </if>
+      <if test="detailid != null" >
+        #{detailid},
+      </if>
+      <if test="addtime != null" >
+        #{addtime},
+      </if>
+      <choose>
+        <when test="addtime != null" >
+        #{addtime},
+        </when>
+        <otherwise>
+          now(),
+        </otherwise>
+      </choose>
+      <if test="name != null" >
+        #{name},
+      </if>
+      <if test="fullpath != null" >
+        #{fullpath},
+      </if>
+      <if test="content != null" >
+        #{content},
+      </if>
+    </trim>
+  </insert>
+  <delete id="deletePrintJobDetailImage" parameterType="java.lang.String">
+    delete from t_print_job_detail_image
+    where id = #{id}
+  </delete>
+  <delete id="deletePrintJobDetailImageBeforeDate" parameterType="java.util.Date">
+    DELETE FROM t_print_job_detail_image
+    WHERE
+    <![CDATA[ addtime <= #{date}  ]]>
+  </delete>
+  <sql id="PrintJobDetailImage_Where_Clause">
+    <if test="beforedate != null" >
+      and <![CDATA[ addtime <= #{beforedate, jdbcType=TIMESTAMP}  ]]>
+    </if>
+    <if test="emptyfullpath=='true'">
+      and <![CDATA[ (fullpath is null or length(fullpath)=0)  ]]>
+    </if>
+  </sql>
+  <select id="getPrintJobDetailImageListBy" parameterType="java.util.Date" resultType="com.hd.agent.agprint.model.PrintJobDetailImage">
+    SELECT
+    <include refid="PrintJobDetailImage_Column"/>
+     FROM t_print_job_detail_image
+    <trim prefix="where" prefixOverrides="and|or">
+    <include refid="PrintJobDetailImage_Where_Clause" />
+    </trim>
+  </select>
+  <select id="getPrintJobDetailImageFileId" resultType="java.lang.String">
+    select uuid_short() as ID
+  </select>
+</mapper>

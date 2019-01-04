@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.common.dao.QueryMapper" >
+	<cache type="org.mybatis.caches.ehcache.EhcacheCache"></cache>
+	<insert id="addQuery" parameterType="com.hd.agent.common.model.Query">
+		<selectKey resultType="java.lang.String" keyProperty="id" order="BEFORE" >
+	      select uuid_short()
+	    </selectKey>
+	    insert into t_sys_query
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	        id,
+	      <if test="queryname != null" >
+	        queryname,
+	      </if>
+	      <if test="description != null" >
+	        description,
+	      </if>
+	      <if test="type != null" >
+	        type,
+	      </if>
+	      <if test="adduserid != null" >
+	        adduserid,
+	      </if>
+	      <if test="1==1" >
+	        addtime,
+	      </if>
+	      <if test="queryrule != null" >
+	        queryrule,
+	      </if>
+	      <if test="orderrule != null" >
+	        orderrule,
+	      </if>
+	      <if test="tablename != null" >
+	        tablename,
+	      </if>
+	      <if test="divid != null" >
+	        divid,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	        #{id},
+	      <if test="queryname != null" >
+	        #{queryname},
+	      </if>
+	      <if test="description != null" >
+	        #{description},
+	      </if>
+	      <if test="type != null" >
+	        #{type},
+	      </if>
+	      <if test="adduserid != null" >
+	        #{adduserid},
+	      </if>
+	      <if test="1==1" >
+	        now(),
+	      </if>
+	      <if test="queryrule != null" >
+	        #{queryrule},
+	      </if>
+	      <if test="orderrule != null" >
+	        #{orderrule},
+	      </if>
+	      <if test="tablename != null" >
+	        #{tablename},
+	      </if>
+	      <if test="divid != null" >
+	        #{divid},
+	      </if>
+	    </trim>
+	</insert>
+	<select id="showUserQuery" parameterType="java.lang.String" resultType="com.hd.agent.common.model.Query">
+		select id, queryname, description, type, adduserid, addtime,tablename,queryrule,orderrule,divid
+		from t_sys_query where (type='1' or adduserid=#{userid}) and divid=#{divid}
+	</select>
+	<delete id="deleteQuery" parameterType="java.lang.String">
+		delete from t_sys_query where id = #{id}
+	</delete>
+</mapper>

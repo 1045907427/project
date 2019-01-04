@@ -1,0 +1,1007 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.account.dao.CustomerPushBalanceMapper" >
+	<sql id="Base_Column_List" >
+	    id, businessdate, customerid,pcustomerid,customersort,salesarea,salesdept,salesuser, isinvoice,isrebate,orderid,invoiceid,pushtype,subject,brandid,branduser,branddept,supplierid,supplieruser, amount, iswriteoff,writeoffdate,writeoffuserid,writeoffusername, status, remark, adduserid,
+	    addusername, adddeptid, adddeptname, addtime, modifyuserid, modifyusername, modifytime, 
+	    audituserid, auditusername, audittime, stopuserid, stopusername, stoptime, closetime, 
+	    printtimes, field01, field02, field03, field04, field05, field06, field07, field08,checkdate,invoicedate,initsendamount,initsendcostamount,
+	    sendamount,sendnotaxamount,sendcostamount,checkamount,checknotaxamount,invoiceamount,invoicenotaxamount,writeoffamount,writeoffnotaxamount,tailamount,
+	    isrelate,indooruserid,isrefer,oaid,isinvoicebill,ishand,defaulttaxtype,notaxamount,tax,invoicebilldate,oaback,vouchertimes
+	</sql>
+    <sql id="CustomerPushBanlance_querySql">
+        <trim prefix="where" prefixOverrides="and|or">
+            <include refid="common.Page_querySql"/>
+            <include refid="common.Page_dataSql"/>
+            <if test="condition.businessdate1 != null">
+                and businessdate >= #{condition.businessdate1}
+            </if>
+            <if test="condition.businessdate2 != null">
+                <![CDATA[and businessdate <= #{condition.businessdate2}]]>
+            </if>
+            <if test="condition.remark != null" >
+                and remark like CONCAT('%',#{condition.remark},'%')
+            </if>
+            <if test="condition.id != null" >
+                and ( id like CONCAT('%',#{condition.id},'%') or invoiceid like CONCAT('%',#{condition.invoiceid},'%')  )
+            </if>
+            <if test="condition.isinvoice != null" >
+                and isinvoice = #{condition.isinvoice}
+            </if>
+            <if test="condition.customerid != null" >
+                and customerid = #{condition.customerid}
+            </if>
+            <if test="condition.pcustomerid != null" >
+                and pcustomerid = #{condition.pcustomerid}
+            </if>
+            <if test="condition.pushtype != null" >
+                and pushtype = #{condition.pushtype}
+            </if>
+            <if test="condition.subject != null" >
+                and FIND_IN_SET(subject, #{condition.subject})
+            </if>
+            <if test="condition.brandid != null" >
+                and brandid = #{condition.brandid}
+            </if>
+            <if test="condition.orderid != null" >
+                and orderid like CONCAT('%',#{condition.orderid},'%')
+            </if>
+            <!--<if test="condition.invoiceid != null" >-->
+            <!--and invoiceid like CONCAT('%',#{condition.invoiceid},'%')-->
+            <!--</if>-->
+            <if test="condition.iswriteoff != null" >
+                and iswriteoff = #{condition.iswriteoff}
+            </if>
+            <if test="condition.status != null" >
+                and status = #{condition.status}
+            </if>
+            <choose>
+                <when test="condition.isClose ==0 ">
+                    and status !='4'
+                </when>
+                <when test="condition.isClose ==1 ">
+                    and status ='4'
+                </when>
+            </choose>
+            <if test="condition.doprintopt != null">
+                and (status !='1' or status !='2')
+                <choose>
+                    <when test="condition.printstatus == null ">
+                        and 1 != 1
+                    </when>
+                    <when test="condition.printstatus ==0 ">
+                        and (printtimes is null or printtimes=0)
+                    </when>
+                    <when test="condition.printstatus ==1 ">
+                        <![CDATA[and (printtimes > 0) ]]>
+                    </when>
+                    <when test="condition.printstatus == 2 ">
+                        and 1 = 1
+                    </when>
+                </choose>
+            </if>
+        </trim>
+    </sql>
+  	<select id="showCustomerPushBanlanceList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.account.model.CustomerPushBalance">
+  		select <include refid="Base_Column_List"/>
+  		from t_account_customer_push_balance
+  		<include refid="CustomerPushBanlance_querySql"/>
+	    <if test="condition.isflag == null" >
+	    	<include refid="common.Page_limit"/>
+	    </if>
+  	</select>
+  	<select id="showCustomerPushBanlanceCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  		select count(1) from t_account_customer_push_balance
+        <include refid="CustomerPushBanlance_querySql"/>
+  	</select>
+  	<select id="showCustomerPushBanlanceSum" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.account.model.CustomerPushBalance">
+  		select sum(amount) as amount,sum(writeoffamount) as writeoffamount,sum(tailamount) as tailamount
+  		from t_account_customer_push_balance
+        <include refid="CustomerPushBanlance_querySql"/>
+  	</select>
+  	<insert id="addCustomerPushBanlance" parameterType="com.hd.agent.account.model.CustomerPushBalance" >
+	    insert into t_account_customer_push_balance
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="businessdate != null" >
+                businessdate,
+            </if>
+            <if test="customerid != null" >
+                customerid,
+            </if>
+            <if test="pcustomerid != null" >
+                pcustomerid,
+            </if>
+            <if test="customersort != null" >
+                customersort,
+            </if>
+            <if test="salesarea != null" >
+                salesarea,
+            </if>
+            <if test="salesdept != null" >
+                salesdept,
+            </if>
+            <if test="salesuser != null" >
+                salesuser,
+            </if>
+            <if test="pushtype != null" >
+                pushtype,
+            </if>
+            <if test="subject != null" >
+                subject,
+            </if>
+            <if test="brandid != null" >
+                brandid,
+            </if>
+            <if test="branduser != null" >
+                branduser,
+            </if>
+            <if test="branddept != null" >
+                branddept,
+            </if>
+            <if test="supplierid != null" >
+                supplierid,
+            </if>
+            <if test="supplieruser != null" >
+                supplieruser,
+            </if>
+            <if test="isinvoice != null" >
+                isinvoice,
+            </if>
+            <if test="isrebate != null" >
+                isrebate,
+            </if>
+            <if test="orderid != null" >
+                orderid,
+            </if>
+            <if test="invoiceid != null" >
+                invoiceid,
+            </if>
+            <if test="amount != null" >
+                amount,
+            </if>
+            <if test="iswriteoff != null" >
+                iswriteoff,
+            </if>
+            <if test="status != null" >
+                status,
+            </if>
+            <if test="remark != null" >
+                remark,
+            </if>
+            <if test="adduserid != null" >
+                adduserid,
+            </if>
+            <if test="addusername != null" >
+                addusername,
+            </if>
+            <if test="adddeptid != null" >
+                adddeptid,
+            </if>
+            <if test="adddeptname != null" >
+                adddeptname,
+            </if>
+            <if test="1==1" >
+                addtime,
+            </if>
+            <if test="audituserid != null" >
+                audituserid,
+            </if>
+            <if test="auditusername != null" >
+                auditusername,
+            </if>
+            <if test="audittime != null" >
+                audittime,
+            </if>
+            <if test="field01 != null" >
+                field01,
+            </if>
+            <if test="field02 != null" >
+                field02,
+            </if>
+            <if test="field03 != null" >
+                field03,
+            </if>
+            <if test="field04 != null" >
+                field04,
+            </if>
+            <if test="field05 != null" >
+                field05,
+            </if>
+            <if test="field06 != null" >
+                field06,
+            </if>
+            <if test="field07 != null" >
+                field07,
+            </if>
+            <if test="field08 != null" >
+                field08,
+            </if>
+            <if test="checkdate != null">
+                checkdate,
+            </if>
+            <if test="invoicedate != null">
+                invoicedate,
+            </if>
+            <if test="initsendamount != null">
+                initsendamount,
+            </if>
+            <if test="initsendcostamount != null">
+                initsendcostamount,
+            </if>
+            <if test="sendamount != null">
+                sendamount,
+            </if>
+            <if test="sendnotaxamount != null">
+                sendnotaxamount,
+            </if>
+            <if test="sendcostamount != null">
+                sendcostamount,
+            </if>
+            <if test="checkamount != null">
+                checkamount,
+            </if>
+            <if test="checknotaxamount != null">
+                checknotaxamount,
+            </if>
+            <if test="invoiceamount != null">
+                invoiceamount,
+            </if>
+            <if test="invoicenotaxamount != null">
+                invoicenotaxamount,
+            </if>
+            <if test="writeoffamount != null">
+                writeoffamount,
+            </if>
+            <if test="writeoffnotaxamount != null">
+                writeoffnotaxamount,
+            </if>
+            <if test="indooruserid != null">
+                indooruserid,
+            </if>
+            <if test="isrefer != null">
+                isrefer,
+            </if>
+            <if test="oaid != null">
+                oaid,
+            </if>
+            <if test="defaulttaxtype != null">
+                defaulttaxtype,
+            </if>
+            <if test="notaxamount != null">
+                notaxamount,
+            </if>
+            <if test="tax != null">
+                tax,
+            </if>
+            <if test="invoicebilldate != null">
+                invoicebilldate,
+            </if>
+            <if test="oaback != null">
+                oaback,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id},
+            </if>
+            <if test="businessdate != null" >
+                #{businessdate},
+            </if>
+            <if test="customerid != null" >
+                #{customerid},
+            </if>
+            <if test="pcustomerid != null" >
+                #{pcustomerid},
+            </if>
+            <if test="customersort != null" >
+                #{customersort},
+            </if>
+            <if test="salesarea != null" >
+                #{salesarea},
+            </if>
+            <if test="salesdept != null" >
+                #{salesdept},
+            </if>
+            <if test="salesuser != null" >
+                #{salesuser},
+            </if>
+            <if test="pushtype != null" >
+                #{pushtype},
+            </if>
+            <if test="subject != null" >
+                #{subject},
+            </if>
+            <if test="brandid != null" >
+                #{brandid},
+            </if>
+            <if test="branduser != null" >
+                #{branduser},
+            </if>
+            <if test="branddept != null" >
+                #{branddept},
+            </if>
+            <if test="supplierid != null" >
+                #{supplierid},
+            </if>
+            <if test="supplieruser != null" >
+                #{supplieruser},
+            </if>
+            <if test="isinvoice != null" >
+                #{isinvoice},
+            </if>
+            <if test="isrebate != null" >
+                #{isrebate},
+            </if>
+            <if test="orderid != null" >
+                #{orderid},
+            </if>
+            <if test="invoiceid != null" >
+                #{invoiceid},
+            </if>
+            <if test="amount != null" >
+                #{amount},
+            </if>
+            <if test="iswriteoff != null" >
+                #{iswriteoff},
+            </if>
+            <if test="status != null" >
+                #{status},
+            </if>
+            <if test="remark != null" >
+                #{remark},
+            </if>
+            <if test="adduserid != null" >
+                #{adduserid},
+            </if>
+            <if test="addusername != null" >
+                #{addusername},
+            </if>
+            <if test="adddeptid != null" >
+                #{adddeptid},
+            </if>
+            <if test="adddeptname != null" >
+                #{adddeptname},
+            </if>
+            <if test="1==1" >
+                now(),
+            </if>
+            <if test="audituserid != null" >
+                #{audituserid},
+            </if>
+            <if test="auditusername != null" >
+                #{auditusername},
+            </if>
+            <if test="audittime != null" >
+                now(),
+            </if>
+            <if test="field01 != null" >
+                #{field01},
+            </if>
+            <if test="field02 != null" >
+                #{field02},
+            </if>
+            <if test="field03 != null" >
+                #{field03},
+            </if>
+            <if test="field04 != null" >
+                #{field04},
+            </if>
+            <if test="field05 != null" >
+                #{field05},
+            </if>
+            <if test="field06 != null" >
+                #{field06},
+            </if>
+            <if test="field07 != null" >
+                #{field07},
+            </if>
+            <if test="field08 != null" >
+                #{field08},
+            </if>
+            <if test="checkdate != null">
+                #{checkdate},
+            </if>
+            <if test="invoicedate != null">
+                #{invoicedate},
+            </if>
+            <if test="initsendamount != null">
+                #{initsendamount},
+            </if>
+            <if test="initsendcostamount != null">
+                #{initsendcostamount},
+            </if>
+            <if test="sendamount != null">
+                #{sendamount},
+            </if>
+            <if test="sendnotaxamount != null">
+                #{sendnotaxamount},
+            </if>
+            <if test="sendcostamount != null">
+                #{sendcostamount},
+            </if>
+            <if test="checkamount != null">
+                #{checkamount},
+            </if>
+            <if test="checknotaxamount != null">
+                #{checknotaxamount},
+            </if>
+            <if test="invoiceamount != null">
+                #{invoiceamount},
+            </if>
+            <if test="invoicenotaxamount != null">
+                #{invoicenotaxamount},
+            </if>
+            <if test="writeoffamount != null">
+                #{writeoffamount},
+            </if>
+            <if test="writeoffnotaxamount != null">
+                #{writeoffnotaxamount},
+            </if>
+            <if test="indooruserid != null">
+                #{indooruserid},
+            </if>
+            <if test="isrefer != null">
+                #{isrefer},
+            </if>
+            <if test="oaid != null">
+                #{oaid},
+            </if>
+            <if test="defaulttaxtype != null">
+                #{defaulttaxtype},
+            </if>
+            <if test="notaxamount != null">
+                #{notaxamount},
+            </if>
+            <if test="tax != null">
+                #{tax},
+            </if>
+            <if test="invoicebilldate != null">
+                #{invoicebilldate},
+            </if>
+            <if test="oaback != null">
+                #{oaback},
+            </if>
+        </trim>
+	  </insert>
+	  <select id="showCustomerPushBanlanceInfo" parameterType="java.lang.String" resultType="com.hd.agent.account.model.CustomerPushBalance">
+	  	select <include refid="Base_Column_List"/> 
+	  	from t_account_customer_push_balance where id=#{id}
+	  </select>
+	  <update id="editCustomerPushBanlance" parameterType="com.hd.agent.account.model.CustomerPushBalance">
+          update t_account_customer_push_balance
+          <set >
+              <if test="businessdate != null" >
+                  businessdate = #{businessdate},
+              </if>
+              <if test="customerid != null" >
+                  customerid = #{customerid},
+              </if>
+              <if test="pcustomerid != null" >
+                  pcustomerid = #{pcustomerid},
+              </if>
+              <if test="customersort != null" >
+                  customersort = #{customersort},
+              </if>
+              <if test="salesarea != null" >
+                  salesarea = #{salesarea},
+              </if>
+              <if test="salesdept != null" >
+                  salesdept = #{salesdept},
+              </if>
+              <if test="salesuser != null" >
+                  salesuser = #{salesuser},
+              </if>
+              <if test="pushtype != null" >
+                  pushtype = #{pushtype},
+              </if>
+              <if test="subject != null" >
+                  subject = #{subject},
+              </if>
+              <if test="brandid != null" >
+                  brandid = #{brandid},
+              </if>
+              <if test="branduser != null" >
+                  branduser = #{branduser},
+              </if>
+              <if test="branddept != null" >
+                  branddept = #{branddept},
+              </if>
+              <if test="supplierid != null" >
+                  supplierid = #{supplierid},
+              </if>
+              <if test="supplieruser != null" >
+                  supplieruser = #{supplieruser},
+              </if>
+              <if test="isinvoice != null" >
+                  isinvoice = #{isinvoice},
+              </if>
+              <if test="isrebate != null" >
+                  isrebate = #{isrebate},
+              </if>
+              <if test="orderid != null" >
+                  orderid = #{orderid},
+              </if>
+              <if test="invoiceid != null" >
+                  invoiceid = #{invoiceid},
+              </if>
+              <if test="amount != null" >
+                  amount = #{amount},
+              </if>
+              <if test="iswriteoff != null" >
+                  iswriteoff = #{iswriteoff},
+              </if>
+              <if test="writeoffdate != null" >
+                  writeoffdate = #{writeoffdate},
+              </if>
+              <if test="status != null" >
+                  status = #{status},
+              </if>
+              <if test="remark != null" >
+                  remark = #{remark},
+              </if>
+              <if test="modifyuserid != null" >
+                  modifyuserid = #{modifyuserid},
+              </if>
+              <if test="modifyusername != null" >
+                  modifyusername = #{modifyusername},
+              </if>
+              <if test="1==1" >
+                  modifytime = now(),
+              </if>
+              <if test="field01 != null" >
+                  field01 = #{field01},
+              </if>
+              <if test="field02 != null" >
+                  field02 = #{field02},
+              </if>
+              <if test="field03 != null" >
+                  field03 = #{field03},
+              </if>
+              <if test="field04 != null" >
+                  field04 = #{field04},
+              </if>
+              <if test="field05 != null" >
+                  field05 = #{field05},
+              </if>
+              <if test="field06 != null" >
+                  field06 = #{field06},
+              </if>
+              <if test="field07 != null" >
+                  field07 = #{field07},
+              </if>
+              <if test="field08 != null" >
+                  field08 = #{field08},
+              </if>
+              <if test="checkdate != null">
+                  checkdate = #{checkdate},
+              </if>
+              <if test="invoicedate != null">
+                  invoicedate = #{invoicedate},
+              </if>
+              <if test="initsendamount != null">
+                  initsendamount = #{initsendamount},
+              </if>
+              <if test="initsendcostamount != null">
+                  initsendcostamount = #{initsendcostamount},
+              </if>
+              <if test="sendamount != null">
+                  sendamount = #{sendamount},
+              </if>
+              <if test="sendnotaxamount != null">
+                  sendnotaxamount = #{sendnotaxamount},
+              </if>
+              <if test="sendcostamount != null">
+                  sendcostamount = #{sendcostamount},
+              </if>
+              <if test="checkamount != null">
+                  checkamount = #{checkamount},
+              </if>
+              <if test="checknotaxamount != null">
+                  checknotaxamount = #{checknotaxamount},
+              </if>
+              <if test="invoiceamount != null">
+                  invoiceamount = #{invoiceamount},
+              </if>
+              <if test="invoicenotaxamount != null">
+                  invoicenotaxamount = #{invoicenotaxamount},
+              </if>
+              <if test="writeoffamount != null">
+                  writeoffamount = #{writeoffamount},
+              </if>
+              <if test="writeoffnotaxamount != null">
+                  writeoffnotaxamount = #{writeoffnotaxamount},
+              </if>
+              <if test="indooruserid != null">
+                  indooruserid = #{indooruserid},
+              </if>
+              <if test="oaid != null">
+                  oaid = #{oaid},
+              </if>
+              <if test="defaulttaxtype != null">
+                  defaulttaxtype = #{defaulttaxtype},
+              </if>
+              <if test="notaxamount != null">
+                  notaxamount = #{notaxamount},
+              </if>
+              <if test="tax != null">
+                  tax = #{tax},
+              </if>
+              <if test="invoicebilldate != null">
+                  invoicebilldate = #{invoicebilldate},
+              </if>
+          </set>
+          where id = #{id}
+	  </update>
+	  <delete id="deleteCustomerPushBanlance" parameterType="java.lang.String">
+	  	delete from t_account_customer_push_balance where id=#{id} and (status='2' or status='1')
+	  </delete>
+	  <delete id="deleteCustomerPushBanlanceByInvoiceid" parameterType="java.lang.String">
+	  	delete from t_account_customer_push_balance where (isinvoice='2' or isinvoice='1') and invoiceid=#{invoiceid} 
+	  </delete>
+	  <update id="auditCustomerPushBanlance" parameterType="java.lang.String">
+	  	update t_account_customer_push_balance set status='3',businessdate=date_format(now(),'%Y-%m-%d'),checkdate=date_format(now(),'%Y-%m-%d'),audituserid=#{userid},auditusername=#{username},audittime=now(),printtimes=0 
+  		where id=#{id} and status='2'
+	  </update>
+	  <update id="oppauditCustomerPushBanlance" parameterType="java.lang.String">
+	  	update t_account_customer_push_balance set status='2',audituserid=#{userid},auditusername=#{username},audittime=now(),printtimes=0  
+  		where id=#{id} and status='3'
+	  </update>
+	  <update id="auditCustomerPushBanlanceByinvoiceid" parameterType="java.lang.String">
+	  	update t_account_customer_push_balance 
+	  	set status='3',audituserid=#{userid},auditusername=#{username},audittime=now() ,
+	  	businessdate=date_format(now(),'%Y-%m-%d'),
+	  	checkdate=date_format(now(),'%Y-%m-%d'),invoicedate=date_format(now(),'%Y-%m-%d'),
+	  	invoiceamount=amount,invoicenotaxamount = notaxamount
+  		where invoiceid=#{invoiceid} and status='2'
+	  </update>
+	  <update id="oppauditCustomerPushBanlanceByinvoiceid" parameterType="java.lang.String">
+	  	update t_account_customer_push_balance set status='2',audituserid=#{userid},auditusername=#{username},audittime=now() 
+  		where isinvoice='1' and invoiceid=#{invoiceid} and status='3'
+	  </update>
+	  <delete id="deleteCustomerPushBanlanceByinvoiceidAndBrandid" parameterType="java.lang.String">
+	  	delete from t_account_customer_push_balance 
+  		where brandid=#{brandid} and invoiceid=#{invoiceid} and isinvoice='1' and status='2'
+	  </delete>
+	  <delete id="deleteCustomerPushBanlanceByInvoiceIsrebate" parameterType="java.lang.String">
+	  	delete from t_account_customer_push_balance 
+  		where isrebate='1' and invoiceid=#{invoiceid} and status='2'
+	  </delete>
+    <delete id="deleteCustomerPushBanlanceBySouceid" parameterType="java.lang.String">
+	  	delete from t_account_customer_push_balance
+  		where brandid=#{brandid} and id=#{sourceid} and isinvoice='1' and status='2'
+	  </delete>
+	  <delete id="deleteCustomerPushBanlanceBySouceidIsrebate" parameterType="java.lang.String">
+	  	delete from t_account_customer_push_balance
+  		where isrebate='1' and id=#{sourceid} and status='2'
+	  </delete>
+	  <select id="getCustomerPushBanlanceByInvoiceIsrebate" parameterType="java.lang.String" resultType="int">
+	  	select count(1) from t_account_customer_push_balance
+	  	where isrebate='1' and invoiceid=#{invoiceid} and status='2'
+	  </select>
+    <update id="closeCustomerPushBanlanceBySourceid" parameterType="java.lang.String">
+        update t_account_customer_push_balance t,t_account_sales_invoice_detail t1
+        set t.status='4',t.iswriteoff='1',t.closetime=now(),t.writeoffdate=#{writeoffdate},
+        t.writeoffamount=amount,t.writeoffuserid=#{userid},t.writeoffusername=#{username}
+        where t.id = t1.sourcedetailid and t.status='3' and t1.sourcetype = '3' and t1.billid = #{invoiceid}
+    </update>
+	  <!-- 反核销 回写销售发票-->
+	  <update id="openCustomerPushBanlanceByInvoiceid" parameterType="java.lang.String">
+	  	update t_account_customer_push_balance t,t_account_sales_invoice_detail t1
+	  	set t.status='3',t.iswriteoff='0',t.closetime=NULL,t.writeoffdate='',
+	  	t.writeoffamount=0,t.writeoffuserid='',t.writeoffusername=''
+  		where t.id = t1.sourcedetailid and t.status='4' and t1.sourcetype = '3' and t1.billid = #{invoiceid}
+	  </update>
+	  <!-- 反核销 回写销售发货回单 -->
+	  <update id="openCustomerPushBanlanceByReceiptid" parameterType="java.lang.String">
+	  	update t_account_customer_push_balance 
+	  	set status='3',iswriteoff='0',closetime=NULL,writeoffdate='',writeoffuserid='',writeoffusername=''
+  		where invoiceid=#{receiptid} and isinvoice = '2'
+	  </update>
+    <update id="closeCustomerPushBanlanceByReceiptid" parameterType="java.lang.String">
+        update t_account_customer_push_balance
+        set status='4',iswriteoff='1',closetime=now(),writeoffdate=date_format(now(),'%Y-%m-%d'),writeoffuserid=#{userid},writeoffusername=#{username}
+        where invoiceid=#{receiptid} and isinvoice = '2'
+    </update>
+	  <update id="closeCustomerPushBanlance" parameterType="java.lang.String">
+	  	update t_account_customer_push_balance set status='4',iswriteoff='1',closetime=now() ,writeoffdate=date_format(now(),'%Y-%m-%d'),
+	  	writeoffamount=amount,writeoffuserid=#{userid},writeoffusername=#{username}
+  		where id=#{id} and status='3'
+	  </update>
+	  <!-- 反核销 回写冲差单 -->
+	  <update id="openCustomerPushBanlance" parameterType="java.lang.String">
+	  	update t_account_customer_push_balance set status='3',iswriteoff='0',closetime=NULL ,writeoffdate='',
+	  	writeoffamount=0,writeoffuserid='',writeoffusername=''
+  		where id=#{id} and status='4'
+	  </update>
+	  <update id="writeoffCustomerPushBanlance" parameterType="java.lang.String">
+	  	update t_account_customer_push_balance set status='4',iswriteoff='1',closetime=now() ,writeoffdate=#{writeoffdate},
+	  	writeoffamount=#{writeoffamount},tailamount=#{writeoffamount}-amount,writeoffuserid=#{userid},writeoffusername=#{username}
+  		where id=#{id} and status='3' and writeoffamount=#{oldWriteoffamount} and tailamount= #{oldTailamount}
+	  </update>
+	  <select id="getCustomerPushBanlanceListByCustomerid" parameterType="java.lang.String" resultType="com.hd.agent.account.model.CustomerPushBalance">
+	  	select <include refid="Base_Column_List"/> 
+	  	from t_account_customer_push_balance where (isinvoice='0') and (pcustomerid=#{customerid} or customerid=#{customerid}) and status='3'
+	  </select>
+    <sql id="pushBalanceReport_sql">
+        (
+          select <include refid="Base_Column_List"/>
+          from t_account_customer_push_balance
+          <trim prefix="where" prefixOverrides="and|or">
+              <include refid="common.Page_dataSql"/>
+              <if test="1 == 1">
+                  and (status = '3' || status = '4')
+              </if>
+              <if test="condition.businessdate1 != null">
+                  and businessdate >= #{condition.businessdate1}
+              </if>
+              <if test="condition.businessdate2 != null">
+                  <![CDATA[and businessdate <= #{condition.businessdate2}]]>
+              </if>
+              <if test="condition.customerid != null" >
+                  and FIND_IN_SET(customerid, #{condition.customerid})
+              </if>
+              <if test="condition.pcustomerid != null" >
+                  and pcustomerid = #{condition.pcustomerid}
+              </if>
+              <if test="condition.isinvoice != null" >
+                  and isinvoice = #{condition.isinvoice}
+              </if>
+              <if test="condition.pushtype != null" >
+                  and pushtype = #{condition.pushtype}
+              </if>
+              <if test="condition.subject != null" >
+                  and  FIND_IN_SET(subject,#{condition.subject})
+              </if>
+              <if test="condition.brandid != null" >
+                  and FIND_IN_SET(brandid, #{condition.brandid})
+              </if>
+              <if test="condition.salesuser != null" >
+                  and FIND_IN_SET(salesuser, #{condition.salesuser})
+              </if>
+              <if test="condition.branduser != null" >
+                  and FIND_IN_SET(branduser, #{condition.branduser})
+              </if>
+          </trim>
+        )
+    </sql>
+    <select id="getPushBalanceReportData" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.account.model.CustomerPushBalance">
+       select z.id,z.customerid,z.isinvoice,z.pcustomerid,z.salesdept,z.salesuser,z.branduser,z.pushtype,z.subject,z.brandid,
+        sum(z.amount) as amount from
+        <include refid="pushBalanceReport_sql" /> z group by ${condition.groupcols}
+          <if test="condition.isflag == null" >
+              <include refid="common.Page_limit"/>
+          </if>
+    </select>
+    <select id="getPushBalanceReportDataCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+       select count(*) from (
+        select z.id,z.customerid,z.isinvoice,z.pcustomerid,z.salesdept,z.salesuser,z.pushtype,z.subject,z.brandid,sum(z.amount) as amount from
+        <include refid="pushBalanceReport_sql" /> z group by ${condition.groupcols}
+       ) x
+    </select>
+    <select id="getPushBalanceReportSum" parameterType="java.util.Map" resultType="com.hd.agent.account.model.CustomerPushBalance">
+        select sum(z.amount) as amount from <include refid="pushBalanceReport_sql" /> z
+    </select>
+    <sql id="CustomerAndUserPush_sql">
+        select id, businessdate, customerid,pcustomerid,customersort,salesarea,salesdept,salesuser, isinvoice,isrebate,orderid,invoiceid,pushtype,
+        subject,brandid,branduser,branddept,supplierid,supplieruser, amount, iswriteoff,writeoffdate,writeoffuserid,writeoffusername,status,
+        <foreach collection="condition.pushtypes" item="pushtype" index="idx">
+            sum(
+            CASE WHEN pushtype = #{pushtype.code } then amount  ELSE 0
+            end
+            ) amount${pushtype.code },
+        </foreach>
+        sum(amount) amountSum
+        from t_account_customer_push_balance
+        <trim prefix="where" prefixOverrides="and|or">
+            <include refid="common.Page_dataSql"/>
+            <if test="1 == 1">
+                and (status = '3' || status = '4')
+            </if>
+            <if test="condition.businessdate1 != null">
+                and businessdate >= #{condition.businessdate1}
+            </if>
+            <if test="condition.businessdate2 != null">
+                <![CDATA[and businessdate <= #{condition.businessdate2}]]>
+            </if>
+            <if test="condition.customerid != null" >
+                and FIND_IN_SET(customerid, #{condition.customerid})
+            </if>
+            <if test="condition.pcustomerid != null" >
+                and pcustomerid = #{condition.pcustomerid}
+            </if>
+            <if test="condition.isinvoice != null" >
+                and isinvoice = #{condition.isinvoice}
+            </if>
+            <if test="condition.pushtype != null" >
+                and pushtype = #{condition.pushtype}
+            </if>
+            <if test="condition.subject != null" >
+                and  FIND_IN_SET(subject,#{condition.subject})
+            </if>
+            <if test="condition.brandid != null" >
+                and FIND_IN_SET(brandid, #{condition.brandid})
+            </if>
+            <if test="condition.salesuser != null" >
+                and FIND_IN_SET(salesuser, #{condition.salesuser})
+            </if>
+            <if test="condition.branduser != null" >
+                and FIND_IN_SET(branduser, #{condition.branduser})
+            </if>
+        </trim>
+        group by ${condition.groupcols}
+    </sql>
+    <select id="getCustomerAndUserPushData" parameterType="com.hd.agent.common.util.PageMap" resultType="java.util.Map">
+       <include refid="CustomerAndUserPush_sql" />
+        <if test="condition.isflag == null" >
+            <include refid="common.Page_limit"/>
+        </if>
+    </select>
+    <select id="getCustomerAndUserPushDataCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+        select count(*) from ( <include refid="CustomerAndUserPush_sql" /> ) z
+    </select>
+    <select id="getCustomerAndUserPushDataSum" parameterType="com.hd.agent.common.util.PageMap" resultType="java.util.Map">
+        select
+        <foreach collection="condition.pushtypes" item="pushtype" index="idx">
+            sum(amount${pushtype.code }) as amount${pushtype.code } ,
+        </foreach>
+        sum(amountSum) amountSum from ( <include refid="CustomerAndUserPush_sql" /> ) z
+    </select>
+    <select id="showCustomerPushBanlanceListBy" parameterType="java.util.Map" resultType="com.hd.agent.account.model.CustomerPushBalance">
+  		select <include refid="Base_Column_List"/>
+  		from t_account_customer_push_balance
+  		<trim prefix="where" prefixOverrides="and|or">
+	      <if test="idarrs != null">
+	      	and FIND_IN_SET(id,#{idarrs})
+	      </if>
+	      <if test="statusarr !=null">
+	      	and FIND_IN_SET(status,#{statusarr})
+	      </if>
+	      <if test="invoiceid !=null">
+	      	and invoiceid=#{invoiceid}
+	      </if>
+	      <if test="notisinvoicearr !=null">
+	      	and find_in_set(isinvoice,#{notisinvoicearr})=0
+	      </if>
+	    </trim>
+        <if test="groupCustomerPrint == 1">
+            group by businessdate,customerid,id
+        </if>
+        <if test="showPrintIdDesc == 1">
+            ORDER BY id DESC
+        </if>
+  	  </select>
+	  <update id="updateOrderPrinttimes" parameterType="com.hd.agent.account.model.CustomerPushBalance">
+			update t_account_customer_push_balance
+		    <set>
+		      <if test="printtimes != null">
+		        printtimes = IFNULL(printtimes,0)+1,
+		      </if>
+		    </set>
+		    where id = #{id}
+	  </update>
+	  <select id="getCustomerPushBanlanceCountBy" parameterType="java.util.Map" resultType="int">
+  		select count(*)
+  		from t_account_customer_push_balance
+  		<trim prefix="where" prefixOverrides="and|or">
+	      <if test="statusarr !=null">
+	      	and FIND_IN_SET(status,#{statusarr})
+	      </if>
+	      <if test="invoiceid !=null">
+	      	and invoiceid=#{invoiceid}
+	      </if>
+	      <if test="isinvoice !=null">
+	      	and isinvoice=#{isinvoice}
+	      </if>
+	      <if test="notisinvoicearr !=null">
+	      	and find_in_set(isinvoice,#{notisinvoicearr})=0
+	      </if>
+	      <if test="idarrs !=null">
+	      	and find_in_set(id,#{idarrs})
+	      </if>
+	    </trim>
+  	  </select>
+	  <update id="updateCustomerPushIsrelate" parameterType="java.lang.String">
+	  	update t_account_customer_push_balance set isrelate=#{isrelate}
+	  	where id=#{id}
+	  </update>
+	  <update id="updateCustomerPushIsrefer" parameterType="java.lang.String">
+	  	update t_account_customer_push_balance 
+	  	set isrefer=#{isrefer},invoicedate=#{invoicedate},invoiceamount=amount,invoicenotaxamount=notaxamount
+	  	where id=#{id} and isinvoice='0'
+	  </update>
+	  <update id="updateCustomerPushIsreferClear" parameterType="java.lang.String">
+	  	update t_account_customer_push_balance set isrefer='0',invoiceid='',invoicedate='',invoiceamount=0,invoicenotaxamount=0
+	  	where id=#{id} and isinvoice='0'
+	  </update>
+	  <update id="updateCustomerPushBanlanceIsreferByInvoiceid" parameterType="java.lang.String">
+	  	update t_account_customer_push_balance set isrefer='0',invoiceid='',invoicedate='',invoiceamount=0,invoicenotaxamount=0
+	  	where invoiceid=#{invoiceid}
+	  </update>
+	  <update id="updateCustomerPushBanlanceIsreferByID" parameterType="java.lang.String">
+	  	update t_account_customer_push_balance set isrefer='0',invoiceid='',invoicedate='',invoiceamount=0,invoicenotaxamount=0
+	  	where id=#{id}
+	  </update>
+	  <update id="updateCustomerPushBanlanceIsReferByinvoiceidAndBrandid" parameterType="java.lang.String">
+	  	update t_account_customer_push_balance t,t_account_sales_invoice_detail s
+	  	set t.isrefer='0',t.invoicedate='',t.invoiceamount=0,t.invoicenotaxamount=0
+	  	where t.id=s.sourceid and t.isinvoice='0' and s.brandid=#{brandid} and s.sourcetype='3' and s.billid=#{invoiceid} 
+	  </update>
+	  
+	  <delete id="deleteCustomerPushBanlanceByOA" parameterType="java.lang.String">
+	  	delete from t_account_customer_push_balance
+	  	where oaid=#{oaid}
+	  </delete>
+	  <update id="updateCustomerPushBalanceIsHand" parameterType="java.lang.String">
+	  	update t_account_customer_push_balance
+	  		set ishand = #{ishand}
+	  	where id = #{id}
+	  </update>
+    <select id="selectCustomerPushBanlanceByOaid" parameterType="java.lang.String" resultType="com.hd.agent.account.model.CustomerPushBalance">
+        select <include refid="Base_Column_List"/>
+        from t_account_customer_push_balance
+        where oaid = #{oaid }
+        order by id desc, addtime desc
+    </select>
+      <update id="updateCustomerPushIsreferBill" parameterType="java.lang.String">
+        update t_account_customer_push_balance
+        set isinvoicebill=#{isinvoicebill},
+        <choose>
+            <when test="isinvoicebill == 0">
+                invoicebillamount=0,invoicebillnotaxamount=0
+            </when>
+            <when test="isinvoicebill == 1">
+                invoicebillamount=amount,invoicebillnotaxamount=notaxamount
+            </when>
+        </choose>
+        where id=#{id}
+      </update>
+      <update id="updateCustomerPushBanlanceIsinvoicebillByID" parameterType="java.lang.String">
+	  	update t_account_customer_push_balance set isinvoicebill='0',invoicebilldate='',invoicebillamount=0,invoicebillnotaxamount=0
+	  	where id=#{id}
+	  </update>
+    <update id="clearCustomerPushBanlanceInvoiceidByID" parameterType="java.lang.String">
+        update t_account_customer_push_balance set
+        invoiceid = ""
+        where id = #{id}
+    </update>
+	  <update id="updateCustomerPushBanlanceIsinvoicebillByinvoiceidAndBrandid" parameterType="java.lang.String">
+	  	update t_account_customer_push_balance t,t_account_sales_invoicebill_detail s
+	  	set t.isinvoicebill='0',t.invoicebilldate=''
+	  	where t.id=s.sourceid and t.isinvoice='0' and s.brandid=#{brandid} and s.sourcetype='3' and s.billid=#{invoiceid}
+	  </update>
+    <update id="updateCustomerPushBanlanceInvoicedate" parameterType="java.util.Map">
+        UPDATE t_account_customer_push_balance
+        <set>
+            <choose>
+                <when test="hasinvoicedate == 1">
+                    invoicebilldate=#{invoicebilldate}
+                </when>
+                <when test="hasinvoicedate == 0">
+                    invoicebilldate=''
+                </when>
+            </choose>
+        </set>
+        WHERE id = #{id}
+    </update>
+    <update id="updateReceiptCustomerPushBalanceIsinvoicebill">
+      UPDATE t_account_customer_push_balance
+      set isinvoicebill = #{isinvoicebill}
+      where invoiceid = #{receiptid} and isinvoice = '2'
+    </update>
+    <update id="updateReceiptCustomerPushBalanceInvoicebilldate">
+        UPDATE t_account_customer_push_balance
+        set
+        <choose>
+            <when test="isinvoicebill == 1">
+                invoicebilldate=#{invoicebilldate}
+            </when>
+            <when test="isinvoicebill == 0">
+                invoicebilldate=''
+            </when>
+        </choose>
+        where invoiceid = #{receiptid} and isinvoice = '2'
+    </update>
+</mapper>

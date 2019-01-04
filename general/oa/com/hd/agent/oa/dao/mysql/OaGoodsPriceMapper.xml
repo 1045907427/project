@@ -1,0 +1,589 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.oa.dao.OaGoodsPriceMapper" >
+    <resultMap id="BaseResultMap" type="com.hd.agent.oa.model.OaGoodsPrice" >
+        <id column="id" property="id" jdbcType="VARCHAR" />
+        <result column="businessdate" property="businessdate" jdbcType="VARCHAR" />
+        <result column="status" property="status" jdbcType="VARCHAR" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="adduserid" property="adduserid" jdbcType="VARCHAR" />
+        <result column="addusername" property="addusername" jdbcType="VARCHAR" />
+        <result column="adddeptid" property="adddeptid" jdbcType="VARCHAR" />
+        <result column="adddeptname" property="adddeptname" jdbcType="VARCHAR" />
+        <result column="addtime" property="addtime" jdbcType="TIMESTAMP" />
+        <result column="modifyuserid" property="modifyuserid" jdbcType="VARCHAR" />
+        <result column="modifyusername" property="modifyusername" jdbcType="VARCHAR" />
+        <result column="modifytime" property="modifytime" jdbcType="TIMESTAMP" />
+        <result column="audituserid" property="audituserid" jdbcType="VARCHAR" />
+        <result column="auditusername" property="auditusername" jdbcType="VARCHAR" />
+        <result column="audittime" property="audittime" jdbcType="TIMESTAMP" />
+        <result column="stopuserid" property="stopuserid" jdbcType="VARCHAR" />
+        <result column="stopusername" property="stopusername" jdbcType="VARCHAR" />
+        <result column="stoptime" property="stoptime" jdbcType="TIMESTAMP" />
+        <result column="closetime" property="closetime" jdbcType="TIMESTAMP" />
+        <result column="printtimes" property="printtimes" jdbcType="INTEGER" />
+        <result column="supplierid" property="supplierid" jdbcType="VARCHAR" />
+        <result column="brandid" property="brandid" jdbcType="VARCHAR" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+        id, businessdate, status, remark, adduserid, addusername, adddeptid, adddeptname,
+        addtime, modifyuserid, modifyusername, modifytime, audituserid, auditusername, audittime,
+        stopuserid, stopusername, stoptime, closetime, printtimes, supplierid, brandid
+    </sql>
+    <resultMap id="DetailResultMap" type="com.hd.agent.oa.model.OaGoodsPriceDetail" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="billid" property="billid" jdbcType="VARCHAR" />
+        <result column="goodsid" property="goodsid" jdbcType="VARCHAR" />
+        <result column="goodsname" property="goodsname" jdbcType="VARCHAR" />
+        <result column="brandid" property="brandid" jdbcType="VARCHAR" />
+        <result column="barcode" property="barcode" jdbcType="VARCHAR" />
+        <result column="boxbarcode" property="boxbarcode" jdbcType="VARCHAR" />
+        <result column="goodssort" property="goodssort" jdbcType="VARCHAR" />
+        <result column="unitid" property="unitid" jdbcType="VARCHAR" />
+        <result column="unitname" property="unitname" jdbcType="VARCHAR" />
+        <result column="auxunitid" property="auxunitid" jdbcType="VARCHAR" />
+        <result column="auxunitname" property="auxunitname" jdbcType="VARCHAR" />
+        <result column="boxnum" property="boxnum" jdbcType="INTEGER" />
+        <result column="grossweight" property="grossweight" jdbcType="DECIMAL" />
+        <result column="singlevolume" property="singlevolume" jdbcType="DECIMAL" />
+        <result column="storageid" property="storageid" jdbcType="VARCHAR" />
+        <result column="oldbuytaxprice" property="oldbuytaxprice" jdbcType="DECIMAL" />
+        <result column="newbuytaxprice" property="newbuytaxprice" jdbcType="DECIMAL" />
+        <result column="buynotaxprice" property="buynotaxprice" jdbcType="DECIMAL" />
+        <result column="taxtype" property="taxtype" jdbcType="VARCHAR" />
+        <result column="taxrate" property="taxrate" jdbcType="DECIMAL" />
+        <result column="oldprice1" property="oldprice1" jdbcType="DECIMAL" />
+        <result column="oldprice2" property="oldprice2" jdbcType="DECIMAL" />
+        <result column="oldprice3" property="oldprice3" jdbcType="DECIMAL" />
+        <result column="oldprice4" property="oldprice4" jdbcType="DECIMAL" />
+        <result column="oldprice5" property="oldprice5" jdbcType="DECIMAL" />
+        <result column="oldprice6" property="oldprice6" jdbcType="DECIMAL" />
+        <result column="oldprice7" property="oldprice7" jdbcType="DECIMAL" />
+        <result column="oldprice8" property="oldprice8" jdbcType="DECIMAL" />
+        <result column="newprice1" property="newprice1" jdbcType="DECIMAL" />
+        <result column="newprice2" property="newprice2" jdbcType="DECIMAL" />
+        <result column="newprice3" property="newprice3" jdbcType="DECIMAL" />
+        <result column="newprice4" property="newprice4" jdbcType="DECIMAL" />
+        <result column="newprice5" property="newprice5" jdbcType="DECIMAL" />
+        <result column="newprice6" property="newprice6" jdbcType="DECIMAL" />
+        <result column="newprice7" property="newprice7" jdbcType="DECIMAL" />
+        <result column="newprice8" property="newprice8" jdbcType="DECIMAL" />
+        <result column="totalvolume" property="totalvolume" jdbcType="DECIMAL" />
+        <result column="totalweight" property="totalweight" jdbcType="DECIMAL" />
+        <result column="glength" property="glength" jdbcType="DECIMAL" />
+        <result column="gwidth" property="gwidth" jdbcType="DECIMAL" />
+        <result column="gheight" property="gheight" jdbcType="DECIMAL" />
+        <result column="oldbasesaleprice" property="oldbasesaleprice" jdbcType="DECIMAL" />
+        <result column="newbasesaleprice" property="newbasesaleprice" jdbcType="DECIMAL" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="oldcostaccountprice" property="oldcostaccountprice" jdbcType="DECIMAL" />
+        <result column="newcostaccountprice" property="newcostaccountprice" jdbcType="DECIMAL" />
+    </resultMap>
+    <sql id="Detail_Column_List" >
+        id, billid, goodsid, goodsname, brandid, barcode, boxbarcode, goodssort, unitid,
+        unitname, auxunitid, auxunitname, boxnum, grossweight, singlevolume, storageid, oldbuytaxprice,
+        newbuytaxprice, buynotaxprice, taxtype, taxrate, oldprice1, oldprice2, oldprice3,
+        oldprice4, oldprice5, oldprice6, oldprice7, oldprice8, newprice1, newprice2, newprice3,
+        newprice4, newprice5, newprice6, newprice7, newprice8, totalvolume, totalweight,
+        glength, gwidth, gheight, oldbasesaleprice, newbasesaleprice, remark, oldcostaccountprice,
+        newcostaccountprice
+    </sql>
+    <sql id="Detail_Column_List1" >
+        t1.id, t1.billid, t1.goodsid, t1.goodsname, t1.brandid, t1.barcode, t1.boxbarcode, t1.goodssort, t1.unitid,
+        t1.unitname, t1.auxunitid, t1.auxunitname, t1.boxnum, t1.grossweight, t1.singlevolume, t1.storageid, t1.oldbuytaxprice,
+        t1.newbuytaxprice, t1.buynotaxprice, t1.taxtype, t1.taxrate, t1.oldprice1, t1.oldprice2, t1.oldprice3,
+        t1.oldprice4, t1.oldprice5, t1.oldprice6, t1.oldprice7, t1.oldprice8, t1.newprice1, t1.newprice2, t1.newprice3,
+        t1.newprice4, t1.newprice5, t1.newprice6, t1.newprice7, t1.newprice8, t1.totalvolume, t1.totalweight,
+        t1.glength, t1.gwidth, t1.gheight, t1.oldbasesaleprice, t1.newbasesaleprice, t1.remark, t1.oldcostaccountprice,
+        t1.newcostaccountprice
+    </sql>
+    <select id="selectOaGoodsPrice" resultMap="BaseResultMap" parameterType="java.lang.String" >
+        select
+        <include refid="Base_Column_List" />
+        from t_oa_goodsprice
+        where id = #{id}
+    </select>
+    <delete id="deleteOaGoodsPrice" parameterType="java.lang.String" >
+        delete from t_oa_goodsprice
+        where id = #{id}
+    </delete>
+    <insert id="insertOaGoodsPrice" parameterType="com.hd.agent.oa.model.OaGoodsPrice" >
+        insert into t_oa_goodsprice
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="businessdate != null" >
+                businessdate,
+            </if>
+            <if test="status != null" >
+                status,
+            </if>
+            <if test="remark != null" >
+                remark,
+            </if>
+            <if test="adduserid != null" >
+                adduserid,
+            </if>
+            <if test="addusername != null" >
+                addusername,
+            </if>
+            <if test="adddeptid != null" >
+                adddeptid,
+            </if>
+            <if test="adddeptname != null" >
+                adddeptname,
+            </if>
+            addtime,
+            <if test="modifyuserid != null" >
+                modifyuserid,
+            </if>
+            <if test="modifyusername != null" >
+                modifyusername,
+            </if>
+            <if test="modifytime != null" >
+                modifytime,
+            </if>
+            <if test="audituserid != null" >
+                audituserid,
+            </if>
+            <if test="auditusername != null" >
+                auditusername,
+            </if>
+            <if test="audittime != null" >
+                audittime,
+            </if>
+            <if test="stopuserid != null" >
+                stopuserid,
+            </if>
+            <if test="stopusername != null" >
+                stopusername,
+            </if>
+            <if test="stoptime != null" >
+                stoptime,
+            </if>
+            <if test="closetime != null" >
+                closetime,
+            </if>
+            <if test="printtimes != null" >
+                printtimes,
+            </if>
+            <if test="supplierid != null" >
+                supplierid,
+            </if>
+            <if test="brandid != null" >
+                brandid,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id},
+            </if>
+            <if test="businessdate != null" >
+                #{businessdate},
+            </if>
+            <if test="status != null" >
+                #{status},
+            </if>
+            <if test="remark != null" >
+                #{remark},
+            </if>
+            <if test="adduserid != null" >
+                #{adduserid},
+            </if>
+            <if test="addusername != null" >
+                #{addusername},
+            </if>
+            <if test="adddeptid != null" >
+                #{adddeptid},
+            </if>
+            <if test="adddeptname != null" >
+                #{adddeptname},
+            </if>
+            now(),
+            <if test="modifyuserid != null" >
+                #{modifyuserid},
+            </if>
+            <if test="modifyusername != null" >
+                #{modifyusername},
+            </if>
+            <if test="modifytime != null" >
+                #{modifytime},
+            </if>
+            <if test="audituserid != null" >
+                #{audituserid},
+            </if>
+            <if test="auditusername != null" >
+                #{auditusername},
+            </if>
+            <if test="audittime != null" >
+                #{audittime},
+            </if>
+            <if test="stopuserid != null" >
+                #{stopuserid},
+            </if>
+            <if test="stopusername != null" >
+                #{stopusername},
+            </if>
+            <if test="stoptime != null" >
+                #{stoptime},
+            </if>
+            <if test="closetime != null" >
+                #{closetime},
+            </if>
+            <if test="printtimes != null" >
+                #{printtimes},
+            </if>
+            <if test="supplierid != null" >
+                #{supplierid},
+            </if>
+            <if test="brandid != null" >
+                #{brandid},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateOaGoodsPrice" parameterType="com.hd.agent.oa.model.OaGoodsPrice" >
+        update t_oa_goodsprice
+        set businessdate = #{businessdate},
+        status = #{status},
+        remark = #{remark},
+        modifyuserid = #{modifyuserid},
+        modifyusername = #{modifyusername},
+        modifytime = now(),
+        audituserid = #{audituserid},
+        auditusername = #{auditusername},
+        audittime = #{audittime},
+        stopuserid = #{stopuserid},
+        stopusername = #{stopusername},
+        stoptime = #{stoptime},
+        closetime = #{closetime},
+        printtimes = #{printtimes},
+        supplierid = #{supplierid},
+        brandid = #{brandid}
+        where id = #{id }
+    </update>
+    <insert id="insertOaGoodsPriceDetail" parameterType="com.hd.agent.oa.model.OaGoodsPriceDetail" >
+        insert into t_oa_goodsprice_detail
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="billid != null" >
+                billid,
+            </if>
+            <if test="goodsid != null" >
+                goodsid,
+            </if>
+            <if test="goodsname != null" >
+                goodsname,
+            </if>
+            <if test="brandid != null" >
+                brandid,
+            </if>
+            <if test="barcode != null" >
+                barcode,
+            </if>
+            <if test="boxbarcode != null" >
+                boxbarcode,
+            </if>
+            <if test="goodssort != null" >
+                goodssort,
+            </if>
+            <if test="unitid != null" >
+                unitid,
+            </if>
+            <if test="unitname != null" >
+                unitname,
+            </if>
+            <if test="auxunitid != null" >
+                auxunitid,
+            </if>
+            <if test="auxunitname != null" >
+                auxunitname,
+            </if>
+            <if test="boxnum != null" >
+                boxnum,
+            </if>
+            <if test="grossweight != null" >
+                grossweight,
+            </if>
+            <if test="singlevolume != null" >
+                singlevolume,
+            </if>
+            <if test="storageid != null" >
+                storageid,
+            </if>
+            <if test="oldbuytaxprice != null" >
+                oldbuytaxprice,
+            </if>
+            <if test="newbuytaxprice != null" >
+                newbuytaxprice,
+            </if>
+            <if test="buynotaxprice != null" >
+                buynotaxprice,
+            </if>
+            <if test="taxtype != null" >
+                taxtype,
+            </if>
+            <if test="taxrate != null" >
+                taxrate,
+            </if>
+            <if test="oldprice1 != null" >
+                oldprice1,
+            </if>
+            <if test="oldprice2 != null" >
+                oldprice2,
+            </if>
+            <if test="oldprice3 != null" >
+                oldprice3,
+            </if>
+            <if test="oldprice4 != null" >
+                oldprice4,
+            </if>
+            <if test="oldprice5 != null" >
+                oldprice5,
+            </if>
+            <if test="oldprice6 != null" >
+                oldprice6,
+            </if>
+            <if test="oldprice7 != null" >
+                oldprice7,
+            </if>
+            <if test="oldprice8 != null" >
+                oldprice8,
+            </if>
+            <if test="newprice1 != null" >
+                newprice1,
+            </if>
+            <if test="newprice2 != null" >
+                newprice2,
+            </if>
+            <if test="newprice3 != null" >
+                newprice3,
+            </if>
+            <if test="newprice4 != null" >
+                newprice4,
+            </if>
+            <if test="newprice5 != null" >
+                newprice5,
+            </if>
+            <if test="newprice6 != null" >
+                newprice6,
+            </if>
+            <if test="newprice7 != null" >
+                newprice7,
+            </if>
+            <if test="newprice8 != null" >
+                newprice8,
+            </if>
+            <if test="totalvolume != null" >
+                totalvolume,
+            </if>
+            <if test="totalweight != null" >
+                totalweight,
+            </if>
+            <if test="glength != null" >
+                glength,
+            </if>
+            <if test="gwidth != null" >
+                gwidth,
+            </if>
+            <if test="gheight != null" >
+                gheight,
+            </if>
+            <if test="oldbasesaleprice != null" >
+                oldbasesaleprice,
+            </if>
+            <if test="newbasesaleprice != null" >
+                newbasesaleprice,
+            </if>
+            <if test="remark != null" >
+                remark,
+            </if>
+            <if test="oldcostaccountprice != null" >
+                oldcostaccountprice,
+            </if>
+            <if test="newcostaccountprice != null" >
+                newcostaccountprice,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="billid != null" >
+                #{billid},
+            </if>
+            <if test="goodsid != null" >
+                #{goodsid},
+            </if>
+            <if test="goodsname != null" >
+                #{goodsname},
+            </if>
+            <if test="brandid != null" >
+                #{brandid},
+            </if>
+            <if test="barcode != null" >
+                #{barcode},
+            </if>
+            <if test="boxbarcode != null" >
+                #{boxbarcode},
+            </if>
+            <if test="goodssort != null" >
+                #{goodssort},
+            </if>
+            <if test="unitid != null" >
+                #{unitid},
+            </if>
+            <if test="unitname != null" >
+                #{unitname},
+            </if>
+            <if test="auxunitid != null" >
+                #{auxunitid},
+            </if>
+            <if test="auxunitname != null" >
+                #{auxunitname},
+            </if>
+            <if test="boxnum != null" >
+                #{boxnum},
+            </if>
+            <if test="grossweight != null" >
+                #{grossweight},
+            </if>
+            <if test="singlevolume != null" >
+                #{singlevolume},
+            </if>
+            <if test="storageid != null" >
+                #{storageid},
+            </if>
+            <if test="oldbuytaxprice != null" >
+                #{oldbuytaxprice},
+            </if>
+            <if test="newbuytaxprice != null" >
+                #{newbuytaxprice},
+            </if>
+            <if test="buynotaxprice != null" >
+                #{buynotaxprice},
+            </if>
+            <if test="taxtype != null" >
+                #{taxtype},
+            </if>
+            <if test="taxrate != null" >
+                #{taxrate},
+            </if>
+            <if test="oldprice1 != null" >
+                #{oldprice1},
+            </if>
+            <if test="oldprice2 != null" >
+                #{oldprice2},
+            </if>
+            <if test="oldprice3 != null" >
+                #{oldprice3},
+            </if>
+            <if test="oldprice4 != null" >
+                #{oldprice4},
+            </if>
+            <if test="oldprice5 != null" >
+                #{oldprice5},
+            </if>
+            <if test="oldprice6 != null" >
+                #{oldprice6},
+            </if>
+            <if test="oldprice7 != null" >
+                #{oldprice7},
+            </if>
+            <if test="oldprice8 != null" >
+                #{oldprice8},
+            </if>
+            <if test="newprice1 != null" >
+                #{newprice1},
+            </if>
+            <if test="newprice2 != null" >
+                #{newprice2},
+            </if>
+            <if test="newprice3 != null" >
+                #{newprice3},
+            </if>
+            <if test="newprice4 != null" >
+                #{newprice4},
+            </if>
+            <if test="newprice5 != null" >
+                #{newprice5},
+            </if>
+            <if test="newprice6 != null" >
+                #{newprice6},
+            </if>
+            <if test="newprice7 != null" >
+                #{newprice7},
+            </if>
+            <if test="newprice8 != null" >
+                #{newprice8},
+            </if>
+            <if test="totalvolume != null" >
+                #{totalvolume},
+            </if>
+            <if test="totalweight != null" >
+                #{totalweight},
+            </if>
+            <if test="glength != null" >
+                #{glength},
+            </if>
+            <if test="gwidth != null" >
+                #{gwidth},
+            </if>
+            <if test="gheight != null" >
+                #{gheight},
+            </if>
+            <if test="oldbasesaleprice != null" >
+                #{oldbasesaleprice},
+            </if>
+            <if test="newbasesaleprice != null" >
+                #{newbasesaleprice},
+            </if>
+            <if test="remark != null" >
+                #{remark},
+            </if>
+            <if test="oldcostaccountprice != null" >
+                #{oldcostaccountprice},
+            </if>
+            <if test="newcostaccountprice != null" >
+                #{newcostaccountprice},
+            </if>
+        </trim>
+    </insert>
+    <delete id="deleteOaGoodsDetailByBillid" parameterType="java.lang.String">
+        delete from t_oa_goodsprice_detail
+        where billid = #{billid }
+    </delete>
+    <select id="selectGoodsPriceDetailList" resultType="com.hd.agent.oa.model.OaGoodsPriceDetail" parameterType="com.hd.agent.common.util.PageMap">
+        select
+        <include refid="Detail_Column_List1"/>,
+        t2.name brandname,
+        t3.name goodssortname,
+        t4.name unitname,
+        t5.name auxunitname,
+        t6.name storagename,
+        t7.name taxname
+        from t_oa_goodsprice_detail t1
+        left join t_base_goods_brand t2 on t1.brandid = t2.id
+        left join t_base_goods_waresclass t3 on t1.goodssort = t3.id
+        left join t_base_goods_meteringunit t4 on t1.unitid = t4.id
+        left join t_base_goods_meteringunit t5 on t1.auxunitid = t5.id
+        left join t_base_storage_info t6 on t1.storageid = t6.id
+        left join t_base_finance_taxtype t7 on t1.taxtype = t7.id
+        <trim prefix="where" prefixOverrides="and|or">
+            and t1.billid = #{condition.billid }
+            <include refid="common.Page_querySql"/>
+            <include refid="common.Page_dataSql"/>
+        </trim>
+        order by t1.id
+        <include refid="common.Page_limit"/>
+    </select>
+    <select id="selectOaGoodsPriceDetailListByBillid" resultType="com.hd.agent.oa.model.OaGoodsPriceDetail" parameterType="java.lang.String">
+        select
+        <include refid="Detail_Column_List"/>
+        from t_oa_goodsprice_detail where billid = #{billid }
+    </select>
+    <select id="selectGoodsPriceDetailListCount" resultType="int" parameterType="com.hd.agent.common.util.PageMap">
+        select count(1) from t_oa_goodsprice_detail
+        <trim prefix="where" prefixOverrides="and|or">
+            and billid = #{condition.billid }
+            <include refid="common.Page_querySql"/>
+            <include refid="common.Page_dataSql"/>
+        </trim>
+    </select>
+</mapper>

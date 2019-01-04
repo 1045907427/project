@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.client.dao.ClientOffpriceLogMapper" >
+  <sql id="Base_Column_List">
+    id, deptid, goodsid, begintimebefore, begintimeafter, endtimebefore, endtimeafter,
+    begindatebefore, begindateafter, enddatebefore, enddateafter, retailpricebefore,
+    retailpriceafter, operatetime, operateuserid, operateusername, operatetype, offpriceid
+  </sql>
+  <sql id="ClientOffPriceLogQuery">
+    <trim>
+      where t.goodsid = t1.id
+      <if test="condition.offpriceid != null">
+        and t.offpriceid = #{condition.offpriceid}
+      </if>
+      <if test="condition.deptid != null">
+        and t.deptid = #{condition.deptid}
+      </if>
+      <if test="condition.goodsname != null">
+        and t1.name  like CONCAT('%',#{condition.goodsname},'%')
+      </if>
+      <if test="condition.operatedatebegin != null">
+        <![CDATA[ and str_to_date(t.operatetime, '%Y-%m-%d') >= str_to_date(#{condition.operatedatebegin}, '%Y-%m-%d') ]]>
+      </if>
+      <if test="condition.operatedateend != null">
+        <![CDATA[ and str_to_date(t.operatetime, '%Y-%m-%d') < date_add(str_to_date(#{condition.operatedateend}, '%Y-%m-%d'), interval '1' day) ]]>
+      </if>
+    </trim>
+  </sql>
+  <select id="getOffPriceLogList"  parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.client.model.ClientOffpriceLog">
+    select
+    t.id,t.deptid,t.goodsid,t.begintimebefore,t.begintimeafter,t.endtimebefore,t.endtimeafter,t.begindatebefore,t.begindateafter,t.enddatebefore,t.enddateafter,t.retailpricebefore,t.retailpriceafter,t.operatetime,t.operateuserid,t.operateusername,t.operatetype,t.offpriceid
+    from t_client_offpricelog t, t_base_goods_info t1
+    <include refid="ClientOffPriceLogQuery" />
+    <include refid="common.Page_limit" />
+  </select>
+  <select id="getOffPriceLogCount" resultType="int" parameterType="com.hd.agent.common.util.PageMap">
+    select count(1)
+    from t_client_offpricelog t, t_base_goods_info t1
+    <include refid="ClientOffPriceLogQuery" />
+  </select>
+  <insert id="addOffPriceLog" parameterType="com.hd.agent.client.model.ClientOffpriceLog">
+    insert into t_client_offpricelog
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="offpriceid != null">
+        offpriceid,
+      </if>
+      <if test="deptid != null">
+        deptid,
+      </if>
+      <if test="goodsid != null">
+        goodsid,
+      </if>
+      <if test="begintimebefore != null">
+        begintimebefore,
+      </if>
+      <if test="begintimeafter != null">
+        begintimeafter,
+      </if>
+      <if test="endtimebefore != null">
+        endtimebefore,
+      </if>
+      <if test="endtimeafter != null">
+        endtimeafter,
+      </if>
+      <if test="begindatebefore != null">
+        begindatebefore,
+      </if>
+      <if test="begindateafter != null">
+        begindateafter,
+      </if>
+      <if test="enddatebefore != null">
+        enddatebefore,
+      </if>
+      <if test="enddateafter != null">
+        enddateafter,
+      </if>
+      <if test="retailpricebefore != null">
+        retailpricebefore,
+      </if>
+      <if test="retailpriceafter != null">
+        retailpriceafter,
+      </if>
+      <if test="operatetime != null">
+        operatetime,
+      </if>
+      <if test="operateuserid != null">
+        operateuserid,
+      </if>
+      <if test="operateusername != null">
+        operateusername,
+      </if>
+      <if test="operatetype != null">
+        operatetype,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id},
+      </if>
+      <if test="offpriceid != null">
+        #{offpriceid},
+      </if>
+      <if test="deptid != null">
+        #{deptid},
+      </if>
+      <if test="goodsid != null">
+        #{goodsid},
+      </if>
+      <if test="begintimebefore != null">
+        #{begintimebefore},
+      </if>
+      <if test="begintimeafter != null">
+        #{begintimeafter},
+      </if>
+      <if test="endtimebefore != null">
+        #{endtimebefore},
+      </if>
+      <if test="endtimeafter != null">
+        #{endtimeafter},
+      </if>
+      <if test="begindatebefore != null">
+        #{begindatebefore},
+      </if>
+      <if test="begindateafter != null">
+        #{begindateafter},
+      </if>
+      <if test="enddatebefore != null">
+        #{enddatebefore},
+      </if>
+      <if test="enddateafter != null">
+        #{enddateafter},
+      </if>
+      <if test="retailpricebefore != null">
+        #{retailpricebefore},
+      </if>
+      <if test="retailpriceafter != null">
+        #{retailpriceafter},
+      </if>
+      <if test="operatetime != null">
+        #{operatetime},
+      </if>
+      <if test="operateuserid != null">
+        #{operateuserid},
+      </if>
+      <if test="operateusername != null">
+        #{operateusername},
+      </if>
+      <if test="operatetype != null">
+        #{operatetype},
+      </if>
+    </trim>
+  </insert>
+</mapper>

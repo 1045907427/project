@@ -1,0 +1,892 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.message.dao.InnerMessageMapper">
+    <sql id="Msgc_Base_Column_List">    	
+    	id, title, adduserid, addtime, clocktime, clocktype, msgtype, url, delflag, deltime,content, receivers,tabtitle
+    </sql>    
+	<sql id="Msgc_PageList_Column_List">
+    	msgc.id, msgc.title, msgc.adduserid, msgc.addtime, msgc.clocktime, msgc.clocktype, msgc.msgtype, msgc.url,
+    	msgc.delflag, msgc.deltime,msgc.content, msgc.receivers,msgc.tabtitle
+	</sql>
+    <sql id="Msgc_PageList_Where_Clause">
+		<if test="condition.title != null">
+			and title like CONCAT('%',#{condition.title},'%')
+           </if>
+		<if test="condition.content != null">
+			and content like CONCAT('%',#{condition.content},'%')
+        </if>
+		<if test="condition.tlecont != null">
+			and ( content like CONCAT('%',#{condition.tlecont},'%')
+			or title like CONCAT('%',#{condition.tlecont},'%')
+			)
+		</if>
+		<if test="condition.adduserid != null">
+			and adduserid = #{condition.adduserid}
+        </if>
+		<if test="condition.delflag != null">
+			and delflag = #{condition.delflag}
+        </if>
+		<if test="condition.clocktype != null">
+			and clocktype = #{condition.clocktype}
+        </if>
+		<if test="condition.msgtype != null">
+			and msgtype = #{condition.msgtype}
+        </if>
+		<if test="condition.starttime != null">
+			<![CDATA[ and addtime >= #{condition.starttime} ]]>
+        </if>
+		<if test="condition.endtime != null">
+			<![CDATA[ and addtime <= #{condition.endtime} ]]>
+        </if>        
+    </sql>
+    
+    <resultMap id="Msgr_QueryResultMap" type="com.hd.agent.message.model.MsgReceive">
+		<id column="id" property="id" />
+		<result column="msgid" property="msgid" />
+		<result column="senduserid" property="senduserid" />
+		<result column="sendtime" property="sendtime" />
+		<result column="recvuserid" property="recvuserid" />
+		<result column="recvtime" property="recvtime" />
+		<result column="viewflag" property="viewflag" />
+		<result column="viewtime" property="viewtime" />
+		<result column="delflag" property="delflag" />
+	    <result column="recvflag" property="recvflag" />
+	    <result column="recvusername" property="recvusername" />
+	    <result column="sendusername" property="sendusername" />
+		<association property="msgContent" column="msgid"
+			javaType="com.hd.agent.message.model.MsgContent">
+			<id column="msgc_id" property="id"></id>
+			<result column="msgc_title" property="title" />
+			<result column="msgc_adduserid" property="adduserid" />
+			<result column="msgc_addtime" property="addtime" />
+			<result column="msgc_clocktime" property="clocktime" />
+			<result column="msgc_clocktype" property="clocktype" />
+			<result column="msgc_msgtype" property="msgtype" />
+			<result column="msgc_url" property="url" />
+			<result column="msgc_delflag" property="delflag" />
+			<result column="msgc_content" property="content" />
+	    	<result column="msgc_tabtitle" property="tabtitle" />
+		</association>
+	</resultMap>
+	<sql id="Msgr_Base_Column_List">
+		id, msgid, senduserid, sendtime, recvuserid, recvtime,
+		viewflag,viewtime, delflag, recvflag
+    </sql>
+	<sql id="Msgr_PageList_Column_List">
+		msgr.id, msgr.msgid, msgr.senduserid, msgr.sendtime,msgr.recvuserid,msgr.recvtime, msgr.viewflag,
+		msgr.viewtime,msgr.delflag, msgr.recvflag, 
+		msgc.id msgc_id,msgc.title msgc_title,msgc.adduserid msgc_adduserid,
+		msgc.addtime msgc_addtime,msgc.clocktime msgc_clocktime,msgc.clocktype msgc_clocktype,
+		msgc.msgtype msgc_msgtype,msgc.url msgc_url,msgc.delflag msgc_delflag,msgc.content msgc_content,msgc.tabtitle msgc_tabtitle,
+		suser.name sendusername
+    </sql>
+	<sql id="Msgr_Base_Where_Clause">
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="msgid != null">
+				and msgid = #{msgid}
+            </if>
+			<if test="senduserid != null">
+				and senduserid = #{senduserid}
+            </if>
+			<if test="sendtime != null">
+				and sendtime = #{sendtime}
+            </if>
+			<if test="recvuserid != null">
+				and recvuserid = #{recvuserid}
+            </if>
+			<if test="recvtime != null">
+				and recvtime = #{recvtime}
+            </if>
+			<if test="viewflag != null">
+				and viewflag = #{viewflag}
+            </if>
+			<if test="viewtime != null">
+				and viewtime = #{viewtime}
+            </if>
+			<if test="delflag != null">
+				and delflag = #{delflag}
+            </if>
+	      	<if test="condition.recvflag != null">
+	         	and recvflag = #{condition.recvflag}
+	     	</if>
+		</trim>
+	</sql>
+	<sql id="MsgrMsgc_PageList_Where_Clause">		
+		<if test="condition.msgid != null">
+			and msgr.msgid = #{condition.msgid}
+           </if>
+		<if test="condition.senduserid != null">
+			and msgr.senduserid = #{condition.senduserid}
+           </if>
+		<if test="condition.sendtime != null">
+			and msgr.sendtime = #{condition.sendtime}
+           </if>
+		<if test="condition.starttime != null">
+			<![CDATA[ and msgr.sendtime >= #{ condition.starttime} ]]>
+        </if>
+		<if test="condition.endtime != null">
+			<![CDATA[ and msgr.sendtime <= #{condition.endtime} ]]>
+        </if>
+		<if test="condition.recvuserid != null">
+			and msgr.recvuserid = #{condition.recvuserid}
+           </if>
+		<if test="condition.recvtime != null">
+			and msgr.recvtime = #{condition.recvtime}
+           </if>
+		<if test="condition.viewflag != null">
+			and msgr.viewflag = #{condition.viewflag}
+           </if>
+		<if test="condition.viewtime != null">
+			and msgr.viewtime = #{condition.viewtime}
+           </if>
+		<if test="condition.delflag != null">
+			and msgr.delflag = #{condition.delflag}
+           </if>
+		<if test="condition.recvflag != null">
+			and msgr.recvflag = #{condition.recvflag}
+           </if>
+		<if test="condition.msgc_title != null">
+			and msgc.title like CONCAT('%',#{condition.msgc_title},'%')
+           </if>
+		<if test="condition.msgc_content != null">
+			and msgc.content like CONCAT('%',#{condition.msgc_content},'%')
+		</if>
+		<if test="condition.msgc_tlecont != null">
+			and ( msgc.content like CONCAT('%',#{condition.msgc_tlecont},'%')
+				or msgc.title like CONCAT('%',#{condition.msgc_tlecont},'%')
+			)
+		</if>
+		<if test="condition.msgc_url != null">
+			and msgc.url like CONCAT('%', #{condition.msgc_url},'%')
+		</if>
+		<if test="condition.msgc_adduserid != null">
+			and msgc.adduserid = #{condition.msgc_adduserid}
+           </if>
+		<if test="condition.msgc_delflag != null">
+			and msgc.delflag = #{condition.msgc_delflag}
+           </if>
+		<if test="condition.msgc_clocktype != null">
+			and msgc.clocktype = #{condition.msgc_clocktype}
+           </if>
+		<if test="condition.msgc_msgtype != null">
+			and msgc.msgtype = #{condition.msgc_msgtype}
+           </if>
+	</sql>
+	<select id="getMsgContentListBy"  parameterType="java.util.HashMap" resultType="com.hd.agent.message.model.MsgContent" useCache="false">
+		select		    	
+    	id, title, adduserid, addtime, clocktime, clocktype, msgtype, url, delflag, deltime,tabtitle
+    	<if test="showcontentcol==1">
+    		,content
+    	</if>
+    	<if test="showreceiverscol==1">
+    		,receivers
+    	</if>
+		from t_msg_content
+		where
+		<trim prefixOverrides="and|or">
+	      <if test="wadduserid != null" >
+	        and adduserid = #{wadduserid}
+	      </if>
+	      <if test="wmsgtype != null" >
+	        and msgtype = #{wmsgtype}
+	      </if>
+	      <if test="wdelflag != null" >
+	        and delflag = #{wdelflag}
+	      </if>
+	      <if test="wclocktype!=null">
+	      	and clocktype=#{wclocktype}
+	      </if>
+	      <if test="woverclocktime == 1">
+	      <![CDATA[	and LENGTH(clocktime)>0 and (NOT clocktime IS NULL) and clocktime <=now() ]]>
+	      </if>
+		</trim>
+	</select>
+
+	<sql id="MsgcMsgr_PageList_Where_Clause">
+		<if test="condition.title != null">
+			and msgc.title like CONCAT('%',#{condition.title},'%')
+		</if>
+		<if test="condition.content != null">
+			and msgc.content like CONCAT('%',#{condition.content},'%')
+		</if>
+		<if test="condition.tlecont != null">
+			and ( msgc.content like CONCAT('%',#{condition.tlecont},'%')
+			or msgc.title like CONCAT('%',#{condition.tlecont},'%')
+			)
+		</if>
+		<if test="condition.url != null">
+			and msgc.url like CONCAT('%', #{condition.url},'%')
+		</if>
+		<if test="condition.adduserid != null">
+			and msgc.adduserid = #{condition.adduserid}
+		</if>
+		<if test="condition.delflag != null">
+			and msgc.delflag = #{condition.delflag}
+		</if>
+		<if test="condition.clocktype != null">
+			and msgc.clocktype = #{condition.clocktype}
+		</if>
+		<if test="condition.msgtype != null">
+			and msgc.msgtype = #{condition.msgtype}
+		</if>
+		<if test="condition.starttime != null" >
+			<![CDATA[ and date_format(msgc.addtime,'%Y-%m-%d') >=  #{condition.starttime} ]]>
+		</if>
+		<if test="condition.endtime != null" >
+			<![CDATA[ and date_format(msgc.addtime,'%Y-%m-%d') <= #{condition.endtime}  ]]>
+		</if>
+		<if test="condition.queryreceiverArr!=null ">
+			and
+			<foreach collection="condition.queryreceiverArr" item="item" open="("  separator="or" close=")">
+				<![CDATA[ find_in_set(#{item}, msgc.receivers )  ]]>
+			</foreach>
+		</if>
+		<if test="condition.msgr_senduserid != null
+					or condition.msgr_starttime != null
+					or condition.msgr_endtime != null
+					or condition.msgr_recvuserid != null
+					or condition.msgr_viewflag != null
+					or condition.msgr_delflag != null
+					or condition.msgr_recvflag != null">
+			and EXISTS (SELECT 1 FROM t_msg_receive msgr
+			<trim prefix="where" prefixOverrides="and|or">
+				<if test="1==1">
+					and msgc.id = msgid
+				</if>
+				<if test="condition.msgr_senduserid != null">
+					and msgr.senduserid = #{condition.msgr_senduserid}
+				</if>
+				<if test="condition.msgr_starttime != null">
+					<![CDATA[ and msgr.sendtime >= #{condition.msgr_starttime} ]]>
+				</if>
+				<if test="condition.msgr_endtime != null">
+					<![CDATA[ and msgr.sendtime <= #{condition.msgr_endtime} ]]>
+				</if>
+				<if test="condition.msgr_recvuserid != null">
+					and msgr.recvuserid = #{condition.msgr_recvuserid}
+				</if>
+				<if test="condition.msgr_viewflag != null">
+					and msgr.viewflag = #{condition.msgr_viewflag}
+				</if>
+				<if test="condition.msgr_delflag != null">
+					and msgr.delflag = #{condition.msgr_delflag}
+				</if>
+				<if test="condition.msgr_recvflag != null">
+					and msgr.recvflag = #{condition.msgr_recvflag}
+				</if>
+			</trim>
+			)
+		</if>
+	</sql>
+	<select id="getMsgContentPageList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.message.model.MsgContent" useCache="false">
+		select
+		<include refid="Msgc_PageList_Column_List" />,auser.name addusername
+		from t_msg_content msgc
+		left join t_sys_user auser on msgc.adduserid = auser.userid	   
+		 <trim prefix="where" prefixOverrides="and|or">
+			<include refid="MsgcMsgr_PageList_Where_Clause"/>
+			<include refid="common.Page_querySql"/>
+			<include refid="common.Page_dataSql"/>
+		</trim>		
+		<include refid="common.Page_limit" />     
+	</select>
+	<select id="getMsgContentCount" parameterType="com.hd.agent.common.util.PageMap"
+		resultType="int" useCache="false">
+		select
+		count(*)
+		from t_msg_content msgc
+		left join t_sys_user auser on msgc.adduserid = auser.userid
+		<trim prefix="where" prefixOverrides="and|or">
+			<include refid="MsgcMsgr_PageList_Where_Clause"/>
+			<include refid="common.Page_querySql"/>
+			<include refid="common.Page_dataSql"/>
+		</trim>
+	</select>
+	<select id="showMsgContent" parameterType="java.lang.String" resultType="com.hd.agent.message.model.MsgContent">
+		select * from t_msg_content where id=#{id}
+	</select>
+	<select id="showMsgContentBy" parameterType="java.util.HashMap" resultType="com.hd.agent.message.model.MsgContent">
+		select
+		id, title, adduserid, addtime, clocktime, clocktype, msgtype, url, delflag, deltime,tabtitle
+		<if test="showcontcol !=0 ">
+			,content
+		</if>
+		<if test="showrecvcol !=0 ">
+			, receivers
+		</if> 
+		from t_msg_content
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="id != null">
+				and id = #{id}
+            </if>
+			<if test="adduserid != null">
+				and adduserid = #{adduserid}
+            </if>
+            <if test="hasrecvuserid != null">
+				and FIND_IN_SET(#{hasrecvuserid},receivers)
+            </if>
+        </trim>
+	</select>
+    <insert id="addMsgContent" parameterType="com.hd.agent.message.model.MsgContent" >
+    	insert into t_msg_content
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="title != null" >
+	        title,
+	      </if>
+	      <if test="adduserid != null" >
+	        adduserid,
+	      </if>
+	        addtime,
+	      <if test="clocktime != null" >
+	        clocktime,
+	      </if>
+	      <if test="clocktype != null" >
+	        clocktype,
+	      </if>
+	      <if test="msgtype != null" >
+	        msgtype,
+	      </if>
+	      <if test="url != null" >
+	        url,
+	      </if>
+	      <if test="delflag != null" >
+	        delflag,
+	      </if>
+	      <if test="content != null" >
+	        content,
+	      </if>
+	      <if test="receivers != null" >
+	        receivers,
+	      </if>
+	      <if test="tabtitle != null" >
+	        tabtitle,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="title != null" >
+	        #{title},
+	      </if>
+	      <if test="adduserid != null" >
+	        #{adduserid},
+	      </if>
+	      <choose>
+	      	<when test="addtime !=null">	      		
+	        	#{addtime},
+	      	</when>
+	      	<otherwise>
+	        	now(),
+	        </otherwise>
+	      </choose>	      
+	      <if test="clocktime != null" >
+	        #{clocktime},
+	      </if>
+	      <if test="clocktype != null" >
+	        #{clocktype},
+	      </if>
+	      <if test="msgtype != null" >
+	        #{msgtype},
+	      </if>
+	      <if test="url != null" >
+	        #{url},
+	      </if>
+	      <if test="delflag != null" >
+	        #{delflag},
+	      </if>
+	      <if test="content != null" >
+	        #{content},
+	      </if>
+	      <if test="receivers != null" >
+	        #{receivers},
+	      </if>
+	      <if test="tabtitle != null" >
+	        #{tabtitle},
+	      </if>
+	    </trim>
+		<selectKey resultType="int" keyProperty="id"
+			order="AFTER">
+			select LAST_INSERT_ID() as id
+	    </selectKey>
+  </insert>
+   <update id="updateMsgContent" parameterType="com.hd.agent.message.model.MsgContent" >
+    update t_msg_content
+    <set >
+      <if test="title != null" >
+        title = #{title},
+      </if>
+      <if test="adduserid != null" >
+        adduserid = #{adduserid},
+      </if>
+      <if test="addtime != null" >
+        addtime = #{addtime},
+      </if>
+      <if test="clocktime != null" >
+        clocktime = #{clocktime},
+      </if>
+      <if test="clocktype != null" >
+        clocktype = #{clocktype},
+      </if>
+      <if test="msgtype != null" >
+        msgtype = #{msgtype},
+      </if>
+      <if test="url != null" >
+        url = #{url},
+      </if>
+      <if test="content != null" >
+        content = #{content},
+      </if>
+      <if test="receivers != null" >
+		receivers = #{receivers},
+      </if>
+      <if test="tabtitle != null" >
+        tabtitle = #{tabtitle},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  <update id="updateMsgContentBy" parameterType="java.util.HashMap" >
+    update t_msg_content
+    <set >
+      <if test="title != null" >
+        title = #{title},
+      </if>
+      <if test="addtime != null" >
+        addtime = #{addtime},
+      </if>
+      <if test="clocktime != null" >
+        clocktime = #{clocktime},
+      </if>
+      <if test="clocktype != null" >
+        clocktype = #{clocktype},
+      </if>
+      <if test="msgtype != null" >
+        msgtype = #{msgtype},
+      </if>
+      <if test="delflag != null" >
+        delflag = #{delflag},
+      </if>
+      <if test="deltime != null" >
+        deltime = #{deltime},
+      </if>
+    </set>
+    where
+	<trim prefixOverrides="and|or">	
+      <if test="id != null" >
+        and id = #{id}
+      </if>	
+      <if test="idarr != null" >
+        and FIND_IN_SET(id,#{idarr})
+      </if>	
+      <if test="wadduserid != null" >
+        and adduserid = #{wadduserid}
+      </if>
+      <if test="wclocktype != null" >
+        and clocktype = #{wclocktype}
+      </if>
+      <if test="wmsgtype != null" >
+        and msgtype = #{wmsgtype}
+      </if>
+      <if test="wdelflag != null" >
+        and delflag = #{wdelflag}
+      </if>
+      <if test="authDataSql != null">
+      	and ${authDataSql}
+      </if>
+	</trim>
+  </update> 
+  <delete id="deleteMsgContent" parameterType="java.lang.String">
+	delete t_msg_content  where id=#{id}
+  </delete>
+
+<!-- 接收人 -->
+	<select id="getMsgReceivePageList" parameterType="com.hd.agent.common.util.PageMap"
+		resultMap="Msgr_QueryResultMap" useCache="false">
+		select
+		<include refid="Msgr_PageList_Column_List" />
+		from t_msg_receive msgr inner join t_msg_content msgc on
+		msgr.msgid=msgc.id left join t_sys_user suser on msgr.senduserid = suser.userid
+		<trim prefix="where" prefixOverrides="and|or">
+			<include refid="MsgrMsgc_PageList_Where_Clause" />
+			<include refid="common.Page_querySql"/>
+		</trim>
+		<choose>
+			<when test="condition.isPageLimit != false">
+				<include refid="common.Page_limit" />
+			</when>
+			<otherwise>
+				<include refid="common.Page_OrderOnly" />
+			</otherwise>
+		</choose>
+	</select>
+	<select id="getMsgReceiveCount" parameterType="com.hd.agent.common.util.PageMap"
+		resultType="int" useCache="false">
+		select count(msgr.id) from t_msg_receive msgr inner join t_msg_content msgc
+		on msgr.msgid=msgc.id left join t_sys_user suser on msgr.senduserid = suser.userid
+		<trim prefix="where" prefixOverrides="and|or">
+			<include refid="MsgrMsgc_PageList_Where_Clause" />
+			<include refid="common.Page_querySql"/>
+		</trim>
+	</select>
+	<insert id="addMsgReceive" parameterType="com.hd.agent.message.model.MsgReceive">
+		insert into t_msg_receive
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="msgid != null">
+				msgid,
+            </if>
+			<if test="senduserid != null">
+				senduserid,
+            </if>
+			<if test="1==1">
+				sendtime,
+            </if>
+			<if test="recvuserid != null">
+				recvuserid,
+            </if>
+			<if test="recvtime != null">
+				recvtime,
+            </if>
+			<if test="viewflag != null">
+				viewflag,
+            </if>
+			<if test="viewtime != null">
+				viewtime,
+            </if>
+			<if test="delflag != null">
+				delflag,
+            </if>
+	      	<if test="recvflag != null">
+	        	recvflag,
+	      	</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="msgid != null">
+				#{msgid},
+            </if>
+			<if test="senduserid != null">
+				#{senduserid},
+            </if>
+            <choose>
+		      	<when test="sendtime !=null">	      		
+		        	#{sendtime},
+		      	</when>
+		      	<otherwise>
+		        	now(),
+		        </otherwise>
+	        </choose>
+			<if test="recvuserid != null">
+				#{recvuserid},
+            </if>
+			<if test="recvtime != null">
+				#{recvtime},
+            </if>
+			<if test="viewflag != null">
+				#{viewflag},
+            </if>
+			<if test="viewtime != null">
+				#{viewtime},
+            </if>
+			<if test="delflag != null">
+				#{delflag},
+            </if>
+      		<if test="recvflag != null">
+        		#{recvflag},
+      		</if>
+		</trim>
+	</insert>
+	<update id="updateMsgReceive" parameterType="com.hd.agent.message.model.MsgReceive" >
+	    update t_msg_receive
+	    <set>
+	      <if test="msgid != null" >
+	        msgid = #{msgid},
+	      </if>
+	      <if test="senduserid != null" >
+	        senduserid = #{senduserid},
+	      </if>
+	      <if test="sendtime != null" >
+	        sendtime = #{sendtime},
+	      </if>
+	      <if test="recvuserid != null" >
+	        recvuserid = #{recvuserid},
+	      </if>
+	      <if test="recvtime != null" >
+	        recvtime = #{recvtime},
+	      </if>
+	      <if test="viewflag != null" >
+	        viewflag = #{viewflag},
+	      </if>
+	      <if test="viewtime != null" >
+	        viewtime = #{viewtime},
+	      </if>
+	      <if test="delflag != null" >
+	        delflag = #{delflag},
+	      </if>
+	      <if test="deltime != null" >
+	        deltime = #{deltime},
+	      </if>
+	      <if test="recvflag != null" >
+	        recvflag = #{recvflag},
+	      </if>
+	    </set>
+	    where id = #{id}
+    </update>
+	<update id="updateMsgReceiveBy" parameterType="java.util.HashMap">
+		update t_msg_receive
+		<set>
+	      <if test="senduserid != null" >
+	        senduserid = #{senduserid},
+	      </if>
+	      <if test="sendtime != null" >
+	        sendtime = #{sendtime},
+	      </if>
+	      <if test="recvuserid != null" >
+	        recvuserid = #{recvuserid},
+	      </if>
+	      <if test="recvtime != null" >
+	        recvtime = #{recvtime},
+	      </if>
+	      <if test="viewflag != null" >
+	        viewflag = #{viewflag},
+	      </if>
+	      <if test="viewtime != null" >
+	        viewtime = #{viewtime},
+	      </if>
+	      <if test="delflag != null" >
+	        delflag = #{delflag},
+	      </if>
+	      <if test="deltime != null" >
+	        deltime = #{deltime},
+	      </if>
+	      <if test="recvflag != null" >
+	        recvflag = #{recvflag},
+	      </if>
+	      <if test="recvtime != null" >
+	        recvtime = #{recvtime},
+	      </if>
+	    </set>
+	    where
+	    <trim prefixOverrides="and|or" >
+			<if test="id != null" >
+			 	and id = #{id}
+			</if>
+			<if test="idarr != null" >
+			 	and FIND_IN_SET(id,#{idarr})
+			</if>
+			<if test="msgid != null" >
+			 	and msgid = #{msgid}
+			</if>
+			<if test="msgidarrs != null" >
+			 	and FIND_IN_SET(msgid,#{msgidarrs})
+			</if>
+			<if test="wsenduserid != null" >
+			 	and senduserid = #{wsenduserid}
+			</if>
+			<if test="wrecvuserid != null" >
+				and recvuserid = #{wrecvuserid}
+			</if>
+			<if test="wviewflag != null" >
+			 	and viewflag = #{wviewflag}
+			</if>
+			<if test="wnotviewflag != null" >
+			 	and (length(viewflag)=0 or viewflag != #{wnotviewflag} )
+			</if>
+			<if test="wdelflag != null" >
+			 	and delflag = #{wdelflag}
+			</if>
+			<if test="wrecvflag != null" >
+			 	and recvflag = #{wrecvflag}
+			</if>		
+			<if test="wnotrecvflag != null" >
+			 	and (length(recvflag)=0 or recvflag != #{wnotrecvflag} )
+			</if>	
+		    <if test="wsendtimeBeforeTime !=null">
+		      <![CDATA[	and not sendtime is null and sendtime<=#{wsendtimeBeforeTime} ]]>
+		    </if>
+		</trim>
+	</update>
+	<select id="getMsgReceiveCountBy" parameterType="java.util.HashMap" resultType="int" useCache="false" >
+		select count(1) from t_msg_receive
+	    where
+	    <trim prefixOverrides="and|or" >
+			<if test="msgid != null" >
+			 	and msgid = #{msgid}
+			</if>
+			<if test="msgidarrs != null" >
+			 	and FIND_IN_SET(msgid,#{msgidarrs})
+			</if>
+			<if test="wsenduserid != null" >
+			 	and senduserid = #{wsenduserid}
+			</if>
+			<if test="wrecvuserid != null" >
+				and recvuserid = #{wrecvuserid}
+			</if>
+			<if test="wviewflag != null" >
+			 	and viewflag = #{wviewflag}
+			</if>
+			<if test="wnotviewflag != null" >
+			 	and (length(viewflag)=0 or viewflag != #{wnotviewflag} )
+			</if>
+			<if test="wdelflag != null" >
+			 	and delflag = #{wdelflag}
+			</if>
+			<if test="wrecvflag != null" >
+			 	and recvflag = #{wrecvflag}
+			</if>		
+			<if test="wnotrecvflag != null" >
+			 	and (length(recvflag)=0 or recvflag != #{wnotrecvflag} )
+			</if>		
+		    <if test="wsendtimeBeforeTime !=null">
+		      <![CDATA[	and not sendtime is null and sendtime<=#{wsendtimeBeforeTime} ]]>
+		    </if>
+		</trim>
+	</select>
+	<delete id="deleteMsgReceive" parameterType="java.lang.String">
+		delete t_msg_receive  where id=#{id}
+	</delete>
+	<select id="getMsgReceiveListBy" parameterType="java.util.HashMap" resultType="com.hd.agent.message.model.MsgReceive" useCache="false" >
+		select * from t_msg_receive
+		where
+		<trim prefixOverrides="and|or" >
+			<if test="msgid != null" >
+				and msgid = #{msgid}
+			</if>
+			<if test="msgidarrs != null" >
+				and FIND_IN_SET(msgid,#{msgidarrs})
+			</if>
+			<if test="wsenduserid != null" >
+				and senduserid = #{wsenduserid}
+			</if>
+			<if test="wrecvuserid != null" >
+				and recvuserid = #{wrecvuserid}
+			</if>
+			<if test="wviewflag != null" >
+				and viewflag = #{wviewflag}
+			</if>
+			<if test="wnotviewflag != null" >
+				and (length(viewflag)=0 or viewflag != #{wnotviewflag} )
+			</if>
+			<if test="wdelflag != null" >
+				and delflag = #{wdelflag}
+			</if>
+			<if test="wrecvflag != null" >
+				and recvflag = #{wrecvflag}
+			</if>
+			<if test="wnotrecvflag != null" >
+				and (length(recvflag)=0 or recvflag != #{wnotrecvflag} )
+			</if>
+			<if test="wsendtimeBeforeTime !=null">
+				<![CDATA[	and not sendtime is null and sendtime<=#{wsendtimeBeforeTime} ]]>
+			</if>
+		</trim>
+	</select>
+	
+	<select id="getReceiveUserPageList"  parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.message.model.MsgReceive">
+		select 		
+			msgr.id, msgr.msgid, msgr.senduserid, msgr.sendtime, msgr.recvuserid, msgr.recvtime,
+			msgr.viewflag,msgr.viewtime, msgr.delflag, msgr.recvflag, 
+			suser.name recvusername
+		from t_msg_receive msgr left join t_sys_user suser on msgr.recvuserid=suser.userid
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="condition.msgid != null">
+				and msgr.msgid = #{condition.msgid}
+            </if>
+			<if test="condition.senduserid != null">
+				and msgr.senduserid = #{condition.senduserid}
+            </if>
+			<if test="condition.sendtime != null">
+				and msgr.sendtime = #{condition.sendtime}
+            </if>
+			<if test="condition.recvuserid != null">
+				and msgr.recvuserid = #{condition.recvuserid}
+            </if>
+			<if test="condition.recvtime != null">
+				and msgr.recvtime = #{condition.recvtime}
+            </if>
+			<if test="condition.viewflag != null">
+				and msgr.viewflag = #{condition.viewflag}
+            </if>
+			<if test="condition.viewtime != null">
+				and msgr.viewtime = #{condition.viewtime}
+            </if>
+			<if test="condition.delflag != null">
+				and msgr.delflag = #{condition.delflag}
+            </if>
+			<if test="condition.recvflag != null">
+				and msgr.recvflag = #{condition.recvflag}
+            </if>
+        </trim>
+	</select>
+	<select id="getReceiveUserCount"  parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+		select count(1)
+		from t_msg_receive msgr left join t_sys_user suser on msgr.recvuserid=suser.userid
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="condition.msgid != null">
+				and msgr.msgid = #{condition.msgid}
+            </if>
+			<if test="condition.senduserid != null">
+				and msgr.senduserid = #{condition.senduserid}
+            </if>
+			<if test="condition.sendtime != null">
+				and msgr.sendtime = #{condition.sendtime}
+            </if>
+			<if test="condition.recvuserid != null">
+				and msgr.recvuserid = #{condition.recvuserid}
+            </if>
+			<if test="condition.recvtime != null">
+				and msgr.recvtime = #{condition.recvtime}
+            </if>
+			<if test="condition.viewflag != null">
+				and msgr.viewflag = #{condition.viewflag}
+            </if>
+			<if test="condition.viewtime != null">
+				and msgr.viewtime = #{condition.viewtime}
+            </if>
+			<if test="condition.delflag != null">
+				and msgr.delflag = #{condition.delflag}
+            </if>
+			<if test="condition.recvflag != null">
+				and msgr.recvflag = #{condition.recvflag}
+            </if>
+        </trim>
+	</select>	
+	<select id="getMsgReceiveUserReadCount" parameterType="com.hd.agent.common.util.PageMap"
+		resultType="int" useCache="false">
+		select count(1)
+		from t_msg_receive
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="condition.msgid != null">
+				and msgid = #{condition.msgid}
+			</if>
+			<if test="condition.senduserid != null">
+				and senduserid = #{condition.senduserid}
+			</if>
+			<if test="condition.recvuserid != null">
+				and recvuserid = #{condition.recvuserid}
+			</if>
+			<if test="condition.viewflag != null">
+				and viewflag = #{condition.viewflag}
+			</if>
+			<if test="condition.delflag != null">
+				and delflag = #{condition.delflag}
+			</if>
+			<if test="condition.recvflag != null">
+				and recvflag = #{condition.recvflag}
+			</if>
+		</trim>
+	</select>
+	<select id="getMsgContentSimplePageList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.message.model.MsgContent" useCache="false">
+		select * from t_msg_content
+		<trim prefix="where" prefixOverrides="and|or">
+			<include refid="Msgc_PageList_Where_Clause"/>
+			<include refid="common.Page_querySql"/>
+			<include refid="common.Page_dataSql"/>
+		</trim>
+		<include refid="common.Page_limit" /> 
+	</select>
+	<select id="getMsgContentSimplePageCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int" useCache="false">
+		select count(*) from t_msg_content
+		<trim prefix="where" prefixOverrides="and|or">
+			<include refid="Msgc_PageList_Where_Clause"/>
+			<include refid="common.Page_querySql"/>
+			<include refid="common.Page_dataSql"/>
+		</trim>
+	</select>
+</mapper>

@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd 
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+	<!-- 配置activiti -->
+	<bean id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration">
+		<property name="dataSource" ref="dataSource"></property>
+		<property name="transactionManager" ref="transactionManager"></property>
+		<property name="databaseSchemaUpdate" value="false"></property>
+		<property name="jobExecutorActivate" value="false"></property>
+		<property name="history" value="audit"></property>
+		<!-- <property name="history" value="activity"></property> -->
+	</bean>
+	<bean id="processEngine" class="org.activiti.spring.ProcessEngineFactoryBean">
+		<property name="processEngineConfiguration" ref="processEngineConfiguration"></property>
+	</bean>
+	<bean id="repositoryService" factory-bean="processEngine" factory-method="getRepositoryService"></bean>
+    <bean id="runtimeService" factory-bean="processEngine" factory-method="getRuntimeService"></bean>
+    <bean id="taskService" factory-bean="processEngine" factory-method="getTaskService"></bean>
+    <bean id="formService" factory-bean="processEngine" factory-method="getFormService"></bean>
+    <bean id="historyService" factory-bean="processEngine" factory-method="getHistoryService"></bean>
+    <bean id="identityService" factory-bean="processEngine" factory-method="getIdentityService"></bean>
+    <bean id="managementService" factory-bean="processEngine" factory-method="getManagementService"></bean>
+
+	<bean id="definitionTypeMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.activiti.dao.DefinitionTypeMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="definitionMapper1" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.activiti.dao.DefinitionMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="definitionTaskMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.activiti.dao.DefinitionTaskMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="definitionSignMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.activiti.dao.DefinitionSignMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="formTypeMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.activiti.dao.FormTypeMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="formMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.hd.agent.activiti.dao.FormMapper" />
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="itemMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.hd.agent.activiti.dao.FormItemMapper" />
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="itemRuleMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.hd.agent.activiti.dao.FormItemRuleMapper" />
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+
+    <bean id="processMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.activiti.dao.ProcessMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="commentMapper1" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.activiti.dao.CommentMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="delegateMapper1" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.activiti.dao.DelegateMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="delegateLogMapper1" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.activiti.dao.DelegateLogMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="workLogMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.activiti.dao.WorkLogMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="attachMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.activiti.dao.AttachMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="ruleMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.activiti.dao.AuthRuleMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="handlerMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.hd.agent.activiti.dao.EventHandlerMapper" />
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="traceMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.hd.agent.activiti.dao.DataTraceMapper" />
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="keywordRuleMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.hd.agent.activiti.dao.KeywordRuleMapper" />
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="mappingMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.hd.agent.activiti.dao.AuthMappingMapper" />
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="sourceMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.hd.agent.activiti.dao.SourceMapper" />
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <!-- service -->
+     <bean id="assignee" class="com.hd.agent.activiti.assignee.AssigneeService" parent="baseServiceImpl">
+    	<property name="definitionService" ref="definitionService"></property>
+		<property name="workService" ref="workService"></property>
+		 <property name="ruleMapper" ref="ruleMapper"></property>
+    </bean>
+     <bean id="create" class="com.hd.agent.activiti.listener.TaskCreateListener" parent="baseServiceImpl">
+		<property name="definitionService" ref="definitionService"></property>
+		<property name="workService" ref="workService"></property>
+    </bean>
+	<bean id="end" class="com.hd.agent.activiti.listener.ExecutionEndListener">
+		<property name="workService" ref="workServiceImpl"></property>
+		<property name="definitionService" ref="definitionService"></property>
+		<property name="baseService" ref="baseServiceImpl"></property>
+		<property name="handlerMapper" ref="handlerMapper"></property>
+	</bean>
+    <bean id="activitiBaseServiceImpl" class="com.hd.agent.activiti.service.impl.BaseServiceImpl" parent="baseServiceImpl">
+    	<property name="repositoryService" ref="repositoryService"></property>
+		<property name="runtimeService" ref="runtimeService"></property>
+		<property name="taskService" ref="taskService"></property>
+		<property name="formService" ref="formService"></property>
+		<property name="historyService" ref="historyService"></property>
+		<property name="identityService" ref="identityService"></property>
+		<property name="managementService" ref="managementService"></property>
+    </bean>
+	<bean id="definitionService" parent="baseTransactionProxy">
+		<property name="target" ref="definitionServiceImpl"></property>
+	</bean>
+	<bean id="definitionServiceImpl" class="com.hd.agent.activiti.service.impl.DefinitionServiceImpl" parent="activitiBaseServiceImpl">
+		<property name="definitionTypeMapper" ref="definitionTypeMapper"></property>
+		<property name="definitionMapper" ref="definitionMapper1"></property>
+		<property name="definitionTaskMapper" ref="definitionTaskMapper"></property>
+		<property name="definitionSignMapper" ref="definitionSignMapper"></property>
+		<property name="ruleMapper" ref="ruleMapper"></property>
+		<property name="handlerMapper" ref="handlerMapper"></property>
+        <property name="keywordRuleMapper" ref="keywordRuleMapper"></property>
+        <property name="mappingMapper" ref="mappingMapper"></property>
+        <property name="itemRuleMapper" ref="itemRuleMapper"></property>
+        <property name="sourceMapper" ref="sourceMapper"></property>
+	</bean>
+	<bean id="formService1" parent="baseTransactionProxy">
+		<property name="target" ref="formServiceImpl"></property>
+	</bean>
+	<bean id="formServiceImpl" class="com.hd.agent.activiti.service.impl.FormServiceImpl" parent="activitiBaseServiceImpl">
+		<property name="formTypeMapper" ref="formTypeMapper"></property>
+        <property name="formMapper" ref="formMapper"></property>
+        <property name="itemMapper" ref="itemMapper"></property>
+        <property name="definitionMapper" ref="definitionMapper1"></property>
+        <property name="itemRuleMapper" ref="itemRuleMapper"></property>
+	</bean>
+	<bean id="workService" parent="baseTransactionProxy">
+		<property name="target" ref="workServiceImpl"></property>
+	</bean>
+	<bean id="workServiceImpl" class="com.hd.agent.activiti.service.impl.WorkServiceImpl" parent="activitiBaseServiceImpl">
+		<property name="definitionService" ref="definitionService"></property>
+		<property name="actFormService" ref="formService1"></property>
+		<property name="processMapper" ref="processMapper"></property>
+		<property name="commentMapper" ref="commentMapper1"></property>
+		<property name="delegateMapper" ref="delegateMapper1"></property>
+		<property name="delegateLogMapper" ref="delegateLogMapper1"></property>
+		<property name="workLogMapper" ref="workLogMapper"></property>
+		<property name="attachFileMapper" ref="attachFileMapper"></property>
+		<property name="attachMapper" ref="attachMapper"></property>
+        <property name="ruleMapper" ref="ruleMapper"></property>
+        <property name="traceMapper" ref="traceMapper"></property>
+        <property name="mappingMapper" ref="mappingMapper"></property>
+        <property name="sysUserService" ref="sysUserService"></property>
+		<property name="handlerMapper" ref="handlerMapper"></property>
+	</bean>
+	<!-- action -->
+	<bean id="activitiBaseAction" class="com.hd.agent.activiti.action.BaseAction" scope="prototype" parent="baseAction">
+		<property name="definitionService" ref="definitionService"></property>
+		<property name="formService" ref="formService1"></property>
+		<property name="workService" ref="workService"></property>
+		<property name="baseService" ref="baseServiceImpl"></property>
+		<property name="historyService" ref="historyService"></property>
+	</bean>
+	<bean id="definitionAction" class="com.hd.agent.activiti.action.DefinitionAction" scope="prototype" parent="activitiBaseAction">
+	</bean>
+	<bean id="formAction" class="com.hd.agent.activiti.action.FormAction" scope="prototype" parent="activitiBaseAction">
+	</bean>
+	<bean id="activitiWorkAction" class="com.hd.agent.activiti.action.WorkAction" scope="prototype" parent="activitiBaseAction">
+	</bean>
+    <bean id="handler" class="com.hd.agent.activiti.listener.TaskHandlerListener">
+        <property name="handlerMapper" ref="handlerMapper"></property>
+		<property name="processMapper" ref="processMapper"></property>
+		<property name="workService" ref="workService"></property>
+		<property name="definitionService" ref="definitionService"></property>
+		<property name="signService" ref="signService"></property>
+    </bean>
+    <bean id="informer" class="com.hd.agent.activiti.listener.InformerListener" parent="baseServiceImpl">
+        <property name="definitionService" ref="definitionService"></property>
+        <property name="workService" ref="workService"></property>
+    </bean>
+    <bean id="phoneWorkAction" class="com.hd.agent.activiti.action.PhoneWorkAction" scope="prototype" parent="activitiBaseAction">
+        <property name="attachFileService" ref="attachFileService"></property>
+    </bean>
+	<bean id="taskListener" class="org.activiti.engine.delegate.impl.TaskListenerImpl">
+		<property name="workService" ref="workService"></property>
+		<property name="payService" ref="payService"></property>
+		<property name="businessService" ref="oaBusinessService"></property>
+		<property name="sysUserMapper" ref="sysUserMapper"></property>
+	</bean>
+	<bean id="signService" class="com.hd.agent.activiti.assignee.SignServiceImpl" parent="activitiBaseServiceImpl">
+		<property name="workService" ref="workService"></property>
+		<property name="definitionService" ref="definitionService"></property>
+	</bean>
+
+</beans>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.oa.dao.OaCustomerBrandMapper" >
+  <resultMap id="BaseResultMap" type="com.hd.agent.oa.model.OaCustomerBrand" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="billid" property="billid" jdbcType="VARCHAR" />
+    <result column="brandid" property="brandid" jdbcType="VARCHAR" />
+    <result column="brandname" property="brandname" jdbcType="VARCHAR" />
+    <result column="barcodenum" property="barcodenum" jdbcType="INTEGER" />
+    <result column="realnum" property="realnum" jdbcType="INTEGER" />
+    <result column="displaynum" property="displaynum" jdbcType="INTEGER" />
+    <result column="cost" property="cost" jdbcType="DECIMAL" />
+  </resultMap>
+  
+  <sql id="commonCustomerBrandCols">
+	a.id, a.billid, a.brandid, a.barcodenum, a.realnum, a.displaynum, a.cost
+  </sql>
+  
+  <select id="selectBarcodenum" parameterType="String" resultType="int">
+  	select count(1) from t_base_goods_info where brand = #{brand }
+  </select>
+ 
+  <select id="selectCustomerBrandList" resultMap="BaseResultMap" parameterType="com.hd.agent.common.util.PageMap">
+  	select
+  		<include refid="commonCustomerBrandCols"/>
+  		,b.name brandname
+  	from t_oa_customer_brand a left join t_base_goods_brand b on a.brandid = b.id
+	<trim prefix="where" prefixOverrides="and|or">
+         and a.billid = #{condition.billid}
+		<include refid="common.Page_querySql"/>
+		<include refid="common.Page_dataSql"/>
+	</trim>
+	order by a.id 
+	<include refid="common.Page_limit"/>
+  </select>
+  <select id="selectCustomerBrandListCount" resultType="int" parameterType="com.hd.agent.common.util.PageMap">
+  	select
+  		count(*)
+  	from t_oa_customer_brand a
+	<trim prefix="where" prefixOverrides="and|or">
+         and a.billid = #{condition.billid}
+	    <include refid="common.Page_querySql"/>
+	  	<include refid="common.Page_dataSql"/>
+	</trim>
+  </select>
+  
+  <insert id="insertCustomerBrand" parameterType="com.hd.agent.oa.model.OaCustomerBrand">
+  	insert into t_oa_customer_brand
+  	<trim prefix="(" suffix=")" suffixOverrides=",">
+  		<if test="billid != null">
+  			billid,
+  		</if>
+  		<if test="brandid != null">
+  			brandid,
+  		</if>
+  			barcodenum,
+  			realnum,
+  			displaynum,
+  			cost,
+  	</trim>
+  	<trim prefix="values (" suffix=")" suffixOverrides=",">
+  		<if test="billid != null">
+  			#{billid }, 
+  		</if>
+  		<if test="brandid != null">
+  			#{brandid }, 
+  		</if>
+  			#{barcodenum }, 
+  			#{realnum }, 
+  			#{displaynum }, 
+  			#{cost }, 
+  	</trim>
+  </insert>
+  <delete id="deleteBrandByBillid" parameterType="String">
+  	delete from t_oa_customer_brand where billid = #{billid }
+  </delete>
+</mapper>

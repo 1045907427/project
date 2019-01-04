@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+	
+	<!-- dao -->
+	<bean id="salesCustomerReportMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.report.dao.SalesCustomerReportMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="salesGoodsReportMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.report.dao.SalesGoodsReportMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    
+    <bean id="financeFundsReturnMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.report.dao.FinanceFundsReturnMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="financePaymentsMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.report.dao.FinancePaymentsMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="storageReportMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.report.dao.StorageReportMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="buySaleReportMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.hd.agent.report.dao.BuySaleReportMapper" />
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="salesOrderMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.hd.agent.sales.dao.OrderMapper" />
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="storageCheckListReportMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.report.dao.StorageCheckListReportMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="paymentdaysSetMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.report.dao.PaymentdaysSetMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="purchaseReportMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.report.dao.PurchaseReportMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="exceptionReportMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.report.dao.ExceptionReportMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="logisticsReportMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.report.dao.LogisticsReportMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="performanceReportMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.report.dao.PerformanceReportMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="performanceKPISubjectMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.report.dao.PerformanceKPISubjectMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="reportTargetMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.report.dao.ReportTargetMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    
+    <bean id="deliveryReportMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.report.dao.DeliveryReportMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+
+    <bean id="salesRejectMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.hd.agent.report.dao.SalesRejectMapper" />
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+
+    <bean id="lendReportMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.hd.agent.report.dao.LendReportMapper" />
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+
+
+    <!-- service -->
+	<bean id="salesReportService" parent="baseTransactionProxy">
+    	<property name="target" ref="salesReportServiceImpl"></property>  
+    </bean>
+    <bean id="salesReportServiceImpl" class="com.hd.agent.report.service.impl.SalesReportSericeImpl" parent="baseFilesServiceImpl">
+    	<property name="salesGoodsReportMapper" ref="salesGoodsReportMapper"></property>
+    	<property name="salesCustomerReportMapper" ref="salesCustomerReportMapper"></property>
+    	<property name="reportTargetMapper" ref="reportTargetMapper"></property>
+        <property name="personnelMapper" ref="personnelMapper"></property>
+        <property name="goodsMapper" ref="goodsMapper"></property>
+        <property name="customerCapitalMapper" ref="customerCapitalMapper"></property>
+        <property name="salesRejectMapper" ref="salesRejectMapper"></property>
+        <property name="orderGoodsMapper" ref="orderGoodsMapper"></property>
+        <property name="salesService" ref="salesService"></property>
+    </bean>  
+      
+    <bean id="financeFundsReturnService" parent="baseTransactionProxy">
+    	<property name="target" ref="financeFundsReturnServiceImpl"></property>  
+    </bean>
+    <bean id="financeFundsReturnServiceImpl" class="com.hd.agent.report.service.impl.FinanceFundsReturnServiceImpl" parent="baseFilesServiceImpl">
+    	<property name="financeFundsReturnMapper" ref="financeFundsReturnMapper"></property>
+    	<property name="paymentdaysSetMapper" ref="paymentdaysSetMapper"></property>
+    	<property name="customerCapitalMapper" ref="customerCapitalMapper"></property>
+    	<property name="collectionOrderMapper" ref="collectionOrderMapper"></property>
+    	<property name="receiptMapper" ref="receiptMapper"></property>
+    </bean> 
+    <bean id="financePaymentsService" parent="baseTransactionProxy">
+    	<property name="target" ref="financePaymentsServiceImpl"></property>  
+    </bean>
+    <bean id="financePaymentsServiceImpl" class="com.hd.agent.report.service.impl.FinancePaymentsServiceImpl" parent="baseFilesServiceImpl">
+    	<property name="financePaymentsMapper" ref="financePaymentsMapper"></property>
+    </bean> 
+    <bean id="storageReportService" parent="baseTransactionProxy">
+    	<property name="target" ref="storageReportServiceImpl"></property>  
+    </bean>
+    <bean id="storageReportServiceImpl" class="com.hd.agent.report.service.impl.StorageReportServiceImpl" parent="baseFilesServiceImpl">
+    	<property name="storageReportMapper" ref="storageReportMapper"></property>
+    	<property name="stockInitMapper" ref="stockInitMapper"></property>
+    	<property name="storageSummaryMapper" ref="storageSummaryMapper"></property>
+    	<property name="journalSheetMapper" ref="journalSheetMapper"></property>
+        <property name="buySaleReportMapper" ref="buySaleReportMapper"></property>
+        <property name="checkListMapper" ref="checkListMapper"></property>
+        <property name="allocateOutMapper" ref="allocateOutMapper"></property>
+    </bean>
+    <bean id="paymentdaysSetService" parent="baseTransactionProxy">
+    	<property name="target" ref="paymentdaysSetServiceImpl"></property>  
+    </bean>
+    <bean id="paymentdaysSetServiceImpl" class="com.hd.agent.report.service.impl.PaymentdaysSetServiceImpl" parent="baseFilesServiceImpl">
+    	<property name="paymentdaysSetMapper" ref="paymentdaysSetMapper"></property>
+    </bean>
+    <bean id="purchaseReportService" parent="baseTransactionProxy">
+    	<property name="target" ref="purchaseReportServiceImpl"></property>  
+    </bean>
+    <bean id="purchaseReportServiceImpl" class="com.hd.agent.report.service.impl.PurchaseReportServiceImpl" parent="baseFilesServiceImpl">
+    	<property name="purchaseReportMapper" ref="purchaseReportMapper"></property>
+    	<property name="storageReportService" ref="storageReportService"></property>
+    </bean>
+    <bean id="exceptionReportService" parent="baseTransactionProxy">
+    	<property name="target" ref="exceptionReportServiceImpl"></property>  
+    </bean>
+    <bean id="exceptionReportServiceImpl" class="com.hd.agent.report.service.impl.ExceptionReportServiceImpl" parent="baseFilesServiceImpl">
+    	<property name="exceptionReportMapper" ref="exceptionReportMapper"></property>
+    </bean>
+    <bean id="logisticsReportService" parent="baseTransactionProxy">
+    	<property name="target" ref="logisticsReportServiceImpl"></property>  
+    </bean>
+    <bean id="logisticsReportServiceImpl" class="com.hd.agent.report.service.impl.LogisticsReportServiceImpl" parent="baseFilesServiceImpl">
+    	<property name="logisticsReportMapper" ref="logisticsReportMapper"></property>
+    	<property name="personnelMapper" ref="personnelMapper"></property>
+    	<property name="logisticsMapper" ref="logisticsMapper"></property>
+    </bean>
+    <bean id="performanceReportService" parent="baseTransactionProxy">
+    	<property name="target" ref="performanceReportServiceImpl"></property>  
+    </bean>
+    <bean id="performanceReportServiceImpl" class="com.hd.agent.report.service.impl.PerformanceReportServiceImpl" parent="baseFilesServiceImpl">
+    	<property name="performanceReportMapper" ref="performanceReportMapper"></property>   
+    	<property name="deptDailyCostMapper" ref="deptDailyCostMapper"></property>
+    	<property name="departMentMapper" ref="departMentMapper"></property>
+    	<property name="salesBillCheckMapper" ref="salesBillCheckMapper"></property>
+    	<property name="journalSheetMapper" ref="journalSheetMapper"></property>  	
+    	<property name="storageReportMapper" ref="storageReportMapper"></property>
+    	<property name="performanceKPISubjectMapper" ref="performanceKPISubjectMapper"></property> 
+    </bean>
+    
+    <bean id="reportTargetService" parent="baseTransactionProxy">
+    	<property name="target" ref="reportTargetServiceImpl"></property>  
+    </bean>
+    <bean id="reportTargetServiceImpl" class="com.hd.agent.report.service.impl.ReportTargetServiceImpl" parent="baseFilesServiceImpl">
+    	<property name="reportTargetMapper" ref="reportTargetMapper"></property>
+    </bean>
+    
+    <bean id="deliveryReportService" parent="baseTransactionProxy">
+    	<property name="target" ref="deliveryReportServiceImpl"></property>  
+    </bean>
+    <bean id="deliveryReportServiceImpl" class="com.hd.agent.report.service.impl.DeliveryReportServiceImpl" parent="baseFilesServiceImpl">
+    	<property name="deliveryReportMapper" ref="deliveryReportMapper"></property>
+    </bean>
+
+
+    <bean id="lendReportService" parent="baseTransactionProxy">
+        <property name="target" ref="lendReportServiceImpl"></property>
+    </bean>
+    <bean id="lendReportServiceImpl" class="com.hd.agent.report.service.impl.LendReportServiceImpl" parent="baseFilesServiceImpl">
+        <property name="lendReportMapper" ref="lendReportMapper"></property>
+        <property name="stockInitMapper" ref="stockInitMapper"></property>
+        <property name="storageSummaryMapper" ref="storageSummaryMapper"></property>
+        <property name="buySaleReportMapper" ref="buySaleReportMapper"></property>
+    </bean>
+
+    <!-- action -->
+    <bean id="salesReportAction" class="com.hd.agent.report.action.SalesReportAction" scope="prototype" parent="baseFilesAction">
+    	<property name="salesReportService" ref="salesReportService"></property>
+    </bean>
+    <bean id="financeFundsReturnAction" class="com.hd.agent.report.action.FinanceFundsReturnAction" scope="prototype" parent="baseFilesAction">
+    	<property name="financeFundsReturnService" ref="financeFundsReturnService"></property>
+    	<property name="paymentdaysSetService" ref="paymentdaysSetService"></property>
+    	<property name="salesBillCheckService" ref="salesBillCheckService"></property>
+    </bean>
+    <bean id="financePaymentsAction" class="com.hd.agent.report.action.FinancePaymentsAction" scope="prototype" parent="baseFilesAction">
+    	<property name="financePaymentsService" ref="financePaymentsService"></property>
+    </bean>
+    <bean id="storageReportAction" class="com.hd.agent.report.action.StorageReportAction" scope="prototype" parent="baseFilesAction">
+    	<property name="storageReportService" ref="storageReportService"></property>
+    </bean>
+    <bean id="paymentdaysSetAction" class="com.hd.agent.report.action.PaymentdaysSetAction" scope="prototype" parent="baseFilesAction">
+    	<property name="paymentdaysSetService" ref="paymentdaysSetService"></property>
+    </bean>
+    <bean id="purchaseReportAction" class="com.hd.agent.report.action.PurchaseReportAction" scope="prototype" parent="baseFilesAction">
+    	<property name="purchaseReportService" ref="purchaseReportService"></property>
+    </bean>
+    <bean id="exceptionReportAction" class="com.hd.agent.report.action.ExceptionReportAction" scope="prototype" parent="baseFilesAction">
+    	<property name="exceptionReportService" ref="exceptionReportService"></property>
+    </bean>
+    <bean id="logisticsReportAction" class="com.hd.agent.report.action.LogisticsReportAction" scope="prototype" parent="baseFilesAction">
+    	<property name="logisticsReportService" ref="logisticsReportService"></property>
+    </bean>
+    <bean id="performanceReportAction" class="com.hd.agent.report.action.PerformanceReportAction" parent="baseFilesAction">
+    	<property name="performanceReportService" ref="performanceReportService"></property>
+    </bean>
+    <bean id="reportTargetAction" class="com.hd.agent.report.action.ReportTargetAction" parent="baseFilesAction">
+    	<property name="reportTargetService" ref="reportTargetService"></property>
+    </bean>
+    
+    <bean  id="deliveryReportAction" class="com.hd.agent.report.action.DeliveryReportAction" parent="baseFilesAction">
+    	<property name="deliveryReportService" ref="deliveryReportService"></property>
+    </bean>
+    <bean  id="inventoryAgeAction" class="com.hd.agent.report.action.InventoryAgeAction" parent="baseFilesAction">
+        <property name="storageSummaryService" ref="storageSummaryServiceImpl"></property>
+        <property name="paymentdaysSetService" ref="paymentdaysSetService"></property>
+    </bean>
+
+    <bean id="lendReportAction" class="com.hd.agent.report.action.LendReportAction" scope="prototype" parent="baseFilesAction">
+        <property name="lendReportService" ref="lendReportService"></property>
+    </bean>
+</beans>

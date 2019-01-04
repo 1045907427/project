@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+	
+	<bean class="com.hd.agent.system.initstart.InstantiationTracingBeanPostProcessor"/>
+	
+	<!-- dao配置 -->
+	<bean id="tableInfoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.system.dao.TableInfoMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="tableColumnMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.system.dao.TableColumnMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="tableRelationMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.system.dao.TableRelationMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="sysCodeMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.system.dao.SysCodeMapper" />
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+    </bean>
+    <bean id="sysParamMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.system.dao.SysParamMapper" />
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+    </bean>
+    <bean id="sysNumberMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.system.dao.SysNumberMapper" />
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+    </bean>
+    <bean id="sysNumberRuleMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.system.dao.SysNumberRuleMapper" />
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+    </bean>
+    <bean id="dataExceptionMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.system.dao.DataExceptionMapper" />
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+    </bean>
+    <bean id="referWindowMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.system.dao.ReferWindowMapper" />
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+    </bean>
+    <bean id="netLockMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.system.dao.NetLockMapper" />
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+    </bean>
+    <bean id="taskScheduleMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.system.dao.TaskScheduleMapper" />
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+    </bean>
+    <bean id="accountingMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.system.dao.AccountingMapper" />
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+    </bean>
+    <bean id="updateDBMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.hd.agent.system.dao.UpdateDBMapper" />
+        <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+    </bean>
+    <bean id="sysDataSourceMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.hd.agent.system.dao.SysDataSourceMapper" />
+        <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+    </bean>
+    <bean id="backupDBMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.hd.agent.system.dao.BackupDBMapper" />
+        <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+    </bean>
+    <!-- service配置 -->
+    <bean id="dataDictionaryService" parent="baseTransactionProxy" >
+    	<property name="target" ref="dataDictionaryServiceImpl"></property>   
+    </bean>
+    <bean id="dataDictionaryServiceImpl" class="com.hd.agent.system.service.impl.DataDictionaryService" parent="baseServiceImpl">
+    	<property name="tableInfoMapper" ref="tableInfoMapper"></property>
+    	<property name="tableColumnMapper" ref="tableColumnMapper"></property>
+    	<property name="tableRelationMapper" ref="tableRelationMapper"></property>
+    </bean>
+
+    <bean id="syncService" parent="baseTransactionProxy">
+        <property name="target" ref="syncServiceImpl"></property>
+    </bean>
+    <bean id="syncServiceImpl" class="com.hd.agent.system.service.impl.SyncServiceImpl" parent="baseServiceImpl">
+        <property name="sysDataSourceService" ref="sysDataSourceService"></property>
+        <property name="sysLogService" ref="sysLogService"></property>
+    </bean>
+    <bean id="sysCodeService" parent="baseTransactionProxy">
+    	<property name="target" ref="sysCodeServiceImpl"></property>  
+    </bean>
+    <bean id="sysCodeServiceImpl" class="com.hd.agent.system.service.impl.SysCodeServiceImpl" parent="baseServiceImpl">
+    	<property name="sysCodeMapper" ref="sysCodeMapper"></property>
+    	<property name="sysNumberMapper" ref="sysNumberMapper"></property>
+    	<property name="sysNumberRuleMapper" ref="sysNumberRuleMapper"></property>
+    </bean>
+    <bean id="sysParamService" parent="baseTransactionProxy">
+        <property name="target" ref="sysParamServiceImpl"></property>
+    </bean>
+    <bean id="sysParamServiceImpl" class="com.hd.agent.system.service.impl.SysParamService">
+    	<property name="sysParamMapper" ref="sysParamMapper"></property>
+    </bean>
+    <bean id="sysNumberService" parent="baseTransactionProxy">
+    	<property name="target" ref="sysNumberServiceImpl"></property>  
+    </bean>
+    <bean id="sysNumberServiceImpl" class="com.hd.agent.system.service.impl.SysNumberService" parent="baseServiceImpl">
+    	<property name="sysNumberMapper" ref="sysNumberMapper"></property>
+    	<property name="sysNumberRuleMapper" ref="sysNumberRuleMapper"></property>
+    </bean>
+    <bean id="sysNumberRuleService" parent="baseTransactionProxy">
+    	<property name="target" ref="sysNumberRuleServiceImpl"></property>  
+    </bean>
+    <bean id="sysNumberRuleServiceImpl" class="com.hd.agent.system.service.impl.SysNumberRuleService">
+    	<property name="sysNumberRuleMapper" ref="sysNumberRuleMapper"></property>
+    	<property name="sysNumberMapper" ref="sysNumberMapper"></property>
+    </bean>
+    <!-- 数据异常规则service -->
+    <bean id="dataExceptionService" parent="baseTransactionProxy">
+    	<property name="target" ref="dataExceptionServiceImpl"></property>  
+    </bean>
+    <bean id="dataExceptionServiceImpl" class="com.hd.agent.system.service.impl.DataExceptionServiceImpl">
+    	<property name="dataExceptionMapper" ref="dataExceptionMapper"></property>
+    </bean>
+    <!-- 参照窗口service -->
+    <bean id="referWindowService" parent="baseTransactionProxy">
+    	<property name="target" ref="referWindowServiceImpl"></property>  
+    </bean>
+    <bean id="referWindowServiceImpl" class="com.hd.agent.system.service.impl.ReferWindowServiceImpl" parent="baseServiceImpl">
+    	<property name="referWindowMapper" ref="referWindowMapper"></property>
+    	<property name="pageSettingMapper" ref="pageSettingMapper"></property>
+    </bean>
+    <!-- 网络互斥service -->
+    <bean id="netLockService" parent="baseTransactionProxy">
+    	<property name="target" ref="netLockServiceImpl"></property>  
+    </bean>
+    <bean id="netLockServiceImpl" class="com.hd.agent.system.service.impl.NetLockServiceImpl" parent="baseServiceImpl">
+    	<property name="netLockMapper" ref="netLockMapper"></property>
+    	<property name="tableInfoMapper" ref="tableInfoMapper"></property>
+    </bean>
+    <!-- 任务调度service -->
+	<bean id="taskScheduleService" parent="baseTransactionProxy">
+    	<property name="target" ref="taskScheduleServiceImpl"></property>  
+    </bean>
+    <bean id="taskScheduleServiceImpl" class="com.hd.agent.system.service.impl.TaskScheduleServiceImpl">
+    	<property name="scheduler" ref="scheduler"></property>
+    	<property name="taskScheduleMapper" ref="taskScheduleMapper"></property>
+    </bean>
+    <bean id="accountingService" parent="baseTransactionProxy">
+    	<property name="target" ref="accountingServiceImpl"></property>  
+    </bean>
+    <bean id="accountingServiceImpl" class="com.hd.agent.system.service.impl.AccountingServiceImpl" parent="baseServiceImpl">
+    	<property name="accountingMapper" ref="accountingMapper"></property>
+    </bean>
+    <!-- 数据库更新service -->
+    <bean id="updateDBService" parent="baseTransactionProxy">
+    	<property name="target" ref="updateDBServiceImpl"></property>  
+    </bean>
+    <bean id="updateDBServiceImpl" class="com.hd.agent.system.service.impl.UpdateDBServiceImpl" parent="baseServiceImpl">
+    	<property name="updateDBMapper" ref="updateDBMapper"></property>
+    </bean>
+    <!-- 数据源配置service -->
+    <bean id="sysDataSourceService" parent="baseTransactionProxy">
+        <property name="target" ref="sysDataSourceServiceImpl"></property>
+    </bean>
+    <bean id="sysDataSourceServiceImpl" class="com.hd.agent.system.service.impl.SysDataSourceServiceImpl" parent="baseServiceImpl">
+        <property name="sysDataSourceMapper" ref="sysDataSourceMapper"></property>
+    </bean>
+
+    <bean id="backupDBService" parent="baseTransactionProxy">
+        <property name="target" ref="backupDBServiceImpl"></property>
+    </bean>
+    <bean id="backupDBServiceImpl" class="com.hd.agent.system.service.impl.BackupDBServiceImpl" parent="baseServiceImpl">
+        <property name="backupDBMapper" ref="backupDBMapper"></property>
+    </bean>
+    <!-- spring管理structs2 Action; action中注入service -->    
+	<bean id="dataDictionaryAction" class="com.hd.agent.system.action.DataDictionaryAction" scope="prototype" parent="baseAction">
+		<property name="dataDictionaryService" ref="dataDictionaryService"></property>
+	</bean>
+    <bean id="syncAction" class="com.hd.agent.system.action.SyncAction" scope="prototype" parent="baseAction">
+        <property name="syncService" ref="syncService"></property>
+    </bean>
+    <bean id="sysCodeAction" class="com.hd.agent.system.action.SysCodeAction" scope="prototype" parent="baseAction">
+    	<property name="sysCodeService" ref="sysCodeService"></property>
+    </bean>
+    <bean id="sysParamAction" class="com.hd.agent.system.action.SysParamAction" scope="prototype" parent="baseAction">
+    	<property name="sysParamService" ref="sysParamService"></property>
+    	<property name="sysCodeService" ref="sysCodeService"></property>
+    </bean>
+    <bean id="sysNumberAction" class="com.hd.agent.system.action.SysNumberAction" scope="prototype" parent="baseAction">
+    	<property name="sysNumberService" ref="sysNumberService"></property>
+    	<property name="sysCodeService" ref="sysCodeService"></property>
+    </bean>
+    <bean id="sysNumberRuleAction" class="com.hd.agent.system.action.SysNumberRuleAction" scope="prototype" parent="baseAction">
+    	<property name="sysNumberRuleService" ref="sysNumberRuleService"></property>
+    	<property name="sysNumberService" ref="sysNumberService"></property>
+    </bean>
+    <bean id="dataExceptionAction" class="com.hd.agent.system.action.DataExceptionAction" scope="prototype" parent="baseAction">
+    	<property name="dataExceptionService" ref="dataExceptionService"></property>
+    </bean>
+    <bean id="referWindowAction" class="com.hd.agent.system.action.ReferWindowAction" scope="prototype" parent="baseAction">
+    	<property name="referWindowService" ref="referWindowService"></property>
+    	<property name="dataDictionaryService" ref="dataDictionaryService"></property>
+    </bean>
+    <bean id="netLockAction" class="com.hd.agent.system.action.NetLockAction" scope="prototype" parent="baseAction">
+    	<property name="netLockService" ref="netLockService"></property>
+    </bean>
+    <bean id="taskScheduleAction" class="com.hd.agent.system.action.TaskScheduleAction" scope="prototype" parent="baseAction">
+    	<property name="taskScheduleService" ref="taskScheduleService"></property>
+    </bean>
+    <bean id="accountingAction" class="com.hd.agent.system.action.AccountingAction" scope="prototype" parent="baseAction">
+        <property name="accountingService" ref="accountingService"></property>
+    </bean>
+    <bean id="updateDBAction" class="com.hd.agent.system.action.UpdateDBAction" scope="prototype" parent="baseAction">
+        <property name="updateDBService" ref="updateDBService"></property>
+    </bean>
+    <bean id="sysDataSourceAction" class="com.hd.agent.system.action.SysDataSourceAction" scope="prototype" parent="baseAction">
+        <property name="sysDataSourceService" ref="sysDataSourceService"></property>
+    </bean>
+    <bean id="backupDBAction" class="com.hd.agent.system.action.BackupDBAction" scope="prototype" parent="baseAction">
+        <property name="backupDBService" ref="backupDBService"></property>
+    </bean>
+
+</beans>

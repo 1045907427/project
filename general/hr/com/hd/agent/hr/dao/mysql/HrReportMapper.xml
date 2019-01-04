@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hd.agent.hr.dao.HrReportMapper">
+    <sql id="getSignReportData_sql">
+        <foreach collection="condition.intervalList" index="index" item="interval" separator="union all" >
+            select t2.id, DATE_ADD(#{condition.startdate}, INTERVAL #{interval } DAY) businessdate, t1.personnelid personid, t1.userid, DATE_FORMAT(t2.ambegin, '%Y-%m-%d %T') ambegin, DATE_FORMAT(t2.amend, '%Y-%m-%d %T') amend, DATE_FORMAT(t2.pmbegin, '%Y-%m-%d %T') pmbegin, DATE_FORMAT(t2.pmend, '%Y-%m-%d %T') pmend, DATE_FORMAT(t2.outtime, '%Y-%m-%d %T') outtime, t1.departmentid deptid
+            from t_sys_user t1
+            left join (
+            select * from t_hr_singin
+            <trim prefix="where" prefixOverrides="and|or">
+                businessdate = DATE_ADD(#{condition.startdate}, INTERVAL #{interval } DAY)
+            </trim>
+            ) t2 on t1.userid = t2.userid
+            <trim prefix="where" prefixOverrides="and|or">
+                1 = 1
+                and(t1.state = '1' or t2.id is not null)
+                <if test="condition.userid != null">
+                    and find_in_set(t1.userid, #{condition.userid })
+                </if>
+                <if test="condition.deptid != null">
+                    and find_in_set(t1.departmentid, #{condition.deptid })
+                </if>
+                <choose>
+                    <when test="condition.issignin == 1">
+                        and t2.id is not null
+                    </when>
+                    <when test="condition.issignin == 0">
+                        and t2.id is null
+                    </when>
+                    <otherwise>
+                    </otherwise>
+                </choose>
+                <include refid="common.Page_querySql"/>
+                <include refid="common.Page_dataSql"/>
+            </trim>
+        </foreach>
+    </sql>
+    <select id="getSignReportDataList" parameterType="com.hd.agent.common.util.PageMap" resultType="Map">
+        select t.id, t.businessdate, t.personid, t.userid, t.ambegin, t.amend, t.pmbegin, t.pmend, t.outtime, t.deptid
+        from (<include refid="getSignReportData_sql" />)t
+        <include refid="common.Page_limit"/>
+    </select>
+    <select id="getSignReportDataCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+        select count(1)
+        from (<include refid="getSignReportData_sql" />)t
+    </select>
+</mapper>

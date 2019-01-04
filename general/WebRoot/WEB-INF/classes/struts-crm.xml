@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>	
+	<package name="crmVisitPlan" extends="parent" namespace="/crm/visitplan">
+        <action name="crmPlanListPage" class="crmAction" method="crmPlanListPage">
+            <result name="success">/crm/crmPlan/crmPlanListPage.jsp</result>
+        </action>
+        <action name="getCrmPlanListPage" class="crmAction" method="getCrmPlanListPage">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="crmPlanPage" class="crmAction" method="crmPlanPage">
+            <result name="success">/crm/crmPlan/crmPlanPage.jsp</result>
+        </action>
+        <!--<action name="crmPlanEditPage" class="crmAction" method="crmPlanEditPage">-->
+            <!--<result name="success">/crm/crmPlan/crmPlanViewPage.jsp</result>-->
+        <!--</action>-->
+        <action name="crmPlanAddPage" class="crmAction" method="crmPlanAddPage">
+            <result name="success">/crm/crmPlan/crmPlanAddPage.jsp</result>
+        </action>
+        <action name="crmAddWayPage" class="crmAction" method="crmAddWayPage">
+            <result name="success">/crm/crmPlan/crmAddWayPage.jsp</result>
+        </action>
+        <action name="crmEditWayPage" class="crmAction" method="crmEditWayPage">
+            <result name="success">/crm/crmPlan/crmEditWayPage.jsp</result>
+        </action>
+        <action name="getCrmAddPageList" class="crmAction" method="getCrmAddPageList">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="getCrmSupplierAddPageList" class="crmAction" method="getCrmSupplierAddPageList">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="deleteMultiPlan" class="crmAction" method="deleteMultiPlan">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="multiDisableCrm" class="crmAction" method="multiDisableCrm">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="multiEnableCrm" class="crmAction" method="multiEnableCrm">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="importCrmData" class="crmAction" method="importCrmData">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="exportCrmPlanList" class="crmAction" method="exportCrmPlanList"></action>
+        <action name="addCrmPlan" class="crmAction" method="addCrmPlan">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="editCrmPlan" class="crmAction" method="editCrmPlan">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="crmEditPage" class="crmAction" method="crmEditPage">
+            <result name="success">/crm/crmPlan/crmPlanEditPage.jsp</result>
+        </action>
+        <action name="deletePlan" class="crmAction" method="deletePlan">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="enableCrm" class="crmAction" method="enableCrm">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="disableCrm" class="crmAction" method="disableCrm">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="validateEmploy" class="crmAction" method="validateEmploy">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+    </package>
+    <!--客户拜访记录-->
+	<package name="crmVisitRecord" extends="parent" namespace="/crm/visitrecord">			
+		<action name="addCrmVisitRecord" class="crmVisitRecordAction" method="addCrmVisitRecord">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>			
+		<action name="editCrmVisitRecord" class="crmVisitRecordAction" method="editCrmVisitRecord">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>	
+		<action name="crmVisitRecordListPage" class="crmVisitRecordAction" method="crmVisitRecordListPage">
+			<result name="success">/crm/visitrecord/crmVisitRecordListPage.jsp</result>
+		</action>			
+		<action name="showCrmVisitRecordPageList" class="crmVisitRecordAction" method="showCrmVisitRecordPageList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+        <action name="exportCrmVisitRecordPageList" class="crmVisitRecordAction" method="exportCrmVisitRecordPageList"></action>
+		<action name="crmVisitRecordDetailListPage" class="crmVisitRecordAction" method="crmVisitRecordDetailListPage">
+			<result name="success">/crm/visitrecord/crmVisitRecordDetailListPage.jsp</result>
+		</action>			
+		<action name="showCrmVisitRecordDetailPageList" class="crmVisitRecordAction" method="showCrmVisitRecordDetailPageList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="crmVisitRecordDetailListPage" class="crmVisitRecordAction" method="crmVisitRecordDetailListPage">
+			<result name="success">/crm/visitrecord/crmVisitRecordDetailListPage.jsp</result>
+		</action>			
+		<action name="setOKVisitRecordDetail" class="crmVisitRecordAction" method="setOKVisitRecordDetail">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>			
+		<action name="setNotOKVisitRecordDetail" class="crmVisitRecordAction" method="setNotOKVisitRecordDetail">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="crmVisitRecordOrderDetailListPage" class="crmVisitRecordAction" method="crmVisitRecordOrderDetailListPage">
+			<result name="success">/crm/visitrecord/crmVisitRecordOrderDetailListPage.jsp</result>
+		</action>		
+		<action name="showCrmVisitRecordOrderDetailPageList" class="crmVisitRecordAction" method="showCrmVisitRecordOrderDetailPageList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="crmVisitRecordDetailInfoPage" class="crmVisitRecordAction" method="crmVisitRecordDetailInfoPage">
+			<result name="success">/crm/visitrecord/crmVisitRecordDetailInfoPage.jsp</result>
+		</action>	
+		<action name="crmVisitRecordInfoPage" class="crmVisitRecordAction" method="crmVisitRecordInfoPage">
+			<result name="success">/crm/visitrecord/crmVisitRecordInfoPage.jsp</result>
+		</action>	
+		<action name="crmVisitRecordMapPage" class="crmVisitRecordAction" method="crmVisitRecordMapPage">
+			<result name="success">/crm/visitrecord/crmVisitRecordMapPage.jsp</result>
+		</action>	
+		<action name="crmVisitRecordDetailMapPage" class="crmVisitRecordAction" method="crmVisitRecordDetailMapPage">
+			<result name="success">/crm/visitrecord/crmVisitRecordDetailMapPage.jsp</result>
+		</action>		
+	</package>
+    <!--客户拜访计划报表-->
+    <package name="crmVisitReport" extends="parent" namespace="/crm/visit/report">
+        <action name="visitReportPage" class="crmVisitReportAction" method="visitReportPage">
+            <result name="success">/crm/visitrecord/report/visitReportPage.jsp</result>
+        </action>
+        <action name="getVisitReportData" class="crmVisitReportAction" method="getVisitReportData">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="exportVisitReportData" class="crmVisitReportAction" method="exportVisitReportData"></action>
+        <action name="personReportPage" class="crmVisitReportAction" method="personReportPage">
+            <result name="success">/crm/visitrecord/report/personReportPage.jsp</result>
+        </action>
+        <action name="getPersonReportData" class="crmVisitReportAction" method="getPersonReportData">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="exportPersonReportData" class="crmVisitReportAction" method="exportPersonReportData"></action>
+    </package>
+    <!--客户销量订单-->
+    <package name="crmTerminal" extends="parent" namespace="/crm/terminal">
+        <action name="terminalSalesOrderListPage" class="terminalSalesAction" method="terminalSalesOrderListPage">
+            <result name="success">/crm/terminalsale/terminalSalesOrderList.jsp</result>
+        </action>
+        <action name="terminalSalesOrderListData" class="terminalSalesAction" method="terminalSalesOrderListData">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="showCustomerQeuryTeminalPage" class="terminalSalesAction" method="showCustomerQeuryTeminalPage">
+            <result name="success">/crm/terminalsale/customerQeuryTeminalPage.jsp</result>
+        </action>
+        <action name="customerQeuryTeminalData" class="terminalSalesAction" method="customerQeuryTeminalData">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="terminalSalesOrderPage" class="terminalSalesAction" method="terminalSalesOrderPage">
+            <result name="success">/crm/terminalsale/terminalSalesOrderPage.jsp</result>
+        </action>
+        <action name="showTerminalSalesOrderAddPage" class="terminalSalesAction" method="showTerminalSalesOrderAddPage">
+            <result name="success">/crm/terminalsale/terminalSalesOrderAddPage.jsp</result>
+        </action>
+        <action name="terminalOrderEditPage" class="terminalSalesAction" method="terminalOrderEditPage">
+            <result name="success">/crm/terminalsale/terminalSalesOrderEditPage.jsp</result>
+        </action>
+        <action name="terminalOrderDetailAddPage" class="terminalSalesAction" method="terminalOrderDetailAddPage">
+            <result name="success">/crm/terminalsale/terminalOrderDetailAddPage.jsp</result>
+        </action>
+        <action name="terminalOrderDetailEditPage" class="terminalSalesAction" method="terminalOrderDetailEditPage">
+            <result name="success">/crm/terminalsale/terminalOrderDetailEditPage.jsp</result>
+        </action>
+        <action name="showCrmModelParamPage" class="terminalSalesAction" method="showCrmModelParamPage">
+            <result name="success">/crm/terminalsale/crmModelParamPage.jsp</result>
+        </action>
+        <action name="addTerminalSalesOrder" class="terminalSalesAction" method="addTerminalSalesOrder">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="editTerminalSalesOrder" class="terminalSalesAction" method="editTerminalSalesOrder">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="deleteTerminalSalesOrder" class="terminalSalesAction" method="deleteTerminalSalesOrder">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="importCrmOrderModel" class="terminalSalesAction" method="importCrmOrderModel">
+            <result name="success">/common/upload/modelMsgPage.jsp</result>
+        </action>
+    </package>
+    <!--客户库存单据-->
+    <package name="customerStorageOrder" extends="parent" namespace="/crm/customerStorageOrder">
+        <action name="showCustomerStorageOrderListPage" class="customerStorageOrderAction" method="showCustomerStorageOrderListPage">
+            <result name="success">/crm/customerStorageOrder/CustomerStorageOrderListPage.jsp</result>
+        </action>
+        <action name="showCustomerStorageOrderPage" class="customerStorageOrderAction" method="showCustomerStorageOrderPage">
+            <result name="success">/crm/customerStorageOrder/CustomerStorageOrderPage.jsp</result>
+        </action>
+        <action name="showCustomerStorageOrderAddPage" class="customerStorageOrderAction" method="showCustomerStorageOrderAddPage">
+            <result name="success">/crm/customerStorageOrder/CustomerStorageOrderAddPage.jsp</result>
+        </action>
+        <action name="showCustomerStorageEditPage" class="customerStorageOrderAction" method="showCustomerStorageEditPage">
+            <result name="editSuccess">/crm/customerStorageOrder/CustomerStorageOrderEditPage.jsp</result>
+            <result name="viewSuccess">/crm/customerStorageOrder/CustomerStorageOrderViewPage.jsp</result>
+        </action>
+        <action name="showCustStorageDetailAddPage" class="customerStorageOrderAction" method="showCustStorageDetailAddPage">
+            <result name="success">/crm/customerStorageOrder/CustomerStorageDetailAddPage.jsp</result>
+        </action>
+        <action name="showCustStorageDetailEditPage" class="customerStorageOrderAction" method="showCustStorageDetailEditPage">
+            <result name="success">/crm/customerStorageOrder/CustomerStorageDetailEditPage.jsp</result>
+        </action>
+        <action name="getCustomerStorageOrderListPageData" class="customerStorageOrderAction" method="getCustomerStorageOrderListPageData">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="addCustomerStorageOrder" class="customerStorageOrderAction" method="addCustomerStorageOrder">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="editCustomerStorageOrder" class="customerStorageOrderAction" method="editCustomerStorageOrder">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="deleteCustomerStorageSalesOrder" class="customerStorageOrderAction" method="deleteCustomerStorageSalesOrder">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="auditCustomerStorageSalesOrder" class="customerStorageOrderAction" method="auditCustomerStorageSalesOrder">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="oppAuditCustomerStorageSalesOrder" class="customerStorageOrderAction" method="oppAuditCustomerStorageSalesOrder">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="importCustStorageModel" class="customerStorageOrderAction" method="importCustStorageModel">
+            <result name="success">/common/upload/modelMsgPage.jsp</result>
+        </action>
+    </package>
+    <!--数据上报 报表-->
+    <package name="dataport" extends="parent" namespace="/crm/dataport">
+        <action name="showCustStorageReportPage" class="crmDataPortAction" method="showCustStorageReportPage">
+            <result name="success">/crm/report/customerStorageReportPage.jsp</result>
+        </action>
+        <action name="getCustomerSummaryReportGroupData" class="crmDataPortAction" method="getCustomerSummaryReportGroupData">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="exportCustomerSummaryReportGroupData" class="crmDataPortAction" method="exportCustomerSummaryReportGroupData"></action>
+        <action name="showCustStorageDetailReportPage" class="crmDataPortAction" method="showCustStorageDetailReportPage">
+            <result name="success">/crm/report/customerStorageDetailReportPage.jsp</result>
+        </action>
+        <action name="getCustomerSummaryData" class="crmDataPortAction" method="getCustomerSummaryData">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="getCustomerSummaryClearPage" class="crmDataPortAction" method="getCustomerSummaryClearPage">
+            <result name="success">/crm/report/customerSummaryClearPage.jsp</result>
+        </action>
+        <action name="getCustomerSummaryPage" class="crmDataPortAction" method="getCustomerSummaryPage">
+            <result name="success">/crm/report/customerSummaryPage.jsp</result>
+        </action>
+        <action name="getCrmSalesSyncPage" class="crmDataPortAction" method="getCrmSalesSyncPage">
+            <result name="success">/crm/report/crmSalesSyncPage.jsp</result>
+        </action>
+        <action name="getCustomerSummaryRevolutionReportPage" class="crmDataPortAction" method="getCustomerSummaryRevolutionReportPage">
+            <result name="success">/crm/report/customerSummaryRevolutionReportPage.jsp</result>
+        </action>
+        <action name="clearCustomerSummary" class="crmDataPortAction" method="clearCustomerSummary">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="getCustomerSummaryRevolutionReportData" class="crmDataPortAction" method="getCustomerSummaryRevolutionReportData">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="exportCustomerSummaryRevolution" class="crmDataPortAction" method="exportCustomerSummaryRevolution"></action>
+        <action name="getLastSummaryDayForCustomer" class="crmDataPortAction" method="getLastSummaryDayForCustomer">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="updateCustomerSummary" class="crmDataPortAction" method="updateCustomerSummary">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="crmSalesSync" class="crmDataPortAction" method="crmSalesSync">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="exportCustomerStorageData" class="crmDataPortAction" method="exportCustomerStorageData"></action>
+        <action name="showTerminalSalesOrderReportPage" class="crmDataPortAction" method="showTerminalSalesOrderReportPage">
+            <result name="success">/crm/report/terminalSalesOrderReportPage.jsp</result>
+        </action>
+        <action name="getTerminalSalesOrderReportData" class="crmDataPortAction" method="getTerminalSalesOrderReportData">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="exportCrmSalesOrderData" class="crmDataPortAction" method="exportCrmSalesOrderData"></action>
+        <action name="showCustomerSummaryHistory" class="crmDataPortAction" method="showCustomerSummaryHistory">
+            <result name="success">/crm/report/customerSummaryHistory.jsp</result>
+        </action>
+    </package>
+
+</struts>

@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.journalsheet.dao.BugetAnalyzerMapper" >
+  
+   <resultMap id="BaseResultMap" type="com.hd.agent.journalsheet.model.BugetAnalyzer">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="budgetid" jdbcType="VARCHAR" property="budgetid" />
+    <result column="brand" jdbcType="VARCHAR" property="brand" />
+    <result column="deptid" jdbcType="VARCHAR" property="deptid" />
+    <result column="supplierid" jdbcType="VARCHAR" property="supplierid" />
+    <result column="month" jdbcType="VARCHAR" property="month" />
+    <result column="budgetnum" jdbcType="DECIMAL" property="budgetnum" />
+    <result column="bugettype" jdbcType="INTEGER" property="bugettype" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="addtime" jdbcType="TIMESTAMP" property="addtime" />
+    <result column="adduserid" jdbcType="VARCHAR" property="adduserid" />
+    <result column="year" jdbcType="VARCHAR" property="year" />
+  </resultMap>
+  <sql id="bugetQuery">
+    <trim prefix="where" prefixOverrides="and|or">
+      <if test="condition.budgetid != null">
+         and budgetid = #{condition.budgetid}
+      </if>
+      <if test="condition.brand != null">
+         and brand = #{condition.brand}
+      </if>
+      <if test="condition.deptid != null">
+         and deptid = #{condition.deptid}
+      </if>
+      <if test="condition.supplierid != null">
+         and supplierid = #{condition.supplierid}
+      </if>
+      <if test="condition.month != null">
+         and month = #{condition.month}
+      </if>
+      <if test="condition.budgetnum != null">
+         and budgetnum = #{condition.budgetnum}
+      </if>
+      <if test="condition.bugettype != null">
+         and bugettype = #{condition.bugettype}
+      </if>
+      <if test="condition.state != null">
+         and state = #{condition.state}
+      </if>
+      <if test="condition.remark != null">
+         and remark = #{condition.remark}
+      </if>
+      <if test="condition.addtime != null">
+         and addtime = #{condition.addtime}
+      </if>
+      <if test="condition.adduserid != null">
+         and adduserid = #{condition.adduserid}
+      </if>
+      <if test="condition.year != null">
+         and year = #{condition.year}
+      </if>
+      
+    </trim>
+  </sql>
+  <sql id="Base_Column_List">
+    id, budgetid, brand, deptid, supplierid, month, budgetnum, bugettype, state, remark, 
+    addtime, adduserid ,year
+  </sql>
+  
+	<insert id="addbuget" parameterType="com.hd.agent.journalsheet.model.BugetAnalyzer">
+    insert into t_js_budget
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="budgetid != null">
+        budgetid,
+      </if>
+      <if test="brand != null">
+        brand,
+      </if>
+      <if test="deptid != null">
+        deptid,
+      </if>
+      <if test="supplierid != null">
+        supplierid,
+      </if>
+      <if test="month != null">
+        month,
+      </if>
+      <if test="year != null">
+        year,
+      </if>
+      <if test="budgetnum != null">
+        budgetnum,
+      </if>
+      <if test="bugettype != null">
+        bugettype,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="addtime != null">
+        addtime,
+      </if>
+      <if test="adduserid != null">
+        adduserid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="budgetid != null">
+        #{budgetid},
+      </if>
+      <if test="brand != null">
+        #{brand},
+      </if>
+      <if test="deptid != null">
+        #{deptid},
+      </if>
+      <if test="supplierid != null">
+        #{supplierid},
+      </if>
+      <if test="month != null">
+        #{month},
+      </if>
+      <if test="year != null">
+        #{year},
+      </if>
+      <if test="budgetnum != null">
+        #{budgetnum},
+      </if>
+      <if test="bugettype != null">
+        #{bugettype},
+      </if>
+      <if test="state != null">
+        #{state},
+      </if>
+      <if test="remark != null">
+        #{remark},
+      </if>
+      <if test="addtime != null">
+        #{addtime},
+      </if>
+      <if test="adduserid != null">
+        #{adduserid},
+      </if>
+    </trim>
+  </insert>
+
+	<select id="getbugetAnalyzerList" resultType="com.hd.agent.journalsheet.model.BugetAnalyzer" parameterType="com.hd.agent.common.util.PageMap">
+		select 
+		<include refid="Base_Column_List" />
+		from  t_js_budget
+		<include refid="bugetQuery" />
+		<include refid="common.Page_limit" />
+	</select>
+	
+	<select id="getbugetAnalyzerListCount" resultType="int" parameterType="com.hd.agent.common.util.PageMap">
+		select count(1)
+		from t_js_budget
+		<include refid="bugetQuery" />
+	</select>
+	
+	<select id="getAnalyzerByBugetId" resultType="com.hd.agent.journalsheet.model.BugetAnalyzer" parameterType="java.lang.String">
+		select * from t_js_budget where budgetid = #{id}
+	</select>
+	
+	<delete id="deleteAnalyzerByBugetId" parameterType="java.lang.String">
+		delete from t_js_budget where budgetid = #{id}
+	</delete>
+	
+	<update id="updateState">
+		update t_js_budget set state = #{state} where budgetid = #{id}
+	</update>
+	
+	<update id="updateBugetAnalyzer" parameterType="com.hd.agent.journalsheet.model.BugetAnalyzer">
+	    update t_js_budget
+	    <set>
+	      <if test="brand != null">
+	        brand = #{brand},
+	      </if>
+	      <if test="deptid != null">
+	        deptid = #{deptid},
+	      </if>
+	      <if test="supplierid != null">
+	        supplierid = #{supplierid},
+	      </if>
+	      <if test="month != null">
+	        month = #{month},
+	      </if>
+	      <if test="year != null">
+	        year = #{year},
+	      </if>
+	      <if test="budgetnum != null">
+	        budgetnum = #{budgetnum},
+	      </if>
+	       <if test="bugettype != null">
+	        bugettype = #{bugettype},
+	      </if>
+	      <if test="state != null">
+	        state = #{state},
+	      </if>
+	      <if test="remark != null">
+	        remark = #{remark},
+	      </if>
+	      <if test="addtime != null">
+	        addtime = #{addtime},
+	      </if>
+	      <if test="adduserid != null">
+	        adduserid = #{adduserid},
+	      </if>
+	    </set>
+	    where budgetid = #{budgetid}
+  </update>
+  
+  
+  
+	<select id="getbugetAnalyzerGroupList" resultType="com.hd.agent.journalsheet.model.BugetAnalyzer" parameterType="com.hd.agent.common.util.PageMap">
+		select brand,deptid,supplierid,bugettype,month ,sum(budgetnum)  as budgetnum
+		from 
+		t_js_budget 
+		where 1=1 
+		and state = 1 
+		<if test="condition.bugettype != null">
+         and bugettype = #{condition.bugettype}
+      	</if>
+      	<if test="condition.brand != null">
+         and brand = #{condition.brand}
+      	</if>
+     	 <if test="condition.deptid != null">
+         and deptid = #{condition.deptid}
+     	 </if>
+      	<if test="condition.supplierid != null">
+         and supplierid = #{condition.supplierid}
+     	 </if>
+     	 <if test="condition.year != null">
+         and year = #{condition.year}
+      	 </if>
+		group by brand,deptid,supplierid,bugettype,month
+	</select>
+	
+	
+</mapper>

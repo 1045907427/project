@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.agprint.dao.PrintJobCallHandleMapper" >
+
+  <sql id="PrintJobCallHandleBase_Column_List">
+    id, jobid, printorderid, printordername, sourceorderid, sourceordername, classname, 
+    methodname, addtime, adduserid, addusername, status, pages, modifyuserid, modifyusername, 
+    modifytime,methodparam
+  </sql>
+
+  <sql id="PrintJobCallHandleBase_Where_Clause">
+    <if test="condition.jobid != null" >
+      and jobid = #{condition.jobid}
+    </if>
+    <if test="condition.printorderid != null" >
+      and printorderid like CONCAT('%', #{condition.printorderid} ,'%')
+    </if>
+    <if test="condition.printordername != null" >
+      and printordername like CONCAT('%', #{condition.printordername} ,'%')
+    </if>
+    <if test="condition.sourceorderid != null" >
+      and sourceorderid like CONCAT('%', #{condition.sourceorderid} ,'%')
+    </if>
+    <if test="condition.sourceordername != null" >
+      and sourceordername like CONCAT('%', #{condition.sourceordername} ,'%')
+    </if>
+    <if test="condition.classname != null" >
+      and classname = #{condition.classname}
+    </if>
+    <if test="condition.methodname != null" >
+      and methodname like CONCAT('%', #{condition.methodname} ,'%')
+    </if>
+    <if test="condition.addtime != null" >
+      and addtime = #{condition.addtime}
+    </if>
+    <if test="condition.adduserid != null" >
+      and adduserid = #{condition.adduserid}
+    </if>
+    <if test="condition.addusername != null" >
+      and addusername like CONCAT('%', #{condition.addusername} ,'%')
+    </if>
+    <if test="condition.status != null" >
+      and status = #{condition.status}
+    </if>
+    <if test="condition.pages != null" >
+      and pages = #{condition.pages}
+    </if>
+    <if test="condition.modifyuserid != null" >
+      and modifyuserid = #{condition.modifyuserid}
+    </if>
+    <if test="condition.modifyusername != null" >
+      and modifyusername = #{condition.modifyusername}
+    </if>
+    <if test="condition.modifytime != null" >
+      and modifytime = #{condition.modifytime}
+    </if>
+    <if test="condition.type != null" >
+      and type = #{condition.type}
+    </if>
+    <if test="condition.methodparam != null" >
+      and methodparam like CONCAT('%', #{condition.methodparam} ,'%')
+    </if>
+  </sql>
+  <select id="getPrintJobCallHandlePageList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.agprint.model.PrintJobCallHandle"  useCache="false">
+    select
+    <include refid="PrintJobCallHandleBase_Column_List"/>
+    from t_print_job_callhandle
+    <trim prefix="where" prefixOverrides="and|or">
+      <include refid="PrintJobCallHandleBase_Where_Clause" />
+    </trim>
+    <include refid="common.Page_limit"/>
+  </select>
+  <select id="getPrintJobCallHandlePageCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int"  useCache="false">
+    select
+    count(*)
+    from t_print_job_callhandle
+    <trim prefix="where" prefixOverrides="and|or">
+      <include refid="PrintJobCallHandleBase_Where_Clause" />
+    </trim>
+  </select>
+  <insert id="addPrintJobCallHandle" parameterType="com.hd.agent.agprint.model.PrintJobCallHandle">
+	<selectKey resultType="java.lang.String" keyProperty="id" order="BEFORE" >
+      select uuid_short()
+    </selectKey>
+    insert into t_print_job_callhandle
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="jobid != null">
+        jobid,
+      </if>
+      <if test="printorderid != null">
+        printorderid,
+      </if>
+      <if test="printordername != null">
+        printordername,
+      </if>
+      <if test="sourceorderid != null">
+        sourceorderid,
+      </if>
+      <if test="sourceordername != null">
+        sourceordername,
+      </if>
+      <if test="classname != null">
+        classname,
+      </if>
+      <if test="methodname != null">
+        methodname,
+      </if>
+      <if test="addtime != null">
+        addtime,
+      </if>
+      <if test="adduserid != null">
+        adduserid,
+      </if>
+      <if test="addusername != null">
+        addusername,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="pages != null">
+        pages,
+      </if>
+      <if test="modifyuserid != null">
+        modifyuserid,
+      </if>
+      <if test="modifyusername != null">
+        modifyusername,
+      </if>
+      <if test="modifytime != null">
+        modifytime,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="methodparam != null">
+        methodparam,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id},
+      </if>
+      <if test="jobid != null">
+        #{jobid},
+      </if>
+      <if test="printorderid != null">
+        #{printorderid},
+      </if>
+      <if test="printordername != null">
+        #{printordername},
+      </if>
+      <if test="sourceorderid != null">
+        #{sourceorderid},
+      </if>
+      <if test="sourceordername != null">
+        #{sourceordername},
+      </if>
+      <if test="classname != null">
+        #{classname},
+      </if>
+      <if test="methodname != null">
+        #{methodname},
+      </if>
+      <if test="addtime != null">
+        #{addtime},
+      </if>
+      <if test="adduserid != null">
+        #{adduserid},
+      </if>
+      <if test="addusername != null">
+        #{addusername},
+      </if>
+      <if test="status != null">
+        #{status},
+      </if>
+      <if test="pages != null">
+        #{pages},
+      </if>
+      <if test="modifyuserid != null">
+        #{modifyuserid},
+      </if>
+      <if test="modifyusername != null">
+        #{modifyusername},
+      </if>
+      <if test="modifytime != null">
+        #{modifytime},
+      </if>
+      <if test="type != null">
+        #{type},
+      </if>
+      <if test="methodparam != null">
+        #{methodparam},
+      </if>
+    </trim>
+  </insert>
+  <update id="updatePrintJobCallHandleStatus" parameterType="com.hd.agent.agprint.model.PrintJobCallHandle">
+    update t_print_job_callhandle
+    <set>
+      <if test="status != null">
+        status = #{status},
+      </if>
+      <if test="modifyuserid != null">
+        modifyuserid = #{modifyuserid},
+      </if>
+      <if test="modifyusername != null">
+        modifyusername = #{modifyusername},
+      </if>
+      <if test="modifytime != null">
+        modifytime = #{modifytime},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  <select id="getPrintJobCallHandleListBy" parameterType="com.hd.agent.agprint.model.query.PrintJobCallHandleQuery" resultType="com.hd.agent.agprint.model.PrintJobCallHandle">
+  	select
+  	<include refid="PrintJobCallHandleBase_Column_List"></include>
+  	from t_print_job_callhandle
+  	where
+  	<trim prefixOverrides="and|or">
+      <if test="jobid != null">
+         and jobid = #{jobid}
+      </if>
+      <if test="status != null">
+         and status = #{status}
+      </if>
+      <if test="adduserid != null">
+         and adduserid = #{adduserid}
+      </if>
+    </trim>
+  </select>
+  <delete id="deletePrintJobCallHandleBeforeDate" parameterType="java.util.Date">
+    DELETE FROM t_print_job_callhandle
+    WHERE
+    <![CDATA[ addtime <= #{date}  ]]>
+  </delete>
+</mapper>

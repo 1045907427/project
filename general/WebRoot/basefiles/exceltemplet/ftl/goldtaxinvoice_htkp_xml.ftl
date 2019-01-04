@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="GBK" ?>
+<Kp>
+    <Version>2.0</Version>
+    <Fpxx>
+        <Zsl>1</Zsl>
+        <Fpsj>
+            <Fp>
+                <Djh>${billOrderData.id!}</Djh>
+                <Gfmc>${cutStringFunc(billOrderData.invoicecustomername,100,"[&]")}</Gfmc>
+                <Gfsh>${billOrderData.customertaxno!}</Gfsh>
+                <Gfyhzh>${billOrderData.customercardno!}</Gfyhzh>
+                <Gfdzdh>${cutStringFunc(billOrderData.customeradrrphone,80,"[&]")}</Gfdzdh>
+                <Bz></Bz>
+                <Fhr>${billchecker!}</Fhr>
+                <Skr>${billreceipter!}</Skr>
+                <Spbmbbh>${jsgoodsversion!}</Spbmbbh>
+                <Hsbz>0</Hsbz>
+                <Spxx>
+<#list detailList as detailItem>
+                    <Sph>
+                        <Xh>${detailItem_index+1}</Xh>
+                        <Spmc>${cutStringFunc(detailItem.goodsname,100,"[&]")}</Spmc>
+                        <Ggxh>${cutStringFunc(detailItem.model,40,"[&]")}</Ggxh>
+                        <Jldw>${cutStringFunc(detailItem.unitname,32,"[&]")}</Jldw>
+                        <Spbm>${paddingStringFunc(detailItem.jstypeid,"2",19,"0")}</Spbm>
+                        <Qyspbm>${cutStringFunc(detailItem.goodsid,20)}</Qyspbm>
+                        <Syyhzcbz>${detailItem.syyhzcbz!}</Syyhzcbz>
+                        <Lslbz>${detailItem.lslbz!}</Lslbz>
+                        <Yhzcsm>${detailItem.yhzcsm!}</Yhzcsm>
+                        <Dj>${detailItem.notaxprice?if_exists?string("0.#########")}</Dj>
+                        <Sl>${detailItem.unitnum!}</Sl>
+                        <Je>${detailItem.notaxamount!}</Je>
+                        <Slv>${detailItem.taxrate!}</Slv>
+                        <Kce>0.00</Kce>
+                    </Sph>
+</#list>
+                </Spxx>
+            </Fp>
+        </Fpsj>
+    </Fpxx>
+</Kp>

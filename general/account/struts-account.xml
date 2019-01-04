@@ -1,0 +1,1893 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>	
+	<package name="accountManager-salesInvoice" extends="parent" namespace="/account/receivable">
+		<action name="showSalesInvoiceAddPage" class="salesInvoiceAction" method="showSalesInvoiceAddPage">
+			<result name="success">/account/receivable/salesinvoice/salesInvoiceAddPage.jsp</result>
+		</action>
+		<action name="salesInvoiceAddPage" class="salesInvoiceAction" method="salesInvoiceAddPage">
+			<result name="success">/account/receivable/salesinvoice/salesInvoiceAddPage.jsp</result>
+		</action>
+		<action name="showSalesInvoiceRelationUpperPage" class="salesInvoiceAction" method="showSalesInvoiceRelationUpperPage">
+			<result name="success">/account/receivable/salesinvoice/salesInvoiceSourceQueryPage.jsp</result>
+		</action>
+		<action name="showSalesInvoiceSourceListPage" class="salesInvoiceAction" method="showSalesInvoiceSourceListPage">
+			<result name="success">/account/receivable/salesinvoice/salesInvoiceSourceListPage.jsp</result>
+		</action>
+		<action name="addSalesInvoiceByRefer" class="salesInvoiceAction" method="addSalesInvoiceByRefer">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSalesInvoiceViewPage" class="salesInvoiceAction" method="showSalesInvoiceViewPage">
+			<result name="success">/account/receivable/salesinvoice/salesInvoicePage.jsp</result>
+		</action>
+		<action name="salesInvoiceViewPage" class="salesInvoiceAction" method="salesInvoiceViewPage">
+			<result name="success">/account/receivable/salesinvoice/salesInvoiceViewPage.jsp</result>
+			<result name="addSuccess">/account/receivable/salesinvoice/salesInvoiceAddPage.jsp</result>
+		</action>
+		<action name="showSalesInvoiceListPage" class="salesInvoiceAction" method="showSalesInvoiceListPage">
+			<result name="success">/account/receivable/salesinvoice/salesInvoiceListPage.jsp</result>
+		</action>
+		<action name="showSalesInvoiceList" class="salesInvoiceAction" method="showSalesInvoiceList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showTailamountReportPage" class="salesInvoiceAction" method="showTailamountReportPage">
+			<result name="success">/account/receivable/salesinvoice/salesTailamountReportPage.jsp</result>
+		</action>
+		<action name="getTailamountReportPageData" class="salesInvoiceAction" method="getTailamountReportPageData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSalesInvoiceEditPage" class="salesInvoiceAction" method="showSalesInvoiceEditPage">
+			<result name="success">/account/receivable/salesinvoice/salesInvoicePage.jsp</result>
+		</action>
+		<action name="salesInvoiceEditPage" class="salesInvoiceAction" method="salesInvoiceEditPage">
+			<result name="success">/account/receivable/salesinvoice/salesInvoiceEditPage.jsp</result>
+			<result name="viewSuccess">/account/receivable/salesinvoice/salesInvoiceViewPage.jsp</result>
+			<result name="addSuccess">/account/receivable/salesinvoice/salesInvoiceAddPage.jsp</result>
+		</action>
+		<action name="showSalesInvoiceDetailEditPage" class="salesInvoiceAction" method="showSalesInvoiceDetailEditPage">
+			<result name="success">/account/receivable/salesinvoice/salesInvoiceDetailEditPage.jsp</result>
+		</action>
+		<action name="deleteSalesInvoice" class="salesInvoiceAction" method="deleteSalesInvoice">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editSalesInvoiceSave" class="salesInvoiceAction" method="editSalesInvoiceSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditSalesInvoice" class="salesInvoiceAction" method="auditSalesInvoice">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="oppauditSalesInvoice" class="salesInvoiceAction" method="oppauditSalesInvoice">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSalesInvoiceDiscountPage" class="salesInvoiceAction" method="showSalesInvoiceDiscountPage">
+			<result name="success">/account/receivable/salesinvoice/salesInvoiceDiscountPage.jsp</result>
+		</action>
+		<action name="submitSalesInvoicePageProcess" class="salesInvoiceAction" method="submitSalesInvoicePageProcess">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSalesInvoiceSourceListReferPage" class="salesInvoiceAction" method="showSalesInvoiceSourceListReferPage">
+			<result name="success">/account/receivable/salesinvoice/salesInvoiceSourceListReferPage.jsp</result>
+		</action>		
+		<action name="salesInvoiceApplyWriteOff" class="salesInvoiceAction" method="salesInvoiceApplyWriteOff">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="salesInvoiceMuApplyWriteOff" class="salesInvoiceAction" method="salesInvoiceMuApplyWriteOff">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSalesInvoicePushAddPage" class="salesInvoiceAction" method="showSalesInvoicePushAddPage">
+			<result name="success">/account/receivable/salesinvoice/salesInvoicePushAddPage.jsp</result>
+		</action>
+		<action name="addCustomerPushBanlanceBySalesInvoice" class="salesInvoiceAction" method="addCustomerPushBanlanceBySalesInvoice">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSalesInvoiceListPageByIds" class="salesInvoiceAction" method="showSalesInvoiceListPageByIds">
+			<result name="success">/account/receivable/salesinvoice/salesInvoiceListPageByIds.jsp</result>
+		</action>
+		<action name="showSalesInvoiceRebatePage" class="salesInvoiceAction" method="showSalesInvoiceRebatePage">
+			<result name="success">/account/receivable/salesinvoice/salesInvoiceRebatePage.jsp</result>
+		</action>
+		<action name="addSalesInvoiceRebate" class="salesInvoiceAction" method="addSalesInvoiceRebate">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showReceiptUnWriteOffPage" class="salesInvoiceAction" method="showReceiptUnWriteOffPage">
+			<result name="success">/account/receivable/salesinvoice/receiptUnWriteOffPage.jsp</result>
+		</action>
+		<action name="showReceiptUnWriteOffData" class="salesInvoiceAction" method="showReceiptUnWriteOffData">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="exportSalesInvoiceList" class="salesInvoiceAction" method="exportSalesInvoiceList"></action>
+		<action name="exportTailamountReportData" class="salesInvoiceAction" method="exportTailamountReportData"></action>
+		<action name="salesInvoiceCancel" class="salesInvoiceAction" method="salesInvoiceCancel">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSalesInvoiceCancelListPage" class="salesInvoiceAction" method="showSalesInvoiceCancelListPage">
+			<result name="success">/account/receivable/salesinvoice/salesInvoiceCancelListPage.jsp</result>
+		</action>
+		<action name="showSalesInvoiceListPageByCustomer" class="salesInvoiceAction" method="showSalesInvoiceListPageByCustomer">
+			<result name="success">/account/receivable/salesinvoice/salesInvoiceListPageByCustomer.jsp</result>
+		</action>
+		<action name="addToSalesInvoiceByCustomer" class="salesInvoiceAction" method="addToSalesInvoiceByCustomer">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="salesInvoiceMutiDelete" class="salesInvoiceAction" method="salesInvoiceMutiDelete">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSalesInvoiceDetailPage" class="salesInvoiceAction" method="showSalesInvoiceDetailPage">
+			<result name="success">/account/receivable/salesinvoice/salesInvoiceDetailPage.jsp</result>
+		</action>
+		<action name="showSalesInvoiceDetailData" class="salesInvoiceAction" method="showSalesInvoiceDetailData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="exportSalesInvoiceDetailData" class="salesInvoiceAction" method="exportSalesInvoiceDetailData"></action>
+		<action name="deleteSalesInvoiceSource" class="salesInvoiceAction" method="deleteSalesInvoiceSource">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+        <action name="checkSalesInvoiceCanMuApplyInvoice" class="salesInvoiceAction" method="checkSalesInvoiceCanMuApplyInvoice">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="doSalesInvoiceMuApplyInvoice" class="salesInvoiceAction" method="doSalesInvoiceMuApplyInvoice">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="getCancelSalesInvoiceFlag" class="salesInvoiceAction" method="getCancelSalesInvoiceFlag">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="getUnrelateSalesInvoiceFlag" class="salesInvoiceAction" method="getUnrelateSalesInvoiceFlag">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="getRelateSalesInvoiceFlag" class="salesInvoiceAction" method="getRelateSalesInvoiceFlag">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="getOppauditFlag" class="salesInvoiceAction" method="getOppauditFlag">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+		<action name="getSalesInvoiceDetailList" class="salesInvoiceAction" method="getSalesInvoiceDetailList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="salesInvoiceDetailTaxtypeCount" class="salesInvoiceAction" method="salesInvoiceDetailTaxtypeCount">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+	<!-- 申请开票 -->
+	<package name="accountManager-salesInvoiceBill" extends="parent" namespace="/account/receivable">
+		<action name="exportSalesInvoiceBillData" class="salesInvoiceBillAction" method="exportSalesInvoiceBillData">
+		</action>
+		<action name="showSalesInvoiceBillListPage" class="salesInvoiceBillAction" method="showSalesInvoiceBillListPage">
+			<result name="success">/account/receivable/salesinvoicebill/salesInvoiceBillListPage.jsp</result>
+		</action>
+		<action name="getSalesInvoiceBillData" class="salesInvoiceBillAction" method="getSalesInvoiceBillData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSalesInvoiceBillAddPage" class="salesInvoiceBillAction" method="showSalesInvoiceBillAddPage">
+			<result name="success">/account/receivable/salesinvoicebill/salesInvoiceBillAddPage.jsp</result>
+		</action>
+		<action name="addSalesInvoiceBillByRefer" class="salesInvoiceBillAction" method="addSalesInvoiceBillByRefer">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSalesInvoiceBillEditPage" class="salesInvoiceBillAction" method="showSalesInvoiceBillEditPage">
+			<result name="success">/account/receivable/salesinvoicebill/salesInvoiceBillPage.jsp</result>
+		</action>
+		<action name="salesInvoiceBillEditPage" class="salesInvoiceBillAction" method="salesInvoiceBillEditPage">
+			<result name="success">/account/receivable/salesinvoicebill/salesInvoiceBillEditPage.jsp</result>
+			<result name="viewSuccess">/account/receivable/salesinvoicebill/salesInvoiceBillViewPage.jsp</result>
+			<result name="addSuccess">/account/receivable/salesinvoicebill/salesInvoiceBillAddPage.jsp</result>
+		</action>
+		<action name="editSalesInvoiceBillSave" class="salesInvoiceBillAction" method="editSalesInvoiceBillSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditSalesInvoiceBill" class="salesInvoiceBillAction" method="auditSalesInvoiceBill">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="oppauditSalesInvoiceBill" class="salesInvoiceBillAction" method="oppauditSalesInvoiceBill">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteSalesInvoiceBill" class="salesInvoiceBillAction" method="deleteSalesInvoiceBill">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSalesInvoiceBillSourceListReferPage" class="salesInvoiceBillAction" method="showSalesInvoiceBillSourceListReferPage">
+			<result name="success">/account/receivable/salesinvoicebill/salesInvoiceBillSourceListReferPage.jsp</result>
+		</action>
+		<action name="deleteSalesInvoiceBillSource" class="salesInvoiceBillAction" method="deleteSalesInvoiceBillSource">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showReceiptUnWriteOffForInvoicebillPage" class="salesInvoiceBillAction" method="showReceiptUnWriteOffForInvoicebillPage">
+			<result name="success">/account/receivable/salesinvoicebill/receiptUnWriteOffForInvoicebillPage.jsp</result>
+		</action>
+		<action name="showReceiptUnWriteOffForInvoicebillData" class="salesInvoiceBillAction" method="showReceiptUnWriteOffForInvoicebillData">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSalesInvoiceBillDetailPage" class="salesInvoiceBillAction" method="showSalesInvoiceBillDetailPage">
+			<result name="success">/account/receivable/salesinvoicebill/salesInvoiceBillDetailPage.jsp</result>
+		</action>
+		<action name="showSalesInvoiceBillDetailData" class="salesInvoiceBillAction" method="showSalesInvoiceBillDetailData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="exportSalesInvoiceBillDetailData" class="salesInvoiceBillAction" method="exportSalesInvoiceBillDetailData"></action>
+		<action name="salesInvoiceBillCancel" class="salesInvoiceBillAction" method="salesInvoiceBillCancel">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="exportSalesInvoiceBillList" class="salesInvoiceBillAction" method="exportSalesInvoiceBillList"></action>
+		<action name="exportSalesInvoiceBillDetailList" class="salesInvoiceBillAction" method="exportSalesInvoiceBillDetailList"></action>
+		<action name="exportSalesInvoiceBillForHTKP" class="salesInvoiceBillAction" method="exportSalesInvoiceBillForHTKP"></action>
+		<action name="exportSalesInvoiceBillForHTKPHZ" class="salesInvoiceBillAction" method="exportSalesInvoiceBillForHTKPHZ"></action>
+		<action name="exportSalesInvoiceBillXMLForHTKP" class="salesInvoiceBillAction" method="exportSalesInvoiceBillXMLForHTKP">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="exportSalesInvoiceBillForXMLHTKPHZ" class="salesInvoiceBillAction" method="exportSalesInvoiceBillXMLForHTKPHZ"></action>
+		<action name="exportSalesInvoiceBillExcelForHTKP" class="salesInvoiceBillAction" method="exportSalesInvoiceBillExcelForHTKP"></action>
+		<action name="importAndCreateSalesInvoiceBillExcelForHTKP" class="salesInvoiceBillAction" method="importAndCreateSalesInvoiceBillExcelForHTKP">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+
+		<action name="showJSKPSysParamConfigPage" class="salesInvoiceBillAction" method="showJSKPSysParamConfigPage">
+			<result name="success">/account/receivable/salesinvoicebill/jskpSysParamConfigPage.jsp</result>
+		</action>
+		<action name="updateJSKPSysParamConfig" class="salesInvoiceBillAction" method="updateJSKPSysParamConfig">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+
+		<action name="showSalesInvoiceBillListPageByCustomer" class="salesInvoiceBillAction" method="showSalesInvoiceBillListPageByCustomer">
+			<result name="success">/account/receivable/salesinvoicebill/salesInvoiceBillListPageByCustomer.jsp</result>
+		</action>
+		<action name="addToSalesInvoiceBillByCustomer" class="salesInvoiceBillAction" method="addToSalesInvoiceBillByCustomer">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSalesInvoiceBillInvoicenoInfoPage" class="salesInvoiceBillAction" method="showSalesInvoiceBillInvoicenoInfoPage">
+			<result name="success">/account/receivable/salesinvoicebill/salesInvoiceBillInvoicenoInfoPage.jsp</result>
+		</action>
+		<action name="editSalesInvoiceBillInvoiceno" class="salesInvoiceBillAction" method="editSalesInvoiceBillInvoiceno">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+        <action name="showSalesInvoiceBillCancelListPage" class="salesInvoiceBillAction" method="showSalesInvoiceBillCancelListPage">
+            <result name="success">/account/receivable/salesinvoicebill/salesInvoiceBillCancelListPage.jsp</result>
+        </action>
+        <action name="salesInvoiceBillMutiDelete" class="salesInvoiceBillAction" method="salesInvoiceBillMutiDelete">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="checkSalesInvoiceBillCanMuApplyWriteOff" class="salesInvoiceBillAction" method="checkSalesInvoiceBillCanMuApplyWriteOff">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="doSalesInvoiceBillMuApplyWriteOff" class="salesInvoiceBillAction" method="doSalesInvoiceBillMuApplyWriteOff">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+		<action name="getSalesInvoiceBillDetailList" class="salesInvoiceBillAction" method="getSalesInvoiceBillDetailList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSalesInvoiceBillListPageByIds" class="salesInvoiceBillAction" method="showSalesInvoiceBillListPageByIds">
+			<result name="success">/account/receivable/salesinvoice/salesInvoiceListPageByIds.jsp</result>
+		</action>
+
+        <!-- 预开票 -->
+        <action name="showSalesAdvanceBillAddPage" class="salesInvoiceBillAction" method="showSalesAdvanceBillAddPage">
+            <result name="success">/account/receivable/salesinvoicebill/salesadvancebill/salesAdvanceBillAddPage.jsp</result>
+        </action>
+        <action name="addSalesAdvanceBillByRefer" class="salesInvoiceBillAction" method="addSalesAdvanceBillByRefer">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+	</package>
+	
+	<package name="accountManager-collectionOrder" extends="parent" namespace="/account/receivable">
+		<action name="showCollectionOrderAddPage" class="collectionOrderAction" method="showCollectionOrderAddPage">
+			<result name="success">/account/receivable/collection/collectionOrderPage.jsp</result>
+		</action>
+		<action name="showCollectionOrderAddAuditPage" class="collectionOrderAction" method="showCollectionOrderAddAuditPage">
+			<result name="success">/account/receivable/collection/collectionOrderAddAuditPage.jsp</result>
+		</action>
+		<action name="collectionOrderAddPage" class="collectionOrderAction" method="collectionOrderAddPage">
+			<result name="success">/account/receivable/collection/collectionOrderAddPage.jsp</result>
+		</action>
+		<action name="addCollectionOrderHold" class="collectionOrderAction" method="addCollectionOrderHold">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addCollectionOrderSave" class="collectionOrderAction" method="addCollectionOrderSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addCollectionOrderSaveAudit" class="collectionOrderAction" method="addCollectionOrderSaveAudit">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showCollectionOrderViewPage" class="collectionOrderAction" method="showCollectionOrderViewPage">
+			<result name="success">/account/receivable/collection/collectionOrderPage.jsp</result>
+		</action>
+		<action name="collectionOrderViewPage" class="collectionOrderAction" method="collectionOrderViewPage">
+			<result name="success">/account/receivable/collection/collectionOrderViewPage.jsp</result>
+		</action>
+		<action name="showCollectionOrderListPage" class="collectionOrderAction" method="showCollectionOrderListPage">
+			<result name="success">/account/receivable/collection/collectionOrderListPage.jsp</result>
+		</action>
+		<action name="showCollectionOrderList" class="collectionOrderAction" method="showCollectionOrderList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteCollectionOrder" class="collectionOrderAction" method="deleteCollectionOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteMutCollectionOrder" class="collectionOrderAction" method="deleteMutCollectionOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showCollectionOrderEditPage" class="collectionOrderAction" method="showCollectionOrderEditPage">
+			<result name="success">/account/receivable/collection/collectionOrderPage.jsp</result>
+		</action>
+		<action name="collectionOrderEditPage" class="collectionOrderAction" method="collectionOrderEditPage">
+			<result name="success">/account/receivable/collection/collectionOrderEditPage.jsp</result>
+			<result name="viewSuccess">/account/receivable/collection/collectionOrderViewPage.jsp</result>
+			<result name="addSuccess">/account/receivable/collection/collectionOrderAddPage.jsp</result>
+		</action>
+		<action name="editCollectionOrderHold" class="collectionOrderAction" method="editCollectionOrderHold">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editCollectionOrderSave" class="collectionOrderAction" method="editCollectionOrderSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditCollectionOrder" class="collectionOrderAction" method="auditCollectionOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditMutCollectionOrder" class="collectionOrderAction" method="auditMutCollectionOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditSuperMutCollectionOrder" class="collectionOrderAction" method="auditSuperMutCollectionOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="oppauditCollectionOrder" class="collectionOrderAction" method="oppauditCollectionOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="oppauditMutCollectionOrder" class="collectionOrderAction" method="oppauditMutCollectionOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showCustomerAccountListPage" class="collectionOrderAction" method="showCustomerAccountListPage">
+			<result name="success">/account/receivable/collection/customerAccountListPage.jsp</result>
+		</action>
+		<action name="showCustomerAccountList" class="collectionOrderAction" method="showCustomerAccountList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="exportCustomerAccountData" class="collectionOrderAction" method="exportCustomerAccountData"></action>
+		<action name="showCustomerCapitalLogListPage" class="collectionOrderAction" method="showCustomerCapitalLogListPage">
+			<result name="success">/account/receivable/collection/customerCapitalLogListPage.jsp</result>
+		</action>
+		<action name="showCustomerCapitalLogList" class="collectionOrderAction" method="showCustomerCapitalLogList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showWriteoffCollectionOrderPage" class="collectionOrderAction" method="showWriteoffCollectionOrderPage">
+			<result name="success">/account/receivable/collection/customerCapitalLogListPage.jsp</result>
+		</action>
+		<action name="showCollectionOrderMergePage" class="collectionOrderAction" method="showCollectionOrderMergePage">
+			<result name="success">/account/receivable/collection/collectionOrderMergePage.jsp</result>
+		</action>
+		<action name="showCollectionOrderMergeSubmitPage" class="collectionOrderAction" method="showCollectionOrderMergeSubmitPage">
+			<result name="success">/account/receivable/collection/collectionOrderMergeSubmitPage.jsp</result>
+		</action>
+		<action name="setCollectionOrderMerge" class="collectionOrderAction" method="setCollectionOrderMerge">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showCollectionOrderTransferPage" class="collectionOrderAction" method="showCollectionOrderTransferPage">
+			<result name="success">/account/receivable/collection/collectionOrderTransferPage.jsp</result>
+		</action>
+		<action name="showCollectionOrderTransferSubmitPage" class="collectionOrderAction" method="showCollectionOrderTransferSubmitPage">
+			<result name="success">/account/receivable/collection/collectionOrderTransferSubmitPage.jsp</result>
+		</action>
+		<action name="setCollectionOrderTransfer" class="collectionOrderAction" method="setCollectionOrderTransfer">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="submitCollectionOrderPageProcess" class="collectionOrderAction" method="submitCollectionOrderPageProcess">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="collectionOrderAssignCustomerPage" class="collectionOrderAction" method="collectionOrderAssignCustomerPage">
+			<result name="success">/account/receivable/collection/collectionOrderAssignCustomerPage.jsp</result>
+		</action>
+		<action name="assignCustomer" class="collectionOrderAction" method="assignCustomer">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getCustomerCapital" class="collectionOrderAction" method="getCustomerCapital">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showCollectionStatementDetailListPage" class="collectionOrderAction" method="showCollectionStatementDetailListPage">
+			<result name="success">/account/receivable/collection/collectionStatementDetailListPage.jsp</result>
+		</action>
+		<action name="showBillRelateCollectionListPage" class="collectionOrderAction" method="showBillRelateCollectionListPage">
+			<result name="success">/account/receivable/salessatement/billRelateCollectionListPage.jsp</result>
+		</action>
+		<action name="showBankWriteReportCollectionListPage" class="collectionOrderAction" method="showBankWriteReportCollectionListPage">
+			<result name="success">/account/receivable/salessatement/bankWriteReportCollectionListPage.jsp</result>
+		</action>
+		<action name="collectionOrderOtherListPage" class="collectionOrderAction" method="collectionOrderOtherListPage">
+			<result name="success">/account/receivable/collection/collectionOrderOtherListPage.jsp</result>
+		</action>
+		<action name="collectionOrderOtherAddPage" class="collectionOrderAction" method="collectionOrderOtherAddPage">
+			<result name="success">/account/receivable/collection/collectionOrderOtherAddPage.jsp</result>
+		</action>
+		<action name="exportCollectionOrderList" class="collectionOrderAction" method="exportCollectionOrderList"></action>
+        <action name="showCollectionOrderListCaseReceiptPage" class="collectionOrderAction" method="showCollectionOrderListCaseReceiptPage">
+            <result name="success">/account/receivable/collection/collectionOrderListCaseReceiptPage.jsp</result>
+        </action>
+        <action name="importCollectionOrder" class="collectionOrderAction" method="importCollectionOrder">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+	</package>
+	
+	<package name="accountManager-salesBillCheck" extends="parent" namespace="/account/receivable">
+		<action name="showSalesBillCheckPage" class="salesBillCheckAction" method="showSalesBillCheckPage">
+			<result name="success">/account/receivable/salesBillCheck/salesBillCheckPage.jsp</result>
+		</action>
+		<action name="showSalesBillCheckList" class="salesBillCheckAction" method="showSalesBillCheckList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSalesBillCheckInfoPage" class="salesBillCheckAction" method="showSalesBillCheckInfoPage">
+			<result name="editsuccess">/account/receivable/salesBillCheck/salesBillCheckEditPage.jsp</result>
+			<result name="addsuccess">/account/receivable/salesBillCheck/salesBillCheckAddPage.jsp</result>
+		</action>
+		<action name="addSalesBillCheck" class="salesBillCheckAction" method="addSalesBillCheck">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editSalesBillCheck" class="salesBillCheckAction" method="editSalesBillCheck">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="exportSalesBillCheckList" class="salesBillCheckAction" method="exportSalesBillCheckList"></action>
+        <action name="autoExportSalesBillCheckList" class="salesBillCheckAction" method="autoExportSalesBillCheckList"></action>
+		<action name="importSalesBillCheckList" class="salesBillCheckAction" method="importSalesBillCheckList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+	
+	<package name="accountManager-salesStatement" extends="parent" namespace="/account/receivable">
+		<action name="showWriteoffCollectionOrderPage" class="salesStatementAction" method="showWriteoffCollectionOrderPage">
+			<result name="success">/account/receivable/salessatement/writeoffCollectionOrderPage.jsp</result>
+			<result name="error">/account/receivable/salessatement/writeoffError.jsp</result>
+		</action>
+		<action name="showSalesInvoiceListByCustomerid" class="salesStatementAction" method="showSalesInvoiceListByCustomerid">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showWriteoffPage" class="salesStatementAction" method="showWriteoffPage">
+			<result name="success">/account/receivable/salessatement/writeoffPage.jsp</result>
+			<result name="error">/account/receivable/salessatement/writeoffError.jsp</result>
+		</action>
+		<action name="showWriteoffInvoicebillPage" class="salesStatementAction" method="showWriteoffInvoicebillPage">
+			<result name="success">/account/receivable/salessatement/writeoffInvoicebillPage.jsp</result>
+			<result name="error">/account/receivable/salessatement/writeoffError.jsp</result>
+		</action>
+		<action name="auditWriteoffCollectionOrder" class="salesStatementAction" method="auditWriteoffCollectionOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="uncancelSalesInvoice" class="salesStatementAction" method="uncancelSalesInvoice">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSalesStatementListPage" class="salesStatementAction" method="showSalesStatementListPage">
+			<result name="success">/account/receivable/salessatement/salesStatementListPage.jsp</result>
+		</action>
+		<action name="showSalesStatementList" class="salesStatementAction" method="showSalesStatementList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showInvoiceRelateCollectionPage" class="salesStatementAction" method="showInvoiceRelateCollectionPage">
+			<result name="success">/account/receivable/salessatement/invoiceRelateCollectionPage.jsp</result>
+		</action>
+		<action name="showInvoicebillRelateCollectionPage" class="salesStatementAction" method="showInvoicebillRelateCollectionPage">
+			<result name="success">/account/receivable/salessatement/invoicebillRelateCollectionPage.jsp</result>
+		</action>
+		<action name="addRelateCollectionOrder" class="salesStatementAction" method="addRelateCollectionOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addInvoiceBillRelateCollectionOrder" class="salesStatementAction" method="addInvoiceBillRelateCollectionOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteRelateCollectionOrder" class="salesStatementAction" method="deleteRelateCollectionOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteInvoiceBillRelateCollectionOrder" class="salesStatementAction" method="deleteInvoiceBillRelateCollectionOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showRelateCollectionListPage" class="salesStatementAction" method="showRelateCollectionListPage">
+			<result name="success">/account/receivable/salessatement/invoiceRelateCollectionListPage.jsp</result>
+		</action>
+	</package>
+	
+	<!-- 超账原因 -->
+	<package name="accountManager-pastDueReason" extends="parent" namespace="/account/receivable">
+		<action name="showCustomerReceivablePastDueReasonListPage" class="salesFreeOrderAction" method="showCustomerReceivablePastDueReasonListPage">
+			<result name="success">/account/receivable/reason/customerReceivablePastDueReasonListPage.jsp</result>
+		</action>
+		<action name="showCustomerBranduserReceivablePastDueReasonListPage" class="salesFreeOrderAction" method="showCustomerBranduserReceivablePastDueReasonListPage">
+			<result name="success">/account/receivable/reason/customerBranduserReceivablePastDueReasonListPage.jsp</result>
+		</action>
+        <action name="showSalesuserReceivablePastDueReasonListPage" class="salesFreeOrderAction" method="showSalesuserReceivablePastDueReasonListPage">
+            <result name="success">/account/receivable/reason/salesuserReceivablePastDueReasonListPage.jsp</result>
+        </action>
+        <action name="showSalesuserDetailReceivablePastDueReasonListPage" class="salesFreeOrderAction" method="showSalesuserDetailReceivablePastDueReasonListPage">
+            <result name="success">/account/receivable/reason/salesuserDetailReceivablePastDueReasonListPage.jsp</result>
+        </action>
+		<action name="showHistoryCustomerReceivablePastDueReasonPage" class="salesFreeOrderAction" method="showHistoryCustomerReceivablePastDueReasonPage">
+			<result name="success">/account/receivable/reason/historyCustomerReceivablePastDueReasonPage.jsp</result>
+		</action>
+		<action name="showEditCustomerReceivablePastDueReasonPage" class="salesFreeOrderAction" method="showEditCustomerReceivablePastDueReasonPage">
+			<result name="success">/account/receivable/reason/editCustomerReceivablePastDueReasonPage.jsp</result>
+		</action>
+		<action name="showCustomerSalesFlowDetailListPage" class="salesFreeOrderAction" method="showCustomerSalesFlowDetailListPage">
+			<result name="success">/account/receivable/reason/customerSalesFlowDetailListPage.jsp</result>
+		</action>
+		<action name="exportBasereceivablePastDueResonData" class="salesFreeOrderAction" method="exportBasereceivablePastDueResonData">
+		</action>
+		<action name="addCustomerReceivablePastDueReason" class="salesFreeOrderAction" method="addCustomerReceivablePastDueReason">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="oneClearReceivablePastDueReason" class="salesFreeOrderAction" method="oneClearReceivablePastDueReason">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showCustomerReceivablePastDueReasonListData" class="salesFreeOrderAction" method="showCustomerReceivablePastDueReasonListData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getHistoryCustomerReceivablePastDueReasonList" class="salesFreeOrderAction" method="getHistoryCustomerReceivablePastDueReasonList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		<action name="showSalesFreeOrderListPage" class="salesFreeOrderAction" method="showSalesFreeOrderListPage">
+			<result name="success">/account/receivable/freeorder/salesFreeOrderListPage.jsp</result>
+		</action>
+		<action name="getSalesFreeOrderList" class="salesFreeOrderAction" method="getSalesFreeOrderList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="overalExportSalesFreeOrderList" class="salesFreeOrderAction" method="overalExportSalesFreeOrderList"></action>
+		<action name="auditSalesFreeOrder" class="salesFreeOrderAction" method="auditSalesFreeOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="oppauditSalesFreeOrder" class="salesFreeOrderAction" method="oppauditSalesFreeOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteSalesFreeOrder" class="salesFreeOrderAction" method="deleteSalesFreeOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSupplierReceivablePastDueReasonListPage" class="salesFreeOrderAction" method="showSupplierReceivablePastDueReasonListPage">
+			<result name="success">/account/receivable/reason/supplierReceivablePastDueReasonListPage.jsp</result>
+		</action>
+		<action name="showSupplierReceivablePastDueReasonListData" class="salesFreeOrderAction" method="showSupplierReceivablePastDueReasonListData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="exportSupplierPastDueResonData" class="salesFreeOrderAction" method="exportSupplierPastDueResonData">
+		</action>
+		<action name="showSupplierMatcostsListPage" class="salesFreeOrderAction" method="showSupplierMatcostsListPage">
+			<result name="success">/account/receivable/reason/supplierMatcostsListPage.jsp</result>
+		</action>
+		<action name="showSendSupplierPastDueListPage" class="salesFreeOrderAction" method="showSendSupplierPastDueListPage">
+			<result name="success">/account/receivable/reason/sendSupplierPastDueListPage.jsp</result>
+		</action>
+
+	</package>
+	
+	<!-- 采购发票 -->
+	<package name="accountManager-purchaseInvoice" extends="parent" namespace="/account/payable">
+		<action name="purchaseInvoiceListPage" class="purchaseInvoiceAction" method="purchaseInvoiceListPage">
+			<result name="success">/account/payable/purchaseinvoice/purchaseInvoiceListPage.jsp</result>
+		</action>
+		<action name="showPurchaseInvoicePage" class="purchaseInvoiceAction" method="showPurchaseInvoicePage">
+			<result name="success">/account/payable/purchaseinvoice/purchaseInvoicePage.jsp</result>
+		</action>
+		<action name="showPurchaseInvoiceRelationUpperPage" class="purchaseInvoiceAction" method="showPurchaseInvoiceRelationUpperPage">
+			<result name="success">/account/payable/purchaseinvoice/purchaseInvoiceSourceQueryPage.jsp</result>
+		</action>
+		<action name="showPurchaseInvoiceSourceListPage" class="purchaseInvoiceAction" method="showPurchaseInvoiceSourceListPage">
+			<result name="success">/account/payable/purchaseinvoice/purchaseInvoiceSourceListPage.jsp</result>
+		</action>
+		<action name="showPurchaseInvoiceAddPage" class="purchaseInvoiceAction" method="showPurchaseInvoiceAddPage">
+			<result name="success">/account/payable/purchaseinvoice/purchaseInvoicePage.jsp</result>
+		</action>
+		<action name="purchaseInvoiceAddPage" class="purchaseInvoiceAction" method="purchaseInvoiceAddPage">
+			<result name="success">/account/payable/purchaseinvoice/purchaseInvoiceAddPage.jsp</result>
+		</action>
+		<action name="salesInvoiceAddPage" class="purchaseInvoiceAction" method="salesInvoiceAddPage">
+			<result name="success">/account/payable/purchaseinvoice/purchaseInvoiceAddPage.jsp</result>
+		</action>
+		<action name="showPurchaseInvoiceEditPage" class="purchaseInvoiceAction" method="showPurchaseInvoiceEditPage">
+			<result name="success">/account/payable/purchaseinvoice/purchaseInvoicePage.jsp</result>
+		</action>
+        <action name="showPurchaseInvoiceDetailListByGoodsidPage" class="purchaseInvoiceAction" method="showPurchaseInvoiceDetailListByGoodsidPage">
+            <result name="success">/account/payable/purchaseinvoice/purchaseInvoiceDetailListByGoodsidPage.jsp</result>
+        </action>
+		<action name="showPurchaseInvoiceViewPage" class="purchaseInvoiceAction" method="showPurchaseInvoiceViewPage">
+			<result name="success">/account/payable/purchaseinvoice/purchaseInvoicePage.jsp</result>
+		</action>
+		<action name="purchaseInvoiceEditPage" class="purchaseInvoiceAction" method="purchaseInvoiceEditPage">
+			<result name="success">/account/payable/purchaseinvoice/purchaseInvoiceEditPage.jsp</result>
+			<result name="viewSuccess">/account/payable/purchaseinvoice/purchaseInvoiceViewPage.jsp</result>
+			<result name="addSuccess">/account/payable/purchaseinvoice/purchaseInvoiceAddPage.jsp</result>
+		</action>
+		<action name="purchaseInvoicePage" class="purchaseInvoiceAction" method="purchaseInvoicePage">
+			<result name="success">/account/payable/purchaseinvoice/purchaseInvoicePage.jsp</result>
+		</action>
+		<action name="purchaseInvoiceViewPage" class="purchaseInvoiceAction" method="purchaseInvoiceViewPage">
+			<result name="success">/account/payable/purchaseinvoice/purchaseInvoiceViewPage.jsp</result>
+			<result name="addSuccess">/account/payable/purchaseinvoice/purchaseInvoiceAddPage.jsp</result>
+		</action>
+		<action name="showPurchaseInvoiceDetailEditPage" class="purchaseInvoiceAction" method="showPurchaseInvoiceDetailEditPage">
+			<result name="success">/account/payable/purchaseinvoice/purchaseInvoiceDetailEditPage.jsp</result>
+		</action>
+		<action name="showPurchaseInvoiceSourceListReferPage" class="purchaseInvoiceAction" method="showPurchaseInvoiceSourceListReferPage">
+			<result name="success">/account/payable/purchaseinvoice/purchaseInvoiceSourceListReferPage.jsp</result>
+		</action>
+		<action name="showPurchaseInvoiceList" class="purchaseInvoiceAction" method="showPurchaseInvoiceList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="checkUnitNum" class="purchaseInvoiceAction" method="checkUnitNum">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addPurchaseInvoiceByRefer" class="purchaseInvoiceAction" method="addPurchaseInvoiceByRefer">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deletePurchaseInvoice" class="purchaseInvoiceAction" method="deletePurchaseInvoice">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editPurchaseInvoice" class="purchaseInvoiceAction" method="editPurchaseInvoice">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditPurchaseInvoice" class="purchaseInvoiceAction" method="auditPurchaseInvoice">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="oppauditPurchaseInvoice" class="purchaseInvoiceAction" method="oppauditPurchaseInvoice">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="submitPurchaseInvoicePageProcess" class="purchaseInvoiceAction" method="submitPurchaseInvoicePageProcess">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getUnitnumChange" class="purchaseInvoiceAction" method="getUnitnumChange">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showPurchaseInvoicePushPage" class="purchaseInvoiceAction" method="showPurchaseInvoicePushPage">
+			<result name="success">/account/payable/purchaseinvoice/purchaseInvoicePushPage.jsp</result>
+		</action>
+        <action name="showPurchaseInvoicePushEditPage" class="purchaseInvoiceAction" method="showPurchaseInvoicePushEditPage">
+            <result name="success">/account/payable/purchaseinvoice/purchaseInvoicePushEditPage.jsp</result>
+        </action>
+		<action name="addOrUpdatePurchaseInvoicePush" class="purchaseInvoiceAction" method="addOrUpdatePurchaseInvoicePush">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+        <action name="UpdatePurchaseInvoicePush" class="purchaseInvoiceAction" method="UpdatePurchaseInvoicePush">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+		<action name="showPurchaseInvoicePushListPage" class="purchaseInvoiceAction" method="showPurchaseInvoicePushListPage">
+			<result name="success">/account/payable/purchaseinvoice/purchaseInvoicePushListPage.jsp</result>
+		</action>
+		<action name="exportPurchaseInvoicePushData" class="purchaseInvoiceAction" method="exportPurchaseInvoicePushData"></action>
+		<action name="showPurchaseInvoicePushList" class="purchaseInvoiceAction" method="showPurchaseInvoicePushList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deletePurchaseInvoicePush" class="purchaseInvoiceAction" method="deletePurchaseInvoicePush">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+        <action name="deleteInvoicePushDetail" class="purchaseInvoiceAction" method="deleteInvoicePushDetail">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+		<action name="deleteInvoiceBeginDueDetail" class="purchaseInvoiceAction" method="deleteInvoiceBeginDueDetail">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getPurchaseOrderList" class="purchaseInvoiceAction" method="getPurchaseOrderList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getPurchaseOrderDetailList" class="purchaseInvoiceAction" method="getPurchaseOrderDetailList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showPurchaseInvoiceListPageBySourceid" class="purchaseInvoiceAction" method="showPurchaseInvoiceListPageBySourceid">
+			<result name="success">/account/payable/purchaseinvoice/purchaseInvoiceListPageBySourceid.jsp</result>
+		</action>
+        <action name="exportPurchaseInvoicePushPage" class="purchaseInvoiceAction" method="exportPurchaseInvoicePushPage"></action>
+		
+		<!-- anotherway-采购发票另一种方式 -->
+		<action name="showPurchaseInvoiceAnotherAddPage" class="purchaseInvoiceAction" method="showPurchaseInvoiceAnotherAddPage">
+			<result name="success">/account/payable/purchaseinvoice/anotherway/purchaseInvoiceAddPage.jsp</result>
+		</action>
+		<action name="getPurchaseInvoiceSourceOfBillList" class="purchaseInvoiceAction" method="getPurchaseInvoiceSourceOfBillList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showPurchaseInvoiceSourceBillDetailListPage" class="purchaseInvoiceAction" method="showPurchaseInvoiceSourceBillDetailListPage">
+			<result name="success">/account/payable/purchaseinvoice/anotherway/purchaseInvoiceSourceBillDetailListPage.jsp</result>
+		</action>
+		<action name="showArrivalAndReturnBillDetailList" class="purchaseInvoiceAction" method="showArrivalAndReturnBillDetailList">
+			<result name="success">/account/payable/purchaseinvoice/anotherway/arrivalAndReturnBillDetailListPage.jsp</result>
+		</action>
+		<action name="showPurchaseInvoiceListBySupplierPage" class="purchaseInvoiceAction" method="showPurchaseInvoiceListBySupplierPage">
+			<result name="success">/account/payable/purchaseinvoice/anotherway/purchaseInvoiceListBySupplierPage.jsp</result>
+		</action>
+        <action name="countGoodsInfoNumber" class="purchaseInvoiceAction" method="countGoodsInfoNumber">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+	</package>
+	
+	<!-- 付款单 -->
+	<package name="accountManager-Payorder" extends="parent" namespace="/account/payable">
+		<action name="showPayorderAddPage" class="payorderAction" method="showPayorderAddPage">
+			<result name="success">/account/payable/pay/payorderPage.jsp</result>
+		</action>
+		<action name="payorderAddPage" class="payorderAction" method="payorderAddPage">
+			<result name="success">/account/payable/pay/payorderAddPage.jsp</result>
+		</action>
+		<action name="showSupplierAccountListPage" class="payorderAction" method="showSupplierAccountListPage">
+			<result name="success">/account/payable/pay/supplierAccountListPage.jsp</result>
+		</action>
+		<action name="showSupplierAccountListPage" class="payorderAction" method="showSupplierAccountListPage">
+			<result name="success">/account/payable/pay/supplierAccountListPage.jsp</result>
+		</action>
+		<action name="showPayOrderTransferSubmitPage" class="payorderAction" method="showPayOrderTransferSubmitPage">
+			<result name="success">/account/payable/pay/payOrderTransferSubmitPage.jsp</result>
+		</action>
+		<action name="showSupplierCapitalLogListPage" class="payorderAction" method="showSupplierCapitalLogListPage">
+			<result name="success">/account/payable/pay/supplierCapitalLogListPage.jsp</result>
+		</action>
+		<action name="addPayorder" class="payorderAction" method="addPayorder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showPayorderViewPage" class="payorderAction" method="showPayorderViewPage">
+			<result name="success">/account/payable/pay/payorderPage.jsp</result>
+		</action>
+		<action name="payorderViewPage" class="payorderAction" method="payorderViewPage">
+			<result name="success">/account/payable/pay/payorderViewPage.jsp</result>
+		</action>
+		<action name="showPayorderListPage" class="payorderAction" method="showPayorderListPage">
+			<result name="success">/account/payable/pay/payorderListPage.jsp</result>
+		</action>
+		<action name="showPayorderList" class="payorderAction" method="showPayorderList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deletePayorder" class="payorderAction" method="deletePayorder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteMutPayorder" class="payorderAction" method="deleteMutPayorder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showPayorderEditPage" class="payorderAction" method="showPayorderEditPage">
+			<result name="success">/account/payable/pay/payorderPage.jsp</result>
+		</action>
+		<action name="payorderEditPage" class="payorderAction" method="payorderEditPage">
+			<result name="success">/account/payable/pay/payorderEditPage.jsp</result>
+			<result name="viewSuccess">/account/payable/pay/payorderViewPage.jsp</result>
+			<result name="addSuccess">/account/payable/pay/payorderAddPage.jsp</result>
+		</action>
+		<action name="editPayorder" class="payorderAction" method="editPayorder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditPayorder" class="payorderAction" method="auditPayorder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditMutPayorder" class="payorderAction" method="auditMutPayorder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="oppauditPayorder" class="payorderAction" method="oppauditPayorder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="oppauditMutPayorder" class="payorderAction" method="oppauditMutPayorder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="backOppauditFlag" class="payorderAction" method="backOppauditFlag">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showPayorderMergePage" class="payorderAction" method="showPayorderMergePage">
+			<result name="success">/account/payable/pay/payorderMergePage.jsp</result>
+		</action>
+		<action name="showPayorderMergeSubmitPage" class="payorderAction" method="showPayorderMergeSubmitPage">
+			<result name="success">/account/payable/pay/payorderMergeSubmitPage.jsp</result>
+		</action>
+		<action name="setPayorderMerge" class="payorderAction" method="setPayorderMerge">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="submitPayorderPageProcess" class="payorderAction" method="submitPayorderPageProcess">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSupplierAccountList" class="payorderAction" method="showSupplierAccountList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getSupplierCapital" class="payorderAction" method="getSupplierCapital">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSupplierCapitalLogList" class="payorderAction" method="showSupplierCapitalLogList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="setPayOrderTransfer" class="payorderAction" method="setPayOrderTransfer">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+        <action name="exportPayorder" class="payorderAction" method="exportPayorder">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+	</package>
+	<!-- 对账单-采购 -->
+	<package name="accountManager-purchaseStatement" extends="parent" namespace="/account/payable">
+
+		<action name="showWriteoffPayorderPage" class="purchaseStatementAction" method="showWriteoffPayorderPage">
+			<result name="success">/account/payable/purchaseStatement/writeoffPayorderPage.jsp</result>
+			<result name="error">/account/payable/purchaseStatement/writeoffError.jsp</result>
+		</action>
+		<action name="showPurchaseInvoiceListBySupplier" class="purchaseStatementAction" method="showPurchaseInvoiceListBySupplier">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showWriteoffPage" class="purchaseStatementAction" method="showWriteoffPage">
+			<result name="success">/account/payable/purchaseStatement/writeoffPage.jsp</result>
+			<result name="error">/account/payable/purchaseStatement/writeoffError.jsp</result>
+		</action>
+		<action name="auditWriteoffPayorder" class="purchaseStatementAction" method="auditWriteoffPayorder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+        <action name="uncancelPurchaseInvoice" class="purchaseStatementAction" method="uncancelPurchaseInvoice">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+		<action name="showPurchaseStatementListPage" class="purchaseStatementAction" method="showPurchaseStatementListPage">
+			<result name="success">/account/payable/purchaseStatement/purchaseStatementListPage.jsp</result>
+		</action>
+		<action name="showPurchaseStatementList" class="purchaseStatementAction" method="showPurchaseStatementList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+	<package name="accountManager-customerPushBanlance" extends="parent" namespace="/account/receivable">
+        <action name="showCustomerPushBalanceReportPage" class="customerPushBanlanceAction" method="showCustomerPushBalanceReportPage">
+            <result name="success">/account/receivable/customer/customerPushBalanceReportPage.jsp</result>
+        </action>
+        <action name="showCustomerPushBalanceReportData" class="customerPushBanlanceAction" method="showCustomerPushBalanceReportData">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+		<action name="showCustomerAndUserPushReportPage" class="customerPushBanlanceAction" method="showCustomerAndUserPushReportPage">
+			<result name="success">/account/receivable/customer/customerAndUserPushReportPage.jsp</result>
+		</action>
+		<action name="showCustomerAndUserPushReportData" class="customerPushBanlanceAction" method="showCustomerAndUserPushReportData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="overalExportCutomerAndUserPushReport" class="customerPushBanlanceAction" method="overalExportCutomerAndUserPushReport"></action>
+		<action name="showCustomerPushBanlaceListPage" class="customerPushBanlanceAction" method="showCustomerPushBanlaceListPage">
+			<result name="success">/account/receivable/customer/customerPushBanlaceListPage.jsp</result>
+		</action>
+		<action name="overalExportCutomerPushBalanceReport" class="customerPushBanlanceAction" method="overalExportCutomerPushBalanceReport"></action>
+		<action name="showCustomerPushBanlanceList" class="customerPushBanlanceAction" method="showCustomerPushBanlanceList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showCustomerPushBanlanceMoreAddPage" class="customerPushBanlanceAction" method="showCustomerPushBanlanceMoreAddPage">
+			<result name="success">/account/receivable/customer/customerPushBanlaceMoreAddPage.jsp</result>
+		</action>
+		<action name="addMoreCustomerPushBanlace" class="customerPushBanlanceAction" method="addMoreCustomerPushBanlace">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showCustomerPushBanlancePage" class="customerPushBanlanceAction" method="showCustomerPushBanlancePage">
+			<result name="success">/account/receivable/customer/customerPushBanlacePage.jsp</result>
+		</action>
+		<action name="showCustomerPushBanlanceDetailEditPage" class="customerPushBanlanceAction" method="showCustomerPushBanlanceDetailEditPage">
+			<result name="success">/account/receivable/customer/customerPushBanlaceDetailEditPage.jsp</result>
+		</action>
+		<action name="showCustomerPushBanlanceAddPage" class="customerPushBanlanceAction" method="showCustomerPushBanlanceAddPage">
+			<result name="success">/account/receivable/customer/customerPushBanlaceAddPage.jsp</result>
+		</action>
+		<action name="showCustomerPushBanlanceDetailAddPage" class="customerPushBanlanceAction" method="showCustomerPushBanlanceDetailAddPage">
+			<result name="success">/account/receivable/customer/customerPushBanlaceDetailAddPage.jsp</result>
+		</action>
+		<action name="addCustomerPushBanlance" class="customerPushBanlanceAction" method="addCustomerPushBanlance">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showCustomerPushBanlanceEditPage" class="customerPushBanlanceAction" method="showCustomerPushBanlanceEditPage">
+			<result name="success">/account/receivable/customer/customerPushBanlaceEditPage.jsp</result>
+			<result name="viewSuccess">/account/receivable/customer/customerPushBanlaceViewPage.jsp</result>
+			<result name="addSuccess">/account/receivable/customer/customerPushBanlaceAddPage.jsp</result>
+		</action>
+		<action name="showCustomerPushBanlanceViewPage" class="customerPushBanlanceAction" method="showCustomerPushBanlanceViewPage">
+			<result name="success">/account/receivable/customer/customerPushBanlaceViewPage.jsp</result>
+		</action>
+		<action name="editCustomerPushBanlance" class="customerPushBanlanceAction" method="editCustomerPushBanlance">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editCustomerPushBanlanceRemark" class="customerPushBanlanceAction" method="editCustomerPushBanlanceRemark">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteCustomerPushBanlance" class="customerPushBanlanceAction" method="deleteCustomerPushBanlance">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditCustomerPushBanlance" class="customerPushBanlanceAction" method="auditCustomerPushBanlance">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="oppauditCustomerPushBanlance" class="customerPushBanlanceAction" method="oppauditCustomerPushBanlance">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>	
+		<action name="exportCustomerPushBanlance" class="customerPushBanlanceAction" method="exportCustomerPushBanlance"></action>
+		<action name="showCustomerPushWritePage" class="customerPushBanlanceAction" method="showCustomerPushWritePage">
+			<result name="success">/account/receivable/customer/customerPushWritePage.jsp</result>
+		</action>
+        <action name="getPushBanlanceNoTaxAmount" class="customerPushBanlanceAction" method="getPushBanlanceNoTaxAmount">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+	</package>
+	<package name="accountManager-beignAmount" extends="parent" namespace="/account/beginamount">
+		<action name="showCustomerBeginAmountListPage" class="beginAmountAction" method="showCustomerBeginAmountListPage">
+			<result name="success">/account/beignamount/customerBeginAmountListPage.jsp</result>
+		</action>
+		<action name="showBeignAmountList" class="beginAmountAction" method="showBeignAmountList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="beignAmountAddPage" class="beginAmountAction" method="beignAmountAddPage">
+			<result name="success">/account/beignamount/beignAmountAddPage.jsp</result>
+		</action>
+		<action name="addBeginAmountSave" class="beginAmountAction" method="addBeginAmountSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="beignAmountEditPage" class="beginAmountAction" method="beignAmountEditPage">
+			<result name="success">/account/beignamount/beignAmountEditPage.jsp</result>
+		</action>
+		<action name="editBeginAmountSave" class="beginAmountAction" method="editBeginAmountSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="beignAmountViewPage" class="beginAmountAction" method="beignAmountViewPage">
+			<result name="success">/account/beignamount/beignAmountViewPage.jsp</result>
+		</action>
+		<action name="deleteMutbeignAmount" class="beginAmountAction" method="deleteMutbeignAmount">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditMutbeignAmount" class="beginAmountAction" method="auditMutbeignAmount">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="oppauditMutbeignAmount" class="beginAmountAction" method="oppauditMutbeignAmount">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="exportBeignAmount" class="beginAmountAction" method="exportBeignAmount"></action>
+		<action name="importBeignAmount" class="beginAmountAction" method="importBeignAmount">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+	<package name="accountManager-beignDue" extends="parent" namespace="/account/begindue">
+		<action name="showSupplierBeginDueListPage" class="beginDueAction" method="showSupplierBeginDueListPage">
+			<result name="success">/account/beigndue/supplierBeginDueListPage.jsp</result>
+		</action>
+		<action name="getBeginDueList" class="beginDueAction" method="getBeginDueList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showBeginDueAddPage" class="beginDueAction" method="showBeginDueAddPage">
+			<result name="success">/account/beigndue/beginDueAddPage.jsp</result>
+		</action>
+		<action name="addBeginDueSave" class="beginDueAction" method="addBeginDueSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showBeginDueEditPage" class="beginDueAction" method="showBeginDueEditPage">
+			<result name="success">/account/beigndue/beginDueEditPage.jsp</result>
+		</action>
+		<action name="editBeginDueSave" class="beginDueAction" method="editBeginDueSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showBeginDueViewPage" class="beginDueAction" method="showBeginDueViewPage">
+			<result name="success">/account/beigndue/beginDueViewPage.jsp</result>
+		</action>
+		<action name="deleteMutBeginDue" class="beginDueAction" method="deleteMutBeginDue">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditMutBeginDue" class="beginDueAction" method="auditMutBeginDue">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="oppauditMutBeginDue" class="beginDueAction" method="oppauditMutBeginDue">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="exportBeginDue" class="beginDueAction" method="exportBeginDue"></action>
+		<action name="importBeginDue" class="beginDueAction" method="importBeginDue">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+	<package name="accountManager-bankamount" extends="parent" namespace="/account/bankamount">
+		<action name="showBankAmountBeginListPage" class="bankAmountAction" method="showBankAmountBeginListPage">
+			<result name="success">/account/bankamount/begin/bankAmountBeginListPage.jsp</result>
+		</action>
+		<action name="showBankAmountBeginAddPage" class="bankAmountAction" method="showBankAmountBeginAddPage">
+			<result name="success">/account/bankamount/begin/bankAmountBeginAddPage.jsp</result>
+		</action>
+		<action name="showBankAmountBeginEditPage" class="bankAmountAction" method="showBankAmountBeginEditPage">
+			<result name="addSuccess">/account/bankamount/begin/bankAmountBeginAddPage.jsp</result>
+			<result name="editSuccess">/account/bankamount/begin/bankAmountBeginEditPage.jsp</result>
+			<result name="viewSuccess">/account/bankamount/begin/bankAmountBeginViewPage.jsp</result>
+		</action>
+		<action name="showBankAmountBeginViewPage" class="bankAmountAction" method="showBankAmountBeginViewPage">
+			<result name="success">/account/bankamount/begin/bankAmountBeginViewPage.jsp</result>
+		</action>
+		<action name="addBankAmountBegin" class="bankAmountAction" method="addBankAmountBegin">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editBankAmountBegin" class="bankAmountAction" method="editBankAmountBegin">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showBankAmountBeginList" class="bankAmountAction" method="showBankAmountBeginList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteBankAmountBegin" class="bankAmountAction" method="deleteBankAmountBegin">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditBankAmountBegin" class="bankAmountAction" method="auditBankAmountBegin">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="oppauditBankAmountBegin" class="bankAmountAction" method="oppauditBankAmountBegin">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="closeBankAmountBegin" class="bankAmountAction" method="closeBankAmountBegin">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		<action name="showBankAmountOthersListPage" class="bankAmountAction" method="showBankAmountOthersListPage">
+			<result name="success">/account/bankamount/others/bankAmountOthersListPage.jsp</result>
+		</action>
+		<action name="showBankAmountOthersList" class="bankAmountAction" method="showBankAmountOthersList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showBankAmountOthersAddPage" class="bankAmountAction" method="showBankAmountOthersAddPage">
+			<result name="success">/account/bankamount/others/bankAmountOthersAddPage.jsp</result>
+		</action>
+		<action name="showBankAmountOthersEditPage" class="bankAmountAction" method="showBankAmountOthersEditPage">
+			<result name="addSuccess">/account/bankamount/others/bankAmountOthersAddPage.jsp</result>
+			<result name="editSuccess">/account/bankamount/others/bankAmountOthersEditPage.jsp</result>
+			<result name="viewSuccess">/account/bankamount/others/bankAmountOthersViewPage.jsp</result>
+		</action>
+        <action name="exportBankAmountOthers" class="bankAmountAction" method="exportBankAmountOthers"></action>
+		<action name="showBankAmountOthersViewPage" class="bankAmountAction" method="showBankAmountOthersViewPage">
+			<result name="success">/account/bankamount/others/bankAmountOthersViewPage.jsp</result>
+		</action>
+		<action name="addBankAmountOthers" class="bankAmountAction" method="addBankAmountOthers">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editBankAmountOthers" class="bankAmountAction" method="editBankAmountOthers">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditBankAmountOthers" class="bankAmountAction" method="auditBankAmountOthers">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="oppauditBankAmountOthers" class="bankAmountAction" method="oppauditBankAmountOthers">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="oppauditBankAmountOthers" class="bankAmountAction" method="oppauditBankAmountOthers">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteBankAmountOthers" class="bankAmountAction" method="deleteBankAmountOthers">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="closeBankAmountOthers" class="bankAmountAction" method="closeBankAmountOthers">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		<action name="showBankAmountListPage" class="bankAmountAction" method="showBankAmountListPage">
+			<result name="success">/account/bankamount/bankAmountListPage.jsp</result>
+		</action>
+		<action name="showBankAmountList" class="bankAmountAction" method="showBankAmountList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showBankAmountLogListPage" class="bankAmountAction" method="showBankAmountLogListPage">
+			<result name="success">/account/bankamount/bankAmountLogListPage.jsp</result>
+		</action>
+		<action name="exportBankAmountLogList" class="bankAmountAction" method="exportBankAmountLogList"></action>
+		<action name="showBankAmountTransferPage" class="bankAmountAction" method="showBankAmountTransferPage">
+			<result name="success">/account/bankamount/bankAmountTransferPage.jsp</result>
+		</action>
+		<action name="showBankAmountLogList" class="bankAmountAction" method="showBankAmountLogList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addBankAmountTransfer" class="bankAmountAction" method="addBankAmountTransfer">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getBankAmountInfo" class="bankAmountAction" method="getBankAmountInfo">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+	<!-- 收款交接单 -->
+	<package name="accountManager-receiptHand" extends="parent" namespace="/account/receipthand">
+		<action name="showReceiptHandPage" class="receiptHandAction" method="showReceiptHandPage">
+			<result name="success">/account/receipthand/receiptHandPage.jsp</result>
+		</action>
+		<action name="showReceiptHandAddPage" class="receiptHandAction" method="showReceiptHandAddPage">
+			<result name="success">/account/receipthand/receiptHandAddPage.jsp</result>
+		</action>
+		<action name="showReceiptHandAddAnotherPage" class="receiptHandAction" method="showReceiptHandAddAnotherPage">
+			<result name="success">/account/receipthand/receiptHandAddAnotherPage.jsp</result>
+		</action>
+		<action name="showReceiptHandViewPage" class="receiptHandAction" method="showReceiptHandViewPage">
+			<result name="success">/account/receipthand/receiptHandViewPage.jsp</result>
+		</action>
+		<action name="showReceiptHandEditPage" class="receiptHandAction" method="showReceiptHandEditPage">
+			<result name="success">/account/receipthand/receiptHandEditPage.jsp</result>
+		</action>
+		<action name="showReceiptHandListPage" class="receiptHandAction" method="showReceiptHandListPage">
+			<result name="success">/account/receipthand/receiptHandListPage.jsp</result>
+		</action>
+		<action name="showReceiptListByHandPage" class="receiptHandAction" method="showReceiptListByHandPage">
+			<result name="success">/account/receipthand/receiptListByHandPage.jsp</result>
+		</action>
+		<action name="showReceiptHandAddReceiptPage" class="receiptHandAction" method="showReceiptHandAddReceiptPage">
+			<result name="success">/account/receipthand/receiptHandAddReceiptPage.jsp</result>
+		</action>
+		<action name="showReceiptListOfReceiptDetailPage" class="receiptHandAction" method="showReceiptListOfReceiptDetailPage">
+			<result name="success">/account/receipthand/receiptListOfReceiptDetailPage.jsp</result>
+		</action>
+		<action name="showReceiptHandAddDetailPage" class="receiptHandAction" method="showReceiptHandAddDetailPage">
+			<result name="success">/account/receipthand/receiptHandAddDetailPage.jsp</result>
+		</action>
+		<action name="getReceiptListForReceiptHand" class="receiptHandAction" method="getReceiptListForReceiptHand">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addReceiptHand" class="receiptHandAction" method="addReceiptHand">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getReceiptHandList" class="receiptHandAction" method="getReceiptHandList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getReceiptHandBillListByBillid" class="receiptHandAction" method="getReceiptHandBillListByBillid">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="exportReceiptHandBillDetailList" class="receiptHandAction" method="exportReceiptHandBillDetailList"></action>
+		<action name="getReceiptHandCustomerListByBillid" class="receiptHandAction" method="getReceiptHandCustomerListByBillid">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteReceiptHands" class="receiptHandAction" method="deleteReceiptHands">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditReceiptHands" class="receiptHandAction" method="auditReceiptHands">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editReceiptHand" class="receiptHandAction" method="editReceiptHand">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="saveAuditReceiptHand" class="receiptHandAction" method="saveAuditReceiptHand">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="oppauditReceiptHands" class="receiptHandAction" method="oppauditReceiptHands">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getReceiptListByHand" class="receiptHandAction" method="getReceiptListByHand">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="exportReceiptbyhandData" class="receiptHandAction" method="exportReceiptbyhandData"></action>
+		<action name="doBackReceiptHands" class="receiptHandAction" method="doBackReceiptHands">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getReceiptHandCustomerListByBills" class="receiptHandAction" method="getReceiptHandCustomerListByBills">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getReceiptHandDetailListMap" class="receiptHandAction" method="getReceiptHandDetailListMap">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getReceiptListGroupByCustomerForReceiptHand" class="receiptHandAction" method="getReceiptListGroupByCustomerForReceiptHand">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+	<!-- account打印 -->
+	<package name="accountManager-accountPrint" extends="parent" namespace="/account/print">
+		<action name="receiptHandPrintView" class="accountPrintAction" method="receiptHandPrintView"></action>
+		<action name="receiptHandPrint" class="accountPrintAction" method="receiptHandPrint"></action>
+		<action name="salesInvoiceApplyWriteOff" class="accountPrintAction" method="salesInvoiceApplyWriteOff">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+	<!-- 收款交接单 -->
+	<package name="accountManager-paymentVoucher" extends="parent" namespace="/account/paymentvoucher">
+		<action name="paymentVoucherListPage" class="paymentVoucherAction" method="paymentVoucherListPage">
+			<result name="success">/account/paymentvoucher/paymentVoucherListPage.jsp</result>
+		</action>
+		<action name="showPaymentVoucherPageList" class="paymentVoucherAction" method="showPaymentVoucherPageList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>		
+		<action name="paymentVoucherPage" class="paymentVoucherAction" method="paymentVoucherPage">
+			<result name="success">/account/paymentvoucher/paymentVoucherPage.jsp</result>
+		</action>
+		<action name="addPaymentVoucher" class="paymentVoucherAction" method="addPaymentVoucher">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>		
+		<action name="paymentVoucherAddPage" class="paymentVoucherAction" method="paymentVoucherAddPage">
+			<result name="success">/account/paymentvoucher/paymentVoucherAddPage.jsp</result>
+		</action>		
+		<action name="addPaymentVoucher" class="paymentVoucherAction" method="addPaymentVoucher">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="paymentVoucherEditPage" class="paymentVoucherAction" method="paymentVoucherEditPage">
+			<result name="success">/account/paymentvoucher/paymentVoucherEditPage.jsp</result>
+			<result name="viewSuccess">/account/paymentvoucher/paymentVoucherViewPage.jsp</result>
+		</action>
+		<action name="editPaymentVoucher" class="paymentVoucherAction" method="editPaymentVoucher">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deletePaymentVoucher" class="paymentVoucherAction" method="deletePaymentVoucher">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditPaymentVoucher" class="paymentVoucherAction" method="auditPaymentVoucher">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="oppauditPaymentVoucher" class="paymentVoucherAction" method="oppauditPaymentVoucher">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="paymentVoucherViewPage" class="paymentVoucherAction" method="paymentVoucherViewPage">
+			<result name="success">/account/paymentvoucher/paymentVoucherViewPage.jsp</result>
+		</action>		
+		<action name="paymentVoucherDetailAddPage" class="paymentVoucherAction" method="paymentVoucherDetailAddPage">
+			<result name="success">/account/paymentvoucher/paymentVoucherDetailAddPage.jsp</result>
+		</action>	
+		<action name="paymentVoucherDetailEditPage" class="paymentVoucherAction" method="paymentVoucherDetailEditPage">
+			<result name="success">/account/paymentvoucher/paymentVoucherDetailEditPage.jsp</result>
+		</action>
+		<action name="paymentVoucherDetailViewPage" class="paymentVoucherAction" method="paymentVoucherDetailViewPage">
+			<result name="success">/account/paymentvoucher/paymentVoucherDetailViewPage.jsp</result>
+		</action>	
+	</package>
+	<package name="goldTaxCustomerInvoice" extends="parent" namespace="/account/goldtaxcustomerinvoice">
+		<action name="showGoldTaxCustomerInvoiceListPage" class="goldTaxCustomerInvoiceAction" method="showGoldTaxCustomerInvoiceListPage">
+			<result name="success">/account/goldtaxcustomerinvoice/goldTaxCustomerInvoiceListPage.jsp</result>
+		</action>
+		<action name="getGoldTaxCustomerInvoicePageData" class="goldTaxCustomerInvoiceAction" method="getGoldTaxCustomerInvoicePageData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showGoldTaxCustomerInvoicePage" class="goldTaxCustomerInvoiceAction" method="showGoldTaxCustomerInvoicePage">
+			<result name="success">/account/goldtaxcustomerinvoice/goldTaxCustomerInvoicePage.jsp</result>
+		</action>
+		<action name="showGoldTaxCustomerInvoiceAddPage" class="goldTaxCustomerInvoiceAction" method="showGoldTaxCustomerInvoiceAddPage">
+			<result name="success">/account/goldtaxcustomerinvoice/goldTaxCustomerInvoiceAddPage.jsp</result>
+		</action>
+		<action name="addGoldTaxCustomerInvoice" class="goldTaxCustomerInvoiceAction" method="addGoldTaxCustomerInvoice">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showGoldTaxCustomerInvoiceEditPage" class="goldTaxCustomerInvoiceAction" method="showGoldTaxCustomerInvoiceEditPage">
+			<result name="success">/account/goldtaxcustomerinvoice/goldTaxCustomerInvoiceEditPage.jsp</result>
+			<result name="viewSuccess">/account/goldtaxcustomerinvoice/goldTaxCustomerInvoiceViewPage.jsp</result>
+			<result name="addSuccess">/account/goldtaxcustomerinvoice/goldTaxCustomerInvoiceAddPage.jsp</result>
+		</action>
+		<action name="editGoldTaxCustomerInvoice" class="goldTaxCustomerInvoiceAction" method="editGoldTaxCustomerInvoice">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteGoldTaxCustomerInvoice" class="goldTaxCustomerInvoiceAction" method="deleteGoldTaxCustomerInvoice">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditGoldTaxCustomerInvoice" class="goldTaxCustomerInvoiceAction" method="auditGoldTaxCustomerInvoice">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="oppauditGoldTaxCustomerInvoice" class="goldTaxCustomerInvoiceAction" method="oppauditGoldTaxCustomerInvoice">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showGoldTaxCustomerInvoiceViewPage" class="goldTaxCustomerInvoiceAction" method="showGoldTaxCustomerInvoiceViewPage">
+			<result name="success">/account/goldtaxcustomerinvoice/goldTaxCustomerInvoiceViewPage.jsp</result>
+		</action>
+		<action name="showGoldTaxCustomerInvoiceDetailAddPage" class="goldTaxCustomerInvoiceAction" method="showGoldTaxCustomerInvoiceDetailAddPage">
+			<result name="success">/account/goldtaxcustomerinvoice/goldTaxCustomerInvoiceDetailAddPage.jsp</result>
+		</action>
+		<action name="showGoldTaxCustomerInvoiceDetailEditPage" class="goldTaxCustomerInvoiceAction" method="showGoldTaxCustomerInvoiceDetailEditPage">
+			<result name="success">/account/goldtaxcustomerinvoice/goldTaxCustomerInvoiceDetailEditPage.jsp</result>
+		</action>
+		<action name="showGoldTaxCustomerInvoiceDetailViewPage" class="goldTaxCustomerInvoiceAction" method="showGoldTaxCustomerInvoiceDetailViewPage">
+			<result name="success">/account/goldtaxcustomerinvoice/goldTaxCustomerInvoiceDetailViewPage.jsp</result>
+		</action>
+		<action name="getGoldTaxCustomerInvoiceDetailListByOrderid" class="goldTaxCustomerInvoiceAction" method="getGoldTaxCustomerInvoiceDetailListByOrderid">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="exportGoldTaxCustomerInvoiceDetailData" class="goldTaxCustomerInvoiceAction" method="exportGoldTaxCustomerInvoiceDetailData"></action>
+		<action name="updateGoldTaxCustomerInvoice" class="goldTaxCustomerInvoiceAction" method="updateGoldTaxCustomerInvoice">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="importCustomerGoldTaxInvoiceData" class="goldTaxCustomerInvoiceAction" method="importCustomerGoldTaxInvoiceData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="exportGoldTaxCustomerInvoiceXMLForHTKP" class="goldTaxCustomerInvoiceAction" method="exportGoldTaxCustomerInvoiceXMLForHTKP">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getJsUnitnumChanger" class="goldTaxCustomerInvoiceAction" method="getJsUnitnumChanger">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getJsPriceChanger" class="goldTaxCustomerInvoiceAction" method="getJsPriceChanger">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getJsAmountChanger" class="goldTaxCustomerInvoiceAction" method="getJsAmountChanger">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showGoldTaxCustomerInvoiceNoEditPage" class="goldTaxCustomerInvoiceAction" method="showGoldTaxCustomerInvoiceNoEditPage">
+			<result name="success">/account/goldtaxcustomerinvoice/goldTaxCustomerInvoiceNoEditPage.jsp</result>
+		</action>
+		<action name="editGoldTaxCustomerInvoiceNo" class="goldTaxCustomerInvoiceAction" method="editGoldTaxCustomerInvoiceNo">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+
+</struts>    

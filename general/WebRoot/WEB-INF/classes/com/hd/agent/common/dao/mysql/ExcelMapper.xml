@@ -1,0 +1,697 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.common.dao.ExcelMapper" >
+   <sql id="Excel_Column">
+	<if test="cols!=null">
+		<trim prefix="" prefixOverrides=",">
+ 			${cols} 
+ 		</trim>
+	</if>
+  </sql>
+  <sql id="Excel_querySql">
+  	<if test="querySql != null">
+		and ${querySql} 
+  	</if>
+  </sql>
+  <sql id="Excel_dataSql">
+  	<if test="dataSql != null">
+		and ${dataSql} 
+  	</if>
+  </sql>
+  <sql id="Excel_tableName">
+  	<if test="condition.tn != null">
+  		from ${condition.tn} 
+  	</if>
+  </sql>
+  <sql id="Excel_joinTable">
+  	<if test="condition.tn != null">
+  		from ${condition.tn} 
+  	</if>
+  </sql>
+  <sql id="Excel_orderOnly" >
+  	<if test="orderSql !=null and orderSql!=''">
+  		order by ${orderSql}
+  	</if>
+  </sql>
+  <sql id="Excel_state" >
+  	<if test="condition.state !=null and condition.state!=''">
+  		and state = #{condition.state}
+  	</if>
+  </sql>
+  <sql id="Excel_formQuery" >
+  	<choose>
+  		<when test="condition.exportids == null">
+  			<if test="condition.id !=null">
+		  		<choose>
+			  		<when test="condition.id1 == null or condition.id1 == ''">
+			  			and id like CONCAT('%',#{condition.id}, '%')
+			  		</when>
+			  		<otherwise>
+			  			and ${condition.childkey} IN (SELECT id FROM ${condition.maintn} WHERE ${condition.id1} like CONCAT('%',#{condition.id}, '%'))
+			  		</otherwise>
+			  	</choose>
+		  	</if>
+		  	<if test="condition.name !=null">
+		  		<choose>
+			  		<when test="condition.name1 == null or condition.name1 == ''">
+			  			and name like CONCAT('%', CONCAT(#{condition.name}, '%'))
+			  		</when>
+			  		<otherwise>
+			  			and ${condition.childkey} IN (SELECT id FROM ${condition.maintn} WHERE ${condition.name1} like CONCAT('%', #{condition.name}, '%'))
+			  		</otherwise>
+			  	</choose>
+		  	</if>
+		  	<if test="condition.belongdeptid !=null">
+		  		<choose>
+			  		<when test="condition.belongdeptid1 == null or condition.belongdeptid1 == ''">
+			  			and belongdeptid like CONCAT(#{condition.belongdeptid},'%')
+			  		</when>
+			  		<otherwise>
+			  			and ${condition.childkey} IN (SELECT id FROM ${condition.maintn} WHERE ${condition.belongdeptid1} like CONCAT(#{condition.belongdeptid}, '%'))
+			  		</otherwise>
+			  	</choose>
+		  	</if>
+		  	<if test="condition.linkmansort !=null">
+		  		<choose>
+			  		<when test="condition.linkmansort1 == null or condition.linkmansort1 == ''">
+			  			linkmansort = #{condition.linkmansort}
+			  		</when>
+			  		<otherwise>
+			  			and ${condition.childkey} IN (SELECT id FROM ${condition.maintn} WHERE ${condition.linkmansort1} = #{condition.linkmansort})
+			  		</otherwise>
+			  	</choose>
+		  	</if>
+		  	<if test="condition.customer != null">
+				<choose>
+			  		<when test="condition.customer1 == null or condition.customer1 == ''">
+			  			customer = #{condition.customer}
+			  		</when>
+			  		<otherwise>
+			  			and ${condition.childkey} IN (SELECT id FROM ${condition.maintn} WHERE ${condition.customer1} = #{condition.customer})
+			  		</otherwise>
+			  	</choose>
+			</if>
+			<if test="condition.supplier != null">
+				<choose>
+			  		<when test="condition.supplier1 == null or condition.supplier1 == ''">
+			  			supplier = #{condition.supplier}
+			  		</when>
+			  		<otherwise>
+			  			and ${condition.childkey} IN (SELECT id FROM ${condition.maintn} WHERE ${condition.supplier1} = #{condition.supplier})
+			  		</otherwise>
+			  	</choose>
+			</if>
+		  	<if test="condition.shortcode !=null">
+		  		<choose>
+			  		<when test="condition.shortcode1 == null or condition.shortcode1 == ''">
+			  			and shortcode like CONCAT(#{condition.shortcode}, '%')
+			  		</when>
+			  		<otherwise>
+			  			and ${condition.childkey} IN (SELECT id FROM ${condition.maintn} WHERE ${condition.shortcode1} like CONCAT(#{condition.shortcode}, '%'))
+			  		</otherwise>
+			  	</choose>
+		  	</if>
+		  	<if test="condition.spell !=null">
+		  		and spell like CONCAT(#{condition.spell}, '%')
+		  	</if>
+		  	<if test="condition.defaultsort != null and condition.defaultsort != ''">
+				<choose>
+			  		<when test="condition.sort != null and condition.sort != ''">
+			  			and defaultsort like CONCAT(#{condition.defaultsort},'%')
+			  		</when>
+			  		<otherwise>
+			  			and ${condition.childkey} IN (SELECT id FROM ${condition.maintn} WHERE ${condition.sort1} = #{condition.defaultsort})
+			  		</otherwise>
+			  	</choose>
+			</if>
+			<if test="condition.salesarea != null">
+	      		<choose>
+			  		<when test="condition.salesarea1 == null or condition.salesarea1 == ''">
+			  			and salesarea = #{condition.salesarea}
+			  		</when>
+			  		<otherwise>
+			  			and ${condition.childkey} IN (SELECT id FROM ${condition.maintn} WHERE ${condition.salesarea1} = #{condition.salesarea})
+			  		</otherwise>
+			  	</choose>
+	      	</if>
+			<if test="condition.sortarea != null and condition.sortarea != ''">
+				<choose>
+					<when test="condition.sort != null and condition.sort != ''">
+						<if test="condition.type == 1" >
+					  		and salesarea like CONCAT(#{condition.sortarea}, '%')
+					  	</if>
+					  	<if test="condition.type == 2" >
+					  		and customersort like CONCAT(#{condition.sortarea}, '%')
+					  	</if>
+					</when>
+					<otherwise>
+						and ${condition.childkey} IN (
+							SELECT id FROM ${condition.maintn}
+							<trim prefix="where" prefixOverrides="and|or" >
+								<if test="condition.type == 1" >
+							  		and ${condition.sort2} like CONCAT(#{condition.sortarea}, '%')
+							  	</if>
+							  	<if test="condition.type == 2" >
+							  		and ${condition.sort1} like CONCAT(#{condition.sortarea}, '%')
+							  	</if>
+							</trim>
+					  	)
+					</otherwise>
+				</choose>
+			</if>
+			<if test="condition.buyarea != null and condition.buyarea != ''">
+				<choose>
+					<when test="condition.sort != null and condition.sort != ''">
+						and buyarea like CONCAT(#{condition.buyarea },'%')
+					</when>
+					<otherwise>
+						and ${condition.childkey} IN (
+							SELECT id FROM ${condition.maintn} where ${condition.sort1} like CONCAT(#{condition.buyarea}, '%')
+					  	)
+					</otherwise>
+				</choose>
+			</if>
+			<if test="condition.suppliersort != null and condition.suppliersort != ''">
+				<choose>
+					<when test="condition.sort != null and condition.sort != ''">
+						and id in (select supplierid from t_base_buy_supplier_detailsort where suppliersort like CONCAT(#{condition.suppliersort},'%'))
+					</when>
+					<otherwise>
+						and ${condition.childkey} IN (
+							SELECT id FROM ${condition.maintn} where ${condition.sort2} like CONCAT(#{condition.suppliersort}, '%')
+					  	)
+					</otherwise>
+				</choose>
+			</if>
+			<if test="condition.defaultsupplier != null" >
+	      		<choose>
+			  		<when test="condition.defaultsupplier1 == null or condition.defaultsupplier1 == ''">
+			  			and defaultsupplier = #{condition.defaultsupplier}
+			  		</when>
+			  		<otherwise>
+			  			and ${condition.childkey} IN (SELECT id FROM ${condition.maintn} WHERE ${condition.defaultsupplier1} = #{condition.defaultsupplier})
+			  		</otherwise>
+			  	</choose>
+	      	</if>
+	      	<if test="condition.brandid != null" >
+	      		<choose>
+			  		<when test="condition.brandid1 == null or condition.brandid1 == ''">
+			  			and brand = #{condition.brandid}
+			  		</when>
+			  		<otherwise>
+			  			and ${condition.childkey} IN (SELECT id FROM ${condition.maintn} WHERE brand = #{condition.brandid})
+			  		</otherwise>
+			  	</choose>
+	      	</if>
+	      	<if test="condition.deptid != null" >
+	         	<choose>
+			  		<when test="condition.deptid1 == null or condition.deptid1 == ''">
+			  			and deptid like concat(#{condition.deptid},'%')
+			  			<!-- and brand IN (SELECT b.id AS brand FROM t_base_goods_brand b WHERE b.deptid like concat(#{condition.deptid},'%')) -->
+			  		</when>
+			  		<otherwise>
+			  			and ${condition.childkey} IN (SELECT id FROM ${condition.maintn} WHERE deptid like concat(#{condition.deptid},'%'))
+			  			<!-- and ${condition.childkey} IN (SELECT id FROM ${condition.maintn} WHERE brand IN (SELECT b.id AS brand FROM t_base_goods_brand b WHERE b.deptid like concat(#{condition.deptid},'%'))) -->
+			  		</otherwise>
+			  	</choose>
+	      	</if>
+		  	<if test="condition.supplierid !=null">
+		  		and supplierid like CONCAT('%',#{condition.supplierid}, '%')
+		  	</if>
+		  	<if test="condition.customerid !=null">
+		  		and customerid like CONCAT('%',#{condition.customerid}, '%')
+		  	</if>
+		  	<if test="condition.goodsid !=null">
+		  		and goodsid like CONCAT('%',#{condition.goodsid},'%')
+		  	</if>
+		  	<if test="condition.personid !=null">
+		  		and personid like CONCAT('%',#{condition.personid},'%')
+		  	</if>
+		  	<if test="condition.linkmanid !=null">
+		  		and linkmanid like CONCAT('%',#{condition.linkmanid},'%')
+		  	</if>
+		  	<if test="condition.begintime != null">
+			    and businessdate >= #{condition.begintime}
+		    </if>
+		    <if test="condition.endtime != null">
+			   <![CDATA[and businessdate <= #{condition.endtime}]]>
+		    </if>
+		  	<if test="condition.supplierdeptid != null">
+		  		and supplierdeptid like concat(#{condition.supplierdeptid},'%')
+		  	</if>
+		  	<if test="condition.subjectid != null">
+		  		and subjectid = #{condition.subjectid}
+		  	</if>
+		  	<if test="condition.storageid != null">
+		  		and storageid = #{condition.storageid}
+		  	</if>
+		  	<if test="condition.status != null">
+		  		and status = #{condition.status}
+		  	</if>
+  		</when>
+  		<otherwise>
+  			<choose>
+  				<when test="condition.tn == condition.maintn">
+  					and FIND_IN_SET(id,#{condition.exportids})
+  				</when>
+  				<otherwise>
+  					<if test="condition.personid != null">
+	  					and FIND_IN_SET(personid,#{condition.personid})
+	  				</if>
+	  				<if test="condition.goodsid != null">
+	  					and FIND_IN_SET(goodsid,#{condition.goodsid})
+	  				</if>
+	  				<if test="condition.customerid != null">
+	  					and FIND_IN_SET(customerid,#{condition.customerid})
+	  				</if>
+	  				<if test="condition.supplierid != null">
+	  					and FIND_IN_SET(supplierid,#{condition.supplierid})
+	  				</if>
+	  				<if test="condition.linkmanid !=null">
+				  		and FIND_IN_SET(linkmanid,#{condition.linkmanid})
+				  	</if>
+				  	<if test="condition.lineid !=null">
+				  		and FIND_IN_SET(lineid,#{condition.lineid})
+				  	</if>
+  				</otherwise>
+  			</choose>
+  		</otherwise>
+  	</choose>
+  </sql>
+  <select id="getList" parameterType="com.hd.agent.common.util.PageMap" resultType="map">
+  	select 
+  	<include refid="Excel_Column"/>
+  	<include refid="Excel_tableName"/>
+  	<trim prefix="where" prefixOverrides="and|or" >
+  		<include refid="Excel_state"/>
+  		<include refid="Excel_formQuery"/>
+	  	<include refid="Excel_querySql"/>
+	  	<include refid="Excel_dataSql"/>
+  	</trim>
+	<include refid="Excel_orderOnly"/>
+	<if test="condition.uniontable != null">
+		UNION
+		select 
+  		<include refid="Excel_Column"/>
+  		from ${condition.uniontable}
+  		<trim prefix="where" prefixOverrides="and|or" >
+	  		<include refid="Excel_state"/>
+	  		<include refid="Excel_formQuery"/>
+		  	<include refid="Excel_querySql"/>
+		  	<include refid="Excel_dataSql"/>
+	  	</trim>
+		<include refid="Excel_orderOnly"/>
+	</if>
+  </select>
+  <select id="getAnotherList" parameterType="com.hd.agent.common.util.PageMap" resultType="map">
+  	SELECT DISTINCT 
+  	<include refid="Excel_Column"/>
+  	<include refid="Excel_tableName"/>
+  	<trim prefix="where" prefixOverrides="and|or" >
+  		<include refid="Excel_state"/>
+  		<include refid="Excel_formQuery"/>
+	  	<include refid="Excel_querySql"/>
+	  	<include refid="Excel_dataSql"/>
+  	</trim>
+	<include refid="Excel_orderOnly"/>
+  </select>
+  <select id="getSaleOrderList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.sales.model.ExportSalesOrder">
+  	SELECT a.id,a.customerid,a.businessdate,a.salesdept,a.salesuser, b.goodsid,c.spell,c.barcode,b.unitnum,b.auxnumdetail,b.taxprice,b.taxamount,
+  		b.notaxamount,b.tax,d.shopid as customergoodsid,a.remark as remark,b.remark as remark1,a.addusername ,a.sourceid
+	FROM t_sales_order a 
+	RIGHT JOIN t_sales_order_detail b ON a.id = b.orderid
+	RIGHT join t_base_goods_info c on c.id = b.goodsid
+	LEFT JOIN t_base_sales_customer_price d ON d.goodsid = b.goodsid AND a.customerid=d.customerid
+	<trim prefix="where" prefixOverrides="and|or" >
+		isview = '1'
+		<include refid="common.Page_querySql"/>
+	    <include refid="common.Page_dataSql"/>
+   	  	<if test="condition.id != null" >
+         and a.id like concat('%',#{condition.id},'%')
+      	</if>
+		<if test="condition.businessdate != null" >
+         <![CDATA[ and businessdate >= #{condition.businessdate} ]]>
+      	</if>
+		<if test="condition.businessdate1 != null" >
+         <![CDATA[ and businessdate <= #{condition.businessdate1}]]>
+      	</if>
+		<if test="condition.customerid != null" >
+         and a.customerid = #{condition.customerid}
+      	</if>
+		<if test="condition.salesdept != null" >
+         and a.salesdept = #{condition.salesdept}
+      	</if>
+		<if test="condition.status != null" >
+         and a.status = #{condition.status}
+      	</if>
+		<if test="condition.isrefer != null" >
+         and a.isrefer = #{condition.isrefer}
+      	</if>
+      	<if test="condition.exportids != null" >
+         and FIND_IN_SET(a.id,#{condition.exportids})
+      	</if>
+      	<choose>
+	      	<when test="condition.isClose ==0 ">
+	      		and status in("1","2")
+	      	</when>
+	      	<when test="condition.isClose ==1 ">
+	      		and status in("3","4")
+	      	</when>
+	    </choose>
+    </trim>
+    <include refid="Excel_orderOnly"/>
+  </select>
+
+  <select id="getStorageOtherEnterAndOutList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.storage.model.ExportStorageOtherEnterAndOut">
+    select a.id,a.businessdate,a.deptid,f.name as deptname,a.userid,c.name as username,a.storageid,h.name as storagename,
+      b.goodsid,g.name as goodsname,g.spell,g.barcode,b.unitnum,b.auxnumdetail,b.taxprice,b.taxamount,b.storagelocationid,
+      s.name as storagelocationname,b.batchno,b.produceddate,b.deadline,b.remark
+      <if test="condition.type == 1">
+        from t_storage_other_enter a
+        LEFT JOIN t_storage_other_enter_detail b on a.id = b.billid
+      </if>
+      <if test="condition.type == 0">
+          from t_storage_other_out a
+          LEFT JOIN t_storage_other_out_detail b on a.id = b.billid
+      </if>
+      LEFT JOIN t_base_department f ON a.deptid = f.id
+      LEFT JOIN t_base_personnel c ON a.userid = c.id
+      LEFT JOIN t_base_storage_info h ON a.storageid = h.id
+      LEFT JOIN t_base_goods_info g on g.id = b.goodsid
+      LEFT JOIN t_base_storage_location s on s.id = b.storagelocationid
+      <trim prefix="where" prefixOverrides="and|or">
+          <include refid="common.Page_querySql"/>
+          <include refid="common.Page_dataSql"/>
+          <if test="condition.businessdate1 != null">
+              and a.businessdate >= #{condition.businessdate1}
+          </if>
+          <if test="condition.businessdate2 != null">
+              <![CDATA[and a.businessdate <= #{condition.businessdate2}]]>
+          </if>
+          <if test="condition.id != null" >
+              and a.id like CONCAT('%',#{condition.id},'%')
+          </if>
+          <if test="condition.status != null">
+              and a.status = #{condition.status}
+          </if>
+          <if test="condition.deptid != null">
+              and a.deptid = #{condition.deptid}
+          </if>
+          <if test="condition.userid != null">
+              and a.userid = #{condition.userid}
+          </if>
+          <if test="condition.storageid != null">
+              and a.storageid = #{condition.storageid}
+          </if>
+          <if test="condition.entertype != null">
+              and a.entertype = #{condition.entertype}
+          </if>
+          <if test="condition.exportids != null" >
+              and FIND_IN_SET(a.id,#{condition.exportids})
+          </if>
+          <choose>
+              <when test="condition.isClose ==0 ">
+                  and a.status in("1","2")
+              </when>
+              <when test="condition.isClose ==1 ">
+                  and a.status in("3","4")
+              </when>
+          </choose>
+          <if test="condition.printsign != null and condition.queryprinttimes != null">
+              <choose>
+                  <when test="condition.printsign == 1">
+                      <![CDATA[and a.printtimes = #{condition.queryprinttimes} ]]>
+                  </when>
+                  <when test="condition.printsign == 2">
+                      <![CDATA[and a.printtimes < #{condition.queryprinttimes} ]]>
+                  </when>
+                  <when test="condition.printsign == 3">
+                      <![CDATA[and a.printtimes <= #{condition.queryprinttimes} ]]>
+                  </when>
+                  <when test="condition.printsign == 4">
+                      <![CDATA[and a.printtimes > #{condition.queryprinttimes} ]]>
+                  </when>
+                  <when test="condition.printsign == 5">
+                      <![CDATA[and a.printtimes >= #{condition.queryprinttimes} ]]>
+                  </when>
+              </choose>
+          </if>
+      </trim>
+      <include refid="Excel_orderOnly"/>
+  </select>
+
+  <select id="getGoodsList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.basefiles.model.GoodsInfo">
+  	SELECT a.id,a.NAME,a.model,a.spell,a.barcode,a.itemno,a.defaultsort,e.name as defaultsortname, a.mainunit, a.goodstype,
+		a.brand,d.name as brandname, a.state,a.highestbuyprice,a.basesaleprice,a.planmargin,a.defaulttaxtype,a.deptid,a.minimum,
+		a.storageid,a.storagelocation,a.isshelflife,a.shelflife,a.shelflifeunit,a.defaultsupplier,a.secondsupplier,a.normalprice,
+		a.bstype,a.newbuyprice,a.newsaleprice,a.remark,g.name as defaultsuppliername,a.costaccountprice,a.productfield,a.isbatch,
+		a.glength,a.gwidth,a.ghight,a.totalweight,a.totalvolume,a.singlevolume,a.boxbarcode,a.lowestsaleprice,a.isstoragelocation,
+		c.rate as boxnum,c.meteringunitid  as auxunitid,
+		h.name as storagename,t.name as storagelocationname,o.name as defaulttaxtypename,
+		MAX(CASE b.code WHEN 1 THEN b.taxprice ELSE 0 END) AS price1,
+		MAX(CASE b.code WHEN 2 THEN b.taxprice ELSE 0 END) AS price2,
+		MAX(CASE b.code WHEN 3 THEN b.taxprice ELSE 0 END) AS price3,
+		MAX(CASE b.code WHEN 4 THEN b.taxprice ELSE 0 END) AS price4,
+		MAX(CASE b.code WHEN 5 THEN b.taxprice ELSE 0 END) AS price5,
+		MAX(CASE b.code WHEN 6 THEN b.taxprice ELSE 0 END) AS price6,
+		MAX(CASE b.code WHEN 7 THEN b.taxprice ELSE 0 END) AS price7,
+		MAX(CASE b.code WHEN 8 THEN b.taxprice ELSE 0 END) AS price8,
+		MAX(CASE b.code WHEN 9 THEN b.taxprice ELSE 0 END) AS price9,
+		MAX(CASE b.code WHEN 10 THEN b.taxprice ELSE 0 END) AS price10,
+        MAX(CASE b.code WHEN 1 THEN b.boxprice ELSE 0 END) AS boxprice1,
+        MAX(CASE b.code WHEN 2 THEN b.boxprice ELSE 0 END) AS boxprice2,
+        MAX(CASE b.code WHEN 3 THEN b.boxprice ELSE 0 END) AS boxprice3,
+        MAX(CASE b.code WHEN 4 THEN b.boxprice ELSE 0 END) AS boxprice4,
+        MAX(CASE b.code WHEN 5 THEN b.boxprice ELSE 0 END) AS boxprice5,
+        MAX(CASE b.code WHEN 6 THEN b.boxprice ELSE 0 END) AS boxprice6,
+        MAX(CASE b.code WHEN 7 THEN b.boxprice ELSE 0 END) AS boxprice7,
+        MAX(CASE b.code WHEN 8 THEN b.boxprice ELSE 0 END) AS boxprice8,
+        MAX(CASE b.code WHEN 9 THEN b.boxprice ELSE 0 END) AS boxprice9,
+        MAX(CASE b.code WHEN 10 THEN b.boxprice ELSE 0 END) AS boxprice10
+	FROM t_base_goods_info a
+	LEFT JOIN t_base_goods_info_price b ON b.goodsid = a.id
+	LEFT JOIN t_base_goods_info_meteringunit c ON c.goodsid = a.id
+	LEFT JOIN t_base_goods_brand d on a.brand = d.id
+	LEFT JOIN t_base_goods_waresclass e ON a.defaultsort = e.id 
+	LEFT JOIN t_base_buy_supplier g ON a.defaultsupplier = g.id
+	LEFT JOIN t_base_storage_info h ON a.storageid = h.id
+	LEFT JOIN t_base_storage_location t ON a.storagelocation = t.id
+	LEFT JOIN t_base_finance_taxtype o ON a.defaulttaxtype = o.id
+	<trim prefix="where" prefixOverrides="and|or">
+		<include refid="common.Page_dataSql"/>
+		<choose>
+			<when test="condition.exportids == null">
+				<if test="condition.defaultsort != null and condition.defaultsort != ''">
+					and a.defaultsort like CONCAT(#{condition.defaultsort},'%')
+				</if>
+				<if test="condition.name != null" >
+		         	and a.name like CONCAT('%',#{condition.name},'%')
+		      	</if>
+		      	<if test="condition.id != null" >
+		         	and a.id like CONCAT('%',#{condition.id},'%')
+		      	</if>
+				<if test="condition.idarrs != null" >
+					and FIND_IN_SET(a.id,#{condition.idarrs})
+				</if>
+		      	<if test="condition.defaultsupplier != null" >
+		         	and a.defaultsupplier = #{condition.defaultsupplier}
+		      	</if>
+		      	<if test="condition.brandid != null" >
+		         	and a.brand = #{condition.brandid}
+		      	</if>
+		      	<if test="condition.deptid != null" >
+		         	and a.deptid like CONCAT(#{condition.deptid},'%')
+		      	</if>
+		      	<if test="condition.state != null" >
+		         	and a.state = #{condition.state}
+		      	</if>
+			</when>
+			<otherwise>
+				<if test="condition.exportids != null" >
+		         	and FIND_IN_SET(a.id,#{condition.exportids})
+		      	</if>
+			</otherwise>
+		</choose>
+	</trim>
+  	GROUP BY a.id
+  </select>
+  <select id="getSupplierList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.basefiles.model.BuySupplier">
+  	SELECT a.id,a.NAME,a.spell,a.shortname,a.taxno,a.bank,a.cardno,a.mobile,a.telphone,a.faxno,a.address,a.filiale,a.buydeptid, 
+  		b.name AS buydeptname,a.buyuserid,c.name AS buyusername,d.name AS settletypename,e.name AS storagename,f.name as filialename,
+		a.buyusermobile,a.settletype,a.canceltype,a.storageid,a.state,a.addusername,a.remark,a.financiallink,a.financialmobile,
+		a.financialemail,a.contactname,a.contactmobile,a.contactemail,a.contactarea,a.contactareamobile,a.contactareaemail,a.region,
+		a.regionmobile,a.regionemail,a.annualobjectives,a.annualrebate,a.semiannualrebate,a.quarterlyrebate,a.monthlyrebate,
+		a.breakagesubsidies,a.othersubsidies,a.recoverymode,a.pricediscount,a.otherconditions,a.promotersplaces,a.promoterssalary,
+		a.salesmanplaces,a.salesmansalary,a.person,a.personmobile,a.personcard,a.fund,a.orderappend,a.salesmonth,a.ownlimit,a.buyarea,
+		a.suppliersort
+	FROM t_base_buy_supplier a
+	LEFT JOIN t_base_department b ON a.buydeptid = b.id
+	LEFT JOIN t_base_department f ON a.filiale = f.id
+	LEFT JOIN t_base_personnel c ON a.buyuserid = c.id
+	LEFT JOIN t_base_finance_settlement d ON a.settletype = d.id
+	LEFT JOIN t_base_storage_info e ON a.storageid = e.id
+	<trim prefix="where" prefixOverrides="and|or">
+		<include refid="common.Page_dataSql"/>
+		<choose>
+  			<when test="condition.exportids == null">
+  				<if test="condition.name != null" >
+		         	and a.name like CONCAT('%',#{condition.name},'%')
+		      	</if>
+		      	<if test="condition.id != null" >
+		         	and a.id like CONCAT('%',#{condition.id},'%')
+		      	</if>
+				<if test="condition.suppliersort != null and condition.suppliersort != ''">
+					and a.id in (select supplierid from t_base_buy_supplier_detailsort where suppliersort like CONCAT(#{condition.suppliersort},'%'))
+				</if>
+				<if test="condition.buyarea != null and condition.buyarea != ''">
+					and a.buyarea like CONCAT(#{condition.buyarea },'%')
+				</if>
+  			</when>
+  			<otherwise>
+  				<if test="condition.exportids != null" >
+		         	and FIND_IN_SET(a.id,#{condition.exportids})
+		      	</if>
+  			</otherwise>
+  		</choose>
+	</trim>
+	order by a.id
+  </select>
+  <select id="getCustomerList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.basefiles.model.Customer">
+  	SELECT a.id,a.name,a.pid,a.islast, e.name AS pname,a.shortcode,a.shortname,a.shopno,a.taxno,a.bank,a.cardno,a.caraccount,a.fund,a.storearea, a.contact, a.creditrating,
+			b.name AS contactname,a.mobile,a.faxno,a.nature,a.ischain,a.countylevel,a.villagetown,a.address, a.settletype, c.name AS settletypename,
+			a.settleday,a.paytype, d.name AS paytypename,a.iscash,a.islongterm,a.overgracedate,a.credit,a.reconciliationdate,a.billingdate,a.arrivalamountdate,
+			a.tickettype,a.canceltype,a.pricesort,a.promotionsort,a.salesarea,f.thisname AS salesareaname,a.customersort,m.thisname AS customersortname,
+			a.abclevel,a.salesdeptid,a.salesdeptname,a.salesuserid,a.salesusername,a.tallyuserid,a.tallyusername,a.indoorstaff,n.name AS indoorstaffname,a.payeeid,
+			a.checker,a.checkmobile,a.checkemail,a.payer,a.payermobile,a.payeremail,a.shopmanager,a.shopmanagermobile,a.gsreceipter,a.gsreceiptermobile,
+			a.state,a.addusername,a.remark,a.person,a.personmobile,a.personcard,a.setupdate,a.overcontrol,a.creditrating,a.creditdate,a.targetsales,
+			a.yearback,a.monthback,a.dispatchingamount,a.sixone
+	FROM t_base_sales_customer a
+	LEFT JOIN t_base_sales_customer e ON a.pid = e.id
+	LEFT JOIN t_base_linkman_info b ON a.contact = b.id
+	LEFT JOIN t_base_finance_settlement c ON a.settletype = c.id
+	LEFT JOIN t_base_finance_payment d ON a.paytype = d.id
+	LEFT JOIN t_base_sales_area f ON a.salesarea = f.id
+	LEFT JOIN t_base_sales_customersort m ON a.customersort = m.id
+	LEFT JOIN t_base_personnel n ON a.indoorstaff = n.id
+  <if test="condition.salesman != null">
+      LEFT JOIN t_base_personnel_customer t1 on a.id = t1.customerid and t1.personid = #{condition.salesman}
+      LEFT JOIN t_base_personnel_supplier_customer t2 on a.id = t2.customerid and t2.personid = #{condition.salesman}
+  </if>
+	<trim prefix="where" prefixOverrides="and|or" >
+		<include refid="common.Page_dataSql"/>
+		<choose>
+			<when test="condition.exportids == null">
+				<if test="condition.id != null" >
+		         and a.id like CONCAT('%',#{condition.id}, '%')
+		      	</if>
+		      	<if test="condition.name != null" >
+		         and a.name like CONCAT('%', CONCAT(#{condition.name}, '%'))
+		      	</if>
+		      	<if test="condition.shortcode != null" >
+		         and a.shortcode like CONCAT(#{condition.shortcode}, '%')
+		      	</if>
+		      	<if test="condition.salesarea != null">
+		      		and a.salesarea = #{condition.salesarea}
+		      	</if>
+		      	<if test="condition.type == 1" >
+		      		and a.salesarea like CONCAT(#{condition.sortarea}, '%')
+		      	</if>
+		      	<if test="condition.type == 2" >
+		      		and a.customersort like CONCAT(#{condition.sortarea}, '%')
+		      	</if>
+		      	<if test="condition.salesuserid != null" >
+		         and a.salesuserid = #{condition.salesuserid}
+		      	</if>
+                <if test="condition.salesman != null" >
+                    and (t1.personid = #{condition.salesman} or t2.personid = #{condition.salesman} or a.salesuserid = #{condition.salesman})
+                </if>
+			</when>
+			<otherwise>
+				<if test="condition.exportids != null" >
+		         	and FIND_IN_SET(a.id,#{condition.exportids})
+		      	</if>
+			</otherwise>
+		</choose>
+	</trim>
+	order by a.id
+  </select>
+
+
+	<select id="getLendList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.storage.model.ExportLend">
+		select a.id,a.businessdate,a.deptid,f.name as deptname,a.lendid,a.storageid,h.name as storagename,
+		b.goodsid,g.name as goodsname,g.spell,g.barcode,b.unitnum,b.auxnumdetail,b.taxprice,b.taxamount,b.storagelocationid,
+		s.name as storagelocationname,b.batchno,b.produceddate,b.deadline,b.remark,a.billtype,if(a.lendtype=1,"供应商","客户") as lendtypename,
+		if(a.lendtype=1,d.name,c.name) as lendname
+		from t_storage_lend a
+		LEFT JOIN t_storage_lend_detail b on a.id = b.billid
+		LEFT JOIN t_base_department f ON a.deptid = f.id
+		LEFT JOIN t_base_buy_supplier d ON a.lendid = d.id
+		LEFT JOIN t_base_sales_customer c ON a.lendid = c.id
+		LEFT JOIN t_base_storage_info h ON a.storageid = h.id
+		LEFT JOIN t_base_goods_info g on g.id = b.goodsid
+		LEFT JOIN t_base_storage_location s on s.id = b.storagelocationid
+		<trim prefix="where" prefixOverrides="and|or">
+			<include refid="common.Page_querySql"/>
+			<include refid="common.Page_dataSql"/>
+			<if test="condition.businessdate1 != null">
+				and a.businessdate >= #{condition.businessdate1}
+			</if>
+			<if test="condition.businessdate2 != null">
+				<![CDATA[and a.businessdate <= #{condition.businessdate2}]]>
+			</if>
+			<if test="condition.id != null" >
+				and a.id like CONCAT('%',#{condition.id},'%')
+			</if>
+			<if test="condition.status != null">
+				and a.status = #{condition.status}
+			</if>
+			<if test="condition.deptid != null">
+				and a.deptid = #{condition.deptid}
+			</if>
+			<if test="condition.lendid != null">
+				and a.lendid = #{condition.lendid}
+			</if>
+			<if test="condition.storageid != null">
+				and a.storageid = #{condition.storageid}
+			</if>
+			<if test="condition.lendtype != null">
+				and a.lendtype = #{condition.lendtype}
+			</if>
+			<if test="condition.billtype != null">
+				and a.billtype = #{condition.billtype}
+			</if>
+			<if test="condition.exportids != null" >
+				and FIND_IN_SET(a.id,#{condition.exportids})
+			</if>
+			<choose>
+				<when test="condition.isClose ==0 ">
+					and a.status in("1","2")
+				</when>
+				<when test="condition.isClose ==1 ">
+					and a.status in("3","4")
+				</when>
+			</choose>
+			<if test="condition.printsign != null and condition.queryprinttimes != null">
+				<choose>
+					<when test="condition.printsign == 1">
+						<![CDATA[and a.printtimes = #{condition.queryprinttimes} ]]>
+					</when>
+					<when test="condition.printsign == 2">
+						<![CDATA[and a.printtimes < #{condition.queryprinttimes} ]]>
+					</when>
+					<when test="condition.printsign == 3">
+						<![CDATA[and a.printtimes <= #{condition.queryprinttimes} ]]>
+					</when>
+					<when test="condition.printsign == 4">
+						<![CDATA[and a.printtimes > #{condition.queryprinttimes} ]]>
+					</when>
+					<when test="condition.printsign == 5">
+						<![CDATA[and a.printtimes >= #{condition.queryprinttimes} ]]>
+					</when>
+				</choose>
+			</if>
+		</trim>
+		<include refid="Excel_orderOnly"/>
+	</select>
+
+</mapper>

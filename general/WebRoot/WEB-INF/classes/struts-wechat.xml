@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<package name="wechat" extends="parent" namespace="/wechat">
+		<action name="index" class="wechatUserAction" method="index">
+			<result name="success">/wechat/views/index.jsp</result>
+		</action>
+		<action name="showWechatRegisterPage" class="wechatUserAction" method="showWechatRegisterPage">
+			<result name="success">/wechat/views/user/wechatRegister.jsp</result>
+		</action>
+		<action name="showCheckIamge" class="wechatUserAction" method="showCheckIamge">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="checkRepeatPhone" class="wechatUserAction" method="checkRepeatPhone">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="checkImageNumber" class="wechatUserAction" method="checkImageNumber">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="sendMessage" class="wechatUserAction" method="sendMessage">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addInviteCustomerUser" class="wechatUserAction" method="addInviteCustomerUser">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+
+</struts>  

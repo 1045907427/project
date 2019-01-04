@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.agprint.dao.PrintJobMapper" >
+	
+  	<sql id="PrintJobBase_Column_List">
+	    id, jobname, adduserid, addtime, addusername, status, ip, modifyuserid, modifyusername, 
+	    modifytime,requestparam, orderidarr,remark
+  	</sql>
+
+	<sql id="PrintJobBase_Where_Clause">
+		<if test="condition.jobname != null" >
+			and jobname like CONCAT('%', #{condition.jobname} ,'%')
+		</if>
+		<if test="condition.adduserid != null" >
+			and adduserid = #{condition.adduserid}
+		</if>
+		<if test="condition.addtime != null" >
+			and addtime = #{condition.addtime}
+		</if>
+		<if test="condition.addusername != null" >
+			and addusername like CONCAT('%', #{condition.addusername} ,'%')
+		</if>
+		<if test="condition.status != null" >
+			and status = #{condition.status}
+		</if>
+		<if test="condition.ip != null" >
+			and ip = #{condition.ip}
+		</if>
+		<if test="condition.modifyuserid != null" >
+			and modifyuserid = #{condition.modifyuserid}
+		</if>
+		<if test="condition.modifyusername != null" >
+			and modifyusername like CONCAT('%', #{condition.modifyusername} ,'%')
+		</if>
+		<if test="condition.modifytime != null" >
+			and modifytime = #{condition.modifytime}
+		</if>
+		<if test="condition.requestparam != null" >
+			and requestparam like CONCAT('%', #{condition.modifyusername} ,'%')
+		</if>
+		<if test="condition.orderid != null" >
+			and FIND_IN_SET(#{condition.orderid},orderidarr)
+		</if>
+		<if test="condition.remark != null" >
+			and remark like CONCAT('%', #{condition.remark} ,'%')
+		</if>
+	</sql>
+	<select id="getPrintJobPageList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.agprint.model.PrintJob"  useCache="false">
+		select
+		<include refid="PrintJobBase_Column_List"/>
+		from t_print_job
+		<trim prefix="where" prefixOverrides="and|or">
+			<include refid="PrintJobBase_Where_Clause" />
+		</trim>
+		<include refid="common.Page_limit"/>
+	</select>
+	<select id="getPrintJobPageCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int"  useCache="false">
+		select
+		count(*)
+		from t_print_job
+		<trim prefix="where" prefixOverrides="and|or">
+			<include refid="PrintJobBase_Where_Clause" />
+		</trim>
+	</select>
+	<insert id="addPrintJob" parameterType="com.hd.agent.agprint.model.PrintJob">
+		<selectKey resultType="java.lang.String" keyProperty="id" order="BEFORE" >
+	      select uuid_short()
+	    </selectKey>
+		insert into t_print_job
+	    <trim prefix="(" suffix=")" suffixOverrides=",">
+	      <if test="id != null">
+	        id,
+	      </if>
+	      <if test="jobname != null">
+	        jobname,
+	      </if>
+	      <if test="adduserid != null">
+	        adduserid,
+	      </if>
+	      <if test="addtime != null">
+	        addtime,
+	      </if>
+	      <if test="addusername != null">
+	        addusername,
+	      </if>
+	      <if test="status != null">
+	        status,
+	      </if>
+	      <if test="ip != null">
+	        ip,
+	      </if>
+	      <if test="modifyuserid != null">
+	        modifyuserid,
+	      </if>
+	      <if test="modifyusername != null">
+	        modifyusername,
+	      </if>
+	      <if test="modifytime != null">
+	        modifytime,
+	      </if>
+	      <if test="requestparam != null">
+	        requestparam,
+	      </if>
+	      <if test="orderidarr != null">
+	        orderidarr,
+	      </if>
+			<if test="remark != null">
+				remark,
+			</if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides=",">
+	      <if test="id != null">
+	        #{id},
+	      </if>
+	      <if test="jobname != null">
+	        #{jobname},
+	      </if>
+	      <if test="adduserid != null">
+	        #{adduserid},
+	      </if>
+	      <if test="addtime != null">
+	        #{addtime},
+	      </if>
+	      <if test="addusername != null">
+	        #{addusername},
+	      </if>
+	      <if test="status != null">
+	        #{status},
+	      </if>
+	      <if test="ip != null">
+	        #{ip},
+	      </if>
+	      <if test="modifyuserid != null">
+	        #{modifyuserid},
+	      </if>
+	      <if test="modifyusername != null">
+	        #{modifyusername},
+	      </if>
+	      <if test="modifytime != null">
+	        #{modifytime},
+	      </if>
+	      <if test="requestparam != null">
+	        #{requestparam},
+	      </if>
+	      <if test="orderidarr != null">
+	        #{orderidarr},
+	      </if>
+			<if test="remark != null">
+				#{remark},
+			</if>
+	    </trim>
+	</insert>
+	<update id="updatePrintJobStatus" parameterType="com.hd.agent.agprint.model.PrintJob">
+	    update t_print_job
+	    <set>
+	      <if test="status != null">
+	        status = #{status},
+	      </if>
+	      <if test="modifyuserid != null">
+	        modifyuserid = #{modifyuserid},
+	      </if>
+	      <if test="modifyusername != null">
+	        modifyusername = #{modifyusername},
+	      </if>
+	      <if test="modifytime != null">
+	        modifytime = #{modifytime},
+	      </if>
+	    </set>
+	    where id = #{id}
+  </update>
+  <select id="getPrintJob" parameterType="java.lang.String" resultType="com.hd.agent.agprint.model.PrintJob">
+  	select
+  	<include refid="PrintJobBase_Column_List" />
+  	from t_print_job
+  	where id=#{id}
+  </select>
+  <select id="getPrintJobWithUserid" parameterType="java.lang.String" resultType="com.hd.agent.agprint.model.PrintJob">
+  	select
+  	<include refid="PrintJobBase_Column_List" />
+  	from t_print_job
+  	where id=#{id}
+  </select>
+  <delete id="deletePrintJobBeforeDate" parameterType="java.util.Date">
+    DELETE FROM t_print_job
+    WHERE
+    <![CDATA[ addtime <= #{date}  ]]>
+  </delete>
+</mapper>

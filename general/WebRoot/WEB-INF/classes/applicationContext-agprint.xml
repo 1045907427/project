@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+    <bean id="basePrintTempletServiceImpl" class="com.hd.agent.agprint.service.impl.BasePrintTempletServiceImpl" parent="baseServiceImpl">
+        <property name="printTempletMapper" ref="printTempletMapper"></property>
+        <property name="printTempletSubjectMapper" ref="printTempletSubjectMapper"></property>
+        <property name="printTempletResourceMapper" ref="printTempletResourceMapper"></property>
+        <property name="printOrderSeqMapper" ref="printOrderSeqMapper"></property>
+        <property name="printPaperSizeMapper" ref="printPaperSizeMapper"></property>
+    </bean>
+    <!-- Templet开始 -->
+    <!-- dao配置 -->
+    <bean id="printTempletMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.hd.agent.agprint.dao.PrintTempletMapper" />
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <!-- service配置 -->
+    <bean id="printTempletService" parent="baseTransactionProxy">
+        <property name="target" ref="printTempletServiceImpl"></property>
+    </bean>
+    <bean id="printTempletServiceImpl" class="com.hd.agent.agprint.service.impl.PrintTempletServiceImpl" parent="basePrintTempletServiceImpl">
+    </bean>
+    <!-- action配置 -->
+    <bean id="printTempletAction" class="com.hd.agent.agprint.action.PrintTempletAction" scope="prototype" parent="baseAction">
+        <property name="printTempletService" ref="printTempletService"></property>
+    </bean>
+    <!-- Templet结束 -->
+    <!-- OrderSeq开始 -->
+    <!-- dao配置 -->
+    <bean id="printOrderSeqMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.hd.agent.agprint.dao.PrintOrderSeqMapper" />
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <!-- service配置 -->
+    <bean id="printOrderSeqService" parent="baseTransactionProxy">
+        <property name="target" ref="printOrderSeqServiceImpl"></property>
+    </bean>
+    <bean id="printOrderSeqServiceImpl" class="com.hd.agent.agprint.service.impl.PrintOrderSeqServiceImpl" parent="basePrintTempletServiceImpl">
+    </bean>
+    <!-- action配置 -->
+    <bean id="printOrderSeqAction" class="com.hd.agent.agprint.action.PrintOrderSeqAction" scope="prototype" parent="baseAction">
+        <property name="printOrderSeqService" ref="printOrderSeqService"></property>
+    </bean>
+    <!-- OrderSeq结束 -->
+
+    <!-- TempletSubject开始 -->
+    <!-- dao配置 -->
+    <bean id="printTempletSubjectMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.hd.agent.agprint.dao.PrintTempletSubjectMapper" />
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <!-- service配置 -->
+    <bean id="printTempletSubjectService" parent="baseTransactionProxy">
+        <property name="target" ref="printTempletSubjectServiceImpl"></property>
+    </bean>
+    <bean id="printTempletSubjectServiceImpl" class="com.hd.agent.agprint.service.impl.PrintTempletSubjectServiceImpl" parent="basePrintTempletServiceImpl">
+    </bean>
+    <!-- action配置 -->
+    <bean id="printTempletSubjectAction" class="com.hd.agent.agprint.action.PrintTempletSubjectAction" scope="prototype" parent="baseAction">
+        <property name="printTempletSubjectService" ref="printTempletSubjectService"></property>
+    </bean>
+    <!-- TempletSubject结束 -->
+
+    <!-- TempletResource开始 -->
+    <!-- dao配置 -->
+    <bean id="printTempletResourceMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.hd.agent.agprint.dao.PrintTempletResourceMapper" />
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <!-- service配置 -->
+    <bean id="printTempletResourceService" parent="baseTransactionProxy">
+        <property name="target" ref="printTempletResourceServiceImpl"></property>
+    </bean>
+    <bean id="printTempletResourceServiceImpl" class="com.hd.agent.agprint.service.impl.PrintTempletResourceServiceImpl" parent="basePrintTempletServiceImpl">
+        <property name="attachFileMapper" ref="attachFileMapper"></property>
+    </bean>
+    <!-- action配置 -->
+    <bean id="printTempletResourceAction" class="com.hd.agent.agprint.action.PrintTempletResourceAction" scope="prototype" parent="baseAction">
+        <property name="printTempletResourceService" ref="printTempletResourceService"></property>
+    </bean>
+    <!-- TempletResource结束 -->
+
+    <!-- OrderSeq开始 -->
+    <!-- dao配置 -->
+    <bean id="printPaperSizeMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.hd.agent.agprint.dao.PrintPaperSizeMapper" />
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <!-- service配置 -->
+    <bean id="printPaperSizeService" parent="baseTransactionProxy">
+        <property name="target" ref="printPaperSizeServiceImpl"></property>
+    </bean>
+    <bean id="printPaperSizeServiceImpl" class="com.hd.agent.agprint.service.impl.PrintPaperSizeServiceImpl" parent="basePrintTempletServiceImpl">
+    </bean>
+    <!-- action配置 -->
+    <bean id="printPaperSizeAction" class="com.hd.agent.agprint.action.PrintPaperSizeAction" scope="prototype" parent="baseAction">
+        <property name="printPaperSizeService" ref="printPaperSizeService"></property>
+    </bean>
+    <!-- OrderSeq结束 -->
+    <!-- PrintJob 开始 -->
+    <!-- dao配置 -->
+    <bean id="printJobMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.hd.agent.agprint.dao.PrintJobMapper" />
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+
+    <bean id="printJobHandleMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.hd.agent.agprint.dao.PrintJobCallHandleMapper" />
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="printJobDetailMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.hd.agent.agprint.dao.PrintJobDetailMapper" />
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="printJobDetailImageMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.hd.agent.agprint.dao.PrintJobDetailImageMapper" />
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <!-- service配置 -->
+    <bean id="printJobService" parent="baseTransactionProxy">
+        <property name="target" ref="printJobServiceImpl"></property>
+    </bean>
+    <bean id="printJobServiceImpl" class="com.hd.agent.agprint.service.impl.PrintJobServiceImpl" parent="baseServiceImpl">
+        <property name="printJobMapper" ref="printJobMapper"></property>
+        <property name="printJobCallHandleMapper" ref="printJobHandleMapper"></property>
+        <property name="printJobDetailMapper" ref="printJobDetailMapper"></property>
+        <property name="printJobDetailImageMapper" ref="printJobDetailImageMapper"></property>
+    </bean>
+    <!-- action配置 -->
+    <bean id="printJobAction" class="com.hd.agent.agprint.action.PrintJobAction" scope="prototype" parent="baseAction">
+        <property name="printJobService" ref="printJobService"></property>
+    </bean>
+    <!--  PrintJob 结束 -->
+
+    <!-- AgprintService 开始 -->
+    <bean id="agprintServiceImpl" class="com.hd.agent.agprint.service.impl.AgprintServiceImpl">
+        <property name="printTempletService" ref="printTempletService"></property>
+        <property name="printJobService" ref="printJobService"></property>
+    </bean>
+    <!-- AgprintService 结束 -->
+
+    <!-- ####### 各种 打印 Action #######-->
+
+
+    <!-- ###* 与 Account包相关开始 *### -->
+    <!-- 客户冲差单打印Action-->
+    <bean id="customerPushBanlancePrintAction" class="com.hd.agent.agprint.action.account.CustomerPushBanlancePrintAction" scope="prototype" parent="baseFilesAction">
+        <property name="customerPushBanlanceService" ref="customerPushBanlanceService"></property>
+        <property name="receiptService" ref="salesReceiptService"></property>
+        <property name="agprintServiceImpl" ref="agprintServiceImpl"></property>
+    </bean>
+    <!-- 回单交接单打印Action -->
+    <bean id="receiptHandPrintAction" class="com.hd.agent.agprint.action.account.ReceiptHandPrintAction" scope="prototype" parent="baseFilesAction">
+        <property name="receiptHandService" ref="receiptHandService"></property>
+        <property name="agprintServiceImpl" ref="agprintServiceImpl"></property>
+    </bean>
+    <!-- 销售发票清单打印Action -->
+    <bean id="salesInvoicePrintAction" class="com.hd.agent.agprint.action.account.SalesInvoicePrintAction" scope="prototype" parent="baseFilesAction">
+        <property name="salesInvoiceService" ref="salesInvoiceService"></property>
+        <property name="salesInvoiceBillService" ref="salesInvoiceBillService"></property>
+        <property name="agprintServiceImpl" ref="agprintServiceImpl"></property>
+    </bean>
+    <!-- 销售单据核对打印Action -->
+    <bean id="salesBillCheckPrintAction" class="com.hd.agent.agprint.action.account.SalesBillCheckPrintAction" scope="prototype" parent="baseFilesAction">
+        <property name="salesBillCheckService" ref="salesBillCheckService"></property>
+        <property name="agprintServiceImpl" ref="agprintServiceImpl"></property>
+    </bean>
+    <!-- 交款单打印Action-->
+    <bean id="paymentVoucherPrintAction" class="com.hd.agent.agprint.action.account.PaymentVoucherPrintAction" scope="prototype" parent="baseFilesAction">
+        <property name="paymentVoucherService" ref="paymentVoucherService"></property>
+        <property name="agprintServiceImpl" ref="agprintServiceImpl"></property>
+    </bean>
+    <!-- 收款单打印Action-->
+    <bean id="collectionOrderPrintAction" class="com.hd.agent.agprint.action.account.CollectionOrderPrintAction" scope="prototype" parent="baseFilesAction">
+        <property name="collectionOrderService" ref="collectionOrderService"></property>
+        <property name="agprintServiceImpl" ref="agprintServiceImpl"></property>
+    </bean>
+    <!-- 采购发票打印Action-->
+    <bean id="purchaseInvoicePrintAction" class="com.hd.agent.agprint.action.account.PurchaseInvoicePrintAction" scope="prototype" parent="baseFilesAction">
+        <property name="purchaseInvoiceService" ref="purchaseInvoiceService"></property>
+        <property name="agprintServiceImpl" ref="agprintServiceImpl"></property>
+    </bean>
+    <!-- ###* 与 Account 包相关结束 *### -->
+
+
+    <!-- ###* 与 Basefiles 包相关开始 *### -->
+    <!-- 商品打印Action  -->
+    <bean id="goodsPrintAction" class="com.hd.agent.agprint.action.basefiles.GoodsPrintAction" scope="prototype" parent="baseAction">
+        <property name="goodsService" ref="goodsService"></property>
+        <property name="agprintServiceImpl" ref="agprintServiceImpl"></property>
+    </bean>
+    <!-- ###* 与 Basefiles 包相关结束 *### -->
+
+
+    <!-- ###* 与 Purchase 包相关开始 *### -->
+    <!-- 采购进货单打印Action -->
+    <bean id="arrivalOrderPrintAction" class="com.hd.agent.agprint.action.purchase.ArrivalOrderPrintAction" scope="prototype" parent="baseFilesAction">
+        <property name="arrivalOrderService" ref="arrivalOrderService"></property>
+        <property name="agprintServiceImpl" ref="agprintServiceImpl"></property>
+    </bean>
+    <!-- 采购订单打印Action -->
+    <bean id="buyOrderPrintAction" class="com.hd.agent.agprint.action.purchase.BuyOrderPrintAction" scope="prototype" parent="baseFilesAction">
+        <property name="buyOrderService" ref="buyOrderService"></property>
+        <property name="agprintServiceImpl" ref="agprintServiceImpl"></property>
+        <property name="purchaseEnterService" ref="purchaseEnterService"></property>
+    </bean>
+    <!-- 采购计划单打印Action -->
+    <bean id="plannedOrderPrintAction" class="com.hd.agent.agprint.action.purchase.PlannedOrderPrintAction" scope="prototype" parent="baseFilesAction">
+        <property name="plannedOrderService" ref="plannedOrderService"></property>
+        <property name="agprintServiceImpl" ref="agprintServiceImpl"></property>
+        <property name="purchaseEnterService" ref="purchaseEnterService"></property>
+    </bean>
+    <!-- 采购退货通知单打印Action  -->
+    <bean id="returnOrderPrintAction" class="com.hd.agent.agprint.action.purchase.ReturnOrderPrintAction" scope="prototype" parent="baseFilesAction">
+        <property name="returnOrderService" ref="returnOrderService"></property>
+        <property name="agprintServiceImpl" ref="agprintServiceImpl"></property>
+        <property name="purchaseRejectOutService" ref="purchaseRejectOutService"></property>
+    </bean>
+    <!-- 采购进货流水打印Action -->
+    <bean id="purchaseQueryPrintAction" class="com.hd.agent.agprint.action.purchase.PurchaseQueryPrintAction" scope="prototype" parent="baseFilesAction">
+        <property name="purchaseQueryService" ref="purchaseQueryService"></property>
+        <property name="agprintServiceImpl" ref="agprintServiceImpl"></property>
+    </bean>
+    <!-- ###* 与 Purchase 包相关结束 *### -->
+
+
+    <!-- ###* 与 Report 包相关开始 *### -->
+    <!-- 销售报表相关打印Action -->
+    <bean id="salesReportPrintAction" class="com.hd.agent.agprint.action.report.SalesReportPrintAction" scope="prototype" parent="baseFilesAction">
+        <property name="salesReportService" ref="salesReportService"></property>
+        <property name="agprintServiceImpl" ref="agprintServiceImpl"></property>
+    </bean>
+    <!-- 资金回笼相关打印Action -->
+    <bean id="financeFundsReturnPrintAction" class="com.hd.agent.agprint.action.report.FinanceFundsReturnPrintAction" scope="prototype" parent="baseFilesAction">
+        <property name="financeFundsReturnService" ref="financeFundsReturnService"></property>
+        <property name="agprintServiceImpl" ref="agprintServiceImpl"></property>
+    </bean>
+    <!-- ###* 与 Report 包相关结束 *### -->
+
+
+    <!-- ###* 与 Sales 包相关开始 *### -->
+    <!-- 车销打印相关 -->
+    <bean id="orderCarPrintAction" class="com.hd.agent.agprint.action.sales.OrderCarPrintAction" scope="prototype" parent="baseFilesAction">
+        <property name="storageSaleOutPrintService" ref="storageSaleOutPrintService"></property>
+        <property name="salesOrderCarService" ref="salesOrderCarService"></property>
+        <property name="agprintServiceImpl" ref="agprintServiceImpl"></property>
+    </bean>
+    <!-- 退货通知单打印相关 -->
+    <bean id="rejectBillPrintAction" class="com.hd.agent.agprint.action.sales.RejectBillPrintAction" scope="prototype" parent="baseFilesAction">
+        <property name="salesRejectBillService" ref="salesRejectBillService"></property>
+        <property name="agprintServiceImpl" ref="agprintServiceImpl"></property>
+    </bean>
+    <!-- 销售退货验收打印相关 -->
+    <bean id="rejectBillCheckPrintAction" class="com.hd.agent.agprint.action.sales.RejectBillCheckPrintAction" scope="prototype" parent="baseFilesAction">
+        <property name="salesRejectBillService" ref="salesRejectBillService"></property>
+        <property name="saleRejectEnterService" ref="saleRejectEnterService"></property>
+        <property name="agprintServiceImpl" ref="agprintServiceImpl"></property>
+    </bean>
+    <!-- 发货通知单打印发货单 -->
+    <bean id="dispatchBillPrintAction" class="com.hd.agent.agprint.action.sales.DispatchBillPrintAction" scope="prototype" parent="baseFilesAction">
+        <property name="salesDispatchBillService" ref="salesDispatchBillService"></property>
+        <property name="storageSaleOutService" ref="storageSaleOutService"></property>
+        <property name="storageSaleOutPrintService" ref="storageSaleOutPrintService"></property>
+        <property name="agprintServiceImpl" ref="agprintServiceImpl"></property>
+    </bean>
+    <!-- 销售 订单打印发货单 -->
+    <bean id="saleOrderPrintAction" class="com.hd.agent.agprint.action.sales.SaleOrderPrintAction" scope="prototype" parent="baseFilesAction">
+        <property name="salesOrderService" ref="salesOrderService"></property>
+        <property name="storageSaleOutService" ref="storageSaleOutService"></property>
+        <property name="storageSaleOutPrintService" ref="storageSaleOutPrintService"></property>
+        <property name="agprintServiceImpl" ref="agprintServiceImpl"></property>
+    </bean>
+    <bean id="orderGoodsPrintAction" class="com.hd.agent.agprint.action.sales.OrderGoodsPrintAction" scope="prototype" parent="baseFilesAction">
+        <property name="agprintServiceImpl" ref="agprintServiceImpl"></property>
+        <property name="orderGoodsService" ref="orderGoodsService"></property>
+    </bean>
+    <!-- 特价销售单打印 -->
+    <bean id="offpricePrintAction" class="com.hd.agent.agprint.action.sales.OffpricePrintAction" scope="prototype" parent="baseFilesAction">
+        <property name="salesOffpriceService" ref="salesOffpriceService"></property>
+        <property name="agprintServiceImpl" ref="agprintServiceImpl"></property>
+    </bean>
+
+    <!-- ###* 与 Sales 包相关结束 *### -->
+
+
+    <!-- ###* 与 Storage 包相关开始 *### -->
+    <!-- 库存总量相关打印Action -->
+    <bean id="storageSummaryPrintAction" class="com.hd.agent.agprint.action.storage.StorageSummaryPrintAction" scope="prototype" parent="baseFilesAction">
+        <property name="storageSummaryService" ref="storageSummaryService"></property>
+        <property name="agprintServiceImpl" ref="agprintServiceImpl"></property>
+    </bean>
+    <!-- 发货单相关打印 Action-->
+    <bean id="saleOutPrintAction" class="com.hd.agent.agprint.action.storage.SaleOutPrintAction" scope="prototype" parent="baseFilesAction">
+        <property name="storageSaleOutService" ref="storageSaleOutService"></property>
+        <property name="storageSaleOutPrintService" ref="storageSaleOutPrintService"></property>
+        <property name="agprintServiceImpl" ref="agprintServiceImpl"></property>
+        <property name="salesOrderService" ref="salesOrderService"></property>
+    </bean>
+    <!-- 大单发货单相关打印 Action-->
+    <bean id="bigSaleOutPrintAction" class="com.hd.agent.agprint.action.storage.BigSaleOutPrintAction" scope="prototype" parent="baseFilesAction">
+        <property name="bigSaleOutService" ref="bigSaleOutService"></property>
+        <property name="storageSaleOutPrintService" ref="storageSaleOutPrintService"></property>
+        <property name="agprintServiceImpl" ref="agprintServiceImpl"></property>
+    </bean>
+    <!-- 销售退货入库单相关打印 Action-->
+    <bean id="saleRejectEnterPrintAction" class="com.hd.agent.agprint.action.storage.SaleRejectEnterPrintAction" scope="prototype" parent="baseFilesAction">
+        <property name="saleRejectEnterService" ref="saleRejectEnterService"></property>
+        <property name="agprintServiceImpl" ref="agprintServiceImpl"></property>
+    </bean>
+    <!-- 采购退货出库单相关打印 Action-->
+    <bean id="purchaseRejectOutPrintAction" class="com.hd.agent.agprint.action.storage.PurchaseRejectOutPrintAction" scope="prototype" parent="baseFilesAction">
+        <property name="purchaseRejectOutService" ref="purchaseRejectOutService"></property>
+        <property name="agprintServiceImpl" ref="agprintServiceImpl"></property>
+    </bean>
+    <!-- 调拨单相关打印 Action-->
+    <bean id="allocatePrintAction" class="com.hd.agent.agprint.action.storage.AllocatePrintAction" scope="prototype" parent="baseFilesAction">
+        <property name="allocateService" ref="allocateService"></property>
+        <property name="agprintServiceImpl" ref="agprintServiceImpl"></property>
+    </bean>
+    <!-- 交接单相关打印 -->
+    <bean id="deliveryPrintAction" class="com.hd.agent.agprint.action.storage.DeliveryPrintAction" scope="prototype" parent="baseFilesAction">
+        <property name="deliveryService" ref="deliveryService"></property>
+        <property name="agprintServiceImpl" ref="agprintServiceImpl"></property>
+    </bean>
+    <!-- 报溢报损打印 -->
+    <bean id="adjustmentsPrintAction" class="com.hd.agent.agprint.action.storage.AdjustmentsPrintAction" scope="prototype" parent="baseFilesAction">
+        <property name="adjustmentsService" ref="adjustmentsService"></property>
+        <property name="agprintServiceImpl" ref="agprintServiceImpl"></property>
+    </bean>
+    <!-- 其他入库 -->
+    <bean id="storageOtherEnterPrintAction" class="com.hd.agent.agprint.action.storage.StorageOtherEnterPrintAction" scope="prototype" parent="baseFilesAction">
+        <property name="storageOtherEnterService" ref="storageOtherEnterService"></property>
+        <property name="agprintServiceImpl" ref="agprintServiceImpl"></property>
+    </bean>
+    <!-- 其他出库 -->
+    <bean id="storageOtherOutPrintAction" class="com.hd.agent.agprint.action.storage.StorageOtherOutPrintAction" scope="prototype" parent="baseFilesAction">
+        <property name="storageOtherOutService" ref="storageOtherOutService"></property>
+        <property name="agprintServiceImpl" ref="agprintServiceImpl"></property>
+    </bean>
+    <!-- 其他出库 -->
+    <bean id="storageLendPrintAction" class="com.hd.agent.agprint.action.storage.StorageLendPrintAction" scope="prototype" parent="baseFilesAction">
+        <property name="lendService" ref="lendService"></property>
+        <property name="agprintServiceImpl" ref="agprintServiceImpl"></property>
+    </bean>
+    <!-- 采购入库单 -->
+    <bean id="storagePurchaseEnterPrintAction" class="com.hd.agent.agprint.action.storage.PurchaseEnterPrintAction" scope="prototype" parent="baseFilesAction">
+        <property name="purchaseEnterService" ref="purchaseEnterService"></property>
+        <property name="agprintServiceImpl" ref="agprintServiceImpl"></property>
+    </bean>
+    <!-- 盘点单 -->
+    <bean id="checkListPrintAction" class="com.hd.agent.agprint.action.storage.CheckListPrintAction" scope="prototype" parent="baseFilesAction">
+        <property name="checkListService" ref="checkListService"></property>
+        <property name="agprintServiceImpl" ref="agprintServiceImpl"></property>
+    </bean>
+    <!-- ###* 与 Storage 包相关结束 *### -->
+
+    <!-- ###* 与 delivery 包相关开始 *### -->
+    <!-- 供应商代配送单打印Action -->
+    <bean id="aogorderPrintAction" class="com.hd.agent.agprint.action.delivery.AogorderPrintAction" scope="prototype" parent="baseFilesAction">
+        <property name="distributeService" ref="distributeService"></property>
+        <property name="agprintServiceImpl" ref="agprintServiceImpl"></property>
+    </bean>
+    <bean id="aogreturnPrintAction" class="com.hd.agent.agprint.action.delivery.AogreturnPrintAction" scope="prototype" parent="baseFilesAction">
+        <property name="distributeService" ref="distributeService"></property>
+        <property name="agprintServiceImpl" ref="agprintServiceImpl"></property>
+    </bean>
+    <bean id="orderPrintAction" class="com.hd.agent.agprint.action.delivery.OrderPrintAction" scope="prototype" parent="baseFilesAction">
+        <property name="distributeService" ref="distributeService"></property>
+        <property name="agprintServiceImpl" ref="agprintServiceImpl"></property>
+    </bean>
+    <bean id="rejectbillPrintAction" class="com.hd.agent.agprint.action.delivery.RejectbillPrintAction" scope="prototype" parent="baseFilesAction">
+        <property name="distributeService" ref="distributeService"></property>
+        <property name="agprintServiceImpl" ref="agprintServiceImpl"></property>
+    </bean>
+    <!-- 供应商代配送出入库单打印Action -->
+    <bean id="deliveryEnterPrintAction" class="com.hd.agent.agprint.action.delivery.DeliveryEnterPrintAction" scope="prototype" parent="baseFilesAction">
+        <property name="distributeRejectService" ref="distributeRejectService"></property>
+        <property name="agprintServiceImpl" ref="agprintServiceImpl"></property>
+        <property name="deliveryOutService" ref="deliveryOutService"></property>
+    </bean>
+
+    <!-- ###* 与 delivery 包相关结束 *### -->
+
+
+    <!-- ###* 与 splitmerge 包相关开始 *### -->
+    <bean id="splitMergePrintAction" class="com.hd.agent.agprint.action.storage.SplitMergePrintAction" scope="prototype" parent="baseFilesAction">
+        <property name="splitMergeService" ref="splitMergeService"></property>
+        <property name="agprintServiceImpl" ref="agprintServiceImpl"></property>
+    </bean>
+    <!-- ###* 与 journalsheet 包相关开始 *### -->
+    <!-- 代垫收回单打印Action-->
+    <bean id="matReimbursePrintAction" class="com.hd.agent.agprint.action.journalsheet.MatReimbursePrintAction" scope="prototype" parent="baseFilesAction">
+        <property name="journalSheetService" ref="journalSheetService"></property>
+        <property name="agprintServiceImpl" ref="agprintServiceImpl"></property>
+    </bean>
+    <!-- 代垫录入单打印Action-->
+    <bean id="matcostsInputPrintAction" class="com.hd.agent.agprint.action.journalsheet.MatcostsInputPrintAction" scope="prototype" parent="baseFilesAction">
+        <property name="journalSheetService" ref="journalSheetService"></property>
+        <property name="printTempletService" ref="printTempletService"></property>
+        <property name="agprintServiceImpl" ref="agprintServiceImpl"></property>
+    </bean>
+    <!-- 部门日常费用单打印Action-->
+    <bean id="deptDailyCostPrintAction" class="com.hd.agent.agprint.action.journalsheet.DeptDailyCostPrintAction" scope="prototype" parent="baseFilesAction">
+        <property name="deptDailyCostService" ref="deptDailyCostService"></property>
+        <property name="agprintServiceImpl" ref="agprintServiceImpl"></property>
+    </bean>
+    <!-- 收入单打印Action-->
+    <bean id="deptIncomePrintAction" class="com.hd.agent.agprint.action.journalsheet.DeptIncomePrintAction" scope="prototype" parent="baseFilesAction">
+        <property name="deptIncomeService" ref="deptIncomeService"></property>
+        <property name="agprintServiceImpl" ref="agprintServiceImpl"></property>
+    </bean>
+    <!-- ###* 与 journalsheet 包相关开始 *### -->
+</beans>

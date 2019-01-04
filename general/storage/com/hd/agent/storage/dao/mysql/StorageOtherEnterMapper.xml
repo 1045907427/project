@@ -1,0 +1,671 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.storage.dao.StorageOtherEnterMapper" >
+ 	<sql id="storageOtherEnter_Column_List">
+	    id, businessdate, status, remark, adduserid, addusername, adddeptid, adddeptname, 
+	    addtime, modifyuserid, modifyusername, modifytime, audituserid, auditusername, audittime, 
+	    stopuserid, stopusername, stoptime, closetime, printtimes, deptid, userid, storageid, 
+	    entertype, field01, field02, field03, field04, field05, field06, field07, field08,sourcetype,sourceid,vouchertimes
+	</sql>
+	<sql id="storageOtherEnterDetail_Column_List">
+	    id, billid, goodsid, brandid, unitid, unitname, unitnum, auxunitid, auxunitname, 
+	    auxnum, auxremainder, auxnumdetail,totalbox, taxprice, taxamount, notaxprice, notaxamount, 
+	    taxtype, tax,costprice,realcostprice, remark, storageid, summarybatchid,storagelocationid, batchno, produceddate, 
+	    deadline, field01, field02, field03, field04, field05, field06, field07, field08, 
+	    seq
+	</sql>
+ 	<insert id="addStorageOtherEnterDetail" parameterType="com.hd.agent.storage.model.StorageOtherEnterDetail">
+ 		insert into t_storage_other_enter_detail
+	    <trim prefix="(" suffix=")" suffixOverrides=",">
+	      <if test="id != null">
+	        id,
+	      </if>
+	      <if test="billid != null">
+	        billid,
+	      </if>
+	      <if test="goodsid != null">
+	        goodsid,
+	      </if>
+	      <if test="brandid != null">
+	        brandid,
+	      </if>
+	      <if test="unitid != null">
+	        unitid,
+	      </if>
+	      <if test="unitname != null">
+	        unitname,
+	      </if>
+	      <if test="unitnum != null">
+	        unitnum,
+	      </if>
+	      <if test="auxunitid != null">
+	        auxunitid,
+	      </if>
+	      <if test="auxunitname != null">
+	        auxunitname,
+	      </if>
+	      <if test="auxnum != null">
+	        auxnum,
+	      </if>
+	      <if test="auxremainder != null">
+	        auxremainder,
+	      </if>
+	      <if test="auxnumdetail != null">
+	        auxnumdetail,
+	      </if>
+	      <if test="totalbox != null">
+	        totalbox,
+	      </if>
+	      <if test="taxprice != null">
+	        taxprice,
+	      </if>
+	      <if test="taxamount != null">
+	        taxamount,
+	      </if>
+	      <if test="notaxprice != null">
+	        notaxprice,
+	      </if>
+	      <if test="notaxamount != null">
+	        notaxamount,
+	      </if>
+	      <if test="taxtype != null">
+	        taxtype,
+	      </if>
+	      <if test="tax != null">
+	        tax,
+	      </if>
+	      <if test="costprice != null">
+	        costprice,
+	      </if>
+	      <if test="realcostprice != null">
+	        realcostprice,
+	      </if>
+	      <if test="remark != null">
+	        remark,
+	      </if>
+	      <if test="storageid != null">
+	        storageid,
+	      </if>
+	      <if test="summarybatchid != null">
+	        summarybatchid,
+	      </if>
+	      <if test="storagelocationid != null">
+	        storagelocationid,
+	      </if>
+	      <if test="batchno != null">
+	        batchno,
+	      </if>
+	      <if test="produceddate != null">
+	        produceddate,
+	      </if>
+	      <if test="deadline != null">
+	        deadline,
+	      </if>
+	      <if test="field01 != null">
+	        field01,
+	      </if>
+	      <if test="field02 != null">
+	        field02,
+	      </if>
+	      <if test="field03 != null">
+	        field03,
+	      </if>
+	      <if test="field04 != null">
+	        field04,
+	      </if>
+	      <if test="field05 != null">
+	        field05,
+	      </if>
+	      <if test="field06 != null">
+	        field06,
+	      </if>
+	      <if test="field07 != null">
+	        field07,
+	      </if>
+	      <if test="field08 != null">
+	        field08,
+	      </if>
+	      <if test="seq != null">
+	        seq,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides=",">
+	      <if test="id != null">
+	        #{id},
+	      </if>
+	      <if test="billid != null">
+	        #{billid},
+	      </if>
+	      <if test="goodsid != null">
+	        #{goodsid},
+	      </if>
+	      <if test="brandid != null">
+	        #{brandid},
+	      </if>
+	      <if test="unitid != null">
+	        #{unitid},
+	      </if>
+	      <if test="unitname != null">
+	        #{unitname},
+	      </if>
+	      <if test="unitnum != null">
+	        #{unitnum},
+	      </if>
+	      <if test="auxunitid != null">
+	        #{auxunitid},
+	      </if>
+	      <if test="auxunitname != null">
+	        #{auxunitname},
+	      </if>
+	      <if test="auxnum != null">
+	        #{auxnum},
+	      </if>
+	      <if test="auxremainder != null">
+	        #{auxremainder},
+	      </if>
+	      <if test="auxnumdetail != null">
+	        #{auxnumdetail},
+	      </if>
+	      <if test="totalbox != null">
+	        #{totalbox},
+	      </if>
+	      <if test="taxprice != null">
+	        #{taxprice},
+	      </if>
+	      <if test="taxamount != null">
+	        #{taxamount},
+	      </if>
+	      <if test="notaxprice != null">
+	        #{notaxprice},
+	      </if>
+	      <if test="notaxamount != null">
+	        #{notaxamount},
+	      </if>
+	      <if test="taxtype != null">
+	        #{taxtype},
+	      </if>
+	      <if test="tax != null">
+	        #{tax},
+	      </if>
+	      <if test="costprice != null">
+	        #{costprice},
+	      </if>
+	      <if test="realcostprice != null">
+	        #{realcostprice},
+	      </if>
+	      <if test="remark != null">
+	        #{remark},
+	      </if>
+	      <if test="storageid != null">
+	        #{storageid},
+	      </if>
+	      <if test="summarybatchid != null">
+	        #{summarybatchid},
+	      </if>
+	      <if test="storagelocationid != null">
+	        #{storagelocationid},
+	      </if>
+	      <if test="batchno != null">
+	        #{batchno},
+	      </if>
+	      <if test="produceddate != null">
+	        #{produceddate},
+	      </if>
+	      <if test="deadline != null">
+	        #{deadline},
+	      </if>
+	      <if test="field01 != null">
+	        #{field01},
+	      </if>
+	      <if test="field02 != null">
+	        #{field02},
+	      </if>
+	      <if test="field03 != null">
+	        #{field03},
+	      </if>
+	      <if test="field04 != null">
+	        #{field04},
+	      </if>
+	      <if test="field05 != null">
+	        #{field05},
+	      </if>
+	      <if test="field06 != null">
+	        #{field06},
+	      </if>
+	      <if test="field07 != null">
+	        #{field07},
+	      </if>
+	      <if test="field08 != null">
+	        #{field08},
+	      </if>
+	      <if test="seq != null">
+	        #{seq},
+	      </if>
+	    </trim>
+ 	</insert>
+ 	<insert id="addStorageOtherEnter" parameterType="com.hd.agent.storage.model.StorageOtherEnter">
+	    insert into t_storage_other_enter
+	    <trim prefix="(" suffix=")" suffixOverrides=",">
+	      <if test="id != null">
+	        id,
+	      </if>
+	      <if test="businessdate != null">
+	        businessdate,
+	      </if>
+	      <if test="status != null">
+	        status,
+	      </if>
+	      <if test="remark != null">
+	        remark,
+	      </if>
+	      <if test="adduserid != null">
+	        adduserid,
+	      </if>
+	      <if test="addusername != null">
+	        addusername,
+	      </if>
+	      <if test="adddeptid != null">
+	        adddeptid,
+	      </if>
+	      <if test="adddeptname != null">
+	        adddeptname,
+	      </if>
+	      <if test="1==1">
+	        addtime,
+	      </if>
+	      <if test="deptid != null">
+	        deptid,
+	      </if>
+	      <if test="userid != null">
+	        userid,
+	      </if>
+	      <if test="storageid != null">
+	        storageid,
+	      </if>
+	      <if test="entertype != null">
+	        entertype,
+	      </if>
+	      <if test="field01 != null">
+	        field01,
+	      </if>
+	      <if test="field02 != null">
+	        field02,
+	      </if>
+	      <if test="field03 != null">
+	        field03,
+	      </if>
+	      <if test="field04 != null">
+	        field04,
+	      </if>
+	      <if test="field05 != null">
+	        field05,
+	      </if>
+	      <if test="field06 != null">
+	        field06,
+	      </if>
+	      <if test="field07 != null">
+	        field07,
+	      </if>
+	      <if test="field08 != null">
+	        field08,
+	      </if>
+			<if test="sourcetype != null">
+				sourcetype,
+			</if>
+			<if test="sourceid != null">
+				sourceid,
+			</if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides=",">
+	      <if test="id != null">
+	        #{id},
+	      </if>
+	      <if test="businessdate != null">
+	        #{businessdate},
+	      </if>
+	      <if test="status != null">
+	        #{status},
+	      </if>
+	      <if test="remark != null">
+	        #{remark},
+	      </if>
+	      <if test="adduserid != null">
+	        #{adduserid},
+	      </if>
+	      <if test="addusername != null">
+	        #{addusername},
+	      </if>
+	      <if test="adddeptid != null">
+	        #{adddeptid},
+	      </if>
+	      <if test="adddeptname != null">
+	        #{adddeptname},
+	      </if>
+	      <if test="1==1">
+	        now(),
+	      </if>
+	      <if test="deptid != null">
+	        #{deptid},
+	      </if>
+	      <if test="userid != null">
+	        #{userid},
+	      </if>
+	      <if test="storageid != null">
+	        #{storageid},
+	      </if>
+	      <if test="entertype != null">
+	        #{entertype},
+	      </if>
+	      <if test="field01 != null">
+	        #{field01},
+	      </if>
+	      <if test="field02 != null">
+	        #{field02},
+	      </if>
+	      <if test="field03 != null">
+	        #{field03},
+	      </if>
+	      <if test="field04 != null">
+	        #{field04},
+	      </if>
+	      <if test="field05 != null">
+	        #{field05},
+	      </if>
+	      <if test="field06 != null">
+	        #{field06},
+	      </if>
+	      <if test="field07 != null">
+	        #{field07},
+	      </if>
+	      <if test="field08 != null">
+	        #{field08},
+	      </if>
+			<if test="sourcetype != null">
+				#{sourcetype},
+			</if>
+			<if test="sourceid != null">
+				#{sourceid},
+			</if>
+	    </trim>
+	  </insert>
+	  <select id="getStorageOtherEnterInfo" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.StorageOtherEnter">
+  		select <include refid="storageOtherEnter_Column_List"/>
+	  		from t_storage_other_enter where id = #{id}
+	  </select>
+	  <select id="getStorageOtherEnterDetailListByID" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.StorageOtherEnterDetail">
+	  	select <include refid="storageOtherEnterDetail_Column_List"/>
+	  	from t_storage_other_enter_detail where billid=#{billid}
+	  </select>
+	  <select id="showStorageOtherEnterList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.storage.model.StorageOtherEnter">
+	  	select <include refid="storageOtherEnter_Column_List"/>
+	  	from t_storage_other_enter
+	  	<trim prefix="where" prefixOverrides="and|or">
+	      <include refid="common.Page_querySql"/>	
+	      <include refid="common.Page_dataSql"/>
+	      <if test="condition.businessdate1 != null">
+			 and businessdate >= #{condition.businessdate1}
+		  </if>
+		  <if test="condition.businessdate2 != null">
+			 <![CDATA[and businessdate <= #{condition.businessdate2}]]>
+		  </if>
+		  <if test="condition.id != null" >
+	         and id like CONCAT('%',#{condition.id},'%')
+	      </if>
+	      <if test="condition.status != null">
+	         and status = #{condition.status}
+	      </if>
+	      <if test="condition.deptid != null">
+	         and deptid = #{condition.deptid}
+	      </if>
+	      <if test="condition.userid != null">
+	         and userid = #{condition.userid}
+	      </if>
+	      <if test="condition.storageid != null">
+	         and storageid = #{condition.storageid}
+	      </if>
+	      <if test="condition.entertype != null">
+	         and entertype = #{condition.entertype}
+	      </if>
+			<if test="condition.sourceid != null">
+				and sourceid = #{condition.sourceid}
+			</if>
+			<if test="condition.sourcetype != null">
+				and sourcetype = #{condition.sourcetype}
+			</if>
+	      <choose>
+	      	<when test="condition.isClose ==0 ">
+	      		and status in("1","2")
+	      	</when>
+	      	<when test="condition.isClose ==1 ">
+	      		and status in("3","4")
+	      	</when>
+	      </choose>	      
+      	  <if test="condition.printsign != null and condition.queryprinttimes != null">
+      		<choose>
+      			<when test="condition.printsign == 1">
+      				<![CDATA[and printtimes = #{condition.queryprinttimes} ]]>
+      			</when>
+      			<when test="condition.printsign == 2">
+      				<![CDATA[and printtimes < #{condition.queryprinttimes} ]]>
+      			</when>
+      			<when test="condition.printsign == 3">
+      				<![CDATA[and printtimes <= #{condition.queryprinttimes} ]]>
+      			</when>
+      			<when test="condition.printsign == 4">
+      				<![CDATA[and printtimes > #{condition.queryprinttimes} ]]>
+      			</when>
+      			<when test="condition.printsign == 5">
+      				<![CDATA[and printtimes >= #{condition.queryprinttimes} ]]>
+      			</when>
+      		</choose>
+      	 </if>
+	    </trim>
+	    <include refid="common.Page_limit" />
+	  </select>
+	  <select id="showStorageOtherEnterListCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+	  	select count(1) from t_storage_other_enter
+	  	<trim prefix="where" prefixOverrides="and|or">
+	      <include refid="common.Page_querySql"/>	
+	      <include refid="common.Page_dataSql"/>
+	      <if test="condition.businessdate1 != null">
+			 and businessdate >= #{condition.businessdate1}
+		  </if>
+		  <if test="condition.businessdate2 != null">
+			 <![CDATA[and businessdate <= #{condition.businessdate2}]]>
+		  </if>
+		  <if test="condition.id != null" >
+	         and id like CONCAT('%',#{condition.id},'%')
+	      </if>
+	      <if test="condition.status != null">
+	         and status = #{condition.status}
+	      </if>
+	      <if test="condition.deptid != null">
+	         and deptid = #{condition.deptid}
+	      </if>
+	      <if test="condition.userid != null">
+	         and userid = #{condition.userid}
+	      </if>
+	      <if test="condition.storageid != null">
+	         and storageid = #{condition.storageid}
+	      </if>
+	      <if test="condition.entertype != null">
+	         and entertype = #{condition.entertype}
+	      </if>
+			<if test="condition.sourceid != null">
+				and sourceid = #{condition.sourceid}
+			</if>
+			<if test="condition.sourcetype != null">
+				and sourcetype = #{condition.sourcetype}
+			</if>
+	      <choose>
+	      	<when test="condition.isClose ==0 ">
+	      		and status in("1","2")
+	      	</when>
+	      	<when test="condition.isClose ==1 ">
+	      		and status in("3","4")
+	      	</when>
+	      </choose>	      	      
+      	  <if test="condition.printsign != null and condition.queryprinttimes != null">
+      		<choose>
+      			<when test="condition.printsign == 1">
+      				<![CDATA[and printtimes = #{condition.queryprinttimes} ]]>
+      			</when>
+      			<when test="condition.printsign == 2">
+      				<![CDATA[and printtimes < #{condition.queryprinttimes} ]]>
+      			</when>
+      			<when test="condition.printsign == 3">
+      				<![CDATA[and printtimes <= #{condition.queryprinttimes} ]]>
+      			</when>
+      			<when test="condition.printsign == 4">
+      				<![CDATA[and printtimes > #{condition.queryprinttimes} ]]>
+      			</when>
+      			<when test="condition.printsign == 5">
+      				<![CDATA[and printtimes >= #{condition.queryprinttimes} ]]>
+      			</when>
+      		</choose>
+      	 </if>
+	    </trim>
+	  </select>
+	<select id="getStorageOtherEnterAmountByID" parameterType="java.lang.String" resultType="java.util.Map">
+		select sum(taxamount) taxamount,sum(notaxamount) notaxamount
+		from t_storage_other_enter_detail where billid=#{billid}
+	</select>
+	  <delete id="deleteStorageOtherEnterDetailListByBillid" parameterType="java.lang.String">
+	  	delete from t_storage_other_enter_detail where billid=#{billid}
+	  </delete>
+	  <update id="editStorageOtherEnter" parameterType="com.hd.agent.storage.model.StorageOtherEnter">
+	    update t_storage_other_enter
+	    <set>
+	      <if test="businessdate != null">
+	        businessdate = #{businessdate},
+	      </if>
+	      <if test="status != null">
+	        status = #{status},
+	      </if>
+	      <if test="remark != null">
+	        remark = #{remark},
+	      </if>
+	      <if test="modifyuserid != null">
+	        modifyuserid = #{modifyuserid},
+	      </if>
+	      <if test="modifyusername != null">
+	        modifyusername = #{modifyusername},
+	      </if>
+	      <if test="1==1">
+	        modifytime = now(),
+	      </if>
+	      <if test="deptid != null">
+	        deptid = #{deptid},
+	      </if>
+	      <if test="userid != null">
+	        userid = #{userid},
+	      </if>
+	      <if test="storageid != null">
+	        storageid = #{storageid},
+	      </if>
+	      <if test="entertype != null">
+	        entertype = #{entertype},
+	      </if>
+	      <if test="field01 != null">
+	        field01 = #{field01},
+	      </if>
+	      <if test="field02 != null">
+	        field02 = #{field02},
+	      </if>
+	      <if test="field03 != null">
+	        field03 = #{field03},
+	      </if>
+	      <if test="field04 != null">
+	        field04 = #{field04},
+	      </if>
+	      <if test="field05 != null">
+	        field05 = #{field05},
+	      </if>
+	      <if test="field06 != null">
+	        field06 = #{field06},
+	      </if>
+	      <if test="field07 != null">
+	        field07 = #{field07},
+	      </if>
+	      <if test="field08 != null">
+	        field08 = #{field08},
+	      </if>
+	    </set>
+	    where id = #{id}
+	  </update>
+	  <delete id="deleteStorageOtherEnter" parameterType="java.lang.String">
+	  	delete from t_storage_other_enter where id=#{id} and (status='2' or status='1')
+	  </delete>
+	  <update id="auditStorageOtherEnter">
+  		update t_storage_other_enter set
+		 businessdate = businessdate,
+  		status ='4',audituserid=#{userid},auditusername=#{username},audittime=now(),closetime=now()
+  		where id=#{id} and (status='2' or status='6')
+  	  </update>
+  	  <update id="updateStorageOtherEnterDetailSummarybatchid">
+  	  	update t_storage_other_enter_detail
+  	  	set summarybatchid=#{summarybatchid} where id=#{id}
+  	  </update>
+  	  <update id="oppauditStorageOtherEnter" parameterType="java.lang.String">
+  		update t_storage_other_enter set status ='2'
+  		where id=#{id} and (status='3' or status='4')
+  	  </update>
+  	  
+  	  <select id="showStorageOtherEnterListBy" parameterType="java.util.Map" resultType="com.hd.agent.storage.model.StorageOtherEnter">
+  		select 
+	    <include refid="storageOtherEnter_Column_List" />
+	    from t_storage_other_enter
+  		<trim prefix="where" prefixOverrides="and|or">
+		  	<if test="dataSql != null">
+		  		and ${dataSql}
+		  	</if>
+  			<if test="idarrs!=null">
+  				and find_in_set(id,#{idarrs})
+  			</if>
+  			<if test="status!=null">
+  				and status=#{status}
+  			</if>
+  			<if test="statusarr!=null">
+			   and FIND_IN_SET(status,#{statusarr})
+  			</if>
+			<if test="notprint != null and notprint == 1">
+	  			 and (printtimes is null or printtimes=0)
+			</if>
+  		</trim>
+  	</select>
+  	
+  	<update id="updateOrderPrinttimes" parameterType="com.hd.agent.storage.model.StorageOtherEnter">
+		update t_storage_other_enter
+	    <set>
+	      <if test="printtimes != null">
+	        printtimes = IFNULL(printtimes,0)+1,
+	      </if>
+	    </set>
+	    where id = #{id}
+	</update>
+	<select id="getStorageOtherEnterIdBySourceId" parameterType="java.lang.String" resultType="java.lang.String">
+		select id FROM t_storage_other_enter where sourceid=#{sourceid}
+	</select>
+	<select id="getStorageOtherEnterSumData" resultType="map">
+		select t.id,t.entertype,sum(t1.taxamount) as taxamount,sum(t1.notaxamount) as notaxamount,t1.goodsid,sum(t1.unitnum) as unitnum
+		from t_storage_other_enter t
+		LEFT JOIN t_storage_other_enter_detail t1 ON t.id=t1.billid
+		where 1=1
+		<if test="list != null">
+			and t.id in
+			<foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		<if test="list == null">
+			1>2
+		</if>
+		GROUP BY t.id,t1.goodsid
+	</select>
+	<select id="getStorageOtherEnterSumById" parameterType="java.lang.String" resultType="map">
+		select sum(t1.taxamount) as taxamount
+		from t_storage_other_enter t
+		LEFT JOIN t_storage_other_enter_detail t1 ON t.id=t1.billid
+		WHERE t.id=#{id}
+	</select>
+</mapper>

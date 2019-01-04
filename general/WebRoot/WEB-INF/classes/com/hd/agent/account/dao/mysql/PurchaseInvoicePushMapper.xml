@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.account.dao.PurchaseInvoicePushMapper">
+    <sql id="Base_Column_List" >
+	    id, businessdate, supplierid, pushtype, subject, brand, invoiceid, amount, iswriteoff, 
+	    status, remark, adduserid, addusername, adddeptid, adddeptname, addtime, modifyuserid, 
+	    modifyusername, modifytime, audituserid, auditusername, audittime, stopuserid, stopusername, 
+	    stoptime, closetime, printtimes, field01, field02, field03, field04, field05, field06, 
+	    field07, field08
+	</sql>
+    <sql id="Base_Column_List_AmountSUM" >
+	    id, businessdate, supplierid, pushtype, subject, brand, invoiceid ,sum(amount) as amount, iswriteoff, 
+	    status, remark, adduserid, addusername, adddeptid, adddeptname, addtime, modifyuserid, 
+	    modifyusername, modifytime, audituserid, auditusername, audittime, stopuserid, stopusername, 
+	    stoptime, closetime, printtimes, field01, field02, field03, field04, field05, field06, 
+	    field07, field08
+	</sql>
+    <select id="getPurchaseInvoicePushInfo" parameterType="java.lang.String" resultType="com.hd.agent.account.model.PurchaseInvoicePush">
+        select <include refid="Base_Column_List_AmountSUM"/>
+        from t_account_purchase_invoice_push
+        where invoiceid=#{invoiceid}
+        GROUP BY invoiceid
+    </select>
+    <select id="getPurchaseInvoicePushInfoList" parameterType="java.lang.String" resultType="com.hd.agent.account.model.PurchaseInvoicePush">
+        select <include refid="Base_Column_List"/>
+        from t_account_purchase_invoice_push where invoiceid=#{invoiceid}
+    </select>
+    <select id="getPurchaseInvoicePushInfoByType" parameterType="java.lang.String" resultType="com.hd.agent.account.model.PurchaseInvoicePush">
+        select <include refid="Base_Column_List"/>
+        from t_account_purchase_invoice_push where id=#{id}
+    </select>
+    <select id="getPurchaseInvoicePushInfoByGoodsid" parameterType="java.lang.String" resultType="com.hd.agent.account.model.PurchaseInvoicePush">
+        select <include refid="Base_Column_List_AmountSUM"/>
+        from t_account_purchase_invoice_push
+        where invoiceid=#{invoiceid} and brand = #{brand}
+        GROUP BY invoiceid
+    </select>
+    <select id="getPurcicePushInfoByGoodsid" parameterType="java.lang.String" resultType="com.hd.agent.account.model.PurchaseInvoicePush">
+        select <include refid="Base_Column_List_AmountSUM"/>
+        from t_account_purchase_invoice_push
+        where invoiceid=#{invoiceid} and brand = #{brand}
+        GROUP BY invoiceid
+    </select>
+    <select id="showPurchaseInvoicePushInfo" parameterType="java.lang.String" resultType="com.hd.agent.account.model.PurchaseInvoicePush">
+        select <include refid="Base_Column_List"/>
+        from t_account_purchase_invoice_push where id=#{id}
+    </select>
+    <insert id="addPurchaseInvoicePursh" parameterType="com.hd.agent.account.model.PurchaseInvoicePush" >
+        insert into t_account_purchase_invoice_push
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="businessdate != null" >
+                businessdate,
+            </if>
+            <if test="supplierid != null" >
+                supplierid,
+            </if>
+            <if test="pushtype != null" >
+                pushtype,
+            </if>
+            <if test="subject != null" >
+                subject,
+            </if>
+            <if test="brand != null" >
+                brand,
+            </if>
+            <if test="invoiceid != null" >
+                invoiceid,
+            </if>
+            <if test="amount != null" >
+                amount,
+            </if>
+            <if test="iswriteoff != null" >
+                iswriteoff,
+            </if>
+            <if test="status != null" >
+                status,
+            </if>
+            <if test="remark != null" >
+                remark,
+            </if>
+            <if test="adduserid != null" >
+                adduserid,
+            </if>
+            <if test="addusername != null" >
+                addusername,
+            </if>
+            <if test="adddeptid != null" >
+                adddeptid,
+            </if>
+            <if test="adddeptname != null" >
+                adddeptname,
+            </if>
+            <if test="1 == 1" >
+                addtime,
+            </if>
+            <if test="field01 != null" >
+                field01,
+            </if>
+            <if test="field02 != null" >
+                field02,
+            </if>
+            <if test="field03 != null" >
+                field03,
+            </if>
+            <if test="field04 != null" >
+                field04,
+            </if>
+            <if test="field05 != null" >
+                field05,
+            </if>
+            <if test="field06 != null" >
+                field06,
+            </if>
+            <if test="field07 != null" >
+                field07,
+            </if>
+            <if test="field08 != null" >
+                field08,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id},
+            </if>
+            <if test="businessdate != null" >
+                #{businessdate},
+            </if>
+            <if test="supplierid != null" >
+                #{supplierid},
+            </if>
+            <if test="pushtype != null" >
+                #{pushtype},
+            </if>
+            <if test="subject != null" >
+                #{subject},
+            </if>
+            <if test="brand != null" >
+                #{brand},
+            </if>
+            <if test="invoiceid != null" >
+                #{invoiceid},
+            </if>
+            <if test="amount != null" >
+                #{amount},
+            </if>
+            <if test="iswriteoff != null" >
+                #{iswriteoff},
+            </if>
+            <if test="status != null" >
+                #{status},
+            </if>
+            <if test="remark != null" >
+                #{remark},
+            </if>
+            <if test="adduserid != null" >
+                #{adduserid},
+            </if>
+            <if test="addusername != null" >
+                #{addusername},
+            </if>
+            <if test="adddeptid != null" >
+                #{adddeptid},
+            </if>
+            <if test="adddeptname != null" >
+                #{adddeptname},
+            </if>
+            <if test="1 == 1" >
+                now(),
+            </if>
+            <if test="field01 != null" >
+                #{field01},
+            </if>
+            <if test="field02 != null" >
+                #{field02},
+            </if>
+            <if test="field03 != null" >
+                #{field03},
+            </if>
+            <if test="field04 != null" >
+                #{field04},
+            </if>
+            <if test="field05 != null" >
+                #{field05},
+            </if>
+            <if test="field06 != null" >
+                #{field06},
+            </if>
+            <if test="field07 != null" >
+                #{field07},
+            </if>
+            <if test="field08 != null" >
+                #{field08},
+            </if>
+        </trim>
+    </insert>
+    <update id="updatePurchaseInvoicePush" parameterType="com.hd.agent.account.model.PurchaseInvoicePush" >
+        update t_account_purchase_invoice_push
+        <set >
+            <if test="businessdate != null" >
+                businessdate = #{businessdate},
+            </if>
+            <if test="supplierid != null" >
+                supplierid = #{supplierid},
+            </if>
+            <if test="pushtype != null" >
+                pushtype = #{pushtype},
+            </if>
+            <if test="subject != null" >
+                subject = #{subject},
+            </if>
+            <if test="brand != null" >
+                brand = #{brand},
+            </if>
+            <if test="amount != null" >
+                amount = #{amount},
+            </if>
+            <if test="iswriteoff != null" >
+                iswriteoff = #{iswriteoff},
+            </if>
+            <if test="status != null" >
+                status = #{status},
+            </if>
+            <if test="remark != null" >
+                remark = #{remark},
+            </if>
+            <if test="modifyuserid != null" >
+                modifyuserid = #{modifyuserid},
+            </if>
+            <if test="modifyusername != null" >
+                modifyusername = #{modifyusername},
+            </if>
+            <if test="1 == 1" >
+                modifytime = now(),
+            </if>
+            <if test="field01 != null" >
+                field01 = #{field01},
+            </if>
+            <if test="field02 != null" >
+                field02 = #{field02},
+            </if>
+            <if test="field03 != null" >
+                field03 = #{field03},
+            </if>
+            <if test="field04 != null" >
+                field04 = #{field04},
+            </if>
+            <if test="field05 != null" >
+                field05 = #{field05},
+            </if>
+            <if test="field06 != null" >
+                field06 = #{field06},
+            </if>
+            <if test="field07 != null" >
+                field07 = #{field07},
+            </if>
+            <if test="field08 != null" >
+                field08 = #{field08},
+            </if>
+        </set>
+        where invoiceid = #{invoiceid}
+    </update>
+    <update id="updatePurchaseInvoicePushById" parameterType="com.hd.agent.account.model.PurchaseInvoicePush" >
+        update t_account_purchase_invoice_push
+        <set >
+            <if test="businessdate != null" >
+                businessdate = #{businessdate},
+            </if>
+            <if test="supplierid != null" >
+                supplierid = #{supplierid},
+            </if>
+            <if test="pushtype != null" >
+                pushtype = #{pushtype},
+            </if>
+            <if test="subject != null" >
+                subject = #{subject},
+            </if>
+            <if test="brand != null" >
+                brand = #{brand},
+            </if>
+            <if test="amount != null" >
+                amount = #{amount},
+            </if>
+            <if test="iswriteoff != null" >
+                iswriteoff = #{iswriteoff},
+            </if>
+            <if test="status != null" >
+                status = #{status},
+            </if>
+            <if test="remark != null" >
+                remark = #{remark},
+            </if>
+            <if test="modifyuserid != null" >
+                modifyuserid = #{modifyuserid},
+            </if>
+            <if test="modifyusername != null" >
+                modifyusername = #{modifyusername},
+            </if>
+            <if test="1 == 1" >
+                modifytime = now(),
+            </if>
+            <if test="field01 != null" >
+                field01 = #{field01},
+            </if>
+            <if test="field02 != null" >
+                field02 = #{field02},
+            </if>
+            <if test="field03 != null" >
+                field03 = #{field03},
+            </if>
+            <if test="field04 != null" >
+                field04 = #{field04},
+            </if>
+            <if test="field05 != null" >
+                field05 = #{field05},
+            </if>
+            <if test="field06 != null" >
+                field06 = #{field06},
+            </if>
+            <if test="field07 != null" >
+                field07 = #{field07},
+            </if>
+            <if test="field08 != null" >
+                field08 = #{field08},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <delete id="deletePurchaseInvoicePush" parameterType="java.lang.String">
+        delete from t_account_purchase_invoice_push where invoiceid = #{invoiceid}
+    </delete>
+    <delete id="deletePurchaseInvoicePushByType" parameterType="java.lang.String">
+        delete from t_account_purchase_invoice_push where id = #{id}
+    </delete>
+
+    <sql id="purchaseInvoicePushList_sql">
+        (
+        select t.id, t.businessdate, t.supplierid, t.pushtype, t.subject, t.brand,t1.buydeptid,t1.buyuserid,
+        t.invoiceid, t.amount, t.iswriteoff,t.status, t.remark, t.printtimes
+        from t_account_purchase_invoice_push t
+        INNER JOIN t_base_buy_supplier t1 on t.supplierid = t1.id
+        <trim prefix="where" prefixOverrides="and|or" >
+            <include refid="common.Page_querySql"/>
+            <if test="condition.businessdate1 != null">
+                and t.businessdate >= #{condition.businessdate1}
+            </if>
+            <if test="condition.businessdate2 != null">
+                <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+            </if>
+            <if test="condition.supplierid != null" >
+                and t.supplierid = #{condition.supplierid}
+            </if>
+            <if test="condition.pushtype != null" >
+                and t.pushtype = #{condition.pushtype}
+            </if>
+            <if test="condition.subject != null" >
+                and t.subject = #{condition.subject}
+            </if>
+            <if test="condition.brand != null" >
+                and t.brand = #{condition.brand}
+            </if>
+            <if test="condition.invoiceid != null" >
+                and t.invoiceid like CONCAT('%',#{condition.invoiceid},'%')
+            </if>
+            <if test="condition.iswriteoff != null" >
+                and t.iswriteoff = #{condition.iswriteoff}
+            </if>
+            <if test="condition.status != null" >
+                and t.status = #{condition.status}
+            </if>
+            <choose>
+                <when test="condition.isClose ==0 ">
+                    and t.status !='4'
+                </when>
+                <when test="condition.isClose ==1 ">
+                    and t.status ='4'
+                </when>
+            </choose>
+        </trim>
+        )
+    </sql>
+    <select id="showPurchaseInvoicePushList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.account.model.PurchaseInvoicePush">
+        select * from <include refid="purchaseInvoicePushList_sql" /> z
+        <trim prefix="where" prefixOverrides="and|or" >
+            <include refid="common.Page_dataSql"/>
+        </trim>
+        <if test="condition.isflag == null">
+            <include refid="common.Page_limit" />
+        </if>
+    </select>
+    <select id="showPurchaseInvoicePushCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+        select count(1) from <include refid="purchaseInvoicePushList_sql" /> z
+        <trim prefix="where" prefixOverrides="and|or" >
+            <include refid="common.Page_dataSql"/>
+        </trim>
+    </select>
+    <select id="getPurchaseInvoicePushSum" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.account.model.PurchaseInvoicePush">
+        select sum(z.amount) as amount from <include refid="purchaseInvoicePushList_sql" /> z
+        <trim prefix="where" prefixOverrides="and|or" >
+            <include refid="common.Page_dataSql"/>
+        </trim>
+    </select>
+    <update id="updatePurchaseInvoicePushStatus" parameterType="java.lang.String">
+	  	update t_account_purchase_invoice_push
+	  	set status=#{status},businessdate = date_format(now(), '%Y-%m-%d') where invoiceid = #{invoiceid}
+	  </update>
+    <update id="updatePurchaseInvoiceIswriteoff" parameterType="java.lang.String">
+	  	update t_account_purchase_invoice_push
+	  	set status='4',iswriteoff='1' where invoiceid = #{invoiceid} 
+	  </update>
+    <update id="updatePurchaseInvoiceUnIswriteoff" parameterType="java.lang.String">
+          update t_account_purchase_invoice_push
+	  	set status='3',iswriteoff='0' where invoiceid = #{invoiceid}
+      </update>
+    <update id="closePurchaseInvoicePush" parameterType="java.lang.String">
+	  	update t_account_purchase_invoice_push set status='4',iswriteoff='1',closetime=now() 
+  		where id=#{id} and status='3'
+	  </update>
+</mapper>

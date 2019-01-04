@@ -1,0 +1,424 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.journalsheet.dao.ContractCaluseMapper" >
+  <resultMap id="BaseResultMap" type="com.hd.agent.journalsheet.model.ContractCaluse" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="costtype" property="costtype" jdbcType="CHAR" />
+    <result column="sharetype" property="sharetype" jdbcType="CHAR" />
+    <result column="returntype" property="returntype" jdbcType="CHAR" />
+    <result column="returnmonthnum" property="returnmonthnum" jdbcType="INTEGER" />
+    <result column="returnrequire" property="returnrequire" jdbcType="CHAR" />
+    <result column="subjectexpenses" property="subjectexpenses" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="CHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="adduserid" property="adduserid" jdbcType="VARCHAR" />
+    <result column="addusername" property="addusername" jdbcType="VARCHAR" />
+    <result column="adddeptid" property="adddeptid" jdbcType="VARCHAR" />
+    <result column="adddeptname" property="adddeptname" jdbcType="VARCHAR" />
+    <result column="addtime" property="addtime" jdbcType="TIMESTAMP" />
+    <result column="modifyuserid" property="modifyuserid" jdbcType="VARCHAR" />
+    <result column="modifyusername" property="modifyusername" jdbcType="VARCHAR" />
+    <result column="modifytime" property="modifytime" jdbcType="TIMESTAMP" />
+    <result column="audituserid" property="audituserid" jdbcType="VARCHAR" />
+    <result column="auditusername" property="auditusername" jdbcType="VARCHAR" />
+    <result column="audittime" property="audittime" jdbcType="TIMESTAMP" />
+    <result column="stopuserid" property="stopuserid" jdbcType="VARCHAR" />
+    <result column="stopusername" property="stopusername" jdbcType="VARCHAR" />
+    <result column="stoptime" property="stoptime" jdbcType="TIMESTAMP" />
+    <result column="closetime" property="closetime" jdbcType="TIMESTAMP" />
+    <result column="printtimes" property="printtimes" jdbcType="INTEGER" />
+    <result column="printdatetime" property="printdatetime" jdbcType="TIMESTAMP" />
+  </resultMap>
+
+  <sql id="ContractCaluse_Column_List" >
+    id, name, type, costtype, sharetype, returntype, returnmonthnum, returnrequire, subjectexpenses, 
+    state, remark, adduserid, addusername, adddeptid, adddeptname, addtime, modifyuserid, 
+    modifyusername, modifytime, audituserid, auditusername, audittime, stopuserid, stopusername, 
+    stoptime, closetime, printtimes, printdatetime
+  </sql>
+  <sql id="ContractCaluse_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.id != null" >
+        and id  like concat('%', #{condition.id} ,'%')
+      </if>
+      <if test="condition.name != null" >
+        and name  like concat('%', #{condition.name} ,'%')
+      </if>
+      <if test="condition.type != null" >
+        and type = #{condition.type}
+      </if>
+      <if test="condition.costtype != null" >
+        and costtype = #{condition.costtype}
+      </if>
+      <if test="condition.sharetype != null" >
+        and sharetype = #{condition.sharetype}
+      </if>
+      <if test="condition.returntype != null" >
+        and returntype = #{condition.returntype}
+      </if>
+      <if test="condition.returnmonthnum != null" >
+        and returnmonthnum = #{condition.returnmonthnum}
+      </if>
+      <if test="condition.returnrequire != null" >
+        and returnrequire = #{condition.returnrequire}
+      </if>
+      <if test="condition.subjectexpenses != null" >
+        and subjectexpenses = #{condition.subjectexpenses}
+      </if>
+      <if test="condition.state != null" >
+        and state = #{condition.state}
+      </if>
+      <if test="condition.remark != null" >
+        and remark = #{condition.remark}
+      </if>
+      <if test="condition.adduserid != null" >
+        and adduserid = #{condition.adduserid}
+      </if>
+      <if test="condition.addusername != null" >
+        and addusername = #{condition.addusername}
+      </if>
+      <if test="condition.adddeptid != null" >
+        and adddeptid = #{condition.adddeptid}
+      </if>
+      <if test="condition.adddeptname != null" >
+        and adddeptname = #{condition.adddeptname}
+      </if>
+      <if test="condition.addtime != null" >
+        and addtime = #{condition.addtime}
+      </if>
+      <if test="condition.modifyuserid != null" >
+        and modifyuserid = #{condition.modifyuserid}
+      </if>
+      <if test="condition.modifyusername != null" >
+        and modifyusername = #{condition.modifyusername}
+      </if>
+      <if test="condition.modifytime != null" >
+        and modifytime = #{condition.modifytime}
+      </if>
+      <if test="condition.audituserid != null" >
+        and audituserid = #{condition.audituserid}
+      </if>
+      <if test="condition.auditusername != null" >
+        and auditusername = #{condition.auditusername}
+      </if>
+      <if test="condition.audittime != null" >
+        and audittime = #{condition.audittime}
+      </if>
+      <if test="condition.stopuserid != null" >
+        and stopuserid = #{condition.stopuserid}
+      </if>
+      <if test="condition.stopusername != null" >
+        and stopusername = #{condition.stopusername}
+      </if>
+      <if test="condition.stoptime != null" >
+        and stoptime = #{condition.stoptime}
+      </if>
+      <if test="condition.closetime != null" >
+        and closetime = #{condition.closetime}
+      </if>
+      <if test="condition.printtimes != null" >
+        and printtimes = #{condition.printtimes}
+      </if>
+      <if test="condition.printdatetime != null" >
+        and printdatetime = #{condition.printdatetime}
+      </if>
+    </trim>
+  </sql>
+  <select id="getContractCaluseListData" resultType="com.hd.agent.journalsheet.model.ContractCaluse" parameterType="com.hd.agent.common.util.PageMap" useCache="false">
+    select
+    <include refid="ContractCaluse_Column_List"/>
+    from t_finance_customer_contract_caluse
+      <include refid="ContractCaluse_Where_Clause" />
+      <include refid="common.Page_dataSql"/>
+    <include refid="common.Page_limit"/>
+  </select>
+  <select id="getContractCaluseListDataCount" resultType="int" parameterType="com.hd.agent.common.util.PageMap" useCache="false">
+    select count(1) from t_finance_customer_contract_caluse
+      <include refid="ContractCaluse_Where_Clause" />
+      <include refid="common.Page_dataSql"/>
+  </select>
+  <select id="getContractCaluseById" parameterType="java.lang.String" resultType="com.hd.agent.journalsheet.model.ContractCaluse">
+    select
+    <include refid="ContractCaluse_Column_List"/>
+    from t_finance_customer_contract_caluse
+    where id = #{id}
+  </select>
+  <insert id="addContractCaluse" parameterType="com.hd.agent.journalsheet.model.ContractCaluse" >
+    insert into t_finance_customer_contract_caluse
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="costtype != null" >
+        costtype,
+      </if>
+      <if test="sharetype != null" >
+        sharetype,
+      </if>
+      <if test="returntype != null" >
+        returntype,
+      </if>
+      <if test="returnmonthnum != null" >
+        returnmonthnum,
+      </if>
+      <if test="returnrequire != null" >
+        returnrequire,
+      </if>
+      <if test="subjectexpenses != null" >
+        subjectexpenses,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="adduserid != null" >
+        adduserid,
+      </if>
+      <if test="addusername != null" >
+        addusername,
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid,
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname,
+      </if>
+      <if test="1 == 1" >
+        addtime,
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid,
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername,
+      </if>
+      <if test="modifytime != null" >
+        modifytime,
+      </if>
+      <if test="audituserid != null" >
+        audituserid,
+      </if>
+      <if test="auditusername != null" >
+        auditusername,
+      </if>
+      <if test="audittime != null" >
+        audittime,
+      </if>
+      <if test="stopuserid != null" >
+        stopuserid,
+      </if>
+      <if test="stopusername != null" >
+        stopusername,
+      </if>
+      <if test="stoptime != null" >
+        stoptime,
+      </if>
+      <if test="closetime != null" >
+        closetime,
+      </if>
+      <if test="printtimes != null" >
+        printtimes,
+      </if>
+      <if test="printdatetime != null" >
+        printdatetime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="name != null" >
+        #{name},
+      </if>
+      <if test="type != null" >
+        #{type},
+      </if>
+      <if test="costtype != null" >
+        #{costtype},
+      </if>
+      <if test="sharetype != null" >
+        #{sharetype},
+      </if>
+      <if test="returntype != null" >
+        #{returntype},
+      </if>
+      <if test="returnmonthnum != null" >
+        #{returnmonthnum},
+      </if>
+      <if test="returnrequire != null" >
+        #{returnrequire},
+      </if>
+      <if test="subjectexpenses != null" >
+        #{subjectexpenses},
+      </if>
+      <if test="state != null" >
+        #{state},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+      <if test="adduserid != null" >
+        #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        #{adddeptname},
+      </if>
+      <if test="1 == 1" >
+        now(),
+      </if>
+      <if test="modifyuserid != null" >
+        #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        #{modifyusername},
+      </if>
+      <if test="modifytime != null" >
+        #{modifytime},
+      </if>
+      <if test="audituserid != null" >
+        #{audituserid},
+      </if>
+      <if test="auditusername != null" >
+        #{auditusername},
+      </if>
+      <if test="audittime != null" >
+        #{audittime},
+      </if>
+      <if test="stopuserid != null" >
+        #{stopuserid},
+      </if>
+      <if test="stopusername != null" >
+        #{stopusername},
+      </if>
+      <if test="stoptime != null" >
+        #{stoptime},
+      </if>
+      <if test="closetime != null" >
+        #{closetime},
+      </if>
+      <if test="printtimes != null" >
+        #{printtimes},
+      </if>
+      <if test="printdatetime != null" >
+        #{printdatetime},
+      </if>
+    </trim>
+  </insert>
+  <update id="editContractCaluse" parameterType="com.hd.agent.journalsheet.model.ContractCaluse" >
+    update t_finance_customer_contract_caluse
+    <set >
+      <if test="name != null" >
+        name = #{name},
+      </if>
+      <if test="type != null" >
+        type = #{type},
+      </if>
+      <if test="costtype != null" >
+        costtype = #{costtype},
+      </if>
+      <if test="sharetype != null" >
+        sharetype = #{sharetype},
+      </if>
+      <if test="returntype != null" >
+        returntype = #{returntype},
+      </if>
+      <if test="returnmonthnum != null" >
+        returnmonthnum = #{returnmonthnum},
+      </if>
+      <if test="returnrequire != null" >
+        returnrequire = #{returnrequire},
+      </if>
+      <if test="subjectexpenses != null" >
+        subjectexpenses = #{subjectexpenses},
+      </if>
+      <if test="state != null" >
+        state = #{state},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark},
+      </if>
+      <if test="adduserid != null" >
+        adduserid = #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        addusername = #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid = #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname = #{adddeptname},
+      </if>
+      <if test="addtime != null" >
+        addtime = #{addtime},
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid = #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername = #{modifyusername},
+      </if>
+      <if test="1 == 1" >
+        modifytime = now(),
+      </if>
+      <if test="audituserid != null" >
+        audituserid = #{audituserid},
+      </if>
+      <if test="auditusername != null" >
+        auditusername = #{auditusername},
+      </if>
+      <if test="audittime != null" >
+        audittime = #{audittime},
+      </if>
+      <if test="stopuserid != null" >
+        stopuserid = #{stopuserid},
+      </if>
+      <if test="stopusername != null" >
+        stopusername = #{stopusername},
+      </if>
+      <if test="stoptime != null" >
+        stoptime = #{stoptime},
+      </if>
+      <if test="closetime != null" >
+        closetime = #{closetime},
+      </if>
+      <if test="printtimes != null" >
+        printtimes = #{printtimes},
+      </if>
+      <if test="printdatetime != null" >
+        printdatetime = #{printdatetime},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  <delete id="deleteContractCaluse" parameterType="java.lang.String" >
+    delete from t_finance_customer_contract_caluse
+    where id = #{id}
+  </delete>
+  <update id="openContractCaluse" parameterType="java.lang.String" >
+    update t_finance_customer_contract_caluse
+    set state = '1'
+     where id = #{id}
+  </update>
+  <update id="closeContractCaluse" parameterType="java.lang.String" >
+    update t_finance_customer_contract_caluse
+    set state = '0'
+    where id = #{id}
+  </update>
+</mapper>

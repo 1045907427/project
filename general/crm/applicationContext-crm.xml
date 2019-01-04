@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+    <!-- dao配置 -->
+
+    <bean id="crmVisitPlanMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.hd.agent.crm.dao.CrmVisitPlanMapper" />
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="crmVisitRecordMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.hd.agent.crm.dao.CrmVisitRecordMapper" />
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="crmVisitReportMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.hd.agent.crm.dao.CrmVisitReportMapper" />
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="crmSalesOrderMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.hd.agent.crm.dao.CrmSalesOrderMapper" />
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="customerStorageOrderMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.hd.agent.crm.dao.CustomerStorageOrderMapper" />
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="customerSummaryMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.hd.agent.crm.dao.CustomerSummaryMapper" />
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+
+
+	<!-- Service -->
+    <bean id="crmVisitPlanService"  parent="baseTransactionProxy" >
+        <property name="target" ref="crmVisitPlanServiceImpl"></property>
+    </bean>
+    <bean id="crmVisitPlanServiceImpl" class="com.hd.agent.crm.service.impl.CrmVisitPlanServiceImpl" parent="baseFilesServiceImpl">
+        <property name="crmVisitPlanMapper" ref="crmVisitPlanMapper"></property>
+    </bean>
+    <bean id="crmVisitRecordService" parent="baseTransactionProxy">
+    	<property name="target" ref="crmVisitRecordServiceImpl"></property>  
+    </bean>
+    <bean id="crmVisitRecordServiceImpl" class="com.hd.agent.crm.service.impl.CrmVisitRecordServiceImpl" parent="baseFilesServiceImpl">
+    	<property name="crmVisitRecordMapper" ref="crmVisitRecordMapper"></property>
+    </bean>
+    <bean id="crmVisitReportService" parent="baseTransactionProxy">
+        <property name="target" ref="crmVisitReportServiceImpl"></property>
+    </bean>
+    <bean id="crmVisitReportServiceImpl" class="com.hd.agent.crm.service.impl.CrmVisitReportServiceImpl" parent="baseFilesServiceImpl">
+        <property name="crmVisitReportMapper" ref="crmVisitReportMapper"></property>
+    </bean>
+    <bean id="crmTerminalSalesServiceImpl" class="com.hd.agent.crm.service.impl.CrmTerminalSalesServiceImpl" parent="baseFilesServiceImpl">
+        <property name="crmSalesOrderMapper" ref="crmSalesOrderMapper"></property>
+    </bean>
+    <bean id="crmTerminalSalesService" parent="baseTransactionProxy">
+        <property name="target" ref="crmTerminalSalesServiceImpl"></property>
+    </bean>
+    <bean id="customerStorageOrderServiceImpl" class="com.hd.agent.crm.service.impl.CustomerStorageOrderServiceImpl" parent="baseFilesServiceImpl">
+        <property name="customerStorageOrderMapper" ref="customerStorageOrderMapper"></property>
+        <property name="customerSummaryMapper" ref="customerSummaryMapper"></property>
+    </bean>
+    <bean id="customerStorageOrderService" parent="baseTransactionProxy">
+        <property name="target" ref="customerStorageOrderServiceImpl"></property>
+    </bean>
+    <bean id="CustomerSummaryServiceImpl" class="com.hd.agent.crm.service.impl.CustomerSummaryServiceImpl" parent="baseFilesServiceImpl">
+        <property name="customerSummaryMapper" ref="customerSummaryMapper"></property>
+        <property name="customerStorageOrderMapper" ref="customerStorageOrderMapper"></property>
+        <property name="crmSalesOrderMapper" ref="crmSalesOrderMapper"></property>
+    </bean>
+    <bean id="customerSummaryService" parent="baseTransactionProxy">
+        <property name="target" ref="CustomerSummaryServiceImpl"></property>
+    </bean>
+
+    
+    <!-- Action -->    
+    <bean id="crmVisitRecordAction" class="com.hd.agent.crm.action.CrmVisitRecordAction" scope="prototype" parent="baseFilesAction">
+    	<property name="crmVisitRecordService" ref="crmVisitRecordService"></property>
+    </bean>
+    <bean id="crmAction" class="com.hd.agent.crm.action.CrmVisitPlanAction" scope="prototype" parent="baseFilesAction">
+        <property name="crmVisitPlanService" ref="crmVisitPlanService"></property>
+    </bean>
+    <bean id="crmVisitReportAction" class="com.hd.agent.crm.action.CrmVisitReportAction" scope="prototype" parent="baseFilesAction">
+        <property name="crmVisitReportService" ref="crmVisitReportService"></property>
+    </bean>
+    <bean id="terminalSalesAction" class="com.hd.agent.crm.action.TerminalSalesAction" scope="prototype" parent="baseSalesAction">
+        <property name="crmTerminalSalesService" ref="crmTerminalSalesService"></property>
+    </bean>
+    <bean id="customerStorageOrderAction" class="com.hd.agent.crm.action.CustomerStorageOrderAction" scope="prototype" parent="baseFilesAction">
+        <property name="customerStorageOrderService" ref="customerStorageOrderService"></property>
+    </bean>
+    <bean id="crmDataPortAction" class="com.hd.agent.crm.action.CrmDataPortAction" scope="prototype" parent="baseFilesAction">
+        <property name="customerSummaryService" ref="customerSummaryService"></property>
+        <property name="crmTerminalSalesService" ref="crmTerminalSalesService"></property>
+    </bean>
+</beans>

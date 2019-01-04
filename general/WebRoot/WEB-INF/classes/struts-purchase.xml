@@ -1,0 +1,653 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<package name="plannedOrder" extends="parent" namespace="/purchase/planorder">
+		<action name="plannedOrderListPage" class="plannedOrderAction" method="plannedOrderListPage">
+			<result name="success">/purchase/planorder/plannedOrderListPage.jsp</result>
+		</action>
+		<action name="showPlannedOrderPageList" class="plannedOrderAction" method="showPlannedOrderPageList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showPlannedOrderForReferPageList" class="plannedOrderAction" method="showPlannedOrderForReferPageList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>		
+		<action name="showPlannedOrderDetailReferList" class="plannedOrderAction" method="showPlannedOrderDetailReferList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="plannedOrderPage" class="plannedOrderAction" method="plannedOrderPage">
+			<result name="success">/purchase/planorder/plannedOrderPage.jsp</result>
+		</action>
+		<action name="plannedOrderPageAdd" class="plannedOrderAction" method="plannedOrderPage">
+			<result name="success">/purchase/planorder/plannedOrderPage.jsp</result>
+		</action>
+		<action name="plannedOrderAddPage" class="plannedOrderAction" method="plannedOrderAddPage">
+			<result name="success">/purchase/planorder/plannedOrderAddPage.jsp</result>
+		</action>
+		<action name="addPlannedOrder" class="plannedOrderAction" method="addPlannedOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>	
+		<action name="plannedOrderEditPage" class="plannedOrderAction" method="plannedOrderEditPage">
+			<result name="success">/purchase/planorder/plannedOrderEditPage.jsp</result>
+			<result name="viewSuccess">/purchase/planorder/plannedOrderViewPage.jsp</result>
+		</action>
+		<action name="editPlannedOrder" class="plannedOrderAction" method="editPlannedOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deletePlannedOrder" class="plannedOrderAction" method="deletePlannedOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditPlannedOrder" class="plannedOrderAction" method="auditPlannedOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="oppauditPlannedOrder" class="plannedOrderAction" method="oppauditPlannedOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="plannedOrderViewPage" class="plannedOrderAction" method="plannedOrderViewPage">
+			<result name="success">/purchase/planorder/plannedOrderViewPage.jsp</result>
+		</action>		
+		<action name="plannedOrderDetailAddPage" class="plannedOrderAction" method="plannedOrderDetailAddPage">
+			<result name="success">/purchase/planorder/plannedOrderDetailAddPage.jsp</result>
+		</action>			
+		<action name="plannedOrderDetailEditPage" class="plannedOrderAction" method="plannedOrderDetailEditPage">
+			<result name="success">/purchase/planorder/plannedOrderDetailEditPage.jsp</result>
+		</action>		
+		<action name="showPlannedOrderDetailList" class="plannedOrderAction" method="showPlannedOrderDetailList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="submitPlannedOrderProcess" class="plannedOrderAction" method="submitPlannedOrderProcess">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addPlannedOrderByReport" class="plannedOrderAction" method="addPlannedOrderByReport">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="importPlannedOrder" class="plannedOrderAction" method="importPlannedOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+	<!-- 采购订单 -->
+	<package name="buyOrder" extends="parent" namespace="/purchase/buyorder">
+		<action name="buyOrderListPage" class="buyOrderAction" method="buyOrderListPage">
+			<result name="success">/purchase/buyorder/buyOrderListPage.jsp</result>
+		</action>
+		<action name="showBuyOrderPageList" class="buyOrderAction" method="showBuyOrderPageList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showBuyOrderForReferPageList" class="buyOrderAction" method="showBuyOrderForReferPageList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>		
+		<action name="showBuyOrderDetailReferList" class="buyOrderAction" method="showBuyOrderDetailReferList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="buyOrderPage" class="buyOrderAction" method="buyOrderPage">
+			<result name="success">/purchase/buyorder/buyOrderPage.jsp</result>
+		</action>
+		<action name="buyOrderPageAdd" class="buyOrderAction" method="buyOrderPage">
+			<result name="success">/purchase/buyorder/buyOrderPage.jsp</result>
+		</action>
+		<action name="buyOrderAddPage" class="buyOrderAction" method="buyOrderAddPage">
+			<result name="success">/purchase/buyorder/buyOrderAddPage.jsp</result>
+		</action>
+		<action name="buyOrderReferAddPage" class="buyOrderAction" method="buyOrderReferAddPage">
+			<result name="success">/purchase/buyorder/buyOrderEditPage.jsp</result>
+			<result name="referSuccess">/purchase/buyorder/buyOrderReferAddPage.jsp</result>
+		</action>
+		<action name="addBuyOrder" class="buyOrderAction" method="addBuyOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="buyOrderEditPage" class="buyOrderAction" method="buyOrderEditPage">
+			<result name="success">/purchase/buyorder/buyOrderEditPage.jsp</result>
+			<result name="viewSuccess">/purchase/buyorder/buyOrderViewPage.jsp</result>
+		</action>
+		<action name="editBuyOrder" class="buyOrderAction" method="editBuyOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteBuyOrder" class="buyOrderAction" method="deleteBuyOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditBuyOrder" class="buyOrderAction" method="auditBuyOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="oppauditBuyOrder" class="buyOrderAction" method="oppauditBuyOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="buyOrderViewPage" class="buyOrderAction" method="buyOrderViewPage">
+			<result name="success">/purchase/buyorder/buyOrderViewPage.jsp</result>
+		</action>		
+		<action name="buyOrderDetailAddPage" class="buyOrderAction" method="buyOrderDetailAddPage">
+			<result name="success">/purchase/buyorder/buyOrderDetailAddPage.jsp</result>
+		</action>	
+		<action name="buyOrderDetailEditPage" class="buyOrderAction" method="buyOrderDetailEditPage">
+			<result name="success">/purchase/buyorder/buyOrderDetailEditPage.jsp</result>
+		</action>
+		<action name="buyOrderDetailViewPage" class="buyOrderAction" method="buyOrderDetailViewPage">
+			<result name="success">/purchase/buyorder/buyOrderDetailViewPage.jsp</result>
+		</action>	
+		<action name="buyOrderSourceQueryPage" class="buyOrderAction" method="buyOrderSourceQueryPage">
+			<result name="success">/purchase/buyorder/buyOrderSourceQueryPage.jsp</result>
+		</action>	
+		<action name="buyOrderSourcePage" class="buyOrderAction" method="buyOrderSourcePage">
+			<result name="success">/purchase/buyorder/buyOrderSourcePage.jsp</result>
+		</action>		
+		<action name="buyOrderSourceViewPage" class="buyOrderAction" method="buyOrderSourceViewPage">
+			<result name="success">/purchase/buyorder/buyOrderSourceViewPage.jsp</result>
+		</action>	
+		<action name="submitBuyOrderProcess" class="buyOrderAction" method="submitBuyOrderProcess">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="exportBuyOrderDetailData" class="buyOrderAction" method="exportBuyOrderDetailData"></action>			
+		<action name="showPlanOrderAnalysisViewReportPage" class="buyOrderAction" method="showPlanOrderAnalysisViewReportPage">
+			<result name="success">/purchase/buyorder/planOrderAnalysisReportViewPage.jsp</result>
+		</action>
+		<action name="addBuyOrderByReport" class="buyOrderAction" method="addBuyOrderByReport">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="closeBuyOrder" class="buyOrderAction" method="closeBuyOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>	
+		  <action name="showPurchaseHistoryGoodsPricePage" class="buyOrderAction" method="showPurchaseHistoryGoodsPricePage">
+            <result name="success">/purchase/buyorder/purchaseHistoryGoodsPricePage.jsp</result>
+        </action>
+        <action name="auditMultiBuyOrder" class="buyOrderAction" method="auditMultiBuyOrder">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+    </package>
+	<!-- 采购进货单 -->
+	<package name="arrivalOrder" extends="parent" namespace="/purchase/arrivalorder">
+		<action name="arrivalOrderListPage" class="arrivalOrderAction" method="arrivalOrderListPage">
+			<result name="success">/purchase/arrivalorder/arrivalOrderListPage.jsp</result>
+		</action>
+		<action name="showArrivalOrderPageList" class="arrivalOrderAction" method="showArrivalOrderPageList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="checkUnitNum" class="arrivalOrderAction" method="checkUnitNum">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="arrivalOrderPage" class="arrivalOrderAction" method="arrivalOrderPage">
+			<result name="success">/purchase/arrivalorder/arrivalOrderPage.jsp</result>
+		</action>
+		<action name="arrivalOrderPageAdd" class="arrivalOrderAction" method="arrivalOrderPage">
+			<result name="success">/purchase/arrivalorder/arrivalOrderPage.jsp</result>
+		</action>
+		<action name="arrivalOrderAddPage" class="arrivalOrderAction" method="arrivalOrderAddPage">
+			<result name="success">/purchase/arrivalorder/arrivalOrderAddPage.jsp</result>
+		</action>
+		<action name="addArrivalOrder" class="arrivalOrderAction" method="addArrivalOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>	
+		<action name="arrivalOrderEditPage" class="arrivalOrderAction" method="arrivalOrderEditPage">
+			<result name="success">/purchase/arrivalorder/arrivalOrderEditPage.jsp</result>
+			<result name="viewSuccess">/purchase/arrivalorder/arrivalOrderViewPage.jsp</result>
+			<result name="addSuccess">/purchase/arrivalorder/arrivalOrderAddPage.jsp</result>
+		</action>
+		<action name="editArrivalOrder" class="arrivalOrderAction" method="editArrivalOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteArrivalOrder" class="arrivalOrderAction" method="deleteArrivalOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditArrivalOrder" class="arrivalOrderAction" method="auditArrivalOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="oppauditArrivalOrder" class="arrivalOrderAction" method="oppauditArrivalOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+        <action name="batchAuditArrivalOrder" class="arrivalOrderAction" method="batchAuditArrivalOrder">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+		<action name="arrivalOrderViewPage" class="arrivalOrderAction" method="arrivalOrderViewPage">
+			<result name="success">/purchase/arrivalorder/arrivalOrderViewPage.jsp</result>
+		</action>		
+		<action name="arrivalOrderDetailAddPage" class="arrivalOrderAction" method="arrivalOrderDetailAddPage">
+			<result name="success">/purchase/arrivalorder/arrivalOrderDetailAddPage.jsp</result>
+		</action>	
+		<action name="arrivalOrderReferAddPage" class="arrivalOrderAction" method="arrivalOrderReferAddPage">
+			<result name="success">/purchase/arrivalorder/arrivalOrderEditPage.jsp</result>
+			<result name="referSuccess">/purchase/arrivalorder/arrivalOrderReferAddPage.jsp</result>
+		</action>
+		<action name="arrivalOrderDetailEditPage" class="arrivalOrderAction" method="arrivalOrderDetailEditPage">
+			<result name="success">/purchase/arrivalorder/arrivalOrderDetailEditPage.jsp</result>
+		</action>
+		<action name="arrivalOrderSourceDetailEditPage" class="arrivalOrderAction" method="arrivalOrderSourceDetailEditPage">
+			<result name="success">/purchase/arrivalorder/arrivalOrderSourceDetailEditPage.jsp</result>
+		</action>
+		<action name="arrivalOrderDetailViewPage" class="arrivalOrderAction" method="arrivalOrderDetailViewPage">
+			<result name="success">/purchase/arrivalorder/arrivalOrderDetailViewPage.jsp</result>
+		</action>
+		<action name="showArrivalOrderDiscountAddPage" class="arrivalOrderAction" method="showArrivalOrderDiscountAddPage">
+			<result name="success">/purchase/arrivalorder/arrivalOrderDiscountAddPage.jsp</result>
+		</action>
+		<action name="arrivalOrderSourceQueryPage" class="arrivalOrderAction" method="arrivalOrderSourceQueryPage">
+			<result name="success">/purchase/arrivalorder/arrivalOrderSourceQueryPage.jsp</result>
+		</action>	
+		<action name="arrivalOrderSourcePage" class="arrivalOrderAction" method="arrivalOrderSourcePage">
+			<result name="success">/purchase/arrivalorder/arrivalOrderSourcePage.jsp</result>
+		</action>		
+		<action name="arrivalOrderSourceViewPage" class="arrivalOrderAction" method="arrivalOrderSourceViewPage">
+			<result name="success">/purchase/arrivalorder/arrivalOrderSourceViewPage.jsp</result>
+		</action>		
+		<action name="showArrivalOrderDetailUpReferList" class="arrivalOrderAction" method="showArrivalOrderDetailUpReferList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addArrivalOrderDiscount" class="arrivalOrderAction" method="addArrivalOrderDiscount">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showArrivalOrderDetailDownReferList" class="arrivalOrderAction" method="showArrivalOrderDetailDownReferList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>	  
+		<action name="submitArrivalOrderProcess" class="arrivalOrderAction" method="submitArrivalOrderProcess">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showArrivalOrderDetailListByOrderid" class="arrivalOrderAction" method="showArrivalOrderDetailListByOrderid">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>			
+		</action>  		
+		<action name="exportArrivalOrderData" class="arrivalOrderAction" method="exportArrivalOrderData"></action>		  
+		<action name="updateArrivalOrderDetailRemark" class="arrivalOrderAction" method="updateArrivalOrderDetailRemark">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showArrivalPurchaseSharePage" class="arrivalOrderAction" method="showArrivalPurchaseSharePage">
+			<result name="success">/purchase/arrivalorder/arrivalPurchaseSharePage.jsp</result>
+		</action>
+		<action name="addPurchaseShareAmount" class="arrivalOrderAction" method="addPurchaseShareAmount">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showArrivalPurchaseShareLogPage" class="arrivalOrderAction" method="showArrivalPurchaseShareLogPage">
+			<result name="success">/purchase/arrivalorder/arrivalOrderShareLogPage.jsp</result>
+		</action>
+		<action name="getPurchaseShareLogDate" class="arrivalOrderAction" method="getPurchaseShareLogDate">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="cancelArrivalPurchaseShare" class="arrivalOrderAction" method="cancelArrivalPurchaseShare">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+	<!-- 采购退货单 -->
+	<package name="returnOrder" extends="parent" namespace="/purchase/returnorder">
+		<action name="returnOrderListPage" class="returnOrderAction" method="returnOrderListPage">
+			<result name="success">/purchase/returnorder/returnOrderListPage.jsp</result>
+		</action>
+		<action name="showReturnOrderPageList" class="returnOrderAction" method="showReturnOrderPageList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="returnOrderPage" class="returnOrderAction" method="returnOrderPage">
+			<result name="success">/purchase/returnorder/returnOrderPage.jsp</result>
+		</action>
+		<action name="returnOrderPageAdd" class="returnOrderAction" method="returnOrderPage">
+			<result name="success">/purchase/returnorder/returnOrderPage.jsp</result>
+		</action>
+		<action name="returnOrderAddPage" class="returnOrderAction" method="returnOrderAddPage">
+			<result name="success">/purchase/returnorder/returnOrderAddPage.jsp</result>
+		</action>
+		<action name="addReturnOrder" class="returnOrderAction" method="addReturnOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="returnOrderEditPage" class="returnOrderAction" method="returnOrderEditPage">
+			<result name="success">/purchase/returnorder/returnOrderEditPage.jsp</result>
+			<result name="viewSuccess">/purchase/returnorder/returnOrderViewPage.jsp</result>
+		</action>
+		<action name="editReturnOrder" class="returnOrderAction" method="editReturnOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteReturnOrder" class="returnOrderAction" method="deleteReturnOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditReturnOrder" class="returnOrderAction" method="auditReturnOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="oppauditReturnOrder" class="returnOrderAction" method="oppauditReturnOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="returnOrderViewPage" class="returnOrderAction" method="returnOrderViewPage">
+			<result name="success">/purchase/returnorder/returnOrderViewPage.jsp</result>
+		</action>		
+		<action name="returnOrderDetailAddPage" class="returnOrderAction" method="returnOrderDetailAddPage">
+			<result name="success">/purchase/returnorder/returnOrderDetailAddPage.jsp</result>
+		</action>	
+		<action name="returnOrderDetailEditPage" class="returnOrderAction" method="returnOrderDetailEditPage">
+			<result name="success">/purchase/returnorder/returnOrderDetailEditPage.jsp</result>
+		</action>
+		<action name="returnOrderDetailViewPage" class="returnOrderAction" method="returnOrderDetailViewPage">
+			<result name="success">/purchase/returnorder/returnOrderDetailViewPage.jsp</result>
+		</action>
+		<action name="showReturnOrderDetailReferList" class="returnOrderAction" method="showReturnOrderDetailReferList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>			
+		<action name="submitReturnOrderProcess" class="returnOrderAction" method="submitReturnOrderProcess">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="importReturnModel" class="returnOrderAction" method="importReturnModel">
+			<result name="success">/common/upload/modelMsgPage.jsp</result>
+		</action>
+		<action name="showReturnModelPage" class="returnOrderAction" method="showReturnModelPage">
+			<result name="success">/purchase/returnorder/returnModelPage.jsp</result>
+		</action>
+		<action name="exportReturnOrderListData" class="returnOrderAction" method="exportReturnOrderListData"></action>
+        <action name="exportReturnOrderListDetail" class="returnOrderAction" method="exportReturnOrderListDetail"></action>
+		<!-- 退货验收 -->
+		<action name="returnCheckOrderListPage" class="returnOrderAction" method="returnCheckOrderListPage">
+			<result name="success">/purchase/returncheckorder/returnCheckOrderListPage.jsp</result>
+		</action>
+		<action name="showReturnCheckOrderPageList" class="returnOrderAction" method="showReturnCheckOrderPageList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="returnCheckOrderPage" class="returnOrderAction" method="returnCheckOrderPage">
+			<result name="success">/purchase/returncheckorder/returnCheckOrderPage.jsp</result>
+		</action>
+		<action name="updateReturnOrderCheck" class="returnOrderAction" method="updateReturnOrderCheck">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="updateReturnOrderCheckCancel" class="returnOrderAction" method="updateReturnOrderCheckCancel">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="updateReturnOrderMutiCheck" class="returnOrderAction" method="updateReturnOrderMutiCheck">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="returnCheckOrderEditPage" class="returnOrderAction" method="returnCheckOrderEditPage">
+			<result name="success">/purchase/returncheckorder/returnCheckOrderEditPage.jsp</result>
+			<result name="viewSuccess">/purchase/returncheckorder/returnCheckOrderViewPage.jsp</result>
+		</action>
+		<action name="returnCheckOrderViewPage" class="returnOrderAction" method="returnCheckOrderViewPage">
+			<result name="success">/purchase/returncheckorder/returnCheckOrderViewPage.jsp</result>
+		</action>
+		<action name="returnCheckOrderDetailEditPage" class="returnOrderAction" method="returnCheckOrderDetailEditPage">
+			<result name="success">/purchase/returncheckorder/returnCheckOrderDetailEditPage.jsp</result>
+		</action>
+		<action name="importReturnOrder" class="returnOrderAction" method="importReturnOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+	<!-- 采购限价单 -->
+	<package name="limitPriceOrder" extends="parent" namespace="/purchase/limitpriceorder">
+		<action name="limitPriceOrderListPage" class="limitPriceOrderAction" method="limitPriceOrderListPage">
+			<result name="success">/purchase/limitpriceorder/limitPriceOrderListPage.jsp</result>
+		</action>
+		<action name="showLimitPriceOrderPageList" class="limitPriceOrderAction" method="showLimitPriceOrderPageList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="limitPriceOrderPage" class="limitPriceOrderAction" method="limitPriceOrderPage">
+			<result name="success">/purchase/limitpriceorder/limitPriceOrderPage.jsp</result>
+		</action>
+		<action name="limitPriceOrderPageAdd" class="limitPriceOrderAction" method="limitPriceOrderPage">
+			<result name="success">/purchase/limitpriceorder/limitPriceOrderPage.jsp</result>
+		</action>
+		<action name="limitPriceOrderAddPage" class="limitPriceOrderAction" method="limitPriceOrderAddPage">
+			<result name="success">/purchase/limitpriceorder/limitPriceOrderAddPage.jsp</result>
+		</action>
+		<action name="addLimitPriceOrder" class="limitPriceOrderAction" method="addLimitPriceOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="limitPriceOrderEditPage" class="limitPriceOrderAction" method="limitPriceOrderEditPage">
+			<result name="success">/purchase/limitpriceorder/limitPriceOrderEditPage.jsp</result>
+			<result name="viewSuccess">/purchase/limitpriceorder/limitPriceOrderViewPage.jsp</result>
+		</action>
+		<action name="editLimitPriceOrder" class="limitPriceOrderAction" method="editLimitPriceOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteLimitPriceOrder" class="limitPriceOrderAction" method="deleteLimitPriceOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditLimitPriceOrder" class="limitPriceOrderAction" method="auditLimitPriceOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="oppauditLimitPriceOrder" class="limitPriceOrderAction" method="oppauditLimitPriceOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="limitPriceOrderViewPage" class="limitPriceOrderAction" method="limitPriceOrderViewPage">
+			<result name="success">/purchase/limitpriceorder/limitPriceOrderViewPage.jsp</result>
+		</action>		
+		<action name="limitPriceOrderDetailAddPage" class="limitPriceOrderAction" method="limitPriceOrderDetailAddPage">
+			<result name="success">/purchase/limitpriceorder/limitPriceOrderDetailAddPage.jsp</result>
+		</action>			
+		<action name="limitPriceOrderDetailEditPage" class="limitPriceOrderAction" method="limitPriceOrderDetailEditPage">
+			<result name="success">/purchase/limitpriceorder/limitPriceOrderDetailEditPage.jsp</result>
+		</action>		
+		<action name="showLimitPriceOrderDetailList" class="limitPriceOrderAction" method="showLimitPriceOrderDetailList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>		
+		<action name="showBuyOrderReferDetailList" class="limitPriceOrderAction" method="showBuyOrderReferDetailList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="existLimitPriceOrder" class="limitPriceOrderAction" method="existLimitPriceOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>	
+	</package>
+	<package name="purchaseCommon" extends="parent" namespace="/purchase/common">
+		<action name="completeBuyDetailGoodsOrder" class="purchaseAction" method="completeBuyDetailGoodsOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="completeBuyDetailGoodsNoLimit" class="purchaseAction" method="completeBuyDetailGoodsNoLimit">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showAuxAndUnitNameInfo" class="purchaseAction" method="showAuxAndUnitNameInfo">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getAmountChanger" class="purchaseAction" method="getAmountChanger">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getAmountChangerByBoxprice" class="purchaseAction" method="getAmountChangerByBoxprice">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getPriceChanger" class="purchaseAction" method="getPriceChanger">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>		
+	</package>
+	<package name="purchaseQuery" extends="parent" namespace="/purchase/query">
+		<action name="showArrivalReturnDetailListPage" class="purchaseQueryAction" method="showArrivalReturnDetailListPage">
+			<result name="success">/purchase/query/arrivalReturnDetailListPage.jsp</result>
+		</action>
+		<action name="exportArrivalReturnListData" class="purchaseQueryAction" method="exportArrivalReturnListData">
+		</action>
+		<action name="showArrivalReturnDetailList" class="purchaseQueryAction" method="showArrivalReturnDetailList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>	
+	</package>
+</struts>

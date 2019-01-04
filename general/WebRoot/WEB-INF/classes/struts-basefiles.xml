@@ -1,0 +1,4269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>	
+	<!-- 基础档案Action 该模块下 基础档案的namespace="/basefiles"统一成basefiles -->
+	<package name="basefiles-common" extends="parent" namespace="/basefiles">
+		<action name="computeGoodsByUnitnum" class="baseFilesAction" method="computeGoodsByUnitnum">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getAmountMapByTaxAndAmount" class="baseFilesAction" method="getAmountMapByTaxAndAmount">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="computeGoodsByAuxnum" class="baseFilesAction" method="computeGoodsByAuxnum">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="computeUnitumPriceAmountChange" class="baseFilesAction" method="computeUnitumPriceAmountChange">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>		
+	</package>
+	<!-- 基础档案级次定义 -->
+	<package name="filesLevel" extends="parent" namespace="/basefiles">
+		<action name="showFilesLevelSet" class="filesLevleAction" method="showFilesLevelSet">
+			<result name="success">/basefiles/fileslevel/filesLevelSetPage.jsp</result>
+		</action>
+		<action name="showFilesLevelPage" class="filesLevleAction" method="showFilesLevelPage">
+			<result name="success">/basefiles/fileslevel/filesLevelDefinePage.jsp</result>
+		</action>
+		<action name="saveFilesLevel" class="filesLevleAction" method="saveFilesLevel">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		<!-- 工作日历 -->
+		<action name="showWorkCalendarPage" class="workCalendarAction" method="showWorkCalendarPage">
+			<result name="success">/basefiles/calendar/workCalendarPage.jsp</result>
+		</action>
+		<action name="showWorkCanlendarAddPage" class="workCalendarAction" method="showWorkCanlendarAddPage">
+			<result name="success">/basefiles/calendar/workCalendarAddPage.jsp</result>
+		</action>
+		<action name="showWorkCanlendarQuickSetPage" class="workCalendarAction" method="showWorkCanlendarQuickSetPage">
+			<result name="success">/basefiles/calendar/workCalendarQuickSetPage.jsp</result>
+		</action>
+		<action name="workCanlendarQuickSet" class="workCalendarAction" method="workCanlendarQuickSet">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addWorkCalendar" class="workCalendarAction" method="addWorkCalendar">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addWorkCalendarHold" class="workCalendarAction" method="addWorkCalendarHold">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getWorkCalendarList" class="workCalendarAction" method="getWorkCalendarList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showWorkCanlendarInfo" class="workCalendarAction" method="showWorkCanlendarInfo">
+			<result name="success">/basefiles/calendar/workCalendarInfoPage.jsp</result>
+		</action>
+		<action name="deleteWorkCalendar" class="workCalendarAction" method="deleteWorkCalendar">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showWorkCanlendarEditPage" class="workCalendarAction" method="showWorkCanlendarEditPage">
+			<result name="success">/basefiles/calendar/workCalendarEditPage.jsp</result>
+		</action>
+		<action name="editWorkCalendar" class="workCalendarAction" method="editWorkCalendar">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editWorkCalendarHold" class="workCalendarAction" method="editWorkCalendarHold">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="openWorkCalendar" class="workCalendarAction" method="openWorkCalendar">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="closeWorkCalendar" class="workCalendarAction" method="closeWorkCalendar">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showWorkCanlendarCopyPage" class="workCalendarAction" method="showWorkCanlendarCopyPage">
+			<result name="success">/basefiles/calendar/workCalendarAddPage.jsp</result>
+		</action>
+		<action name="checkWorkCalendarId" class="workCalendarAction" method="checkWorkCalendarId">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showDepartMainPage" class="departMentAction" method="showDepartMainPage">
+			<result name="success">/basefiles/department/departMain.jsp</result>
+		</action>
+		<action name="showDepartMentTree" class="departMentAction" method="showDepartMentTree">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showDepartMentCheckedTree" class="departMentAction" method="showDepartMentCheckedTree">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showDepartMentByMenu" class="departMentAction" method="showDepartMentByMenu">
+			<result name="success">/basefiles/department/departMentInfoPage.jsp</result>
+		</action>
+		<action name="showDepartMentAddPage" class="departMentAction" method="showDepartMentAddPage">
+			<result name="success">/basefiles/department/departmentAddPage.jsp</result>
+		</action>
+		<action name="showDepartMentEditPage" class="departMentAction" method="showDepartMentEditPage">
+			<result name="success">/basefiles/department/departmentEditPage.jsp</result>
+		</action>
+		<action name="addDepartMent" class="departMentAction" method="addDepartMent">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getDepartMentList" class="departMentAction" method="getDepartMentList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showDepartMentListPage" class="departMentAction" method="showDepartMentListPage">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editDepartMent" class="departMentAction" method="editDepartMent">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editDepartMentAll" class="departMentAction" method="editDepartMentAll">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getNextLenght" class="departMentAction" method="getNextLenght">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="isExistDepartmentId" class="departMentAction" method="isExistDepartmentId">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteDepartment" class="departMentAction" method="deleteDepartment">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteDepartMentAll" class="departMentAction" method="deleteDepartMentAll">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="disableDepartMentAll" class="departMentAction" method="disableDepartMentAll">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="enableDepartMentAll" class="departMentAction" method="enableDepartMentAll">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="disableDepartMent" class="departMentAction" method="disableDepartMent">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="enableDepartMent" class="departMentAction" method="enableDepartMent">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="holdDepartMent" class="departMentAction" method="holdDepartMent">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="copyDepartMent" class="departMentAction" method="copyDepartMent">
+			<result name="success">/basefiles/department/departmentCopyPage.jsp</result>
+		</action>
+		<action name="getPidAllDeptList" class="departMentAction" method="getPidAllDeptList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getPidAllDeptList2" class="departMentAction" method="getPidAllDeptList2">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="checkSoleName" class="departMentAction" method="checkSoleName">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<!-- 导入导出 -->
+		<action name="importExcelPage" class="departMentAction" method="importExcelPage">
+			<result name="success">/common/excel/importExcel.jsp</result>
+		</action>
+		<action name="importExcel" class="departMentAction" method="importExcel">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="exportExcel" class="departMentAction" method="exportExcel">
+			
+		</action>
+		
+		<!-- 人员档案 -->
+		<action name="showPersonnelPage" class="personnelAction" method="showPersonnelPage">
+			<result name="success">/basefiles/personnel/personnelPage.jsp</result>
+		</action>
+		<action name="showPersonnelListPage" class="personnelAction" method="showPersonnelListPage">
+			<result name="success">/basefiles/personnel/personnelListPage.jsp</result>
+		</action>
+		<action name="showPersonnelAddPage" class="personnelAction" method="showPersonnelAddPage">
+			<result name="success">/basefiles/personnel/personnelAddPage.jsp</result>
+		</action>
+		<action name="showPersonnelInfoPage" class="personnelAction" method="showPersonnelInfoPage">
+			<result name="success">/basefiles/personnel/personnelInfoPage.jsp</result>
+		</action>
+		<action name="showPersonnelEditPage" class="personnelAction" method="showPersonnelEditPage">
+			<result name="success">/basefiles/personnel/personnelEditPage.jsp</result>
+		</action>
+		<action name="showPersonnelCopyPage" class="personnelAction" method="showPersonnelCopyPage">
+			<result name="success">/basefiles/personnel/personnelCopyPage.jsp</result>
+		</action>
+		<action name="showBrandToGoodsPage" class="personnelAction" method="showBrandToGoodsPage">
+			<result name="success">/basefiles/personnel/brandToGoodsPage.jsp</result>
+		</action>
+		<action name="showBrandToGoodsEditPage" class="personnelAction" method="showBrandToGoodsEditPage">
+			<result name="success">/basefiles/personnel/brandToGoodsEditPage.jsp</result>
+		</action>
+		<action name="showCustomerToGoodsAddPage" class="personnelAction" method="showCustomerToGoodsAddPage">
+			<result name="success">/basefiles/personnel/customerToGoodsAddPage.jsp</result>
+		</action>
+		<action name="showCustomerToGoodsEditPage" class="personnelAction" method="showCustomerToGoodsEditPage">
+			<result name="success">/basefiles/personnel/customerToGoodsEditPage.jsp</result>
+		</action>
+		<!-- 显示原图页面 -->
+		<action name="showPersonnelOldImgPage" class="personnelAction" method="showPersonnelOldImgPage">
+			<result name="success">/basefiles/personnel/personnelOldImgPage.jsp</result>
+		</action>
+		<!-- 显示分配系统用户页面 -->
+		<action name="showAllotSysUserPage" class="personnelAction" method="showAllotSysUserPage">
+			<result name="success">/basefiles/personnel/allotSysUserPage.jsp</result>
+		</action>
+		<action name="getPersonelDeptTree" class="personnelAction" method="getPersonelDeptTree">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getPersonnelListByDeptid" class="personnelAction" method="getPersonnelListByDeptid">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showPersonnelList" class="personnelAction" method="showPersonnelList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showPersonnelDept" class="personnelAction" method="showPersonnelDept">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addPersonnel" class="personnelAction" method="addPersonnel">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editPersonnel" class="personnelAction" method="editPersonnel">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="isExistPersonnelId" class="personnelAction" method="isExistPersonnelId">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deletePersonnelInfo" class="personnelAction" method="deletePersonnelInfo">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deletePersonCustomer" class="personnelAction" method="deletePersonCustomer">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addPersonCustomer" class="personnelAction" method="addPersonCustomer">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deletePersonBrand" class="personnelAction" method="deletePersonBrand">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+        <action name="addPersonBrand" class="personnelAction" method="addPersonBrand">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getPersonBrandListByDeptid" class="personnelAction" method="getPersonBrandListByDeptid">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showPersEducationList" class="personnelAction" method="showPersEducationList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addPersonCustomerList" class="personnelAction" method="addPersonCustomerList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getBrandToPersonList" class="personnelAction" method="getBrandToPersonList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getPersonSupplierCustomerListPageData" class="personnelAction" method="getPersonSupplierCustomerListPageData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSupplierBrandList" class="personnelAction" method="showSupplierBrandList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="checkEmployetypeOfCustomerData" class="personnelAction" method="checkEmployetypeOfCustomerData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="importPersonBrandCustomerData" class="personnelAction" method="importPersonBrandCustomerData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="edusHoldSave" class="personnelAction" method="edusHoldSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteEdus" class="personnelAction" method="deleteEdus">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showPersWorksList" class="personnelAction" method="showPersWorksList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteWorks" class="personnelAction" method="deleteWorks">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showPersPostsList" class="personnelAction" method="showPersPostsList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deletePosts" class="personnelAction" method="deletePosts">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="enablePersonnels" class="personnelAction" method="enablePersonnels">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="disablePersonnels" class="personnelAction" method="disablePersonnels">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getNPname" class="personnelAction" method="getNPname">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showCustomerList" class="personnelAction" method="showCustomerList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showBrandList" class="personnelAction" method="showBrandList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showBrandListData" class="personnelAction" method="showBrandListData">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getCustomerListForPsnCstm" class="personnelAction" method="getCustomerListForPsnCstm">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showCustomerListData" class="personnelAction" method="showCustomerListData">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="checkBrandAndCustomerRepeat" class="personnelAction" method="checkBrandAndCustomerRepeat">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="checkBrandAndCustomerRepeat2" class="personnelAction" method="checkBrandAndCustomerRepeat2">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getCustomerListFromPsnBrandAndCustomer" class="personnelAction" method="getCustomerListFromPsnBrandAndCustomer">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getPersonCustomerListPageData" class="personnelAction" method="getPersonCustomerListPageData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getBrandListFromPsnBrandAndCustomer" class="personnelAction" method="getBrandListFromPsnBrandAndCustomer">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deletePersonFiles" class="personnelAction" method="deletePersonFiles">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addPersonFiles" class="personnelAction" method="addPersonFiles">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+	
+	<package name="workjob" extends="parent" namespace="/basefiles">
+        <action name="showWorkJobPage" class="workJobAction" method="showWorkJobPage">
+			<result name="success">/basefiles/workjob/workJobPage.jsp</result>
+		</action>
+		<action name="showWorkJobAddPage" class="workJobAction" method="showWorkJobAddPage">
+			<result name="success">/basefiles/workjob/workJobAddPage.jsp</result>
+		</action>
+		<action name="addWorkJobHold" class="workJobAction" method="addWorkJobHold">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addWorkJobSave" class="workJobAction" method="addWorkJobSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getWorkJobList" class="workJobAction" method="getWorkJobList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showWorkJobInfo" class="workJobAction" method="showWorkJobInfo">
+			<result name="success">/basefiles/workjob/workJobInfoPage.jsp</result>
+		</action>
+		<action name="showWorkJobEditPage" class="workJobAction" method="showWorkJobEditPage">
+			<result name="success">/basefiles/workjob/workJobEditPage.jsp</result>
+		</action>
+		<action name="editWorkJobHold" class="workJobAction" method="editWorkJobHold">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editWorkJobSave" class="workJobAction" method="editWorkJobSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteWorkJob" class="workJobAction" method="deleteWorkJob">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showWorkJobCopyPage" class="workJobAction" method="showWorkJobCopyPage">
+			<result name="success">/basefiles/workjob/workJobCopyPage.jsp</result>
+		</action>
+		<action name="openWorkJob" class="workJobAction" method="openWorkJob">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="closeWorkJob" class="workJobAction" method="closeWorkJob">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="checkWorkJobID" class="workJobAction" method="checkWorkJobID">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="checkWorkJobName" class="workJobAction" method="checkWorkJobName">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getRoleListByWorkjob" class="workJobAction" method="getRoleListByWorkjob">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+	<package name="storage" extends="parent" namespace="/basefiles">
+		<action name="showStorageInoutPage" class="storageAction" method="showStorageInoutPage">
+			<result name="success">/basefiles/storage/inout/storageInoutPage.jsp</result>
+		</action>
+		<action name="showStorageInoutAddPage" class="storageAction" method="showStorageInoutAddPage">
+			<result name="success">/basefiles/storage/inout/storageInoutAddPage.jsp</result>
+		</action>
+		<action name="addStorageInoutHold" class="storageAction" method="addStorageInoutHold">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addStorageInoutSave" class="storageAction" method="addStorageInoutSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="checkStorageInoutID" class="storageAction" method="checkStorageInoutID">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="checkStorageInoutName" class="storageAction" method="checkStorageInoutName">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showStorageInoutInfo" class="storageAction" method="showStorageInoutInfo">
+			<result name="success">/basefiles/storage/inout/storageInoutInfoPage.jsp</result>
+		</action>
+		<action name="showStorageInoutCopyPage" class="storageAction" method="showStorageInoutCopyPage">
+			<result name="success">/basefiles/storage/inout/storageInoutCopyPage.jsp</result>
+		</action>
+		<action name="showStorageInoutList" class="storageAction" method="showStorageInoutList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showStorageEditPage" class="storageAction" method="showStorageEditPage">
+			<result name="success">/basefiles/storage/inout/storageInoutEditPage.jsp</result>
+		</action>
+		<action name="editStorageInoutHold" class="storageAction" method="editStorageInoutHold">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editStorageInoutSave" class="storageAction" method="editStorageInoutSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteStorageInout" class="storageAction" method="deleteStorageInout">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="openStorageInout" class="storageAction" method="openStorageInout">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="closeStorageInout" class="storageAction" method="closeStorageInout">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showStorageInoutEditPage" class="storageAction" method="showStorageInoutEditPage">
+			<result name="success">/basefiles/storage/inout/storageInoutEditPage.jsp</result>
+		</action>
+		<!-- 仓库类型 -->
+		<action name="showStorageTypePage" class="storageAction" method="showStorageTypePage">
+			<result name="success">/basefiles/storage/type/storageTypePage.jsp</result>
+		</action>
+		<action name="showStorageTypeAddPage" class="storageAction" method="showStorageTypeAddPage">
+			<result name="success">/basefiles/storage/type/storageTypeAddPage.jsp</result>
+		</action>
+		<action name="addStorageTypeHold" class="storageAction" method="addStorageTypeHold">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addStorageTypeSave" class="storageAction" method="addStorageTypeSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="checkStorageTypeID" class="storageAction" method="checkStorageTypeID">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="checkStorageTypeName" class="storageAction" method="checkStorageTypeName">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showStorageTypeInfo" class="storageAction" method="showStorageTypeInfo">
+			<result name="success">/basefiles/storage/type/storageTypeInfoPage.jsp</result>
+		</action>
+		<action name="showStorageTypeList" class="storageAction" method="showStorageTypeList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showStorageTypeEditPage" class="storageAction" method="showStorageTypeEditPage">
+			<result name="success">/basefiles/storage/type/storageTypeEditPage.jsp</result>
+		</action>
+		<action name="editStorageTypeHold" class="storageAction" method="editStorageTypeHold">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editStorageTypeSave" class="storageAction" method="editStorageTypeSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showStorageTypeCopyPage" class="storageAction" method="showStorageTypeCopyPage">
+			<result name="success">/basefiles/storage/type/storageTypeCopyPage.jsp</result>
+		</action>
+		<action name="deleteStorageType" class="storageAction" method="deleteStorageType">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="openStorageType" class="storageAction" method="openStorageType">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="closeStorageType" class="storageAction" method="closeStorageType">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<!-- 库位档案 -->
+		<action name="showStorageLocationPage" class="storageAction" method="showStorageLocationPage">
+			<result name="success">/basefiles/storage/location/storageLocationPage.jsp</result>
+		</action>
+		<action name="showStorageLocationAddPage" class="storageAction" method="showStorageLocationAddPage">
+			<result name="success">/basefiles/storage/location/storageLocationAddPage.jsp</result>
+		</action>
+		<action name="showStorageLocationTree" class="storageAction" method="showStorageLocationTree">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addStorageLocationHold" class="storageAction" method="addStorageLocationHold">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addStorageLocationSave" class="storageAction" method="addStorageLocationSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="checkStorageLocationID" class="storageAction" method="checkStorageLocationID">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="checkStorageLocationName" class="storageAction" method="checkStorageLocationName">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showStorageLocationInfoPage" class="storageAction" method="showStorageLocationInfoPage">
+			<result name="success">/basefiles/storage/location/storageLocationInfoPage.jsp</result>
+		</action>
+		<action name="showStorageLocationEditPage" class="storageAction" method="showStorageLocationEditPage">
+			<result name="success">/basefiles/storage/location/storageLocationEditPage.jsp</result>
+		</action>
+		<action name="editStorageLocationHold" class="storageAction" method="editStorageLocationHold">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editStorageLocationSave" class="storageAction" method="editStorageLocationSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="openStorageLocation" class="storageAction" method="openStorageLocation">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="closeStorageLocation" class="storageAction" method="closeStorageLocation">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteStorageLocation" class="storageAction" method="deleteStorageLocation">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showStorageLocationCopyPage" class="storageAction" method="showStorageLocationCopyPage">
+			<result name="success">/basefiles/storage/location/storageLocationCopyPage.jsp</result>
+		</action>
+		<action name="isRepeatStorageLocationThisname" class="storageAction" method="isRepeatStorageLocationThisname">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<!-- 仓库档案 -->
+		<action name="showStorageInfoPage" class="storageAction" method="showStorageInfoPage">
+			<result name="success">/basefiles/storage/info/storageInfoPage.jsp</result>
+		</action>
+		<action name="showStorageInfoAddPage" class="storageAction" method="showStorageInfoAddPage">
+			<result name="success">/basefiles/storage/info/storageInfoAddPage.jsp</result>
+		</action>
+		<action name="checkStorageInfoID" class="storageAction" method="checkStorageInfoID">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="checkStorageInfoName" class="storageAction" method="checkStorageInfoName">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addStorageInfoHold" class="storageAction" method="addStorageInfoHold">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addStorageInfoSave" class="storageAction" method="addStorageInfoSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showStorageInfoViewPage" class="storageAction" method="showStorageInfoViewPage">
+			<result name="success">/basefiles/storage/info/storageInfoViewPage.jsp</result>
+		</action>
+		<action name="showStorageInfoEditPage" class="storageAction" method="showStorageInfoEditPage">
+			<result name="success">/basefiles/storage/info/storageInfoEditPage.jsp</result>
+		</action>
+		<action name="showStorageInfoCopyPage" class="storageAction" method="showStorageInfoCopyPage">
+			<result name="success">/basefiles/storage/info/storageInfoCopyPage.jsp</result>
+		</action>
+		<action name="showStorageInfoDataList" class="storageAction" method="showStorageInfoDataList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editStorageInfoHold" class="storageAction" method="editStorageInfoHold">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editStorageInfoSave" class="storageAction" method="editStorageInfoSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteStorageInfo" class="storageAction" method="deleteStorageInfo">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="openStorageInfo" class="storageAction" method="openStorageInfo">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="closeStorageInfo" class="storageAction" method="closeStorageInfo">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+	
+	<!-- 采购 -->
+	<package name="buy" extends="parent" namespace="/basefiles">
+		<action name="buyArea" class="buyAction" method="buyArea">
+			<result name="success">/basefiles/buy/buyarea/buyArea.jsp</result>
+		</action>
+		<action name="getBuyAreaTree" class="buyAction" method="getBuyAreaTree">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="buyAreaAddPage" class="buyAction" method="buyAreaAddPage">
+			<result name="success">/basefiles/buy/buyarea/buyAreaAddPage.jsp</result>
+		</action>
+		<action name="addBuyArea" class="buyAction" method="addBuyArea">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>	
+		<action name="buyAreaEditPage" class="buyAction" method="buyAreaEditPage">
+			<result name="success">/basefiles/buy/buyarea/buyAreaEditPage.jsp</result>
+		</action>
+		<action name="updateBuyArea" class="buyAction" method="updateBuyArea">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="buyAreaViewPage" class="buyAction" method="buyAreaViewPage">
+			<result name="success">/basefiles/buy/buyarea/buyAreaViewPage.jsp</result>
+		</action>
+		<action name="deleteBuyArea" class="buyAction" method="deleteBuyArea">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="openBuyArea" class="buyAction" method="openBuyArea">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="closeBuyArea" class="buyAction" method="closeBuyArea">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="buyAreaCopyPage" class="buyAction" method="buyAreaCopyPage">
+			<result name="success">/basefiles/buy/buyarea/buyAreaCopyPage.jsp</result>
+		</action>
+		<action name="isRepeatBuyAreaThisname" class="buyAction" method="isRepeatBuyAreaThisname">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+	
+	<!-- 供应商分类 -->
+	<package name="buySupplierSort" extends="parent" namespace="/basefiles">
+		<action name="buySupplierSort" class="buyAction" method="buySupplierSort">
+			<result name="success">/basefiles/buy/buysuppliersort/buySupplierSort.jsp</result>
+		</action>
+		<action name="getBuySupplierSortTree" class="buyAction" method="getBuySupplierSortTree">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="buySupplierSortAddPage" class="buyAction" method="buySupplierSortAddPage">
+			<result name="success">/basefiles/buy/buysuppliersort/buySupplierSortAddPage.jsp</result>
+		</action>
+		<action name="addBuySupplierSort" class="buyAction" method="addBuySupplierSort">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>	
+		<action name="buySupplierSortEditPage" class="buyAction" method="buySupplierSortEditPage">
+			<result name="success">/basefiles/buy/buysuppliersort/buySupplierSortEditPage.jsp</result>
+		</action>
+		<action name="updateBuySupplierSort" class="buyAction" method="updateBuySupplierSort">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="buySupplierSortViewPage" class="buyAction" method="buySupplierSortViewPage">
+			<result name="success">/basefiles/buy/buysuppliersort/buySupplierSortViewPage.jsp</result>
+		</action>
+		<action name="deleteBuySupplierSort" class="buyAction" method="deleteBuySupplierSort">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="openBuySupplierSort" class="buyAction" method="openBuySupplierSort">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="closeBuySupplierSort" class="buyAction" method="closeBuySupplierSort">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="buySupplierSortCopyPage" class="buyAction" method="buySupplierSortCopyPage">
+			<result name="success">/basefiles/buy/buysuppliersort/buySupplierSortCopyPage.jsp</result>
+		</action>
+		<action name="isBuyAreaIdExist" class="buyAction" method="isBuyAreaIdExist">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="isBuySupplierSortIdExist" class="buyAction" method="isBuySupplierSortIdExist">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showBuySupplierDetailSortList" class="buyAction" method="showBuySupplierDetailSortList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="isRepeatSupplierSortThisname" class="buyAction" method="isRepeatSupplierSortThisname">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+	<!-- 供应商档案 -->
+	<package name="buySupplier" extends="parent" namespace="/basefiles">		
+		<action name="buySupplierListPage" class="buyAction" method="buySupplierListPage">
+			<result name="success">/basefiles/buy/buysupplier/buySupplierListPage.jsp</result>
+		</action>
+		<action name="showBuySupplierShortcutPage" class="buyAction" method="showBuySupplierShortcutPage">
+			<result name="success">/basefiles/buy/buysuppliershortcut/buySupplierShortcutPage.jsp</result>
+		</action>
+		<action name="showBuySupplierShortcutMainPage" class="buyAction" method="showBuySupplierShortcutMainPage">
+			<result name="success">/basefiles/buy/buysuppliershortcut/buySupplierShortcutMainPage.jsp</result>
+		</action>
+		<action name="showBuySupplierShortcutAddPage" class="buyAction" method="showBuySupplierShortcutAddPage">
+			<result name="success">/basefiles/buy/buysuppliershortcut/buySupplierShortcutAddPage.jsp</result>
+		</action>
+		<action name="showBuySupplierShortcutEditPage" class="buyAction" method="showBuySupplierShortcutEditPage">
+			<result name="success">/basefiles/buy/buysuppliershortcut/buySupplierShortcutEditPage.jsp</result>
+		</action>
+		<action name="showBuySupplierShortcutCopyPage" class="buyAction" method="showBuySupplierShortcutCopyPage">
+			<result name="success">/basefiles/buy/buysuppliershortcut/buySupplierShortcutCopyPage.jsp</result>
+		</action>
+		<action name="showBuySupplierShortcutViewPage" class="buyAction" method="showBuySupplierShortcutViewPage">
+			<result name="success">/basefiles/buy/buysuppliershortcut/buySupplierShortcutViewPage.jsp</result>
+		</action>
+		<action name="showBuySupplierPageList" class="buyAction" method="showBuySupplierPageList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="buySupplierPage" class="buyAction" method="buySupplierPage">
+			<result name="success">/basefiles/buy/buysupplier/buySupplierPage.jsp</result>
+		</action>				
+		<action name="buySupplierAddPage" class="buyAction" method="buySupplierAddPage">
+			<result name="success">/basefiles/buy/buysupplier/buySupplierAddPage.jsp</result>
+		</action>		
+		<action name="addBuySupplier" class="buyAction" method="addBuySupplier">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addBuySupplierShortcut" class="buyAction" method="addBuySupplierShortcut">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editBuySupplierShortcut" class="buyAction" method="editBuySupplierShortcut">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="importSupplierSimplifyListData" class="buyAction" method="importSupplierSimplifyListData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="exportSupplierSimplifyListData" class="buyAction" method="exportSupplierSimplifyListData"></action>
+		<action name="isBuySupplierNameExist" class="buyAction" method="isBuySupplierNameExist">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>					
+		<action name="buySupplierEditPage" class="buyAction" method="buySupplierEditPage">
+			<result name="success">/basefiles/buy/buysupplier/buySupplierEditPage.jsp</result>
+		</action>		
+		<action name="editBuySupplier" class="buyAction" method="editBuySupplier">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>					
+		<action name="buySupplierViewPage" class="buyAction" method="buySupplierViewPage">
+			<result name="success">/basefiles/buy/buysupplier/buySupplierViewPage.jsp</result>
+		</action>						
+		<action name="buySupplierCopyPage" class="buyAction" method="buySupplierCopyPage">
+			<result name="success">/basefiles/buy/buysupplier/buySupplierCopyPage.jsp</result>
+		</action>
+		<action name="openBuySupplier" class="buyAction" method="openBuySupplier">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="openMultiBuySupplier" class="buyAction" method="openMultiBuySupplier">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="closeBuySupplier" class="buyAction" method="closeBuySupplier">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="closeMultiBuySupplier" class="buyAction" method="closeMultiBuySupplier">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteBuySupplier" class="buyAction" method="deleteBuySupplier">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteMultiBuySupplier" class="buyAction" method="deleteMultiBuySupplier">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="isBuySupplierIdExist" class="buyAction" method="isBuySupplierIdExist">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>	
+		<action name="showSuppplierSelectPage" class="buyAction" method="showSuppplierSelectPage">
+			<result name="success">/basefiles/buy/buysupplier/suppplierSelectPage.jsp</result>
+		</action>
+		<action name="getSupplierSelectListData" class="buyAction" method="getSupplierSelectListData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSupplierBrandSettletypeListPage" class="buyAction" method="showSupplierBrandSettletypeListPage">
+			<result name="success">/basefiles/buy/buysupplierbrandsettletype/buySupplierBrandSettletypeListPage.jsp</result>
+		</action>
+		<action name="getSupplierListForPact" class="buyAction" method="getSupplierListForPact">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSupplierBrandSettletypeAddPage" class="buyAction" method="showSupplierBrandSettletypeAddPage">
+			<result name="success">/basefiles/buy/buysupplierbrandsettletype/buySupplierBrandSettletypeAddPage.jsp</result>
+		</action>
+		<action name="addSupplierBrandSettletype" class="buyAction" method="addSupplierBrandSettletype">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSupplierBrandSettletypeList" class="buyAction" method="showSupplierBrandSettletypeList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteSupplierBrandSettletypes" class="buyAction" method="deleteSupplierBrandSettletypes">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editSupplierBrandSettletype" class="buyAction" method="editSupplierBrandSettletype">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="importSupplierBrandSettletype" class="buyAction" method="importSupplierBrandSettletype">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+
+	</package>
+		
+	<!-- 销售 -->
+	<package name="basefilesSales" extends="parent" namespace="/basefiles">
+		<action name="salesArea" class="salesAction" method="salesArea">
+			<result name="success">/basefiles/sales/salesarea/salesArea.jsp</result>
+		</action>
+		<action name="getSalesAreaTree" class="salesAction" method="getSalesAreaTree">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="salesAreaAddPage" class="salesAction" method="salesAreaAddPage">
+			<result name="success">/basefiles/sales/salesarea/salesAreaAddPage.jsp</result>
+		</action>
+		<action name="addSalesArea" class="salesAction" method="addSalesArea">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>	
+		<action name="salesAreaEditPage" class="salesAction" method="salesAreaEditPage">
+			<result name="success">/basefiles/sales/salesarea/salesAreaEditPage.jsp</result>
+		</action>
+		<action name="updateSalesArea" class="salesAction" method="updateSalesArea">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="salesAreaViewPage" class="salesAction" method="salesAreaViewPage">
+			<result name="success">/basefiles/sales/salesarea/salesAreaViewPage.jsp</result>
+		</action>
+		<action name="deleteSalesArea" class="salesAction" method="deleteSalesArea">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="openSalesArea" class="salesAction" method="openSalesArea">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="closeSalesArea" class="salesAction" method="closeSalesArea">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="salesAreaCopyPage" class="salesAction" method="salesAreaCopyPage">
+			<result name="success">/basefiles/sales/salesarea/salesAreaCopyPage.jsp</result>
+		</action>
+		<action name="salesAreaNOUsed" class="salesAction" method="salesAreaNOUsed">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+        <action name="shopnoIsRepeat" class="salesAction" method="shopnoIsRepeat">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+		<action name="isRepeatSalesAreaThisname" class="salesAction" method="isRepeatSalesAreaThisname">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<!-- 客户分类 -->
+		<action name="customerSort" class="salesAction" method="customerSort">
+			<result name="success">/basefiles/sales/customerSort/customerSort.jsp</result>
+		</action>
+		<action name="getCustomerSortTree" class="salesAction" method="getCustomerSortTree">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="customerSortAddPage" class="salesAction" method="customerSortAddPage">
+			<result name="success">/basefiles/sales/customerSort/customerSortAddPage.jsp</result>
+		</action>
+		<action name="addCustomerSort" class="salesAction" method="addCustomerSort">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>	
+		<action name="customerSortEditPage" class="salesAction" method="customerSortEditPage">
+			<result name="success">/basefiles/sales/customerSort/customerSortEditPage.jsp</result>
+		</action>
+		<action name="updateCustomerSort" class="salesAction" method="updateCustomerSort">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="customerSortViewPage" class="salesAction" method="customerSortViewPage">
+			<result name="success">/basefiles/sales/customerSort/customerSortViewPage.jsp</result>
+		</action>
+		<action name="deleteCustomerSort" class="salesAction" method="deleteCustomerSort">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="openCustomerSort" class="salesAction" method="openCustomerSort">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="closeCustomerSort" class="salesAction" method="closeCustomerSort">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="customerSortCopyPage" class="salesAction" method="customerSortCopyPage">
+			<result name="success">/basefiles/sales/customerSort/customerSortCopyPage.jsp</result>
+		</action>
+		<action name="customerSortNOUsed" class="salesAction" method="customerSortNOUsed">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="isRepeatCustomerSortThisname" class="salesAction" method="isRepeatCustomerSortThisname">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getCustomerSortEnableList" class="salesAction" method="getCustomerSortEnableList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<!-- 客户档案 -->
+		<action name="customerPage" class="salesAction" method="customerPage">
+			<result name="success">/basefiles/sales/customer/customerPage.jsp</result>
+		</action>
+		<action name="showCustomerPriceAndGoodsPage" class="salesAction" method="showCustomerPriceAndGoodsPage">
+			<result name="success">/basefiles/sales/customerprice/customerPriceAndGoodsPage.jsp</result>
+		</action>
+		<action name="showCustomerPriceAndGoodsAddPage" class="salesAction" method="showCustomerPriceAndGoodsAddPage">
+			<result name="success">/basefiles/sales/customerprice/customerPriceAndGoodsAddPage.jsp</result>
+		</action>
+		<action name="showCustomerPriceAndGoodsEditPage" class="salesAction" method="showCustomerPriceAndGoodsEditPage">
+			<result name="success">/basefiles/sales/customerprice/customerPriceAndGoodsEditPage.jsp</result>
+		</action>
+		<action name="showCustomerPriceAndGoodsMoreEditPage" class="salesAction" method="showCustomerPriceAndGoodsMoreEditPage">
+			<result name="success">/basefiles/sales/customerprice/customerPriceAndGoodsMoreEditPage.jsp</result>
+		</action>
+		<action name="showCustomerPriceAndGoodsCopyPage" class="salesAction" method="showCustomerPriceAndGoodsCopyPage">
+			<result name="success">/basefiles/sales/customerprice/customerPriceAndGoodsCopyPage.jsp</result>
+		</action>
+		<action name="showAllotPSNCustomerPage" class="salesAction" method="showAllotPSNCustomerPage">
+			<result name="success">/basefiles/sales/customer/allotPSNCustomerPage.jsp</result>
+		</action>
+		<action name="showClearPSNCustomerPage" class="salesAction" method="showClearPSNCustomerPage">
+			<result name="success">/basefiles/sales/customer/clearPSNCustomerPage.jsp</result>
+		</action>
+		<action name="showCustomerShortcutPage" class="salesAction" method="showCustomerShortcutPage">
+			<result name="success">/basefiles/sales/customershortcut/customerShortcutPage.jsp</result>
+		</action>
+		<action name="showCustomerShortcutMainPage" class="salesAction" method="showCustomerShortcutMainPage">
+			<result name="success">/basefiles/sales/customershortcut/customerShortcutMainPage.jsp</result>
+		</action>
+		<action name="showCustomerShortcutAddPage" class="salesAction" method="showCustomerShortcutAddPage">
+			<result name="success">/basefiles/sales/customershortcut/customerShortcutAddPage.jsp</result>
+		</action>
+		<action name="showCustomerShortcutCopyPage" class="salesAction" method="showCustomerShortcutCopyPage">
+			<result name="success">/basefiles/sales/customershortcut/customerShortcutCopyPage.jsp</result>
+		</action>
+		<action name="showCustomerShortcutEditPage" class="salesAction" method="showCustomerShortcutEditPage">
+			<result name="success">/basefiles/sales/customershortcut/customerShortcutEditPage.jsp</result>
+		</action>
+		<action name="showCustomerShortcutViewPage" class="salesAction" method="showCustomerShortcutViewPage">
+			<result name="success">/basefiles/sales/customershortcut/customerShortcutViewPage.jsp</result>
+		</action>
+		<action name="customerMoreEditPage" class="salesAction" method="customerMoreEditPage">
+			<result name="success">/basefiles/sales/customer/customerMoreEditPage.jsp</result>
+		</action>
+		<action name="showCustomerSimplifyListPage" class="salesAction" method="showCustomerSimplifyListPage">
+			<result name="success">/basefiles/sales/customerSimplify/customerSimplifyListPage.jsp</result>
+		</action>
+		<action name="showCustomerSimplifyPage" class="salesAction" method="showCustomerSimplifyPage">
+			<result name="success">/basefiles/sales/customerSimplify/customerSimplifyPage.jsp</result>
+		</action>
+		<action name="showCustomerSimplifyAddPage" class="salesAction" method="showCustomerSimplifyAddPage">
+			<result name="success">/basefiles/sales/customerSimplify/customerSimplifyAddPage.jsp</result>
+		</action>
+		<action name="showCustomerSimplifyCopyPage" class="salesAction" method="showCustomerSimplifyCopyPage">
+			<result name="success">/basefiles/sales/customerSimplify/customerSimplifyCopyPage.jsp</result>
+		</action>
+		<action name="showCustomerSimplifyEditPage" class="salesAction" method="showCustomerSimplifyEditPage">
+			<result name="success">/basefiles/sales/customerSimplify/customerSimplifyEditPage.jsp</result>
+		</action>
+		<action name="showCustomerSimplifyViewPage" class="salesAction" method="showCustomerSimplifyViewPage">
+			<result name="success">/basefiles/sales/customerSimplify/customerSimplifyViewPage.jsp</result>
+		</action>
+		<action name="showCustomerSimplifyMoreEditPage" class="salesAction" method="showCustomerSimplifyMoreEditPage">
+			<result name="success">/basefiles/sales/customerSimplify/customerSimplifyMoreEditPage.jsp</result>
+		</action>
+		<action name="editCustomerPriceAndGoodsMore" class="salesAction" method="editCustomerPriceAndGoodsMore">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="saveCustomerPrice" class="salesAction" method="saveCustomerPrice">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getCustomerTree" class="salesAction" method="getCustomerTree">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="customerAddPage" class="salesAction" method="customerAddPage">
+			<result name="success">/basefiles/sales/customer/customerAddPage.jsp</result>
+		</action>
+		<action name="customerDIYFieldName" class="salesAction" method="customerDIYFieldName">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteCustomerFromListPage" class="salesAction" method="deleteCustomerFromListPage">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="allotCustomerToPsn" class="salesAction" method="allotCustomerToPsn">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="doClearCustomerToPsn" class="salesAction" method="doClearCustomerToPsn">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addCustomer" class="salesAction" method="addCustomer">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addCustomerShortcut" class="salesAction" method="addCustomerShortcut">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editCustomerShortcut" class="salesAction" method="editCustomerShortcut">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editCustomerMore" class="salesAction" method="editCustomerMore">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getGoodsListPage" class="salesAction" method="getGoodsListPage">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="customerNameNoUsed" class="salesAction" method="customerNameNoUsed">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getNextCustomerLenById" class="salesAction" method="getNextCustomerLenById">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="openMultiCustomer" class="salesAction" method="openMultiCustomer">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="closeMultiCustomer" class="salesAction" method="closeMultiCustomer">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteMultiCustomer" class="salesAction" method="deleteMultiCustomer">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getPriceListPage" class="salesAction" method="getPriceListPage">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="customerEditPage" class="salesAction" method="customerEditPage">
+			<result name="success">/basefiles/sales/customer/customerEditPage.jsp</result>
+		</action>
+		<action name="updateCustomer" class="salesAction" method="updateCustomer">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="customerCopyPage" class="salesAction" method="customerCopyPage">
+			<result name="success">/basefiles/sales/customer/customerCopyPage.jsp</result>
+		</action>
+		<action name="deleteCustomer" class="salesAction" method="deleteCustomer">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="openCustomer" class="salesAction" method="openCustomer">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="closeCustomer" class="salesAction" method="closeCustomer">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="customerViewPage" class="salesAction" method="customerViewPage">
+			<result name="success">/basefiles/sales/customer/customerViewPage.jsp</result>
+		</action>
+		<action name="customerNOUsed" class="salesAction" method="customerNOUsed">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getCustomerAndSortList" class="salesAction" method="getCustomerAndSortList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="customerListPage" class="salesAction" method="customerListPage">
+			<result name="success">/basefiles/sales/customer/customerListPage.jsp</result>
+		</action>
+		<action name="getCustomerList" class="salesAction" method="getCustomerList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getCustomerListForCustomerprice" class="salesAction" method="getCustomerListForCustomerprice">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getCustomerListForPact" class="salesAction" method="getCustomerListForPact">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getCustomerListForCombobox" class="salesAction" method="getCustomerListForCombobox">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showCustomerSelectPage" class="salesAction" method="showCustomerSelectPage">
+			<result name="success">/basefiles/sales/customer/customerSelectPage.jsp</result>
+		</action>
+		<action name="getCustomerSelectListData" class="salesAction" method="getCustomerSelectListData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addCustomerPrice" class="salesAction" method="addCustomerPrice">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="doCopyCustomerPrice" class="salesAction" method="doCopyCustomerPrice">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="doCheckIsExistCustomerPrice" class="salesAction" method="doCheckIsExistCustomerPrice">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="updateCustomerPrice" class="salesAction" method="updateCustomerPrice">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteCustomerPrices" class="salesAction" method="deleteCustomerPrices">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getCustomerListData" class="salesAction" method="getCustomerListData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getTaxPrice" class="salesAction" method="getTaxPrice">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getCustomerPriceChanger" class="salesAction" method="getCustomerPriceChanger">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="importPriceCustomerData" class="salesAction" method="importPriceCustomerData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+        <action name="importCustomerSimplifyListData" class="salesAction" method="importCustomerSimplifyListData">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+		<action name="exportPriceCustomerData" class="salesAction" method="exportPriceCustomerData">
+		</action>
+		<action name="exportCustomerSimplifyListData" class="salesAction" method="exportCustomerSimplifyListData">
+		</action>
+        <action name="exportCustomerSimplifyListData" class="salesAction" method="exportCustomerSimplifyListData">
+            <result name="success" type="json">
+                <param name="root">jsonArray</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+		<action name="getCustomerExportMod" class="salesAction" method="getCustomerExportMod">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<!-- 客户品牌对应价格套 -->
+		<action name="showCustomerBrandPricesortListPage" class="salesAction" method="showCustomerBrandPricesortListPage">
+			<result name="success">/basefiles/sales/customerbrand/customerBrandPricesortListPage.jsp</result>
+		</action>
+		<action name="showCustomerBrandPricesortAddPage" class="salesAction" method="showCustomerBrandPricesortAddPage">
+			<result name="success">/basefiles/sales/customerbrand/customerBrandPricesortAddPage.jsp</result>
+		</action>
+		<action name="addCustomerBrandPricesort" class="salesAction" method="addCustomerBrandPricesort">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showCustomerBrandPricesort" class="salesAction" method="showCustomerBrandPricesort">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editCustomerBrandPricesort" class="salesAction" method="editCustomerBrandPricesort">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteCustomerBrandPricesorts" class="salesAction" method="deleteCustomerBrandPricesorts">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		<!-- 销售部门参照窗 -->
+		<action name="showDeptPage" class="salesAction" method="showDeptPage">
+			<result name="success">/basefiles/sales/dept/salesDeptPage.jsp</result>
+		</action>
+		
+		<action name="getDeptList" class="salesAction" method="getDeptList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+
+		<action name="showCustomerBrandSettletypeListPage" class="salesAction" method="showCustomerBrandSettletypeListPage">
+			<result name="success">/basefiles/sales/customerbrandsettletype/customerBrandSettletypeListPage.jsp</result>
+		</action>
+		<action name="showCustomerBrandSettletypeList" class="salesAction" method="showCustomerBrandSettletypeList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showCustomerBrandSettletypeAddPage" class="salesAction" method="showCustomerBrandSettletypeAddPage">
+			<result name="success">/basefiles/sales/customerbrandsettletype/customerBrandSettletypeAddPage.jsp</result>
+		</action>
+		<action name="addCustomerBrandSettletype" class="salesAction" method="addCustomerBrandSettletype">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editCustomerBrandSettletype" class="salesAction" method="editCustomerBrandSettletype">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteCustomerBrandSettletypes" class="salesAction" method="deleteCustomerBrandSettletypes">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="importCustomerBrandSettletype" class="salesAction" method="importCustomerBrandSettletype">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+        <!-- 客户地图 -->
+        <action name="customerSimplifyMapPage" class="salesAction" method="customerSimplifyMapPage">
+            <result name="success">/basefiles/sales/customerSimplify/customerSimplifyMapPage.jsp</result>
+        </action>
+        <action name="editCustomerLocation" class="salesAction" method="editCustomerLocation">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+		<action name="searchPlace" class="salesAction" method="searchPlace">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+	
+	<!-- 联系人 -->
+	<package name="contacter" extends="parent" namespace="/basefiles">
+		<action name="contacterSort" class="contacterAction" method="contacterSort">
+			<result name="success">/basefiles/contacter/contacterSort/contacterSort.jsp</result>
+		</action>
+		<action name="getContacterSortTree" class="contacterAction" method="getContacterSortTree">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="contacterSortAddPage" class="contacterAction" method="contacterSortAddPage">
+			<result name="success">/basefiles/contacter/contacterSort/contacterSortAddPage.jsp</result>
+		</action>
+		<action name="addContacterSort" class="contacterAction" method="addContacterSort">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="contacterSortEditPage" class="contacterAction" method="contacterSortEditPage">
+			<result name="success">/basefiles/contacter/contacterSort/contacterSortEditPage.jsp</result>
+		</action>
+		<action name="updateContacterSort" class="contacterAction" method="updateContacterSort">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="contacterSortCopyPage" class="contacterAction" method="contacterSortCopyPage">
+			<result name="success">/basefiles/contacter/contacterSort/contacterSortCopyPage.jsp</result>
+		</action>
+		<action name="contacterSortViewPage" class="contacterAction" method="contacterSortViewPage">
+			<result name="success">/basefiles/contacter/contacterSort/contacterSortViewPage.jsp</result>
+		</action>
+		<action name="deleteContacterSort" class="contacterAction" method="deleteContacterSort">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="openContacterSort" class="contacterAction" method="openContacterSort">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="closeContacterSort" class="contacterAction" method="closeContacterSort">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="contacterSortNOUsed" class="contacterAction" method="contacterSortNOUsed">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="isRepeatContacterSortThisname" class="contacterAction" method="isRepeatContacterSortThisname">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="contacterListPage" class="contacterAction" method="contacterListPage">
+			<result name="success">/basefiles/contacter/contacter/contacterListPage.jsp</result>
+		</action>
+		<action name="getContacterList" class="contacterAction" method="getContacterList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getContacterListCustomer" class="contacterAction" method="getContacterListCustomer">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="contacterPage" class="contacterAction" method="contacterPage">
+			<result name="success">/basefiles/contacter/contacter/contacterPage.jsp</result>
+		</action>
+		<action name="contacterAddPage" class="contacterAction" method="contacterAddPage">
+			<result name="success">/basefiles/contacter/contacter/contacterAddPage.jsp</result>
+		</action>
+		<action name="contacterDIYFieldName" class="contacterAction" method="contacterDIYFieldName">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addContacter" class="contacterAction" method="addContacter">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>		
+		<action name="contacterCopyPage" class="contacterAction" method="contacterCopyPage">
+			<result name="success">/basefiles/contacter/contacter/contacterCopyPage.jsp</result>
+		</action>
+		<action name="contacterEditPage" class="contacterAction" method="contacterEditPage">
+			<result name="success">/basefiles/contacter/contacter/contacterEditPage.jsp</result>
+		</action>
+		<action name="updateContacter" class="contacterAction" method="updateContacter">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="contacterViewPage" class="contacterAction" method="contacterViewPage">
+			<result name="success">/basefiles/contacter/contacter/contacterViewPage.jsp</result>
+		</action>
+		<action name="deleteContacter" class="contacterAction" method="deleteContacter">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteMultiContacter" class="contacterAction" method="deleteMultiContacter">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="openContacter" class="contacterAction" method="openContacter">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="openMultiContacter" class="contacterAction" method="openMultiContacter">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="closeContacter" class="contacterAction" method="closeContacter">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="closeMultiContacter" class="contacterAction" method="closeMultiContacter">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="contacterNoUsed" class="contacterAction" method="contacterNoUsed">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getContacterAndSortList" class="contacterAction" method="getContacterAndSortList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getContacterBy" class="contacterAction" method="getContacterBy">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<!-- 显示原图页面 -->
+		<action name="showContacterOldImgPage" class="contacterAction" method="showContacterOldImgPage">
+			<result name="success">/basefiles/contacter/contacter/contacterOldImgPage.jsp</result>
+		</action>
+	</package>
+	
+	<!-- 商品 -->
+	<package name="wares" extends="parent" namespace="/basefiles">
+		<!-- 计量单位 -->
+		<action name="showMeteringUnitPage" class="goodsAction" method="showMeteringUnitPage">
+			<result name="success">/basefiles/wares/meteringunit/meteringUnitPage.jsp</result>
+		</action>
+		<action name="showMeteringUnitAddPage" class="goodsAction" method="showMeteringUnitAddPage">
+			<result name="success">/basefiles/wares/meteringunit/meteringUnitAddPage.jsp</result>
+		</action>
+		<action name="showMeteringUnitEditPage" class="goodsAction" method="showMeteringUnitEditPage">
+			<result name="success">/basefiles/wares/meteringunit/meteringUnitEditPage.jsp</result>
+		</action>
+		<action name="showMeteringUnitInfoPage" class="goodsAction" method="showMeteringUnitInfoPage">
+			<result name="success">/basefiles/wares/meteringunit/meteringUnitInfoPage.jsp</result>
+		</action>
+		<action name="showMeteringUnitCopyPage" class="goodsAction" method="showMeteringUnitCopyPage">
+			<result name="success">/basefiles/wares/meteringunit/meteringUnitCopyPage.jsp</result>
+		</action>
+		<action name="importExcelPage" class="personnelAction" method="importExcelPage">
+			<result name="success">/common/excel/importExcel.jsp</result>
+		</action>
+		<action name="uploadPage" class="goodsAction" method="uploadPage">
+			<result name="success">/common/upload/uploadPage.jsp</result>
+		</action>
+		<action name="addMeteringUnitHold" class="goodsAction" method="addMeteringUnitHold">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addMeteringUnitSave" class="goodsAction" method="addMeteringUnitSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getMeteringUnitList" class="goodsAction" method="getMeteringUnitList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="isRepeatMUID" class="goodsAction" method="isRepeatMUId">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="isRepeatMUName" class="goodsAction" method="isRepeatMUName">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editMeteringUnitSave" class="goodsAction" method="editMeteringUnitSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editMeteringUnitHold" class="goodsAction" method="editMeteringUnitHold">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteMeteringUnit" class="goodsAction" method="deleteMeteringUnit">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="enableMeteringUnit" class="goodsAction" method="enableMeteringUnit">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="disableMeteringUnit" class="goodsAction" method="disableMeteringUnit">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getMUListForCombobox" class="goodsAction" method="getMUListForCombobox">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<!-- 商品分类  -->
+		<action name="showWaresClassPage" class="goodsAction" method="showWaresClassPage">
+			<result name="success">/basefiles/wares/waresclass/waresClassPage.jsp</result>
+		</action>
+		<action name="showWaresClassListPage" class="goodsAction" method="showWaresClassListPage">
+			<result name="success">/basefiles/wares/waresclass/waresClassListPage.jsp</result>
+		</action>
+		<action name="showWaresClassInfoPage" class="goodsAction" method="showWaresClassInfoPage">
+			<result name="success">/basefiles/wares/waresclass/waresClassInfoPage.jsp</result>
+		</action>
+		<action name="showWaresClassAddPage" class="goodsAction" method="showWaresClassAddPage">
+			<result name="success">/basefiles/wares/waresclass/waresClassAddPage.jsp</result>
+		</action>
+		<action name="showWaresClassEditPage" class="goodsAction" method="showWaresClassEditPage">
+			<result name="success">/basefiles/wares/waresclass/waresClassEditPage.jsp</result>
+		</action>
+		<action name="showWaresClassCopyPage" class="goodsAction" method="showWaresClassCopyPage">
+			<result name="success">/basefiles/wares/waresclass/waresClassCopyPage.jsp</result>
+		</action>
+		<action name="getWaresClassListPage" class="goodsAction" method="getWaresClassListPage">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getWaresClassTreeList" class="goodsAction" method="getWaresClassTreeList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getWaresClassTreeOpenList" class="goodsAction" method="getWaresClassTreeOpenList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="isRepeatWCID" class="goodsAction" method="isRepeatWCID">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="isRepeatThisName" class="goodsAction" method="isRepeatThisName">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addWaresClassHold" class="goodsAction" method="addWaresClassHold">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addWaresClassSave" class="goodsAction" method="addWaresClassSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editWaresClassHold" class="goodsAction" method="editWaresClassHold">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editWaresClassSave" class="goodsAction" method="editWaresClassSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteWaresClass" class="goodsAction" method="deleteWaresClass">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="isExistChildWCList" class="goodsAction" method="isExistChildWCList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="enableWaresClass" class="goodsAction" method="enableWaresClass">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="disableWaresClass" class="goodsAction" method="disableWaresClass">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getNextWCLenght" class="goodsAction" method="getNextWCLenght">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getParentWaresClass" class="goodsAction" method="getParentWaresClass">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		<!-- 商品品牌 -->
+		<action name="showBrandPage" class="goodsAction" method="showBrandPage">
+			<result name="success">/basefiles/wares/brand/brandPage.jsp</result>
+		</action>
+		<action name="showBrandAddPage" class="goodsAction" method="showBrandAddPage">
+			<result name="success">/basefiles/wares/brand/brandAddPage.jsp</result>
+		</action>
+		<action name="showBrandInfoPage" class="goodsAction" method="showBrandInfoPage">
+			<result name="success">/basefiles/wares/brand/brandInfoPage.jsp</result>
+		</action>
+		<action name="showBrandEditPage" class="goodsAction" method="showBrandEditPage">
+			<result name="success">/basefiles/wares/brand/brandEditPage.jsp</result>
+		</action>
+		<action name="showBrandCopyPage" class="goodsAction" method="showBrandCopyPage">
+			<result name="success">/basefiles/wares/brand/brandCopyPage.jsp</result>
+		</action>
+		<action name="getBrandListForCombobox" class="goodsAction" method="getBrandListForCombobox">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getBrandListPage" class="goodsAction" method="getBrandListPage">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="isRepeatBrandById" class="goodsAction" method="isRepeatBrandById">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="isRepeatBrandName" class="goodsAction" method="isRepeatBrandName">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addBrand" class="goodsAction" method="addBrand">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editBrand" class="goodsAction" method="editBrand">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteBrand" class="goodsAction" method="deleteBrand">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="enableBrand" class="goodsAction" method="enableBrand">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="disableBrand" class="goodsAction" method="disableBrand">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getBrandListByDeptid" class="goodsAction" method="getBrandListByDeptid">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getBrandListDataByDeptid" class="goodsAction" method="getBrandListDataByDeptid">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getBrandListWithParentByDeptid" class="goodsAction" method="getBrandListWithParentByDeptid">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getBrandEnableList" class="goodsAction" method="getBrandEnableList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+
+
+
+		<action name="showBrandInfoForJSEditPage" class="goodsAction" method="showBrandInfoForJSEditPage">
+			<result name="success">/basefiles/wares/brand/brandInfoForJSEditPage.jsp</result>
+		</action>
+		<action name="updateBrandInfoForJS" class="goodsAction" method="updateBrandInfoForJS">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+
+		<!-- 商品档案 -->
+        <action name="getExportMod" class="goodsAction" method="getExportMod">
+            <result name="success" type="json">
+                <param name="root">jsonArray</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+		<action name="showGoodsInfoPage" class="goodsAction" method="showGoodsInfoPage">
+			<result name="success">/basefiles/wares/goodsinfo/goodsInfoPage.jsp</result>
+		</action>
+		<action name="showGoodsInfoListPage" class="goodsAction" method="showGoodsInfoListPage">
+			<result name="success">/basefiles/wares/goodsinfo/goodsInfoListPage.jsp</result>
+		</action>
+		<action name="showGoodsInfoAddPage" class="goodsAction" method="showGoodsInfoAddPage">
+			<result name="success">/basefiles/wares/goodsinfo/goodsInfoAddPage.jsp</result>
+		</action>
+		<action name="showGoodsInfoViewPage" class="goodsAction" method="showGoodsInfoViewPage">
+			<result name="success">/basefiles/wares/goodsinfo/goodsInfoViewPage.jsp</result>
+		</action>
+        <action name="showPhoneGoodsInfo" class="goodsAction" method="showPhoneGoodsInfo">
+            <result name="success">/basefiles/wares/goodsinfo/phone/goodsInfoViewPage.jsp</result>
+        </action>
+        <action name="goodesSimplifyViewCostpriceChage" class="goodsAction" method="goodesSimplifyViewCostpriceChage">
+            <result name="success">/basefiles/wares/goodsSimplify/goodsSimplifyViewCostpriceChage.jsp</result>
+        </action>
+		<action name="getGoodesSimplifyViewCostpriceChageData" class="goodsAction" method="getGoodesSimplifyViewCostpriceChageData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+
+		<action name="showGoodsInfoEidtPage" class="goodsAction" method="showGoodsInfoEidtPage">
+			<result name="success">/basefiles/wares/goodsinfo/goodsInfoEditPage.jsp</result>
+		</action>
+		<action name="showGoodsInfoCopyPage" class="goodsAction" method="showGoodsInfoCopyPage">
+			<result name="success">/basefiles/wares/goodsinfo/goodsInfoCopyPage.jsp</result>
+		</action>
+		<action name="showGoodsInfoOldImgPage" class="goodsAction" method="showGoodsInfoOldImgPage">
+			<result name="success">/basefiles/wares/goodsinfo/goodsInfoOldImagePage.jsp</result>
+		</action>
+		<action name="goodsInfoMoreEditPage" class="goodsAction" method="goodsInfoMoreEditPage">
+			<result name="success">/basefiles/wares/goodsinfo/goodsInfoMoreEditPage.jsp</result>
+		</action>
+		<action name="showGoodsShortcutPage" class="goodsAction" method="showGoodsShortcutPage">
+			<result name="success">/basefiles/wares/goodsShortcut/goodsShortcutPage.jsp</result>
+		</action>
+		<action name="showGoodsShortcutAddPage" class="goodsAction" method="showGoodsShortcutAddPage">
+			<result name="success">/basefiles/wares/goodsShortcut/goodsShortcutAddPage.jsp</result>
+		</action>
+		<action name="showGoodsShortcutEditPage" class="goodsAction" method="showGoodsShortcutEditPage">
+			<result name="success">/basefiles/wares/goodsShortcut/goodsShortcutEditPage.jsp</result>
+		</action>
+		<action name="showGoodsShortcutCopyPage" class="goodsAction" method="showGoodsShortcutCopyPage">
+			<result name="success">/basefiles/wares/goodsShortcut/goodsShortcutCopyPage.jsp</result>
+		</action>
+		<action name="showGoodsShortcutViewPage" class="goodsAction" method="showGoodsShortcutViewPage">
+			<result name="success">/basefiles/wares/goodsShortcut/goodsShortcutViewPage.jsp</result>
+		</action>
+		<action name="showGoodsSimplifyListPage" class="goodsAction" method="showGoodsSimplifyListPage">
+			<result name="success">/basefiles/wares/goodsSimplify/goodsSimplifyListPage.jsp</result>
+		</action>
+		<action name="showGoodsSimplifyPage" class="goodsAction" method="showGoodsSimplifyPage">
+			<result name="success">/basefiles/wares/goodsSimplify/goodsSimplifyPage.jsp</result>
+		</action>
+		<action name="showGoodsSimplifyAddPage" class="goodsAction" method="showGoodsSimplifyAddPage">
+			<result name="success">/basefiles/wares/goodsSimplify/goodsSimplifyAddPage.jsp</result>
+		</action>
+		<action name="showGoodsSimplifyEditPage" class="goodsAction" method="showGoodsSimplifyEditPage">
+			<result name="success">/basefiles/wares/goodsSimplify/goodsSimplifyEditPage.jsp</result>
+		</action>
+		<action name="showGoodsSimplifyCopyPage" class="goodsAction" method="showGoodsSimplifyCopyPage">
+			<result name="success">/basefiles/wares/goodsSimplify/goodsSimplifyCopyPage.jsp</result>
+		</action>
+		<action name="showGoodsSimplifyViewPage" class="goodsAction" method="showGoodsSimplifyViewPage">
+			<result name="success">/basefiles/wares/goodsSimplify/goodsSimplifyViewPage.jsp</result>
+		</action>
+		<action name="showGoodsSimplifyMoreEditPage" class="goodsAction" method="showGoodsSimplifyMoreEditPage">
+			<result name="success">/basefiles/wares/goodsSimplify/goodsSimplifyMoreEditPage.jsp</result>
+		</action>
+		<action name="showGoodsUploadImgPage" class="goodsAction" method="showGoodsUploadImgPage">
+			<result name="success">/basefiles/wares/goodsSimplify/goodsUploadImgPage.jsp</result>
+		</action>
+		<action name="exportGoosSimplifyListData" class="goodsAction" method="exportGoosSimplifyListData">
+		</action>
+		<action name="exportGoodsListDataSplitByBrandForHTKP" class="goodsAction" method="exportGoodsListDataSplitByBrandForHTKP">
+		</action>
+		<action name="convertGoodsExcelToXMLForHTKP" class="goodsAction" method="convertGoodsExcelToXMLForHTKP">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="importAndUpdateJSGoodsHTKP" class="goodsAction" method="importAndUpdateJSGoodsHTKP">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="importGoosSimplifyListData" class="goodsAction" method="importGoosSimplifyListData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="importGoosSimplifyListData" class="goodsAction" method="importGoosSimplifyListData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="importGoodsSortListData" class="goodsAction" method="importGoodsSortListData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getGoodsListForCombobox" class="goodsAction" method="getGoodsListForCombobox">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="goodsInfoWaresClassTree" class="goodsAction" method="goodsInfoWaresClassTree">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="goodsInfoListPage" class="goodsAction" method="goodsInfoListPage">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="enableGoodsInfos" class="goodsAction" method="enableGoodsInfos">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="disableGoodsInfos" class="goodsAction" method="disableGoodsInfos">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteGoodsInfos" class="goodsAction" method="deleteGoodsInfos">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addGoodsInfo" class="goodsAction" method="addGoodsInfo">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="isRepeatGoodsInfoID" class="goodsAction" method="isRepeatGoodsInfoID">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="isRepeatGoodsInfoName" class="goodsAction" method="isRepeatGoodsInfoName">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="isRepeatGoodsInfoBarcode" class="goodsAction" method="isRepeatGoodsInfoBarcode">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="isRepeatGoodsInfoBoxbarcode" class="goodsAction" method="isRepeatGoodsInfoBoxbarcode">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="isRepeatGoodsInfoItemno" class="goodsAction" method="isRepeatGoodsInfoItemno">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showMeteringUnitInfoList" class="goodsAction" method="showMeteringUnitInfoList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showPriceInfoList" class="goodsAction" method="showPriceInfoList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showStorageInfoList" class="goodsAction" method="showStorageInfoList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showGoodsStorageLocationList" class="goodsAction" method="showGoodsStorageLocationList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showWaresClassInfoList" class="goodsAction" method="showWaresClassInfoList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editGoodsInfo" class="goodsAction" method="editGoodsInfo">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editGoodsInfoShortcut" class="goodsAction" method="editGoodsInfoShortcut">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addGoodsInfoShortcut" class="goodsAction" method="addGoodsInfoShortcut">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editGoodsInfoMore" class="goodsAction" method="editGoodsInfoMore">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showGoodsSelectPage" class="goodsAction" method="showGoodsSelectPage">
+			<result name="success">/basefiles/wares/goodsinfo/goodsSelectPage.jsp</result>
+		</action>
+		<action name="getGoodsSelectListData" class="goodsAction" method="getGoodsSelectListData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getGoodsSelectListDataSimple" class="goodsAction" method="getGoodsSelectListDataSimple">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+        <action name="getPinYingJCLen" class="goodsAction" method="getPinYingJCLen">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+		<!-- 价格套列表 -->
+		<action name="showPriceListPage" class="goodsAction" method="showPriceListPage">
+			<result name="success">/basefiles/wares/pricelist/priceListPage.jsp</result>
+		</action>
+		<action name="showPriceAddPage" class="goodsAction" method="showPriceAddPage">
+			<result name="success">/basefiles/wares/pricelist/priceAddPage.jsp</result>
+		</action>
+		<action name="priceList" class="goodsAction" method="priceList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showGoodsInfoByPriceList" class="goodsAction" method="showGoodsInfoByPriceList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editGoodsPriceList" class="goodsAction" method="editGoodsPriceList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getPriceChanger" class="goodsAction" method="getPriceChanger">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+
+
+		<action name="showGoodsInfoForJSEditPage" class="goodsAction" method="showGoodsInfoForJSEditPage">
+			<result name="success">/basefiles/wares/goodsSimplify/goodsInfoForJSEditPage.jsp</result>
+		</action>
+		<action name="updateGoodsInfoForJS" class="goodsAction" method="updateGoodsInfoForJS">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+
+
+	</package>
+
+	<!-- 客户关系 -->
+	<package name="crmrelations" extends="parent" namespace="/basefiles/crmrelations">
+		<!-- 销售方式 -->
+		<action name="showSaleModePage" class="cmrAction" method="showSaleModePage">
+			<result name="success">/basefiles/crmrelations/salemode/saleModePage.jsp</result>
+		</action>
+		<action name="showSaleModeViewPage" class="cmrAction" method="showSaleModeViewPage">
+			<result name="success">/basefiles/crmrelations/salemode/saleModeViewPage.jsp</result>
+		</action>
+		<action name="showSalemodeAddPage" class="cmrAction" method="showSalemodeAddPage">
+			<result name="success">/basefiles/crmrelations/salemode/saleModeAddPage.jsp</result>
+		</action>
+		<action name="showSalemodeEditPage" class="cmrAction" method="showSalemodeEditPage">
+			<result name="success">/basefiles/crmrelations/salemode/saleModeEditPage.jsp</result>
+		</action>
+		<action name="showSaleModeCopyPage" class="cmrAction" method="showSaleModeCopyPage">
+			<result name="success">/basefiles/crmrelations/salemode/saleModeCopyPage.jsp</result>
+		</action>
+		<action name="showSaleModeListPage" class="cmrAction" method="showSaleModeListPage">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSaleModeDetailList" class="cmrAction" method="showSaleModeDetailList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="isRepeatSaleModeId" class="cmrAction" method="isRepeatSaleModeId">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="isRepeatSaleModeName" class="cmrAction" method="isRepeatSaleModeName">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addSaleMode" class="cmrAction" method="addSaleMode">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editSaleMode" class="cmrAction" method="editSaleMode">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteSaleMode" class="cmrAction" method="deleteSaleMode">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="enableSaleMode" class="cmrAction" method="enableSaleMode">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="disableSaleMode" class="cmrAction" method="disableSaleMode">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="isRepeatSatgeCode" class="cmrAction" method="isRepeatSatgeCode">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="isRepeatSatgeName" class="cmrAction" method="isRepeatSatgeName">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		<!-- 销售机会来源 -->
+		<action name="showSaleChance_SortPage" class="cmrAction" method="showSaleChance_SortPage">
+			<result name="success">/basefiles/crmrelations/salechance_sort/saleChance_SortPage.jsp</result>
+		</action>
+		<action name="showSaleChance_SortAddPage" class="cmrAction" method="showSaleChance_SortAddPage">
+			<result name="success">/basefiles/crmrelations/salechance_sort/saleChance_SortAddPage.jsp</result>
+		</action>
+		<action name="showSaleChance_SortEditPage" class="cmrAction" method="showSaleChance_SortEditPage">
+			<result name="success">/basefiles/crmrelations/salechance_sort/saleChance_SortEditPage.jsp</result>
+		</action>
+		<action name="showSaleChance_SortCopyPage" class="cmrAction" method="showSaleChance_SortCopyPage">
+			<result name="success">/basefiles/crmrelations/salechance_sort/saleChance_SortCopyPage.jsp</result>
+		</action>
+		<action name="showSaleChance_SortViewPage" class="cmrAction" method="showSaleChance_SortViewPage">
+			<result name="success">/basefiles/crmrelations/salechance_sort/saleChance_SortViewPage.jsp</result>
+		</action>
+		<action name="getSaleChanceSortTree" class="cmrAction" method="getSaleChanceSortTree">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addSaleChance" class="cmrAction" method="addSaleChance">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="saleChanceNOUsed" class="cmrAction" method="saleChanceNOUsed">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editSaleChance" class="cmrAction" method="editSaleChance">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="saleChanceNameNOUsed" class="cmrAction" method="saleChanceNameNOUsed">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteSaleChance" class="cmrAction" method="deleteSaleChance">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="enableSaleChance_Sort" class="cmrAction" method="enableSaleChance_Sort">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="disableSaleChance_Sort" class="cmrAction" method="disableSaleChance_Sort">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		<!-- 任务分类 -->
+		<action name="showTaskSortPage" class="cmrAction" method="showTaskSortPage">
+			<result name="success">/basefiles/crmrelations/tasksort/taskSortPage.jsp</result>
+		</action>
+		<action name="showTaskSortAddPage" class="cmrAction" method="showTaskSortAddPage">
+			<result name="success">/basefiles/crmrelations/tasksort/taskSortAddPage.jsp</result>
+		</action>
+		<action name="showTaskSortEditPage" class="cmrAction" method="showTaskSortEditPage">
+			<result name="success">/basefiles/crmrelations/tasksort/taskSortEditPage.jsp</result>
+		</action>
+		<action name="showTaskSortCopyPage" class="cmrAction" method="showTaskSortCopyPage">
+			<result name="success">/basefiles/crmrelations/tasksort/taskSortCopyPage.jsp</result>
+		</action>
+		<action name="showTaskSortViewPage" class="cmrAction" method="showTaskSortViewPage">
+			<result name="success">/basefiles/crmrelations/tasksort/taskSortViewPage.jsp</result>
+		</action>
+		<action name="getTaskSortTree" class="cmrAction" method="getTaskSortTree">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addTaskSort" class="cmrAction" method="addTaskSort">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editTaskSort" class="cmrAction" method="editTaskSort">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteTaskSort" class="cmrAction" method="deleteTaskSort">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="enableTaskSort" class="cmrAction" method="enableTaskSort">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="disableTaskSort" class="cmrAction" method="disableTaskSort">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="isUsedTaskSortID" class="cmrAction" method="isUsedTaskSortID">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="isUsedTaskSortName" class="cmrAction" method="isUsedTaskSortName">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		<!-- 市场活动分类 -->
+		<action name="marketActivitySortPage" class="cmrAction" method="marketActivitySortPage">
+			<result name="success">/basefiles/crmrelations/marketactivitysort/marketActivitySortPage.jsp</result>
+		</action>
+		<action name="marketActivitySortAddPage" class="cmrAction" method="marketActivitySortAddPage">
+			<result name="success">/basefiles/crmrelations/marketactivitysort/marketActivitySortAddPage.jsp</result>
+		</action>
+		<action name="marketActivitySortEditPage" class="cmrAction" method="marketActivitySortEditPage">
+			<result name="success">/basefiles/crmrelations/marketactivitysort/marketActivitySortEditPage.jsp</result>
+		</action>
+		<action name="marketActivitySortCopyPage" class="cmrAction" method="marketActivitySortCopyPage">
+			<result name="success">/basefiles/crmrelations/marketactivitysort/marketActivitySortCopyPage.jsp</result>
+		</action>
+		<action name="marketActivitySortViewPage" class="cmrAction" method="marketActivitySortViewPage">
+			<result name="success">/basefiles/crmrelations/marketactivitysort/marketActivitySortViewPage.jsp</result>
+		</action>
+		<action name="getmarketActivityTree" class="cmrAction" method="getmarketActivityTree">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addmarketActivitySort" class="cmrAction" method="addmarketActivitySort">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editMarketActivitySort" class="cmrAction" method="editMarketActivitySort">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteMarketActivitySort" class="cmrAction" method="deleteMarketActivitySort">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="enableMarketActivitySort" class="cmrAction" method="enableMarketActivitySort">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="disableMarketActivitySort" class="cmrAction" method="disableMarketActivitySort">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="isUsedMarketActivitySortID" class="cmrAction" method="isUsedMarketActivitySortID">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="isUsedMarketActivitySortName" class="cmrAction" method="isUsedMarketActivitySortName">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+    
+    <!-- 财务 -->
+    <package name="finance" extends="parent" namespace="/basefiles/finance">
+    	<!-- 税种档案 -->
+		<action name="showTaxTypePage" class="financeAction" method="showTaxTypePage">
+			<result name="success">/basefiles/finance/taxtype/taxTypePage.jsp</result>
+		</action>
+		<action name="showTaxTypeViewPage" class="financeAction" method="showTaxTypeViewPage">
+			<result name="success">/basefiles/finance/taxtype/taxTypeViewPage.jsp</result>
+		</action>
+		<action name="showTaxTypeAddPage" class="financeAction" method="showTaxTypeAddPage">
+			<result name="success">/basefiles/finance/taxtype/taxTypeAddPage.jsp</result>
+		</action>
+		<action name="showTaxTypeEditPage" class="financeAction" method="showTaxTypeEditPage">
+			<result name="success">/basefiles/finance/taxtype/taxTypeEditPage.jsp</result>
+		</action>
+		<action name="isUsedId" class="financeAction" method="isUsedId">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="isUsedName" class="financeAction" method="isUsedName">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="isUsedRate" class="financeAction" method="isUsedRate">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getTaxTypeList" class="financeAction" method="getTaxTypeList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addTaxType" class="financeAction" method="addTaxType">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editTaxType" class="financeAction" method="editTaxType">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="enableTaxType" class="financeAction" method="enableTaxType">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="disableTaxType" class="financeAction" method="disableTaxType">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteTaxType" class="financeAction" method="deleteTaxType">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		<!-- 结算方式 -->
+		<action name="settlementPage" class="financeAction" method="settlementPage">
+			<result name="success">/basefiles/finance/settlement/settlementPage.jsp</result>
+		</action>
+		<action name="settlementAddPage" class="financeAction" method="settlementAddPage">
+			<result name="success">/basefiles/finance/settlement/settlementAddPage.jsp</result>
+		</action>
+		<action name="settlementViewPage" class="financeAction" method="settlementViewPage">
+			<result name="success">/basefiles/finance/settlement/settlementViewPage.jsp</result>
+		</action>
+		<action name="settlementEditPage" class="financeAction" method="settlementEditPage">
+			<result name="success">/basefiles/finance/settlement/settlementEditPage.jsp</result>
+		</action>
+		<action name="addSettlement" class="financeAction" method="addSettlement">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getSettlementListPage" class="financeAction" method="getSettlementListPage">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editSettlement" class="financeAction" method="editSettlement">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteSettlement" class="financeAction" method="deleteSettlement">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="enableSettlement" class="financeAction" method="enableSettlement">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="disableSettlement" class="financeAction" method="disableSettlement">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="isUsedSettlementID" class="financeAction" method="isUsedSettlementID">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="isUsedSettlementName" class="financeAction" method="isUsedSettlementName">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		<!-- 支付方式 -->
+		<action name="paymentPage" class="financeAction" method="paymentPage">
+			<result name="success">/basefiles/finance/payment/paymentPage.jsp</result>
+		</action>
+		<action name="paymentAddPage" class="financeAction" method="paymentAddPage">
+			<result name="success">/basefiles/finance/payment/paymentAddPage.jsp</result>
+		</action>
+		<action name="paymentEidtPage" class="financeAction" method="paymentEidtPage">
+			<result name="success">/basefiles/finance/payment/paymentEidtPage.jsp</result>
+		</action>
+		<action name="paymentViewPage" class="financeAction" method="paymentViewPage">
+			<result name="success">/basefiles/finance/payment/paymentViewPage.jsp</result>
+		</action>
+		<action name="getPaymentListPage" class="financeAction" method="getPaymentListPage">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addPayment" class="financeAction" method="addPayment">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editPayment" class="financeAction" method="editPayment">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deletePayment" class="financeAction" method="deletePayment">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="enablePayment" class="financeAction" method="enablePayment">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="disablePayment" class="financeAction" method="disablePayment">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="isUsedPaymentID" class="financeAction" method="isUsedPaymentID">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="isUsedPaymentName" class="financeAction" method="isUsedPaymentName">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="isUsedPaymentAccount" class="financeAction" method="isUsedPaymentAccount">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="isUsedPaymentAccountingSubject" class="financeAction" method="isUsedPaymentAccountingSubject">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		<!-- 费用分类 -->
+		<action name="expensesSortPage" class="financeAction" method="expensesSortPage">
+			<result name="success">/basefiles/finance/expensessort/expensesSortPage.jsp</result>
+		</action>
+		<action name="expensesSortAddPage" class="financeAction" method="expensesSortAddPage">
+			<result name="success">/basefiles/finance/expensessort/expensesSortAddPage.jsp</result>
+		</action>
+		<action name="expensesSortEditPage" class="financeAction" method="expensesSortEditPage">
+			<result name="success">/basefiles/finance/expensessort/expensesSortEditPage.jsp</result>
+		</action>
+		<action name="expensesSortCopyPage" class="financeAction" method="expensesSortCopyPage">
+			<result name="success">/basefiles/finance/expensessort/expensesSortCopyPage.jsp</result>
+		</action>
+		<action name="expensesSortViewPage" class="financeAction" method="expensesSortViewPage">
+			<result name="success">/basefiles/finance/expensessort/expensesSortViewPage.jsp</result>
+		</action>
+		<action name="getExpensesSortTree" class="financeAction" method="getExpensesSortTree">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addExpensesSort" class="financeAction" method="addExpensesSort">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editExpensesSort" class="financeAction" method="editExpensesSort">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteExpensesSort" class="financeAction" method="deleteExpensesSort">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="enableExpensesSort" class="financeAction" method="enableExpensesSort">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="disableExpensesSort" class="financeAction" method="disableExpensesSort">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="isUsedExpensesSortID" class="financeAction" method="isUsedExpensesSortID">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="isUsedExpensesSortName" class="financeAction" method="isUsedExpensesSortName">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		<!-- 银行档案 -->
+		<action name="showBankPage" class="financeAction" method="showBankPage">
+			<result name="success">/basefiles/finance/bank/bankPage.jsp</result>
+		</action>
+		<action name="showBankAddPage" class="financeAction" method="showBankAddPage">
+			<result name="success">/basefiles/finance/bank/bankAddPage.jsp</result>
+		</action>
+		<action name="showBankEditPage" class="financeAction" method="showBankEditPage">
+			<result name="success">/basefiles/finance/bank/bankEditPage.jsp</result>
+		</action>
+		<action name="showBankViewPage" class="financeAction" method="showBankViewPage">
+			<result name="success">/basefiles/finance/bank/bankViewPage.jsp</result>
+		</action>
+		<action name="getBankListPage" class="financeAction" method="getBankListPage">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addBank" class="financeAction" method="addBank">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editBank" class="financeAction" method="editBank">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="openBank" class="financeAction" method="openBank">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="closeBank" class="financeAction" method="closeBank">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteBank" class="financeAction" method="deleteBank">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="checkBankidUserd" class="financeAction" method="checkBankidUserd">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="checkBandAccountUserd" class="financeAction" method="checkBandAccountUserd">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+    </package>
+	<!-- 物流 -->
+    <package name="logistics" extends="parent" namespace="/basefiles">
+    
+		<!-- 线路档案 -->
+		<action name="showLineInfoListPage" class="logisticsAction">
+			<result name="success">/basefiles/logistics/logisticsLineInfoListPage.jsp</result>
+		</action>
+		
+		<action name="lineInfoListPage" class="logisticsAction" method="lineInfoListPage">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		<action name="showLineInfoPage" class="logisticsAction" method="showLineInfoPage">
+			<result name="success">/basefiles/logistics/logisticsLineInfoPage.jsp</result>
+		</action>
+		
+		<action name="showLineInfoViewPage" class="logisticsAction" method="showLineInfoViewPage">
+			<result name="success">/basefiles/logistics/logisticsLineInfoViewPage.jsp</result>
+		</action>
+		
+		<action name="showCarInfoList" class="logisticsAction" method="showCarInfoList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		<action name="showCustomerInfoList" class="logisticsAction" method="showCustomerInfoList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		<action name="showLineInfoAddPage" class="logisticsAction" method="showLineInfoAddPage">
+			<result name="success">/basefiles/logistics/logisticsLineInfoAddPage.jsp</result>
+		</action>
+
+        <action name="showCustomerToLineAddPage" class="logisticsAction" method="showCustomerToLineAddPage">
+            <result name="success">/basefiles/logistics/customerToLineAddPage.jsp</result>
+        </action>
+        <action name="showCustomerToLineViewPage" class="logisticsAction" method="showCustomerToLineViewPage">
+            <result name="success">/basefiles/logistics/customerToLineViewPage.jsp</result>
+        </action>
+		
+		<action name="addLineInfo" class="logisticsAction" method="addLineInfo">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		<action name="showLineInfoEidtPage" class="logisticsAction" method="showLineInfoEidtPage">
+			<result name="success">/basefiles/logistics/logisticsLineInfoEditPage.jsp</result>
+		</action>
+		
+		<action name="editLineInfo" class="logisticsAction" method="editLineInfo">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		<action name="deleteLineInfo" class="logisticsAction" method="deleteLineInfo">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		<action name="enableLineInfos" class="logisticsAction" method="enableLineInfos">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		<action name="disableLineInfos" class="logisticsAction" method="disableLineInfos">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		<action name="showLineInfoCopyPage" class="logisticsAction" method="showLineInfoCopyPage">
+			<result name="success">/basefiles/logistics/logisticsLineInfoCopyPage.jsp</result>
+		</action>
+		
+		<!-- 车辆 -->
+		<action name="showCarListPage" class="logisticsAction" method="showCarListPage">
+			<result name="success">/basefiles/logistics/car/carPage.jsp</result>
+		</action>
+		
+		<action name="getCarListPage" class="logisticsAction" method="getCarListPage">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		<action name="showCarViewPage" class="logisticsAction" method="showCarViewPage">
+			<result name="success">/basefiles/logistics/car/carViewPage.jsp</result>
+		</action>
+		
+		<action name="showCarAddPage" class="logisticsAction" method="showCarAddPage">
+			<result name="success">/basefiles/logistics/car/carAddPage.jsp</result>
+		</action>
+		
+		<action name="isRepeatLineInfoID" class="logisticsAction" method="isRepeatLineInfoID">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		<action name="isRepeatCarId" class="logisticsAction" method="isRepeatCarId">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+
+		<action name="isRepeatCarName" class="logisticsAction" method="isRepeatCarName">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		<action name="addCar" class="logisticsAction" method="addCar">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		<action name="showCarEditPage" class="logisticsAction" method="showCarEditPage">
+			<result name="success">/basefiles/logistics/car/carEditPage.jsp</result>
+		</action>
+		
+		<action name="editCar" class="logisticsAction" method="editCar">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		<action name="showCarCopyPage" class="logisticsAction" method="showCarCopyPage">
+			<result name="success">/basefiles/logistics/car/carCopyPage.jsp</result>
+		</action>
+		
+		<action name="deleteCar" class="logisticsAction" method="deleteCar">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		<action name="enableCar" class="logisticsAction" method="enableCar">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		<action name="disableCar" class="logisticsAction" method="disableCar">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		<action name="showCarToLineAddPage" class="logisticsAction" method="showCarToLineAddPage">
+			<result name="success">/basefiles/logistics/carToLineAddPage.jsp</result>
+		</action>
+		
+		<action name="getCarListForCombobox" class="logisticsAction" method="getCarListForCombobox">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		<action name="showCarListForLine" class="logisticsAction" method="showCarListForLine">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="saveCarForLine" class="logisticsAction" method="saveCarForLine">
+			<result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteCarForLine" class="logisticsAction" method="deleteCarForLine">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+
+		<action name="showLineCustomerListData" class="logisticsAction" method="showLineCustomerListData">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showLineCustomerListDataByDel" class="logisticsAction" method="showLineCustomerListDataByDel">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="sortLineCustomerList" class="logisticsAction" method="sortLineCustomerList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+
+        <action name="customerToLineMapPage" class="logisticsAction" method="customerToLineMapPage">
+            <result name="success">/basefiles/logistics/customerToLineMapPage.jsp</result>
+        </action>
+
+		<action name="saveCustomerForLine" class="logisticsAction" method="saveCustomerForLine">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteCustomerForLine" class="logisticsAction" method="deleteCustomerForLine">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteCarForLine" class="logisticsAction" method="deleteCarForLine">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+
+    </package>
+	<!-- 多价调整单-->
+	<package name="adjustMultiPrice" extends="parent" namespace="/basefiles">
+		<action name="showAdjustMultiPriceListPage" class="adjustMultiPriceAction" method="showAdjustMultiPriceListPage">
+			<result name="success">/basefiles/wares/adjustMultiPrice/adjustMultiPriceListPage.jsp</result>
+		</action>
+		<action name="showAdjustMultiPriceAddPage" class="adjustMultiPriceAction" method="showAdjustMultiPriceAddPage">
+			<result name="success">/basefiles/wares/adjustMultiPrice/adjustMultiPricePage.jsp</result>
+		</action>
+		<action name="showAdjustMultiPriceEditPage" class="adjustMultiPriceAction" method="showAdjustMultiPriceEditPage">
+			<result name="success">/basefiles/wares/adjustMultiPrice/adjustMultiPricePage.jsp</result>
+		</action>
+		<action name="adjustMultiPriceAddPage" class="adjustMultiPriceAction" method="adjustMultiPriceAddPage">
+			<result name="success">/basefiles/wares/adjustMultiPrice/adjustMultiPriceAddPage.jsp</result>
+		</action>
+		<action name="adjustMultiPriceEditPage" class="adjustMultiPriceAction" method="adjustMultiPriceEditPage">
+			<result name="success">/basefiles/wares/adjustMultiPrice/adjustMultiPriceEditPage.jsp</result>
+			<result name="viewsuccess">/basefiles/wares/adjustMultiPrice/adjustMultiPriceViewPage.jsp</result>
+		</action>
+		<action name="adjustMultiPriceAddByBrandAndSortPage" class="adjustMultiPriceAction" method="adjustMultiPriceAddByBrandAndSortPage">
+			<result name="success">/basefiles/wares/adjustMultiPrice/adjustMultiPriceAddByBrandAndSortPage.jsp</result>
+		</action>
+		<action name="showAdjustMultiPriceDetailAddPage" class="adjustMultiPriceAction" method="showAdjustMultiPriceDetailAddPage">
+			<result name="success">/basefiles/wares/adjustMultiPrice/adjustMultiPriceDetailAddPage.jsp</result>
+		</action>
+		<action name="showAdjustMultiPriceDetailEditPage" class="adjustMultiPriceAction" method="showAdjustMultiPriceDetailEditPage">
+			<result name="success">/basefiles/wares/adjustMultiPrice/adjustMultiPriceDetailEditPage.jsp</result>
+		</action>
+		<action name="showAdjustMultiPriceData" class="adjustMultiPriceAction" method="showAdjustMultiPriceData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+        <action name="getPriceDataByGoodsidAndOpenCode" class="adjustMultiPriceAction" method="getPriceDataByGoodsidAndOpenCode">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+		<action name="addAdjustMultiPriceSave" class="adjustMultiPriceAction" method="addAdjustMultiPriceSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editAdjustMultiPriceSave" class="adjustMultiPriceAction" method="editAdjustMultiPriceSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getAdjustMultiPriceGoodsByBrandAndSort" class="adjustMultiPriceAction" method="getAdjustMultiPriceGoodsByBrandAndSort">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deletesAdjustMultiPrice" class="adjustMultiPriceAction" method="deletesAdjustMultiPrice">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditsAdjustMultiPrice" class="adjustMultiPriceAction" method="auditsAdjustMultiPrice">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="exportAdjustMultiPriceDetail" class="adjustMultiPriceAction" method="exportAdjustMultiPriceDetail"></action>
+	</package>
+     <!-- 调价单-->
+	<package name="adjustPrice" extends="parent" namespace="/basefiles">
+		<action name="showAdjustPriceListPage" class="adjustPriceAction" method="showAdjustPriceListPage">
+			<result name="success">/basefiles/wares/adjustPrice/adjustPriceListPage.jsp</result>
+		</action>
+		<action name="showAdjustPriceAddPage" class="adjustPriceAction" method="showAdjustPriceAddPage">
+			<result name="success">/basefiles/wares/adjustPrice/adjustPricePage.jsp</result>
+		</action>
+		<action name="showAdjustPriceEditPage" class="adjustPriceAction" method="showAdjustPriceEditPage">
+			<result name="success">/basefiles/wares/adjustPrice/adjustPricePage.jsp</result>
+		</action>
+		<action name="adjustPriceAddPage" class="adjustPriceAction" method="adjustPriceAddPage">
+			<result name="success">/basefiles/wares/adjustPrice/adjustPriceAddPage.jsp</result>
+		</action>
+		<action name="showAdjustPriceList" class="adjustPriceAction" method="showAdjustPriceList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showAdjustPriceDetailAddPage" class="adjustPriceAction" method="showAdjustPriceDetailAddPage">
+			<result name="success">/basefiles/wares/adjustPrice/adjustPriceDetailAddPage.jsp</result>
+		</action>
+		<action name="showAdjustPriceDetailEditPage" class="adjustPriceAction" method="showAdjustPriceDetailEditPage">
+			<result name="success">/basefiles/wares/adjustPrice/adjustPriceDetailEditPage.jsp</result>
+		</action>
+		<action name="getPriceDataByGoodsidAndCode" class="adjustPriceAction" method="getPriceDataByGoodsidAndCode">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getPriceDataByCustomerid" class="adjustPriceAction" method="getPriceDataByCustomerid">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showAdjustPriceDetailAddPageByBrand" class="adjustPriceAction" method="showAdjustPriceDetailAddPageByBrand">
+			<result name="success">/basefiles/wares/adjustPrice/adjustPriceDetailAddPageByBrand.jsp</result>
+		</action>
+		<action name="getAdjustPriceDetailByBrand" class="adjustPriceAction" method="getAdjustPriceDetailByBrand">
+				<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showAdjustCustomerPriceDetailAddPageByBrand" class="adjustPriceAction" method="showAdjustCustomerPriceDetailAddPageByBrand">
+			<result name="success">/basefiles/wares/adjustPrice/adjustPriceDetailAddPageByBrand.jsp</result>
+		</action>
+		<action name="getAdjustCustomerPriceDetailByBrand" class="adjustPriceAction" method="getAdjustCustomerPriceDetailByBrand">
+				<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+
+		<action name="showAdjustPriceDetailAddPageByDefaultSort" class="adjustPriceAction" method="showAdjustPriceDetailAddPageByDefaultSort">
+			<result name="success">/basefiles/wares/adjustPrice/adjustPriceDetailAddPageByDefaultSort.jsp</result>
+		</action>
+		<action name="getAdjustPriceDetailByDefaultSort" class="adjustPriceAction" method="getAdjustPriceDetailByDefaultSort">
+				<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addAdjustPriceSave" class="adjustPriceAction" method="addAdjustPriceSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editAdjustPriceSave" class="adjustPriceAction" method="editAdjustPriceSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteAdjustPrice" class="adjustPriceAction" method="deleteAdjustPrice">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="oppauditAdjustPrice" class="adjustPriceAction" method="oppauditAdjustPrice">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditAdjustPrice" class="adjustPriceAction" method="auditAdjustPrice">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditsAdjustPrice" class="adjustPriceAction" method="auditsAdjustPrice">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deletesAdjustPrice" class="adjustPriceAction" method="deletesAdjustPrice">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="adjustPriceEditPage" class="adjustPriceAction" method="adjustPriceEditPage">
+			<result name="success">/basefiles/wares/adjustPrice/adjustPriceEditPage.jsp</result>
+			<result name="viewSuccess">/basefiles/wares/adjustPrice/adjustPriceViewPage.jsp</result>
+		</action>
+		<action name="exportAdjustPrice" class="adjustPriceAction" method="exportAdjustPrice"></action>
+		<action name="importAdjustPrice" class="adjustPriceAction" method="importAdjustPrice">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+    <!-- BOM -->
+    <package name="bom" extends="parent" namespace="/basefiles">
+        <action name="bomPage" class="bomAction" method="bomPage">
+            <result name="success">/basefiles/bom/bomPage.jsp</result>
+        </action>
+        <action name="bomAddPage" class="bomAction" method="bomAddPage">
+            <result name="success">/basefiles/bom/bomAddPage.jsp</result>
+        </action>
+        <action name="bomEditPage" class="bomAction" method="bomEditPage">
+            <result name="success">/basefiles/bom/bomEditPage.jsp</result>
+        </action>
+        <action name="bomViewPage" class="bomAction" method="bomViewPage">
+            <result name="success">/basefiles/bom/bomViewPage.jsp</result>
+        </action>
+        <action name="bomListPage" class="bomAction" method="bomListPage">
+            <result name="success">/basefiles/bom/bomListPage.jsp</result>
+        </action>
+        <action name="selectBomList" class="bomAction" method="selectBomList">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="addBom" class="bomAction" method="addBom">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="editBom" class="bomAction" method="editBom">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="openBom" class="bomAction" method="openBom">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="closeBom" class="bomAction" method="closeBom">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="deleteBom" class="bomAction" method="deleteBom">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="computeGoodsByUnitnum" class="bomAction" method="computeGoodsByUnitnum">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="selectBomDetailList" class="bomAction" method="selectBomDetailList">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+    </package>
+
+    <!-- SUBJECT -->
+    <package name="subject" extends="parent" namespace="/basefiles/subject">
+    	<!-- 科目分类开始 -->
+		<action name="showSubjectTypeListPage" class="subjectAction" method="showSubjectTypeListPage">
+			<result name="success">/basefiles/subject/subjectTypeListPage.jsp</result>
+		</action>
+		<action name="showSubjectTypePageList" class="subjectAction" method="showSubjectTypePageList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSubjectTypePage" class="subjectAction" method="showSubjectTypePage">
+			<result name="success">/basefiles/subject/subjectTypePage.jsp</result>
+		</action>
+		<action name="showSubjectTypeAddPage" class="subjectAction" method="showSubjectTypeAddPage">
+			<result name="success">/basefiles/subject/subjectTypeAddPage.jsp</result>
+		</action>
+		<action name="addSubjectType" class="subjectAction" method="addSubjectType">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSubjectTypeEditPage" class="subjectAction" method="showSubjectTypeEditPage">
+			<result name="success">/basefiles/subject/subjectTypeEditPage.jsp</result>			
+			<result name="viewSuccess">/basefiles/subject/subjectTypeViewPage.jsp</result>
+		</action>
+		<action name="editSubjectType" class="subjectAction" method="editSubjectType">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSubjectTypeViewPage" class="subjectAction" method="showSubjectTypeViewPage">
+			<result name="success">/basefiles/subject/subjectTypeViewPage.jsp</result>
+		</action>
+		<action name="disableSubjectType" class="subjectAction" method="disableSubjectType">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="enableSubjectType" class="subjectAction" method="enableSubjectType">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteSubjectType" class="subjectAction" method="deleteSubjectType">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteSubjectTypeMore" class="subjectAction" method="deleteSubjectTypeMore">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="isUsedSubjectType" class="subjectAction" method="isUsedSubjectType">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>		
+		<!-- 科目分类结束-->
+		<action name="showSubjectPage" class="subjectAction" method="showSubjectPage">
+			<result name="success">/basefiles/subject/subjectPage.jsp</result>
+		</action>
+		<action name="showSubjectSubPage" class="subjectAction" method="showSubjectSubPage">
+			<result name="success">/basefiles/subject/subjectSubPage.jsp</result>
+			<result name="error">/basefiles/subject/error.jsp</result>
+		</action>
+    	<!-- 科目开始 -->
+		<action name="showSubjectListPage" class="subjectAction" method="showSubjectListPage">
+			<result name="success">/basefiles/subject/subjectListPage.jsp</result>
+		</action>
+		<action name="showSubjectPageList" class="subjectAction" method="showSubjectPageList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSubjectCopyPage" class="subjectAction" method="showSubjectCopyPage">
+			<result name="success">/basefiles/subject/subjectCopyPage.jsp</result>
+		</action>
+		<action name="showSubjectAddPage" class="subjectAction" method="showSubjectAddPage">
+			<result name="success">/basefiles/subject/subjectAddPage.jsp</result>
+			<result name="error">/basefiles/subject/error.jsp</result>
+		</action>
+		<action name="addSubject" class="subjectAction" method="addSubject">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSubjectEditPage" class="subjectAction" method="showSubjectEditPage">
+			<result name="success">/basefiles/subject/subjectEditPage.jsp</result>			
+			<result name="viewSuccess">/basefiles/subject/subjectViewPage.jsp</result>
+			<result name="error">/basefiles/subject/error.jsp</result>
+		</action>
+		<action name="editSubject" class="subjectAction" method="editSubject">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSubjectCopyPage" class="subjectAction" method="showSubjectCopyPage">
+			<result name="success">/basefiles/subject/subjectCopyPage.jsp</result>		
+		</action>
+		<action name="showSubjectViewPage" class="subjectAction" method="showSubjectViewPage">
+			<result name="success">/basefiles/subject/subjectViewPage.jsp</result>
+		</action>
+		<action name="disableSubject" class="subjectAction" method="disableSubject">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="enableSubject" class="subjectAction" method="enableSubject">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteSubject" class="subjectAction" method="deleteSubject">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteSubjectMore" class="subjectAction" method="deleteSubjectMore">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="isUsedSubjectID" class="subjectAction" method="isUsedSubjectID">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="isUsedSubjectName" class="subjectAction" method="isUsedSubjectName">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>		
+		<action name="getSubjectTree" class="subjectAction" method="getSubjectTree">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="importSubjectListData" class="subjectAction" method="importSubjectListData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="exportSubjectListData" class="subjectAction" method="exportSubjectListData"></action>
+		<!-- 科目结束-->
+    </package>
+
+    <!-- 分销规则 start -->
+    <package name="distribution" extends="parent" namespace="/basefiles/distribution">
+        <action name="distributionRulePage" class="salesAction" method="distributionRulePage">
+            <result name="success">/basefiles/sales/distribution/distributionRulePage.jsp</result>
+        </action>
+        <action name="distributionRuleListPage" class="salesAction" method="distributionRuleListPage">
+            <result name="success">/basefiles/sales/distribution/distributionRuleListPage.jsp</result>
+        </action>
+        <action name="distributionRuleEditPage" class="salesAction" method="distributionRuleEditPage">
+            <result name="success">/basefiles/sales/distribution/distributionRuleEditPage.jsp</result>
+        </action>
+        <action name="distributionRuleAddPage" class="salesAction" method="distributionRuleAddPage">
+            <result name="success">/basefiles/sales/distribution/distributionRuleAddPage.jsp</result>
+        </action>
+        <action name="getGoodsList" class="salesAction" method="getGoodsList">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="distributionRuleGoodsAddPage" class="salesAction" method="distributionRuleGoodsAddPage">
+            <result name="success">/basefiles/sales/distribution/distributionRuleGoodsAddPage.jsp</result>
+        </action>
+        <action name="distributionRuleBrandAddPage" class="salesAction" method="distributionRuleBrandAddPage">
+            <result name="success">/basefiles/sales/distribution/distributionRuleBrandAddPage.jsp</result>
+        </action>
+        <action name="distributionRuleSupplierAddPage" class="salesAction" method="distributionRuleSupplierAddPage">
+            <result name="success">/basefiles/sales/distribution/distributionRuleSupplierAddPage.jsp</result>
+        </action>
+        <action name="distributionRuleGoodsTypeAddPage" class="salesAction" method="distributionRuleGoodsTypeAddPage">
+            <result name="success">/basefiles/sales/distribution/distributionRuleGoodsTypeAddPage.jsp</result>
+        </action>
+        <action name="distributionRuleGoodsSortAddPage" class="salesAction" method="distributionRuleGoodsSortAddPage">
+            <result name="success">/basefiles/sales/distribution/distributionRuleGoodsSortAddPage.jsp</result>
+        </action>
+        <action name="addDistributionRule" class="salesAction" method="addDistributionRule">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="editDistributionRule" class="salesAction" method="editDistributionRule">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="deleteDistributionRule" class="salesAction" method="deleteDistributionRule">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="selectDistributionRulePageData" class="salesAction" method="selectDistributionRulePageData">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="enableDistributionRule" class="salesAction" method="enableDistributionRule">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="disableDistributionRule" class="salesAction" method="disableDistributionRule">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="distributionRuleViewPage" class="salesAction" method="distributionRuleViewPage">
+            <result name="success">/basefiles/sales/distribution/distributionRuleViewPage.jsp</result>
+        </action>
+    </package>
+    <!-- 分销规则 end -->
+
+
+	<!-- 基础档案级次定义 -->
+	<package name="customeruser" extends="parent" namespace="/basefiles">
+		<action name="showCustomerUserListPage" class="customerUserAction" method="showCustomerUserListPage">
+			<result name="success">/basefiles/customeruser/customerUserListPage.jsp</result>
+		</action>
+		<action name="showCustomerUserAddCustomerPage" class="customerUserAction" method="showCustomerUserAddCustomerPage">
+			<result name="success">/basefiles/customeruser/customerUserAddCustomerPage.jsp</result>
+		</action>
+		<action name="addCustomerUserAddCustomer" class="customerUserAction" method="addCustomerUserAddCustomer">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showCustomerUserEditCustomerPage" class="customerUserAction" method="showCustomerUserEditCustomerPage">
+			<result name="success">/basefiles/customeruser/customerUserEditCustomerPage.jsp</result>
+		</action>
+		<action name="getCustomerUserList" class="customerUserAction" method="getCustomerUserList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="enableCustomerUser" class="customerUserAction" method="enableCustomerUser">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="disableCustomerUser" class="customerUserAction" method="disableCustomerUser">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<!--<action name="showFilesLevelPage" class="customerUserAction" method="showFilesLevelPage">-->
+			<!--<result name="success">/basefiles/fileslevel/filesLevelDefinePage.jsp</result>-->
+		<!--</action>-->
+		<!--<action name="saveFilesLevel" class="customerUserAction" method="saveFilesLevel">-->
+			<!--<result name="success" type="json">-->
+				<!--<param name="root">jsonResult</param>-->
+				<!--<param name="contentType">text/html</param>-->
+			<!--</result>-->
+		<!--</action>-->
+	</package>
+
+
+	<package name="goods-interface" extends="parent" namespace="/basefiles/goods/interface">
+		<action name="editGoodsItemno" class="goodsInterfaceAction" method="editGoodsItemno">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+
+	<!-- 仓库货位档案 -->
+	<package name="storageitem" extends="parent" namespace="/basefiles">
+		<action name="showStorageItemListPage" class="storageItemAction" method="showStorageItemListPage">
+			<result name="success">/basefiles/wares/storageItem/storageItemListPage.jsp</result>
+		</action>
+		<action name="getStorageItemList" class="storageItemAction" method="getStorageItemList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showStorageItemGoodsAddPage" class="storageItemAction" method="showStorageItemGoodsAddPage">
+			<result name="success">/basefiles/wares/storageItem/storageItemGoodsAddPage.jsp</result>
+		</action>
+		<action name="showStorageItemGoodsEditPage" class="storageItemAction" method="showStorageItemGoodsEditPage">
+			<result name="success">/basefiles/wares/storageItem/storageItemGoodsEditPage.jsp</result>
+		</action>
+		<action name="addStorageItemGoods" class="storageItemAction" method="addStorageItemGoods">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editStorageItemGoods" class="storageItemAction" method="editStorageItemGoods">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getStorageList" class="storageItemAction" method="getStorageList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showStorageItemGoodsList" class="storageItemAction" method="showStorageItemGoodsList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteStorageItemGoods" class="storageItemAction" method="deleteStorageItemGoods">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="exportStorageItemGoods" class="storageItemAction" method="exportStorageItemGoods">
+		</action>
+		<action name="importStorageItemGoods" class="storageItemAction" method="importStorageItemGoods">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getItemByGoodsAndStorage" class="storageItemAction" method="getItemByGoodsAndStorage">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+
+	<!-- 航天金税 -->
+	<package name="htgoldtax" extends="parent" namespace="/basefiles/htgoldtax">
+		<!-- 商品和服务税收分类与编码 -->
+		<action name="showJsTaxTypeCodeListPage" class="htGoldTaxSystemAction" method="showJsTaxTypeCodeListPage">
+			<result name="success">/basefiles/htgoldtax/jstaxtypecode/jsTaxTypeCodeListPage.jsp</result>
+		</action>
+		<action name="getJsTaxTypeCodePageListData" class="htGoldTaxSystemAction" method="getJsTaxTypeCodePageListData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showJsTaxTypeCodeAddPage" class="htGoldTaxSystemAction" method="showJsTaxTypeCodeAddPage">
+			<result name="success">/basefiles/htgoldtax/jstaxtypecode/jsTaxTypeCodeAddPage.jsp</result>
+		</action>
+		<action name="addJsTaxTypeCode" class="htGoldTaxSystemAction" method="addJsTaxTypeCode">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showJsTaxTypeCodeEditPage" class="htGoldTaxSystemAction" method="showJsTaxTypeCodeEditPage">
+			<result name="success">/basefiles/htgoldtax/jstaxtypecode/jsTaxTypeCodeEditPage.jsp</result>
+			<result name="viewSuccess">/basefiles/htgoldtax/jstaxtypecode/jsTaxTypeCodeViewPage.jsp</result>
+		</action>
+		<action name="showJsTaxTypeCodeCopyPage" class="htGoldTaxSystemAction" method="showJsTaxTypeCodeCopyPage">
+			<result name="success">/basefiles/htgoldtax/jstaxtypecode/jsTaxTypeCodeCopyPage.jsp</result>
+		</action>
+		<action name="editJsTaxTypeCode" class="htGoldTaxSystemAction" method="editJsTaxTypeCode">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showJsTaxTypeCodeViewPage" class="htGoldTaxSystemAction" method="showJsTaxTypeCodeViewPage">
+			<result name="success">/basefiles/htgoldtax/jstaxtypecode/jsTaxTypeCodeViewPage.jsp</result>
+		</action>
+		<action name="deleteJsTaxTypeCode" class="htGoldTaxSystemAction" method="deleteJsTaxTypeCode">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="isUsedJsTaxTypeCodeById" class="htGoldTaxSystemAction" method="isUsedJsTaxTypeCodeById">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="importJsTaxTypeCodeData" class="htGoldTaxSystemAction" method="importJsTaxTypeCodeData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="exportJsTaxTypeCodeData" class="htGoldTaxSystemAction" method="exportJsTaxTypeCodeData"></action>
+
+		<action name="showUnLinkJsTypeCodeGoodsListPage" class="htGoldTaxSystemAction" method="showUnLinkJsTypeCodeGoodsListPage">
+			<result name="success">/basefiles/htgoldtax/jstaxtypecode/unLinkJsTypeCodeGoodsListPage.jsp</result>
+		</action>
+		<action name="getUnLinkJsTypeCodeGoodsPageListData" class="htGoldTaxSystemAction" method="getUnLinkJsTypeCodeGoodsPageListData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showLinkJsTypeCodeGoodsListPage" class="htGoldTaxSystemAction" method="showLinkJsTypeCodeGoodsListPage">
+			<result name="success">/basefiles/htgoldtax/jstaxtypecode/linkJsTypeCodeGoodsListPage.jsp</result>
+		</action>
+		<action name="getLinkJsTypeCodeGoodsPageListData" class="htGoldTaxSystemAction" method="getLinkJsTypeCodeGoodsPageListData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addLinkJsTypeCode" class="htGoldTaxSystemAction" method="addLinkJsTypeCode">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<!-- 商品和服务税收分类与编码-->
+
+		<!-- 税收分类关联商品条形码 -->
+		<action name="showJsTaxTypeCodeBarcodeListPage" class="htGoldTaxSystemAction" method="showJsTaxTypeCodeBarcodeListPage">
+			<result name="success">/basefiles/htgoldtax/jstaxtypecodebarcode/jsTaxTypeCodeBarcodeListPage.jsp</result>
+		</action>
+		<action name="getJsTaxTypeCodeBarcodePageListData" class="htGoldTaxSystemAction" method="getJsTaxTypeCodeBarcodePageListData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showJsTaxTypeCodeBarcodeAddPage" class="htGoldTaxSystemAction" method="showJsTaxTypeCodeBarcodeAddPage">
+			<result name="success">/basefiles/htgoldtax/jstaxtypecodebarcode/jsTaxTypeCodeBarcodeAddPage.jsp</result>
+		</action>
+		<action name="addJsTaxTypeCodeBarcode" class="htGoldTaxSystemAction" method="addJsTaxTypeCodeBarcode">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showJsTaxTypeCodeBarcodeEditPage" class="htGoldTaxSystemAction" method="showJsTaxTypeCodeBarcodeEditPage">
+			<result name="success">/basefiles/htgoldtax/jstaxtypecodebarcode/jsTaxTypeCodeBarcodeEditPage.jsp</result>
+			<result name="viewSuccess">/basefiles/htgoldtax/jstaxtypecodebarcode/jsTaxTypeCodeBarcodeViewPage.jsp</result>
+		</action>
+		<action name="showJsTaxTypeCodeBarcodeCopyPage" class="htGoldTaxSystemAction" method="showJsTaxTypeCodeBarcodeCopyPage">
+			<result name="success">/basefiles/htgoldtax/jstaxtypecodebarcode/jsTaxTypeCodeBarcodeCopyPage.jsp</result>
+		</action>
+		<action name="editJsTaxTypeCodeBarcode" class="htGoldTaxSystemAction" method="editJsTaxTypeCodeBarcode">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showJsTaxTypeCodeBarcodeViewPage" class="htGoldTaxSystemAction" method="showJsTaxTypeCodeBarcodeViewPage">
+			<result name="success">/basefiles/htgoldtax/jstaxtypecodebarcode/jsTaxTypeCodeBarcodeViewPage.jsp</result>
+		</action>
+		<action name="deleteJsTaxTypeCodeBarcode" class="htGoldTaxSystemAction" method="deleteJsTaxTypeCodeBarcode">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="isUsedJsTaxTypeCodeBarcode" class="htGoldTaxSystemAction" method="isUsedJsTaxTypeCodeBarcode">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="importJsTaxTypeCodeBarcodeData" class="htGoldTaxSystemAction" method="importJsTaxTypeCodeBarcodeData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="exportJsTaxTypeCodeBarcodeData" class="htGoldTaxSystemAction" method="exportJsTaxTypeCodeBarcodeData"></action>
+		<action name="updateAndLinkGoodsInfoJsCodeByBarcode" class="htGoldTaxSystemAction" method="updateAndLinkGoodsInfoJsCodeByBarcode">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="updateAndCreateJsBarcodeData" class="htGoldTaxSystemAction" method="updateAndCreateJsBarcodeData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<!-- 税收分类关联商品条形码-->
+	</package>
+</struts>

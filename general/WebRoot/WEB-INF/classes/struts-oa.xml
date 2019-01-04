@@ -1,0 +1,1023 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<package name="oacommon" extends="parent" namespace="/oa/common">
+		<action name="selectGoodsInfo" class="baseOaAction" method="selectGoodsInfo">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+        <action name="selectSupplierInfo" class="baseOaAction" method="selectSupplierInfo">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="selectPriceListByGoodsid" class="baseOaAction" method="selectPriceListByGoodsid">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="selectCustomerInfo" class="baseOaAction" method="selectCustomerInfo">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="selectDeptInfo" class="baseOaAction" method="selectDeptInfo">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="selectPersonnelInfo" class="baseOaAction" method="selectPersonnelInfo">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+		<action name="getGoodsPrice" class="baseOaAction" method="getGoodsPrice">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+	<package name="oacustomer" extends="parent" namespace="/oa">
+		<action name="oacustomerAddPage" class="oaCustomerAction" method="oacustomerAddPage">
+			<result name="success" >/oa/customer/oacustomerAddPage.jsp</result>
+		</action>
+		<action name="oacustomerEditPage" class="oaCustomerAction" method="oacustomerEditPage">
+			<result name="success" >/oa/customer/oacustomerEditPage.jsp</result>
+		</action>
+		<action name="oacustomerHandlePage" class="oaCustomerAction" method="oacustomerHandlePage">
+			<result name="success" >/oa/customer/oacustomerHandlePage.jsp</result>
+			<result name="phone" >/oa/customer/phone/oacustomerHandlePage.jsp</result>
+			<result name="sign" >/oa/customer/phone/oacustomerViewPage.jsp</result>
+		</action>
+		<action name="oacustomerHandlePage1" class="oaCustomerAction" method="oacustomerHandlePage1">
+			<result name="success" >/oa/customer/oacustomerHandlePage1.jsp</result>
+            <result name="phone" >/oa/customer/phone/oacustomerHandlePage1.jsp</result>
+			<result name="sign" >/oa/customer/phone/oacustomerViewPage.jsp</result>
+		</action>
+		<action name="oacustomerPage" class="oaCustomerAction" method="oacustomerPage">
+			<result name="success" >/oa/customer/oacustomerPage.jsp</result>
+            <result name="phone" >/oa/customer/phone/oacustomerPage.jsp</result>
+		</action>
+		<action name="oacustomerBrandAddPage" class="oaCustomerAction" method="oacustomerBrandAddPage">
+			<result name="success" >/oa/customer/oacustomerBrandAddPage.jsp</result>
+		</action>
+		<action name="oacustomerBrandEditPage" class="oaCustomerAction" method="oacustomerBrandEditPage">
+			<result name="success" >/oa/customer/oacustomerBrandEditPage.jsp</result>
+		</action>
+		<action name="getBarcodenum" class="oaCustomerAction" method="getBarcodenum">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addOaCustomer" class="oaCustomerAction" method="addOaCustomer">
+			<!-- <result name="success">/oa/oacustomerPage.do?type=view</result> -->
+			<!-- <result name="success">/oa/customer/oacustomerPage.jsp</result> -->
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editOaCustomer" class="oaCustomerAction" method="editOaCustomer">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteOaCustomer" class="oaCustomerAction" method="deleteOaCustomer">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="handleOaCustomer" class="oaCustomerAction" method="handleOaCustomer">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="selectOacustomerList" class="oaCustomerAction" method="selectOacustomerList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="oacustomerListPage" class="oaCustomerAction" method="oacustomerListPage">
+			<result name="success" >/oa/customer/oacustomerListPage.jsp</result>
+		</action>
+		<action name="oacustomerViewPage" class="oaCustomerAction" method="oacustomerViewPage">
+			<result name="success" >/oa/customer/oacustomerViewPage.jsp</result>
+            <result name="phone" >/oa/customer/phone/oacustomerViewPage.jsp</result>
+		</action>
+		<action name="selectCustomerBrandList" class="oaCustomerAction" method="selectCustomerBrandList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="selectOacustomerStatus" class="oaCustomerAction" method="selectOacustomerStatus">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="checkCustomerUsed" class="oaCustomerAction" method="checkCustomerUsed">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="checkCustomerNameUsed" class="oaCustomerAction" method="checkCustomerNameUsed">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="oaAllotPSNCustomerPage" class="oaCustomerAction" method="oaAllotPSNCustomerPage">
+			<result name="success" >/oa/customer/oaAllotPSNCustomerPage.jsp</result>
+		</action>
+		<action name="allotCustomerToPsn" class="oaCustomerAction" method="allotCustomerToPsn">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+        <action name="oacustomerPrintPage" class="oaCustomerAction" method="oacustomerPrintPage">
+            <result name="success" >/oa/customer/oacustomerPrintPage.jsp</result>
+        </action>
+        <action name="oacustomerAllotPSNPage" class="oaCustomerAction" method="oacustomerAllotPSNPage">
+            <result name="success" >/oa/customer/phone/oacustomerAllotPSNPage.jsp</result>
+        </action>
+	</package>
+	<package name="oagoods" extends="parent" namespace="/oa">
+		<action name="oagoodsPage" class="oaGoodsAction" method="oagoodsPage">
+			<result name="success" >/oa/goods/oagoodsPage.jsp</result>
+            <result name="phone" >/oa/goods/phone/oagoodsPage.jsp</result>
+		</action>
+		<action name="oagoodsViewPage" class="oaGoodsAction" method="oagoodsViewPage">
+			<result name="success" >/oa/goods/oagoodsViewPage.jsp</result>
+            <result name="phone" >/oa/goods/phone/oagoodsViewPage.jsp</result>
+		</action>
+		<action name="oagoodsHandlePage" class="oaGoodsAction" method="oagoodsHandlePage">
+			<result name="success" >/oa/goods/oagoodsHandlePage.jsp</result>
+            <result name="phone" >/oa/goods/phone/oagoodsHandlePage.jsp</result>
+			<result name="sign" >/oa/goods/phone/oagoodsViewPage.jsp</result>
+		</action>
+		<action name="oagoodsDetailAddPage" class="oaGoodsAction" method="oagoodsDetailAddPage">
+			<result name="success" >/oa/goods/oagoodsDetailAddPage.jsp</result>
+		</action>
+		<action name="addGoods" class="oaGoodsAction" method="addGoods">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editGoods" class="oaGoodsAction" method="editGoods">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="oagoodsDetailEditPage" class="oaGoodsAction" method="oagoodsDetailEditPage">
+			<result name="success" >/oa/goods/oagoodsDetailEditPage.jsp</result>
+		</action>
+		<action name="selectOaGoodsDetailList" class="oaGoodsAction" method="selectOaGoodsDetailList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="selectExistedGoodsid" class="oaGoodsAction" method="selectExistedGoodsid">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="selectExistedGoodsname" class="oaGoodsAction" method="selectExistedGoodsname">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="selectExistedBarcode" class="oaGoodsAction" method="selectExistedBarcode">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="selectExistedBoxbarcode" class="oaGoodsAction" method="selectExistedBoxbarcode">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+        <action name="oagoodsPrintPage" class="oaGoodsAction" method="oagoodsPrintPage">
+            <result name="success" >/oa/goods/oagoodsPrintPage.jsp</result>
+        </action>
+        <action name="oagoodsDetailPage" class="oaGoodsAction" method="oagoodsDetailPage">
+            <result name="success" >/oa/goods/phone/oagoodsDetailPage.jsp</result>
+        </action>
+        <action name="selectExistedGoodsid2" class="oaGoodsAction" method="selectExistedGoodsid2">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+	</package>
+	<package name="oaaccess" extends="parent" namespace="/oa">
+		<action name="oaAccessPage" class="oaAccessAction" method="oaAccessPage">
+			<result name="success" >/oa/access/oaAccessPage.jsp</result>
+            <result name="phone" >/oa/access/phone/oaAccessPage.jsp</result>
+		</action>
+		<action name="oaAccessAddPage" class="oaAccessAction" method="oaAccessAddPage">
+			<result name="success" >/oa/access/oaAccessAddPage.jsp</result>
+		</action>
+		<action name="oaAccessEditPage" class="oaAccessAction" method="oaAccessEditPage">
+			<result name="success" >/oa/access/oaAccessEditPage.jsp</result>
+		</action>
+		<action name="oaAccessViewPage" class="oaAccessAction" method="oaAccessViewPage">
+			<result name="success" >/oa/access/oaAccessViewPage.jsp</result>
+            <result name="phone" >/oa/access/phone/oaAccessViewPage.jsp</result>
+		</action>
+		<action name="oaAccessHandlePage" class="oaAccessAction" method="oaAccessHandlePage">
+			<result name="success" >/oa/access/oaAccessHandlePage.jsp</result>
+			<result name="phone" >/oa/access/phone/oaAccessHandlePage.jsp</result>
+			<result name="sign" >/oa/access/phone/oaAccessViewPage.jsp</result>
+		</action>
+		<action name="oaAccessHandlePage1" class="oaAccessAction" method="oaAccessHandlePage1">
+			<result name="success" >/oa/access/oaAccessHandlePage1.jsp</result>
+            <result name="phone" >/oa/access/phone/oaAccessHandlePage1.jsp</result>
+			<result name="sign" >/oa/access/phone/oaAccessViewPage.jsp</result>
+		</action>
+		<action name="oaAccessHandlePage2" class="oaAccessAction" method="oaAccessHandlePage2">
+			<result name="success" >/oa/access/oaAccessHandlePage2.jsp</result>
+            <result name="phone" >/oa/access/phone/oaAccessHandlePage2.jsp</result>
+			<result name="sign" >/oa/access/phone/oaAccessViewPage.jsp</result>
+		</action>
+		<action name="oaAccessHandlePage3" class="oaAccessAction" method="oaAccessHandlePage3">
+			<result name="success" >/oa/access/oaAccessHandlePage3.jsp</result>
+            <result name="phone" >/oa/access/phone/oaAccessHandlePage3.jsp</result>
+			<result name="sign" >/oa/access/phone/oaAccessViewPage.jsp</result>
+		</action>
+		<action name="oaAccessHandlePage4" class="oaAccessAction" method="oaAccessHandlePage4">
+			<result name="success" >/oa/access/oaAccessHandlePage4.jsp</result>
+			<result name="sign" >/oa/access/phone/oaAccessViewPage.jsp</result>
+		</action>
+		<action name="getGoodsPrice" class="oaAccessAction" method="getGoodsPrice">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getErpNum" class="oaAccessAction" method="getErpNum">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getGoodsInfo" class="oaAccessAction" method="getGoodsInfo">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="computeGoodsByUnitnum" class="oaAccessAction" method="computeGoodsByUnitnum">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="computeGoodsByAuxnum" class="oaAccessAction" method="computeGoodsByAuxnum">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addOaAccess" class="oaAccessAction" method="addOaAccess">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editOaAccess" class="oaAccessAction" method="editOaAccess">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="selectOaAccessGoodsPriceList" class="oaAccessAction" method="selectOaAccessGoodsPriceList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="selectOaAccessGoodsAmountList" class="oaAccessAction" method="selectOaAccessGoodsAmountList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="selectOaAccessBrandDiscountList" class="oaAccessAction" method="selectOaAccessBrandDiscountList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getCustomerById" class="oaAccessAction" method="getCustomerById">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="selectAccessInfo" class="oaAccessAction" method="selectAccessInfo">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+        <action name="oaAccessPrintPage" class="oaAccessAction" method="oaAccessPrintPage">
+            <result name="success" >/oa/access/oaAccessPrintPage.jsp</result>
+        </action>
+	</package>
+	<!-- 通路单for hd (页面部分)-->
+	<package name="oaaccess2" extends="parent" namespace="/oa/hd">
+		<action name="oaAccessPage" class="oaAccess2Action" method="oaAccessPage">
+			<result name="success" >/oa/access2/oaAccessPage.jsp</result>
+			<result name="phone" >/oa/access2/phone/oaAccessPage.jsp</result>
+		</action>
+		<action name="oaAccessAddPage" class="oaAccess2Action" method="oaAccessAddPage">
+			<result name="success" >/oa/access2/oaAccessAddPage.jsp</result>
+		</action>
+		<action name="oaAccessEditPage" class="oaAccess2Action" method="oaAccessEditPage">
+			<result name="success" >/oa/access2/oaAccessEditPage.jsp</result>
+		</action>
+		<action name="oaAccessViewPage" class="oaAccess2Action" method="oaAccessViewPage">
+			<result name="success" >/oa/access2/oaAccessViewPage.jsp</result>
+			<result name="phone" >/oa/access2/phone/oaAccessViewPage.jsp</result>
+		</action>
+		<action name="oaAccessHandlePage" class="oaAccess2Action" method="oaAccessHandlePage">
+			<result name="success" >/oa/access2/oaAccessHandlePage.jsp</result>
+		</action>
+		<action name="oaAccessHandlePage1" class="oaAccess2Action" method="oaAccessHandlePage1">
+			<result name="success" >/oa/access2/oaAccessHandlePage1.jsp</result>
+			<result name="phone" >/oa/access2/phone/oaAccessHandlePage1.jsp</result>
+			<result name="sign" >/oa/access2/phone/oaAccessViewPage.jsp</result>
+		</action>
+		<action name="oaAccessHandlePage2" class="oaAccess2Action" method="oaAccessHandlePage2">
+			<result name="success" >/oa/access2/oaAccessHandlePage2.jsp</result>
+			<result name="phone" >/oa/access2/phone/oaAccessHandlePage2.jsp</result>
+			<result name="sign" >/oa/access2/phone/oaAccessViewPage.jsp</result>
+		</action>
+		<action name="oaAccessHandlePage3" class="oaAccess2Action" method="oaAccessHandlePage3">
+			<result name="success" >/oa/access2/oaAccessHandlePage3.jsp</result>
+			<result name="phone" >/oa/access2/phone/oaAccessHandlePage3.jsp</result>
+			<result name="sign" >/oa/access2/phone/oaAccessViewPage.jsp</result>
+		</action>
+		<action name="oaAccessHandlePage4" class="oaAccess2Action" method="oaAccessHandlePage4">
+			<result name="success" >/oa/access2/oaAccessHandlePage4.jsp</result>
+			<result name="sign" >/oa/access2/phone/oaAccessViewPage.jsp</result>
+		</action>
+		<action name="getGoodsPrice" class="oaAccess2Action" method="getGoodsPrice">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getErpNum" class="oaAccess2Action" method="getErpNum">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getGoodsInfo" class="oaAccess2Action" method="getGoodsInfo">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="computeGoodsByUnitnum" class="oaAccess2Action" method="computeGoodsByUnitnum">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="computeGoodsByAuxnum" class="oaAccess2Action" method="computeGoodsByAuxnum">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addOaAccess" class="oaAccess2Action" method="addOaAccess">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editOaAccess" class="oaAccess2Action" method="editOaAccess">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="selectOaAccessGoodsPriceList" class="oaAccess2Action" method="selectOaAccessGoodsPriceList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="selectOaAccessGoodsAmountList" class="oaAccess2Action" method="selectOaAccessGoodsAmountList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="selectOaAccessBrandDiscountList" class="oaAccess2Action" method="selectOaAccessBrandDiscountList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getCustomerById" class="oaAccess2Action" method="getCustomerById">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="selectAccessInfo" class="oaAccess2Action" method="selectAccessInfo">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="oaAccessPrintPage" class="oaAccess2Action" method="oaAccessPrintPage">
+			<result name="success" >/oa/access2/oaAccessPrintPage.jsp</result>
+		</action>
+	</package>
+	<package name="oasupplierpay" extends="parent" namespace="/oa">
+		<action name="oaSupplierPayPage" class="oaSupplierPayAction" method="oaSupplierPayPage">
+			<result name="success" >/oa/supplierpay/oaSupplierPayPage.jsp</result>
+            <result name="phone" >/oa/supplierpay/phone/oaSupplierPayPage.jsp</result>
+		</action>
+		<action name="oaSupplierPayViewPage" class="oaSupplierPayAction" method="oaSupplierPayViewPage">
+			<result name="success" >/oa/supplierpay/oaSupplierPayViewPage.jsp</result>
+            <result name="phone" >/oa/supplierpay/phone/oaSupplierPayViewPage.jsp</result>
+		</action>
+		<action name="oaSupplierPayHandlePage" class="oaSupplierPayAction" method="oaSupplierPayHandlePage">
+			<result name="success" >/oa/supplierpay/oaSupplierPayHandlePage.jsp</result>
+            <result name="phone" >/oa/supplierpay/phone/oaSupplierPayHandlePage.jsp</result>
+			<result name="sign" >/oa/supplierpay/phone/oaSupplierPayViewPage.jsp</result>
+		</action>
+		<action name="oaSupplierPayHandlePage2" class="oaSupplierPayAction" method="oaSupplierPayHandlePage2">
+			<result name="success" >/oa/supplierpay/oaSupplierPayHandlePage2.jsp</result>
+            <result name="phone" >/oa/supplierpay/phone/oaSupplierPayHandlePage2.jsp</result>
+			<result name="sign" >/oa/supplierpay/phone/oaSupplierPayViewPage.jsp</result>
+		</action>
+		<action name="addOaSupplierPay" class="oaSupplierPayAction" method="addOaSupplierPay">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editOaSupplierPay" class="oaSupplierPayAction" method="editOaSupplierPay">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+        <action name="oaSupplierPayPrintPage" class="oaSupplierPayAction" method="oaSupplierPayPrintPage">
+            <result name="success" >/oa/supplierpay/oaSupplierPayPrintPage.jsp</result>
+        </action>
+	</package>
+	<package name="oacustomerpay" extends="parent" namespace="/oa">
+		<action name="oaCustomerPayPage" class="oaCustomerPayAction" method="oaCustomerPayPage">
+            <result name="success" >/oa/customerpay/oaCustomerPayPage.jsp</result>
+            <result name="phone" >/oa/customerpay/phone/oaCustomerPayPage.jsp</result>
+		</action>
+		<action name="oaCustomerPayHandlePage" class="oaCustomerPayAction" method="oaCustomerPayHandlePage">
+			<result name="success" >/oa/customerpay/oaCustomerPayHandlePage.jsp</result>
+            <result name="phone" >/oa/customerpay/phone/oaCustomerPayHandlePage.jsp</result>
+			<result name="sign" >/oa/customerpay/phone/oaCustomerPayViewPage.jsp</result>
+		</action>
+		<action name="oaCustomerPayHandlePage2" class="oaCustomerPayAction" method="oaCustomerPayHandlePage2">
+			<result name="success" >/oa/customerpay/oaCustomerPayHandlePage2.jsp</result>
+            <result name="phone" >/oa/customerpay/phone/oaCustomerPayHandlePage2.jsp</result>
+			<result name="sign" >/oa/customerpay/phone/oaCustomerPayViewPage.jsp</result>
+		</action>
+		<action name="oaCustomerPayViewPage" class="oaCustomerPayAction" method="oaCustomerPayViewPage">
+			<result name="success" >/oa/customerpay/oaCustomerPayViewPage.jsp</result>
+            <result name="phone" >/oa/customerpay/phone/oaCustomerPayViewPage.jsp</result>
+		</action>
+		<action name="selectOaCustomerPayDetailList" class="oaCustomerPayAction" method="selectOaCustomerPayDetailList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editOaCustomerPay" class="oaCustomerPayAction" method="editOaCustomerPay">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addOaCustomerPay" class="oaCustomerPayAction" method="addOaCustomerPay">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getCustomerBrandSalesAmount" class="oaCustomerPayAction" method="getCustomerBrandSalesAmount">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+        <action name="oaCustomerPayPrintPage" class="oaCustomerPayAction" method="oaCustomerPayPrintPage">
+            <result name="success" >/oa/customerpay/oaCustomerPayPrintPage.jsp</result>
+        </action>
+	</package>
+	<!-- customer pay for hd -->
+	<package name="oacustomerpay2" extends="parent" namespace="/oa/hd">
+		<action name="oaCustomerPayPage" class="oaCustomerPay2Action" method="oaCustomerPayPage">
+			<result name="success" >/oa/customerpay2/oaCustomerPayPage.jsp</result>
+			<result name="phone" >/oa/customerpay2/phone/oaCustomerPayPage.jsp</result>
+		</action>
+		<action name="oaCustomerPayHandlePage" class="oaCustomerPay2Action" method="oaCustomerPayHandlePage">
+			<result name="success" >/oa/customerpay2/oaCustomerPayHandlePage.jsp</result>
+			<result name="phone" >/oa/customerpay2/phone/oaCustomerPayHandlePage.jsp</result>
+			<result name="sign" >/oa/customerpay2/phone/oaCustomerPayViewPage.jsp</result>
+		</action>
+		<action name="oaCustomerPayHandlePage2" class="oaCustomerPay2Action" method="oaCustomerPayHandlePage2">
+			<result name="success" >/oa/customerpay2/oaCustomerPayHandlePage2.jsp</result>
+			<result name="phone" >/oa/customerpay2/phone/oaCustomerPayHandlePage2.jsp</result>
+			<result name="sign" >/oa/customerpay2/phone/oaCustomerPayViewPage.jsp</result>
+		</action>
+		<action name="oaCustomerPayViewPage" class="oaCustomerPay2Action" method="oaCustomerPayViewPage">
+			<result name="success" >/oa/customerpay2/oaCustomerPayViewPage.jsp</result>
+			<result name="phone" >/oa/customerpay2/phone/oaCustomerPayViewPage.jsp</result>
+		</action>
+		<action name="selectOaCustomerPayDetailList" class="oaCustomerPay2Action" method="selectOaCustomerPayDetailList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editOaCustomerPay" class="oaCustomerPay2Action" method="editOaCustomerPay">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addOaCustomerPay" class="oaCustomerPay2Action" method="addOaCustomerPay">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getCustomerBrandSalesAmount" class="oaCustomerPay2Action" method="getCustomerBrandSalesAmount">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="oaCustomerPayPrintPage" class="oaCustomerPay2Action" method="oaCustomerPayPrintPage">
+			<result name="success" >/oa/customerpay2/oaCustomerPayPrintPage.jsp</result>
+		</action>
+	</package>
+	<package name="oapersonalloan" extends="parent" namespace="/oa">
+		<action name="oaPersonalLoanPage" class="oaPersonalLoanAction" method="oaPersonalLoanPage">
+			<result name="success" >/oa/personalloan/oaPersonalLoanPage.jsp</result>
+		</action>
+		<action name="oaPersonalLoanHandlePage" class="oaPersonalLoanAction" method="oaPersonalLoanHandlePage">
+			<result name="success" >/oa/personalloan/oaPersonalLoanHandlePage.jsp</result>
+		</action>
+		<action name="oaPersonalLoanHandlePage2" class="oaPersonalLoanAction" method="oaPersonalLoanHandlePage2">
+			<result name="success" >/oa/personalloan/oaPersonalLoanHandlePage2.jsp</result>
+		</action>
+		<action name="oaPersonalLoanViewPage" class="oaPersonalLoanAction" method="oaPersonalLoanViewPage">
+			<result name="success" >/oa/personalloan/oaPersonalLoanViewPage.jsp</result>
+		</action>
+		<action name="addOaPersonalLoan" class="oaPersonalLoanAction" method="addOaPersonalLoan">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editOaPersonalLoan" class="oaPersonalLoanAction" method="editOaPersonalLoan">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+        <action name="oaPersonalLoanPrintPage" class="oaPersonalLoanAction" method="oaPersonalLoanPrintPage">
+            <result name="success" >/oa/personalloan/oaPersonalLoanPrintPage.jsp</result>
+        </action>
+    </package>
+    <package name="oaprepay" extends="parent" namespace="/oa/oaprepay">
+        <action name="oaPrepayPage" class="oaPrepayAction" method="oaPrepayPage">
+            <result name="success" >/oa/prepay/oaPrepayPage.jsp</result>
+        </action>
+        <action name="oaPrepayHandlePage" class="oaPrepayAction" method="oaPrepayHandlePage">
+            <result name="success" >/oa/prepay/oaPrepayHandlePage.jsp</result>
+        </action>
+        <action name="oaPrepayHandlePage2" class="oaPrepayAction" method="oaPrepayHandlePage2">
+            <result name="success" >/oa/prepay/oaPrepayHandlePage2.jsp</result>
+        </action>
+        <action name="oaPrepayViewPage" class="oaPrepayAction" method="oaPrepayViewPage">
+            <result name="success" >/oa/prepay/oaPrepayViewPage.jsp</result>
+        </action>
+        <action name="addOaPrepay" class="oaPrepayAction" method="addOaPrepay">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="editOaPrepay" class="oaPrepayAction" method="editOaPrepay">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="oaPrepayPrintPage" class="oaPrepayAction" method="oaPrepayPrintPage">
+            <result name="success" >/oa/prepay/oaPrepayPrintPage.jsp</result>
+        </action>
+	</package>
+	<package name="oainnershare" extends="parent" namespace="/oa">
+		<action name="oaInnerSharePage" class="oaInnerShareAction" method="oaInnerSharePage">
+			<result name="success" >/oa/innershare/oaInnerSharePage.jsp</result>
+		</action>
+		<action name="oaInnerShareHandlePage" class="oaInnerShareAction" method="oaInnerShareHandlePage">
+			<result name="success" >/oa/innershare/oaInnerShareHandlePage.jsp</result>
+		</action>
+		<action name="oaInnerShareHandlePage2" class="oaInnerShareAction" method="oaInnerShareHandlePage2">
+			<result name="success" >/oa/innershare/oaInnerShareHandlePage2.jsp</result>
+		</action>
+		<action name="oaInnerShareViewPage" class="oaInnerShareAction" method="oaInnerShareViewPage">
+			<result name="success" >/oa/innershare/oaInnerShareViewPage.jsp</result>
+		</action>
+		<action name="addOaInnerShare" class="oaInnerShareAction" method="addOaInnerShare">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editOaInnerShare" class="oaInnerShareAction" method="editOaInnerShare">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+        <action name="oaInnerSharePrintPage" class="oaInnerShareAction" method="oaInnerSharePrintPage">
+            <result name="success" >/oa/innershare/oaInnerSharePrintPage.jsp</result>
+        </action>
+	</package>
+	<package name="oadailpay" extends="parent" namespace="/oa">
+		<action name="oaDailPayPage" class="oaDailPayAction" method="oaDailPayPage">
+			<result name="success" >/oa/dailpay/oaDailPayPage.jsp</result>
+		</action>
+		<action name="oaDailPayHandlePage" class="oaDailPayAction" method="oaDailPayHandlePage">
+			<result name="success" >/oa/dailpay/oaDailPayHandlePage.jsp</result>
+		</action>
+		<action name="oaDailPayHandlePage2" class="oaDailPayAction" method="oaDailPayHandlePage2">
+			<result name="success" >/oa/dailpay/oaDailPayHandlePage2.jsp</result>
+		</action>
+		<action name="oaDailPayHandlePage3" class="oaDailPayAction" method="oaDailPayHandlePage3">
+			<result name="success" >/oa/dailpay/oaDailPayHandlePage3.jsp</result>
+		</action>
+        <action name="oaDailPayHandlePage4" class="oaDailPayAction" method="oaDailPayHandlePage4">
+            <result name="success" >/oa/dailpay/oaDailPayHandlePage4.jsp</result>
+        </action>
+		<action name="oaDailPayViewPage" class="oaDailPayAction" method="oaDailPayViewPage">
+			<result name="success" >/oa/dailpay/oaDailPayViewPage.jsp</result>
+		</action>
+		<action name="addOaDailPay" class="oaDailPayAction" method="addOaDailPay">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editOaDailPay" class="oaDailPayAction" method="editOaDailPay">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="selectOaDailPayDetailList" class="oaDailPayAction" method="selectOaDailPayDetailList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+        <action name="oaDailPayPrintPage" class="oaDailPayAction" method="oaDailPayPrintPage">
+            <result name="success" >/oa/dailpay/oaDailPayPrintPage.jsp</result>
+        </action>
+	</package>
+	<package name="oaexpensepush" extends="parent" namespace="/oa/expensepush">
+		<action name="oaExpensePushPage" class="oaExpensePushAction" method="oaExpensePushPage">
+			<result name="success" >/oa/expensepush/oaExpensePushPage.jsp</result>
+            <result name="phone" >/oa/expensepush/phone/oaExpensePushPage.jsp</result>
+		</action>
+		<action name="oaExpensePushHandlePage" class="oaExpensePushAction" method="oaExpensePushHandlePage">
+            <result name="success" >/oa/expensepush/oaExpensePushHandlePage.jsp</result>
+            <result name="phone" >/oa/expensepush/phone/oaExpensePushHandlePage.jsp</result>
+			<result name="sign" >/oa/expensepush/phone/oaExpensePushViewPage.jsp</result>
+		</action>
+		<action name="oaExpensePushViewPage" class="oaExpensePushAction" method="oaExpensePushViewPage">
+			<result name="success" >/oa/expensepush/oaExpensePushViewPage.jsp</result>
+            <result name="phone" >/oa/expensepush/phone/oaExpensePushViewPage.jsp</result>
+		</action>
+		<action name="selectOaExpensePushDetailList" class="oaExpensePushAction" method="selectOaExpensePushDetailList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addOaExpensePush" class="oaExpensePushAction" method="addOaExpensePush">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editOaExpensePush" class="oaExpensePushAction" method="editOaExpensePush">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+        <action name="oaExpensePushPrintPage" class="oaExpensePushAction" method="oaExpensePushPrintPage">
+            <result name="success" >/oa/expensepush/oaExpensePushPrintPage.jsp</result>
+        </action>
+	</package>
+    <package name="oaoffprice" extends="parent" namespace="/oa/offprice">
+        <action name="oaOffPricePage" class="oaOffPriceAction" method="oaOffPricePage">
+            <result name="success" >/oa/offprice/oaOffPricePage.jsp</result>
+            <result name="phone" >/oa/offprice/phone/oaOffPricePage.jsp</result>
+        </action>
+        <action name="oaOffPriceHandlePage" class="oaOffPriceAction" method="oaOffPriceHandlePage">
+            <result name="success" >/oa/offprice/oaOffPriceHandlePage.jsp</result>
+            <result name="phone" >/oa/offprice/phone/oaOffPriceHandlePage.jsp</result>
+			<result name="sign" >/oa/offprice/phone/oaOffPriceViewPage.jsp</result>
+        </action>
+        <action name="oaOffPriceViewPage" class="oaOffPriceAction" method="oaOffPriceViewPage">
+            <result name="success" >/oa/offprice/oaOffPriceViewPage.jsp</result>
+            <result name="phone" >/oa/offprice/phone/oaOffPriceViewPage.jsp</result>
+        </action>
+        <action name="oaOffPricePrintPage" class="oaOffPriceAction" method="oaOffPricePrintPage">
+            <result name="success" >/oa/offprice/oaOffPricePrintPage.jsp</result>
+        </action>
+        <action name="selectOaOffPriceDetailList" class="oaOffPriceAction" method="selectOaOffPriceDetailList">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="addOaOffPrice" class="oaOffPriceAction" method="addOaOffPrice">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="editOaOffPrice" class="oaOffPriceAction" method="editOaOffPrice">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="oaOffPriceDetailsAddPage" class="oaOffPriceAction" method="oaOffPriceDetailsAddPage">
+            <result name="success" >/oa/offprice/oaOffPriceDetailsAddPage.jsp</result>
+        </action>
+        <action name="getGoodsList" class="oaOffPriceAction" method="getGoodsList">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+    </package>
+    <package name="oagoodsprice" extends="parent" namespace="/oa/goodsprice">
+        <action name="oaGoodsPricePage" class="oaGoodsPriceAction" method="oaGoodsPricePage">
+            <result name="success" >/oa/goodsprice/oaGoodsPricePage.jsp</result>
+			<result name="phone" >/oa/goodsprice/phone/oaGoodsPricePage.jsp</result>
+        </action>
+        <action name="oaGoodsPriceHandlePage" class="oaGoodsPriceAction" method="oaGoodsPriceHandlePage">
+            <result name="success" >/oa/goodsprice/oaGoodsPriceHandlePage.jsp</result>
+			<result name="phone" >/oa/goodsprice/phone/oaGoodsPriceHandlePage.jsp</result>
+			<result name="sign" >/oa/goodsprice/phone/oaGoodsPriceViewPage.jsp</result>
+        </action>
+        <action name="oaGoodsPriceViewPage" class="oaGoodsPriceAction" method="oaGoodsPriceViewPage">
+            <result name="success" >/oa/goodsprice/oaGoodsPriceViewPage.jsp</result>
+			<result name="phone" >/oa/goodsprice/phone/oaGoodsPriceViewPage.jsp</result>
+        </action>
+        <action name="oagoodsPriceDetailAddPage" class="oaGoodsPriceAction" method="oagoodsPriceDetailAddPage">
+            <result name="success" >/oa/goodsprice/oaGoodsPriceDetailAddPage.jsp</result>
+        </action>
+        <action name="oagoodsPriceDetailEditPage" class="oaGoodsPriceAction" method="oagoodsPriceDetailEditPage">
+            <result name="success" >/oa/goodsprice/oaGoodsPriceDetailEditPage.jsp</result>
+        </action>
+        <action name="addOaGoodsPrice" class="oaGoodsPriceAction" method="addOaGoodsPrice">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="editOaGoodsPrice" class="oaGoodsPriceAction" method="editOaGoodsPrice">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="selectGoodsPriceDetailList" class="oaGoodsPriceAction" method="selectGoodsPriceDetailList">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+		<action name="oaGoodsPriceDetailPage" class="oaGoodsPriceAction" method="oaGoodsPriceDetailPage">
+			<result name="phone" >/oa/goodsprice/phone/oaGoodsPriceDetailPage.jsp</result>
+		</action>
+    </package>
+	<package name="oacustomerfee" extends="parent" namespace="/oa/customerfee">
+		<action name="oaCustomerFeePage" class="oaCustomerFeeAction" method="oaCustomerFeePage">
+			<result name="success" >/oa/customerfee/oaCustomerFeePage.jsp</result>
+			<result name="phone" >/oa/customerfee/phone/oaCustomerFeePage.jsp</result>
+		</action>
+        <action name="oaCustomerFeeHandlePage1" class="oaCustomerFeeAction" method="oaCustomerFeeHandlePage1">
+            <result name="success" >/oa/customerfee/oaCustomerFeeHandlePage1.jsp</result>
+            <result name="phone" >/oa/customerfee/phone/oaCustomerFeeHandlePage1.jsp</result>
+			<result name="sign" >/oa/customerfee/phone/oaCustomerFeeViewPage.jsp</result>
+        </action>
+		<action name="oaCustomerFeeHandlePage2" class="oaCustomerFeeAction" method="oaCustomerFeeHandlePage2">
+			<result name="success" >/oa/customerfee/oaCustomerFeeHandlePage2.jsp</result>
+			<result name="phone" >/oa/customerfee/phone/oaCustomerFeeHandlePage2.jsp</result>
+			<result name="sign" >/oa/customerfee/phone/oaCustomerFeeViewPage.jsp</result>
+		</action>
+		<action name="oaCustomerFeeViewPage" class="oaCustomerFeeAction" method="oaCustomerFeeViewPage">
+			<result name="success" >/oa/customerfee/oaCustomerFeeViewPage.jsp</result>
+			<result name="phone" >/oa/customerfee/phone/oaCustomerFeeViewPage.jsp</result>
+		</action>
+		<action name="addOaCustomerFee" class="oaCustomerFeeAction" method="addOaCustomerFee">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editOaCustomerFee" class="oaCustomerFeeAction" method="editOaCustomerFee">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getCustomerFeeDetailList" class="oaCustomerFeeAction" method="getCustomerFeeDetailList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="oaCustomerFeePrintPage" class="oaCustomerFeeAction" method="oaCustomerFeePrintPage">
+			<result name="success" >/oa/customerfee/oaCustomerFeePrintPage.jsp</result>
+		</action>
+	</package>
+	<package name="oabrandfee" extends="parent" namespace="/oa/brandfee">
+		<action name="oaBrandFeePage" class="oaBrandFeeAction" method="oaBrandFeePage">
+			<result name="success" >/oa/brandfee/oaBrandFeePage.jsp</result>
+			<result name="phone" >/oa/brandfee/phone/oaBrandFeePage.jsp</result>
+		</action>
+		<action name="oaBrandFeeHandlePage1" class="oaBrandFeeAction" method="oaBrandFeeHandlePage1">
+			<result name="success" >/oa/brandfee/oaBrandFeeHandlePage1.jsp</result>
+			<result name="phone" >/oa/brandfee/phone/oaBrandFeeHandlePage1.jsp</result>
+			<result name="sign" >/oa/brandfee/phone/oaBrandFeeViewPage.jsp</result>
+		</action>
+		<action name="oaBrandFeeHandlePage2" class="oaBrandFeeAction" method="oaBrandFeeHandlePage2">
+			<result name="success" >/oa/brandfee/oaBrandFeeHandlePage2.jsp</result>
+			<result name="phone" >/oa/brandfee/phone/oaBrandFeeHandlePage2.jsp</result>
+			<result name="sign" >/oa/brandfee/phone/oaBrandFeeViewPage.jsp</result>
+		</action>
+		<action name="oaBrandFeeViewPage" class="oaBrandFeeAction" method="oaBrandFeeViewPage">
+			<result name="success" >/oa/brandfee/oaBrandFeeViewPage.jsp</result>
+			<result name="phone" >/oa/brandfee/phone/oaBrandFeeViewPage.jsp</result>
+		</action>
+		<action name="getBrandFeeDetailList" class="oaBrandFeeAction" method="getBrandFeeDetailList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addBrandFee" class="oaBrandFeeAction" method="addBrandFee">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editBrandFee" class="oaBrandFeeAction" method="editBrandFee">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="oaBrandFeePrintPage" class="oaBrandFeeAction" method="oaBrandFeePrintPage">
+			<result name="success" >/oa/brandfee/oaBrandFeePrintPage.jsp</result>
+		</action>
+	</package>
+    <package name="oadelegate" extends="parent" namespace="/oa/delegate">
+        <action name="oaDelegatePage" class="oaDelegateAction" method="oaDelegatePage">
+            <result name="success" >/oa/delegate/oaDelegatePage.jsp</result>
+            <result name="phone" >/oa/delegate/phone/oaDelegatePage.jsp</result>
+        </action>
+        <action name="oaDelegateHandlePage" class="oaDelegateAction" method="oaDelegateHandlePage">
+            <result name="success" >/oa/delegate/oaDelegateHandlePage.jsp</result>
+            <result name="phone" >/oa/delegate/phone/oaDelegateHandlePage.jsp</result>
+			<result name="sign" >/oa/delegate/phone/oaDelegateViewPage.jsp</result>
+        </action>
+        <action name="oaDelegateViewPage" class="oaDelegateAction" method="oaDelegateViewPage">
+            <result name="success" >/oa/delegate/oaDelegateViewPage.jsp</result>
+            <result name="phone" >/oa/delegate/phone/oaDelegateViewPage.jsp</result>
+        </action>
+        <action name="addOaDelegate" class="oaDelegateAction" method="addOaDelegate">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="editOaDelegate" class="oaDelegateAction" method="editOaDelegate">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="oaDelegatePrintPage" class="oaDelegateAction" method="oaDelegatePrintPage">
+            <result name="success" >/oa/delegate/oaDelegatePrintPage.jsp</result>
+        </action>
+    </package>
+    <package name="oapurchasepay" extends="parent" namespace="/oa/purchasepay">
+        <action name="oaPurchasePayPage" class="oaPurchasePayAction" method="oaPurchasePayPage">
+            <result name="success" >/oa/purchasepay/oaPurchasePayPage.jsp</result>
+            <result name="phone" >/oa/purchasepay/phone/oaPurchasePayPage.jsp</result>
+        </action>
+        <action name="oaPurchasePayHandlePage" class="oaPurchasePayAction" method="oaPurchasePayHandlePage">
+            <result name="success" >/oa/purchasepay/oaPurchasePayHandlePage.jsp</result>
+            <result name="phone" >/oa/purchasepay/phone/oaPurchasePayHandlePage.jsp</result>
+        </action>
+        <action name="oaPurchasePayHandlePage2" class="oaPurchasePayAction" method="oaPurchasePayHandlePage2">
+            <result name="success" >/oa/purchasepay/oaPurchasePayHandlePage2.jsp</result>
+            <result name="phone" >/oa/purchasepay/phone/oaPurchasePayHandlePage2.jsp</result>
+        </action>
+        <action name="oaPurchasePayViewPage" class="oaPurchasePayAction" method="oaPurchasePayViewPage">
+            <result name="success" >/oa/purchasepay/oaPurchasePayViewPage.jsp</result>
+            <result name="phone" >/oa/purchasepay/phone/oaPurchasePayViewPage.jsp</result>
+        </action>
+        <action name="oaPurchasePayPrintPage" class="oaPurchasePayAction" method="oaPurchasePayPrintPage">
+            <result name="success" >/oa/purchasepay/oaPurchasePayPrintPage.jsp</result>
+        </action>
+        <action name="addOaPurchasePay" class="oaPurchasePayAction" method="addOaPurchasePay">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="editOaPurchasePay" class="oaPurchasePayAction" method="editOaPurchasePay">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+    </package>
+	<package name="oamatcost" extends="parent" namespace="/oa/matcost">
+		<action name="oaMatcostPage" class="oaMatcostAction" method="oaMatcostPage">
+			<result name="success" >/oa/matcost/oaMatcostPage.jsp</result>
+			<result name="phone" >/oa/matcost/phone/oaMatcostPage.jsp</result>
+		</action>
+		<action name="oaMatcostHandlePage1" class="oaMatcostAction" method="oaMatcostHandlePage1">
+			<result name="success" >/oa/matcost/oaMatcostHandlePage1.jsp</result>
+			<result name="phone" >/oa/matcost/phone/oaMatcostHandlePage1.jsp</result>
+		</action>
+		<action name="oaMatcostHandlePage2" class="oaMatcostAction" method="oaMatcostHandlePage2">
+			<result name="success" >/oa/matcost/oaMatcostHandlePage2.jsp</result>
+			<result name="phone" >/oa/matcost/phone/oaMatcostHandlePage2.jsp</result>
+		</action>
+		<action name="oaMatcostViewPage" class="oaMatcostAction" method="oaMatcostViewPage">
+			<result name="success" >/oa/matcost/oaMatcostViewPage.jsp</result>
+			<result name="phone" >/oa/matcost/phone/oaMatcostViewPage.jsp</result>
+		</action>
+		<action name="oaMatcostPrintPage" class="oaMatcostAction" method="oaMatcostPrintPage">
+			<result name="success" >/oa/matcost/oaMatcostPrintPage.jsp</result>
+		</action>
+		<action name="addOaMatcost" class="oaMatcostAction" method="addOaMatcost">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editOaMatcost" class="oaMatcostAction" method="editOaMatcost">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+</struts>

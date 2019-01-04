@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd 
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+	<bean id="phoneLocationMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.phone.dao.LocationMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="phoneMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.phone.dao.PhoneMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="distanceMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.phone.dao.RouteDistanceMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+	<bean id="phoneService" parent="baseTransactionProxy">
+		<property name="target" ref="phoneServiceImpl"></property>
+	</bean>
+	<bean id="phoneServiceImpl" class="com.hd.agent.phone.service.impl.PhoneServiceImpl" parent="salesBaseServiceImpl">
+		<property name="locationMapper" ref="phoneLocationMapper"></property>
+		<property name="phoneMapper" ref="phoneMapper"></property>
+		<property name="checkListMapper" ref="checkListMapper"></property>
+		<property name="distanceMapper" ref="distanceMapper"></property>
+        <property name="attachFileMapper" ref="attachFileMapper"></property>
+		<property name="storageSaleOutService" ref="storageSaleOutService"></property>
+        <property name="purchaseEnterService" ref="purchaseEnterService"></property>
+		<property name="orderService" ref="salesOrderService"></property>
+		<property name="demandService" ref="salesDemandService"></property>
+        <property name="salesService" ref="salesService"></property>
+	</bean>
+	<bean id="phoneOaService" parent="baseTransactionProxy">
+		<property name="target" ref="phoneOaServiceImpl"></property>
+	</bean>
+	<bean id="phoneOaServiceImpl" class="com.hd.agent.phone.service.impl.PhoneOaServiceImpl" parent="baseFilesServiceImpl">
+		<property name="emailMapper" ref="emailMapper"></property>
+		<property name="noticeMapper" ref="noticeMapper"></property>
+		<property name="signinMapper" ref="signinMapper"></property>
+	</bean>
+	
+	<bean id="phoneMessageService" parent="baseTransactionProxy">
+		<property name="target" ref="phoneMessageServiceImpl"></property>
+	</bean>
+	<bean id="phoneMessageServiceImpl" class="com.hd.agent.phone.service.impl.PhoneMessageServiceImpl" parent="baseFilesServiceImpl">
+		<property name="emailMapper" ref="emailMapper"></property>
+		<property name="noticeMapper" ref="noticeMapper"></property>
+	</bean>
+	
+	<bean id="phoneOrderService" parent="baseTransactionProxy">
+		<property name="target" ref="phoneOrderServiceImpl"></property>
+	</bean>
+	<bean id="phoneOrderServiceImpl" class="com.hd.agent.phone.service.impl.PhoneOrderServiceImpl" parent="baseFilesServiceImpl">
+		<property name="phoneMapper" ref="phoneMapper"></property>
+		<property name="salesInvoiceService" ref="salesInvoiceService"></property>
+        <property name="salesInvoiceBillService" ref="salesInvoiceBillService"></property>
+		<property name="salesFreeOrderMapper" ref="salesFreeOrderMapper"></property>
+	</bean>
+
+	<bean id="phoneLoginAction" class="com.hd.agent.phone.action.LoginAction" scope="prototype" parent="baseAction">
+		<property name="phoneService" ref="phoneService"></property>
+	</bean>
+	<bean id="phoneSalesAction" class="com.hd.agent.phone.action.SalesAction" scope="prototype" parent="baseFilesAction">
+		<property name="phoneService" ref="phoneService"></property>
+	</bean>
+	<bean id="phoneReportAction" class="com.hd.agent.phone.action.ReportAction" scope="prototype" parent="baseAction">
+		<property name="phoneService" ref="phoneService"></property>
+	</bean>
+	<bean id="phoneOaAction" class="com.hd.agent.phone.action.OaAction" scope="prototype" parent="baseAction">
+		<property name="phoneService" ref="phoneService"></property>
+		<property name="phoneOaService" ref="phoneOaService"></property>
+	</bean>
+	<bean id="phoneMessageAction" class="com.hd.agent.phone.action.MessageAction" scope="prototype" parent="baseAction">
+		<property name="phoneService" ref="phoneService"></property>
+		<property name="emailService" ref="emailService"></property>
+		<property name="innerMessageService" ref="innerMessageService"></property>
+		<property name="noticeService" ref="noticeService"></property>
+		<property name="attachFileService" ref="attachFileService"></property>
+	</bean>
+	<bean id="phoneOrderAction" class="com.hd.agent.phone.action.OrderAction" scope="prototype" parent="baseAction">
+		<property name="phoneService" ref="phoneService"></property>
+		<property name="phoneOrderService" ref="phoneOrderService"></property>
+		<property name="salesFreeOrderService" ref="salesFreeOrderService"></property>
+	</bean>
+    <bean id="customerVisitAction" class="com.hd.agent.phone.action.CustomerVisitAction" scope="prototype" parent="baseAction">
+        <property name="crmVisitPlanService" ref="crmVisitPlanService"></property>
+        <property name="crmVisitRecordService" ref="crmVisitRecordService"></property>
+    </bean>
+    <bean id="phonePurchaseAction" class="com.hd.agent.phone.action.PurchaseAction" scope="prototype" parent="baseAction">
+        <property name="phoneService" ref="phoneService"></property>
+    </bean>
+    <!-- 手机回单交接单 -->
+    <bean id="phoneReceiptHandService" parent="baseTransactionProxy">
+        <property name="target" ref="phoneReceiptHandServiceImpl"></property>
+    </bean>
+    <bean id="phoneReceiptHandServiceImpl" class="com.hd.agent.phone.service.impl.PhoneReceiptHandServiceImpl" parent="baseFilesServiceImpl">
+        <property name="receiptHandService" ref="receiptHandService"></property>
+    </bean>
+    <bean id="phoneReceiptHandAction" class="com.hd.agent.phone.action.ReceiptHandAction" scope="prototype" parent="baseAction">
+        <property name="phoneReceiptHandService" ref="phoneReceiptHandService"></property>
+    </bean>
+    <bean id="phoneCommonAction" class="com.hd.agent.phone.action.PhoneCommonAction" scope="prototype" parent="baseFilesAction">
+    </bean>
+	<bean id="phoneWidgetAction" class="com.hd.agent.phone.action.PhoneWidgetAction" scope="prototype" parent="baseFilesAction">
+		<property name="referWindowService" ref="referWindowService"></property>
+		<property name="dataDictionaryService" ref="dataDictionaryService"></property>
+	</bean>
+
+    <!-- 手机交款单 -->
+    <bean id="phonePaymentVoucherService" parent="baseTransactionProxy">
+        <property name="target" ref="phonePaymentVoucherServiceImpl"></property>
+    </bean>
+    <bean id="phonePaymentVoucherServiceImpl" class="com.hd.agent.phone.service.impl.PhonePaymentVoucherServiceImpl" parent="baseFilesServiceImpl">
+        <property name="paymentVoucherService" ref="paymentVoucherService"></property>
+    </bean>
+    <bean id="phonePaymentVoucherAction" class="com.hd.agent.phone.action.PaymentVoucherAction" scope="prototype" parent="baseAction">
+        <property name="phonePaymentVoucherService" ref="phonePaymentVoucherService"></property>
+    </bean>
+
+    <!-- 手机交款单 -->
+    <bean id="phoneAllocateService" parent="baseTransactionProxy">
+        <property name="target" ref="phoneAllocateServiceImpl"></property>
+    </bean>
+    <bean id="phoneAllocateServiceImpl" class="com.hd.agent.phone.service.impl.PhoneAllocateServiceImpl" parent="baseFilesServiceImpl">
+        <property name="allocateService" ref="allocateService"></property>
+    </bean>
+    <bean id="phoneAllocateAction" class="com.hd.agent.phone.action.AllocateAction" scope="prototype" parent="baseAction">
+        <property name="phoneAllocateService" ref="phoneAllocateService"></property>
+    </bean>
+
+	<bean id="phoneReportLineMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.hd.agent.phone.dao.PhoneReportLineMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+	</bean>
+	<bean id="phoneReportLineService" parent="baseTransactionProxy">
+		<property name="target" ref="phoneReportLineServiceImpl"></property>
+	</bean>
+	<bean id="phoneReportLineServiceImpl" class="com.hd.agent.phone.service.impl.PhoneReportLineServiceImpl" parent="baseFilesServiceImpl">
+		<property name="phoneReportLineMapper" ref="phoneReportLineMapper"></property>
+		<property name="phoneMapper" ref="phoneMapper"></property>
+	</bean>
+	<bean id="phoneReportLineAction" class="com.hd.agent.phone.action.PhoneReportLineAction" scope="prototype" parent="baseAction">
+		<property name="salesReportService" ref="salesReportService"></property>
+		<property name="financeFundsReturnService" ref="financeFundsReturnService"></property>
+		<property name="phoneReportLineService" ref="phoneReportLineService"></property>
+		<property name="exceptionReportService" ref="exceptionReportService"></property>
+		<property name="bankAmountService" ref="bankAmountService"></property>
+		<property name="collectionOrderService" ref="collectionOrderService"></property>
+		<property name="payorderService" ref="payorderService"></property>
+		<property name="deptDailyCostService" ref="deptDailyCostService"></property>
+		<property name="costsFeeService" ref="costsFeeService"></property>
+		<property name="journalSheetService" ref="journalSheetService"></property>
+		<property name="orderGoodsService" ref="orderGoodsService"></property>
+	</bean>
+    <bean id="crmCustomerDataUploadAction" class="com.hd.agent.phone.action.CrmCustomerDataUploadAction" scope="prototype" parent="baseAction">
+        <property name="customerStorageOrderService" ref="customerStorageOrderService"></property>
+        <property name="crmTerminalSalesService" ref="crmTerminalSalesService"></property>
+    </bean>
+</beans>

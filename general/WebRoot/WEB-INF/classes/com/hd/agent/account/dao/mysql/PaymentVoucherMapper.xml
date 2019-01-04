@@ -1,0 +1,704 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hd.agent.account.dao.PaymentVoucherMapper">
+  <sql id="PVPageList_Where_Clause">
+      <if test="condition.id != null">
+         and id like concat('%',#{condition.id},'%') 
+      </if>
+      <if test="condition.businessdate != null">
+         and businessdate = #{condition.businessdate}
+      </if>
+      <if test="condition.status != null">
+         and status = #{condition.status}
+      </if>
+      <if test="condition.collectusername != null">
+         and collectusername = #{condition.collectusername}
+      </if>
+      <if test="condition.collectuserid != null">
+         and collectuserid = #{condition.collectuserid}
+      </if>
+      <if test="condition.adduserid != null">
+         and adduserid = #{condition.adduserid}
+      </if>
+      <if test="condition.adddeptid != null">
+         and adddeptid = #{condition.adddeptid}
+      </if>
+      <if test="condition.addtime != null">
+         and addtime = #{condition.addtime}
+      </if>
+      <if test="condition.modifyuserid != null">
+         and modifyuserid = #{condition.modifyuserid}
+      </if>
+      <if test="condition.modifytime != null">
+         and modifytime = #{condition.modifytime}
+      </if>
+      <if test="condition.audituserid != null">
+         and audituserid = #{condition.audituserid}
+      </if>
+      <if test="condition.audittime != null">
+         and audittime = #{condition.audittime}
+      </if>
+      <if test="condition.printtimes != null">
+         and printtimes = #{condition.printtimes}
+      </if>       
+      <if test="condition.printsign != null and condition.queryprinttimes != null">
+     		<choose>
+     			<when test="condition.printsign == 1">
+     				<![CDATA[and printtimes = #{condition.queryprinttimes} ]]>
+     			</when>
+     			<when test="condition.printsign == 2">
+     				<![CDATA[and printtimes < #{condition.queryprinttimes} ]]>
+     			</when>
+     			<when test="condition.printsign == 3">
+     				<![CDATA[and printtimes <= #{condition.queryprinttimes} ]]>
+     			</when>
+     			<when test="condition.printsign == 4">
+     				<![CDATA[and printtimes > #{condition.queryprinttimes} ]]>
+     			</when>
+     			<when test="condition.printsign == 5">
+     				<![CDATA[and printtimes >= #{condition.queryprinttimes} ]]>
+     			</when>
+     		</choose>
+      </if>    
+	  <if test="condition.businessdatestart != null" >
+        <![CDATA[ and businessdate >= #{condition.businessdatestart} ]]>
+      </if>
+	  <if test="condition.businessdateend != null" >
+        <![CDATA[ and businessdate <= #{condition.businessdateend}]]>
+      </if>   
+	  <if test="condition.amount1 != null" >
+        <![CDATA[ and totalamount >= #{condition.amount1} ]]>
+      </if>
+	  <if test="condition.amount2 != null" >
+        <![CDATA[ and totalamount <= #{condition.amount2} ]]>
+      </if>
+      <if test="condition.bank != null">
+        and bank = #{condition.bank}
+      </if>
+      <if test="condition.bankdeptid != null">
+        and bankdeptid = #{condition.bankdeptid}
+      </if>
+    <choose>
+      	<when test="condition.isAudit ==1 ">
+      		and ( status = '2' or status='1' )
+      	</when>
+      	<when test="condition.isAudit ==2 ">
+      		and (status='3' or status='4' )
+      	</when>
+    </choose>
+  </sql>
+  <sql id="PVBase_Column_List">
+    id, businessdate, status, remark,collectuserid, collectusername, adduserid, addusername, adddeptid, adddeptname, 
+    addtime, modifyuserid, modifyusername, modifytime, audituserid, auditusername, audittime, 
+    printtimes, totalamount, field01, field02, field03, field04, field05, field06, field07, 
+    field08,bank,bankdeptid
+  </sql>
+  <insert id="insertPaymentVoucher" parameterType="com.hd.agent.account.model.PaymentVoucher">
+    insert into t_account_paymentvoucher
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="businessdate != null">
+        businessdate,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="collectuserid != null">
+        collectuserid,
+      </if>
+      <if test="collectusername != null">
+        collectusername,
+      </if>
+      <if test="adduserid != null">
+        adduserid,
+      </if>
+      <if test="addusername != null">
+        addusername,
+      </if>
+      <if test="adddeptid != null">
+        adddeptid,
+      </if>
+      <if test="adddeptname != null">
+        adddeptname,
+      </if>
+      <if test="addtime != null">
+        addtime,
+      </if>
+      <if test="printtimes != null">
+        printtimes,
+      </if>
+      <if test="totalamount != null">
+        totalamount,
+      </if>
+      <if test="field01 != null">
+        field01,
+      </if>
+      <if test="field02 != null">
+        field02,
+      </if>
+      <if test="field03 != null">
+        field03,
+      </if>
+      <if test="field04 != null">
+        field04,
+      </if>
+      <if test="field05 != null">
+        field05,
+      </if>
+      <if test="field06 != null">
+        field06,
+      </if>
+      <if test="field07 != null">
+        field07,
+      </if>
+      <if test="field08 != null">
+        field08,
+      </if>
+      <if test="bank != null">
+        bank,
+      </if>
+      <if test="bankdeptid != null">
+        bankdeptid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id},
+      </if>
+      <if test="businessdate != null">
+        #{businessdate},
+      </if>
+      <if test="status != null">
+        #{status},
+      </if>
+      <if test="remark != null">
+        #{remark},
+      </if>
+      <if test="collectuserid != null">
+        #{collectuserid},
+      </if>
+      <if test="collectusername != null">
+        #{collectusername},
+      </if>
+      <if test="adduserid != null">
+        #{adduserid},
+      </if>
+      <if test="addusername != null">
+        #{addusername},
+      </if>
+      <if test="adddeptid != null">
+        #{adddeptid},
+      </if>
+      <if test="adddeptname != null">
+        #{adddeptname},
+      </if>
+      <if test="addtime != null">
+        #{addtime},
+      </if>
+      <if test="printtimes != null">
+        #{printtimes},
+      </if>
+      <if test="totalamount != null">
+        #{totalamount},
+      </if>
+      <if test="field01 != null">
+        #{field01},
+      </if>
+      <if test="field02 != null">
+        #{field02},
+      </if>
+      <if test="field03 != null">
+        #{field03},
+      </if>
+      <if test="field04 != null">
+        #{field04},
+      </if>
+      <if test="field05 != null">
+        #{field05},
+      </if>
+      <if test="field06 != null">
+        #{field06},
+      </if>
+      <if test="field07 != null">
+        #{field07},
+      </if>
+      <if test="field08 != null">
+        #{field08},
+      </if>
+      <if test="bank != null">
+        #{bank},
+      </if>
+      <if test="bankdeptid != null">
+        #{bankdeptid},
+      </if>
+    </trim>
+  </insert>
+  <update id="updatePaymentVoucher" parameterType="com.hd.agent.account.model.PaymentVoucher">
+    update t_account_paymentvoucher
+    <set>
+      <if test="businessdate != null">
+        businessdate = #{businessdate},
+      </if>
+      <if test="status != null">
+        status = #{status},
+      </if>
+      <if test="remark != null">
+        remark = #{remark},
+      </if>
+      <if test="collectuserid != null">
+        collectuserid = #{collectuserid},
+      </if>
+      <if test="collectusername != null">
+        collectusername = #{collectusername},
+      </if>
+      <if test="adduserid != null">
+        adduserid = #{adduserid},
+      </if>
+      <if test="addusername != null">
+        addusername = #{addusername},
+      </if>
+      <if test="adddeptid != null">
+        adddeptid = #{adddeptid},
+      </if>
+      <if test="adddeptname != null">
+        adddeptname = #{adddeptname},
+      </if>
+      <if test="addtime != null">
+        addtime = #{addtime},
+      </if>
+      <if test="modifyuserid != null">
+        modifyuserid = #{modifyuserid},
+      </if>
+      <if test="modifyusername != null">
+        modifyusername = #{modifyusername},
+      </if>
+      <if test="modifytime != null">
+        modifytime = #{modifytime},
+      </if>
+      <if test="printtimes != null">
+        printtimes = #{printtimes},
+      </if>
+      <if test="totalamount != null">
+        totalamount = #{totalamount},
+      </if>
+      <if test="field01 != null">
+        field01 = #{field01},
+      </if>
+      <if test="field02 != null">
+        field02 = #{field02},
+      </if>
+      <if test="field03 != null">
+        field03 = #{field03},
+      </if>
+      <if test="field04 != null">
+        field04 = #{field04},
+      </if>
+      <if test="field05 != null">
+        field05 = #{field05},
+      </if>
+      <if test="field06 != null">
+        field06 = #{field06},
+      </if>
+      <if test="field07 != null">
+        field07 = #{field07},
+      </if>
+      <if test="field08 != null">
+        field08 = #{field08},
+      </if>
+      <if test="bank != null">
+        bank = #{bank},
+      </if>
+      <if test="bankdeptid != null">
+        bankdeptid = #{bankdeptid},
+      </if>
+    </set>
+    where id = #{id}
+  </update>  
+  
+  <select id="getPaymentVoucher" parameterType="java.lang.String" resultType="com.hd.agent.account.model.PaymentVoucher">
+    select 
+    <include refid="PVBase_Column_List" />
+    from t_account_paymentvoucher
+    where id = #{id}
+  </select>
+  <select id="getPaymentVoucherBy" parameterType="java.util.Map" resultType="com.hd.agent.account.model.PaymentVoucher">
+    select 
+    <choose>
+		<when test="cols!=null">
+			<include refid="common.Page_Column"/>
+		</when>
+		<when test="cols==null">
+ 				<include refid="PVBase_Column_List" />
+		</when>
+	</choose>
+	from t_account_paymentvoucher
+	where
+	<trim prefixOverrides="and|or" >	  		
+		<if test="id != null" >
+		   and id = #{id}
+		</if>
+		<if test="status != null" >
+		   and status = #{status}
+		</if>
+	    <if test="authDataSql != null">
+	    	and ${authDataSql}
+	    </if>
+    </trim>
+  </select>
+  <delete id="deletePaymentVoucher" parameterType="java.lang.String">
+    delete from t_account_paymentvoucher
+    where id = #{id}
+  </delete>  
+  <delete id="deletePaymentVoucherBy" parameterType="java.util.Map">
+    delete from t_account_paymentvoucher
+    where id = #{id}    
+	<trim >
+		<if test="1==1" >
+		   	and 1=1
+		</if>	  
+		<if test="status != null" >
+		   	and status = #{status}
+		</if>  
+		<if test="notAudit != null" >
+		   	and (status = '1' or status='2')
+		</if>
+	    <if test="authDataSql != null">
+	    	and ${authDataSql}
+	    </if>
+    </trim>
+  </delete>  
+  <select id="getPaymentVoucherPageList"  parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.account.model.PaymentVoucher">
+  		select
+	  	<choose>
+			<when test="cols!=null">
+				<include refid="common.Page_Column"/>
+			</when>
+			<when test="cols==null">
+				<include refid="PVBase_Column_List"/>				
+			</when>
+		</choose>
+		from t_account_paymentvoucher t
+		<trim prefix="where" prefixOverrides="and|or">
+			<include refid="PVPageList_Where_Clause" />			
+			<include refid="common.Page_querySql"/>
+			<include refid="common.Page_dataSql"/>
+		</trim>
+		<choose>
+			<when test="condition.isNoPageflag !='true'">
+				<include refid="common.Page_limit" />
+			</when>
+			<otherwise>
+				ORDER BY businessdate desc , id desc
+			</otherwise>
+		</choose>
+ </select>
+ <select id="getPaymentVoucherPageCount"  parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+	select
+  	count(*)
+	from t_account_paymentvoucher t
+	<trim prefix="where" prefixOverrides="and|or">
+		<include refid="PVPageList_Where_Clause" />			
+		<include refid="common.Page_querySql"/>
+		<include refid="common.Page_dataSql"/>
+	</trim>
+ </select>
+ <select id="getPaymentVoucherPageSum"  parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.account.model.PaymentVoucher">
+	select
+  	sum(totalamount) as totalamount
+	from t_account_paymentvoucher
+	<trim prefix="where" prefixOverrides="and|or">
+		<include refid="PVPageList_Where_Clause" />			
+		<include refid="common.Page_querySql"/>
+		<include refid="common.Page_dataSql"/>
+	</trim>
+ </select>
+ 
+ <sql id="PVDetailBase_Column_List">
+    id, orderid, customerid, amount, remark,seq,
+    field01, field02, field03, field04, field05, field06, field07, 
+    field08
+  </sql>
+ 
+ <select id="getPaymentVoucherDetailList" parameterType="java.lang.String" resultType="com.hd.agent.account.model.PaymentVoucherDetail">
+    select 
+    <include refid="PVDetailBase_Column_List" />
+    from t_account_paymentvoucher_detail
+    where orderid = #{orderid}
+  </select>
+  <delete id="deletePaymentVoucherDetail" parameterType="java.lang.String">
+    delete from t_account_paymentvoucher_detail
+    where id = #{id}
+  </delete>
+  <delete id="deletePaymentVoucherDetailByOrderid" parameterType="java.lang.String">
+    delete from t_account_paymentvoucher_detail
+    where orderid = #{orderid}
+  </delete>
+  
+    <insert id="insertPaymentVoucherDetail" parameterType="com.hd.agent.account.model.PaymentVoucherDetail">
+    insert into t_account_paymentvoucher_detail
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="orderid != null">
+        orderid,
+      </if>
+      <if test="customerid != null">
+        customerid,
+      </if>
+      <if test="customername != null" >
+        customername,
+      </if>
+      <if test="amount != null">
+        amount,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="seq != null">
+        seq,
+      </if>
+      <if test="field01 != null">
+        field01,
+      </if>
+      <if test="field02 != null">
+        field02,
+      </if>
+      <if test="field03 != null">
+        field03,
+      </if>
+      <if test="field04 != null">
+        field04,
+      </if>
+      <if test="field05 != null">
+        field05,
+      </if>
+      <if test="field06 != null">
+        field06,
+      </if>
+      <if test="field07 != null">
+        field07,
+      </if>
+      <if test="field08 != null">
+        field08,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id},
+      </if>
+      <if test="orderid != null">
+        #{orderid},
+      </if>
+      <if test="customerid != null">
+        #{customerid},
+      </if>
+      <if test="customername != null" >
+        #{customername},
+      </if>
+      <if test="amount != null">
+        #{amount},
+      </if>
+      <if test="remark != null">
+        #{remark},
+      </if>
+      <if test="seq != null">
+        #{seq},
+      </if>
+      <if test="field01 != null">
+        #{field01},
+      </if>
+      <if test="field02 != null">
+        #{field02},
+      </if>
+      <if test="field03 != null">
+        #{field03},
+      </if>
+      <if test="field04 != null">
+        #{field04},
+      </if>
+      <if test="field05 != null">
+        #{field05},
+      </if>
+      <if test="field06 != null">
+        #{field06},
+      </if>
+      <if test="field07 != null">
+        #{field07},
+      </if>
+      <if test="field08 != null">
+        #{field08},
+      </if>
+    </trim>
+  </insert>
+  <update id="updatePaymentVoucherDetail" parameterType="com.hd.agent.account.model.PaymentVoucherDetail">
+    update t_account_paymentvoucher_detail
+    <set>
+      <if test="orderid != null">
+        orderid = #{orderid},
+      </if>
+      <if test="customerid != null">
+        customerid = #{customerid},
+      </if>
+      <if test="customername != null">
+        customername = #{customername},
+      </if>
+      <if test="amount != null">
+        amount = #{amount},
+      </if>
+      <if test="remark != null">
+        remark = #{remark},
+      </if>
+      <if test="seq != null">
+        seq = #{seq},
+      </if>
+      <if test="field01 != null">
+        field01 = #{field01},
+      </if>
+      <if test="field02 != null">
+        field02 = #{field02},
+      </if>
+      <if test="field03 != null">
+        field03 = #{field03},
+      </if>
+      <if test="field04 != null">
+        field04 = #{field04},
+      </if>
+      <if test="field05 != null">
+        field05 = #{field05},
+      </if>
+      <if test="field06 != null">
+        field06 = #{field06},
+      </if>
+      <if test="field07 != null">
+        field07 = #{field07},
+      </if>
+      <if test="field08 != null">
+        field08 = #{field08},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  <update id="updatePaymentVoucherStatus" parameterType="com.hd.agent.account.model.PaymentVoucher">
+	   update t_account_paymentvoucher
+   	   <set >	       
+   	    <if test="businessdate != null" >
+        	businessdate = #{businessdate},
+      	</if>   
+		<if test="status != null" >
+		  	status = #{status},
+		</if>
+		<if test="audituserid != null">
+	        audituserid = #{audituserid},
+	    </if>
+	    <if test="auditusername != null">
+	        auditusername = #{auditusername},
+	    </if>
+	    <if test="audittime != null">
+	        audittime = #{audittime},
+	    </if>
+	    <if test="closetime != null">
+	        closetime = #{closetime},
+	    </if>
+	   </set>
+	   where id = #{id}
+  </update>
+  
+  <select id="getPaymentVoucherDetailCountBy" parameterType="java.util.Map" resultType="int">
+  		select count(*) from t_account_paymentvoucher_detail
+		<trim prefix="where" prefixOverrides="and|or" >	  		
+			<if test="orderid != null" >
+			   and orderid = #{orderid}
+			</if>
+			<if test="orderidarrs != null" >
+			   and FIND_IN_SET(orderid,#{orderidarrs})
+			</if>	  	
+		    <if test="authDataSql != null">
+		    	and ${authDataSql}
+		    </if>
+	    </trim>	
+  </select>	
+  <update id="updatePaymentVoucherAmount" parameterType="java.util.Map">
+  	 update t_account_paymentvoucher
+  	 set totalamount =#{totalamount}
+  	 where id=#{id}
+  </update>
+  <update id="updateOrderPrinttimes" parameterType="com.hd.agent.account.model.PaymentVoucher">
+		update t_account_paymentvoucher
+	    <set>
+	      <if test="printtimes != null">
+	        printtimes = IFNULL(printtimes,0)+1,
+	      </if>
+	    </set>
+	    where id = #{id}
+	</update>
+    <update id="updateOrderByStatus" parameterType="java.util.ArrayList">
+        update t_account_paymentvoucher set  status = '4'
+        where id IN
+        <foreach collection="idsArr"  item="item" index="index" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+
+    </update>
+	
+  	<select id="showPaymentVoucherListBy" parameterType="java.util.Map" resultType="com.hd.agent.account.model.PaymentVoucher">
+  		select 
+	    <include refid="PVBase_Column_List" />
+	    from t_account_paymentvoucher
+  		<trim prefix="where" prefixOverrides="and|or">
+		  	<if test="dataSql != null">
+		  		and ${dataSql}
+		  	</if>
+  			<if test="idarrs!=null">
+  				and find_in_set(id,#{idarrs})
+  			</if>
+  			<if test="status!=null">
+  				and status=#{status}
+  			</if>
+  			<if test="statusarr!=null">
+			   and FIND_IN_SET(status,#{statusarr})
+  			</if>
+			<if test="notprint != null and notprint == 1">
+	  			 and (printtimes is null or printtimes=0)
+			</if>
+  		</trim>
+  	</select>
+    <select id="hasPhoneBill" resultType="int">
+        select count(1) from t_account_paymentvoucher where field01=#{billid}
+    </select>
+    <select id="getBillIDByPhoneBillid" resultType="java.lang.String">
+        select id from t_account_paymentvoucher where field01=#{billid} limit 1
+    </select>
+    <select id="getPaymentVoucherListByAudit" resultType="com.hd.agent.account.model.PaymentVoucher">
+        select * from t_account_paymentvoucher  where status = '3'
+    </select>
+    <select id="getPaymentVoucherListForPhone"  parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.account.model.PaymentVoucher">
+        select t.id, t.businessdate, t.status, t.remark,t.collectuserid, t.collectusername, t.totalamount, t.field01,sum(1) as billcount
+        from t_account_paymentvoucher t
+        RIGHT JOIN  t_account_paymentvoucher_detail t1 on t1.orderid=t.id
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="condition.businessdatestart != null" >
+                <![CDATA[ and t.businessdate >= #{condition.businessdatestart} ]]>
+            </if>
+            <if test="condition.businessdateend != null" >
+                <![CDATA[ and t.businessdate <= #{condition.businessdateend}]]>
+            </if>
+            <choose>
+                <when test="condition.isAudit ==1 ">
+                    and ( t.status = '2' or t.status='1' )
+                </when>
+                <when test="condition.isAudit ==2 ">
+                    and (t.status='3' or t.status='4' )
+                </when>
+            </choose>
+            <include refid="common.Page_dataSql"/>
+        </trim>
+        GROUP BY  t.id
+        ORDER BY t.businessdate desc , id desc
+    </select>
+</mapper>

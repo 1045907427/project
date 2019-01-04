@@ -1,0 +1,770 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.salestarget.dao.SalesTargetInputMapper" >
+    <sql id="salesTargetInputBase_Column_List" >
+        id, yearmonth, year, month, status, customerid, brandid,  firstsalestarget,
+        firstgrossprofit, firstgrossprofitrate, secondsalestarget, secondgrossprofit, secondgrossprofitrate,
+        remark, adduserid, addusername, addtime, modifyuserid, modifyusername, modifytime,
+        audituserid, auditusername, audittime
+    </sql>
+    <sql id="stiPageList_WhereClause">
+        <if test="condition.yearmonth != null" >
+            and t.yearmonth = #{condition.yearmonth}
+        </if>
+        <if test="condition.yearmonthstart != null" >
+            <![CDATA[ and t.yearmonth >=  #{condition.yearmonthstart}  ]]>
+        </if>
+        <if test="condition.yearmonthend != null" >
+            <![CDATA[ and  t.yearmonth <=  #{condition.yearmonthend} ]]>
+        </if>
+        <if test="condition.year != null" >
+            and t.year = #{condition.year}
+        </if>
+        <if test="condition.month != null" >
+            and t.month = #{condition.month}
+        </if>
+        <if test="condition.status != null" >
+            and t.status = #{condition.status}
+        </if>
+        <if test="condition.customerid != null" >
+            and t.customerid = #{condition.customerid}
+        </if>
+        <if test="condition.customersort != null" >
+            and c.customersort = #{condition.customersort}
+        </if>
+        <if test="condition.salesuserid != null" >
+            and c.salesuserid = #{condition.salesuserid}
+        </if>
+        <if test="condition.brandid != null" >
+            and t.brandid = #{condition.brandid}
+        </if>
+        <if test="condition.remark != null" >
+            and t.remark like CONCAT('%',#{condition.remark},'%')
+        </if>
+        <if test="condition.notyearmonth != null" >
+            and t.yearmonth != #{condition.notyearmonth}
+        </if>
+        <if test="condition.notcustomerid != null" >
+            and t.customerid != #{condition.notcustomerid}
+        </if>
+        <if test="condition.notbrandid != null" >
+            and t.brandid != #{condition.notbrandid}
+        </if>
+        <if test="condition.adduserid != null" >
+            and t.adduserid = #{condition.adduserid}
+        </if>
+        <if test="condition.addusername != null" >
+            and t.addusername = #{condition.addusername}
+        </if>
+        <if test="condition.addtime != null" >
+            and DATE_FORMAT(t.addtime,'%Y-%m-%d') = #{condition.addtime}
+        </if>
+        <if test="condition.modifyuserid != null" >
+            and t.modifyuserid = #{condition.modifyuserid}
+        </if>
+        <if test="condition.modifyusername != null" >
+            and t.modifyusername = #{condition.modifyusername}
+        </if>
+        <if test="condition.modifytime != null" >
+            and t.modifytime = #{condition.modifytime}
+        </if>
+        <if test="condition.audituserid != null" >
+            and t.audituserid = #{condition.audituserid}
+        </if>
+        <if test="condition.auditusername != null" >
+            and t.auditusername = #{condition.auditusername}
+        </if>
+        <if test="condition.audittime != null" >
+            and t.audittime = #{condition.audittime}
+        </if>
+    </sql>
+    <sql id="salesTargetInputPage_Column_List" >
+        t.id, t.yearmonth, t.year, t.month, t.status,t.customerid, t.brandid, t.firstsalestarget,
+        t.firstgrossprofit, t.firstgrossprofitrate, t.secondsalestarget, t.secondgrossprofit, t.secondgrossprofitrate,
+        t.remark, t.adduserid, t.addusername, t.addtime, t.modifyuserid, t.modifyusername, t.modifytime,
+        t.audituserid, t.auditusername, t.audittime
+    </sql>
+    <select id="getSalesTargetInputPageList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.salestarget.model.SalesTargetInput">
+        SELECT <include refid="salesTargetInputPage_Column_List"></include>
+        FROM (
+            SELECT <include refid="salesTargetInputPage_Column_List"></include>
+            FROM t_salestarget_input t
+            <if test="condition.customersort!=null or condition.salesuserid!=null">
+                INNER JOIN t_base_sales_customer c
+                ON t.customerid=c.id
+            </if>
+            <trim prefix="where" prefixOverrides="and|or">
+                <include refid="stiPageList_WhereClause" />
+                <include refid="common.Page_querySql"/>
+                <include refid="common.Page_dataSql"/>
+            </trim>
+        )t
+        <if test="condition.isPageflag !='true'">
+            <include refid="common.Page_limit" />
+        </if>
+    </select>
+    <select id="getSalesTargetInputPageCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+        SELECT COUNT(*)
+        FROM t_salestarget_input t
+        <if test="condition.customersort!=null or condition.salesuserid!=null">
+            INNER JOIN t_base_sales_customer c
+            ON t.customerid=c.id
+        </if>
+        <trim prefix="where" prefixOverrides="and|or">
+            <include refid="stiPageList_WhereClause" />
+            <include refid="common.Page_querySql"/>
+            <include refid="common.Page_dataSql"/>
+        </trim>
+    </select>
+    <select id="getSalesTargetInputPageSum" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.salestarget.model.SalesTargetInput">
+        SELECT SUM(firstsalestarget) AS firstsalestarget,SUM(firstgrossprofit) AS firstgrossprofit,SUM(secondsalestarget) AS secondsalestarget,SUM(secondgrossprofit) AS secondgrossprofit
+        FROM t_salestarget_input t
+        <if test="condition.customersort!=null or condition.salesuserid!=null">
+            INNER JOIN t_base_sales_customer c
+            ON t.customerid=c.id
+        </if>
+        <trim prefix="where" prefixOverrides="and|or">
+            <include refid="stiPageList_WhereClause" />
+            <include refid="common.Page_querySql"/>
+            <include refid="common.Page_dataSql"/>
+        </trim>
+    </select>
+    <select id="getSalesTargetInput" parameterType="java.lang.String" resultType="com.hd.agent.salestarget.model.SalesTargetInput">
+        SELECT
+        <include refid="salesTargetInputBase_Column_List" />
+        FROM t_salestarget_input
+        WHERE
+        id=#{id}
+    </select>
+    <insert id="insertSalesTargetInput" parameterType="com.hd.agent.salestarget.model.SalesTargetInput" >
+        insert into t_salestarget_input
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="yearmonth != null" >
+                yearmonth,
+            </if>
+            <if test="year != null" >
+                year,
+            </if>
+            <if test="month != null" >
+                month,
+            </if>
+            <if test="status != null" >
+                status,
+            </if>
+            <if test="customerid != null" >
+                customerid,
+            </if>
+            <if test="brandid != null" >
+                brandid,
+            </if>
+            <if test="firstsalestarget != null" >
+                firstsalestarget,
+            </if>
+            <if test="firstgrossprofit != null" >
+                firstgrossprofit,
+            </if>
+            <if test="firstgrossprofitrate != null" >
+                firstgrossprofitrate,
+            </if>
+            <if test="secondsalestarget != null" >
+                secondsalestarget,
+            </if>
+            <if test="secondgrossprofit != null" >
+                secondgrossprofit,
+            </if>
+            <if test="secondgrossprofitrate != null" >
+                secondgrossprofitrate,
+            </if>
+            <if test="remark != null" >
+                remark,
+            </if>
+            <if test="adduserid != null" >
+                adduserid,
+            </if>
+            <if test="addusername != null" >
+                addusername,
+            </if>
+            <if test="addtime != null" >
+                addtime,
+            </if>
+            <if test="modifyuserid != null" >
+                modifyuserid,
+            </if>
+            <if test="modifyusername != null" >
+                modifyusername,
+            </if>
+            <if test="modifytime != null" >
+                modifytime,
+            </if>
+            <if test="audituserid != null" >
+                audituserid,
+            </if>
+            <if test="auditusername != null" >
+                auditusername,
+            </if>
+            <if test="audittime != null" >
+                audittime,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id},
+            </if>
+            <if test="yearmonth != null" >
+                #{yearmonth},
+            </if>
+            <if test="year != null" >
+                #{year},
+            </if>
+            <if test="month != null" >
+                #{month},
+            </if>
+            <if test="status != null" >
+                #{status},
+            </if>
+            <if test="customerid != null" >
+                #{customerid},
+            </if>
+            <if test="brandid != null" >
+                #{brandid},
+            </if>
+            <if test="firstsalestarget != null" >
+                #{firstsalestarget},
+            </if>
+            <if test="firstgrossprofit != null" >
+                #{firstgrossprofit},
+            </if>
+            <if test="firstgrossprofitrate != null" >
+                #{firstgrossprofitrate},
+            </if>
+            <if test="secondsalestarget != null" >
+                #{secondsalestarget},
+            </if>
+            <if test="secondgrossprofit != null" >
+                #{secondgrossprofit},
+            </if>
+            <if test="secondgrossprofitrate != null" >
+                #{secondgrossprofitrate},
+            </if>
+            <if test="remark != null" >
+                #{remark},
+            </if>
+            <if test="adduserid != null" >
+                #{adduserid},
+            </if>
+            <if test="addusername != null" >
+                #{addusername},
+            </if>
+            <if test="addtime != null" >
+                #{addtime},
+            </if>
+            <if test="modifyuserid != null" >
+                #{modifyuserid},
+            </if>
+            <if test="modifyusername != null" >
+                #{modifyusername},
+            </if>
+            <if test="modifytime != null" >
+                #{modifytime},
+            </if>
+            <if test="audituserid != null" >
+                #{audituserid},
+            </if>
+            <if test="auditusername != null" >
+                #{auditusername},
+            </if>
+            <if test="audittime != null" >
+                #{audittime},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateSalesTargetInput" parameterType="com.hd.agent.salestarget.model.SalesTargetInput" >
+        update t_salestarget_input
+        <set >
+            <if test="yearmonth != null" >
+                yearmonth = #{yearmonth},
+            </if>
+            <if test="year != null" >
+                year = #{year},
+            </if>
+            <if test="month != null" >
+                month = #{month},
+            </if>
+            <if test="status != null" >
+                status = #{status},
+            </if>
+            <if test="customerid != null" >
+                customerid = #{customerid},
+            </if>
+            <if test="brandid != null" >
+                brandid = #{brandid},
+            </if>
+            <if test="firstsalestarget != null" >
+                firstsalestarget = #{firstsalestarget},
+            </if>
+            <if test="firstgrossprofit != null" >
+                firstgrossprofit = #{firstgrossprofit},
+            </if>
+            <if test="firstgrossprofitrate != null" >
+                firstgrossprofitrate = #{firstgrossprofitrate},
+            </if>
+            <if test="secondsalestarget != null" >
+                secondsalestarget = #{secondsalestarget},
+            </if>
+            <if test="secondgrossprofit != null" >
+                secondgrossprofit = #{secondgrossprofit},
+            </if>
+            <if test="secondgrossprofitrate != null" >
+                secondgrossprofitrate = #{secondgrossprofitrate},
+            </if>
+            <if test="remark != null" >
+                remark = #{remark},
+            </if>
+            <if test="adduserid != null" >
+                adduserid = #{adduserid},
+            </if>
+            <if test="addusername != null" >
+                addusername = #{addusername},
+            </if>
+            <if test="addtime != null" >
+                addtime = #{addtime},
+            </if>
+            <if test="modifyuserid != null" >
+                modifyuserid = #{modifyuserid},
+            </if>
+            <if test="modifyusername != null" >
+                modifyusername = #{modifyusername},
+            </if>
+            <if test="modifytime != null" >
+                modifytime = #{modifytime},
+            </if>
+            <if test="audituserid != null" >
+                audituserid = #{audituserid},
+            </if>
+            <if test="auditusername != null" >
+                auditusername = #{auditusername},
+            </if>
+            <if test="audittime != null" >
+                audittime = #{audittime},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="auditSalesTargetInput" parameterType="com.hd.agent.salestarget.model.SalesTargetInput">
+        update t_salestarget_input t
+        set t.status='3',
+            t.audituserid=#{audituserid},
+            t.auditusername=#{auditusername},
+            t.audittime=now()
+        where t.id=#{id} and (t.status!='3' and t.status!='4')
+    </update>
+    <update id="oppauditSalesTargetInput" parameterType="java.lang.String">
+        update t_salestarget_input t
+        set t.status='2',
+        t.audituserid='',
+        t.auditusername='',
+        t.audittime=null
+        where t.id=#{id} and t.status='3'
+    </update>
+    <delete id="deleteSalesTargetInput" parameterType="java.lang.String">
+        DELETE FROM t_salestarget_input where id =#{id}
+    </delete>
+
+    <select id="getSalesTargetInputSum" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+        sum(t.firstsalestarget) as firstsalestarget,
+        sum(t.firstgrossprofit) as firstgrossprofit,
+        sum(t.secondsalestarget) as secondsalestarget,
+        sum(t.secondgrossprofit) as secondgrossprofit
+        FROM t_salestarget_input t
+        <if test="customersort!=null or salesuserid!=null">
+            INNER JOIN t_base_sales_customer c
+            ON t.customerid=c.id
+        </if>
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="yearmonth != null" >
+                and t.yearmonth = #{yearmonth}
+            </if>
+            <if test="yearmonthstart != null" >
+                <![CDATA[ and t.yearmonth >=  #{yearmonthstart}  ]]>
+            </if>
+            <if test="yearmonthend != null" >
+                <![CDATA[ and  t.yearmonth <=  #{yearmonthend} ]]>
+            </if>
+            <if test="year != null" >
+                and t.year = #{year}
+            </if>
+            <if test="month != null" >
+                and t.month = #{month}
+            </if>
+            <if test="status != null" >
+                and t.status = #{status}
+            </if>
+            <if test="customerid != null" >
+                and t.customerid = #{customerid}
+            </if>
+            <if test="customeridlike != null" >
+                and t.customerid LIKE CONCAT(#{customerid},'%')
+            </if>
+            <if test="customersort != null" >
+                and c.customersort = #{customersort}
+            </if>
+            <if test="salesuserid != null" >
+                and c.salesuserid = #{salesuserid}
+            </if>
+            <if test="brandid != null" >
+                and t.brandid = #{brandid}
+            </if>
+            <if test="statusarr != null" >
+                and FIND_IN_SET(t.status , #{statusarr})
+            </if>
+        </trim>
+    </select>
+    <select id="getSalesTargetInputGroupListBy" parameterType="Map" resultType="Map">
+        SELECT
+            c.customersort,
+            t.brandid
+        FROM
+            t_salestarget_input t
+        INNER JOIN t_base_sales_customer c ON t.customerid = c.id
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="yearmonthstart != null" >
+                <![CDATA[ and t.yearmonth >=  #{yearmonthstart}  ]]>
+            </if>
+            <if test="yearmonthend != null" >
+                <![CDATA[ and  t.yearmonth <=  #{yearmonthend} ]]>
+            </if>
+            <if test="brandidarrs != null" >
+                and FIND_IN_SET(t.brandid,#{brandidarrs})
+            </if>
+            <if test="brandid != null" >
+                and t.brandid = #{brandid}
+            </if>
+            <if test="customersort != null" >
+                and c.customersort = #{customersort}
+            </if>
+            <if test="customersortidarrs != null" >
+                and FIND_IN_SET(c.customersort,#{customersortidarrs})
+            </if>
+            <if test="grouptype!='customersort' and grouptype!='brandid'">
+                and 1==2
+            </if>
+            <choose>
+                <when test="status!=null">
+                    and t.status = #{status}
+                </when>
+                <when test="statusarr != null" >
+                    and FIND_IN_SET(t.status , #{statusarr})
+                </when>
+                <otherwise>
+                    and FIND_IN_SET(t.status , '3,4')
+                </otherwise>
+            </choose>
+        </trim>
+        <choose>
+            <when test="grouptype=='customersort'">
+                GROUP BY c.customersort
+                ORDER BY c.customersort ASC
+            </when>
+            <when test="grouptype=='brandid'">
+                GROUP BY t.brandid
+                ORDER BY t.brandid ASC
+            </when>
+        </choose>
+    </select>
+
+    <select id="getBrandCustomersortListInSalesReport" parameterType="Map" resultType="Map">
+        SELECT
+        z.customersort,
+        z.brandid
+        FROM
+        (
+        SELECT
+        IFNULL(t.customerid, '') AS customerid,
+        IFNULL(t.pcustomerid, '') AS pcustomerid,
+        IFNULL(t.customersort, '') AS customersort,
+        IFNULL(t1.brandid, '') AS brandid
+        FROM
+        t_sales_order t
+        RIGHT JOIN t_sales_order_detail t1 ON t.id = t1.orderid
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="1==1">
+                AND t. STATUS IN ('3', '4')
+            </if>
+            <if test="customersort!=null">
+                AND t.customersort LIKE CONCAT(#{customersort},'%')
+            </if>
+            <if test="businessdatestart!=null or businessdateend!=null or businessdatestart2!=null or businessdateend2!=null">
+                AND
+                (
+                <trim prefix="(" suffix=")" prefixOverrides="and|or">
+                    <if test="businessdatestart!=null">
+                        <![CDATA[AND t.businessdate >= #{businessdatestart}]]>
+                    </if>
+                    <if test="businessdateend!=null">
+                        <![CDATA[AND t.businessdate <= #{businessdateend}]]>
+                    </if>
+                    <if test="businessdatestart==null and businessdateend==null">
+                        1=2
+                    </if>
+                </trim>
+                OR
+                <trim prefix="(" suffix=")" prefixOverrides="and|or">
+                    <if test="businessdatestart2!=null">
+                        <![CDATA[AND t.businessdate >= #{businessdatestart2}]]>
+                    </if>
+                    <if test="businessdateend2!=null">
+                        <![CDATA[AND t.businessdate <= #{businessdateend2}]]>
+                    </if>
+                    <if test="businessdatestart2==null and businessdateend2==null">
+                        1=2
+                    </if>
+                </trim>
+                )
+            </if>
+        </trim>
+        UNION ALL
+        SELECT
+        IFNULL(t.customerid, '') AS customerid,
+        IFNULL(t.pcustomerid, '') AS pcustomerid,
+        IFNULL(t.customersort, '') AS customersort,
+        IFNULL(t1.brandid, '') AS brandid
+        FROM
+        t_sales_dispatchbill t
+        RIGHT JOIN t_sales_dispatchbill_detail t1 ON t.id = t1.billid
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="1==1">
+                AND t. STATUS IN ('3', '4')
+            </if>
+            <if test="customersort!=null">
+                AND t.customersort LIKE CONCAT(#{customersort},'%')
+            </if>
+            <if test="businessdatestart!=null or businessdateend!=null or businessdatestart2!=null or businessdateend2!=null">
+                AND
+                (
+                <trim prefix="(" suffix=")" prefixOverrides="and|or">
+                    <if test="businessdatestart!=null">
+                        <![CDATA[AND t.businessdate >= #{businessdatestart}]]>
+                    </if>
+                    <if test="businessdateend!=null">
+                        <![CDATA[AND t.businessdate <= #{businessdateend}]]>
+                    </if>
+                    <if test="businessdatestart==null and businessdateend==null">
+                        1=2
+                    </if>
+                </trim>
+                OR
+                <trim prefix="(" suffix=")" prefixOverrides="and|or">
+                    <if test="businessdatestart2!=null">
+                        <![CDATA[AND t.businessdate >= #{businessdatestart2}]]>
+                    </if>
+                    <if test="businessdateend2!=null">
+                        <![CDATA[AND t.businessdate <= #{businessdateend2}]]>
+                    </if>
+                    <if test="businessdatestart2==null and businessdateend2==null">
+                        1=2
+                    </if>
+                </trim>
+                )
+            </if>
+        </trim>
+        UNION ALL
+        SELECT
+        IFNULL(t.customerid, '') AS customerid,
+        IFNULL(t.pcustomerid, '') AS pcustomerid,
+        IFNULL(t.customersort, '') AS customersort,
+        IFNULL(t1.brandid, '') AS brandid
+        FROM
+        t_storage_saleout t
+        RIGHT JOIN t_storage_saleout_detail t1 ON t1.saleoutid = t.id
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="1==1">
+                AND t. STATUS IN ('3', '4')
+            </if>
+            <if test="customersort!=null">
+                AND t.customersort LIKE CONCAT(#{customersort},'%')
+            </if>
+            <if test="businessdatestart!=null or businessdateend!=null or businessdatestart2!=null or businessdateend2!=null">
+                AND
+                (
+                <trim prefix="(" suffix=")" prefixOverrides="and|or">
+                    <if test="businessdatestart!=null">
+                        <![CDATA[AND t.businessdate >= #{businessdatestart}]]>
+                    </if>
+                    <if test="businessdateend!=null">
+                        <![CDATA[AND t.businessdate <= #{businessdateend}]]>
+                    </if>
+                    <if test="businessdatestart==null and businessdateend==null">
+                        1=2
+                    </if>
+                </trim>
+                OR
+                <trim prefix="(" suffix=")" prefixOverrides="and|or">
+                    <if test="businessdatestart2!=null">
+                        <![CDATA[AND t.businessdate >= #{businessdatestart2}]]>
+                    </if>
+                    <if test="businessdateend2!=null">
+                        <![CDATA[AND t.businessdate <= #{businessdateend2}]]>
+                    </if>
+                    <if test="businessdatestart2==null and businessdateend2==null">
+                        1=2
+                    </if>
+                </trim>
+                )
+            </if>
+        </trim>
+        UNION ALL
+        SELECT
+        IFNULL(t.customerid, '') AS customerid,
+        IFNULL(t.pcustomerid, '') AS pcustomerid,
+        IFNULL(t.customersort, '') AS customersort,
+        IFNULL(t1.brandid, '') AS brandid
+        FROM
+        t_storage_salereject_enter t
+        RIGHT JOIN t_storage_salereject_enter_detail t1 ON t1.salerejectid = t.id
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="1==1">
+                AND ischeck = '1'
+                AND t.sourcetype = '2'
+                AND t. STATUS IN ('3', '4')
+            </if>
+            <if test="customersort!=null">
+                AND t.customersort LIKE CONCAT(#{customersort},'%')
+            </if>
+            <if test="businessdatestart!=null or businessdateend!=null or businessdatestart2!=null or businessdateend2!=null">
+                AND
+                (
+                <trim prefix="(" suffix=")" prefixOverrides="and|or">
+                    <if test="businessdatestart!=null">
+                        <![CDATA[AND t.businessdate >= #{businessdatestart}]]>
+                    </if>
+                    <if test="businessdateend!=null">
+                        <![CDATA[AND t.businessdate <= #{businessdateend}]]>
+                    </if>
+                    <if test="businessdatestart==null and businessdateend==null">
+                        1=2
+                    </if>
+                </trim>
+                OR
+                <trim prefix="(" suffix=")" prefixOverrides="and|or">
+                    <if test="businessdatestart2!=null">
+                        <![CDATA[AND t.businessdate >= #{businessdatestart2}]]>
+                    </if>
+                    <if test="businessdateend2!=null">
+                        <![CDATA[AND t.businessdate <= #{businessdateend2}]]>
+                    </if>
+                    <if test="businessdatestart2==null and businessdateend2==null">
+                        1=2
+                    </if>
+                </trim>
+                )
+            </if>
+        </trim>
+        UNION ALL
+        SELECT
+        IFNULL(t.customerid, '') AS customerid,
+        IFNULL(t.pcustomerid, '') AS pcustomerid,
+        IFNULL(t.customersort, '') AS customersort,
+        IFNULL(t1.brandid, '') AS brandid
+        FROM
+        t_storage_salereject_enter t
+        RIGHT JOIN t_storage_salereject_enter_detail t1 ON t1.salerejectid = t.id
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="1==1">
+                AND ischeck = '1'
+                AND t.sourcetype = '1'
+                AND t. STATUS IN ('3', '4')
+            </if>
+            <if test="customersort!=null">
+                AND t.customersort LIKE CONCAT(#{customersort},'%')
+            </if>
+            <if test="businessdatestart!=null or businessdateend!=null or businessdatestart2!=null or businessdateend2!=null">
+                AND
+                (
+                <trim prefix="(" suffix=")" prefixOverrides="and|or">
+                    <if test="businessdatestart!=null">
+                        <![CDATA[AND t.businessdate >= #{businessdatestart}]]>
+                    </if>
+                    <if test="businessdateend!=null">
+                        <![CDATA[AND t.businessdate <= #{businessdateend}]]>
+                    </if>
+                    <if test="businessdatestart==null and businessdateend==null">
+                        1=2
+                    </if>
+                </trim>
+                OR
+                <trim prefix="(" suffix=")" prefixOverrides="and|or">
+                    <if test="businessdatestart2!=null">
+                        <![CDATA[AND t.businessdate >= #{businessdatestart2}]]>
+                    </if>
+                    <if test="businessdateend2!=null">
+                        <![CDATA[AND t.businessdate <= #{businessdateend2}]]>
+                    </if>
+                    <if test="businessdatestart2==null and businessdateend2==null">
+                        1=2
+                    </if>
+                </trim>
+                )
+            </if>
+        </trim>
+        UNION ALL
+        SELECT
+        IFNULL(t.customerid, '') AS customerid,
+        IFNULL(t.pcustomerid, '') AS pcustomerid,
+        IFNULL(t.customersort, '') AS customersort,
+        IFNULL(t.brandid, '') AS brandid
+        FROM
+        t_account_customer_push_balance t
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="1==1">
+                AND t. STATUS IN ('3', '4')
+            </if>
+            <if test="customersort!=null">
+                AND t.customersort LIKE CONCAT(#{customersort},'%')
+            </if>
+            <if test="businessdatestart!=null or businessdateend!=null or businessdatestart2!=null or businessdateend2!=null">
+                AND
+                (
+                <trim prefix="(" suffix=")" prefixOverrides="and|or">
+                    <if test="businessdatestart!=null">
+                        <![CDATA[AND t.businessdate >= #{businessdatestart}]]>
+                    </if>
+                    <if test="businessdateend!=null">
+                        <![CDATA[AND t.businessdate <= #{businessdateend}]]>
+                    </if>
+                    <if test="businessdatestart==null and businessdateend==null">
+                        1=2
+                    </if>
+                </trim>
+                OR
+                <trim prefix="(" suffix=")" prefixOverrides="and|or">
+                    <if test="businessdatestart2!=null">
+                        <![CDATA[AND t.businessdate >= #{businessdatestart2}]]>
+                    </if>
+                    <if test="businessdateend2!=null">
+                        <![CDATA[AND t.businessdate <= #{businessdateend2}]]>
+                    </if>
+                    <if test="businessdatestart2==null and businessdateend2==null">
+                        1=2
+                    </if>
+                </trim>
+                )
+            </if>
+        </trim>
+        ) z
+        <choose>
+            <when test="grouptype=='customersort'">
+                GROUP BY z.customersort
+                ORDER BY z.customersort ASC
+            </when>
+            <when test="grouptype=='brandid'">
+                GROUP BY z.brandid
+                ORDER BY z.brandid ASC
+            </when>
+        </choose>
+    </select>
+</mapper>

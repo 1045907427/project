@@ -1,0 +1,617 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<package name="innerMessage" extends="parent" namespace="/message/innerMessage">
+		<action name="messageListPage" class="innerMessageAction" method="messageListPage">
+			<result name="success">/message/innermessage/messageList.jsp</result>
+		</action>
+		<action name="messageReceiveReadList" class="innerMessageAction" method="messageReceiveReadList">
+			<result name="success">/message/innermessage/messageReadList.jsp</result>
+		</action>	
+		<action name="showMessageRemindCount" class="innerMessageAction" method="showMessageRemindCount">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>	
+		<action name="setMessageRemindFlag" class="innerMessageAction" method="setMessageRemindFlag">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="readAllMessageReceive" class="innerMessageAction" method="readAllMessageReceive">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="messageSendPage" class="innerMessageAction" method="messageSendPage">
+			<result name="success">/message/innermessage/messageSendPage.jsp</result>
+		</action>			
+		<action name="messageReplyPage" class="innerMessageAction" method="messageReplyPage">
+			<result name="success">/message/innermessage/messageSendPage.jsp</result>
+		</action>
+		<action name="messageSend" class="innerMessageAction" method="messageSend">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>	
+		<action name="deleteMessageSend" class="innerMessageAction" method="deleteMessageSend">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>		
+		<action name="messageDetailPage" class="innerMessageAction" method="messageDetailPage">
+			<result name="success">/message/innermessage/messageView.jsp</result>
+		</action>		
+		<action name="messageSendDetailPage" class="innerMessageAction" method="messageSendDetailPage">
+			<result name="success">/message/innermessage/messageView.jsp</result>
+		</action>
+		<action name="messageSendListPage" class="innerMessageAction" method="messageSendListPage">
+			<result name="success">/message/innermessage/messageSendList.jsp</result>
+		</action>	
+		<action name="showMessageSendPageList" class="innerMessageAction" method="showMessageSendPageList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="messageReceiveListPage" class="innerMessageAction" method="messageReceiveListPage">
+			<result name="success">/message/innermessage/messageReceiveList.jsp</result>
+		</action>	
+		<action name="showMessageReceivePageList" class="innerMessageAction" method="showMessageReceivePageList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="messageReceiveUserListPage" class="innerMessageAction" method="messageReceiveUserListPage">
+			<result name="success">/message/innermessage/messageReceiveUserList.jsp</result>
+		</action>					
+		<action name="showMessageReceiveUserPageList" class="innerMessageAction" method="showMessageReceiveUserPageList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>	
+		<action name="deleteMessageReceive" class="innerMessageAction" method="deleteMessageReceive">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>	
+		<action name="setMessageReceiveReadFlag" class="innerMessageAction" method="setMessageReceiveReadFlag">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>	
+		<action name="messageReceiveReadByMsgid" class="innerMessageAction" method="messageReceiveReadByMsgid">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="messageReceiveIndexListPage" class="innerMessageAction" method="messageReceiveIndexListPage">
+			<result name="success">/message/innermessage/messageReceiveIndexShowList.jsp</result>
+		</action>
+		<action name="getRemindCount" class="innerMessageAction" method="getRemindCount">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+		
+		<!-- 通知通告 -->	
+	<package name="notice" extends="parent" namespace="/message/notice">	
+		<action name="noticePage" class="noticeAction" method="noticePage">
+			<result name="success">/message/notice/noticePage.jsp</result>
+		</action>						
+		<action name="noticeListPage" class="noticeAction" method="noticeListPage">
+			<result name="success">/message/notice/noticeList.jsp</result>
+		</action>					
+		<action name="showNoticePageList" class="noticeAction" method="showNoticePageList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>		
+		<action name="noticePublishListPage" class="noticeAction" method="noticePublishListPage">
+			<result name="success">/message/notice/noticePublishList.jsp</result>
+		</action>					
+		<action name="showNoticePublishPageList" class="noticeAction" method="showNoticePublishPageList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>		
+		<action name="noticeAddPage" class="noticeAction" method="noticeAddPage">
+			<result name="success">/message/notice/noticeAdd.jsp</result>
+		</action>					
+		<action name="noticeAdd" class="noticeAction" method="noticeAdd">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="noticeViewPage" class="noticeAction" method="noticeViewPage">
+			<result name="success">/message/notice/noticeView.jsp</result>
+		</action>		
+		<action name="noticeEditPage" class="noticeAction" method="noticeEditPage">
+			<result name="success">/message/notice/noticeEdit.jsp</result>
+		</action>					
+		<action name="noticeEdit" class="noticeAction" method="noticeEdit">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>				
+		<action name="noticeDelete" class="noticeAction" method="noticeDelete">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>					
+		<action name="noticeEnable" class="noticeAction" method="noticeEnable">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>					
+		<action name="noticeDisable" class="noticeAction" method="noticeDisable">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>	
+		<action name="noticePublishRangePage" class="noticeAction" method="noticePublishRangePage">
+			<result name="success">/message/notice/noticePublishRange.jsp</result>
+		</action>
+		<action name="noticeDetailPage" class="noticeAction" method="noticeDetailPage">
+			<result name="success">/message/notice/noticeDetail.jsp</result>
+		</action>		
+		<action name="addNoticeread" class="noticeAction" method="addNoticeread">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>	
+		<action name="noticereadListPage" class="noticeAction" method="noticereadListPage">
+			<result name="success">/message/notice/noticereadList.jsp</result>
+		</action>					
+		<action name="showNoticereadPageList" class="noticeAction" method="showNoticereadPageList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>					
+		<action name="noticereadClearAll" class="noticeAction" method="noticereadClearAll">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="noticeIndexShowListPage" class="noticeAction" method="noticeIndexShowListPage">
+			<result name="success">/message/notice/noticeIndexShowList.jsp</result>
+		</action>
+		<action name="showNoticePublishRangeDepartPage" class="noticeAction" method="showNoticePublishRangeDepartPage">
+			<result name="success">/message/notice/noticePublishRangeDepartPage.jsp</result>
+		</action>
+		<action name="showNoticePublishRangeRolePage" class="noticeAction" method="showNoticePublishRangeRolePage">
+			<result name="success">/message/notice/noticePublishRangeRolePage.jsp</result>
+		</action>
+		<action name="showNoticePublishRangeRolePageList" class="noticeAction" method="showNoticePublishRangeRolePageList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showNoticePublishRangeUserPage" class="noticeAction" method="showNoticePublishRangeUserPage">
+			<result name="success">/message/notice/noticePublishRangeUserPage.jsp</result>
+		</action>
+		<action name="showNoticePublishRangeUserPageList" class="noticeAction" method="showNoticePublishRangeUserPageList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+	
+	<!-- 邮件 -->	
+	<package name="email" extends="parent" namespace="/message/email">	
+		<action name="showEmailPage" class="emailAction" method="showEmailPage">
+			<result name="success">/message/email/emailPage.jsp</result>
+		</action>					
+		<action name="emailDetailPage" class="emailAction" method="emailDetailPage">
+			<result name="success">/message/email/emailDetail.jsp</result>
+		</action>					
+		<action name="emailSendDetailPage" class="emailAction" method="emailSendDetailPage">
+			<result name="success">/message/email/emailSendDetail.jsp</result>
+		</action>							
+		<action name="emailAddPage" class="emailAction" method="emailAddPage">
+			<result name="success">/message/email/emailAdd.jsp</result>
+		</action>					
+		<action name="emailReplyPage" class="emailAction" method="emailReplyPage">
+			<result name="success">/message/email/emailAdd.jsp</result>
+		</action>					
+		<action name="emailEditPage" class="emailAction" method="emailEditPage">
+			<result name="success">/message/email/emailAdd.jsp</result>
+		</action>
+		<action name="sendEmail" class="emailAction" method="sendEmail">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="sendReceiptAfReadEmail" class="emailAction" method="sendReceiptAfReadEmail">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>	
+		<action name="emailReceivePreviewListPage" class="emailAction" method="emailReceivePreviewListPage">
+			<result name="successPreview">/message/email/emailReceivePreviewList.jsp</result>			
+			<result name="success">/message/email/emailReceiveList.jsp</result>
+		</action>
+		<action name="showEmailReceivePageList" class="emailAction" method="showEmailReceivePageList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="emailSendPreviewListPage" class="emailAction" method="emailSendPreviewListPage">
+			<result name="successPreview">/message/email/emailSendPreviewList.jsp</result>
+			<result name="success">/message/email/emailSendList.jsp</result>
+		</action>
+		<action name="showEmailSendPageList" class="emailAction" method="showEmailSendPageList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>	
+		<action name="emailDraftListPage" class="emailAction" method="emailDraftListPage">
+			<result name="successPreview">/message/email/emailDraftPreviewList.jsp</result>
+			<result name="success">/message/email/emailDraftList.jsp</result>
+		</action>
+		<action name="emailDropListPage" class="emailAction" method="emailDropListPage">
+			<result name="successPreview">/message/email/emailDropPreviewList.jsp</result>			
+			<result name="success">/message/email/emailDropList.jsp</result>
+		</action>
+		<action name="showEmailDropPageList" class="emailAction" method="showEmailDropPageList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>	
+		<action name="emailInBoxUserListPage" class="emailAction" method="emailInBoxUserListPage">
+			<result name="success">/message/email/emailInBoxUserList.jsp</result>
+		</action>	
+		<action name="emailSendBoxUserListPage" class="emailAction" method="emailSendBoxUserListPage">
+			<result name="success">/message/email/emailSendBoxUserList.jsp</result>
+		</action>
+		<action name="showEmailUserReadPageList" class="emailAction" method="showEmailUserReadPageList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>	
+		<action name="showEmailUserReadPageListBySend" class="emailAction" method="showEmailUserReadPageListBySend">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteEmail" class="emailAction" method="deleteEmail">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteEmailReceive" class="emailAction" method="deleteEmailReceive">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteReadEmailReceive" class="emailAction" method="deleteReadEmailReceive">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteEmailReceiveBySend" class="emailAction" method="deleteEmailReceiveBySend">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="readEmailReceive" class="emailAction" method="readEmailReceive">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="readEmailReceiveByEmailid" class="emailAction" method="readEmailReceiveByEmailid">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="readAllEmailReceive" class="emailAction" method="readAllEmailReceive">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>	
+		<action name="deleteDropEmail" class="emailAction" method="deleteDropEmail">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>	
+		<action name="deleteAllDropEmail" class="emailAction" method="deleteAllDropEmail">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="recoverDropEmail" class="emailAction" method="recoverDropEmail">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>				
+		<action name="showEmailBoxList" class="emailAction" method="showEmailBoxList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>				
+		<action name="emailBoxListPage" class="emailAction" method="emailBoxListPage">
+			<result name="success">/message/email/emailBoxList.jsp</result>
+		</action>						
+		<action name="showEmailBoxPageList" class="emailAction" method="showEmailBoxPageList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>				
+		<action name="showEmailBoxAddPage" class="emailAction" method="showEmailBoxAddPage">
+			<result name="success">/message/email/emailBoxAdd.jsp</result>
+		</action>					
+		<action name="addEmailBox" class="emailAction" method="addEmailBox">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>				
+		<action name="showEmailBoxEditPage" class="emailAction" method="showEmailBoxEditPage">
+			<result name="success">/message/email/emailBoxEdit.jsp</result>
+		</action>						
+		<action name="editEmailBox" class="emailAction" method="editEmailBox">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>						
+		<action name="deleteEmailBox" class="emailAction" method="deleteEmailBox">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>						
+		<action name="moveToEmailBox" class="emailAction" method="moveToEmailBox">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>				
+		<action name="showCurUserWebMailConfigList" class="emailAction" method="showCurUserWebMailConfigList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showWebMailConfigAddPage" class="emailAction" method="showWebMailConfigAddPage">
+			<result name="success">/message/email/webMailConfigAdd.jsp</result>
+		</action>					
+		<action name="addWebMailConfig" class="emailAction" method="addWebMailConfig">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>	
+		<action name="showWebMailConfigEditPage" class="emailAction" method="showWebMailConfigEditPage">
+			<result name="success">/message/email/webMailConfigEdit.jsp</result>
+		</action>					
+		<action name="editWebMailConfig" class="emailAction" method="editWebMailConfig">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+					
+		<action name="webMailConfigListPage" class="emailAction" method="webMailConfigListPage">
+			<result name="success">/message/email/webMailConfigList.jsp</result>
+		</action>					
+		<action name="showWebMailConfigPageList" class="emailAction" method="showWebMailConfigPageList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>					
+		<action name="deleteWebMailConfig" class="emailAction" method="deleteWebMailConfig">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="emailReceiveIndexListPage" class="emailAction" method="emailReceiveIndexListPage">
+			<result name="success">/message/email/emailReceiveIndexListPage.jsp</result>
+		</action>	
+		
+	</package>
+	<package name="mobileSms" extends="parent" namespace="/message/mobileSms">
+		<action name="smsSendPage" class="mobileSmsAction" method="smsSendPage">
+			<result name="success">/message/mobilesms/smsSendPage.jsp</result>
+		</action>				
+		<action name="mobileSmsSend" class="mobileSmsAction" method="mobileSmsSend">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="smsListPage" class="mobileSmsAction" method="smsListPage">
+			<result name="success">/message/mobilesms/smsListPage.jsp</result>
+		</action>
+		<action name="smsSendListPage" class="mobileSmsAction" method="smsSendListPage">
+			<result name="success">/message/mobilesms/smsSendList.jsp</result>
+		</action>		
+		<action name="smsReceiveListPage" class="mobileSmsAction" method="smsReceiveListPage">
+			<result name="success">/message/mobilesms/smsReceiveList.jsp</result>
+		</action>		
+		<action name="showSendMobileSmsPageList" class="mobileSmsAction" method="showSendMobileSmsPageList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>		
+		<action name="showReceiveMobileSmsPageList" class="mobileSmsAction" method="showReceiveMobileSmsPageList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>			
+		<action name="deleteMobileSms" class="mobileSmsAction" method="deleteMobileSms">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>				
+	</package>	
+	<package name="messageUnion" extends="parent" namespace="/message/messageUnion">					
+		<action name="showUnreadMsgEmail" class="messageUnionAction" method="showUnreadMsgEmail">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showUnreadMessageCount" class="messageUnionAction" method="showUnreadMessageCount">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>		
+		<action name="showMsgRemindCount" class="messageUnionAction" method="showMsgRemindCount">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>	
+	</package>
+	<!-- 文件传阅 -->	
+	<package name="fileDistrib" extends="parent" namespace="/message/filedistrib">
+		<action name="fileDistribListPage" class="fileDistribAction" method="fileDistribListPage">
+			<result name="success">/message/filedistrib/fileDistribListPage.jsp</result>
+		</action>
+		<action name="fileDistribPage" class="fileDistribAction" method="fileDistribPage">
+			<result name="success">/message/filedistrib/fileDistribPage.jsp</result>
+		</action>
+		<action name="fileDistribAddPage" class="fileDistribAction" method="fileDistribAddPage">
+			<result name="success">/message/filedistrib/fileDistribAddPage.jsp</result>
+		</action>				
+		<action name="addFileDistrib" class="fileDistribAction" method="addFileDistrib">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="fileDistribEditPage" class="fileDistribAction" method="fileDistribEditPage">
+			<result name="success">/message/filedistrib/fileDistribEditPage.jsp</result>
+		</action>				
+		<action name="editFileDistrib" class="fileDistribAction" method="editFileDistrib">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="fileDistribViewPage" class="fileDistribAction" method="fileDistribViewPage">
+			<result name="success">/message/filedistrib/fileDistribViewPage.jsp</result>
+		</action>	
+		<action name="fileDistribPublishListPage" class="fileDistribAction" method="fileDistribPublishListPage">
+			<result name="success">/message/filedistrib/fileDistribPublishListPage.jsp</result>
+		</action>				
+		<action name="showFileDistribPublishPageList" class="fileDistribAction" method="showFileDistribPublishPageList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>				
+		<action name="openFileDistrib" class="fileDistribAction" method="openFileDistrib">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>				
+		<action name="closeFileDistrib" class="fileDistribAction" method="closeFileDistrib">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>				
+		<action name="fileDistribPublishDelete" class="fileDistribAction" method="fileDistribPublishDelete">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>		
+		<action name="fileDistribReceiveListPage" class="fileDistribAction" method="fileDistribReceiveListPage">
+			<result name="success">/message/filedistrib/fileDistribReceiveListPage.jsp</result>
+		</action>				
+		<action name="showFileDistribReceivePageList" class="fileDistribAction" method="showFileDistribReceivePageList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="fileDistribReceiveDetailPage" class="fileDistribAction" method="fileDistribReceiveDetailPage">
+			<result name="success">/message/filedistrib/fileDistribReceiveDetailPage.jsp</result>
+		</action>
+		<action name="fileDistribReceiveEditPage" class="fileDistribAction" method="fileDistribReceiveEditPage">
+			<result name="success">/message/filedistrib/fileDistribReceiveEditPage.jsp</result>
+		</action>			
+		<action name="addFileDistribread" class="fileDistribAction" method="addFileDistribread">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="fileDistribReadListPage" class="fileDistribAction" method="fileDistribReadListPage">
+			<result name="success">/message/filedistrib/fileDistribReadListPage.jsp</result>
+		</action>					
+		<action name="showFileDistribReadPageList" class="fileDistribAction" method="showFileDistribReadPageList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>	
+	</package>
+
+
+	<package name="wechatTemplate" extends="parent" namespace="/message/wechatTemplate">
+		<action name="showWechatTemplateListPage" class="wechatTemplateAction" method="showWechatTemplateListPage">
+			<result name="success">/message/wechattemplate/wechatTemplateListPage.jsp</result>
+		</action>
+		<!--<action name="showUnreadMsgEmail" class="messageUnionAction" method="showUnreadMsgEmail">-->
+			<!--<result name="success" type="json">-->
+				<!--<param name="root">jsonResult</param>-->
+				<!--<param name="contentType">text/html</param>-->
+			<!--</result>-->
+		<!--</action>-->
+
+	</package>
+</struts>

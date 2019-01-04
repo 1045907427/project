@@ -1,0 +1,636 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.phone.dao.PhoneMapper" >
+	<insert id="addFeed" parameterType="map">
+		insert into t_phone_feed
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="userid != null" >
+	        userid,
+	      </if>
+	      <if test="detail != null" >
+	        detail,
+	      </if>
+	      adddate,
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="userid != null" >
+	        #{userid},
+	      </if>
+	      <if test="detail != null" >
+	        #{detail},
+	      </if>
+	      now(),
+	    </trim>
+	</insert>
+	<select id="getLoginUserInfo" parameterType="java.lang.String" resultType="map">
+		SELECT a.userid, b.name, a.departmentid deptid, a.departmentname deptname, b.employetype type FROM  t_sys_user a
+		LEFT JOIN t_base_personnel b ON a.personnelid = b.id
+		WHERE a.userid = #{userid}
+	</select>
+	<select id="getManagerUserDepartment" parameterType="java.lang.String" resultType="java.lang.String">
+		SELECT b.id FROM t_sys_user a LEFT JOIN t_base_department b ON a.personnelid = b.manageruserid WHERE a.userid = #{uid}
+	</select>
+	<select id="getDepartmentUserList" parameterType="java.lang.String" resultType="map">
+		SELECT a.userid, a.name FROM t_sys_user a 
+		<trim prefix="where" prefixOverrides="and|or">
+			a.departmentid LIKE CONCAT(#{0}, '%')
+			<if test="con != null">  
+			and a.name like CONCAT('%', CONCAT(#{con}, '%'));
+			</if>
+		</trim>
+	</select>
+    <select id="getBaseOrderQueryReprot" resultType="map">
+        select z.customerid,z.customername,z.goodsid,z.auxunitid,z.auxunitname,z.unitid,z.unitname,z.goodsname,z.businessdate,z.salesuser,
+        sum(z.amount1) as amount1,sum(z.amount2) as amount2,sum(z.num1) as num1,sum(z.num2) as num2,sum(z.num3) as num3
+        from (
+        select t1.goodsid,g.name as goodsname,t.businessdate,t1.taxamount amount1,0 amount2,if(t1.taxprice!=0,t1.unitnum,0) num1, 0 num2, if(t1.taxprice=0,t1.unitnum,0) num3,t1.auxunitid,t1.auxunitname,t1.unitid,t1.unitname,
+        t.salesarea,t.salesdept,t.salesuser,t.customerid,c.name as customername,t.customersort,c.pid as pcustomerid,t1.brandid,t1.branddept,t1.branduser,t1.supplierid,t1.supplieruser
+        from t_sales_demand t
+        RIGHT JOIN t_sales_demand_detail t1 on t.id =t1.orderid
+        INNER JOIN t_base_sales_customer c on t.customerid =c.id
+        INNER JOIN t_base_goods_info g on t1.goodsid=g.id
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="salesuser != null" >
+                and FIND_IN_SET(t.salesuser, #{salesuser})
+            </if>
+            <if test="customerid != null" >
+                and FIND_IN_SET(t.customerid, #{customerid})
+            </if>
+            <if test="goodsid != null" >
+                and FIND_IN_SET(t1.goodsid, #{goodsid})
+            </if>
+            <if test="begindate != null" >
+                and t.businessdate>=#{begindate}
+            </if>
+            <if test="enddate != null" >
+                <![CDATA[and t.businessdate<=#{enddate}]]>
+            </if>
+            <if test="businessdate != null" >
+                and t.businessdate=#{businessdate}
+            </if>
+        </trim>
+        UNION ALL
+        select t1.goodsid,g.name as goodsname,t.businessdate,0 amount1,t1.taxamount amount2,0 num1 ,t1.unitnum num2, 0 num3,t1.auxunitid,t1.auxunitname,t1.unitid,t1.unitname,
+        t.salesarea,t.salesdept,t.salesuser,t.customerid,c.name as customername,t.customersort,t.pcustomerid,t1.brandid,t1.branddept,t1.branduser,t1.supplierid,t1.supplieruser
+        from t_sales_rejectbill t
+        RIGHT JOIN t_sales_rejectbill_detail t1 on t.id =t1.billid
+        INNER JOIN t_base_sales_customer c on t.customerid =c.id
+        INNER JOIN t_base_goods_info g on t1.goodsid=g.id
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="salesuser != null" >
+                and FIND_IN_SET(t.salesuser, #{salesuser})
+            </if>
+            <if test="customerid != null" >
+                and FIND_IN_SET(t.customerid, #{customerid})
+            </if>
+            <if test="goodsid != null" >
+                and FIND_IN_SET(t1.goodsid, #{goodsid})
+            </if>
+            <if test="begindate != null" >
+                and t.businessdate>=#{begindate}
+            </if>
+            <if test="enddate != null" >
+                <![CDATA[and t.businessdate<=#{enddate}]]>
+            </if>
+            <if test="businessdate != null" >
+                and t.businessdate=#{businessdate}
+            </if>
+            <if test="1==1" >
+                and t.source='8'
+            </if>
+        </trim>
+        ) z
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="datasql != null" >
+                and ${datasql}
+            </if>
+        </trim>
+        <if test="groupcol !=null">
+            GROUP BY ${groupcol}
+        </if>
+    </select>
+	<select id="getCustomerOrderQueryReport" resultType="map">
+		SELECT a.customerid,a.businessdate, a.name, SUM(a.amount1) amount1, SUM(a.amount2) amount2 FROM (
+			SELECT a.customerid, a.businessdate, c.name, b.taxamount amount1, 0 amount2
+			FROM t_sales_demand a
+			inner JOIN t_base_sales_customer c ON a.customerid = c.id
+			LEFT JOIN t_sales_demand_detail b ON a.id = b.orderid
+            <choose>
+                <when test="isBrandUser != null">
+                    LEFT JOIN t_base_personnel_customer pc on c.id=pc.customerid and pc.personid=#{personnelid}
+                </when>
+                <when test="isSupplierUser !=null">
+                    LEFT JOIN t_base_personnel_supplier_customer pc on c.id=pc.customerid and pc.personid=#{personnelid}
+                </when>
+            </choose>
+            <trim prefix="where" prefixOverrides="and|or">
+                <choose>
+                    <when test="isBrandUser != null">
+                        <if test="datasql != null" >
+                            and (${datasql} or pc.personid=#{personnelid})
+                        </if>
+                        <if test="datasql == null" >
+                            and  pc.personid=#{personnelid}
+                        </if>
+                    </when>
+                    <when test="isSupplierUser != null">
+                        <if test="datasql != null" >
+                            and (${datasql} or pc.personid=#{personnelid})
+                        </if>
+                        <if test="datasql == null" >
+                            and  pc.personid=#{personnelid}
+                        </if>
+                    </when>
+                    <otherwise>
+                        <if test="datasql != null" >
+                            and ${datasql}
+                        </if>
+                    </otherwise>
+                </choose>
+                <if test="ids !=null">
+                    and FIND_IN_SET(a.customerid, #{ids})
+                </if>
+                <if test="1==1">
+                    <![CDATA[  AND a.businessdate >= #{beginDate} AND a.businessdate <= #{endDate} ]]>
+                </if>
+          </trim>
+			UNION ALL
+			SELECT a.customerid, a.businessdate, c.name, 0 amount1, b.taxamount amount2 FROM t_sales_rejectbill a
+			inner JOIN t_base_sales_customer c ON a.customerid = c.id
+			LEFT JOIN t_sales_rejectbill_detail b ON a.id = b.billid
+            <choose>
+                <when test="isBrandUser != null">
+                    LEFT JOIN t_base_personnel_customer pc on c.id=pc.customerid and pc.personid=#{personnelid}
+                </when>
+                <when test="isSupplierUser !=null">
+                    LEFT JOIN t_base_personnel_supplier_customer pc on c.id=pc.customerid and pc.personid=#{personnelid}
+                </when>
+            </choose>
+            <trim prefix="where" prefixOverrides="and|or">
+                <choose>
+                    <when test="isBrandUser != null">
+                        <if test="datasql != null" >
+                            and (${datasql} or pc.personid=#{personnelid})
+                        </if>
+                        <if test="datasql == null" >
+                            and  pc.personid=#{personnelid}
+                        </if>
+                    </when>
+                    <when test="isSupplierUser != null">
+                        <if test="datasql != null" >
+                            and (${datasql} or pc.personid=#{personnelid})
+                        </if>
+                        <if test="datasql == null" >
+                            and  pc.personid=#{personnelid}
+                        </if>
+                    </when>
+                    <otherwise>
+                        <if test="datasql != null" >
+                            and ${datasql}
+                        </if>
+                    </otherwise>
+                </choose>
+                <if test="ids !=null">
+                    and FIND_IN_SET(a.customerid, #{ids})
+                </if>
+                <if test="1==1">
+                    <![CDATA[  AND a.businessdate >= #{beginDate} AND a.businessdate <= #{endDate} AND a.source = '8']]>
+                </if>
+            </trim>
+		) a GROUP BY a.customerid,a.businessdate
+	</select>
+	<select id="getCustomerGoodsOrderQueryReport" parameterType="map" resultType="map">
+		SELECT a.goodsid, a.name, a.unitid, a.unitname, a.auxunitid, a.auxunitname, SUM(a.amount1) amount1, SUM(a.num1) num1, SUM(a.amount2) amount2, SUM(a.num2) num2, SUM(a.num3) num3 FROM (
+			SELECT a.goodsid, c.name, a.unitid, a.unitname, a.auxunitid, a.auxunitname, a.taxamount amount1, a.unitnum num1, 0 amount2, 0 num2, 0 num3 FROM t_sales_demand_detail a 
+			INNER JOIN t_sales_demand b ON a.orderid = b.id 
+			LEFT JOIN t_base_goods_info c ON a.goodsid = c.id
+			<![CDATA[ WHERE b.customerid = #{cid} AND a.taxprice<>0 AND b.businessdate=#{businessdate} ]]>
+			UNION ALL
+			SELECT a.goodsid, c.name, a.unitid, a.unitname, a.auxunitid, a.auxunitname, 0 amount1, 0 num1, 0 amount2, 0 num2, unitnum num3 FROM t_sales_demand_detail a
+			INNER JOIN t_sales_demand b ON a.orderid = b.id
+			LEFT JOIN t_base_goods_info c ON a.goodsid = c.id
+			<![CDATA[ WHERE b.customerid = #{cid} AND a.taxprice=0 AND b.businessdate=#{businessdate} ]]>
+			UNION ALL
+			SELECT a.goodsid, c.name, a.unitid, a.unitname, a.auxunitid, a.auxunitname, 0 amount1, 0 num1 ,a.taxamount amount2, a.unitnum num2, 0 num3 FROM t_sales_rejectbill_detail a
+			INNER JOIN t_sales_rejectbill b ON a.billid = b.id
+			LEFT JOIN t_base_goods_info c ON a.goodsid = c.id
+			<![CDATA[ WHERE  b.customerid = #{cid} AND b.source='8' AND b.businessdate=#{businessdate} ]]>
+		) a GROUP BY goodsid
+	</select>
+	<select id="getGoodsOrderQueryReport" parameterType="map" resultType="map">
+		SELECT a.goodsid,a.businessdate, b.name, a.amount1, a.amount2 FROM (
+			SELECT a.goodsid,a.businessdate, SUM(amount1) amount1, SUM(amount2) amount2 FROM (
+				SELECT a.goodsid,c.businessdate, a.taxamount amount1, 0 amount2 FROM t_sales_demand_detail a
+				INNER JOIN t_sales_demand c ON a.orderid = c.id
+				<![CDATA[ WHERE c.businessdate>=#{t1} AND c.businessdate<=#{t2} AND a.taxamount<>0 ]]>
+				UNION ALL 
+				SELECT a.goodsid,c.businessdate,  0 amount1, a.taxamount amount2 FROM t_sales_rejectbill_detail a
+				INNER JOIN t_sales_rejectbill c ON a.billid = c.id 
+				<![CDATA[ WHERE c.source = '8' AND c.businessdate>=#{t1} AND c.businessdate<=#{t2}]]>
+			)a GROUP BY a.goodsid,a.businessdate ) a
+			INNER JOIN (SELECT a.id, a.name FROM t_base_goods_info a LEFT JOIN t_base_goods_brand b ON a.brand = b.id
+            <choose>
+                <when test="isBrandUser != null">
+                    LEFT JOIN t_base_personnel_brand pc on a.brand=pc.brandid and pc.personid=#{personnelid}
+                </when>
+                <when test="isSupplierUser !=null">
+                    LEFT JOIN t_base_personnel_supplier_brand pc on a.brand=pc.brandid and pc.personid=#{personnelid}
+                </when>
+            </choose>
+            <trim prefix="where" prefixOverrides="and|or">
+                <choose>
+                    <when test="isBrandUser != null">
+                        <if test="datasql != null" >
+                            and (${datasql} or pc.personid=#{personnelid})
+                        </if>
+                        <if test="datasql == null" >
+                            and  pc.personid=#{personnelid}
+                        </if>
+                    </when>
+                    <when test="isSupplierUser != null">
+                        <if test="datasql != null" >
+                            and (${datasql} or pc.personid=#{personnelid})
+                        </if>
+                        <if test="datasql == null" >
+                            and  pc.personid=#{personnelid}
+                        </if>
+                    </when>
+                    <otherwise>
+                        <if test="datasql != null" >
+                            and ${datasql}
+                        </if>
+                    </otherwise>
+                </choose>
+                <if test="con != null">
+                    (a.name LIKE CONCAT('%', CONCAT(#{con}, '%')) OR a.barcode LIKE CONCAT('%', CONCAT(#{con}, '%')) OR a.spell LIKE CONCAT('%', CONCAT(#{con}, '%')) OR b.name LIKE CONCAT('%', CONCAT(#{con}, '%')))
+                </if>
+			</trim>
+			) b ON a.goodsid = b.id
+	</select>
+	<select id="getGoodsCustomerOrderQueryReport" parameterType="map" resultType="map">
+		SELECT a.customerid, a.goodsid, a.auxunitid, a.unitname, a.auxunitname, SUM(a.amount1) amount1, SUM(a.num1) num1, SUM(a.amount2) amount2, SUM(a.num2) num2, SUM(a.num3) num3, a.name FROM(
+			SELECT b.customerid, a.goodsid, a.auxunitid, a.unitname, a.auxunitname, a.taxamount amount1, a.unitnum num1, 0 amount2, 0 num2, 0 num3, c.name FROM t_sales_demand_detail a 
+			LEFT JOIN t_sales_demand b ON a.orderid = b.id 
+			LEFT JOIN t_base_sales_customer c ON b.customerid = c.id 
+			<![CDATA[ WHERE a.goodsid = #{gid} AND a.taxprice<>0 AND b.businessdate=#{businessdate}]]>
+			UNION ALL
+			SELECT b.customerid, a.goodsid, a.auxunitid, a.unitname, a.auxunitname, 0 amount1, 0 num1, 0 amount2, 0 num2, a.unitnum num3, c.name FROM t_sales_demand_detail a 
+			LEFT JOIN t_sales_demand b ON a.orderid = b.id 
+			LEFT JOIN t_base_sales_customer c ON b.customerid = c.id 
+			<![CDATA[ WHERE a.goodsid = #{gid} AND a.taxprice=0 AND b.businessdate=#{businessdate} ]]>
+			UNION ALL
+			SELECT b.customerid, a.goodsid, a.auxunitid, a.unitname, a.auxunitname, 0 amount1, 0 num1, a.taxamount amount2, a.unitnum num2, 0 num3, c.name FROM t_sales_rejectbill_detail a 
+			LEFT JOIN t_sales_rejectbill b ON a.billid = b.id 
+			LEFT JOIN t_base_sales_customer c ON b.customerid = c.id 
+			<![CDATA[ WHERE a.goodsid = #{gid} AND b.source = '8' AND b.businessdate=#{businessdate} ]]>
+		)a GROUP BY a.customerid
+	</select>
+	<select id="getSalerOrderQueryReport" parameterType="map" resultType="map">
+		SELECT a.adduserid uid, a.addusername uname, SUM(a.amount1) amount1, SUM(a.amount2) amount2 FROM(
+			SELECT b.adduserid, b.addusername, a.taxamount amount1, 0 amount2 FROM t_sales_demand_detail a 
+			INNER JOIN t_sales_demand b ON a.orderid = b.id
+            <trim prefix="where" prefixOverrides="and|or">
+                <if test="sid != null">
+                  and FIND_IN_SET(adduserid, #{sid})
+                </if>
+                <if test="t1 != null">
+                    and b.businessdate >= #{t1}
+                </if>
+                <if test="t2 != null">
+                    <![CDATA[ and b.businessdate <= #{t2}]]>
+                </if>
+            </trim>
+			UNION ALL
+			SELECT b.adduserid, b.addusername, 0 amount1, a.taxamount amount2 FROM t_sales_rejectbill_detail a 
+			INNER JOIN t_sales_rejectbill b ON a.billid = b.id
+            <trim prefix="where" prefixOverrides="and|or">
+                <if test="sid != null">
+                    and FIND_IN_SET(adduserid, #{sid})
+                </if>
+                <if test="t1 != null">
+                    and b.businessdate >= #{t1}
+                </if>
+                <if test="t2 != null">
+                    <![CDATA[ and b.businessdate <= #{t2}]]>
+                </if>
+            </trim>
+		) a GROUP BY a.adduserid
+	</select>
+	<select id="getSalerCustomerOrderQueryReport" parameterType="map" resultType="map">
+		SELECT SUM(a.amount1) amount1, SUM(a.amount2) amount2, a.customerid,a.businessdate, a.name FROM (
+			SELECT a.taxamount amount1, 0 amount2, b.customerid, c.name,b.businessdate FROM t_sales_demand_detail a
+			INNER JOIN t_sales_demand b ON a.orderid = b.id 
+			LEFT JOIN t_base_sales_customer c ON b.customerid = c.id 
+			<![CDATA[ WHERE b.adduserid = #{sid} AND b.businessdate>=#{t1} AND b.businessdate<=#{t2} ]]>
+			UNION ALL 
+			SELECT 0 amount1, a.taxamount amoun2, b.customerid, c.name,b.businessdate FROM t_sales_rejectbill_detail a
+			INNER JOIN t_sales_rejectbill b ON a.billid = b.id
+			LEFT JOIN t_base_sales_customer c ON b.customerid = c.id
+			<![CDATA[ WHERE b.adduserid = #{sid} AND b.businessdate>=#{t1} AND b.businessdate<=#{t2} ]]>
+		) a GROUP BY a.customerid,a.businessdate
+	</select>
+	<select id="getSalerCustomerGoodsOrderQueryReport" parameterType="map" resultType="map">
+		SELECT a.goodsid, a.name, a.unitid, a.unitname, a.auxunitid, a.auxunitname, SUM(a.amount1) amount1, SUM(a.num1) num1, SUM(a.amount2) amount2, SUM(a.num2) num2, SUM(a.num3) num3 FROM (
+			SELECT a.goodsid, c.name, a.unitid, a.unitname, a.auxunitid, a.auxunitname, a.taxamount amount1, a.unitnum num1, 0 amount2, 0 num2, 0 num3 FROM t_sales_demand_detail a 
+			INNER JOIN t_sales_demand b ON a.orderid = b.id 
+			LEFT JOIN t_base_goods_info c ON a.goodsid = c.id
+			<![CDATA[ WHERE b.adduserid = #{sid} AND b.customerid = #{cid} AND a.taxprice<>0 AND b.businessdate >= #{t1} AND b.businessdate <= #{t2} ]]>
+			UNION ALL
+			SELECT a.goodsid, c.name, a.unitid, a.unitname, a.auxunitid, a.auxunitname, 0 amount1, 0 num1, 0 amount2, 0 num2, unitnum num3 FROM t_sales_demand_detail a
+			INNER JOIN t_sales_demand b ON a.orderid = b.id
+			LEFT JOIN t_base_goods_info c ON a.goodsid = c.id
+			<![CDATA[ WHERE b.adduserid = #{sid} AND b.customerid = #{cid} AND a.taxprice=0 AND b.businessdate >= #{t1} AND b.businessdate <= #{t2} ]]>
+			UNION ALL
+			SELECT a.goodsid, c.name, a.unitid, a.unitname, a.auxunitid, a.auxunitname, 0 amount1, 0 num1 ,a.taxamount amount2, a.unitnum num2, 0 num3 FROM t_sales_rejectbill_detail a
+			INNER JOIN t_sales_rejectbill b ON a.billid = b.id
+			LEFT JOIN t_base_goods_info c ON a.goodsid = c.id
+			<![CDATA[ WHERE b.adduserid = #{sid} AND b.customerid = #{cid} AND b.source='8' AND b.businessdate >= #{t1} AND b.businessdate <= #{t2} ]]>
+		) a GROUP BY goodsid
+	</select>
+	<select id="getCustomerSaleQueryReport" parameterType="map" resultType="map">
+		SELECT SUM(a.amount1) amount1, SUM(a.amount2) amount2, a.customerid, a.name FROM (	
+			SELECT a.taxamount amount1, 0 amount2, b.customerid, c.name FROM t_storage_saleout_detail a
+			INNER JOIN t_storage_saleout b ON a.saleoutid = b.id
+			LEFT JOIN t_base_sales_customer c ON b.customerid = c.id
+			<![CDATA[ WHERE FIND_IN_SET(b.customerid, #{cid}) AND b.businessdate>=#{t1} AND b.businessdate<=#{t2} AND FIND_IN_SET(b.status, '3,4') ]]>
+			UNION ALL
+			SELECT 0 amount1, a.taxamount amount2, b.customerid, c.name FROM t_sales_rejectbill_detail a
+			INNER JOIN t_sales_rejectbill b ON a.billid = b.id
+			LEFT JOIN t_base_sales_customer c ON b.customerid = c.id
+			<![CDATA[ WHERE FIND_IN_SET(b.customerid, #{cid}) AND b.businessdate>=#{t1} AND b.businessdate<=#{t2} AND FIND_IN_SET(b.status, '3,4') ]]>
+		) a GROUP BY a.customerid
+	</select>
+	<select id="getCustomerGoodsSaleQueryReport" parameterType="map" resultType="map">
+		SELECT a.goodsid, SUM(a.amount1) amount1,SUM(a.num1) num1, SUM(a.amount2) amount2, SUM(a.num2) num2, a.name, a.unitid, a.unitname, a.auxunitid, a.auxunitname FROM (	
+			SELECT a.goodsid, a.taxamount amount1, a.unitnum num1, 0 amount2, 0 num2, c.name, a.unitid, a.unitname, a.auxunitid, a.auxunitname FROM t_storage_saleout_detail a
+			INNER JOIN t_storage_saleout b ON a.saleoutid = b.id
+			LEFT JOIN t_base_goods_info c ON a.goodsid = c.id
+			<![CDATA[ WHERE b.customerid = #{cid} AND b.businessdate>=#{t1} AND b.businessdate<=#{t2} AND FIND_IN_SET(b.status, '3,4') ]]>
+			UNION ALL
+			SELECT a.goodsid, 0 amount1, 0 num1, a.taxamount amount2, a.unitnum num2, c.name, a.unitid, a.unitname, a.auxunitid, a.auxunitname FROM t_sales_rejectbill_detail a
+			INNER JOIN t_sales_rejectbill b ON a.billid = b.id
+			LEFT JOIN t_base_goods_info c ON a.goodsid = c.id
+			<![CDATA[ WHERE b.customerid = #{cid} AND b.businessdate>=#{t1} AND b.businessdate<=#{t2} AND FIND_IN_SET(b.status, '3,4') ]]>
+		) a GROUP BY a.goodsid
+	</select>
+	<select id="getSalerSaleQueryReport" parameterType="map" resultType="map">
+		SELECT SUM(a.amount1) amount1, SUM(a.amount2) amount2, a.adduserid uid, a.addusername name FROM (	
+			SELECT a.taxamount amount1, 0 amount2, b.adduserid, b.addusername FROM t_storage_saleout_detail a
+			INNER JOIN t_storage_saleout b ON a.saleoutid = b.id
+			<![CDATA[ WHERE FIND_IN_SET(b.adduserid, #{sid}) AND b.businessdate>=#{t1} AND b.businessdate<=#{t2} AND FIND_IN_SET(b.status, '3,4') ]]>
+			UNION ALL
+			SELECT 0 amount1, a.taxamount amount2, b.adduserid, b.addusername FROM t_sales_rejectbill_detail a
+			INNER JOIN t_sales_rejectbill b ON a.billid = b.id
+			<![CDATA[ WHERE FIND_IN_SET(b.adduserid, #{sid}) AND b.businessdate>=#{t1} AND b.businessdate<=#{t2} AND FIND_IN_SET(b.status, '3,4') ]]>
+		) a GROUP BY a.adduserid
+	</select>
+	<select id="getBaseSaleReport" parameterType="com.hd.agent.common.util.PageMap" resultType="map">
+        SELECT
+		z.customerid,z.pcustomerid,z.salesarea,z.customersort,z.salesdept,z.salesuser,z.supplierid,z.supplieruser,z.branduserdept as branduserdept ,
+		z.goodsid,z.brandid,z.branduser,z.branddept,z.unitid,z.unitname,z.auxunitid,z.auxunitname,z.taxprice as price,z.costprice,
+		SUM(z.sendnum) AS sendnum,SUM(z.sendamount) AS sendamount,SUM(z.sendnotaxamount) AS sendnotaxamount,sum(z.sendcostamount) as sendcostamount,
+		SUM(z.returnnum) AS returnnum,SUM(z.returnamount) AS returnamount,SUM(z.returnnotaxamount) AS returnnotaxamount,
+		SUM(z.directreturnnum) AS directreturnnum,SUM(z.directreturnamount) AS directreturnamount,SUM(z.directreturnnotaxamount) AS directreturnnotaxamount,
+		SUM(z.checkreturnnum) AS checkreturnnum,SUM(z.checkreturnamount) AS checkreturnamount,SUM(z.checkreturnnotaxamount) AS checkreturnnotaxamount,
+		SUM(z.costamount) as costamount,sum(z.pushamount) as pushamount,(SUM(z.sendamount)-SUM(z.returnamount)+sum(z.pushamount)) as salesamount
+		FROM
+		(
+			SELECT
+				t.customerid,t.pcustomerid,t.salesarea,t.customersort,t.salesdept,t.salesuser,t1.supplierid,t1.supplieruser,IF(p.belongdeptid is null,'',p.belongdeptid) as branduserdept ,
+				t1.goodsid,t1.brandid,t1.branduser,t1.branddept,t1.unitid,t1.unitname,t1.auxunitid,t1.auxunitname,t1.taxprice,t1.costprice,
+				t1.unitnum AS sendnum,t1.taxamount AS sendamount,t1.notaxamount AS sendnotaxamount,t1.unitnum*t1.costprice as sendcostamount,
+				0 AS returnnum,0 AS returnamount,0 AS returnnotaxamount,
+				0 AS directreturnnum,0 AS directreturnamount,0 AS directreturnnotaxamount,
+				0 AS checkreturnnum,0 AS checkreturnamount,0 AS checkreturnnotaxamount,
+				t1.unitnum*t1.costprice as costamount,0 as pushamount
+			FROM t_storage_saleout t
+			RIGHT JOIN t_storage_saleout_detail t1 ON t1.saleoutid = t.id
+            LEFT JOIN t_base_personnel p on p.id = t1.branduser
+			WHERE ${condition.query_sql} AND t.STATUS IN ('3', '4')
+            UNION ALL
+			SELECT
+				t.customerid,t.pcustomerid,t.salesarea,t.customersort,t.salesdept,t.salesuser,t1.supplierid,t1.supplieruser,IF(p.belongdeptid is null,'',p.belongdeptid) as branduserdept ,
+				t1.goodsid,t1.brandid,t1.branduser,t1.branddept,t1.unitid,t1.unitname,t1.auxunitid,t1.auxunitname,t1.taxprice,t1.costprice,
+				0 AS sendnum,0 AS sendamount,0 AS sendnotaxamount,0 as sendcostamount,
+				t1.unitnum AS returnnum,t1.taxamount AS returnamount,t1.notaxamount AS returnnotaxamount,
+				if(t.sourcetype = '2',t1.unitnum,0) AS directreturnnum,if(t.sourcetype = '2',t1.taxamount,0) AS directreturnamount,if(t.sourcetype = '2',t1.notaxamount,0) AS directreturnnotaxamount,
+				if(t.sourcetype = '1',t1.unitnum,0) AS checkreturnnum,if(t.sourcetype = '1',t1.taxamount,0) AS checkreturnamount,if(t.sourcetype = '1',t1.notaxamount,0) AS checkreturnnotaxamount,
+				-t1.unitnum*t1.costprice as costamount,0 as pushamount
+			FROM t_storage_salereject_enter t
+			RIGHT JOIN t_storage_salereject_enter_detail t1 ON t1.salerejectid = t.id
+            LEFT JOIN t_base_personnel p on p.id = t1.branduser
+            WHERE ${condition.query_sql} and ischeck='1' AND t.STATUS IN ('3', '4')
+            UNION ALL
+			SELECT
+				t.customerid,t.pcustomerid,t.salesarea,t.customersort,t.salesdept,t.salesuser,t.supplierid,t.supplieruser,IF(p.belongdeptid is null,'',p.belongdeptid) as branduserdept ,
+				t.brandid AS goodsid,t.brandid,t.branduser,t.branddept, '' AS unitid, '' AS unitname,'' as auxunitid,'' as auxunitname,0 as taxprice, 0 AS costprice,
+				0 AS sendnum, 0 AS sendamount, 0 AS sendnotaxamount, 0 as sendcostamount,
+				0 AS returnnum, 0 AS returnamount, 0 AS returnnotaxamount,
+				0 AS directreturnnum, 0 AS directreturnamount, 0 AS directreturnnotaxamount,
+				0 AS checkreturnnum, 0 AS checkreturnamount, 0 AS checkreturnnotaxamount,
+				0 as costamount,t.amount as pushamount
+			FROM t_account_customer_push_balance t
+            LEFT JOIN t_base_personnel p on p.id = t.branduser
+			WHERE ${condition.query_sql_push} AND t.STATUS IN ('3', '4')
+		) z
+        <if test="dataSql !=null">
+            where ${dataSql}
+        </if>
+		group by ${condition.groupcols}
+        <if test="condition.orderstr !=null">
+		order by ${condition.orderstr}
+        </if>
+		<if test="condition.isflag ==null">
+            LIMIT #{startNum},#{rows}
+        </if>
+	  </select>
+	<select id="getBaseWithdrawReport" parameterType="com.hd.agent.common.util.PageMap" resultType="map">
+        select z.customerid,z.pcustomerid,z.salesarea,z.customersort,z.salesdept,z.salesuser,
+        z.goodsid,z.brandid,z.branduser,z.branddept,z.supplierid,z.supplieruser,
+        sum(z.unitnum) as unitnum,sum(z.withdrawnamount) AS withdrawnamount, sum(z.costwriteoffamount) AS costwriteoffamount,sum(z.writeoffmarginamount) AS writeoffmarginamount
+        FROM
+        (
+         select t.customerid,t.pcustomerid,t.salesarea,t.customersort,t.salesdept,t.salesuser,
+        t1.goodsid,t1.brandid,t1.branduser,t1.branddept,t1.supplierid,t1.supplieruser,
+        t1.unitnum,t1.taxamount AS withdrawnamount, t1.costprice*t1.unitnum as costwriteoffamount,(t1.taxamount-t1.costprice*t1.unitnum) as writeoffmarginamount
+        from t_storage_saleout t
+        RIGHT JOIN t_storage_saleout_detail t1 on t1.saleoutid=t.id
+        WHERE ${condition.query_sql} AND t.STATUS IN ('3', '4') and t1.iswriteoff='1'
+        UNION ALL
+        SELECT t.customerid,t.pcustomerid,t.salesarea,t.customersort,t.salesdept,t.salesuser,
+        t1.goodsid,t1.brandid,t1.branduser,t1.branddept,t1.supplierid,t1.supplieruser,
+        -t1.unitnum,-t1.taxamount AS withdrawnamount,-t1.costprice*t1.unitnum AS costwriteoffamount,-(t1.taxamount-t1.costprice*t1.unitnum) as writeoffmarginamount
+        FROM t_storage_salereject_enter t
+        RIGHT JOIN t_storage_salereject_enter_detail t1 ON t1.salerejectid = t.id
+        WHERE ${condition.query_sql} and t.ischeck='1' and t1.iswriteoff='1' and t.status in('3','4')
+        UNION ALL
+        SELECT
+        t.customerid,t.pcustomerid,t.salesarea,t.customersort,t.salesdept,t.salesuser,
+        t.brandid AS goodsid,t.brandid,t.branduser,t.branddept,t.supplierid,t.supplieruser,
+        0 as unitnum,t.amount AS withdrawnamount, 0 AS costwriteoffamount, t.amount as writeoffmarginamount
+        FROM t_account_customer_push_balance t
+        WHERE ${condition.query_sql_push} and t.iswriteoff='1' and t.status in('3','4')
+        ) z
+        <if test="dataSql !=null">
+            where ${dataSql}
+        </if>
+        group by ${condition.groupcols}
+        <if test="condition.orderstr !=null">
+            order by ${condition.orderstr}
+        </if>
+        <if test="condition.isflag ==null">
+            LIMIT #{startNum},#{rows}
+        </if>
+	</select>
+	<select id="getSalerGoodsSaleQueryReport" parameterType="map" resultType="map">
+		SELECT SUM(a.amount1) amount1, SUM(a.amount2) amount2, SUM(num1) num1, SUM(num2) num2, a.unitid, a.unitname, a.auxunitid, a.auxunitname, a.goodsid, a.name FROM (	
+			SELECT a.goodsid, a.taxamount amount1, a.unitnum num1, 0 amount2, 0 num2, a.unitid, a.unitname, a.auxunitid, a.auxunitname, c.name FROM t_storage_saleout_detail a
+			INNER JOIN t_storage_saleout b ON a.saleoutid = b.id
+			LEFT JOIN t_base_goods_info c ON a.goodsid = c.id
+			<![CDATA[ WHERE b.adduserid = #{sid} AND b.businessdate>=#{t1} AND b.businessdate<=#{t2} AND FIND_IN_SET(b.status, '3,4') ]]>
+			UNION ALL
+			SELECT a.goodsid, 0 amount1, 0 num1, a.taxamount amount2, a.unitnum num2, a.unitid, a.unitname, a.auxunitid, a.auxunitname, c.name FROM t_sales_rejectbill_detail a
+			INNER JOIN t_sales_rejectbill b ON a.billid = b.id 
+			LEFT JOIN t_base_goods_info c ON a.goodsid = c.id
+			<![CDATA[ WHERE b.adduserid = #{sid} AND b.businessdate>=#{t1} AND b.businessdate<=#{t2} AND FIND_IN_SET(b.status, '3,4') ]]>
+		) a GROUP BY a.goodsid
+	</select>
+	<select id="getOrderTrack" parameterType="java.lang.String" resultType="map">
+		SELECT 
+			a.id, 
+			a.businessdate, 
+			a.status, 
+			a.addtime, 
+			a.customerid, 
+			a.addusername, 
+			a.orderid, 
+			min(b.businessdate) orderbusinessdate, 
+			min(b.status) orderstatus, 
+			min(b.addtime) orderaddtime, 
+			b.auditusername orderauditusername, 
+			b.audittime orderaudittime,
+			GROUP_CONCAT(DISTINCT c.id) dbillid, 
+			c.businessdate dbillbusinessdate, 
+			min(c.status) dbillstatus, 
+			min(c.addtime) dbilladdtime, 
+			c.auditusername dbillauditusername,
+			c.audittime dbillaudittime,
+			GROUP_CONCAT(DISTINCT d.id) outid, 
+			d.businessdate outbusinessdate, 
+			min(d.status) outstatus, 
+			min(d.addtime) outaddtime, 
+			d.auditusername outauditusername,
+			d.audittime outaudittime,
+			min(if(d.invoicedate is null or d.invoicedate='',0,1)) as isinvoice,
+			d.iswrite as iswriteoff, 
+			d.invoicedate, 
+			d.writeoffdate as writeoffdate,
+			GROUP_CONCAT(DISTINCT e.id) recid, 
+			e.businessdate recbusinessdate, 
+			min(e.status) recstatus, 
+			min(e.addtime) recaddtime, 
+			e.auditusername recauditusername,
+			e.audittime recaudittime 
+		FROM t_sales_demand a 
+		LEFT JOIN t_sales_order b on find_in_set(b.id,a.orderid)
+		LEFT JOIN t_sales_dispatchbill c on find_in_set(c.billno,a.orderid)
+		LEFT JOIN t_storage_saleout d ON find_in_set(d.saleorderid ,a.orderid)
+		LEFT JOIN t_sales_receipt e ON find_in_set(e.saleorderid ,a.orderid)
+		WHERE a.id = #{id} 
+		GROUP BY id 
+	</select>
+	<select id="getOrderCarTrack" parameterType="java.lang.String" resultType="map">
+		SELECT 
+			a.id, 
+			a.businessdate, 
+			a.status, 
+			a.addtime, 
+			a.customerid, 
+			a.addusername, 
+			b.id as orderid, 
+			b.businessdate orderbusinessdate, 
+			b.status orderstatus, 
+			b.addtime orderaddtime, 
+			b.auditusername orderauditusername, 
+			b.audittime orderaudittime,
+			c.id dbillid, 
+			c.businessdate dbillbusinessdate, 
+			c.status dbillstatus, 
+			c.addtime dbilladdtime, 
+			c.auditusername dbillauditusername,
+			c.audittime dbillaudittime,
+			d.id outid, 
+			d.businessdate outbusinessdate, 
+			d.status outstatus, 
+			d.addtime outaddtime, 
+			d.auditusername outauditusername,
+			d.audittime outaudittime,
+			if(d.invoicedate is null or d.invoicedate='',0,1) as isinvoice,
+			d.iswrite as iswriteoff, 
+			d.invoicedate, 
+			d.writeoffdate as writeoffdate,
+			e.id recid, 
+			e.businessdate recbusinessdate, 
+			e.status recstatus, 
+			e.addtime recaddtime, 
+			e.auditusername recauditusername,
+			e.audittime recaudittime 
+		FROM t_sales_order_car a 
+		LEFT JOIN t_sales_order b on a.id=b.sourceid 
+		LEFT JOIN t_sales_dispatchbill c on b.id=c.source
+		LEFT JOIN t_storage_saleout d ON b.id = d.saleorderid 
+		LEFT JOIN t_sales_receipt e ON b.id = e.saleorderid 
+		WHERE a.id = #{id}
+		GROUP BY id 
+	</select>
+	<select id="getLogisticsBillBySaleoutid" parameterType="java.lang.String" resultType="map">
+		select DISTINCT t.id,t.carid,t.driverid,t.followid from t_storage_logistics_delivery t
+		LEFT JOIN t_storage_logistics_delivery_saleout t1 on t.id=t1.deliveryid
+		where find_in_set(t1.saleoutid,#{saleoutid})
+	</select>
+
+
+    <sql id="temp_sales_checkprice">
+        (SELECT
+        sum(t4.taxprice*t4.unitnum)/sum(t4.unitnum) as checkprice
+        FROM t_sales_order t
+        RIGHT JOIN t_sales_order_detail t1 ON t.id = t1.orderid
+        LEFT JOIN t_sales_dispatchbill t5 on t5.billno=t.id
+        LEFT JOIN t_sales_dispatchbill_detail t2 on  t2.billid=t5.id and t2.billdetailno=t1.id  and (t5.status='3' or t5.status='4')
+        LEFT JOIN t_storage_saleout t6 on t6.sourceid=t2.billid
+        LEFT JOIN t_storage_saleout_detail t3 on t3.saleoutid=t6.id and t3.dispatchbilldetailid=t2.id and (t6.status='3' or t6.status='4')
+        LEFT JOIN t_sales_receipt t7 on t7.saleorderid=t.id
+        LEFT JOIN t_sales_receipt_detail t4 on t4.billno=t3.saleoutid and t4.billdetailno=t3.id and (t7.status='3' or t7.status='4')
+        <trim prefix="WHERE" prefixOverrides="and|or" >
+            <include refid="common.Page_dataSql"/>
+            <if test="condition.businessdate1 != null">
+                and t.businessdate >= #{condition.businessdate1}
+            </if>
+            <if test="condition.businessdate2 != null">
+                <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+            </if>
+            <if test="1==1">
+                and (t.STATUS='3' or t.status='4')
+            </if>
+            <if test="condition.pcustomerid != null">
+                and t.pcustomerid = #{condition.pcustomerid}
+            </if>
+            <if test="condition.customerid != null">
+                and t.customerid = #{condition.customerid}
+            </if>
+            <if test="condition.goodsid != null">
+                and t1.goodsid = #{condition.goodsid}
+            </if>
+            <if test="condition.brandid != null">
+                and FIND_IN_SET(t1.brandid,#{condition.brandid})
+            </if>
+            <if test="condition.salesuser != null">
+                and FIND_IN_SET(t.salesuser,#{condition.salesuser})
+            </if>
+            <if test="condition.id != null">
+                and t.id = #{condition.id}
+            </if>
+        </trim>
+        )
+    </sql>
+</mapper>

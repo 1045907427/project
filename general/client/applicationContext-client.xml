@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+
+    <bean id="clientOffpriceMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.hd.agent.client.dao.ClientOffpriceMapper" />
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="clientOffpriceLogMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.hd.agent.client.dao.ClientOffpriceLogMapper" />
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+
+    <bean id="offPriceService" parent="baseTransactionProxy">
+        <property name="target" ref="offPriceServiceImpl"></property>
+    </bean>
+    <bean id="offPriceServiceImpl" class="com.hd.agent.client.service.impl.OffPriceServiceImpl" parent="baseFilesServiceImpl">
+        <property name="clientOffpriceMapper" ref="clientOffpriceMapper"></property>
+        <property name="clientOffpriceLogMapper" ref="clientOffpriceLogMapper"></property>
+    </bean>
+
+    <bean id="offPriceLogService" parent="baseTransactionProxy">
+        <property name="target" ref="offPriceLogServiceImpl"></property>
+    </bean>
+    <bean id="offPriceLogServiceImpl" class="com.hd.agent.client.service.impl.OffPriceLogServiceImpl" parent="baseFilesServiceImpl">
+        <property name="clientOffpriceLogMapper" ref="clientOffpriceLogMapper"></property>
+    </bean>
+
+    <bean id="clientInterfaceServiceImpl" class="com.hd.agent.client.service.impl.ClientInterfaceServiceImpl" parent="baseFilesServiceImpl">
+        <property name="offpriceMapper" ref="salesOffpriceMapper"></property>
+    </bean>
+
+    <bean id="baseClientAction" class="com.hd.agent.client.action.BaseClientAction" scope="prototype" parent="baseAction"></bean>
+    <bean id="offPriceAction" class="com.hd.agent.client.action.ClientOffPriceAction" scope="prototype" parent="baseAction">
+        <property name="offPriceService" ref="offPriceService"></property>
+        <property name="offPriceLogService" ref="offPriceLogService"></property>
+    </bean>
+    <bean id="clientInterfaceAction" class="com.hd.agent.client.action.ClientInterfaceAction" scope="prototype" parent="baseAction">
+        <property name="offPriceService" ref="offPriceService"></property>
+        <property name="clientInterfaceService" ref="clientInterfaceServiceImpl"></property>
+    </bean>
+</beans>

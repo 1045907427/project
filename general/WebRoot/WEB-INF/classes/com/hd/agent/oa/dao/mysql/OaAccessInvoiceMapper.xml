@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.oa.dao.OaAccessInvoiceMapper" >
+  <resultMap id="BaseResultMap" type="com.hd.agent.oa.model.OaAccessInvoice" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="billid" property="billid" jdbcType="VARCHAR" />
+    <result column="oaid" property="oaid" jdbcType="VARCHAR" />
+    <result column="companyid" property="companyid" jdbcType="VARCHAR" />
+    <result column="companyname" property="companyname" jdbcType="VARCHAR" />
+    <result column="bank" property="bank" jdbcType="VARCHAR" />
+    <result column="bankno" property="bankno" jdbcType="VARCHAR" />
+    <result column="payamount" property="payamount" jdbcType="DECIMAL" />
+    <result column="amountwords" property="amountwords" jdbcType="VARCHAR" />
+    <result column="expensesort" property="expensesort" jdbcType="VARCHAR" />
+    <result column="invoicetype" property="invoicetype" jdbcType="VARCHAR" />
+    <result column="invoicedate" property="invoicedate" jdbcType="VARCHAR" />
+    <result column="paydate" property="paydate" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, billid, oaid, companyid, companyname, bank, bankno, payamount, amountwords, expensesort, 
+    invoicetype, invoicedate, paydate
+  </sql>
+  
+  <insert id="insertOaAccessInvoice" parameterType="com.hd.agent.oa.model.OaAccessInvoice">
+  	insert into t_oa_access_invoice
+  	<trim prefix="(" suffix=")" suffixOverrides=",">
+		<if test="#{billid != null }">
+			billid,
+		</if>
+		<if test="#{oaid != null }">
+			oaid,
+		</if>
+		<if test="#{companyid != null }">
+			companyid,
+		</if>
+		<if test="#{companyname != null }">
+			companyname,
+		</if>
+		<if test="#{bank != null }">
+			bank,
+		</if>
+		<if test="#{bankno != null }">
+			bankno,
+		</if>
+		<if test="#{payamount != null }">
+			payamount,
+		</if>
+		<if test="#{amountwords != null }">
+			amountwords,
+		</if>
+		<if test="#{expensesort != null }">
+			expensesort,
+		</if>
+		<if test="#{invoicetype != null }">
+			invoicetype,
+		</if>
+		<if test="#{invoicedate != null }">
+			invoicedate,
+		</if>
+		<if test="#{paydate != null }">
+			paydate,
+		</if>
+  	</trim>
+  	<trim prefix=" values ( " suffix=")" suffixOverrides=",">
+		<if test="#{billid != null }">
+			#{billid },
+		</if>
+		<if test="#{oaid != null }">
+			#{oaid },
+		</if>
+		<if test="#{companyid != null }">
+			#{companyid },
+		</if>
+		<if test="#{companyname != null }">
+			#{companyname },
+		</if>
+		<if test="#{bank != null }">
+			#{bank },
+		</if>
+		<if test="#{bankno != null }">
+			#{bankno },
+		</if>
+		<if test="#{payamount != null }">
+			#{payamount },
+		</if>
+		<if test="#{amountwords != null }">
+			#{amountwords },
+		</if>
+		<if test="#{expensesort != null }">
+			#{expensesort },
+		</if>
+		<if test="#{invoicetype != null }">
+			#{invoicetype },
+		</if>
+		<if test="#{invoicedate != null }">
+			#{invoicedate },
+		</if>
+		<if test="#{paydate != null }">
+			#{paydate },
+		</if>
+  	</trim>
+  </insert>
+  <update id="updateOaAccessInvoice" parameterType="com.hd.agent.oa.model.OaAccessInvoice">
+  	update t_oa_access_invoice
+  	<set>
+		oaid = #{oaid },
+		companyid = #{companyid },
+		companyname = #{companyname },
+		bank = #{bank },
+		bankno = #{bankno },
+		payamount = #{payamount },
+		amountwords = #{amountwords },
+		expensesort = #{expensesort },
+		invoicetype = #{invoicetype },
+		invoicedate = #{invoicedate },
+		paydate = #{paydate },
+  	</set>
+  	where billid = #{billid }
+  </update>
+  <select id="selectOaAccessInvoice" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List"/>
+  	from t_oa_access_invoice
+  	where billid = #{billid }
+  </select>
+</mapper>

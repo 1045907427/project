@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.journalsheet.dao.ContractLiabilityMapper" >
+  <resultMap id="BaseResultMap" type="com.hd.agent.journalsheet.model.ContractLiability" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="month" property="month" jdbcType="VARCHAR" />
+    <result column="contractid" property="contractid" jdbcType="VARCHAR" />
+    <result column="contractbillid" property="contractbillid" jdbcType="VARCHAR" />
+    <result column="contractcaluseid" property="contractcaluseid" jdbcType="VARCHAR" />
+    <result column="customerid" property="customerid" jdbcType="VARCHAR" />
+    <result column="deptid" property="deptid" jdbcType="VARCHAR" />
+    <result column="subjectexpenses" property="subjectexpenses" jdbcType="VARCHAR" />
+    <result column="liabilityamount" property="liabilityamount" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.month != null" >
+         and month = #{condition.month}
+      </if>
+      <if test="condition.contractid != null" >
+         and contractid = #{condition.contractid}
+      </if>
+      <if test="condition.contractbillid != null" >
+        and contractbillid = #{condition.contractbillid}
+      </if>
+      <if test="condition.contractcaluseid != null" >
+         and contractcaluseid = #{condition.contractcaluseid}
+      </if>
+      <if test="condition.customerid != null" >
+        and FIND_IN_SET(customerid,#{condition.customerid})
+      </if>
+      <if test="condition.deptid != null" >
+         and deptid = #{condition.deptid}
+      </if>
+      <if test="condition.liabilityamount != null" >
+         and liabilityamount = #{condition.liabilityamount}
+      </if>
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, month, contractid,contractbillid, contractcaluseid, customerid, deptid, subjectexpenses, liabilityamount
+  </sql>
+  <select id="getContractLiabilityDataCustomerList" resultType="Map" parameterType="com.hd.agent.common.util.PageMap" useCache="false">
+    select  '1' as type,t.customerid as id,'1' as leaf , '' as pid, sum(t.liabilityamount) as totalamount
+    from t_report_finance_customer_contract_liability t
+    LEFT JOIN t_base_sales_customer c on t.customerid = c.id
+    LEFT JOIN t_finance_customer_contract t1 on t.contractbillid = t1.id
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.month != null" >
+        and t.month = #{condition.month}
+      </if>
+      <if test="condition.customerid != null" >
+        and FIND_IN_SET(t.customerid,#{condition.customerid})
+      </if>
+      <if test="condition.supplierid != null" >
+        and FIND_IN_SET(t1.supplierid,#{condition.supplierid})
+      </if>
+      <if test="condition.salesdeptid != null" >
+        and FIND_IN_SET(c.salesdeptid,#{condition.salesdeptid})
+      </if>
+      <if test="condition.salesuserid != null" >
+        and FIND_IN_SET(c.salesuserid,#{condition.salesuserid})
+      </if>
+    </trim>
+    group by t.customerid
+  </select>
+  <select id="getContractSubjectDataList"  resultType="Map">
+    select '2' as type,t.thisname as name,t1.deptid,t.id as sid,t.name as subjectname,t.pid,t.leaf,sum(IF(t1.subjectexpenses=t.id,t1.liabilityamount,0)) as totalamount
+    from t_base_finance_expenses_sort t
+    LEFT JOIN  t_report_finance_customer_contract_liability t1 on t.id = t1.subjectexpenses
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="con.month != null" >
+        and t1.month = #{con.month}
+      </if>
+      <if test="customerid != null" >
+        and t1.customerid = #{customerid}
+      </if>
+      <if test="con.deptid != null" >
+        and t1.deptid = #{con.deptid}
+      </if>
+    </trim>
+    group by t.id
+    HAVING sum(t1.liabilityamount)>0
+    order by t.id
+  </select>
+  <select id="getContractLiabilityDataSums" resultType="Map" parameterType="com.hd.agent.common.util.PageMap">
+    SELECT '' as deptid,'' as deptname,'' as subjectid,'' as subjectname,'' as subjectpid,sum(t.liabilityamount) as amount,SUM(t.liabilityamount) as totalamount
+    FROM t_report_finance_customer_contract_liability t
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.month !=null">
+        and t.month = #{condition.month}
+      </if>
+      <if test="condition.deptid !=null">
+        and t.deptid = #{condition.deptid}
+      </if>
+      <if test="condition.customerid !=null">
+        and t.customerid = #{condition.customerid}
+      </if>
+    </trim>
+  </select>
+  <select id="getContractLiabilityData" resultType="com.hd.agent.journalsheet.model.ContractLiability" parameterType="com.hd.agent.common.util.PageMap" useCache="false">
+    select
+    <include refid="Base_Column_List"/>
+    from t_report_finance_customer_contract_liability
+      <include refid="Example_Where_Clause" />
+      <include refid="common.Page_dataSql"/>
+    <include refid="common.Page_limit"/>
+  </select>
+  <select id="getContractLiabilityDataCount" resultType="int" parameterType="com.hd.agent.common.util.PageMap" useCache="false">
+    select count(1)
+    from t_report_finance_customer_contract_liability
+      <include refid="Example_Where_Clause" />
+      <include refid="common.Page_dataSql"/>
+  </select>
+
+  <insert id="addContractLiability" parameterType="com.hd.agent.journalsheet.model.ContractLiability" >
+    insert into t_report_finance_customer_contract_liability
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="month != null" >
+        month,
+      </if>
+      <if test="contractid != null" >
+        contractid,
+      </if>
+      <if test="contractbillid != null" >
+        contractbillid,
+      </if>
+      <if test="contractcaluseid != null" >
+        contractcaluseid,
+      </if>
+      <if test="customerid != null" >
+        customerid,
+      </if>
+      <if test="deptid != null" >
+        deptid,
+      </if>
+      <if test="subjectexpenses != null" >
+        subjectexpenses,
+      </if>
+      <if test="liabilityamount != null" >
+        liabilityamount,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="month != null" >
+        #{month},
+      </if>
+      <if test="contractid != null" >
+        #{contractid},
+      </if>
+      <if test="contractbillid != null" >
+        #{contractbillid},
+      </if>
+      <if test="contractcaluseid != null" >
+        #{contractcaluseid},
+      </if>
+      <if test="customerid != null" >
+        #{customerid},
+      </if>
+      <if test="deptid != null" >
+        #{deptid},
+      </if>
+      <if test="subjectexpenses != null" >
+        #{subjectexpenses},
+      </if>
+      <if test="liabilityamount != null" >
+        #{liabilityamount},
+      </if>
+    </trim>
+  </insert>
+
+  <delete id="deleteContractLiabilityByMonthAndCustomerid" parameterType="java.lang.String" >
+    delete from t_report_finance_customer_contract_liability
+    where month = #{month} and customerid = #{customerid}
+  </delete>
+</mapper>

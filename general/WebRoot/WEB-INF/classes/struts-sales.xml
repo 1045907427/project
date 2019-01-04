@@ -1,0 +1,1670 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<package name="baseSales" extends="parent" namespace="/sales">
+		<action name="getAuxUnitNumAndPrice" class="orderAction" method="getAuxUnitNumAndPrice">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getUnitNumAndPrice" class="orderAction" method="getUnitNumAndPrice">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getAuxUnitNum" class="orderAction" method="getAuxUnitNum">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getAmountChanger" class="orderAction" method="getAmountChanger">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getAmountChangerByBoxprice" class="orderAction" method="getAmountChangerByBoxprice">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getTaxAmountChange" class="orderAction" method="getTaxAmountChange">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getAmountChangeByType" class="orderAction" method="getAmountChangeByType">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getReceiptAndRejectBillList" class="orderAction" method="getReceiptAndRejectBillList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getReceiptAndRejectBillListForInvoiceBill" class="orderAction" method="getReceiptAndRejectBillListForInvoiceBill">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="exportReceiptAndRejectBillListForInvoiceBill" class="orderAction" method="exportReceiptAndRejectBillListForInvoiceBill">
+		</action>
+		<action name="exportReceiptAndRejectBillList" class="orderAction" method="exportReceiptAndRejectBillList">
+		</action>
+		<action name="getReceiptAndRejectBillDetailList" class="orderAction" method="getReceiptAndRejectBillDetailList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showReceiptAndRejectBillDetailList" class="orderAction" method="showReceiptAndRejectBillDetailList">
+			<result name="success">/sales/receiptAndRejectBillDetailList.jsp</result>
+		</action>
+		<action name="showReceiptAndRejectBillDetailListForInvoiceBill" class="orderAction" method="showReceiptAndRejectBillDetailListForInvoiceBill">
+			<result name="success">/sales/receiptAndRejectBillDetailListForInvoiceBill.jsp</result>
+		</action>
+		<action name="showReceiptOrRejectBillDetailListPage" class="orderAction" method="showReceiptOrRejectBillDetailListPage">
+			<result name="success">/sales/receiptOrRejectBillDetailList.jsp</result>
+		</action>
+		<action name="showReceiptOrRejectBillDetailListForInvoiceBillPage" class="orderAction" method="showReceiptOrRejectBillDetailListForInvoiceBillPage">
+			<result name="success">/sales/receiptOrRejectBillDetailListForInvoiceBill.jsp</result>
+		</action>
+        <action name="salesModelPage" class="orderAction" method="salesModelPage">
+            <result name="success">/common/upload/salesModelPage.jsp</result>
+        </action>
+        <action name="updateOrderDate" class="orderAction" method="updateOrderDate">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+		<action name="getAuditPrice" class="orderAction" method="getAuditPrice">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+        
+	</package>
+	<package name="offprice" extends="parent" namespace="/sales">
+        <action name="exportOffpriceListData" class="offpriceAction" method="exportOffpriceListData"></action>
+        <action name="importOffpriceListData" class="offpriceAction" method="importOffpriceListData">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="offPriceAddByBrandAndSortPage" class="offpriceAction" method="offPriceAddByBrandAndSortPage">
+            <result name="success">/sales/offprice/offPriceAddByBrandAndSortPage.jsp</result>
+        </action>
+        <action name="getOffPriceByBrandAndSort" class="offpriceAction" method="getOffPriceByBrandAndSort">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+		<action name="showOffpriceAddPage" class="offpriceAction" method="showOffpriceAddPage">
+			<result name="success">/sales/offprice/offpricePage.jsp</result>
+		</action>
+		<action name="offpricePage" class="offpriceAction" method="offpricePage">
+			<result name="success">/sales/offprice/offpricePage.jsp</result>
+		</action>
+		<action name="offpriceAddPage" class="offpriceAction" method="offpriceAddPage">
+			<result name="success">/sales/offprice/offpriceAddPage.jsp</result>
+		</action>
+		<action name="addOffprice" class="offpriceAction" method="addOffprice">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="offpriceEditPage" class="offpriceAction" method="offpriceEditPage">
+			<result name="editSuccess">/sales/offprice/offpriceEditPage.jsp</result>
+			<result name="viewSuccess">/sales/offprice/offpriceViewPage.jsp</result>
+			<result name="addSuccess">/sales/offprice/offpriceAddPage.jsp</result>
+		</action>
+		<action name="updateOffprice" class="offpriceAction" method="updateOffprice">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="offpriceViewPage" class="offpriceAction" method="offpriceViewPage">
+			<result name="success">/sales/offprice/offpriceViewPage.jsp</result>
+		</action>
+		<action name="offpriceListPage" class="offpriceAction" method="offpriceListPage">
+			<result name="success">/sales/offprice/offpriceListPage.jsp</result>
+		</action>
+		<action name="getOffpriceList" class="offpriceAction" method="getOffpriceList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteOffprice" class="offpriceAction" method="deleteOffprice">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditOffprice" class="offpriceAction" method="auditOffprice">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+        <action name="offpriceCancel" class="offpriceAction" method="offpriceCancel">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+		<action name="submitOffpriceProcess" class="offpriceAction" method="submitOffpriceProcess">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="offpriceDetailAddPage" class="offpriceAction" method="offpriceDetailAddPage">
+			<result name="success">/sales/offprice/offpriceDetailAddPage.jsp</result>
+		</action>
+		<action name="offpriceDetailEditPage" class="offpriceAction" method="offpriceDetailEditPage">
+			<result name="success">/sales/offprice/offpriceDetailEditPage.jsp</result>
+		</action>
+	</package>
+	<package name="order" extends="parent" namespace="/sales">
+		<action name="importSalesOrderExcel" class="orderAction" method="importSalesOrderExcel">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="exportBillExcel" class="orderAction" method="exportBillExcel"></action>
+		<action name="showOrderAddPage" class="orderAction" method="showOrderAddPage">
+			<result name="success">/sales/order/orderPage.jsp</result>
+		</action>
+		<action name="orderPage" class="orderAction" method="orderPage">
+			<result name="success">/sales/order/orderPage.jsp</result>
+		</action>
+		<action name="orderAddPage" class="orderAction" method="orderAddPage">
+			<result name="success">/sales/order/orderAddPage.jsp</result>
+		</action>
+		<action name="orderCopyPage" class="orderAction" method="orderCopyPage">
+			<result name="success">/sales/order/orderCopyPage.jsp</result>
+		</action>
+		<action name="orderDetailAddPage" class="orderAction" method="orderDetailAddPage">
+			<result name="success">/sales/order/orderDetailAddPage.jsp</result>
+		</action>
+		<action name="orderDetailEditPage" class="orderAction" method="orderDetailEditPage">
+			<result name="success">/sales/order/orderDetailEditPage.jsp</result>
+		</action>
+		<action name="orderDiscountAddPage" class="orderAction" method="orderDiscountAddPage">
+			<result name="success">/sales/order/billDetailDiscountAddPage.jsp</result>
+		</action>
+		<action name="orderDiscountEditPage" class="orderAction" method="orderDiscountEditPage">
+			<result name="success">/sales/order/billDetailDiscountEditPage.jsp</result>
+		</action>
+		<action name="orderBrandDiscountAddPage" class="orderAction" method="orderBrandDiscountAddPage">
+			<result name="success">/sales/order/billDetailBrandDiscountAddPage.jsp</result>
+		</action>
+		<action name="orderBrandDiscountEditPage" class="orderAction" method="orderBrandDiscountEditPage">
+			<result name="success">/sales/order/billDetailBrandDiscountEditPage.jsp</result>
+		</action>
+		<action name="addOrder" class="orderAction" method="addOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="orderViewPage" class="orderAction" method="orderViewPage">
+			<result name="success">/sales/order/orderViewPage.jsp</result>
+		</action>
+		<action name="orderEditPage" class="orderAction" method="orderEditPage">
+			<result name="editSuccess">/sales/order/orderEditPage.jsp</result>
+			<result name="viewSuccess">/sales/order/orderViewPage.jsp</result>
+			<result name="addSuccess">/sales/order/orderAddPage.jsp</result>
+		</action>
+		<action name="updateOrder" class="orderAction" method="updateOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="orderListPage" class="orderAction" method="orderListPage">
+			<result name="success">/sales/order/orderListPage.jsp</result>
+		</action>
+		<action name="getOrderList" class="orderAction" method="getOrderList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getDetailListByOrder" class="orderAction" method="getDetailListByOrder">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getGoodsDetail" class="orderAction" method="getGoodsDetail">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditOrder" class="orderAction" method="auditOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="supplierAuditOrderMuti" class="orderAction" method="supplierAuditOrderMuti">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditMultiOrder" class="orderAction" method="auditMultiOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteOrder" class="orderAction" method="deleteOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="doInvalidOrder" class="orderAction" method="doInvalidOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="doBatchInvalidOrder" class="orderAction" method="doBatchInvalidOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="submitOrderProcess" class="orderAction" method="submitOrderProcess">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addOrderByGoodsout" class="orderAction" method="addOrderByGoodsout">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+        <action name="orderGoodsPromotionDetailAddPage" class="orderAction" method="orderGoodsPromotionDetailAddPage">
+            <result name="giveSuccess">/sales/order/orderGoodsPromotionGiveAddPage.jsp</result>
+            <result name="bundSuccess">/sales/order/orderGoodsPromotionBundAddPage.jsp</result>
+            <result name="success">/sales/order/orderPage.jsp</result>
+        </action>
+        <action name="getAuxUnitNumAndAmountByGive" class="orderAction" method="getAuxUnitNumAndAmountByGive">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="getUnitNumAndAmountByGive" class="orderAction" method="getUnitNumAndAmountByGive">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="getGoodsDetailListByBund" class="orderAction" method="getGoodsDetailListByBund">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="getSalesOrderPromotionInfo" class="orderAction" method="getSalesOrderPromotionInfo">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="modifyGoodsContractPrice" class="orderAction" method="modifyGoodsContractPrice">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="orderGoodsPromotionDetailEditPage" class="orderAction" method="orderGoodsPromotionDetailEditPage">
+            <result name="giveSuccess">/sales/order/orderGoodsPromotionGiveEditPage.jsp</result>
+            <result name="bundSuccess">/sales/order/orderGoodsPromotionBundEditPage.jsp</result>
+            <result name="success">/sales/order/orderPage.jsp</result>
+        </action>
+        <action name="showOrderVersionListPage" class="orderAction" method="showOrderVersionListPage">
+            <result name="success">/sales/order/orderVersionListPage.jsp</result>
+        </action>
+        <action name="orderVersionViewPage" class="orderAction" method="orderVersionViewPage">
+            <result name="success">/sales/order/orderVersionViewPage.jsp</result>
+        </action>
+        <action name="showFullFreeListPage" class="orderAction" method="showFullFreeListPage">
+            <result name="success">/sales/order/fullFreeListPage.jsp</result>
+        </action>
+        
+        <!-- 车销 -->
+		<action name="showOrderCarAddPage" class="orderCarAction" method="showOrderCarAddPage">
+			<result name="success">/sales/orderCar/orderPage.jsp</result>
+		</action>
+		<action name="orderCarPage" class="orderCarAction" method="orderCarPage">
+			<result name="success">/sales/orderCar/orderPage.jsp</result>
+		</action>
+		<action name="orderCarAddPage" class="orderCarAction" method="orderCarAddPage">
+			<result name="success">/sales/orderCar/orderAddPage.jsp</result>
+		</action>
+		<action name="addOrderCar" class="orderCarAction" method="addOrderCar">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="orderCarEditPage" class="orderCarAction" method="orderCarEditPage">
+			<result name="editSuccess">/sales/orderCar/orderEditPage.jsp</result>
+			<result name="viewSuccess">/sales/orderCar/orderViewPage.jsp</result>
+		</action>
+		<action name="updateOrderCar" class="orderCarAction" method="updateOrderCar">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="orderCarViewPage" class="orderCarAction" method="orderCarViewPage">
+			<result name="success">/sales/orderCar/orderViewPage.jsp</result>
+		</action>
+		<action name="orderCarListPage" class="orderCarAction" method="orderCarListPage">
+			<result name="success">/sales/orderCar/orderListPage.jsp</result>
+		</action>
+		<action name="getOrderCarList" class="orderCarAction" method="getOrderCarList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditOrderCar" class="orderCarAction" method="auditOrderCar">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="oppauditOrderCar" class="orderCarAction" method="oppauditOrderCar">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditMultiOrderCar" class="orderCarAction" method="auditMultiOrderCar">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>		
+		<action name="orderCarDetailAddPage" class="orderCarAction" method="orderCarDetailAddPage">
+			<result name="success">/sales/orderCar/orderCarDetailAddPage.jsp</result>
+		</action>
+		<action name="orderCarDetailEditPage" class="orderCarAction" method="orderCarDetailEditPage">
+			<result name="success">/sales/orderCar/orderCarDetailEditPage.jsp</result>
+		</action>
+		<action name="deleteOrderCar" class="orderCarAction" method="deleteOrderCar">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="updateOrderCarToDemand" class="orderCarAction" method="updateOrderCarToDemand">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="canAuditOrderCar" class="orderCarAction" method="canAuditOrderCar">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSaleOrderPrintList" class="orderAction" method="showSaleOrderPrintList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="countSalesGoodsByCustomer" class="orderAction" method="countSalesGoodsByCustomer">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="multiRefreshCustomerGoodsPrice" class="orderAction" method="multiRefreshCustomerGoodsPrice">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+        <action name="getCustomerFinanceInfo" class="orderAction" method="getCustomerFinanceInfo">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+		<action name="canAuditOrder" class="orderAction" method="canAuditOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+        <action name="messageRedictPage" class="orderAction" method="messageRedictPage">
+            <result name="success">/sales/order/messageRedictPage.jsp</result>
+        </action>
+		<action name="orderDeployInfo" class="orderAction" method="orderDeployInfo">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="orderDeployInfoPage" class="orderAction" method="orderDeployInfoPage">
+			<result name="success">/sales/order/orderEditPage.jsp</result>
+		</action>
+		<action name="orderCarPrintListPage" class="orderCarAction" method="orderCarPrintListPage">
+			<result name="success">/sales/orderCar/orderPrintListPage.jsp</result>
+		</action>
+		<action name="showOrderCarPrintListData" class="orderCarAction" method="showOrderCarPrintListData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="orderCarPrint" class="orderCarPrintAction" method="orderCarPrint"></action>	
+		<action name="orderCarPrintView" class="orderCarPrintAction" method="orderCarPrintView"></action>	
+		<action name="orderDetailAddByBrandAndSortPage" class="orderAction" method="orderDetailAddByBrandAndSortPage">
+			<result name="success">/sales/order/orderDetailAddByBrandAndSort.jsp</result>
+		</action>
+		<action name="getOrderDetailByBrandAndSort" class="orderAction" method="getOrderDetailByBrandAndSort">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="AddOrderDetailByBrandAndSort" class="orderAction" method="AddOrderDetailByBrandAndSort">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="checkOffprice" class="orderAction" method="checkOffprice">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+        <action name="getPromotionInfoByGroupid" class="orderAction" method="getPromotionInfoByGroupid">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="orderDetailDiscountAddPage" class="orderAction" method="orderDetailDiscountAddPage">
+            <result name="success">/sales/order/billDetailOrderDiscountAddPage.jsp</result>
+        </action>
+        <action name="setOrderNewbuyprice" class="orderAction" method="setOrderNewbuyprice">
+            <result name="success" type="json">
+                <param name="root">jsonArray</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+		<action name="setOrderHighestbuyprice" class="orderAction" method="setOrderHighestbuyprice">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+        <action name="setOrderBatchprice" class="orderAction" method="setOrderBatchprice">
+            <result name="success" type="json">
+                <param name="root">jsonArray</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+		<action name="exportOrderListData" class="orderAction" method="exportOrderListData"></action>
+	</package>
+	<package name="dispatchBill" extends="parent" namespace="/sales">
+		<action name="showDispatchBillAddPage" class="dispatchBillAction" method="showDispatchBillAddPage">
+			<result name="success">/sales/dispatchBill/dispatchBill.jsp</result>
+		</action>
+		<action name="dispatchBill" class="dispatchBillAction" method="dispatchBill">
+			<result name="success">/sales/dispatchBill/dispatchBill.jsp</result>
+		</action>
+		<action name="dispatchBillSourceQueryPage" class="dispatchBillAction" method="dispatchBillSourceQueryPage">
+			<result name="success">/sales/dispatchBill/dispatchBillSourceQueryPage.jsp</result>
+		</action>
+		<action name="dispatchBillSourcePage" class="dispatchBillAction" method="dispatchBillSourcePage">
+			<result name="success">/sales/dispatchBill/dispatchBillSourcePage.jsp</result>
+		</action>
+		<action name="billDetailAddPage" class="dispatchBillAction" method="billDetailAddPage">
+			<result name="success">/sales/dispatchBill/billDetailAddPage.jsp</result>
+		</action>
+		<action name="billDetailEditPage" class="dispatchBillAction" method="billDetailEditPage">
+			<result name="success">/sales/dispatchBill/billDetailEditPage.jsp</result>
+		</action>
+		<action name="billDetailDiscountAddPage" class="dispatchBillAction" method="billDetailDiscountAddPage">
+			<result name="success">/sales/dispatchBill/billDetailDiscountAddPage.jsp</result>
+		</action>
+		<action name="billDetailBrandDiscountAddPage" class="dispatchBillAction" method="billDetailBrandDiscountAddPage">
+			<result name="success">/sales/dispatchBill/billDetailBrandDiscountAddPage.jsp</result>
+		</action>
+		<action name="billDetailBrandDiscountEditPage" class="dispatchBillAction" method="billDetailBrandDiscountEditPage">
+			<result name="success">/sales/dispatchBill/billDetailBrandDiscountEditPage.jsp</result>
+		</action>
+		<action name="billDetailDiscountEditPage" class="dispatchBillAction" method="billDetailDiscountEditPage">
+			<result name="success">/sales/dispatchBill/billDetailDiscountEditPage.jsp</result>
+		</action>
+		<action name="computeDispatchBillDiscountTax" class="dispatchBillAction" method="computeDispatchBillDiscountTax">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="dispatchBillReferPage" class="dispatchBillAction" method="dispatchBillReferPage">
+			<result name="success">/sales/dispatchBill/dispatchBillReferPage.jsp</result>
+		</action>
+		<action name="dispatchBillAddPage" class="dispatchBillAction" method="dispatchBillAddPage">
+			<result name="success">/sales/dispatchBill/dispatchBillAddPage.jsp</result>
+		</action>
+		<action name="addDispatchBill" class="dispatchBillAction" method="addDispatchBill">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="dispatchBillEditPage" class="dispatchBillAction" method="dispatchBillEditPage">
+			<result name="editSuccess">/sales/dispatchBill/dispatchBillEditPage.jsp</result>
+			<result name="viewSuccess">/sales/dispatchBill/dispatchBillViewPage.jsp</result>
+		</action>
+		<action name="updateDispatchBill" class="dispatchBillAction" method="updateDispatchBill">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="dispatchBillViewPage" class="dispatchBillAction" method="dispatchBillViewPage">
+			<result name="success">/sales/dispatchBill/dispatchBillViewPage.jsp</result>
+		</action>
+		<action name="dispatchBillListPage" class="dispatchBillAction" method="dispatchBillListPage">
+			<result name="success">/sales/dispatchBill/dispatchBillListPage.jsp</result>
+		</action>
+		<action name="getDispatchBillList" class="dispatchBillAction" method="getDispatchBillList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getDetailListByDispatchBill" class="dispatchBillAction" method="getDetailListByDispatchBill">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteDispatchBill" class="dispatchBillAction" method="deleteDispatchBill">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditDispatchBill" class="dispatchBillAction" method="auditDispatchBill">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+        <action name="auditSupperDispatchBill" class="dispatchBillAction" method="auditSupperDispatchBill">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+		<action name="submitDispatchBillProcess" class="dispatchBillAction" method="submitDispatchBillProcess">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="dispatchBillDeploy" class="dispatchBillAction" method="dispatchBillDeploy">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="dispatchBillDeployPage" class="dispatchBillAction" method="dispatchBillDeployPage">
+			<result name="success">/sales/dispatchBill/dispatchBillEditPage.jsp</result>
+		</action>
+
+        <action name="checkBalanceDatePage" class="dispatchBillAction" method="checkBalanceDatePage">
+            <result name="success">/sales/checkBalanceDatePage.jsp</result>
+        </action>
+        <action name="updateDispatchBillDate" class="dispatchBillAction" method="updateDispatchBillDate">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+
+	</package>
+	<package name="receipt" extends="parent" namespace="/sales">
+        <action name="exportReceipt" class="receiptAction" method="exportReceipt">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="checkSourceBillType" class="receiptAction" method="checkSourceBillType">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="showReceiptAddPage" class="receiptAction" method="showReceiptAddPage">
+			<result name="success">/sales/receipt/receiptPage.jsp</result>
+		</action>
+		<action name="receiptPage" class="receiptAction" method="receiptPage">
+			<result name="success">/sales/receipt/receiptPage.jsp</result>
+		</action>
+		<action name="receiptUnCheckPage" class="receiptAction" method="receiptUnCheckPage">
+			<result name="success">/sales/receipt/receiptUnCheckPage.jsp</result>
+		</action>
+		<action name="receiptDetailAddPage" class="receiptAction" method="receiptDetailAddPage">
+			<result name="success">/sales/receipt/receiptDetailAddPage.jsp</result>
+		</action>
+		<action name="receiptDetailEditPage" class="receiptAction" method="receiptDetailEditPage">
+			<result name="success">/sales/receipt/receiptDetailEditPage.jsp</result>
+		</action>
+		<action name="receiptSourceQueryPage" class="receiptAction" method="receiptSourceQueryPage">
+			<result name="success">/sales/receipt/receiptSourceQueryPage.jsp</result>
+		</action>
+		<action name="receiptSourcePage" class="receiptAction" method="receiptSourcePage">
+			<result name="success">/sales/receipt/receiptSourcePage.jsp</result>
+		</action>
+		<action name="receiptAddPage" class="receiptAction" method="receiptAddPage">
+			<result name="success">/sales/receipt/receiptAddPage.jsp</result>
+		</action>
+		<action name="addReceiptRefer" class="receiptAction" method="addReceiptRefer">
+			<result name="editSuccess">/sales/receipt/receiptEditPage.jsp</result>
+			<result name="viewSuccess">/sales/receipt/receiptViewPage.jsp</result>
+		</action>
+		<action name="addReceipt" class="receiptAction" method="addReceipt">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="receiptEditPage" class="receiptAction" method="receiptEditPage">
+			<result name="editSuccess">/sales/receipt/receiptEditPage.jsp</result>
+			<result name="viewSuccess">/sales/receipt/receiptViewPage.jsp</result>
+		</action>
+		<action name="updateReceipt" class="receiptAction" method="updateReceipt">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="receiptViewPage" class="receiptAction" method="receiptViewPage">
+			<result name="success">/sales/receipt/receiptViewPage.jsp</result>
+		</action>
+		<action name="receiptListPage" class="receiptAction" method="receiptListPage">
+			<result name="success">/sales/receipt/receiptListPage.jsp</result>
+		</action>
+		<action name="receiptListUnAuditPage" class="receiptAction" method="receiptListUnAuditPage">
+			<result name="success">/sales/receipt/receiptListUnAuditPage.jsp</result>
+		</action>
+		<action name="getReceiptList" class="receiptAction" method="getReceiptList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getDetailListByReceipt" class="receiptAction" method="getDetailListByReceipt">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteReceipt" class="receiptAction" method="deleteReceipt">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditReceipt" class="receiptAction" method="auditReceipt">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditMultiReceipt" class="receiptAction" method="auditMultiReceipt">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="submitReceiptProcess" class="receiptAction" method="submitReceiptProcess">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="countReceiptTaxamount" class="receiptAction" method="countReceiptTaxamount">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="receiptCancelCheck" class="receiptAction" method="receiptCancelCheck">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="receiptRelationRejectBillPage" class="receiptAction" method="receiptRelationRejectBillPage">
+			<result name="success">/sales/receipt/receiptRelationRejectBillPage.jsp</result>
+		</action>
+		<action name="receiptRelationRejectBill" class="receiptAction" method="receiptRelationRejectBill">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showReceiptRejectBillIdPage" class="receiptAction" method="showReceiptRejectBillIdPage">
+			<result name="success">/sales/receipt/receiptRejectBillIdPage.jsp</result>
+		</action>
+		<action name="rejectNumBigerThanReceiptNum" class="receiptAction" method="rejectNumBigerThanReceiptNum">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showUpperSaleoutList" class="receiptAction" method="showUpperSaleoutList">
+			<result name="success">/sales/receipt/receiptUpperSaleoutListPage.jsp</result>
+		</action>
+        <action name="exportReceiptList" class="receiptAction" method="exportReceiptList"></action>
+        <action name="writeoffSalesReceipt" class="receiptAction" method="writeoffSalesReceipt">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="updateReceiptDate" class="receiptAction" method="updateReceiptDate">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+		<action name="showReceiptBrandDiscountAddPage" class="receiptAction" method="showReceiptBrandDiscountAddPage">
+			<result name="success">/sales/receipt/receiptBrandDiscountAddPage.jsp</result>
+		</action>
+		<action name="addSaveReceiptDetailBrandDiscount" class="receiptAction" method="addSaveReceiptDetailBrandDiscount">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showReceiptDetailDiscountAddPage" class="receiptAction" method="showReceiptDetailDiscountAddPage">
+			<result name="success">/sales/receipt/receiptDetailDiscountAddPage.jsp</result>
+		</action>
+		<action name="addSaveBillDetailReceiptDiscount" class="receiptAction" method="addSaveBillDetailReceiptDiscount">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+	<package name="rejectBill" extends="parent" namespace="/sales">
+		<action name="showRejectBillAddPage" class="rejectBillAction" method="showRejectBillAddPage">
+			<result name="success">/sales/rejectBill/rejectBill.jsp</result>
+		</action>
+		<action name="showRejectModelPage" class="rejectBillAction" method="showRejectModelPage">
+			<result name="success">/sales/rejectBill/rejectModelPage.jsp</result>
+		</action>
+        <action name="showAddRejectBillCaseOrderPage" class="rejectBillAction" method="showAddRejectBillCaseOrderPage">
+            <result name="success">/sales/rejectBill/addRejectBillCaseOrderPage.jsp</result>
+        </action>
+        <action name="showRejectBillDetailListPage" class="rejectBillAction" method="showRejectBillDetailListPage">
+            <result name="success">/sales/rejectBill/rejectBillDetailListPage.jsp</result>
+        </action>
+		<action name="rejectBill" class="rejectBillAction" method="rejectBill">
+			<result name="success">/sales/rejectBill/rejectBill.jsp</result>
+		</action>
+		<action name="rejectBillAddPage" class="rejectBillAction" method="rejectBillAddPage">
+			<result name="success">/sales/rejectBill/rejectBillAddPage.jsp</result>
+		</action>
+        <action name="showSalesOrderDetailListPage" class="rejectBillAction" method="showSalesOrderDetailListPage">
+            <result name="success">/sales/rejectBill/salesOrderDetailListPage.jsp</result>
+        </action>
+		<action name="rejectBillReferPage" class="rejectBillAction" method="rejectBillReferPage">
+			<result name="success">/sales/rejectBill/rejectBillReferPage.jsp</result>
+		</action>
+		<action name="rejectBillDetailAddPage" class="rejectBillAction" method="rejectBillDetailAddPage">
+			<result name="success">/sales/rejectBill/billDetailAddPage.jsp</result>
+		</action>
+		<action name="rejectBillDetailEditPage" class="rejectBillAction" method="rejectBillDetailEditPage">
+			<result name="success">/sales/rejectBill/billDetailEditPage.jsp</result>
+		</action>
+		<action name="rejectBillSourceQueryPage" class="rejectBillAction" method="rejectBillSourceQueryPage">
+			<result name="success">/sales/rejectBill/rejectBillSourceQueryPage.jsp</result>
+		</action>
+		<action name="rejectBillSourcePage" class="rejectBillAction" method="rejectBillSourcePage">
+			<result name="success">/sales/rejectBill/rejectBillSourcePage.jsp</result>
+		</action>
+		<action name="getRejectBillOperation" class="rejectBillAction" method="getRejectBillOperation">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addRejectBill" class="rejectBillAction" method="addRejectBill">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="importRejectModel" class="rejectBillAction" method="importRejectModel">
+			<result name="success">/common/upload/modelMsgPage.jsp</result>
+		</action>
+		<action name="rejectBillEditPage" class="rejectBillAction" method="rejectBillEditPage">
+			<result name="editSuccess">/sales/rejectBill/rejectBillEditPage.jsp</result>
+			<result name="viewSuccess">/sales/rejectBill/rejectBillViewPage.jsp</result>
+		</action>
+        <action name="exportRejectBill" class="rejectBillAction" method="exportRejectBill"></action>
+		<action name="updateRejectBill" class="rejectBillAction" method="updateRejectBill">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="rejectBillViewPage" class="rejectBillAction" method="rejectBillViewPage">
+			<result name="success">/sales/rejectBill/rejectBillViewPage.jsp</result>
+		</action>
+		<action name="rejectBillListPage" class="rejectBillAction" method="rejectBillListPage">
+			<result name="success">/sales/rejectBill/rejectBillListPage.jsp</result>
+		</action>
+		<action name="getRejectBillList" class="rejectBillAction" method="getRejectBillList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteRejectBill" class="rejectBillAction" method="deleteRejectBill">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditRejectBill" class="rejectBillAction" method="auditRejectBill">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditMultiRejectBill" class="rejectBillAction" method="auditMultiRejectBill">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="checkBuyGoodsRejectBill" class="rejectBillAction" method="checkBuyGoodsRejectBill">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="submitRejectBillProcess" class="rejectBillAction" method="submitRejectBillProcess">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showRejectBillDetailByBill" class="rejectBillAction" method="showRejectBillDetailByOrderid">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>	
+		<action name="rejectBillPrint" class="rejectBillPrintAction" method="rejectBillPrint"></action>	
+		<action name="rejectBillPrintView" class="rejectBillPrintAction" method="rejectBillPrintView"></action>	
+		<action name="showDirectRejectBillDetailByIds" class="rejectBillAction" method="showDirectRejectBillDetailByIds">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="rejectBillSplitPage" class="rejectBillAction" method="rejectBillSplitPage">
+			<result name="success">/sales/rejectBill/rejectBillSplitPage.jsp</result>
+		</action>
+		<action name="updateRejectBillSplit" class="rejectBillAction" method="updateRejectBillSplit">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="rejectBillCheckListPage" class="rejectBillAction" method="rejectBillCheckListPage">
+			<result name="success">/sales/rejectBill/rejectBillCheckListPage.jsp</result>
+		</action>
+		<action name="rejectBillCheckPage" class="rejectBillAction" method="rejectBillCheckPage">
+			<result name="success">/sales/rejectBill/rejectBillCheckPage.jsp</result>
+		</action>
+		<action name="rejectBillCheckEditPage" class="rejectBillAction" method="rejectBillCheckEditPage">
+			<result name="success">/sales/rejectBill/rejectBillCheckEditPage.jsp</result>
+			<result name="checkView">/sales/rejectBill/rejectBillCheckViewPage.jsp</result>
+		</action>
+		<action name="updateRejectBillCheck" class="rejectBillAction" method="updateRejectBillCheck">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="updateRejectBillCheckCancel" class="rejectBillAction" method="updateRejectBillCheckCancel">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="checkMultiRejectBill" class="rejectBillAction" method="checkMultiRejectBill">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="rejectBillPhonePage" class="rejectBillAction" method="rejectBillPhonePage">
+			<result name="success">/sales/rejectBill/rejectBillPhoneListPage.jsp</result>
+		</action>
+		<action name="rejectBillPhone" class="rejectBillAction" method="rejectBillPhone">
+			<result name="success">/sales/rejectBill/rejectBillPhone.jsp</result>
+		</action>
+		<action name="auditRejectBillPhone" class="rejectBillAction" method="auditRejectBillPhone">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditMutRejectBillPhone" class="rejectBillAction" method="auditMutRejectBillPhone">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteRejectBillPhone" class="rejectBillAction" method="deleteRejectBillPhone">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+        <action name="exportRejectBill" class="rejectBillAction" method="exportRejectBill">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+         <action name="exportRejectBillList" class="rejectBillAction" method="exportRejectBillList">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="rejectBillCarListPage" class="rejectBillAction" method="rejectBillCarListPage">
+			<result name="success">/sales/rejectBill/rejectBillCarListPage.jsp</result>
+		</action>
+		<action name="deleteRejectBillCar" class="rejectBillAction" method="deleteRejectBillCar">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditMutRejectBillCar" class="rejectBillAction" method="auditMutRejectBillCar">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditRejectBillCar" class="rejectBillAction" method="auditRejectBillCar">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="oppauditRejectBillCar" class="rejectBillAction" method="oppauditRejectBillCar">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="rejectBillCar" class="rejectBillAction" method="rejectBillCar">
+			<result name="success">/sales/rejectBill/rejectBillCar.jsp</result>
+		</action>
+		<action name="updateRejectBillCarAudit" class="rejectBillAction" method="updateRejectBillCarAudit">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+        <action name="showRejectBillHistoryGoodsPricePage" class="rejectBillAction" method="showRejectBillHistoryGoodsPricePage">
+            <result name="success">/sales/rejectBill/rejectBillHistoryGoodsPricePage.jsp</result>
+        </action>
+        <action name="getNotaxAmountByTaxAmount" class="rejectBillAction" method="getNotaxAmountByTaxAmount">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+		<action name="importRejectBill" class="rejectBillAction" method="importRejectBill">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+        <action name="getAmountByPrice" class="rejectBillAction" method="getAmountByPrice">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="getPriceByAmount" class="rejectBillAction" method="getPriceByAmount">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+	</package>
+	<package name="salesPhone" extends="parent" namespace="/sales">
+		<action name="locationPage" class="salesPhoneAction" method="locationPage">
+			<result name="success">/sales/phone/locationPage.jsp</result>
+		</action>
+		<action name="routeListPage" class="salesPhoneAction" method="routeListPage">
+			<result name="success">/sales/phone/routeListPage.jsp</result>
+		</action>
+		<action name="getRouteList" class="salesPhoneAction" method="getRouteList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showRouteAddPage" class="salesPhoneAction" method="showRouteAddPage">
+			<result name="success">/sales/phone/routeAddPage.jsp</result>
+		</action>
+		
+		<action name="routePage" class="salesPhoneAction" method="routePage">
+			<result name="success">/sales/phone/routePage.jsp</result>
+		</action>
+		
+		<action name="addRoute" class="salesPhoneAction" method="addRoute">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		<action name="showRouteReportPage" class="salesPhoneAction" method="showRouteReportPage">
+			<result name="success">/sales/phone/routeReportPage.jsp</result>
+		</action>
+		<action name="showRouteDetailReportPage" class="salesPhoneAction" method="showRouteDetailReportPage">
+			<result name="success">/sales/phone/routeDetailReportPage.jsp</result>
+		</action>
+		<action name="getDaysOfTheMonth" class="salesPhoneAction" method="getDaysOfTheMonth">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getRoute" class="salesPhoneAction" method="getRoute">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getRouteReportList" class="salesPhoneAction" method="getRouteReportList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="exportRouteReportData" class="salesPhoneAction" method="exportRouteReportData"></action>
+	</package>
+	<package name="demand" extends="parent" namespace="/sales">
+		<action name="addOrderByDemandAndOrderGoods" class="demandAction" method="addOrderByDemandAndOrderGoods">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showDemandPersonnelDataDetailPage" class="demandAction" method="showDemandPersonnelDataDetailPage">
+			<result name="success">/sales/demand/demandPersonnelDataDetailPage.jsp</result>
+		</action>
+		<action name="getPersonnelDemandData" class="demandAction" method="getPersonnelDemandData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showPersonnelDemandDataPage" class="demandAction" method="showPersonnelDemandDataPage">
+			<result name="success">/sales/demand/demandPersonnelDataPage.jsp</result>
+		</action>
+		<action name="demandListImagePage" class="demandAction" method="demandListImagePage">
+			<result name="success">/sales/demand/demandImagePage.jsp</result>
+		</action>
+		<action name="getDemandImageList" class="demandAction" method="getDemandImageList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getDemandImageData" class="demandAction" method="getDemandImageData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="demandPage" class="demandAction" method="demandPage">
+			<result name="success">/sales/demand/demandPage.jsp</result>
+		</action>
+		<action name="demandViewPage" class="demandAction" method="demandViewPage">
+			<result name="success">/sales/demand/demandViewPage.jsp</result>
+		</action>
+		<action name="demandListPage" class="demandAction" method="demandListPage">
+			<result name="success">/sales/demand/demandListPage.jsp</result>
+		</action>
+		<action name="getDemandList" class="demandAction" method="getDemandList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="canAuditDemand" class="demandAction" method="canAuditDemand">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditDemand" class="demandAction" method="auditDemand">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteDemand" class="demandAction" method="deleteDemand">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="updateDemandToOrderCar" class="demandAction" method="updateDemandToOrderCar">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+	<package name="promotion" extends="parent" namespace="/sales">
+		<!--<action name="PromotionListPage" class="promotionAction" method="PromotionListPage">-->
+			<!--<result name="success">/sales/promotion/promotionPackageList.jsp</result>-->
+		<!--</action>-->
+        <action name="promotionCancel" class="promotionAction" method="promotionCancel">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+		<action name="getPromotionList" class="promotionAction" method="getPromotionList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="promotionPage" class="promotionAction" method="promotionPage">
+			<result name="success">/sales/promotion/promotionPage.jsp</result>
+		</action>		
+		<action name="promotionAddPage" class="promotionAction" method="promotionAddPage">
+			<result name="success">/sales/promotion/promotionAddPage.jsp</result>			
+		</action>		
+		<action name="promotionViewPage" class="promotionAction" method="promotionViewPage">
+			<result name="success">/sales/promotion/promotionViewPage.jsp</result>
+		</action>		
+		<action name="groupDetailViewPage" class="promotionAction" method="groupDetailViewPage">
+			<result name="success">/sales/promotion/buyFreeDetailViewPage.jsp</result>
+		</action>			
+		<action name="groupDetailAddPage" class="promotionAction" method="groupDetailAddPage">
+			<result name="success">/sales/promotion/buyFreeDetailAddPage.jsp</result>
+			<result name="bundleSuccess">/sales/promotion/bundleDetailAddPage.jsp</result>
+		</action>	
+		<action name="auxUnitNumChange" class="promotionAction" method="auxUnitNumChange">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>	
+		<action name="getGiveGoodsInfo" class="promotionAction" method="getGiveGoodsInfo">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="viewGiveDetail" class="promotionAction" method="viewGiveDetail">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>		
+		<action name="groupDetailEdit" class="promotionAction" method="groupDetailEdit">
+			<result name="success">/sales/promotion/buyFreeDetailEditPage.jsp</result>
+		</action>		
+		<action name="addPromotionGroup" class="promotionAction" method="addPromotionGroup">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+        <action name="editPromotionGroup" class="promotionAction" method="editPromotionGroup">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+		<action name="auditPromotion" class="promotionAction" method="auditPromotion">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="promotionEditPage" class="promotionAction" method="promotionEditPage">
+			<result name="editSuccess">/sales/promotion/promotionEditPage.jsp</result>
+			<result name="viewSuccess">/sales/promotion/promotionViewPage.jsp</result>
+			<result name="addSuccess">/sales/promotion/promotionAddPage.jsp</result>
+		</action>
+		
+		<action name="saveEditPromotionGroup" class="promotionAction" method="saveEditPromotionGroup">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deletePromotion" class="promotionAction" method="deletePromotion">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+
+	<action name="auditbill" class="promotionAction" method="auditbill">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	<action name="bundleDetailView" class="promotionAction" method="bundleDetailView">
+		<result name="success">/sales/promotion/bundleDetailViewPage.jsp</result>
+	</action>			
+	
+	<action name="bundleEditDetail" class="promotionAction" method="bundleEditDetail">
+		<result name="success">/sales/promotion/bundleDetailEditPage.jsp</result>
+	</action>
+	<action name="buyFreeListPage" class="promotionAction" method="buyFreeListPage">
+			<result name="success">/sales/promotion/buyFreeListPage.jsp</result>
+    </action>
+	<action name="bundleListPage" class="promotionAction" method="bundleListPage">
+			<result name="success">/sales/promotion/bundleListPage.jsp</result>
+	</action>
+    <action name="fullBuyFreeListPage" class="promotionAction" method="fullBuyFreeListPage">
+        <result name="success">/sales/promotion/fullBuyFreeListPage.jsp</result>
+    </action>
+	
+	</package>
+
+	<package name="oweOrder" extends="parent" namespace="/sales">
+	    <action name="oweOrderListPage" class="oweOrderAction" method="oweOrderListPage">
+             <result name="success">/sales/oweOrder/oweOrderListPage.jsp</result>
+        </action>
+        <action name="getOweOrderList" class="oweOrderAction" method="getOweOrderList">
+             <result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+        </action>
+        <action name="oweOrderPage" class="oweOrderAction" method="oweOrderPage">
+            <result name="success">/sales/oweOrder/oweOrderPage.jsp</result>
+        </action>
+        <action name="oweOrderViewPage" class="oweOrderAction" method="oweOrderViewPage">
+            <result name="success">/sales/oweOrder/oweOrderViewPage.jsp</result>
+        </action>
+		<action name="updateOweOrder" class="oweOrderAction" method="updateOweOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+        <action name="checkAddOrder" class="oweOrderAction" method="checkAddOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="OweOrderAddOrder" class="oweOrderAction" method="OweOrderAddOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="OweOrderAddOrders" class="oweOrderAction" method="OweOrderAddOrders">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteOweOrder" class="oweOrderAction" method="deleteOweOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addOweOrderByDispatchBill" class="oweOrderAction" method="addOweOrderByDispatchBill">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addOweOrderByOrder" class="oweOrderAction" method="addOweOrderByOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="closeOweOrder" class="oweOrderAction" method="closeOweOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="checkOweOrderId" class="oweOrderAction" method="checkOweOrderId">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+
+    <package name="model" extends="parent" namespace="/sales">
+        <action name="importHtmlByHG" class="modelAction" method="importHtmlByHG">
+            <result name="success">/common/upload/modelMsgPage.jsp</result>
+        </action>
+        <action name="importHtmlByYK" class="modelAction" method="importHtmlByYK">
+            <result name="success">/common/upload/modelMsgPage.jsp</result>
+        </action>
+        <action name="importHtmlByXFX" class="modelAction" method="importHtmlByXFX">
+            <result name="success">/common/upload/modelMsgPage.jsp</result>
+        </action>
+        <action name="importHtmlByDC" class="modelAction" method="importHtmlByDC">
+            <result name="success">/common/upload/modelMsgPage.jsp</result>
+        </action>
+        <action name="importXmlByTY" class="modelAction" method="importXmlByTY">
+            <result name="success">/common/upload/modelMsgPage.jsp</result>
+        </action>
+        <action name="importHtmlByTKL" class="modelAction" method="importHtmlByTKL">
+            <result name="success">/common/upload/modelMsgPage.jsp</result>
+        </action>
+        <action name="importExcelByHR" class="modelAction" method="importExcelByHR">
+            <result name="success">/common/upload/modelMsgPage.jsp</result>
+        </action>
+        <action name="importExcelByYW" class="modelAction" method="importExcelByYW">
+            <result name="success">/common/upload/modelMsgPage.jsp</result>
+        </action>
+        <action name="importExcelByYZD" class="modelAction" method="importExcelByYZD">
+            <result name="success">/common/upload/modelMsgPage.jsp</result>
+        </action>
+        <action name="importExcelByHZW" class="modelAction" method="importExcelByHZW">
+            <result name="success">/common/upload/modelMsgPage.jsp</result>
+        </action>
+        <action name="importExcelByXBX" class="modelAction" method="importExcelByXBX">
+            <result name="success">/common/upload/modelMsgPage.jsp</result>
+        </action>
+        <action name="importHtmlByLH" class="modelAction" method="importHtmlByLH">
+            <result name="success">/common/upload/modelMsgPage.jsp</result>
+        </action>
+        <action name="importHtmlByCKL" class="modelAction" method="importHtmlByCKL">
+        <result name="success">/common/upload/modelMsgPage.jsp</result>
+        </action>
+        <action name="importHtmlByYH" class="modelAction" method="importHtmlByYH">
+            <result name="success">/common/upload/modelMsgPage.jsp</result>
+        </action>
+        <action name="importExcelByDN" class="modelAction" method="importExcelByDN">
+            <result name="success">/common/upload/modelMsgPage.jsp</result>
+        </action>
+        <action name="importExcelByTH" class="modelAction" method="importExcelByTH">
+            <result name="success">/common/upload/modelMsgPage.jsp</result>
+        </action>
+        <action name="importExcelByYHD" class="modelAction" method="importExcelByYHD">
+            <result name="success">/common/upload/modelMsgPage.jsp</result>
+        </action>
+        <action name="importTxt2" class="modelAction" method="importTxt2">
+            <result name="success">/common/upload/modelMsgPage.jsp</result>
+        </action>
+        <action name="importExcelByTable" class="modelAction" method="importExcelByTable">
+            <result name="success">/common/upload/modelMsgPage.jsp</result>
+        </action>
+        <action name="importByDigitalParam" class="modelAction" method="importByDigitalParam">
+            <result name="success">/common/upload/modelMsgPage.jsp</result>
+        </action>
+        <action name="importHtmlBydigitalParam" class="modelAction" method="importHtmlBydigitalParam">
+            <result name="success">/common/upload/modelMsgPage.jsp</result>
+        </action>
+        <action name="importAdaptiveExcelByColumn" class="modelAction" method="importAdaptiveExcelByColumn">
+            <result name="success">/common/upload/modelMsgPage.jsp</result>
+        </action>
+		<action name="importMultiInfoByDigitalParam" class="modelAction" method="importMultiInfoByDigitalParam">
+			<result name="success">/common/upload/modelMsgPage.jsp</result>
+		</action>
+    </package>
+
+    <package name="import" extends="parent" namespace="/sales">
+        <action name="importModelList" class="importAction" method="importModelList">
+            <result name="success">/sales/salesOrderModel/importModelList.jsp</result>
+        </action>
+        <action name="showImportModelData" class="importAction" method="showImportModelData">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="showImportModelAddPage" class="importAction" method="showImportModelAddPage">
+            <result name="success">/sales/salesOrderModel/importModelAddPage.jsp</result>
+        </action>
+		<action name="showImportAddPage" class="importAction" method="showImportAddPage">
+			<result name="success">/sales/salesOrderModel/importAddPage.jsp</result>
+		</action>
+		<action name="showImportParamAddPage" class="importAction" method="showImportParamAddPage">
+			<result name="success">/sales/salesOrderModel/importParamAddPage.jsp</result>
+		</action>
+		<action name="addModelParam" class="importAction" method="addModelParam">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+        <action name="addImportModel" class="importAction" method="addImportModel">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="deleteImportModel" class="importAction" method="deleteImportModel">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="showImportModelEditPage" class="importAction" method="showImportModelEditPage">
+            <result name="success">/sales/salesOrderModel/importModelEditPage.jsp</result>
+        </action>
+        <action name="showImportModelViewPage" class="importAction" method="showImportModelViewPage">
+            <result name="success">/sales/salesOrderModel/importModelViewPage.jsp</result>
+        </action>
+        <action name="editImportModel" class="importAction" method="editImportModel">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="enableImportModel" class="importAction" method="enableImportModel">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="disableImportModel" class="importAction" method="disableImportModel">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="editImportModel" class="importAction" method="editImportModel">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+
+    </package>
+	<package name="sales" extends="parent" namespace="/sales">
+		<action name="orderGoodsListPage" class="orderGoodsAction" method="orderGoodsListPage">
+			<result name="success">/sales/ordergoods/orderGoodsLiistPage.jsp</result>
+		</action>
+		<action name="getOrderGoodsList" class="orderGoodsAction" method="getOrderGoodsList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="orderGoodsPage" class="orderGoodsAction" method="orderGoodsPage">
+			<result name="success">/sales/ordergoods/orderGoodsPage.jsp</result>
+		</action>
+		<action name="orderGoodsAddPage" class="orderGoodsAction" method="orderGoodsAddPage">
+			<result name="success">/sales/ordergoods/orderGoodsAddPage.jsp</result>
+		</action>
+		<action name="showOrderGoodsDetailAddPage" class="orderGoodsAction" method="showOrderGoodsDetailAddPage">
+			<result name="success">/sales/ordergoods/orderGoodsDetailAddPage.jsp</result>
+			<result name="notaxsuccess">/sales/ordergoods/orderGoodsNotaxDetailAddPage.jsp</result>
+		</action>
+		<action name="orderGoodsDetailEditPage" class="orderGoodsAction" method="orderGoodsDetailEditPage">
+			<result name="success">/sales/ordergoods/orderGoodsDetailEditPage.jsp</result>
+			<result name="notaxsuccess">/sales/ordergoods/orderGoodsNotaxDetailEditPage.jsp</result>
+		</action>
+		<action name="addOrderGoods" class="orderGoodsAction" method="addOrderGoods">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="orderGoodsEditPage" class="orderGoodsAction" method="orderGoodsEditPage">
+			<result name="editSuccess">/sales/ordergoods/orderGoodsEditPage.jsp</result>
+			<result name="viewSuccess">/sales/ordergoods/orderGoodsViewPage.jsp</result>
+			<result name="addSuccess">/sales/ordergoods/orderGoodsAddPage.jsp</result>
+		</action>
+		<action name="orderGoodsViewPage" class="orderGoodsAction" method="orderGoodsViewPage">
+			<result name="success">/sales/ordergoods/orderGoodsViewPage.jsp</result>
+		</action>
+		<action name="updateOrderGoods" class="orderGoodsAction" method="updateOrderGoods">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="orderGoodsDiscountEditPage" class="orderGoodsAction" method="orderGoodsDiscountEditPage">
+			<result name="success">/sales/ordergoods/billDetailDiscountEditPage.jsp</result>
+		</action>
+		<action name="orderGoodsBrandDiscountEditPage" class="orderGoodsAction" method="orderGoodsBrandDiscountEditPage">
+			<result name="success">/sales/ordergoods/billDetailBrandDiscountEditPage.jsp</result>
+		</action>
+		<action name="canAuditOrderGoods" class="orderGoodsAction" method="canAuditOrderGoods">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditOrderGoods" class="orderGoodsAction" method="auditOrderGoods">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteOrderGoods" class="orderGoodsAction" method="deleteOrderGoods">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditMultiOrderGoods" class="orderGoodsAction" method="auditMultiOrderGoods">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="supplierAuditOrderGoodsMuti" class="orderGoodsAction" method="supplierAuditOrderGoodsMuti">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showGoodsToOrderPage" class="orderGoodsAction" method="showGoodsToOrderPage">
+			<result name="success">/sales/ordergoods/goodsToOrderPage.jsp</result>
+		</action>
+		<action name="addOrderByOrderGoodsBill" class="orderGoodsAction" method="addOrderByOrderGoodsBill">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showOrderAddByOrderGoodsPage" class="orderGoodsAction" method="showOrderAddByOrderGoodsPage">
+			<result name="success">/sales/ordergoods/orderAddByOrderGoodsPage.jsp</result>
+		</action>
+		<action name="getOrderGoodsListForAddOrder" class="orderGoodsAction" method="getOrderGoodsListForAddOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showOrderGoodsToOrderDataPage" class="orderGoodsAction" method="showOrderGoodsToOrderDataPage">
+			<result name="success">/sales/ordergoods/orderAddByOrderGoodsDetailPage.jsp</result>
+		</action>
+		<action name="showDemandAddOrderGoodsPage" class="orderGoodsAction" method="showDemandAddOrderGoodsPage">
+			<result name="success">/sales/demand/demandAddOrderGoodsPage.jsp</result>
+		</action>
+		<action name="getDemandAddOrderGoodsData" class="orderGoodsAction" method="getDemandAddOrderGoodsData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="doInvalidOrderGoods" class="orderGoodsAction" method="doInvalidOrderGoods">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="checkInvalidOrderGoods" class="orderGoodsAction" method="checkInvalidOrderGoods">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="exportOrderGoodsData" class="orderGoodsAction" method="exportOrderGoodsData"></action>
+
+	</package>
+</struts>

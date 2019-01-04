@@ -1,0 +1,941 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.purchase.dao.LimitPirceOrderMapper" >
+	<sql id="LPO_Base_Column_List">	    
+    id, businessdate, status, remark, adduserid, addusername, adddeptid, adddeptname, 
+    addtime, modifyuserid, modifyusername, modifytime, audituserid, auditusername, audittime, 
+    stopuserid, stopusername, stoptime, closetime, printtimes, applyuserid, applydeptid, 
+    field01, field02, field03, field04, field05, field06, field07, field08, effectstartdate, 
+    effectenddate
+	</sql>
+	<sql id="LPOPageList_Where_Clause" >
+      <if test="condition.id != null" >
+         and id like CONCAT('%',#{condition.id},'%')
+      </if>
+      <if test="condition.businessdate != null" >
+         and businessdate = #{condition.businessdate}
+      </if>
+      <if test="condition.status != null" >
+         and status = #{condition.status}
+      </if>
+      <if test="condition.remark != null" >
+         and remark = #{condition.remark}
+      </if>
+      <if test="condition.adduserid != null" >
+         and adduserid = #{condition.adduserid}
+      </if>
+      <if test="condition.addusername != null" >
+         and addusername = #{condition.addusername}
+      </if>
+      <if test="condition.adddeptid != null" >
+         and adddeptid = #{condition.adddeptid}
+      </if>
+      <if test="condition.adddeptname != null" >
+         and adddeptname = #{condition.adddeptname}
+      </if>
+      <if test="condition.addtime != null" >
+         and addtime = #{condition.addtime}
+      </if>
+      <if test="condition.modifyuserid != null" >
+         and modifyuserid = #{condition.modifyuserid}
+      </if>
+      <if test="condition.modifyusername != null" >
+         and modifyusername = #{condition.modifyusername}
+      </if>
+      <if test="condition.modifytime != null" >
+         and modifytime = #{condition.modifytime}
+      </if>
+      <if test="condition.audituserid != null" >
+         and audituserid = #{condition.audituserid}
+      </if>
+      <if test="condition.auditusername != null" >
+         and auditusername = #{condition.auditusername}
+      </if>
+      <if test="condition.audittime != null" >
+         and audittime = #{condition.audittime}
+      </if>
+      <if test="condition.stopuserid != null" >
+         and stopuserid = #{condition.stopuserid}
+      </if>
+      <if test="condition.stopusername != null" >
+         and stopusername = #{condition.stopusername}
+      </if>
+      <if test="condition.stoptime != null" >
+         and stoptime = #{condition.stoptime}
+      </if>
+      <if test="condition.closetime != null" >
+         and closetime = #{condition.closetime}
+      </if>
+      <if test="condition.printtimes != null" >
+         and printtimes = #{condition.printtimes}
+      </if>
+      <if test="condition.applyuserid != null" >
+         and applyuserid = #{condition.applyuserid}
+      </if>
+      <if test="condition.applydeptid != null" >
+         and applydeptid = #{condition.applydeptid}
+      </if>
+      <if test="condition.field01 != null" >
+         and field01 = #{condition.field01}
+      </if>
+      <if test="condition.field02 != null" >
+         and field02 = #{condition.field02}
+      </if>
+      <if test="condition.field03 != null" >
+         and field03 = #{condition.field03}
+      </if>
+      <if test="condition.field04 != null" >
+         and field04 = #{condition.field04}
+      </if>
+      <if test="condition.field05 != null" >
+         and field05 = #{condition.field05}
+      </if>
+      <if test="condition.field06 != null" >
+         and field06 = #{condition.field06}
+      </if>
+      <if test="condition.field07 != null" >
+         and field07 = #{condition.field07}
+      </if>
+      <if test="condition.field08 != null" >
+         and field08 = #{condition.field08}
+      </if>
+      <if test="condition.effectstartdate != null">
+         and effectstartdate = #{condition.effectstartdate}
+      </if>
+      <if test="condition.effectenddate != null">
+         and effectenddate = #{condition.effectenddate}
+      </if>
+  </sql>
+  <select id="getLimitPriceOrder" parameterType="java.lang.String" resultType="com.hd.agent.purchase.model.LimitPriceOrder">
+    select 
+    <include refid="LPO_Base_Column_List" />
+    from t_purchase_limitpriceorder
+    where id = #{id}
+  </select>
+  <select id="getLimitPriceOrderBy" parameterType="java.util.Map" resultType="com.hd.agent.purchase.model.LimitPriceOrder">
+    select 
+    <choose>
+		<when test="cols!=null">
+			<include refid="common.Page_Column"/>
+		</when>
+		<when test="cols==null">
+ 				<include refid="LPO_Base_Column_List" />
+		</when>
+	</choose>
+	from t_purchase_limitpriceorder
+	where
+	<trim prefixOverrides="and|or" >	  		
+		<if test="id != null" >
+		   and id = #{id}
+		</if>
+		<if test="status != null" >
+		   and status = #{status}
+		</if>
+	    <if test="authDataSql != null">
+	    	and ${authDataSql}
+	    </if>
+    </trim>
+  </select>
+  <select id="getLimitPriceOrderListBy" parameterType="java.util.Map" resultType="com.hd.agent.purchase.model.LimitPriceOrder">
+    select  	
+    <choose>
+		<when test="cols!=null">
+			<include refid="common.Page_Column"/>
+		</when>
+		<when test="cols==null">
+ 			<include refid="LPO_Base_Column_List" />
+		</when>
+	</choose>
+	from t_purchase_limitpriceorder
+	where
+	<trim prefixOverrides="and|or" >	  		
+		<if test="id != null" >
+		   and id = #{id}
+		</if>
+		<if test="status != null" >
+		   and status = #{status}
+		</if>
+	    <if test="authDataSql != null">
+	    	and ${authDataSql}
+	    </if>
+	    <if test="notEffectData != null">	  
+	    	and status='3'
+	    	and <![CDATA[ ( LENGTH(effectenddate)!=0 AND TO_DAYS(now()) > TO_DAYS(STR_TO_DATE(effectenddate,'%Y-%m-%d')) )  ]]>	
+	    </if>
+    </trim>
+ </select>
+  <insert id="insertLimitPriceOrder" parameterType="com.hd.agent.purchase.model.LimitPriceOrder" >
+    insert into t_purchase_limitpriceorder
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="businessdate != null" >
+        businessdate,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="adduserid != null" >
+        adduserid,
+      </if>
+      <if test="addusername != null" >
+        addusername,
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid,
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname,
+      </if>
+      <if test="addtime != null" >
+        addtime,
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid,
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername,
+      </if>
+      <if test="modifytime != null" >
+        modifytime,
+      </if>
+      <if test="audituserid != null" >
+        audituserid,
+      </if>
+      <if test="auditusername != null" >
+        auditusername,
+      </if>
+      <if test="audittime != null" >
+        audittime,
+      </if>
+      <if test="stopuserid != null" >
+        stopuserid,
+      </if>
+      <if test="stopusername != null" >
+        stopusername,
+      </if>
+      <if test="stoptime != null" >
+        stoptime,
+      </if>
+      <if test="closetime != null" >
+        closetime,
+      </if>
+      <if test="printtimes != null" >
+        printtimes,
+      </if>
+      <if test="applyuserid != null">
+        applyuserid,
+      </if>
+      <if test="applydeptid != null">
+        applydeptid,
+      </if>
+      <if test="field01 != null" >
+        field01,
+      </if>
+      <if test="field02 != null" >
+        field02,
+      </if>
+      <if test="field03 != null" >
+        field03,
+      </if>
+      <if test="field04 != null" >
+        field04,
+      </if>
+      <if test="field05 != null" >
+        field05,
+      </if>
+      <if test="field06 != null" >
+        field06,
+      </if>
+      <if test="field07 != null" >
+        field07,
+      </if>
+      <if test="field08 != null" >
+        field08,
+      </if>
+      <if test="effectstartdate != null">
+        effectstartdate,
+      </if>
+      <if test="effectenddate != null">
+        effectenddate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="businessdate != null" >
+        #{businessdate},
+      </if>
+      <if test="status != null" >
+        #{status},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+      <if test="adduserid != null" >
+        #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        #{adddeptname},
+      </if>
+      <if test="addtime != null" >
+        #{addtime},
+      </if>
+      <if test="modifyuserid != null" >
+        #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        #{modifyusername},
+      </if>
+      <if test="modifytime != null" >
+        #{modifytime},
+      </if>
+      <if test="audituserid != null" >
+        #{audituserid},
+      </if>
+      <if test="auditusername != null" >
+        #{auditusername},
+      </if>
+      <if test="audittime != null" >
+        #{audittime},
+      </if>
+      <if test="stopuserid != null" >
+        #{stopuserid},
+      </if>
+      <if test="stopusername != null" >
+        #{stopusername},
+      </if>
+      <if test="stoptime != null" >
+        #{stoptime},
+      </if>
+      <if test="closetime != null" >
+        #{closetime},
+      </if>
+      <if test="printtimes != null" >
+        #{printtimes},
+      </if>
+      <if test="applyuserid != null">
+        #{applyuserid},
+      </if>
+      <if test="applydeptid != null">
+        #{applydeptid},
+      </if>
+      <if test="field01 != null" >
+        #{field01},
+      </if>
+      <if test="field02 != null" >
+        #{field02},
+      </if>
+      <if test="field03 != null" >
+        #{field03},
+      </if>
+      <if test="field04 != null" >
+        #{field04},
+      </if>
+      <if test="field05 != null" >
+        #{field05},
+      </if>
+      <if test="field06 != null" >
+        #{field06},
+      </if>
+      <if test="field07 != null" >
+        #{field07},
+      </if>
+      <if test="field08 != null" >
+        #{field08},
+      </if>
+      <if test="effectstartdate != null">
+        #{effectstartdate},
+      </if>
+      <if test="effectenddate != null">
+        #{effectenddate},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateLimitPriceOrder" parameterType="com.hd.agent.purchase.model.LimitPriceOrder" >
+    update t_purchase_limitpriceorder
+    <set>
+      <if test="businessdate != null" >
+        businessdate = #{businessdate},
+      </if>
+      <if test="status != null" >
+        status = #{status},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark},
+      </if>
+      <if test="adduserid != null" >
+        adduserid = #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        addusername = #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid = #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname = #{adddeptname},
+      </if>
+      <if test="addtime != null" >
+        addtime = #{addtime},
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid = #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername = #{modifyusername},
+      </if>
+      <if test="modifytime != null" >
+        modifytime = #{modifytime},
+      </if>
+      <if test="audituserid != null" >
+        audituserid = #{audituserid},
+      </if>
+      <if test="auditusername != null" >
+        auditusername = #{auditusername},
+      </if>
+      <if test="audittime != null" >
+        audittime = #{audittime},
+      </if>
+      <if test="stopuserid != null" >
+        stopuserid = #{stopuserid},
+      </if>
+      <if test="stopusername != null" >
+        stopusername = #{stopusername},
+      </if>
+      <if test="stoptime != null" >
+        stoptime = #{stoptime},
+      </if>
+      <if test="closetime != null" >
+        closetime = #{closetime},
+      </if>
+      <if test="printtimes != null" >
+        printtimes = #{printtimes},
+      </if>
+      <if test="applyuserid != null">
+        applyuserid = #{applyuserid},
+      </if>
+      <if test="applydeptid != null">
+        applydeptid = #{applydeptid},
+      </if>
+      <if test="field01 != null" >
+        field01 = #{field01},
+      </if>
+      <if test="field02 != null" >
+        field02 = #{field02},
+      </if>
+      <if test="field03 != null" >
+        field03 = #{field03},
+      </if>
+      <if test="field04 != null" >
+        field04 = #{field04},
+      </if>
+      <if test="field05 != null" >
+        field05 = #{field05},
+      </if>
+      <if test="field06 != null" >
+        field06 = #{field06},
+      </if>
+      <if test="field07 != null" >
+        field07 = #{field07},
+      </if>
+      <if test="field08 != null" >
+        field08 = #{field08},
+      </if>
+      <if test="effectstartdate != null">
+        effectstartdate = #{effectstartdate},
+      </if>
+      <if test="effectenddate != null">
+        effectenddate = #{effectenddate},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  <update id="updateLimitPriceOrderBy" parameterType="map" >
+    update t_purchase_limitpriceorder
+    <set >
+      <if test="limitpriceOrder.id != null" >
+        id = #{limitpriceOrder.id},
+      </if>
+      <if test="limitpriceOrder.businessdate != null" >
+        businessdate = #{limitpriceOrder.businessdate},
+      </if>
+      <if test="limitpriceOrder.status != null" >
+        status = #{limitpriceOrder.status},
+      </if>
+      <if test="limitpriceOrder.remark != null" >
+        remark = #{limitpriceOrder.remark},
+      </if>
+      <if test="limitpriceOrder.adduserid != null" >
+        adduserid = #{limitpriceOrder.adduserid},
+      </if>
+      <if test="limitpriceOrder.addusername != null" >
+        addusername = #{limitpriceOrder.addusername},
+      </if>
+      <if test="limitpriceOrder.adddeptid != null" >
+        adddeptid = #{limitpriceOrder.adddeptid},
+      </if>
+      <if test="limitpriceOrder.adddeptname != null" >
+        adddeptname = #{limitpriceOrder.adddeptname},
+      </if>
+      <if test="limitpriceOrder.addtime != null" >
+        addtime = #{limitpriceOrder.addtime},
+      </if>
+      <if test="limitpriceOrder.modifyuserid != null" >
+        modifyuserid = #{limitpriceOrder.modifyuserid},
+      </if>
+      <if test="limitpriceOrder.modifyusername != null" >
+        modifyusername = #{limitpriceOrder.modifyusername},
+      </if>
+      <if test="limitpriceOrder.modifytime != null" >
+        modifytime = #{limitpriceOrder.modifytime},
+      </if>
+      <if test="limitpriceOrder.audituserid != null" >
+        audituserid = #{limitpriceOrder.audituserid},
+      </if>
+      <if test="limitpriceOrder.auditusername != null" >
+        auditusername = #{limitpriceOrder.auditusername},
+      </if>
+      <if test="limitpriceOrder.audittime != null" >
+        audittime = #{limitpriceOrder.audittime},
+      </if>
+      <if test="limitpriceOrder.stopuserid != null" >
+        stopuserid = #{limitpriceOrder.stopuserid},
+      </if>
+      <if test="limitpriceOrder.stopusername != null" >
+        stopusername = #{limitpriceOrder.stopusername},
+      </if>
+      <if test="limitpriceOrder.stoptime != null" >
+        stoptime = #{limitpriceOrder.stoptime},
+      </if>
+      <if test="limitpriceOrder.closetime != null" >
+        closetime = #{limitpriceOrder.closetime},
+      </if>
+      <if test="limitpriceOrder.printtimes != null" >
+        printtimes = #{limitpriceOrder.printtimes},
+      </if>
+      <if test="limitpriceOrder.applyuserid != null">
+        applyuserid = #{limitpriceOrder.applyuserid},
+      </if>
+      <if test="limitpriceOrder.applydeptid != null">
+        applydeptid = #{limitpriceOrder.applydeptid},
+      </if>
+      <if test="limitpriceOrder.field01 != null" >
+        field01 = #{limitpriceOrder.field01},
+      </if>
+      <if test="limitpriceOrder.field02 != null" >
+        field02 = #{limitpriceOrder.field02},
+      </if>
+      <if test="limitpriceOrder.field03 != null" >
+        field03 = #{limitpriceOrder.field03},
+      </if>
+      <if test="limitpriceOrder.field04 != null" >
+        field04 = #{limitpriceOrder.field04},
+      </if>
+      <if test="limitpriceOrder.field05 != null" >
+        field05 = #{limitpriceOrder.field05},
+      </if>
+      <if test="limitpriceOrder.field06 != null" >
+        field06 = #{limitpriceOrder.field06},
+      </if>
+      <if test="limitpriceOrder.field07 != null" >
+        field07 = #{limitpriceOrder.field07},
+      </if>
+      <if test="limitpriceOrder.field08 != null" >
+        field08 = #{limitpriceOrder.field08},
+      </if>
+      <if test="limitpriceOrder.effectstartdate != null">
+        effectstartdate = #{limitpriceOrder.effectstartdate},
+      </if>
+      <if test="limitpriceOrder.effectenddate != null">
+        effectenddate = #{limitpriceOrder.effectenddate},
+      </if>
+    </set>
+    where
+   	<trim prefixOverrides="and|or">
+   		<if test="1==1">
+   			and id=#{id}
+   		</if>		  	
+	    <if test="authDataSql != null">
+	    	and ${authDataSql}
+	    </if>
+    </trim>
+  </update>  
+  <update id="updateLimitPriceOrderStatus" parameterType="com.hd.agent.purchase.model.LimitPriceOrder">
+	   update t_purchase_limitpriceorder
+	   <set >
+	     <if test="status != null" >
+	       status = #{status},
+	     </if>
+		<if test="audituserid != null">
+	        audituserid = #{audituserid},
+	     </if>
+	     <if test="auditusername != null">
+	        auditusername = #{auditusername},
+	     </if>
+	     <if test="audittime != null">
+	        audittime = #{audittime},
+	     </if>
+	     <if test="stopuserid != null">
+	        stopuserid = #{stopuserid},
+	     </if>
+	     <if test="stopusername != null">
+	        stopusername = #{stopusername},
+	     </if>
+	     <if test="stoptime != null">
+	        stoptime = #{stoptime},
+	     </if>
+	     <if test="closetime != null">
+	        closetime = #{closetime},
+	     </if>
+	   </set>
+	   where id = #{id}
+  </update>
+  <delete id="deleteLimitPriceOrder" parameterType="java.lang.String">
+    delete from t_purchase_limitpriceorder
+    where id = #{id}
+  </delete>
+  <select id="getLimitPriceOrderPageList"  parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.purchase.model.LimitPriceOrder">
+  		select
+	  	<choose>
+			<when test="cols!=null">
+				<include refid="common.Page_Column"/>
+			</when>
+			<when test="cols==null">
+				*
+			</when>
+		</choose>
+		from t_purchase_limitpriceorder
+    	<trim prefix="where" prefixOverrides="and|or">
+			<include refid="LPOPageList_Where_Clause" />
+			<include refid="common.Page_querySql"/>
+			<include refid="common.Page_dataSql"/>
+			<if test="condition.businessdatestart != null" >
+              <![CDATA[ and businessdate >= #{condition.businessdatestart} ]]>
+	      	</if>
+			<if test="condition.businessdateend != null" >
+              <![CDATA[ and businessdate <= #{condition.businessdateend} ]]>
+	      	</if>
+	      	<if test="condition.effectstartdatest != null">
+              <![CDATA[ and effectstartdate >= #{condition.effectstartdatest} ]]>
+		    </if>
+		    <if test="condition.effectenddateed != null">
+              <![CDATA[ and effectenddate <= #{condition.effectenddateed} ]]>
+		    </if>		    
+	      	<choose>
+		      	<when test="condition.isClose ==0 ">
+		      		and status='2'
+		      	</when>
+		      	<when test="condition.isClose ==1 ">
+		      		and status='3'
+		      	</when>
+		      	<when test="condition.isClose ==2 ">
+		      		and status='4'
+		      	</when>
+		    </choose>
+		</trim>
+		<include refid="common.Page_limit" />
+  	</select>
+  	<select id="getLimitPriceOrderPageCount"  parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  		select count(*) from t_purchase_limitpriceorder  		
+    	<trim prefix="where" prefixOverrides="and|or">
+			<include refid="LPOPageList_Where_Clause" />
+			<include refid="common.Page_querySql"/>
+			<include refid="common.Page_dataSql"/>
+			<if test="condition.businessdatestart != null" >
+              <![CDATA[ and businessdate >= #{condition.businessdatestart}  ]]>
+	      	</if>
+			<if test="condition.businessdateend != null" >
+              <![CDATA[ and businessdate <= #{condition.businessdateend} ]]>
+	      	</if>
+	      	<if test="condition.effectstartdatest != null">
+              <![CDATA[ and effectstartdate >= #{condition.effectstartdatest}  ]]>
+		    </if>
+		    <if test="condition.effectenddateed != null">
+              <![CDATA[ and effectenddate <= #{condition.effectenddateed} ]]>
+		    </if>		    
+	      	<choose>
+		      	<when test="condition.isClose ==0 ">
+		      		and status='2'
+		      	</when>
+		      	<when test="condition.isClose ==1 ">
+		      		and status='3'
+		      	</when>
+		      	<when test="condition.isClose ==2 ">
+		      		and status='4'
+		      	</when>
+		    </choose>
+		</trim>
+  	</select>
+  	<!-- 采购限价单明细 -->
+  	<sql id="LPOD_Base_Column_List" >
+    id, orderid, goodsid, unitid, unitname, auxunitid, auxunitname, remark, priceasfound, 
+    priceasleft, field01, field02, field03, field04, field05, field06, field07, field08, 
+    seq
+  	</sql>
+  	<insert id="insertLimitPriceOrderDetail" parameterType="com.hd.agent.purchase.model.LimitPriceOrderDetail">
+    insert into t_purchase_limitpriceorder_detail
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="orderid != null">
+        orderid,
+      </if>
+      <if test="goodsid != null">
+        goodsid,
+      </if>
+      <if test="unitid != null">
+        unitid,
+      </if>
+      <if test="unitname != null">
+        unitname,
+      </if>
+      <if test="auxunitid != null">
+        auxunitid,
+      </if>
+      <if test="auxunitname != null">
+        auxunitname,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="priceasfound != null">
+        priceasfound,
+      </if>
+      <if test="priceasleft != null">
+        priceasleft,
+      </if>
+      <if test="field01 != null">
+        field01,
+      </if>
+      <if test="field02 != null">
+        field02,
+      </if>
+      <if test="field03 != null">
+        field03,
+      </if>
+      <if test="field04 != null">
+        field04,
+      </if>
+      <if test="field05 != null">
+        field05,
+      </if>
+      <if test="field06 != null">
+        field06,
+      </if>
+      <if test="field07 != null">
+        field07,
+      </if>
+      <if test="field08 != null">
+        field08,
+      </if>
+      <if test="seq != null">
+        seq,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id},
+      </if>
+      <if test="orderid != null">
+        #{orderid},
+      </if>
+      <if test="goodsid != null">
+        #{goodsid},
+      </if>
+      <if test="unitid != null">
+        #{unitid},
+      </if>
+      <if test="unitname != null">
+        #{unitname},
+      </if>
+      <if test="auxunitid != null">
+        #{auxunitid},
+      </if>
+      <if test="auxunitname != null">
+        #{auxunitname},
+      </if>
+      <if test="remark != null">
+        #{remark},
+      </if>
+      <if test="priceasfound != null">
+        #{priceasfound},
+      </if>
+      <if test="priceasleft != null">
+        #{priceasleft},
+      </if>
+      <if test="field01 != null">
+        #{field01},
+      </if>
+      <if test="field02 != null">
+        #{field02},
+      </if>
+      <if test="field03 != null">
+        #{field03},
+      </if>
+      <if test="field04 != null">
+        #{field04},
+      </if>
+      <if test="field05 != null">
+        #{field05},
+      </if>
+      <if test="field06 != null">
+        #{field06},
+      </if>
+      <if test="field07 != null">
+        #{field07},
+      </if>
+      <if test="field08 != null">
+        #{field08},
+      </if>
+      <if test="seq != null">
+        #{seq},
+      </if>
+    </trim>
+  </insert>
+  <delete id="deleteLimitPriceOrderDetailByOrderid" parameterType="java.lang.String">
+	    delete from t_purchase_limitpriceorder_detail
+	    where orderid = #{orderid}
+  </delete>
+  <update id="updateLimitPriceOrderDetail" parameterType="com.hd.agent.purchase.model.LimitPriceOrderDetail">
+    update t_purchase_limitpriceorder_detail
+    <set>
+     <if test="orderid != null">
+        orderid = #{orderid},
+      </if>
+      <if test="goodsid != null">
+        goodsid = #{goodsid},
+      </if>
+      <if test="unitid != null">
+        unitid = #{unitid},
+      </if>
+      <if test="unitname != null">
+        unitname = #{unitname},
+      </if>
+      <if test="auxunitid != null">
+        auxunitid = #{auxunitid},
+      </if>
+      <if test="auxunitname != null">
+        auxunitname = #{auxunitname},
+      </if>
+      <if test="remark != null">
+        remark = #{remark},
+      </if>
+      <if test="priceasfound != null">
+        priceasfound = #{priceasfound},
+      </if>
+      <if test="priceasleft != null">
+        priceasleft = #{priceasleft},
+      </if>
+      <if test="field01 != null">
+        field01 = #{field01},
+      </if>
+      <if test="field02 != null">
+        field02 = #{field02},
+      </if>
+      <if test="field03 != null">
+        field03 = #{field03},
+      </if>
+      <if test="field04 != null">
+        field04 = #{field04},
+      </if>
+      <if test="field05 != null">
+        field05 = #{field05},
+      </if>
+      <if test="field06 != null">
+        field06 = #{field06},
+      </if>
+      <if test="field07 != null">
+        field07 = #{field07},
+      </if>
+      <if test="field08 != null">
+        field08 = #{field08},
+      </if>
+      <if test="seq != null">
+        seq = #{seq},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  <select id="getLimitPriceOrderDetailListBy" parameterType="java.util.Map" resultType="com.hd.agent.purchase.model.LimitPriceOrderDetail">
+  		select 
+  		<choose>
+			<when test="cols!=null">
+				<include refid="common.Page_Column"/>
+			</when>
+			<when test="cols==null">
+  				<include refid="LPOD_Base_Column_List" />
+			</when>
+		</choose>
+		from t_purchase_limitpriceorder_detail
+		<trim prefix="where" prefixOverrides="and|or" >	  		
+			<if test="orderid != null" >
+			   and orderid = #{orderid}
+			</if>		  	
+		    <if test="authDataSql != null">
+		    	and ${authDataSql}
+		    </if>
+	    </trim>	
+  </select>	
+  <select id="getLimitPriceOrderDetail" parameterType="java.lang.String" resultType="com.hd.agent.purchase.model.LimitPriceOrderDetail">
+		select 
+		<include refid="LPOD_Base_Column_List" />
+		from t_purchase_limitpriceorder_detail
+		where id = #{id}
+  </select>
+  <select id="getLimitPriceOrderDetailValid" parameterType="java.lang.String" resultType="com.hd.agent.purchase.model.LimitPriceOrderDetail">
+  	select  	
+    lod.id, lod.orderid, lod.goodsid, lod.unitid, lod.unitname, lod.auxunitid, lod.auxunitname, lod.remark, lod.priceasfound, 
+    lod.priceasleft, lod.field01, lod.field02, lod.field03, lod.field04, lod.field05, lod.field06, lod.field07, lod.field08, 
+    lod.seq,lo.effectstartdate,lo.effectenddate
+  	from
+  	t_purchase_limitpriceorder_detail lod 
+  	inner join
+  	t_purchase_limitpriceorder lo
+  	on lod.orderid=lo.id
+  	where lo.status='3'  
+	<![CDATA[ and #{businessdate} >= lo.effectstartdate ]]>
+	<![CDATA[ and ( LENGTH(lo.effectenddate)=0 or #{businessdate} <= lo.effectenddate )  ]]>
+	and lod.goodsid=#{goodsid} 
+	order by lod.id desc 	
+  </select>
+  <select id="getLimitPriceOrderDetailValidBy" parameterType="java.util.Map" resultType="com.hd.agent.purchase.model.LimitPriceOrderDetail">
+  	select  	
+    lod.id, lod.orderid, lod.goodsid, lod.unitid, lod.unitname, lod.auxunitid, lod.auxunitname, lod.remark, lod.priceasfound, 
+    lod.priceasleft, lod.field01, lod.field02, lod.field03, lod.field04, lod.field05, lod.field06, lod.field07, lod.field08, 
+    lod.seq,lo.effectstartdate,lo.effectenddate
+  	from
+  	t_purchase_limitpriceorder_detail lod 
+  	inner join
+  	t_purchase_limitpriceorder lo
+  	on lod.orderid=lo.id
+  	where lo.status='3'  
+  	<if test="businessdate != null">  		
+	<![CDATA[ and #{businessdate} >= lo.effectstartdate ]]>
+	<![CDATA[ and ( LENGTH(lo.effectenddate)=0 or #{businessdate} <= lo.effectenddate )  ]]>
+  	</if>
+  	<if test="effectstartdate != null">
+	<![CDATA[ and #{effectstartdate} >= lo.effectstartdate ]]>
+	</if>	
+  	<if test="effectenddate != null">
+		<![CDATA[ and ( LENGTH(lo.effectenddate)=0 or #{effectenddate} <= lo.effectenddate )  ]]>
+	</if>
+	and lod.goodsid=#{goodsid} 
+	<if test="notcurid !=null">
+		and lod.id != #{nocurid}
+	</if>
+	order by lod.id desc 	
+  </select>
+</mapper>

@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.activiti.dao.DefinitionTaskMapper" >
+  <resultMap id="BaseResultMap" type="com.hd.agent.activiti.model.DefinitionTask" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="definitionkey" property="definitionkey" jdbcType="VARCHAR" />
+    <result column="definitionid" property="definitionid" jdbcType="VARCHAR" />
+    <result column="taskkey" property="taskkey" jdbcType="VARCHAR" />
+    <result column="taskname" property="taskname" jdbcType="VARCHAR" />
+    <result column="rule" property="rule" jdbcType="VARCHAR" />
+    <result column="rulename" property="rulename" jdbcType="VARCHAR" />
+    <result column="user" property="user" jdbcType="VARCHAR" />
+    <result column="dept" property="dept" jdbcType="VARCHAR" />
+    <result column="role" property="role" jdbcType="VARCHAR" />
+    <result column="post" property="post" jdbcType="VARCHAR" />
+    <result column="ruledetail" property="ruledetail" jdbcType="VARCHAR" />
+    <result column="formkey" property="formkey" jdbcType="VARCHAR" />
+    <result column="businessurl" property="businessurl" jdbcType="VARCHAR" />
+    <result column="remindtype" property="remindtype" jdbcType="VARCHAR" />
+    <result column="adduserid" property="adduserid" jdbcType="VARCHAR" />
+    <result column="addusername" property="addusername" jdbcType="VARCHAR" />
+    <result column="adddeptid" property="adddeptid" jdbcType="VARCHAR" />
+    <result column="adddeptname" property="adddeptname" jdbcType="VARCHAR" />
+    <result column="adddate" property="adddate" jdbcType="TIMESTAMP" />
+    <result column="modifyuserid" property="modifyuserid" jdbcType="VARCHAR" />
+    <result column="modifyusername" property="modifyusername" jdbcType="VARCHAR" />
+    <result column="modifytime" property="modifytime" jdbcType="TIMESTAMP" />
+    <result column="endremindapplier" property="endremindapplier" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, definitionkey, taskkey, taskname, rule, rulename, user, dept, role, post, ruledetail, 
+    formkey, businessurl, remindtype, adduserid, addusername, adddeptid, adddeptname, 
+    adddate, modifyuserid, modifyusername, modifytime, canassign, definitionid, endremindapplier
+  </sql>
+  <select id="getDefinitionTask" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_act_definition_task
+    where id = #{id}
+  </select>
+  <select id="getDefinitionTaskByKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+  	select 
+    <include refid="Base_Column_List" />
+    from t_act_definition_task
+    where definitionkey = #{definitionkey }
+      <if test="definitionid != null">
+          and definitionid = #{definitionid }
+      </if>
+      and taskkey = #{taskkey}
+    order by id desc limit 0, 1
+  </select>
+  <select id="getDefinitionTaskByKey2" resultMap="BaseResultMap" parameterType="java.lang.String">
+      select
+      <include refid="Base_Column_List" />
+      from t_act_definition_task
+      where definitionkey = #{0} and taskkey = #{1}
+      order by id desc limit 0, 1
+  </select>
+  <select id="getCountByKey" resultType="java.lang.Integer" parameterType="java.lang.String">
+  	select count(1) from t_act_definition_task where definitionkey = #{0} and definitionid = #{1} and taskkey = #{2}
+  </select>
+  <delete id="deleteDefinitionTask" parameterType="java.lang.String" >
+    delete from t_act_definition_task
+    where id = #{id}
+  </delete>
+  <insert id="addDefinitionTask" parameterType="com.hd.agent.activiti.model.DefinitionTask" >
+    insert into t_act_definition_task
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="definitionkey != null" >
+        definitionkey,
+      </if>
+      <if test="definitionid != null" >
+        definitionid,
+      </if>
+      <if test="taskkey != null" >
+        taskkey,
+      </if>
+      <if test="taskname != null" >
+        taskname,
+      </if>
+      <if test="rule != null" >
+        rule,
+      </if>
+      <if test="rulename != null" >
+        rulename,
+      </if>
+      <if test="user != null" >
+        user,
+      </if>
+      <if test="dept != null" >
+        dept,
+      </if>
+      <if test="role != null" >
+        role,
+      </if>
+      <if test="post != null" >
+        post,
+      </if>
+      <if test="ruledetail != null" >
+        ruledetail,
+      </if>
+      <if test="formkey != null" >
+        formkey,
+      </if>
+      <if test="businessurl != null" >
+        businessurl,
+      </if>
+      <if test="remindtype != null" >
+        remindtype,
+      </if>
+      <if test="adduserid != null" >
+        adduserid,
+      </if>
+      <if test="addusername != null" >
+        addusername,
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid,
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname,
+      </if>
+        adddate,
+      <if test="modifyuserid != null" >
+        modifyuserid,
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername,
+      </if>
+      <if test="modifytime != null" >
+        modifytime,
+      </if>
+      <if test="endremindapplier != null" >
+        endremindapplier,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="definitionkey != null" >
+        #{definitionkey},
+      </if>
+      <if test="definitionid != null" >
+        #{definitionid},
+      </if>
+      <if test="taskkey != null" >
+        #{taskkey},
+      </if>
+      <if test="taskname != null" >
+        #{taskname},
+      </if>
+      <if test="rule != null" >
+        #{rule},
+      </if>
+      <if test="rulename != null" >
+        #{rulename},
+      </if>
+      <if test="user != null" >
+        #{user},
+      </if>
+      <if test="dept != null" >
+        #{dept},
+      </if>
+      <if test="role != null" >
+        #{role},
+      </if>
+      <if test="post != null" >
+        #{post},
+      </if>
+      <if test="ruledetail != null" >
+        #{ruledetail},
+      </if>
+      <if test="formkey != null" >
+        #{formkey},
+      </if>
+      <if test="businessurl != null" >
+        #{businessurl},
+      </if>
+      <if test="remindtype != null" >
+        #{remindtype},
+      </if>
+      <if test="adduserid != null" >
+        #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        #{adddeptname},
+      </if>
+        now(),
+      <if test="modifyuserid != null" >
+        #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        #{modifyusername},
+      </if>
+      <if test="modifytime != null" >
+        #{modifytime},
+      </if>
+      <if test="endremindapplier != null" >
+        #{endremindapplier},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateDefinitionTaskByKey" parameterType="com.hd.agent.activiti.model.DefinitionTask" >
+    update t_act_definition_task
+    <set >
+      <if test="taskname != null" >
+        taskname = #{taskname},
+      </if>
+      <if test="rule != null" >
+        rule = #{rule},
+      </if>
+      <if test="rulename != null" >
+        rulename = #{rulename},
+      </if>
+      <if test="user != null" >
+        user = #{user},
+      </if>
+      <if test="dept != null" >
+        dept = #{dept},
+      </if>
+      <if test="role != null" >
+        role = #{role},
+      </if>
+      <if test="post != null" >
+        post = #{post},
+      </if>
+      <if test="ruledetail != null" >
+        ruledetail = #{ruledetail},
+      </if>
+      <if test="formkey != null" >
+        formkey = #{formkey},
+      </if>
+      <if test="businessurl != null" >
+        businessurl = #{businessurl},
+      </if>
+      <if test="remindtype != null" >
+        remindtype = #{remindtype},
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid = #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername = #{modifyusername},
+      </if>
+      <if test="canassign != null" >
+        canassign = #{canassign},
+      </if>
+      <if test="endremindapplier != null" >
+          endremindapplier = #{endremindapplier},
+      </if>
+      modifytime = now(),
+    </set>
+    where definitionkey = #{definitionkey} and definitionid = #{definitionid} and taskkey = #{taskkey}
+  </update>
+  <delete id="deleteDefinitionTaskByDefinitionid" parameterType="java.lang.String">
+      delete from t_act_definition_task
+      where definitionkey = #{definitionkey }
+      and definitionid = #{definitionid }
+  </delete>
+    <delete id="deleteDefinitionTaskByDefinitionkey" parameterType="java.lang.String">
+        delete from t_act_definition_task
+        where definitionkey = #{definitionkey }
+        and definitionid is null
+    </delete>
+    <insert id="doCloneOldVerson2NewVersion" parameterType="java.util.Map">
+        delete from t_act_definition_task where definitionid = #{newdefinitionid };
+
+        insert into t_act_definition_task (definitionkey, taskkey, taskname, rule, rulename, user, dept, role, post, ruledetail, formkey, businessurl, remindtype, canassign, endremindapplier, definitionid)
+        (select definitionkey, taskkey, taskname, rule, rulename, user, dept, role, post, ruledetail, formkey, businessurl, remindtype, canassign, endremindapplier, #{newdefinitionid } from t_act_definition_task where definitionid = #{olddefinitionid});
+
+        update t_act_definition_task
+        set
+        adduserid = #{adduserid },
+        addusername = #{addusername },
+        adddeptid = #{adddeptid },
+        adddeptname = #{adddeptname },
+        adddate = now()
+        where definitionid = #{newdefinitionid }
+    </insert>
+</mapper>

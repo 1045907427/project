@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.oa.dao.OaGoodsMapper" >
+  <resultMap id="BaseResultMap" type="com.hd.agent.oa.model.OaGoods" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="businessdate" property="businessdate" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="adduserid" property="adduserid" jdbcType="VARCHAR" />
+    <result column="addusername" property="addusername" jdbcType="VARCHAR" />
+    <result column="adddeptid" property="adddeptid" jdbcType="VARCHAR" />
+    <result column="adddeptname" property="adddeptname" jdbcType="VARCHAR" />
+    <result column="addtime" property="addtime" jdbcType="TIMESTAMP" />
+    <result column="modifyuserid" property="modifyuserid" jdbcType="VARCHAR" />
+    <result column="modifyusername" property="modifyusername" jdbcType="VARCHAR" />
+    <result column="modifytime" property="modifytime" jdbcType="TIMESTAMP" />
+    <result column="audituserid" property="audituserid" jdbcType="VARCHAR" />
+    <result column="auditusername" property="auditusername" jdbcType="VARCHAR" />
+    <result column="audittime" property="audittime" jdbcType="TIMESTAMP" />
+    <result column="stopuserid" property="stopuserid" jdbcType="VARCHAR" />
+    <result column="stopusername" property="stopusername" jdbcType="VARCHAR" />
+    <result column="stoptime" property="stoptime" jdbcType="TIMESTAMP" />
+    <result column="closetime" property="closetime" jdbcType="TIMESTAMP" />
+    <result column="printtimes" property="printtimes" jdbcType="INTEGER" />
+    <result column="supplierid" property="supplierid" jdbcType="VARCHAR" />
+    <result column="brandid" property="brandid" jdbcType="VARCHAR" />
+    <result column="customernum" property="customernum" jdbcType="INTEGER" />
+    <result column="costamount" property="costamount" jdbcType="DECIMAL" />
+    <result column="auditname1" property="auditname1" jdbcType="VARCHAR" />
+    <result column="auditdate1" property="auditdate1" jdbcType="VARCHAR" />
+    <result column="auditname2" property="auditname2" jdbcType="VARCHAR" />
+    <result column="auditdate2" property="auditdate2" jdbcType="VARCHAR" />
+    <result column="auditname3" property="auditname3" jdbcType="VARCHAR" />
+    <result column="auditdate3" property="auditdate3" jdbcType="VARCHAR" />
+    <result column="auditname4" property="auditname4" jdbcType="VARCHAR" />
+    <result column="auditdate4" property="auditdate4" jdbcType="VARCHAR" />
+    <result column="auditname5" property="auditname5" jdbcType="VARCHAR" />
+    <result column="auditdate5" property="auditdate5" jdbcType="VARCHAR" />
+    <result column="auditname6" property="auditname6" jdbcType="VARCHAR" />
+    <result column="auditdate6" property="auditdate6" jdbcType="VARCHAR" />
+    <result column="auditname7" property="auditname7" jdbcType="VARCHAR" />
+    <result column="auditdate7" property="auditdate7" jdbcType="VARCHAR" />
+    <result column="auditname8" property="auditname8" jdbcType="VARCHAR" />
+    <result column="auditdate8" property="auditdate8" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="commonGoodsCols" >
+    id, businessdate, status, remark, adduserid, addusername, adddeptid, adddeptname, 
+    addtime, modifyuserid, modifyusername, modifytime, audituserid, auditusername, audittime, 
+    stopuserid, stopusername, stoptime, closetime, printtimes, supplierid, brandid, customernum, 
+    costamount, auditname1, auditdate1, auditname2, auditdate2, auditname3, auditdate3, 
+    auditname4, auditdate4, auditname5, auditdate5, auditname6, auditdate6, auditname7, 
+    auditdate7, auditname8, auditdate8
+  </sql>
+  
+  <insert id="insertOaGoods" parameterType="com.hd.agent.oa.model.OaGoods">
+	INSERT INTO t_oa_goods (
+		id,
+		businessdate,
+		status,
+		remark,
+		adduserid,
+		addusername,
+		adddeptid,
+		adddeptname,
+		addtime,
+		supplierid,
+		brandid,
+		customernum,
+		costamount
+	)
+	VALUES
+		(
+			#{id },
+			#{businessdate }, 
+			#{status }, 
+			#{remark }, 
+			#{adduserid }, 
+			#{addusername }, 
+			#{adddeptid }, 
+			#{adddeptname }, 
+			#{addtime }, 
+			#{supplierid }, 
+			#{brandid }, 
+			#{customernum }, 
+			#{costamount }
+		)
+  </insert>
+  
+  <select id="selectOaGoods" parameterType="String" resultMap="BaseResultMap">
+  	select
+	  	<include refid="commonGoodsCols"/>
+	from T_OA_GOODS
+	where id = #{id }
+  </select>
+  
+  <update id="updateOaGoods" parameterType="com.hd.agent.oa.model.OaGoods">
+  	update t_oa_goods 
+	<trim prefix=" set " suffixOverrides=",">
+  		<if test="#{supplierid != null }">
+  			supplierid = #{supplierid },
+  		</if>
+  		<if test="#{brandid != null }">
+  			brandid = #{brandid },
+  		</if>
+  		<if test="#{customernum != null }">
+  			customernum = #{customernum },
+  		</if>
+  		<if test="#{costamount != null }">
+  			costamount = #{costamount },
+  		</if>
+  		<if test="#{remark != null }">
+  			remark = #{remark },
+  		</if>
+  		<if test="#{modifyuserid != null }">
+  			modifyuserid = #{modifyuserid },
+  		</if>
+  		<if test="#{modifyusername != null }">
+  			modifyusername = #{modifyusername },
+  		</if>
+  		modifytime = now(),
+	</trim>
+	<where>
+		id = #{id }
+	</where>
+  </update>
+  
+  <delete id="deleteOaGoods" parameterType="String">
+  	delete from T_OA_GOODS where id = #{id }
+  </delete>
+
+</mapper>

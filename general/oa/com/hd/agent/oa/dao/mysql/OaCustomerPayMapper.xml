@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.oa.dao.OaCustomerPayMapper" >
+  <resultMap id="BaseResultMap" type="com.hd.agent.oa.model.OaCustomerPay" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="businessdate" property="businessdate" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="adduserid" property="adduserid" jdbcType="VARCHAR" />
+    <result column="addusername" property="addusername" jdbcType="VARCHAR" />
+    <result column="adddeptid" property="adddeptid" jdbcType="VARCHAR" />
+    <result column="adddeptname" property="adddeptname" jdbcType="VARCHAR" />
+    <result column="addtime" property="addtime" jdbcType="TIMESTAMP" />
+    <result column="modifyuserid" property="modifyuserid" jdbcType="VARCHAR" />
+    <result column="modifyusername" property="modifyusername" jdbcType="VARCHAR" />
+    <result column="modifytime" property="modifytime" jdbcType="TIMESTAMP" />
+    <result column="printtimes" property="printtimes" jdbcType="INTEGER" />
+    <result column="oaid" property="oaid" jdbcType="VARCHAR" />
+    <result column="relateoaid" property="relateoaid" jdbcType="VARCHAR" />
+    <result column="supplierid" property="supplierid" jdbcType="VARCHAR" />
+    <result column="customerid" property="customerid" jdbcType="VARCHAR" />
+    <result column="deptid" property="deptid" jdbcType="VARCHAR" />
+    <result column="collectionname" property="collectionname" jdbcType="VARCHAR" />
+    <result column="collectionbank" property="collectionbank" jdbcType="VARCHAR" />
+    <result column="collectionbankno" property="collectionbankno" jdbcType="VARCHAR" />
+    <result column="paybank" property="paybank" jdbcType="VARCHAR" />
+    <result column="paydate" property="paydate" jdbcType="VARCHAR" />
+    <result column="payamount" property="payamount" jdbcType="DECIMAL" />
+    <result column="upperpayamount" property="upperpayamount" jdbcType="VARCHAR" />
+    <result column="payuse" property="payuse" jdbcType="VARCHAR" />
+    <result column="expensesort" property="expensesort" jdbcType="VARCHAR" />
+    <result column="billtype" property="billtype" jdbcType="VARCHAR" />
+    <result column="billamount" property="billamount" jdbcType="DECIMAL" />
+    <result column="billdate" property="billdate" jdbcType="VARCHAR" />
+    <result column="sharetype" property="sharetype" jdbcType="CHAR" />
+    <result column="sharebegindate" property="sharebegindate" jdbcType="VARCHAR" />
+    <result column="shareenddate" property="shareenddate" jdbcType="VARCHAR" />
+	<result column="customerid2" property="customerid2" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, businessdate, remark, adduserid, addusername, adddeptid, adddeptname, addtime, 
+    modifyuserid, modifyusername, modifytime, printtimes, oaid, relateoaid, supplierid, 
+    customerid, deptid, collectionname, collectionbank, collectionbankno, paybank, paydate, 
+    payamount, upperpayamount, payuse, expensesort, billtype, billamount, billdate, sharetype, 
+    sharebegindate, shareenddate, customerid2
+  </sql>
+  <select id="selectCustomerPayInfo" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select
+  		<include refid="Base_Column_List"/>
+  	from t_oa_customerpay
+  	where id = #{id }
+  </select>
+  <insert id="insertOaCustomerPayInfo" parameterType="com.hd.agent.oa.model.OaCustomerPay">
+  	insert into t_oa_customerpay
+  	<trim prefix="(" suffix=")" suffixOverrides=",">
+		<if test="#{id != null }">
+			id,
+		</if>
+		<if test="#{businessdate != null }">
+			businessdate,
+		</if>
+		<if test="#{remark != null }">
+			remark,
+		</if>
+		<if test="#{adduserid != null }">
+			adduserid,
+		</if>
+		<if test="#{addusername != null }">
+			addusername,
+		</if>
+		<if test="#{adddeptid != null }">
+			adddeptid,
+		</if>
+		<if test="#{adddeptname != null }">
+			adddeptname,
+		</if>
+		addtime,
+		<if test="#{modifyuserid != null }">
+			modifyuserid,
+		</if>
+		<if test="#{modifyusername != null }">
+			modifyusername,
+		</if>
+		<if test="#{modifytime != null }">
+			modifytime,
+		</if>
+		<if test="#{printtimes != null }">
+			printtimes,
+		</if>
+		<if test="#{oaid != null }">
+			oaid,
+		</if>
+		<if test="#{relateoaid != null }">
+			relateoaid,
+		</if>
+		<if test="#{supplierid != null }">
+			supplierid,
+		</if>
+		<if test="#{customerid != null }">
+			customerid,
+		</if>
+		<if test="#{deptid != null }">
+			deptid,
+		</if>
+		<if test="#{collectionname != null }">
+			collectionname,
+		</if>
+		<if test="#{collectionbank != null }">
+			collectionbank,
+		</if>
+		<if test="#{collectionbankno != null }">
+			collectionbankno,
+		</if>
+		<if test="#{paybank != null }">
+			paybank,
+		</if>
+		<if test="#{paydate != null }">
+			paydate,
+		</if>
+		<if test="#{payamount != null }">
+			payamount,
+		</if>
+		<if test="#{upperpayamount != null }">
+			upperpayamount,
+		</if>
+		<if test="#{payuse != null }">
+			payuse,
+		</if>
+		<if test="#{expensesort != null }">
+			expensesort,
+		</if>
+		<if test="#{billtype != null }">
+			billtype,
+		</if>
+		<if test="#{billamount != null }">
+			billamount,
+		</if>
+		<if test="#{billdate != null }">
+			billdate,
+		</if>
+		<if test="#{sharetype != null }">
+			sharetype,
+		</if>
+		<if test="#{sharebegindate != null }">
+			sharebegindate,
+		</if>
+		<if test="#{shareenddate != null }">
+			shareenddate,
+		</if>
+		<if test="#{customerid2 != null }">
+			customerid2,
+		</if>
+  	</trim>
+  	<trim prefix="values (" suffix=")" suffixOverrides=",">
+		<if test="#{id != null }">
+			#{id },
+		</if>
+		<if test="#{businessdate != null }">
+			#{businessdate },
+		</if>
+		<if test="#{remark != null }">
+			#{remark },
+		</if>
+		<if test="#{adduserid != null }">
+			#{adduserid },
+		</if>
+		<if test="#{addusername != null }">
+			#{addusername },
+		</if>
+		<if test="#{adddeptid != null }">
+			#{adddeptid },
+		</if>
+		<if test="#{adddeptname != null }">
+			#{adddeptname },
+		</if>
+		now(),
+		<if test="#{modifyuserid != null }">
+			#{modifyuserid },
+		</if>
+		<if test="#{modifyusername != null }">
+			#{modifyusername },
+		</if>
+		<if test="#{modifytime != null }">
+			#{modifytime },
+		</if>
+		<if test="#{printtimes != null }">
+			#{printtimes },
+		</if>
+		<if test="#{oaid != null }">
+			#{oaid },
+		</if>
+		<if test="#{relateoaid != null }">
+			#{relateoaid },
+		</if>
+		<if test="#{supplierid != null }">
+			#{supplierid },
+		</if>
+		<if test="#{customerid != null }">
+			#{customerid },
+		</if>
+		<if test="#{deptid != null }">
+			#{deptid },
+		</if>
+		<if test="#{collectionname != null }">
+			#{collectionname },
+		</if>
+		<if test="#{collectionbank != null }">
+			#{collectionbank },
+		</if>
+		<if test="#{collectionbankno != null }">
+			#{collectionbankno },
+		</if>
+		<if test="#{paybank != null }">
+			#{paybank },
+		</if>
+		<if test="#{paydate != null }">
+			#{paydate },
+		</if>
+		<if test="#{payamount != null }">
+			#{payamount },
+		</if>
+		<if test="#{upperpayamount != null }">
+			#{upperpayamount },
+		</if>
+		<if test="#{payuse != null }">
+			#{payuse },
+		</if>
+		<if test="#{expensesort != null }">
+			#{expensesort },
+		</if>
+		<if test="#{billtype != null }">
+			#{billtype },
+		</if>
+		<if test="#{billamount != null }">
+			#{billamount },
+		</if>
+		<if test="#{billdate != null }">
+			#{billdate },
+		</if>
+		<if test="#{sharetype != null }">
+			#{sharetype },
+		</if>
+		<if test="#{sharebegindate != null }">
+			#{sharebegindate },
+		</if>
+		<if test="#{shareenddate != null }">
+			#{shareenddate },
+		</if>
+		<if test="#{customerid2 != null }">
+			#{customerid2 },
+		</if>
+  	</trim>
+  </insert>
+  <update id="updateOaCustomerPayInfo" parameterType="com.hd.agent.oa.model.OaCustomerPay">
+  	update t_oa_customerpay
+  	<set>
+		businessdate = #{businessdate },
+		remark = #{remark },
+		modifyuserid = #{modifyuserid },
+		modifyusername = #{modifyusername },
+		modifytime = now(),
+		printtimes = #{printtimes },
+		oaid = #{oaid },
+		relateoaid = #{relateoaid },
+		supplierid = #{supplierid },
+		customerid = #{customerid },
+		deptid = #{deptid },
+		collectionname = #{collectionname },
+		collectionbank = #{collectionbank },
+		collectionbankno = #{collectionbankno },
+		paybank = #{paybank },
+		paydate = #{paydate },
+		payamount = #{payamount },
+		upperpayamount = #{upperpayamount },
+		payuse = #{payuse },
+		expensesort = #{expensesort },
+		billtype = #{billtype },
+		billamount = #{billamount },
+		billdate = #{billdate },
+		sharetype = #{sharetype },
+		sharebegindate = #{sharebegindate },
+		shareenddate = #{shareenddate },
+		customerid2 = #{customerid2 }
+  	</set>
+  	where id = #{id }
+  </update>
+  <select id="getCustomerBrandSalesAmount" parameterType="java.util.Map" resultType="java.lang.String">
+  	select CONCAT(IFNULL(sum(t2.taxamount), '0.00'), '') taxamount
+	from t_sales_order t1 
+	left join t_sales_order_detail t2 on t1.id = t2.orderid
+	<trim prefix="where" prefixOverrides="and">
+		<if test="customerid != null">
+			and t1.customerid = #{customerid }
+		</if>
+		<if test="pcustomerid != null">
+			and t1.pcustomerid = #{pcustomerid }
+		</if>
+		<if test="begindate != null">
+			and t1.businessdate <![CDATA[>=]]> #{begindate }
+		</if>
+		<if test="enddate != null">
+			and t1.businessdate <![CDATA[<=]]> #{enddate }
+		</if>
+		<if test="brandid != null">
+			and t2.brandid = #{brandid }
+		</if>
+		and (t1.status = '3' or t1.status = '4')
+	</trim>
+  </select>
+</mapper>

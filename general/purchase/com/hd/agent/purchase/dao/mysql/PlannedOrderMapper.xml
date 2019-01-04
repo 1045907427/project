@@ -1,0 +1,1300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.purchase.dao.PlannedOrderMapper" >
+	<sql id="PO_Base_Column_List">
+	    id, businessdate, status, remark, adduserid, addusername, adddeptid, adddeptname, 
+	    addtime, modifyuserid, modifyusername, modifytime, audituserid, auditusername, audittime, arrivedate,
+	    stopuserid, stopusername, stoptime, closetime, printtimes, supplierid, handlerid, applyuserid, 
+	    applydeptid,buydeptid,buyuserid,storageid, field01, field02, field03, field04, field05, field06, field07, field08,isrefer,orderappend
+  	</sql>
+	<sql id="PO_Base_Column_List_prefix_t">
+		t.id, t.businessdate, t.status, t.remark, t.adduserid, t.addusername, t.adddeptid, t.adddeptname,
+		t.addtime, t.modifyuserid, t.modifyusername, t.modifytime, t.audituserid, t.auditusername, t.audittime, t.arrivedate,
+		t.stopuserid, t.stopusername, t.stoptime, t.closetime, t.printtimes, t.supplierid, t.handlerid, t.applyuserid,
+		t.applydeptid, t.buydeptid, t.buyuserid, t.storageid, t.field01, t.field02, t.field03, t.field04, t.field05, t.field06, t.field07, t.field08, t.isrefer, t.orderappend
+	</sql>
+  	<sql id="POPageList_Where_Clause">
+      <if test="condition.id != null">
+         and t.id like CONCAT('%',#{condition.id},'%')
+      </if>
+      <if test="condition.idarrs != null">
+         and FIND_IN_SET(t.id,#{condition.idarrs})
+      </if>
+      <if test="condition.businessdate != null">
+         and businessdate = #{condition.businessdate}
+      </if>
+      <if test="condition.status != null">
+         and status = #{condition.status}
+      </if>
+      <if test="condition.remark != null">
+         and remark = #{condition.remark}
+      </if>
+      <if test="condition.adduserid != null">
+         and adduserid = #{condition.adduserid}
+      </if>
+      <if test="condition.addusername != null">
+         and addusername = #{condition.addusername}
+      </if>
+      <if test="condition.adddeptid != null">
+         and adddeptid = #{condition.adddeptid}
+      </if>
+      <if test="condition.adddeptname != null">
+         and adddeptname = #{condition.adddeptname}
+      </if>
+      <if test="condition.addtime != null">
+         and addtime = #{condition.addtime}
+      </if>
+      <if test="condition.modifyuserid != null">
+         and modifyuserid = #{condition.modifyuserid}
+      </if>
+      <if test="condition.modifyusername != null">
+         and modifyusername = #{condition.modifyusername}
+      </if>
+      <if test="condition.modifytime != null">
+         and modifytime = #{condition.modifytime}
+      </if>
+      <if test="condition.audituserid != null">
+         and audituserid = #{condition.audituserid}
+      </if>
+      <if test="condition.auditusername != null">
+         and auditusername = #{condition.auditusername}
+      </if>
+      <if test="condition.audittime != null">
+         and audittime = #{condition.audittime}
+      </if>
+      <if test="condition.stopuserid != null">
+         and stopuserid = #{condition.stopuserid}
+      </if>
+      <if test="condition.stopusername != null">
+         and stopusername = #{condition.stopusername}
+      </if>
+      <if test="condition.stoptime != null">
+         and stoptime = #{condition.stoptime}
+      </if>
+      <if test="condition.closetime != null">
+         and closetime = #{condition.closetime}
+      </if>
+      <if test="condition.printtimes != null">
+         and printtimes = #{condition.printtimes}
+      </if>
+      <if test="condition.supplierid != null" >
+         and supplierid = #{condition.supplierid}
+      </if>
+      <if test="condition.handlerid != null" >
+         and handlerid = #{condition.handlerid}
+      </if>
+      <if test="condition.applyuserid != null">
+         and applyuserid = #{condition.applyuserid}
+      </if>
+      <if test="condition.applydeptid != null">
+         and applydeptid = #{condition.applydeptid}
+      </if>
+      <if test="condition.buydeptid != null">
+         and buydeptid like CONCAT(#{condition.buydeptid},'%')
+      </if>
+      <if test="condition.buyuserid != null">
+         and buyuserid = #{condition.buyuserid}
+      </if>
+      <if test="condition.storageid != null">
+         and storageid = #{condition.storageid}
+      </if>
+		<if test="condition.startaddtime != null" >
+			<![CDATA[ and addtime >=  #{condition.startaddtime}  ]]>
+		</if>
+		<if test="condition.endaddtime != null" >
+			<![CDATA[ and addtime <=  #{condition.endaddtime} ]]>
+		</if>
+      <if test="condition.isrefer != null">
+         and isrefer = #{condition.isrefer}
+      </if>      
+      <if test="condition.choiseforrefer != null">
+         and ( isrefer != '1' and status='3' )
+      </if>    
+      <if test="condition.orderappend != null">
+         and orderappend = #{condition.orderappend}
+      </if>
+		<if test="condition.printsign != null and condition.queryprinttimes != null">
+			<choose>
+				<when test="condition.printsign == 1">
+					<![CDATA[and printtimes = #{condition.queryprinttimes} ]]>
+				</when>
+				<when test="condition.printsign == 2">
+					<![CDATA[and printtimes < #{condition.queryprinttimes} ]]>
+				</when>
+				<when test="condition.printsign == 3">
+					<![CDATA[and printtimes <= #{condition.queryprinttimes} ]]>
+				</when>
+				<when test="condition.printsign == 4">
+					<![CDATA[and printtimes > #{condition.queryprinttimes} ]]>
+				</when>
+				<when test="condition.printsign == 5">
+					<![CDATA[and printtimes >= #{condition.queryprinttimes} ]]>
+				</when>
+			</choose>
+		</if>
+	</sql>
+
+	<sql id="POPageList_Where_Clause_prefix_t">
+		<if test="condition.id != null">
+			and t.id like CONCAT('%',#{condition.id},'%')
+		</if>
+		<if test="condition.idarrs != null">
+			and FIND_IN_SET(t.id,#{condition.idarrs})
+		</if>
+		<if test="condition.businessdate != null">
+			and t.businessdate = #{condition.businessdate}
+		</if>
+		<if test="condition.status != null">
+			and t.status = #{condition.status}
+		</if>
+		<if test="condition.remark != null">
+			and t.remark = #{condition.remark}
+		</if>
+		<if test="condition.adduserid != null">
+			and t.adduserid = #{condition.adduserid}
+		</if>
+		<if test="condition.addusername != null">
+			and t.addusername = #{condition.addusername}
+		</if>
+		<if test="condition.adddeptid != null">
+			and t.adddeptid = #{condition.adddeptid}
+		</if>
+		<if test="condition.adddeptname != null">
+			and t.adddeptname = #{condition.adddeptname}
+		</if>
+		<if test="condition.addtime != null">
+			and t.addtime = #{condition.addtime}
+		</if>
+		<if test="condition.modifyuserid != null">
+			and t.modifyuserid = #{condition.modifyuserid}
+		</if>
+		<if test="condition.modifyusername != null">
+			and t.modifyusername = #{condition.modifyusername}
+		</if>
+		<if test="condition.modifytime != null">
+			and t.modifytime = #{condition.modifytime}
+		</if>
+		<if test="condition.audituserid != null">
+			and t.audituserid = #{condition.audituserid}
+		</if>
+		<if test="condition.auditusername != null">
+			and t.auditusername = #{condition.auditusername}
+		</if>
+		<if test="condition.audittime != null">
+			and t.audittime = #{condition.audittime}
+		</if>
+		<if test="condition.stopuserid != null">
+			and t.stopuserid = #{condition.stopuserid}
+		</if>
+		<if test="condition.stopusername != null">
+			and t.stopusername = #{condition.stopusername}
+		</if>
+		<if test="condition.stoptime != null">
+			and t.stoptime = #{condition.stoptime}
+		</if>
+		<if test="condition.closetime != null">
+			and t.closetime = #{condition.closetime}
+		</if>
+		<if test="condition.printtimes != null">
+			and t.printtimes = #{condition.printtimes}
+		</if>
+		<if test="condition.supplierid != null" >
+			and t.supplierid = #{condition.supplierid}
+		</if>
+		<if test="condition.handlerid != null" >
+			and t.handlerid = #{condition.handlerid}
+		</if>
+		<if test="condition.applyuserid != null">
+			and t.applyuserid = #{condition.applyuserid}
+		</if>
+		<if test="condition.applydeptid != null">
+			and t.applydeptid = #{condition.applydeptid}
+		</if>
+		<if test="condition.buydeptid != null">
+			and t.buydeptid like CONCAT(#{condition.buydeptid},'%')
+		</if>
+		<if test="condition.buyuserid != null">
+			and t.buyuserid = #{condition.buyuserid}
+		</if>
+		<if test="condition.storageid != null">
+			and t.storageid = #{condition.storageid}
+		</if>
+		<if test="condition.startaddtime != null" >
+			<![CDATA[ and t.addtime >=  #{condition.startaddtime}  ]]>
+		</if>
+		<if test="condition.endaddtime != null" >
+			<![CDATA[ and t.addtime <=  #{condition.endaddtime} ]]>
+		</if>
+		<if test="condition.isrefer != null">
+			and t.isrefer = #{condition.isrefer}
+		</if>
+		<if test="condition.choiseforrefer != null">
+			and ( t.isrefer != '1' and status='3' )
+		</if>
+		<if test="condition.orderappend != null">
+			and t.orderappend = #{condition.orderappend}
+		</if>
+		<if test="condition.businessdatestart != null" >
+			<![CDATA[ and t.businessdate >= #{condition.businessdatestart} ]]>
+		</if>
+		<if test="condition.businessdateend != null" >
+			<![CDATA[ and t.businessdate <= #{condition.businessdateend} ]]>
+		</if>
+		<if test="condition.printsign != null and condition.queryprinttimes != null">
+			<choose>
+				<when test="condition.printsign == 1">
+					<![CDATA[and t.printtimes = #{condition.queryprinttimes} ]]>
+				</when>
+				<when test="condition.printsign == 2">
+					<![CDATA[and t.printtimes < #{condition.queryprinttimes} ]]>
+				</when>
+				<when test="condition.printsign == 3">
+					<![CDATA[and t.printtimes <= #{condition.queryprinttimes} ]]>
+				</when>
+				<when test="condition.printsign == 4">
+					<![CDATA[and t.printtimes > #{condition.queryprinttimes} ]]>
+				</when>
+				<when test="condition.printsign == 5">
+					<![CDATA[and t.printtimes >= #{condition.queryprinttimes} ]]>
+				</when>
+			</choose>
+		</if>
+	</sql>
+	<select id="getPlannedOrder" parameterType="java.lang.String" resultType="com.hd.agent.purchase.model.PlannedOrder">
+	    select 
+	    <include refid="PO_Base_Column_List" />
+	    from t_purchase_plannedorder
+	    where id = #{id}
+ 	</select>
+	<select id="getPlannedOrderBy" parameterType="java.util.Map" resultType="com.hd.agent.purchase.model.PlannedOrder">
+	    select 
+	    <choose>
+			<when test="cols!=null">
+				<include refid="common.Page_Column"/>
+			</when>
+			<when test="cols==null">
+  				<include refid="PO_Base_Column_List" />
+			</when>
+		</choose>
+		from t_purchase_plannedorder
+		where
+		<trim prefixOverrides="and|or" >	  		
+			<if test="id != null" >
+			   and id = #{id}
+			</if>		  	
+		    <if test="authDataSql != null">
+		    	and ${authDataSql}
+		    </if>
+	    </trim>
+ 	</select>
+	<insert id="insertPlannedOrder" parameterType="com.hd.agent.purchase.model.PlannedOrder" >
+    	insert into t_purchase_plannedorder
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="id != null" >
+	        id,
+	      </if>
+	      <if test="businessdate != null" >
+	        businessdate,
+	      </if>
+	      <if test="status != null" >
+	        status,
+	      </if>
+	      <if test="remark != null" >
+	        remark,
+	      </if>
+	      <if test="adduserid != null" >
+	        adduserid,
+	      </if>
+	      <if test="addusername != null" >
+	        addusername,
+	      </if>
+	      <if test="adddeptid != null" >
+	        adddeptid,
+	      </if>
+	      <if test="adddeptname != null" >
+	        adddeptname,
+	      </if>
+	      <if test="addtime != null" >
+	        addtime,
+	      </if>
+	      <if test="modifyuserid != null" >
+	        modifyuserid,
+	      </if>
+	      <if test="modifyusername != null" >
+	        modifyusername,
+	      </if>
+	      <if test="modifytime != null" >
+	        modifytime,
+	      </if>
+	      <if test="audituserid != null" >
+	        audituserid,
+	      </if>
+	      <if test="auditusername != null" >
+	        auditusername,
+	      </if>
+	      <if test="audittime != null" >
+	        audittime,
+	      </if>
+	      <if test="stopuserid != null" >
+	        stopuserid,
+	      </if>
+	      <if test="stopusername != null" >
+	        stopusername,
+	      </if>
+	      <if test="stoptime != null" >
+	        stoptime,
+	      </if>
+	      <if test="closetime != null" >
+	        closetime,
+	      </if>
+	      <if test="printtimes != null" >
+	        printtimes,
+	      </if>
+	      <if test="supplierid != null" >
+	        supplierid,
+	      </if>
+	      <if test="handlerid != null" >
+	        handlerid,
+	      </if>
+	      <if test="applyuserid != null" >
+	        applyuserid,
+	      </if>
+	      <if test="applydeptid != null" >
+	        applydeptid,
+	      </if>
+	      <if test="buydeptid != null" >
+	        buydeptid,
+	      </if>
+	      <if test="buyuserid != null" >
+	        buyuserid,
+	      </if>
+	      <if test="storageid != null" >
+	        storageid,
+	      </if>
+          <if test="arrivedate != null">
+            arrivedate,
+          </if>
+	      <if test="field01 != null" >
+	        field01,
+	      </if>
+	      <if test="field02 != null" >
+	        field02,
+	      </if>
+	      <if test="field03 != null" >
+	        field03,
+	      </if>
+	      <if test="field04 != null" >
+	        field04,
+	      </if>
+	      <if test="field05 != null" >
+	        field05,
+	      </if>
+	      <if test="field06 != null" >
+	        field06,
+	      </if>
+	      <if test="field07 != null" >
+	        field07,
+	      </if>
+	      <if test="field08 != null" >
+	        field08,
+	      </if>
+	      <if test="isrefer != null" >
+	        isrefer,
+	      </if>
+	      <if test="orderappend != null" >
+	        orderappend,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="id != null" >
+	        #{id},
+	      </if>
+	      <if test="businessdate != null" >
+	        #{businessdate},
+	      </if>
+	      <if test="status != null" >
+	        #{status},
+	      </if>
+	      <if test="remark != null" >
+	        #{remark},
+	      </if>
+	      <if test="adduserid != null" >
+	        #{adduserid},
+	      </if>
+	      <if test="addusername != null" >
+	        #{addusername},
+	      </if>
+	      <if test="adddeptid != null" >
+	        #{adddeptid},
+	      </if>
+	      <if test="adddeptname != null" >
+	        #{adddeptname},
+	      </if>
+	      <if test="addtime != null" >
+	        #{addtime},
+	      </if>
+	      <if test="modifyuserid != null" >
+	        #{modifyuserid},
+	      </if>
+	      <if test="modifyusername != null" >
+	        #{modifyusername},
+	      </if>
+	      <if test="modifytime != null" >
+	        #{modifytime},
+	      </if>
+	      <if test="audituserid != null" >
+	        #{audituserid},
+	      </if>
+	      <if test="auditusername != null" >
+	        #{auditusername},
+	      </if>
+	      <if test="audittime != null" >
+	        #{audittime},
+	      </if>
+	      <if test="stopuserid != null" >
+	        #{stopuserid},
+	      </if>
+	      <if test="stopusername != null" >
+	        #{stopusername},
+	      </if>
+	      <if test="stoptime != null" >
+	        #{stoptime},
+	      </if>
+	      <if test="closetime != null" >
+	        #{closetime},
+	      </if>
+	      <if test="printtimes != null" >
+	        #{printtimes},
+	      </if>
+	      <if test="supplierid != null" >
+	        #{supplierid},
+	      </if>
+	      <if test="handlerid != null" >
+	        #{handlerid},
+	      </if>
+	      <if test="applyuserid != null" >
+	        #{applyuserid},
+	      </if>
+	      <if test="applydeptid != null" >
+	        #{applydeptid},
+	      </if>
+	      <if test="buydeptid != null" >
+	        #{buydeptid},
+	      </if>
+	      <if test="buyuserid != null" >
+	        #{buyuserid},
+	      </if>
+	      <if test="storageid != null" >
+	        #{storageid},
+	      </if>
+          <if test="arrivedate != null" >
+            #{arrivedate},
+          </if>
+	      <if test="field01 != null" >
+	        #{field01},
+	      </if>
+	      <if test="field02 != null" >
+	        #{field02},
+	      </if>
+	      <if test="field03 != null" >
+	        #{field03},
+	      </if>
+	      <if test="field04 != null" >
+	        #{field04},
+	      </if>
+	      <if test="field05 != null" >
+	        #{field05},
+	      </if>
+	      <if test="field06 != null" >
+	        #{field06},
+	      </if>
+	      <if test="field07 != null" >
+	        #{field07},
+	      </if>
+	      <if test="field08 != null" >
+	        #{field08},
+	      </if>
+	      <if test="isrefer != null" >
+	        #{isrefer},
+	      </if>
+	      <if test="orderappend != null" >
+	        #{orderappend},
+	      </if>
+	    </trim>
+  	</insert>
+  	<update id="updatePlannedOrder" parameterType="com.hd.agent.purchase.model.PlannedOrder">
+	    update t_purchase_plannedorder
+		<set >
+	      <if test="businessdate != null" >
+	        businessdate = #{businessdate},
+	      </if>
+	      <if test="status != null" >
+	        status = #{status},
+	      </if>
+	      <if test="remark != null" >
+	        remark = #{remark},
+	      </if>
+	      <if test="adduserid != null" >
+	        adduserid = #{adduserid},
+	      </if>
+	      <if test="addusername != null" >
+	        addusername = #{addusername},
+	      </if>
+	      <if test="adddeptid != null" >
+	        adddeptid = #{adddeptid},
+	      </if>
+	      <if test="adddeptname != null" >
+	        adddeptname = #{adddeptname},
+	      </if>
+	      <if test="addtime != null" >
+	        addtime = #{addtime},
+	      </if>
+	      <if test="modifyuserid != null" >
+	        modifyuserid = #{modifyuserid},
+	      </if>
+	      <if test="modifyusername != null" >
+	        modifyusername = #{modifyusername},
+	      </if>
+	      <if test="modifytime != null" >
+	        modifytime = #{modifytime},
+	      </if>
+	      <if test="audituserid != null" >
+	        audituserid = #{audituserid},
+	      </if>
+	      <if test="auditusername != null" >
+	        auditusername = #{auditusername},
+	      </if>
+	      <if test="audittime != null" >
+	        audittime = #{audittime},
+	      </if>
+	      <if test="stopuserid != null" >
+	        stopuserid = #{stopuserid},
+	      </if>
+	      <if test="stopusername != null" >
+	        stopusername = #{stopusername},
+	      </if>
+	      <if test="stoptime != null" >
+	        stoptime = #{stoptime},
+	      </if>
+	      <if test="closetime != null" >
+	        closetime = #{closetime},
+	      </if>
+	      <if test="printtimes != null" >
+	        printtimes = #{printtimes},
+	      </if>
+	      <if test="supplierid != null" >
+	        supplierid = #{supplierid},
+	      </if>
+	      <if test="handlerid != null" >
+	        handlerid = #{handlerid},
+	      </if>
+	      <if test="applyuserid != null" >
+	        applyuserid = #{applyuserid},
+	      </if>
+	      <if test="applydeptid != null" >
+	        applydeptid = #{applydeptid},
+	      </if>
+	      <if test="buydeptid != null" >
+	        buydeptid = #{buydeptid},
+	      </if>
+	      <if test="buyuserid != null" >
+	        buyuserid = #{buyuserid},
+	      </if>
+	      <if test="storageid != null" >
+	        storageid = #{storageid},
+	      </if>
+          <if test="arrivedate != null" >
+            arrivedate = #{arrivedate},
+          </if>
+	      <if test="field01 != null" >
+	        field01 = #{field01},
+	      </if>
+	      <if test="field02 != null" >
+	        field02 = #{field02},
+	      </if>
+	      <if test="field03 != null" >
+	        field03 = #{field03},
+	      </if>
+	      <if test="field04 != null" >
+	        field04 = #{field04},
+	      </if>
+	      <if test="field05 != null" >
+	        field05 = #{field05},
+	      </if>
+	      <if test="field06 != null" >
+	        field06 = #{field06},
+	      </if>
+	      <if test="field07 != null" >
+	        field07 = #{field07},
+	      </if>
+	      <if test="field08 != null" >
+	        field08 = #{field08},
+	      </if>
+	      <if test="orderappend != null" >
+	        orderappend = #{orderappend},
+	      </if>
+	    </set>
+	    where id = #{id}
+	</update>
+	<update id="updatePlannedOrderBy" parameterType="map" >
+	    update t_purchase_plannedorder
+	    <set >
+	      <if test="plannedOrder.id != null" >
+	        id = #{plannedOrder.id},
+	      </if>
+	      <if test="plannedOrder.businessdate != null" >
+	        businessdate = #{plannedOrder.businessdate},
+	      </if>
+	      <if test="plannedOrder.status != null" >
+	        status = #{plannedOrder.status},
+	      </if>
+	      <if test="plannedOrder.remark != null" >
+	        remark = #{plannedOrder.remark},
+	      </if>
+	      <if test="plannedOrder.adduserid != null" >
+	        adduserid = #{plannedOrder.adduserid},
+	      </if>
+	      <if test="plannedOrder.addusername != null" >
+	        addusername = #{plannedOrder.addusername},
+	      </if>
+	      <if test="plannedOrder.adddeptid != null" >
+	        adddeptid = #{plannedOrder.adddeptid},
+	      </if>
+	      <if test="plannedOrder.adddeptname != null" >
+	        adddeptname = #{plannedOrder.adddeptname},
+	      </if>
+	      <if test="plannedOrder.addtime != null" >
+	        addtime = #{plannedOrder.addtime},
+	      </if>
+	      <if test="plannedOrder.modifyuserid != null" >
+	        modifyuserid = #{plannedOrder.modifyuserid},
+	      </if>
+	      <if test="plannedOrder.modifyusername != null" >
+	        modifyusername = #{plannedOrder.modifyusername},
+	      </if>
+	      <if test="plannedOrder.modifytime != null" >
+	        modifytime = #{plannedOrder.modifytime},
+	      </if>
+	      <if test="plannedOrder.audituserid != null" >
+	        audituserid = #{plannedOrder.audituserid},
+	      </if>
+	      <if test="plannedOrder.auditusername != null" >
+	        auditusername = #{plannedOrder.auditusername},
+	      </if>
+	      <if test="plannedOrder.audittime != null" >
+	        audittime = #{plannedOrder.audittime},
+	      </if>
+	      <if test="plannedOrder.stopuserid != null" >
+	        stopuserid = #{plannedOrder.stopuserid},
+	      </if>
+	      <if test="plannedOrder.stopusername != null" >
+	        stopusername = #{plannedOrder.stopusername},
+	      </if>
+	      <if test="plannedOrder.stoptime != null" >
+	        stoptime = #{plannedOrder.stoptime},
+	      </if>
+	      <if test="plannedOrder.closetime != null" >
+	        closetime = #{plannedOrder.closetime},
+	      </if>
+	      <if test="plannedOrder.printtimes != null" >
+	        printtimes = #{plannedOrder.printtimes},
+	      </if>
+		  <if test="plannedOrder.supplierid != null" >
+		  	supplierid = #{plannedOrder.supplierid},
+		  </if>
+		  <if test="plannedOrder.handlerid != null" >
+		  	handlerid = #{plannedOrder.handlerid},
+		  </if>
+	      <if test="plannedOrder.applyuserid != null" >
+	        applyuserid = #{plannedOrder.applyuserid},
+	      </if>
+	      <if test="plannedOrder.applydeptid != null" >
+	        applydeptid = #{plannedOrder.applydeptid},
+	      </if>
+	      <if test="plannedOrder.buydeptid != null" >
+	        buydeptid = #{plannedOrder.buydeptid},
+	      </if>
+	      <if test="plannedOrder.buyuserid != null" >
+	        buyuserid = #{plannedOrder.buyuserid},
+	      </if>
+	      <if test="plannedOrder.storageid != null" >
+	        storageid = #{plannedOrder.storageid},
+	      </if>
+	      <if test="plannedOrder.field01 != null" >
+	        field01 = #{plannedOrder.field01},
+	      </if>
+	      <if test="plannedOrder.field02 != null" >
+	        field02 = #{plannedOrder.field02},
+	      </if>
+	      <if test="plannedOrder.field03 != null" >
+	        field03 = #{plannedOrder.field03},
+	      </if>
+	      <if test="plannedOrder.field04 != null" >
+	        field04 = #{plannedOrder.field04},
+	      </if>
+	      <if test="plannedOrder.field05 != null" >
+	        field05 = #{plannedOrder.field05},
+	      </if>
+	      <if test="plannedOrder.field06 != null" >
+	        field06 = #{plannedOrder.field06},
+	      </if>
+	      <if test="plannedOrder.field07 != null" >
+	        field07 = #{plannedOrder.field07},
+	      </if>
+	      <if test="plannedOrder.field08 != null" >
+	        field08 = #{plannedOrder.field08},
+	      </if>	      
+	      <if test="plannedOrder.isrefer != null">
+	      	isrefer = #{plannedOrder.isrefer},
+	      </if>
+	      <if test="plannedOrder.orderappend != null" >
+	        orderappend = #{plannedOrder.orderappend},
+	      </if>
+          <if test="plannedOrder.arrivedate != null" >
+              arrivedate = #{plannedOrder.arrivedate},
+          </if>
+	    </set>
+	    where
+    	<trim  prefixOverrides="and|or">
+    		<if test="1==1">
+    			and id=#{id}
+    		</if>		  	
+		    <if test="authDataSql != null">
+		    	and ${authDataSql}
+		    </if>
+	    </trim>
+	</update>
+	<update id="updatePlannedOrderStatus" parameterType="com.hd.agent.purchase.model.PlannedOrder">
+	    update t_purchase_plannedorder
+	    <set >	      
+	     <if test="businessdate != null" >
+	        businessdate = #{businessdate},
+	      </if>    
+	      <if test="isrefer != null">
+		  	isrefer=#{isrefer},
+	      </if>
+	     <if test="status != null" >
+	       status = #{status},
+	     </if>
+		<if test="audituserid != null">
+	        audituserid = #{audituserid},
+	     </if>
+	     <if test="auditusername != null">
+	        auditusername = #{auditusername},
+	     </if>
+	     <if test="audittime != null">
+	        audittime = #{audittime},
+	     </if>
+	     <if test="stopuserid != null">
+	        stopuserid = #{stopuserid},
+	     </if>
+	     <if test="stopusername != null">
+	        stopusername = #{stopusername},
+	     </if>
+	     <if test="stoptime != null">
+	        stoptime = #{stoptime},
+	     </if>
+	     <if test="closetime != null">
+	        closetime = #{closetime},
+	     </if>
+	    </set>
+	    where id = #{id}
+    </update>
+  	<delete id="deletePlannedOrder" parameterType="java.lang.String">
+	    delete from t_purchase_plannedorder
+	    where id = #{id}
+  	</delete>
+  	<select id="getPlannedOrderPageList"  parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.purchase.model.PlannedOrder">
+  		select
+	  	<choose>
+			<when test="cols!=null">
+				<include refid="common.Page_Column"/>
+			</when>
+			<when test="cols==null">
+				*
+			</when>
+		</choose>
+		from t_purchase_plannedorder t
+    	<trim prefix="where" prefixOverrides="and|or">
+			<include refid="POPageList_Where_Clause" />
+			<include refid="common.Page_querySql"/>
+			<include refid="common.Page_dataSql"/>
+			<if test="condition.businessdatestart != null" >
+				<![CDATA[ and businessdate >= #{condition.businessdatestart} ]]>
+			</if>
+			<if test="condition.businessdateend != null" >
+				<![CDATA[ and businessdate <= #{condition.businessdateend} ]]>
+			</if>
+	      	<choose>
+		      	<when test="condition.isClose ==0 ">
+		      		and status='2'
+		      	</when>
+		      	<when test="condition.isClose ==1 ">
+		      		and status='3'
+		      	</when>
+		      	<when test="condition.isClose ==2 ">
+		      		and status='4'
+		      	</when>
+		    </choose>
+			<if test="condition.goodsid != null">
+				and EXISTS (select t1.goodsid from t_purchase_plannedorder_detail t1 where t.id=t1.orderid and t1.goodsid = #{condition.goodsid})
+			</if>
+		</trim>
+		<include refid="common.Page_limit" /> 
+  	</select>
+  	<select id="getPlannedOrderPageCount"  parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  		select count(*) from t_purchase_plannedorder t
+    	<trim prefix="where" prefixOverrides="and|or">
+			<include refid="POPageList_Where_Clause" />
+			<include refid="common.Page_querySql"/>
+			<include refid="common.Page_dataSql"/>
+			<if test="condition.businessdatestart != null" >
+				<![CDATA[ and businessdate >= #{condition.businessdatestart}  ]]>
+			</if>
+			<if test="condition.businessdateend != null" >
+				<![CDATA[ and businessdate <= #{condition.businessdateend} ]]>
+			</if>
+	      	<choose>
+		      	<when test="condition.isClose ==0 ">
+		      		and status='2'
+		      	</when>
+		      	<when test="condition.isClose ==1 ">
+		      		and status='3'
+		      	</when>
+		      	<when test="condition.isClose ==2 ">
+		      		and status='4'
+		      	</when>
+		    </choose>
+			<if test="condition.goodsid != null">
+				and EXISTS (select t1.goodsid from t_purchase_plannedorder_detail t1 where t.id=t1.orderid and t1.goodsid = #{condition.goodsid})
+			</if>
+		</trim>
+  	</select>
+	<select id="getPlannedOrderPageSum" parameterType="com.hd.agent.common.util.PageMap" resultType="map">
+		select '合计' as id,sum(t1.taxamount) as field01,sum(t1.notaxamount) as field02,sum(t1.tax) as field03  from t_purchase_plannedorder t
+		LEFT JOIN t_purchase_plannedorder_detail t1 ON t.id=t1.orderid
+		<trim prefix="where" prefixOverrides="and|or">
+			<include refid="POPageList_Where_Clause" />
+			<include refid="common.Page_querySql"/>
+			<include refid="common.Page_dataSql"/>
+			<if test="condition.businessdatestart != null" >
+				<![CDATA[ and businessdate >= #{condition.businessdatestart}  ]]>
+			</if>
+			<if test="condition.businessdateend != null" >
+				<![CDATA[ and businessdate <= #{condition.businessdateend} ]]>
+			</if>
+			<choose>
+				<when test="condition.isClose ==0 ">
+					and status='2'
+				</when>
+				<when test="condition.isClose ==1 ">
+					and status='3'
+				</when>
+				<when test="condition.isClose ==2 ">
+					and status='4'
+				</when>
+			</choose>
+			<if test="condition.goodsid != null">
+				and EXISTS (select t1.goodsid from t_purchase_plannedorder_detail t1 where t.id=t1.orderid and t1.goodsid = #{condition.goodsid})
+			</if>
+		</trim>
+	</select>
+  	<!-- 采购计划单详细 -->
+  	<sql id="POD_Base_Column_List" >
+	    id, orderid, goodsid, unitid, unitname, unitnum, auxunitid, auxunitname, auxnum, 
+	    auxnumdetail,totalbox, taxprice, taxamount, taxtype, notaxprice, notaxamount, tax, remark, 
+	    arrivedate, field01, field02, field03, field04, field05, field06, field07, field08, 
+	    orderunitnum, orderauxnum,ordertaxamount, unorderunitnum, unorderauxnum, unordertaxamount, seq,auxremainder
+  	</sql>
+	<sql id="POD_Base_Column_List_prefix_t1" >
+		t1.id, t1.orderid, t1.goodsid, t1.unitid, t1.unitname, t1.unitnum, t1.auxunitid, t1.auxunitname, t1.auxnum,
+		t1.auxnumdetail, t1.totalbox, t1.taxprice, t1.taxamount, t1.taxtype, t1.notaxprice, t1.notaxamount, t1.tax, t1.remark,
+		t1.arrivedate, t1.field01, t1.field02, t1.field03, t1.field04, t1.field05, t1.field06, t1.field07, t1.field08,
+		t1.orderunitnum, t1.orderauxnum, t1.ordertaxamount, t1.unorderunitnum, t1.unorderauxnum, t1.unordertaxamount, t1.seq, t1.auxremainder
+	</sql>
+  	<insert id="insertPlannedOrderDetail" parameterType="com.hd.agent.purchase.model.PlannedOrderDetail" >
+		insert into t_purchase_plannedorder_detail
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="orderid != null" >
+	        orderid,
+	      </if>
+	      <if test="goodsid != null" >
+	        goodsid,
+	      </if>
+	      <if test="unitid != null" >
+	        unitid,
+	      </if>
+	      <if test="unitname != null" >
+	        unitname,
+	      </if>
+	      <if test="unitnum != null" >
+	        unitnum,
+	      </if>
+	      <if test="auxunitid != null" >
+	        auxunitid,
+	      </if>
+	      <if test="auxunitname != null" >
+	        auxunitname,
+	      </if>
+	      <if test="auxnum != null" >
+	        auxnum,
+	      </if>
+	      <if test="auxnumdetail != null" >
+	        auxnumdetail,
+	      </if>
+	      <if test="auxremainder != null" >
+	        auxremainder,
+	      </if>
+	      <if test="totalbox != null" >
+	        totalbox,
+	      </if>
+	      <if test="taxprice != null" >
+	        taxprice,
+	      </if>
+	      <if test="taxamount != null" >
+	        taxamount,
+	      </if>
+	      <if test="taxtype != null" >
+	        taxtype,
+	      </if>
+	      <if test="notaxprice != null" >
+	        notaxprice,
+	      </if>
+	      <if test="notaxamount != null" >
+	        notaxamount,
+	      </if>
+	      <if test="tax != null" >
+	        tax,
+	      </if>
+	      <if test="remark != null" >
+	        remark,
+	      </if>
+	      <if test="arrivedate != null" >
+	        arrivedate,
+	      </if>
+	      <if test="field01 != null" >
+	        field01,
+	      </if>
+	      <if test="field02 != null" >
+	        field02,
+	      </if>
+	      <if test="field03 != null" >
+	        field03,
+	      </if>
+	      <if test="field04 != null" >
+	        field04,
+	      </if>
+	      <if test="field05 != null" >
+	        field05,
+	      </if>
+	      <if test="field06 != null" >
+	        field06,
+	      </if>
+	      <if test="field07 != null" >
+	        field07,
+	      </if>
+	      <if test="field08 != null" >
+	        field08,
+	      </if>
+	      <if test="seq != null" >
+	        seq,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="orderid != null" >
+	        #{orderid},
+	      </if>
+	      <if test="goodsid != null" >
+	        #{goodsid},
+	      </if>
+	      <if test="unitid != null" >
+	        #{unitid},
+	      </if>
+	      <if test="unitname != null" >
+	        #{unitname},
+	      </if>
+	      <if test="unitnum != null" >
+	        #{unitnum},
+	      </if>
+	      <if test="auxunitid != null" >
+	        #{auxunitid},
+	      </if>
+	      <if test="auxunitname != null" >
+	        #{auxunitname},
+	      </if>
+	      <if test="auxnum != null" >
+	        #{auxnum},
+	      </if>
+	      <if test="auxnumdetail != null" >
+	        #{auxnumdetail},
+	      </if>
+	      <if test="auxremainder != null" >
+	        #{auxremainder},
+	      </if>
+	      <if test="totalbox != null" >
+	        #{totalbox},
+	      </if>
+	      <if test="taxprice != null" >
+	        #{taxprice},
+	      </if>
+	      <if test="taxamount != null" >
+	        #{taxamount},
+	      </if>
+	      <if test="taxtype != null" >
+	        #{taxtype},
+	      </if>
+	      <if test="notaxprice != null" >
+	        #{notaxprice},
+	      </if>
+	      <if test="notaxamount != null" >
+	        #{notaxamount},
+	      </if>
+	      <if test="tax != null" >
+	        #{tax},
+	      </if>
+	      <if test="remark != null" >
+	        #{remark},
+	      </if>
+          <if test="arrivedate != null">
+                #{arrivedate},
+          </if>
+	      <if test="field01 != null" >
+	        #{field01},
+	      </if>
+	      <if test="field02 != null" >
+	        #{field02},
+	      </if>
+	      <if test="field03 != null" >
+	        #{field03},
+	      </if>
+	      <if test="field04 != null" >
+	        #{field04},
+	      </if>
+	      <if test="field05 != null" >
+	        #{field05},
+	      </if>
+	      <if test="field06 != null" >
+	        #{field06},
+	      </if>
+	      <if test="field07 != null" >
+	        #{field07},
+	      </if>
+	      <if test="field08 != null" >
+	        #{field08},
+	      </if>
+	      <if test="seq != null" >
+	        #{seq},
+	      </if>
+	    </trim>
+  	</insert>  	
+  	<delete id="deletePlannedOrderDetailByOrderid" parameterType="java.lang.String">
+	    delete from t_purchase_plannedorder_detail
+	    where orderid = #{orderid}
+  	</delete>
+  	<update id="updatePlannedOrderDetail" parameterType="com.hd.agent.purchase.model.PlannedOrderDetail">
+	    update t_purchase_plannedorder_detail
+	    <set>
+	      <if test="orderid != null">
+	        orderid = #{orderid},
+	      </if>
+	      <if test="goodsid != null">
+	        goodsid = #{goodsid},
+	      </if>
+	      <if test="unitid != null">
+	        unitid = #{unitid},
+	      </if>
+	      <if test="unitname != null">
+	        unitname = #{unitname},
+	      </if>
+	      <if test="unitnum != null">
+	        unitnum = #{unitnum},
+	      </if>
+	      <if test="auxunitid != null">
+	        auxunitid = #{auxunitid},
+	      </if>
+	      <if test="auxunitname != null">
+	        auxunitname = #{auxunitname},
+	      </if>
+	      <if test="auxnum != null">
+	        auxnum = #{auxnum},
+	      </if>
+	      <if test="auxnumdetail != null">
+	        auxnumdetail = #{auxnumdetail},
+	      </if>
+	      <if test="auxremainder != null">
+	        auxremainder = #{auxremainder},
+	      </if>
+	      <if test="totalbox != null">
+	        totalbox = #{totalbox},
+	      </if>
+	      <if test="taxprice != null">
+	        taxprice = #{taxprice},
+	      </if>
+	      <if test="taxamount != null">
+	        taxamount = #{taxamount},
+	      </if>
+	      <if test="taxtype != null">
+	        taxtype = #{taxtype},
+	      </if>
+	      <if test="notaxprice != null">
+	        notaxprice = #{notaxprice},
+	      </if>
+	      <if test="notaxamount != null">
+	        notaxamount = #{notaxamount},
+	      </if>
+	      <if test="tax != null">
+	        tax = #{tax},
+	      </if>
+	      <if test="remark != null">
+	        remark = #{remark},
+	      </if>
+	      <if test="arrivedate != null">
+	        arrivedate = #{arrivedate},
+	      </if>
+	      <if test="field01 != null">
+	        field01 = #{field01},
+	      </if>
+	      <if test="field02 != null">
+	        field02 = #{field02},
+	      </if>
+	      <if test="field03 != null">
+	        field03 = #{field03},
+	      </if>
+	      <if test="field04 != null">
+	        field04 = #{field04},
+	      </if>
+	      <if test="field05 != null">
+	        field05 = #{field05},
+	      </if>
+	      <if test="field06 != null">
+	        field06 = #{field06},
+	      </if>
+	      <if test="field07 != null">
+	        field07 = #{field07},
+	      </if>
+	      <if test="field08 != null">
+	        field08 = #{field08},
+	      </if>
+	      <if test="seq != null">
+	        seq = #{seq},
+	      </if>
+	    </set>
+	    where id = #{id}
+  	</update> 
+  	<update id="updatePlannedOrderDetailWriteBack" parameterType="com.hd.agent.purchase.model.PlannedOrderDetail">  
+  		update t_purchase_plannedorder_detail
+  		<set>
+	      <if test="orderunitnum != null">
+	        orderunitnum = #{orderunitnum},
+	      </if>
+	      <if test="orderauxnum != null">
+	        orderauxnum = #{orderauxnum},
+	      </if>
+	      <if test="ordertaxamount != null">
+	        ordertaxamount = #{ordertaxamount},
+	      </if>
+	      <if test="unorderunitnum != null">
+	        unorderunitnum = #{unorderunitnum},
+	      </if>
+	      <if test="unorderauxnum != null">
+	        unorderauxnum = #{unorderauxnum},
+	      </if>
+	      <if test="unordertaxamount != null">
+	        unordertaxamount = #{unordertaxamount},
+	      </if>
+	    </set>
+	    where id = #{id}
+	    <trim prefixOverrides="and|or" >	  		
+			<if test="orderid != null" >
+			   and orderid = #{orderid}
+			</if>
+		</trim>
+  	</update> 
+  	<select id="getPlannedOrderDetailListBy" parameterType="java.util.Map" resultType="com.hd.agent.purchase.model.PlannedOrderDetail">
+  		select <include refid="POD_Base_Column_List" />
+		from t_purchase_plannedorder_detail
+		<trim prefix="where" prefixOverrides="and|or" >	   		
+			<if test="id != null" >
+			   and id = #{id}
+			</if>		  	 		
+			<if test="orderid != null" >
+			   and orderid = #{orderid}
+			</if>		  	
+		    <if test="authDataSql != null">
+		    	and ${authDataSql}
+		    </if>
+	    </trim>	
+  	</select>  	
+	<select id="getPlannedOrderDetail" parameterType="java.lang.String" resultType="com.hd.agent.purchase.model.PlannedOrderDetail">
+	    select 
+	    <include refid="POD_Base_Column_List" />
+	    from t_purchase_plannedorder_detail
+	    where id = #{id}
+ 	</select>
+ 	<select id="getPlannedOrderDetailListByOrderid" parameterType="java.lang.String" resultType="com.hd.agent.purchase.model.PlannedOrderDetail">
+	    select 
+	    <include refid="POD_Base_Column_List" />
+	    from t_purchase_plannedorder_detail
+	    where orderid = #{orderid}
+ 	</select> 
+  <select id="getPlannedOrderDetailTotal" parameterType="java.lang.String" resultType="map">
+  	select sum(taxamount) taxamount, sum(notaxamount) notaxamount, sum(tax) tax from t_purchase_plannedorder_detail where orderid = #{orderid}
+  </select>
+	<select id="getPlannedOrderDetailExport"  parameterType="com.hd.agent.common.util.PageMap" resultType="map">
+	select
+		t.businessdate, t.status, t.remark as billremark, t.arrivedate,
+		t.supplierid, t.handlerid, t.applyuserid,
+		t.applydeptid, t.buydeptid, t.buyuserid, t.storageid,
+		<include refid="POD_Base_Column_List_prefix_t1" />
+	from t_purchase_plannedorder t LEFT join t_purchase_plannedorder_detail t1 on t.id=t1.orderid
+	<trim prefix="where" prefixOverrides="and|or">
+		<include refid="POPageList_Where_Clause_prefix_t" />
+		<include refid="common.Page_querySql"/>
+		<include refid="common.Page_dataSql"/>
+		<choose>
+			<when test="condition.isClose ==0 ">
+				and t.status='2'
+			</when>
+			<when test="condition.isClose ==1 ">
+				and t.status='3'
+			</when>
+			<when test="condition.isClose ==2 ">
+				and t.status='4'
+			</when>
+		</choose>
+	</trim>
+</select>
+
+	<select id="showPlannedOrderListBy" parameterType="java.util.Map" resultType="com.hd.agent.purchase.model.PlannedOrder">
+		select
+		<include refid="PO_Base_Column_List" />
+		from t_purchase_plannedorder
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="dataSql != null">
+				and ${dataSql}
+			</if>
+			<if test="idarrs!=null">
+				and find_in_set(id,#{idarrs})
+			</if>
+			<if test="status!=null">
+				and status=#{status}
+			</if>
+			<if test="statusarr!=null">
+				and FIND_IN_SET(status,#{statusarr})
+			</if>
+			<if test="notprint != null and notprint == 1">
+				and (printtimes is null or printtimes=0)
+			</if>
+		</trim>
+	</select>
+
+	<update id="updateOrderPrinttimes" parameterType="com.hd.agent.purchase.model.PlannedOrder">
+		update t_purchase_plannedorder
+		<set>
+			<if test="printtimes != null">
+				printtimes = IFNULL(printtimes,0)+1,
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+</mapper>

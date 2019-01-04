@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hd.agent.report.dao.DeliveryReportMapper">
+	<select id="getDeliveryCustomerData" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.report.model.DeliveryCustomerOutReport">
+	
+		select 	t.customerid,t1.goodsid,t1.brandid,t.supplierid,t1.goodssort,
+																									<!-- 总体积 -->		
+		sum(t1.unitnum*t1.price) as saleprice, sum(t1.unitnum*t1.buyprice) as cost,sum(t1.totalbox) as totalbox,t1.unitnum*t2.singlevolume as volume ,t1.unitnum*t2.grossweight as weight
+		
+		from  ${condition.queryTable}  ,  t_base_goods_info t2
+		
+		where  t.id=t1.billid and t1.goodsid=t2.id
+		
+		
+		and  t.billtype='2' and find_in_set(t.status,'3,4')
+		
+		<if test="condition.businessdatestart != null">
+	         	<![CDATA[ and t.businessdate >= #{condition.businessdatestart}]]>
+			</if>
+		<if test="condition.businessdateend != null">
+	         	<![CDATA[ and t.businessdate <=#{condition.businessdateend} ]]>
+	    </if>
+		<if test="condition.customerid != null">
+	         	and find_in_set(t.customerid,#{condition.customerid})
+		</if>
+		
+		<if test="condition.supplierid != null">
+				and find_in_set(t.supplierid,#{condition.supplierid})
+		</if>
+		
+		<if test="condition.brandid != null">
+	         
+	         	and find_in_set(t1.brandid,#{condition.brandid})
+		</if>
+		<if test="condition.goodsid != null">
+				and find_in_set(t1.goodsid,#{condition.goodsid})
+		</if>
+		group by 
+		<choose>
+			<when test="condition.groupcols != null">
+				${condition.groupcols}
+			</when>
+			<otherwise>
+				t.customerid
+			</otherwise>
+		</choose>
+		<if test="condition.isLimit == null">
+			<if test="startNum != null and rows != null">
+				<![CDATA[ limit #{startNum} , #{rows} ]]>
+			</if>
+		</if>
+		
+		
+	
+	</select>
+	<select id="showAllDeliveryData" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.report.model.DeliveryAllReport">
+		select z.* from (
+		select
+		sum(z.existingbox) as existingbox,sum(IFNULL(z.existingbox,0)+IFNULL(z.intotalbox,0)+IFNULL(z.outtotalbox,0)-IFNULL(z.saleintotalbox,0)-IFNULL(z.saleouttotalbox,0)) endtotalbox,
+		SUM(z.costoutamount) as costoutamount,sum(z.costoutamount/(1+(IFNULL(t9.rate,0)/100))) as costnotaxoutamount,
+		ROUND(SUM(IFNULL(z.intotalnum,0))) intotalnum,ROUND(SUM(IFNULL(z.outtotalnum,0))) outtotalnum,
+		ROUND(SUM(IFNULL(z.saleintotalnum,0))) saleintotalnum,ROUND(SUM(IFNULL(z.saleouttotalnum,0))) saleouttotalnum,
+		(SUM(IFNULL(z.saleouttaxamount,0))/(1+(IFNULL(t9.rate,0)/100))) saleoutnotaxamount,(SUM(IFNULL(z.saleintaxamount,0))/(1+(IFNULL(t9.rate,0)/100))) saleinnotaxamount,
+		(SUM(IFNULL(z.outtaxamount,0))/(1+(IFNULL(t9.rate,0)/100))) outnotaxamount,(SUM(IFNULL(z.intaxamount,0))/(1+(IFNULL(t9.rate,0)/100))) innotaxamount,
+		SUM(taxamount+intaxamount+outtaxamount-saleintaxamount-saleouttaxamount) endamount,
+		sum((IFNULL(taxamount+intaxamount-outtaxamount+saleintaxamount-saleouttaxamount,0)/(1+(IFNULL(t9.rate,0)/100)))) endnotaxamount,
+		z.brandid,z.supplierid,z.storageid,z.unitid,z.goodsid,z.costprice as price,SUM(z.existingnum) existingnum,SUM(z.taxamount) taxamount,
+		SUM(z.notaxamount) notaxamount,SUM(z.intotalbox) intotalbox,SUM(z.inbuyprice) inbuyprice,SUM(z.intaxamount) intaxamount,SUM(z.inaddcostprice) inaddcostprice,
+		SUM(z.outtotalbox) outtotalbox,SUM(z.outbuyprice) outbuyprice,SUM(z.outtaxamount) outtaxamount,z.outaddcostprice outaddcostprice,
+		SUM(z.saleintotalbox) saleintotalbox,SUM(z.saleinbuyprice) saleinbuyprice,SUM(z.saleintaxamount) saleintaxamount,sum(z.saleinaddcostprice) saleinaddcostprice,
+		SUM(z.saleouttotalbox) saleouttotalbox,SUM(z.saleoutbuyprice) saleoutbuyprice,SUM(z.saleouttaxamount) saleouttaxamount,SUM(z.saleoutaddcostprice) saleoutaddcostprice
+		from <include refid="showAllDelivery_sql"/> z
+		LEFT JOIN t_base_goods_info_meteringunit t ON t.goodsid=z.goodsid AND t.isdefault='1'
+		LEFT JOIN t_base_goods_info t8 ON t8.id=z.goodsid
+		LEFT JOIN t_base_finance_taxtype t9 ON t9.id=t8.defaulttaxtype
+		LEFT JOIN t_base_storage_info t6 ON z.storageid=t6.id
+		where t6.storagetype='30'
+		<if test="condition.groupcols != null">
+			group by ${condition.groupcols}
+		</if>
+		ORDER BY z.brandid
+		)z
+		<if test="condition.isflag == null">
+			<include refid="common.Page_limit"/>
+		</if>
+	</select>
+
+	<select id="showAllDeliveryCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+		select count(1) from (
+		select
+		sum(z.existingbox) as existingbox,sum(IFNULL(z.existingbox,0)+IFNULL(z.intotalbox,0)+IFNULL(z.outtotalbox,0)-IFNULL(z.saleintotalbox,0)-IFNULL(z.saleouttotalbox,0)) endbox,
+		SUM(z.costoutamount) as costoutamount,sum(z.saleouttaxamount/(1+(IFNULL(t9.rate,0)/100))) as costnotaxoutamount,
+		ROUND(SUM(IFNULL(z.intotalnum,0))) intotalnum,ROUND(SUM(IFNULL(z.outtotalnum,0))) outtotalnum,
+		ROUND(SUM(IFNULL(z.saleintotalnum,0))) saleintotalnum,ROUND(SUM(IFNULL(z.saleouttotalnum,0))) saleouttotalnum,
+		(SUM(IFNULL(z.saleouttaxamount,0))/(1+(IFNULL(t9.rate,0)/100))) saleoutnotaxamount,(SUM(IFNULL(z.saleintaxamount,0))/(1+(IFNULL(t9.rate,0)/100))) saleinnotaxamount,
+		(SUM(IFNULL(z.outtaxamount,0))/(1+(IFNULL(t9.rate,0)/100))) outnotaxamount,(SUM(IFNULL(z.intaxamount,0))/(1+(IFNULL(t9.rate,0)/100))) innotaxamount,
+		SUM(taxamount+intaxamount+outtaxamount-saleintaxamount-saleouttaxamount) endamount,
+		sum((IFNULL(taxamount+intaxamount-outtaxamount+saleintaxamount-saleouttaxamount,0)/(1+(IFNULL(t9.rate,0)/100)))) endnotaxamount,
+		z.brandid,z.supplierid,z.storageid,z.unitid,z.goodsid,z.costprice as price,SUM(z.existingnum) existingnum,SUM(z.taxamount) taxamount,
+		SUM(z.notaxamount) notaxamount,SUM(z.intotalbox) intotalbox,SUM(z.inbuyprice) inbuyprice,SUM(z.intaxamount) intaxamount,SUM(z.inaddcostprice) inaddcostprice,
+		SUM(z.outtotalbox) outtotalbox,SUM(z.outbuyprice) outbuyprice,SUM(z.outtaxamount) outtaxamount,z.outaddcostprice outaddcostprice,
+		SUM(z.saleintotalbox) saleintotalbox,SUM(z.saleinbuyprice) saleinbuyprice,SUM(z.saleintaxamount) saleintaxamount,sum(z.saleinaddcostprice) saleinaddcostprice,
+		SUM(z.saleouttotalbox) saleouttotalbox,SUM(z.saleoutbuyprice) saleoutbuyprice,SUM(z.saleouttaxamount) saleouttaxamount,SUM(z.saleoutaddcostprice) saleoutaddcostprice
+		from <include refid="showAllDelivery_sql"/> z
+		LEFT JOIN t_base_goods_info_meteringunit t ON t.goodsid=z.goodsid AND t.isdefault='1'
+		LEFT JOIN t_base_goods_info t8 ON t8.id=z.goodsid
+		LEFT JOIN t_base_finance_taxtype t9 ON t9.id=t8.defaulttaxtype
+		LEFT JOIN t_base_storage_info t6 ON z.storageid=t6.id
+		where t6.storagetype='30'
+		<if test="condition.groupcols != null">
+			group by ${condition.groupcols}
+		</if>
+		)z
+	</select>
+
+	<select id="showAllDeliverySum" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.report.model.DeliveryAllReport">
+		select sum(z.endtotalbox) as endtotalbox, SUM(z.existingbox) as existingbox,SUM(z.existingnum) AS existingnum,SUM(z.taxamount) AS taxamount,SUM(z.notaxamount) AS notaxamount,
+		SUM(z.intaxamount) AS intaxamount,SUM(z.outtaxamount) AS outtaxamount,SUM(z.saleintaxamount) AS saleintaxamount,SUM(z.saleouttaxamount) AS saleouttaxamount,
+		SUM(z.intotalnum) intotalnum,SUM(z.outtotalnum) outtotalnum,
+		SUM(z.saleintotalnum) saleintotalnum,SUM(z.saleouttotalnum) saleouttotalnum,
+		SUM(z.intaxamount) intaxamount,SUM(z.outtaxamount) outtaxamount,SUM(z.saleintaxamount) saleintaxamount,SUM(z.saleouttaxamount) saleouttaxamount,
+		SUM(costoutamount) costoutamount, SUM(costnotaxoutamount) costnotaxoutamount,
+		SUM(innotaxamount) innotaxamount,SUM(outnotaxamount) outnotaxamount,SUM(saleinnotaxamount) saleinnotaxamount,SUM(saleoutnotaxamount) saleoutnotaxamount
+		from (
+		select
+		sum(z.existingbox) as existingbox,sum(IFNULL(z.existingbox,0)+IFNULL(z.intotalbox,0)+IFNULL(z.outtotalbox,0)-IFNULL(z.saleintotalbox,0)-IFNULL(z.saleouttotalbox,0)) endtotalbox,
+		SUM(z.costoutamount) as costoutamount,sum(z.costoutamount/(1+(IFNULL(t9.rate,0)/100))) as costnotaxoutamount,
+		ROUND(SUM(IFNULL(z.intotalnum,0))) intotalnum,ROUND(SUM(IFNULL(z.outtotalnum,0))) outtotalnum,
+		ROUND(SUM(IFNULL(z.saleintotalnum,0))) saleintotalnum,ROUND(SUM(IFNULL(z.saleouttotalnum,0))) saleouttotalnum,
+		(SUM(IFNULL(z.saleouttaxamount,0))/(1+(IFNULL(t9.rate,0)/100))) saleoutnotaxamount,(SUM(IFNULL(z.saleintaxamount,0))/(1+(IFNULL(t9.rate,0)/100))) saleinnotaxamount,
+		(SUM(IFNULL(z.outtaxamount,0))/(1+(IFNULL(t9.rate,0)/100))) outnotaxamount,(SUM(IFNULL(z.intaxamount,0))/(1+(IFNULL(t9.rate,0)/100))) innotaxamount,
+		SUM(taxamount+intaxamount+outtaxamount-saleintaxamount-saleouttaxamount) endamount,
+		sum((IFNULL(taxamount+intaxamount-outtaxamount+saleintaxamount-saleouttaxamount,0)/(1+(IFNULL(t9.rate,0)/100)))) endnotaxamount,
+		z.brandid,z.supplierid,z.storageid,z.unitid,z.goodsid,z.costprice as price,SUM(z.existingnum) existingnum,SUM(z.taxamount) taxamount,
+		SUM(z.notaxamount) notaxamount,SUM(z.intotalbox) intotalbox,SUM(z.inbuyprice) inbuyprice,SUM(z.intaxamount) intaxamount,SUM(z.inaddcostprice) inaddcostprice,
+		SUM(z.outtotalbox) outtotalbox,SUM(z.outbuyprice) outbuyprice,SUM(z.outtaxamount) outtaxamount,z.outaddcostprice outaddcostprice,
+		SUM(z.saleintotalbox) saleintotalbox,SUM(z.saleinbuyprice) saleinbuyprice,SUM(z.saleintaxamount) saleintaxamount,sum(z.saleinaddcostprice) saleinaddcostprice,
+		SUM(z.saleouttotalbox) saleouttotalbox,SUM(z.saleoutbuyprice) saleoutbuyprice,SUM(z.saleouttaxamount) saleouttaxamount,SUM(z.saleoutaddcostprice) saleoutaddcostprice
+		from <include refid="showAllDelivery_sql"/> z
+		LEFT JOIN t_base_goods_info_meteringunit t ON t.goodsid=z.goodsid and t.isdefault='1'
+		LEFT JOIN t_base_goods_info t8 ON t8.id=z.goodsid
+		LEFT JOIN t_base_finance_taxtype t9 ON t9.id=t8.defaulttaxtype
+		LEFT JOIN t_base_storage_info t6 ON z.storageid=t6.id
+		where t6.storagetype='30'
+		<if test="condition.groupcols != null">
+			group by ${condition.groupcols}
+		</if>
+		ORDER BY z.brandid
+		)z
+	</select>
+
+	<sql id="showAllDelivery_sql">
+		(
+        SELECT  0 as costoutamount, t1.brandid,t1.supplier AS supplierid,t1.storageid,t1.unitid,t1.goodsid,t1.costprice,
+		t1.existingnum,t1.taxamount,t1.notaxamount,(t1.existingnum/t.rate) existingbox,
+		0 AS intotalbox,0 AS inbuyprice,0 AS inprice,0 AS intaxamount,0 AS inaddcostprice,0 AS intotalnum,
+		0 AS outtotalbox,0 AS outbuyprice,0 AS outprice,0 AS outtaxamount,0 AS outaddcostprice,0 AS outtotalnum,
+		0 AS saleintotalbox,0 AS saleinbuyprice,0 AS saleinprice,0 AS saleintaxamount,0 AS saleinaddcostprice,0 AS saleintotalnum,
+		0 AS saleouttotalbox,0 AS saleoutbuyprice,0 AS saleoutprice,0 AS saleouttaxamount,0 AS saleoutaddcostprice,0 AS saleouttotalnum
+		FROM t_report_storage_bak t1 LEFT JOIN t_base_goods_info_meteringunit t ON t1.goodsid=t.goodsid and t.isdefault='1'
+		<trim prefix="where" prefixOverrides="and|or">
+			<include refid="common.Page_dataSql"/>
+			<if test="condition.yesterday1 != null">
+				and t1.businessdate=#{condition.yesterday1}
+			</if>
+			<if test="condition.brandid != null">
+				and FIND_IN_SET(t1.brandid,#{condition.brandid})
+			</if>
+			<if test="condition.goodsid != null">
+				and FIND_IN_SET(t1.goodsid,#{condition.goodsid})
+			</if>
+			<if test="condition.storageid != null">
+				and FIND_IN_SET(t1.storageid,#{condition.storageid})
+			</if>
+			<if test="condition.supplierid != null">
+				and FIND_IN_SET(t1.supplier,#{condition.supplierid})
+			</if>
+		</trim>
+		UNION ALL
+		SELECT 0 as costoutamount,t1.brandid,t.supplierid AS supplierid,t.storageid,t1.unitid,t1.goodsid,0 AS costprice,
+		0 AS existingnum, 0 AS taxamount,0 AS notaxamount,0 as existingbox,
+		t1.totalbox AS intotalbox,0 AS inbuyprice,0 AS inprice,t1.taxamount AS intaxamount,t1.buyprice AS inaddcostprice,t1.unitnum AS intotalnum,
+		0 AS outtotalbox,0 AS outbuyprice,0 AS outprice,0 AS outtaxamount,0 AS outaddcostprice,0 AS outtotalnum,
+		0 AS saleintotalbox,0 AS saleinbuyprice,0 AS saleinprice,0 AS saleintaxamount,0 AS saleinaddcostprice,0 AS saleintotalnum,
+		0 AS saleouttotalbox,0 AS saleoutbuyprice,0 AS saleoutprice,0 AS saleouttaxamount,0 AS saleoutaddcostprice,0 AS saleouttotalnum
+		FROM t_storage_delivery_enter t LEFT JOIN t_storage_delivery_enter_detail t1 ON t.id=t1.billid
+		<trim prefix="where" prefixOverrides="and|or">
+			<include refid="common.Page_dataSql"/>
+			<if test="1==1">
+				and t.billtype='1' AND (t.status='3' OR t.status='4')
+			</if>
+			<if test="condition.businessdate1 != null">
+				and t.businessdate>=#{condition.businessdate1}
+			</if>
+			<if test="condition.businessdate2 != null">
+				<![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+			</if>
+			<if test="condition.brandid != null">
+				and FIND_IN_SET(t1.brandid,#{condition.brandid})
+			</if>
+			<if test="condition.goodsid != null">
+				and FIND_IN_SET(t1.goodsid,#{condition.goodsid})
+			</if>
+			<if test="condition.storageid != null">
+				and FIND_IN_SET(t.storageid,#{condition.storageid})
+			</if>
+			<if test="condition.supplierid != null">
+				and FIND_IN_SET(t.supplierid,#{condition.supplierid})
+			</if>
+		</trim>
+		UNION ALL
+		SELECT (t1.buyprice*-t1.unitnum) AS costoutamount, t1.brandid,t.supplierid AS supplierid,t.storageid,t1.unitid,t1.goodsid,0 AS costprice,
+		0 AS existingnum, 0 AS taxamount,0 AS notaxamount,0 as existingbox,
+		0 AS intotalbox,0 AS inbuyprice,0 AS inprice,0 AS intaxamount,0 AS inaddcostprice,0 AS intotalnum,
+		0 AS outtotalbox,0 AS outbuyprice,0 AS outprice,0 AS outtaxamount,0 AS outaddcostprice,0 AS outtotalnum,
+		-t1.totalbox AS saleintotalbox,0 AS saleinbuyprice,0 AS saleinprice,-t1.taxamount AS saleintaxamount,t1.buyprice AS saleinaddcostprice,-t1.unitnum AS saleintotalnum,
+		0 AS saleouttotalbox,0 AS saleoutbuyprice,0 AS saleoutprice,0 AS saleouttaxamount,0 AS saleoutaddcostprice,0 AS saleouttotalnum
+		FROM t_storage_delivery_enter t LEFT JOIN t_storage_delivery_enter_detail t1 ON t.id=t1.billid
+		<trim prefix="where" prefixOverrides="and|or">
+			<include refid="common.Page_dataSql"/>
+			<if test="1==1">
+				and t.billtype='2' AND (t.status='3' OR t.status='4')
+			</if>
+			<if test="condition.businessdate1 != null">
+				and t.businessdate>=#{condition.businessdate1}
+			</if>
+			<if test="condition.businessdate2 != null">
+				<![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+			</if>
+			<if test="condition.brandid != null">
+				and FIND_IN_SET(t1.brandid,#{condition.brandid})
+			</if>
+			<if test="condition.goodsid != null">
+				and FIND_IN_SET(t1.goodsid,#{condition.goodsid})
+			</if>
+			<if test="condition.storageid != null">
+				and FIND_IN_SET(t.storageid,#{condition.storageid})
+			</if>
+			<if test="condition.supplierid != null">
+				and FIND_IN_SET(t.supplierid,#{condition.supplierid})
+			</if>
+		</trim>
+		UNION ALL
+		SELECT 0 AS costoutamount,t1.brandid,t.supplierid AS supplierid,t.storageid,t1.unitid,t1.goodsid,0 AS costprice,
+		0 AS existingnum, 0 AS taxamount,0 AS notaxamount,0 as existingbox,
+		0 AS intotalbox,0 AS inbuyprice,0 AS inprice,0 AS intaxamount,0 AS inaddcostprice,0 AS intotalnum,
+		-t1.totalbox AS outtotalbox,0 AS outbuyprice,0 AS outprice,-t1.taxamount AS outtaxamount,t1.buyprice AS outaddcostprice,-t1.unitnum AS outtotalnum,
+		0 AS saleintotalbox,0 AS saleinbuyprice,0 AS saleinprice,0 AS saleintaxamount,0 AS saleinaddcostprice,0 AS saleintotalnum,
+		0 AS saleouttotalbox,0 AS saleoutbuyprice,0 AS saleoutprice,0 AS saleouttaxamount,0 AS saleoutaddcostprice,0 AS saleouttotalnum
+		FROM t_storage_delivery_out t LEFT JOIN t_storage_delivery_out_detail t1 ON t.id=t1.billid
+		<trim prefix="where" prefixOverrides="and|or">
+			<include refid="common.Page_dataSql"/>
+			<if test="1==1">
+				and t.billtype='1' AND (t.status='3' OR t.status='4')
+			</if>
+			<if test="condition.businessdate1 != null">
+				and t.businessdate>=#{condition.businessdate1}
+			</if>
+			<if test="condition.businessdate2 != null">
+				<![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+			</if>
+			<if test="condition.brandid != null">
+				and FIND_IN_SET(t1.brandid,#{condition.brandid})
+			</if>
+			<if test="condition.goodsid != null">
+				and FIND_IN_SET(t1.goodsid,#{condition.goodsid})
+			</if>
+			<if test="condition.storageid != null">
+				and FIND_IN_SET(t.storageid,#{condition.storageid})
+			</if>
+			<if test="condition.supplierid != null">
+				and FIND_IN_SET(t.supplierid,#{condition.supplierid})
+			</if>
+		</trim>
+		UNION ALL
+		SELECT (t1.buyprice*t1.unitnum) AS costoutamount,t1.brandid,t.supplierid AS supplierid,t.storageid,t1.unitid,t1.goodsid,0 AS costprice,
+		0 AS existingnum, 0 AS taxamount,0 AS notaxamount,0 as existingbox,
+		0 AS intotalbox,0 AS inbuyprice,0 AS inprice,0 AS intaxamount,0 AS inaddcostprice,0 AS intotalnum,
+		0 AS outtotalbox,0 AS outbuyprice,0 AS outprice,0 AS outtaxamount,0 AS outaddcostprice,0 AS outtotalnum,
+		0 AS saleintotalbox,0 AS saleinbuyprice,0 AS saleinprice,0 AS saleintaxamount,0 AS saleinaddcostprice,0 AS saleintotalnum,
+		t1.totalbox AS saleouttotalbox,0 AS saleoutbuyprice,0 AS saleoutprice,t1.taxamount AS saleouttaxamount,t1.buyprice AS saleoutaddcostprice,t1.unitnum AS saleouttotalnum
+		FROM t_storage_delivery_out t LEFT JOIN t_storage_delivery_out_detail t1 ON t.id=t1.billid
+		<trim prefix="where" prefixOverrides="and|or">
+			<include refid="common.Page_dataSql"/>
+			<if test="1==1">
+				and t.billtype='2' AND (t.status='3' OR t.status='4')
+			</if>
+			<if test="condition.businessdate1 != null">
+				and t.businessdate>=#{condition.businessdate1}
+			</if>
+			<if test="condition.businessdate2 != null">
+				<![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+			</if>
+			<if test="condition.brandid != null">
+				and FIND_IN_SET(t1.brandid,#{condition.brandid})
+			</if>
+			<if test="condition.goodsid != null">
+				and FIND_IN_SET(t1.goodsid,#{condition.goodsid})
+			</if>
+			<if test="condition.storageid != null">
+				and FIND_IN_SET(t.storageid,#{condition.storageid})
+			</if>
+			<if test="condition.supplierid != null">
+				and FIND_IN_SET(t.supplierid,#{condition.supplierid})
+			</if>
+		</trim>
+		)
+	</sql>
+	
+	
+		
+	
+	
+	
+	
+	
+	
+
+</mapper>

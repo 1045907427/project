@@ -1,0 +1,804 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.message.dao.FileDistribMapper">	
+  	<sql id="FD_Base_Column_List">
+	    id, title, type, istop, topday, ismsg, titleword,wordsize, startdate, enddate, state, isaud, 
+	    audstate, adduserid, addtime, adddeptid, modifyuserid, modifytime, delflag, deltime, 
+	    cversion,content,orgcont,contid,cftype, receivedept, receiverole, receiveuser, attach,formid,formname
+  	</sql>
+	<sql id="FPrefix_FD_Base_Column_List">
+		f.id, f.title, f.type, f.istop, f.topday, f.ismsg, f.titleword,f.wordsize, f.startdate, f.enddate, f.state, f.isaud,
+		f.audstate, f.adduserid, f.addtime, f.adddeptid, f.modifyuserid, f.modifytime, f.delflag, f.deltime,
+		f.cversion,f.content,f.orgcont,f.contid,f.cftype, f.receivedept, f.receiverole, f.receiveuser, f.attach,f.formid,f.formname
+	</sql>
+	<sql id="FD_PageList_Query_Where_Clause">
+      <if test="condition.title != null">
+         and title = #{condition.title}
+      </if>
+      <if test="condition.queryfdid != null">
+         and id = #{condition.queryfdid}
+      </if>
+      <if test="condition.titleword != null">
+         and titleword = #{condition.titleword}
+      </if>
+      <if test="condition.wordsize != null">
+         and wordsize = #{condition.wordsize}
+      </if>
+      <if test="condition.type != null">
+         and type = #{condition.type}
+      </if>
+      <if test="condition.istop != null">
+         and istop = #{condition.istop}
+      </if>
+      <if test="condition.topday != null">
+         and topday = #{condition.topday}
+      </if>
+      <if test="condition.ismsg != null">
+         and ismsg = #{condition.ismsg}
+      </if>
+      <if test="condition.startdate != null" >
+         <![CDATA[ and startdate<=  #{condition.startdate}  ]]>
+      </if>
+      <if test="condition.enddate != null" >
+        <![CDATA[ and ( enddate >=  #{condition.enddate} or length(enddate)=0 ) ]]>
+      </if>
+      
+      <if test="condition.startaddtime != null" >
+         <![CDATA[ and addtime >=  #{condition.startaddtime} ]]>
+      </if>
+      <if test="condition.endaddtime != null" >
+        <![CDATA[ and  addtime <=  #{condition.endaddtime}  ]]>
+      </if>
+      <if test="condition.state != null">
+         and state = #{condition.state}
+      </if>
+      <if test="condition.isaud != null">
+         and isaud = #{condition.isaud}
+      </if>
+      <if test="condition.audstate != null">
+         and audstate = #{condition.audstate}
+      </if>
+      <if test="condition.adduserid != null">
+         and adduserid = #{condition.adduserid}
+      </if>
+      <if test="condition.adddeptid != null">
+         and adddeptid = #{condition.adddeptid}
+      </if>
+      <if test="condition.modifyuserid != null">
+         and modifyuserid = #{condition.modifyuserid}
+      </if>
+      <if test="condition.delflag != null">
+         and delflag = #{condition.delflag}
+      </if>
+      <if test="condition.cversion != null">
+         and cversion = #{condition.cversion}
+      </if>
+    </sql>
+	<sql id="FPrefix_FD_PageList_Query_Where_Clause">
+		<if test="condition.title != null">
+			and f.title = #{condition.title}
+		</if>
+		<if test="condition.queryfdid != null">
+			and f.id = #{condition.queryfdid}
+		</if>
+		<if test="condition.titleword != null">
+			and f.titleword = #{condition.titleword}
+		</if>
+		<if test="condition.wordsize != null">
+			and f.wordsize = #{condition.wordsize}
+		</if>
+		<if test="condition.type != null">
+			and f.type = #{condition.type}
+		</if>
+		<if test="condition.istop != null">
+			and f.istop = #{condition.istop}
+		</if>
+		<if test="condition.topday != null">
+			and f.topday = #{condition.topday}
+		</if>
+		<if test="condition.ismsg != null">
+			and f.ismsg = #{condition.ismsg}
+		</if>
+		<if test="condition.startdate != null" >
+			<![CDATA[ and f.startdate<=  #{condition.startdate}  ]]>
+		</if>
+		<if test="condition.enddate != null" >
+			<![CDATA[ and ( f.enddate >=  #{condition.enddate} or length(enddate)=0 ) ]]>
+		</if>
+
+		<if test="condition.startaddtime != null" >
+			<![CDATA[ and f.addtime >=  #{condition.startaddtime} ]]>
+		</if>
+		<if test="condition.endaddtime != null" >
+			<![CDATA[ and f.addtime <=  #{condition.endaddtime}  ]]>
+		</if>
+		<if test="condition.state != null">
+			and f.state = #{condition.state}
+		</if>
+		<if test="condition.isaud != null">
+			and f.isaud = #{condition.isaud}
+		</if>
+		<if test="condition.audstate != null">
+			and f.audstate = #{condition.audstate}
+		</if>
+		<if test="condition.adduserid != null">
+			and f.adduserid = #{condition.adduserid}
+		</if>
+		<if test="condition.adddeptid != null">
+			and f.adddeptid = #{condition.adddeptid}
+		</if>
+		<if test="condition.modifyuserid != null">
+			and f.modifyuserid = #{condition.modifyuserid}
+		</if>
+		<if test="condition.delflag != null">
+			and f.delflag = #{condition.delflag}
+		</if>
+		<if test="condition.cversion != null">
+			and f.cversion = #{condition.cversion}
+		</if>
+	</sql>
+    <sql id="FDReceive_PageList_Where_Clause" >
+      <if test="condition.fid != null" >
+         and fid = #{condition.fid}
+      </if>
+      <if test="condition.receiveuserid != null" >
+         and receiveuserid = #{condition.receiveuserid}
+      </if>
+      <if test="condition.receivetime != null" >
+         and receivetime = #{condition.receivetime}
+      </if>
+	</sql>
+	
+	<sql id="FD_PublishRange_PageList_Where_Clause">			            	
+	      <trim prefix="and (	" suffix=")" prefixOverrides="and|or" >	      	
+		      <if test="condition.isqueryviewrang==1">
+	      		<if test="condition.curuserdept!=null">	      			
+			       <![CDATA[ or find_in_set(#{condition.curuserdept}, receivedept )  ]]>
+	      		</if>
+	      		<if test="condition.curusrolelist!=null">
+		      		or      			
+			        <foreach collection="condition.curusrolelist" item="item" open="("  separator="or" close=")">
+			       			<![CDATA[ find_in_set(#{item}, receiverole )  ]]>
+			      	</foreach>
+	      		</if>
+	      		<if test="condition.curuserid!=null">	      			
+			        <![CDATA[ or  find_in_set(#{condition.curuserid}, receiveuser )   ]]>
+	      		</if>
+	      		or receivedept='ALL' or receiverole='ALL' or receiveuser='ALL'
+		      </if> 		      	
+	      </trim>
+	</sql>
+  <sql id="FDR_Base_Column_List">
+    id, fid, receiveuserid, receivetime, readtime, readcount
+  </sql>
+  
+  <sql id="FDW_Base_Column_List" >
+    id, fid, addtime, adduserid, addusername, addtype, filetype,
+    orgcontent, content
+  </sql>
+    <insert id="insertFileDistrib" parameterType="com.hd.agent.message.model.FileDistrib">
+	    insert into t_msg_filedistrib
+	    <trim prefix="(" suffix=")" suffixOverrides=",">
+	      <if test="id != null">
+	        id,
+	      </if>
+	      <if test="title != null">
+	        title,
+	      </if>
+	      <if test="type != null">
+	        type,
+	      </if>
+	      <if test="istop != null">
+	        istop,
+	      </if>
+	      <if test="topday != null">
+	        topday,
+	      </if>
+	      <if test="ismsg != null">
+	        ismsg,
+	      </if>
+	      <if test="titleword != null">
+	        titleword,
+	      </if>
+	      <if test="wordsize != null">
+	        wordsize,
+	      </if>
+	      <if test="startdate != null">
+	        startdate,
+	      </if>
+	      <if test="enddate != null">
+	        enddate,
+	      </if>
+	      <if test="state != null">
+	        state,
+	      </if>
+	      <if test="isaud != null">
+	        isaud,
+	      </if>
+	      <if test="audstate != null">
+	        audstate,
+	      </if>
+	      <if test="adduserid != null">
+	        adduserid,
+	      </if>
+	      <if test="addtime != null">
+	        addtime,
+	      </if>
+	      <if test="adddeptid != null">
+	        adddeptid,
+	      </if>
+	      <if test="modifyuserid != null">
+	        modifyuserid,
+	      </if>
+	      <if test="modifytime != null">
+	        modifytime,
+	      </if>
+	      <if test="delflag != null">
+	        delflag,
+	      </if>
+	      <if test="deltime != null">
+	        deltime,
+	      </if>
+	      <if test="cversion != null">
+	        cversion,
+	      </if>
+	      <if test="content != null">
+	        content,
+	      </if>
+	      <if test="orgcont != null">
+	        orgcont,
+	      </if>
+	      <if test="contid != null">
+	        contid,
+	      </if>
+	      <if test="cftype != null">
+	        cftype,
+	      </if>
+	      <if test="receivedept != null">
+	        receivedept,
+	      </if>
+	      <if test="receiverole != null">
+	        receiverole,
+	      </if>
+	      <if test="receiveuser != null">
+	        receiveuser,
+	      </if>
+	      <if test="attach != null">
+	        attach,
+	      </if>
+	      <if test="formid != null">
+	        formid,
+	      </if>
+	      <if test="formname != null">
+	        formname,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides=",">
+	      <if test="id != null">
+	        #{id},
+	      </if>
+	      <if test="title != null">
+	        #{title},
+	      </if>
+	      <if test="type != null">
+	        #{type},
+	      </if>
+	      <if test="istop != null">
+	        #{istop},
+	      </if>
+	      <if test="topday != null">
+	        #{topday},
+	      </if>
+	      <if test="ismsg != null">
+	        #{ismsg},
+	      </if>
+	      <if test="titleword != null">
+	        #{titleword},
+	      </if>
+	      <if test="wordsize != null">
+	        #{wordsize},
+	      </if>
+	      <if test="startdate != null">
+	        #{startdate},
+	      </if>
+	      <if test="enddate != null">
+	        #{enddate},
+	      </if>
+	      <if test="state != null">
+	        #{state},
+	      </if>
+	      <if test="isaud != null">
+	        #{isaud},
+	      </if>
+	      <if test="audstate != null">
+	        #{audstate},
+	      </if>
+	      <if test="adduserid != null">
+	        #{adduserid},
+	      </if>
+	      <if test="addtime != null">
+	        #{addtime},
+	      </if>
+	      <if test="adddeptid != null">
+	        #{adddeptid},
+	      </if>
+	      <if test="modifyuserid != null">
+	        #{modifyuserid},
+	      </if>
+	      <if test="modifytime != null">
+	        #{modifytime},
+	      </if>
+	      <if test="delflag != null">
+	        #{delflag},
+	      </if>
+	      <if test="deltime != null">
+	        #{deltime},
+	      </if>
+	      <if test="cversion != null">
+	        #{cversion},
+	      </if>
+	      <if test="content != null">
+	        #{content},
+	      </if>
+	      <if test="orgcont != null">
+	        #{orgcont},
+	      </if>
+	      <if test="contid != null">
+	        #{contid},
+	      </if>
+	      <if test="cftype != null">
+	        #{cftype},
+	      </if>
+	      <if test="receivedept != null">
+	        #{receivedept},
+	      </if>
+	      <if test="receiverole != null">
+	        #{receiverole},
+	      </if>
+	      <if test="receiveuser != null">
+	        #{receiveuser},
+	      </if>
+	      <if test="attach != null">
+	        #{attach},
+	      </if>
+	      <if test="formid != null">
+	        #{formid},
+	      </if>
+	      <if test="formname != null">
+	        #{formname},
+	      </if>
+	    </trim>
+		<selectKey resultType="int" keyProperty="id"
+			order="AFTER">
+			select LAST_INSERT_ID() as id
+	    </selectKey>
+  </insert>
+  <update id="updateFileDistrib" parameterType="com.hd.agent.message.model.FileDistrib">
+    update t_msg_filedistrib
+    <set>
+      <if test="title != null">
+        title = #{title},
+      </if>
+      <if test="type != null">
+        type = #{type},
+      </if>
+      <if test="istop != null">
+        istop = #{istop},
+      </if>
+      <if test="topday != null">
+        topday = #{topday},
+      </if>
+      <if test="ismsg != null">
+        ismsg = #{ismsg},
+      </if>
+      <if test="titleword != null">
+        titleword = #{titleword},
+      </if>
+      <if test="wordsize != null">
+        wordsize = #{wordsize},
+      </if>
+      <if test="startdate != null">
+        startdate = #{startdate},
+      </if>
+      <if test="enddate != null">
+        enddate = #{enddate},
+      </if>
+      <if test="state != null">
+        state = #{state},
+      </if>
+      <if test="isaud != null">
+        isaud = #{isaud},
+      </if>
+      <if test="audstate != null">
+        audstate = #{audstate},
+      </if>
+      <if test="adduserid != null">
+        adduserid = #{adduserid},
+      </if>
+      <if test="addtime != null">
+        addtime = #{addtime},
+      </if>
+      <if test="adddeptid != null">
+        adddeptid = #{adddeptid},
+      </if>
+      <if test="modifyuserid != null">
+        modifyuserid = #{modifyuserid},
+      </if>
+      <if test="modifytime != null">
+        modifytime = #{modifytime},
+      </if>
+      <if test="delflag != null">
+        delflag = #{delflag},
+      </if>
+      <if test="deltime != null">
+        deltime = #{deltime},
+      </if>
+      <if test="cversion != null">
+        cversion = #{cversion},
+      </if>
+      <if test="content != null">
+        content = #{content},
+      </if>
+      <if test="orgcont != null">
+        orgcont = #{orgcont},
+      </if>
+      <if test="contid != null">
+        contid = #{contid},
+      </if>
+      <if test="cftype != null">
+        cftype = #{cftype},
+      </if>
+      <if test="receivedept != null">
+        receivedept = #{receivedept},
+      </if>
+      <if test="receiverole != null">
+        receiverole = #{receiverole},
+      </if>
+      <if test="receiveuser != null">
+        receiveuser = #{receiveuser},
+      </if>
+      <if test="attach != null">
+        attach = #{attach},
+      </if>
+      <if test="formid != null">
+        #{formid},
+      </if>
+      <if test="formname != null">
+        #{formname},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  <update id="updateFileDistribBy" parameterType="java.util.HashMap">
+    update t_msg_filedistrib
+    <set>
+      <if test="type != null">
+        type = #{type},
+      </if>
+      <if test="istop != null">
+        istop = #{istop},
+      </if>
+      <if test="topday != null">
+        topday = #{topday},
+      </if>
+      <if test="ismsg != null">
+        ismsg = #{ismsg},
+      </if>
+      <if test="state != null">
+        state = #{state},
+      </if>
+      <if test="audstate != null">
+        audstate = #{audstate},
+      </if>
+      <if test="modifyuserid != null">
+        modifyuserid = #{modifyuserid},
+      </if>
+      <if test="modifytime != null">
+        modifytime = #{modifytime},
+      </if>
+      <if test="delflag != null">
+        delflag = #{delflag},
+      </if>
+      <if test="deltime != null">
+        deltime = #{deltime},
+      </if>
+    </set>
+    where
+    <trim prefixOverrides="and|or">	    	
+      <if test="id != null">
+        and id = #{id}
+      </if>   	
+      <if test="idarrs != null">
+        and FIND_IN_SET(id,#{idarrs})
+      </if>
+      <if test="wadduserid != null">
+        and adduserid = #{wadduserid}
+      </if>
+      <if test="wstate != null">
+        and state = #{wstate}
+      </if>
+      <if test="wstatearr != null">
+        and find_in_set(state,#{wstate})
+      </if>
+      <if test="wisaud != null">
+        and isaud = #{wisaud}
+      </if>
+      <if test="waudstate != null">
+        and audstate = #{waudstate}
+      </if>
+      <if test="wmodifyuserid != null">
+        and modifyuserid = #{wmodifyuserid}
+      </if>
+      <if test="wdelflag != null">
+        and delflag = #{wdelflag}
+      </if>
+      <if test="authDataSql != null">
+      	and ${authDataSql}
+      </if>
+    </trim> 
+  </update>
+  <delete id="deleteFileDistribBy" parameterType="java.util.Map">
+		delete from t_msg_filedistrib 
+		where		
+	    <trim prefixOverrides="and|or">	    	
+	      <if test="id != null">
+	        and id = #{id}
+	      </if>   	
+	      <if test="idarrs != null">
+	        and FIND_IN_SET(id,#{idarrs})
+	      </if>
+	      <if test="wadduserid != null">
+	        and adduserid = #{wadduserid}
+	      </if>
+	      <if test="wstate != null">
+	        and state = #{wstate}
+	      </if>
+	      <if test="wstatearr != null">
+	        and find_in_set(state,#{wstate})
+	      </if>	      
+	      <if test="wnotstatearr != null">
+	        and (not find_in_set(state,#{wnotstatearr}) )
+	      </if>
+	      <if test="wisaud != null">
+	        and isaud = #{wisaud}
+	      </if>
+	      <if test="waudstate != null">
+	        and audstate = #{waudstate}
+	      </if>
+	      <if test="wmodifyuserid != null">
+	        and modifyuserid = #{wmodifyuserid}
+	      </if>
+	      <if test="wdelflag != null">
+	        and delflag = #{wdelflag}
+	      </if>
+	      <if test="authDataSql != null">
+	      	and ${authDataSql}
+	      </if>
+	    </trim> 
+  </delete>	
+  <select id="showPureFileDistrib" parameterType="java.lang.String" resultType="com.hd.agent.message.model.FileDistrib">
+  		select
+	  	<include refid="FD_Base_Column_List"></include>
+	  	from t_msg_filedistrib
+		where id=#{id}
+  </select>
+  <select id="showFileDistrib" parameterType="java.util.Map" resultType="com.hd.agent.message.model.FileDistrib">
+  		select
+	  	<choose>
+			<when test="cols!=null">
+				<include refid="common.Page_Column"/>
+			</when>
+			<when test="cols==null">							
+				<include refid="FD_Base_Column_List"></include>
+			</when>
+		</choose>
+	  	from t_msg_filedistrib
+		where id=#{id}
+  </select>
+  <select id="getFileDistribReceivePageList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.message.model.FileDistrib" useCache="false">
+	  select t.*
+	  from (
+	  SELECT
+	  <include refid="FPrefix_FD_Base_Column_List"></include>
+	  ,suser.name as addusername,
+	  case WHEN  f.topday>0 AND f.istop!='0' AND TO_DAYS(NOW())-TO_DAYS(n.ADDTIME) >= (f.topday-1) then '3'
+	  when f.topday=0 AND f.istop!=0 then '2'
+	  else '1' end as myseq
+	  <if test="condition.isshowcuruserrc==1 ">
+		  ,(SELECT COUNT(*) FROM t_msg_filedistribreceive nr WHERE nr.fid=t.id
+		  <if test="condition.curuserid !=null ">
+			  and nr.receiveuserid=${condition.curuserid}
+		  </if>
+		  ) readcount
+	  </if>
+	  FROM
+	  t_msg_filedistrib f
+	  LEFT JOIN t_sys_user suser ON n.adduserid=suser.userid
+	  order by myseq desc, n.ADDTIME desc
+	  ) t
+
+  	 <trim prefix="where" prefixOverrides="and|or">
+		<include refid="FD_PageList_Query_Where_Clause"/>
+		<include refid="common.Page_querySql"/>
+		<include refid="FD_PublishRange_PageList_Where_Clause" />
+		<include refid="common.Page_dataSql"/>
+	</trim>
+	<include refid="common.Page_limit" />
+  </select>  
+  <select id="getFileDistribReceivePageCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int" useCache="false">
+		select count(1) from (
+		  SELECT
+		  <include refid="FPrefix_FD_Base_Column_List"></include>
+		  ,suser.name as addusername,
+		  case WHEN  f.topday>0 AND f.istop!='0' AND TO_DAYS(NOW())-TO_DAYS(n.ADDTIME) >= (f.topday-1)  then '3'
+		  when f.topday=0 AND f.istop!=0 then '2'
+		  else '1' end as myseq
+		  <if test="condition.isshowcuruserrc==1 ">
+			  ,(SELECT COUNT(*) FROM t_msg_filedistribreceive nr WHERE nr.fid=t.id
+			  <if test="condition.curuserid !=null ">
+				  and nr.receiveuserid=${condition.curuserid}
+			  </if>
+			  ) readcount
+		  </if>
+		  FROM
+		  t_msg_filedistrib f
+		  LEFT JOIN t_sys_user suser ON n.adduserid=suser.userid
+		  order by myseq desc, n.ADDTIME desc
+		  ) t
+  		 <trim prefix="where" prefixOverrides="and|or">
+			<include refid="FD_PageList_Query_Where_Clause"/>
+			<include refid="common.Page_querySql"/>
+			<include refid="FD_PublishRange_PageList_Where_Clause" />
+			<include refid="common.Page_dataSql"/>
+  		 </trim>
+  </select>  
+  <select id="getFileDistribPublishPageList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.message.model.FileDistrib" useCache="false">
+	  SELECT  t.*
+	  FROM (
+  		SELECT
+		  <choose>
+			  <when test="cols!=null">
+				  <include refid="common.Page_Column"/>
+			  </when>
+			  <when test="cols==null">
+				  <include refid="FPrefix_FD_Base_Column_List"></include>
+			  </when>
+		  </choose>
+	  	,auser.name addusername,muser.name modifyusername
+	  	FROM
+	  	t_msg_filedistrib f
+		LEFT JOIN t_sys_user auser ON f.adduserid=auser.userid
+		LEFT JOIN t_sys_user muser ON f.modifyuserid=muser.userid
+  	 	<trim prefix="where" prefixOverrides="and|or">
+			<include refid="FPrefix_FD_PageList_Query_Where_Clause"/>
+			<include refid="common.Page_querySql"/>
+			<include refid="common.Page_dataSql"/>
+		</trim>
+	  )t
+	<include refid="common.Page_limit" />
+  </select>  
+  <select id="getFileDistribPublishPageCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int" useCache="false">
+	  SELECT
+	  COUNT (*)
+	  FROM
+	  t_msg_filedistrib f
+	  LEFT JOIN t_sys_user auser ON f.adduserid=auser.userid
+	  LEFT JOIN t_sys_user muser ON f.modifyuserid=muser.userid
+  		 <trim prefix="where" prefixOverrides="and|or">
+			<include refid="FPrefix_FD_PageList_Query_Where_Clause"/>
+			<include refid="common.Page_querySql"/>
+			<include refid="common.Page_dataSql"/>
+  		 </trim>
+  </select>
+  <select id="getFileDistribList" parameterType="java.util.HashMap" resultType="com.hd.agent.message.model.FileDistrib">
+  	select  	
+	    id, title, type, istop, topday, ismsg, titleword,wordsize, startdate, enddate, state, isaud, 
+	    audstate, adduserid, addtime, adddeptid, modifyuserid, modifytime, delflag, deltime, contid,
+	    cversion,formid,formname
+	    <if test="withrecvuser==1">
+	   		, receivedept, receiverole, receiveuser
+	   	</if>
+	   	<if test="withcontent==1">
+	   		,content
+	   	</if>
+	   	<if test="withattachment == 1">
+	   		, attach
+	   	</if>
+	from t_msg_filedistrib
+	<trim prefix="where" prefixOverrides="and|or" >
+		<if test="idarrs!=null">				   			
+      		and FIND_IN_SET(id,#{idarrs})
+     	</if>
+     	<if test="adduserid !=null ">
+     		and adduserid=${adduserid}
+     	</if>
+     	<if test="delflag !=null ">
+     		and delflag=${delflag}
+     	</if>
+     	<if test="state !=null ">
+     		and state=${state}
+     	</if>
+     	<if test="overTopday == 1">
+     		 <![CDATA[ and  topday>0 AND istop!='0' AND TO_DAYS(NOW()) - TO_DAYS(ADDTIME) < topday ]]>
+     	</if>
+     	<if test="overEndday == 1">
+     	<![CDATA[ and (NOT enddate IS NULL) and LENGTH(enddate)>0 and enddate < date_format(NOW(),'%Y-%m-%d')  ]]>
+     	</if>
+	</trim>
+  </select>
+  <insert id="insertFileDistribReceive" parameterType="com.hd.agent.message.model.FileDistribReceive" >
+    insert into t_msg_filedistribreceive
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="fid != null" >
+        fid,
+      </if>
+      <if test="receiveuserid != null" >
+        receiveuserid,
+      </if>
+      <if test="receivetime != null" >
+        receivetime,
+      </if>
+      <if test="readtime != null" >
+        readtime,
+      </if>
+      <if test="readcount != null" >
+        readcount,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="fid != null" >
+        #{fid},
+      </if>
+      <if test="receiveuserid != null" >
+        #{receiveuserid},
+      </if>
+      <if test="receivetime != null" >
+        #{receivetime},
+      </if>
+      <if test="readtime != null" >
+        #{readtime},
+      </if>
+      <if test="readcount != null" >
+        #{readcount},
+      </if>
+    </trim>
+  </insert>
+   <select id="getFileDistribReceiveCountBy" parameterType="java.lang.String" resultType="int">
+  	select count(1) from t_msg_filedistribreceive  		  	  	
+    <trim prefix="where" prefixOverrides="and|or" >
+    	<if test="fid != null" >
+	       and fid = #{fid}
+	      </if>
+	      <if test="receiveuserid != null" >
+	       and receiveuserid = #{receiveuserid}
+	      </if>
+    </trim>
+  </select>
+  <update id="updateFileDistribReceiveRead" parameterType="java.lang.String" >
+  	update t_msg_filedistribreceive
+    set readtime = now(), readcount = readcount+1,
+    where fid = #{fid} and receiveuserid = #{receiveuserid} 
+  </update>
+  <select id="getFileDistribReadPageList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.message.model.FileDistribReceive" useCache="false">
+  	select t.* from(  	
+  	select nr.*,suser.name recvusername
+  	 from t_msg_filedistribreceive nr left join t_sys_user suser on nr.receiveuserid=suser.userid ) t
+    <trim prefix="where" prefixOverrides="and|or" >
+    	<include refid="FDReceive_PageList_Where_Clause"/>
+    </trim>
+	<include refid="common.Page_limit" />
+  </select>
+  <select id="getFileDistribReadCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  	select count(1) from t_msg_filedistribreceive  		  	  	
+    <trim prefix="where" prefixOverrides="and|or" >
+    	<include refid="FDReceive_PageList_Where_Clause"/>
+    </trim>
+  </select>
+</mapper>

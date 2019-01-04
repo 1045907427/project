@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>jQuery Mobile Demos</title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="stylesheet" href="../js/jqm/jquery.mobile-1.4.5.min.css">
+    <script src="../js/jqm/jquery.min.js"></script>
+    <script src="../js/jqm/jquery.mobile-1.4.5.min.js"></script>
+    <script type="text/javascript" src="../js/jqm/json2.js" charset="UTF-8"></script>
+</head>
+<body>
+    <div data-role="page" id="home">
+        <div data-role="header">
+            <h1>欢迎访问我的主页</h1>
+        </div>
+        <div data-role="content">
+            <a href="#page2" data-role="button">列表页面</a>
+            <p>我是一名移动开发者！</p>
+        </div>
+        <div data-role="footer" data-position="fixed">
+            <h1>页脚文本</h1>
+        </div>
+    </div>
+    <div data-role="page" id="page2">
+        <header data-role="header">
+            <h1>jQuery Mobile Demo</h1>
+        </header>
+        <div data-role="content">
+            <ul data-role="listview" data-inset="true">
+                <li><a href="#home" rel="external">回到首页</a></li>
+                <li><a href="demo1.html" rel="external">demo1</a></li>
+                <li><a href="#home" rel="external">回到首页</a></li>
+                <li><a href="javascript:showWidget();">回到首页</a></li>
+            </ul>
+            <div id="footer" style="word-break: normal;">Footer</div>
+        </div>
+        <footer data-role="footer" data-position="fixed">
+            <h2>Footer</h2>
+        </footer>
+    </div>
+</body>
+<script type="text/javascript">
+	function showWidget() {
+		androidWidget({
+			type : "widget",	//widget 通用控件 customerWidgt 客户档案参照窗口 supplier 供应商档案参照窗口
+			//referwid : "RL_T_BASE_GOODS_INFO",
+			name : "t_sales_order",
+			col : "pcustomerid",
+			checkType : "1",		//选择类型 1表示单选2表示多选 默认1
+			onlyLeafCheck:"1",		//是否只能选择子节点 1是2否
+			paramRule : "",
+			ishead:"2",				//customerWidget 1表示门店 2表示总店(包含没有总店的门店) 3表示全部
+			isdatasql:"2",			//customerWidget 1表示进行权限控制 2表示不进行权限控制
+			isHiddenUsenum:"1",		//goodsWidget	 1表示隐藏可用量 2表示显示可用量  默认2
+			storageid:"",			//goodsWidget	  指定仓库获取该仓库下的商品档案
+			queryAllBySupplier:"",	//goodsWidget 	  值为供应商编号 检索商品档案中的第一，第二供应商
+			canBuySale:"",			//goodsWidget	 空值：不限制 1：可采购 2：可销售
+			onSelect : "callback",
+			onCheck:"callback"
+		});
+	}
+	function callback(data) {
+		$("#footer").html(JSON.stringify(data));
+	}
+	function androidWidget(data){
+		androidForWeb.showWidget(JSON.stringify(data));
+	}
+	function androidCallBack(param,dataStr) {
+		var data = $.parseJSON(dataStr);
+		var param = $.parseJSON(param);
+		if(null!=param.onSelect && param.onSelect!=""){
+			window[param.onSelect](data); 
+		}
+		if(null!=param.onCheck && param.onCheck!=""){
+			window[param.onCheck](data); 
+		}
+	}
+</script>
+</html>

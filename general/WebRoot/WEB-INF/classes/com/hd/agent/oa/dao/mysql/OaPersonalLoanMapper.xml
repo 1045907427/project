@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.oa.dao.OaPersonalLoanMapper" >
+  <resultMap id="BaseResultMap" type="com.hd.agent.oa.model.OaPersonalLoan" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="businessdate" property="businessdate" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="adduserid" property="adduserid" jdbcType="VARCHAR" />
+    <result column="addusername" property="addusername" jdbcType="VARCHAR" />
+    <result column="adddeptid" property="adddeptid" jdbcType="VARCHAR" />
+    <result column="adddeptname" property="adddeptname" jdbcType="VARCHAR" />
+    <result column="addtime" property="addtime" jdbcType="TIMESTAMP" />
+    <result column="modifyuserid" property="modifyuserid" jdbcType="VARCHAR" />
+    <result column="modifyusername" property="modifyusername" jdbcType="VARCHAR" />
+    <result column="modifytime" property="modifytime" jdbcType="TIMESTAMP" />
+    <result column="printtimes" property="printtimes" jdbcType="INTEGER" />
+    <result column="billtype" property="billtype" jdbcType="CHAR" />
+    <result column="oaid" property="oaid" jdbcType="VARCHAR" />
+    <result column="paydeptid" property="paydeptid" jdbcType="VARCHAR" />
+    <result column="paytype" property="paytype" jdbcType="VARCHAR" />
+    <result column="paybank" property="paybank" jdbcType="VARCHAR" />
+    <result column="payuserid" property="payuserid" jdbcType="VARCHAR" />
+    <result column="payusername" property="payusername" jdbcType="VARCHAR" />
+    <result column="amount" property="amount" jdbcType="DECIMAL" />
+    <result column="upamount" property="upamount" jdbcType="VARCHAR" />
+    <result column="loantype" property="loantype" jdbcType="VARCHAR" />
+    <result column="collectuserid" property="collectuserid" jdbcType="VARCHAR" />
+    <result column="collectusername" property="collectusername" jdbcType="VARCHAR" />
+    <result column="collectbank" property="collectbank" jdbcType="VARCHAR" />
+    <result column="collectbankno" property="collectbankno" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, businessdate, remark, adduserid, addusername, adddeptid, adddeptname, addtime, 
+    modifyuserid, modifyusername, modifytime, printtimes, billtype, oaid, paydeptid, 
+    paytype, paybank, payuserid, payusername, amount, upamount, loantype, collectuserid, 
+    collectusername, collectbank, collectbankno
+  </sql>
+  <insert id="insertOaPersonalLoan" parameterType="com.hd.agent.oa.model.OaPersonalLoan">
+  	insert into t_oa_personal_loan
+  	<trim prefix="(" suffix=")" suffixOverrides=",">
+		<if test="#{id != null }">
+			id,
+		</if>
+		<if test="#{businessdate != null }">
+			businessdate,
+		</if>
+		<if test="#{remark != null }">
+			remark,
+		</if>
+		<if test="#{adduserid != null }">
+			adduserid,
+		</if>
+		<if test="#{addusername != null }">
+			addusername,
+		</if>
+		<if test="#{adddeptid != null }">
+			adddeptid,
+		</if>
+		<if test="#{adddeptname != null }">
+			adddeptname,
+		</if>
+		addtime,
+		<if test="#{modifyuserid != null }">
+			modifyuserid,
+		</if>
+		<if test="#{modifyusername != null }">
+			modifyusername,
+		</if>
+		<if test="#{modifytime != null }">
+			modifytime,
+		</if>
+		<if test="#{printtimes != null }">
+			printtimes,
+		</if>
+		<if test="#{billtype != null }">
+			billtype,
+		</if>
+		<if test="#{oaid != null }">
+			oaid,
+		</if>
+		<if test="#{paydeptid != null }">
+			paydeptid,
+		</if>
+		<if test="#{paytype != null }">
+			paytype,
+		</if>
+		<if test="#{paybank != null }">
+			paybank,
+		</if>
+		<if test="#{payuserid != null }">
+			payuserid,
+		</if>
+		<if test="#{payusername != null }">
+			payusername,
+		</if>
+		<if test="#{amount != null }">
+			amount,
+		</if>
+		<if test="#{upamount != null }">
+			upamount,
+		</if>
+		<if test="#{loantype != null }">
+			loantype,
+		</if>
+		<if test="#{collectuserid != null }">
+			collectuserid,
+		</if>
+		<if test="#{collectusername != null }">
+			collectusername,
+		</if>
+        <if test="#{collectbank != null }">
+            collectbank,
+        </if>
+        <if test="#{collectbankno != null }">
+            collectbankno,
+        </if>
+  	</trim>
+  	<trim prefix="values (" suffix=")" suffixOverrides=",">
+		<if test="#{id != null }">
+			#{id },
+		</if>
+		<if test="#{businessdate != null }">
+			#{businessdate },
+		</if>
+		<if test="#{remark != null }">
+			#{remark },
+		</if>
+		<if test="#{adduserid != null }">
+			#{adduserid },
+		</if>
+		<if test="#{addusername != null }">
+			#{addusername },
+		</if>
+		<if test="#{adddeptid != null }">
+			#{adddeptid },
+		</if>
+		<if test="#{adddeptname != null }">
+			#{adddeptname },
+		</if>
+		now(),
+		<if test="#{modifyuserid != null }">
+			#{modifyuserid },
+		</if>
+		<if test="#{modifyusername != null }">
+			#{modifyusername },
+		</if>
+		<if test="#{modifytime != null }">
+			#{modifytime },
+		</if>
+		<if test="#{printtimes != null }">
+			#{printtimes },
+		</if>
+		<if test="#{billtype != null }">
+			#{billtype },
+		</if>
+		<if test="#{oaid != null }">
+			#{oaid },
+		</if>
+		<if test="#{paydeptid != null }">
+			#{paydeptid },
+		</if>
+		<if test="#{paytype != null }">
+			#{paytype },
+		</if>
+		<if test="#{paybank != null }">
+			#{paybank },
+		</if>
+		<if test="#{payuserid != null }">
+			#{payuserid },
+		</if>
+		<if test="#{payusername != null }">
+			#{payusername },
+		</if>
+		<if test="#{amount != null }">
+			#{amount },
+		</if>
+		<if test="#{upamount != null }">
+			#{upamount },
+		</if>
+		<if test="#{loantype != null }">
+			#{loantype },
+		</if>
+		<if test="#{collectuserid != null }">
+			#{collectuserid },
+		</if>
+		<if test="#{collectusername != null }">
+			#{collectusername },
+		</if>
+        <if test="#{collectbank != null }">
+            #{collectbank },
+        </if>
+        <if test="#{collectbankno != null }">
+            #{collectbankno },
+        </if>
+  	</trim>
+  </insert>
+  <update id="editOaPersonalLoan" parameterType="com.hd.agent.oa.model.OaPersonalLoan">
+  	update t_oa_personal_loan
+  	<trim prefix="set" suffixOverrides=",">
+		businessdate = #{businessdate },
+		remark = #{remark },
+		modifyuserid = #{modifyuserid },
+		modifyusername = #{modifyusername },
+		modifytime = now(),
+		printtimes = #{printtimes },
+		billtype = #{billtype },
+		oaid = #{oaid },
+		paydeptid = #{paydeptid },
+		paytype = #{paytype },
+		paybank = #{paybank },
+		payuserid = #{payuserid },
+		payusername = #{payusername },
+		amount = #{amount },
+		upamount = #{upamount },
+		loantype = #{loantype },
+		collectuserid = #{collectuserid },
+		collectusername = #{collectusername },
+        collectbank = #{collectbank },
+        collectbankno = #{collectbankno },
+  	</trim>
+  	where id = #{id }
+  </update>
+  <select id="selectOaPersonalLoanInfo" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List"/>
+  	from t_oa_personal_loan
+  	where id = #{id }
+  </select>
+  <delete id="deleteOaPersonalLoanInfo" parameterType="java.lang.String">
+  	delete from t_oa_personal_loan where id = #{id }
+  </delete>
+</mapper>

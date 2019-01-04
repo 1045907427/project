@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.system.dao.SysNumberRuleMapper">
+	<sql id="sys_numberrule_Column_List" >
+	    numberruleid, numberid, coltype, val, prefix, suffix, length, subtype, substart, 
+	    cover, state, sequencing
+  	</sql>
+  	<select id="getSysNumberRuleList" resultType="com.hd.agent.system.model.SysNumberRule" parameterType="java.lang.String">
+  		select 
+	    <include refid="sys_numberrule_Column_List" />
+	    from t_sys_numberrule
+	    where numberid = #{numberid}
+	    order by sequencing
+  	</select>
+  	<select id="getSysNumberRuleInfo" resultType="com.hd.agent.system.model.SysNumberRule" parameterType="java.lang.String">
+  		select 
+	    <include refid="sys_numberrule_Column_List" />
+	    from t_sys_numberrule
+	    where numberruleid = #{numberruleid}
+  	</select>
+  	<insert id="addSysNumberRule" parameterType="com.hd.agent.system.model.SysNumberRule">
+  		<selectKey resultType="java.lang.String" keyProperty="numberruleid" order="BEFORE" >
+	      select uuid_short()
+	    </selectKey>
+  		insert into t_sys_numberrule
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	        numberruleid,
+	      <if test="numberid != null" >
+	        numberid,
+	      </if>
+	      <if test="coltype != null" >
+	        coltype,
+	      </if>
+	      <if test="val != null" >
+	        val,
+	      </if>
+	      <if test="prefix != null" >
+	        prefix,
+	      </if>
+	      <if test="suffix != null" >
+	        suffix,
+	      </if>
+	      <if test="length != null" >
+	        length,
+	      </if>
+	      <if test="subtype != null" >
+	        subtype,
+	      </if>
+	      <if test="substart != null" >
+	        substart,
+	      </if>
+	      <if test="cover != null" >
+	        cover,
+	      </if>
+	      <if test="state != null" >
+	        state,
+	      </if>
+	      <if test="sequencing != null" >
+	        sequencing,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	        #{numberruleid},
+	      <if test="numberid != null" >
+	        #{numberid},
+	      </if>
+	      <if test="coltype != null" >
+	        #{coltype},
+	      </if>
+	      <if test="val != null" >
+	        #{val},
+	      </if>
+	      <if test="prefix != null" >
+	        #{prefix},
+	      </if>
+	      <if test="suffix != null" >
+	        #{suffix},
+	      </if>
+	      <if test="length != null" >
+	        #{length},
+	      </if>
+	      <if test="subtype != null" >
+	        #{subtype},
+	      </if>
+	      <if test="substart != null" >
+	        #{substart},
+	      </if>
+	      <if test="cover != null" >
+	        #{cover},
+	      </if>
+	      <if test="state != null" >
+	        #{state},
+	      </if>
+	      <if test="sequencing != null" >
+	        #{sequencing},
+	      </if>
+	    </trim>
+  	</insert>
+  	<update id="editSysNumberRule" parameterType="com.hd.agent.system.model.SysNumberRule">
+  		update t_sys_numberrule
+	    <set >
+	      <if test="numberid != null" >
+	        numberid = #{numberid},
+	      </if>
+	      <if test="coltype != null" >
+	        coltype = #{coltype},
+	      </if>
+	      <if test="val != null" >
+	        val = #{val},
+	      </if>
+	      <if test="prefix != null" >
+	        prefix = #{prefix},
+	      </if>
+	      <if test="suffix != null" >
+	        suffix = #{suffix},
+	      </if>
+	      <if test="length != null" >
+	        length = #{length},
+	      </if>
+	      <if test="subtype != null" >
+	        subtype = #{subtype},
+	      </if>
+	      <if test="substart != null" >
+	        substart = #{substart},
+	      </if>
+	      <if test="cover != null" >
+	        cover = #{cover},
+	      </if>
+	      <if test="state != null" >
+	        state = #{state},
+	      </if>
+	      <if test="sequencing != null" >
+	       sequencing = #{sequencing},
+	      </if>
+	    </set>
+	    where numberruleid = #{numberruleid}
+  	</update>
+  	<delete id="deleteSysNumberRule" parameterType="java.lang.String">
+  		delete from t_sys_numberrule
+  		where numberruleid = #{numberruleid}
+  	</delete>
+  	<delete id="deleteSysNumberRuleByNumID" parameterType="java.lang.String">
+  		delete from t_sys_numberrule
+  		where numberid = #{numberid}
+  	</delete>
+</mapper>

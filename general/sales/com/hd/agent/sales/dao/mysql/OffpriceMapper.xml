@@ -1,0 +1,882 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.sales.dao.OffpriceMapper" >
+  <resultMap id="BaseResultMap" type="com.hd.agent.sales.model.Offprice" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="businessdate" property="businessdate" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="adduserid" property="adduserid" jdbcType="VARCHAR" />
+    <result column="addusername" property="addusername" jdbcType="VARCHAR" />
+    <result column="adddeptid" property="adddeptid" jdbcType="VARCHAR" />
+    <result column="adddeptname" property="adddeptname" jdbcType="VARCHAR" />
+    <result column="addtime" property="addtime" jdbcType="TIMESTAMP" />
+    <result column="modifyuserid" property="modifyuserid" jdbcType="VARCHAR" />
+    <result column="modifyusername" property="modifyusername" jdbcType="VARCHAR" />
+    <result column="modifytime" property="modifytime" jdbcType="TIMESTAMP" />
+    <result column="audituserid" property="audituserid" jdbcType="VARCHAR" />
+    <result column="auditusername" property="auditusername" jdbcType="VARCHAR" />
+    <result column="audittime" property="audittime" jdbcType="TIMESTAMP" />
+    <result column="stopuserid" property="stopuserid" jdbcType="VARCHAR" />
+    <result column="stopusername" property="stopusername" jdbcType="VARCHAR" />
+    <result column="stoptime" property="stoptime" jdbcType="TIMESTAMP" />
+    <result column="closetime" property="closetime" jdbcType="TIMESTAMP" />
+    <result column="printtimes" property="printtimes" jdbcType="INTEGER" />
+    <result column="customertype" property="customertype" jdbcType="VARCHAR" />
+    <result column="customerid" property="customerid" jdbcType="VARCHAR" />
+    <result column="applydeptid" property="applydeptid" jdbcType="VARCHAR" />
+    <result column="applyuserid" property="applyuserid" jdbcType="VARCHAR" />
+    <result column="begindate" property="begindate" jdbcType="VARCHAR" />
+    <result column="enddate" property="enddate" jdbcType="VARCHAR" />
+    <result column="field01" property="field01" jdbcType="VARCHAR" />
+    <result column="field02" property="field02" jdbcType="VARCHAR" />
+    <result column="field03" property="field03" jdbcType="VARCHAR" />
+    <result column="field04" property="field04" jdbcType="VARCHAR" />
+    <result column="field05" property="field05" jdbcType="VARCHAR" />
+    <result column="field06" property="field06" jdbcType="VARCHAR" />
+    <result column="field07" property="field07" jdbcType="VARCHAR" />
+    <result column="field08" property="field08" jdbcType="VARCHAR" />
+    <result column="oaid" property="oaid" jdbcType="VARCHAR" />
+    <result column="schedule" property="schedule" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, businessdate, status, remark, adduserid, addusername, adddeptid, adddeptname, 
+    addtime, modifyuserid, modifyusername, modifytime, audituserid, auditusername, audittime, 
+    stopuserid, stopusername, stoptime, closetime, printtimes, customertype, customerid, 
+    applydeptid, applyuserid, begindate, enddate, field01, field02, field03, field04, 
+    field05, field06, field07, field08,oaid,schedule
+  </sql>
+  <select id="getOffprice" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_sales_offprice
+    where id = #{id}
+  </select>
+  <select id="getOffpriceByCustomer" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_sales_offprice
+    where customerid = #{customerid} and status = '3' 
+    <![CDATA[ and #{today} >= begindate ]]>
+    <![CDATA[ and #{today} <= enddate ]]>
+    limit 0, 1
+  </select>
+  <select id="getOffpriceListByDate" resultMap="BaseResultMap" parameterType="java.lang.String" >
+        select
+        <include refid="Base_Column_List" />
+        from t_sales_offprice where status = '3'
+        <![CDATA[ and #{today} > enddate ]]>
+  </select>
+  <select id="getOffpriceList" resultMap="BaseResultMap" parameterType="com.hd.agent.common.util.PageMap">
+  	select 
+  	a.id, a.businessdate, a.status, a.remark, a.adduserid, a.addusername, a.adddeptid, a.adddeptname, 
+    a.addtime, a.modifyuserid, a.modifyusername, a.modifytime, a.audituserid, a.auditusername, a.audittime, 
+    a.stopuserid, a.stopusername, a.stoptime, a.closetime, a.printtimes, a.customertype, a.customerid, 
+    a.applydeptid, a.applyuserid, a.begindate, a.enddate,a.oaid,a.schedule
+  	from t_sales_offprice a
+	<if test="condition.goodsid != null" >
+  		inner join (select billid from t_sales_offprice_detail where goodsid = #{condition.goodsid}) b on a.id = b.billid  
+    </if>
+	<trim prefix="where" prefixOverrides="and|or">
+		<if test="condition.customertype != null" >
+         and a.customertype = #{condition.customertype}
+      	</if>
+        <if test="condition.customerid != null" >
+            and FIND_IN_SET(#{condition.customerid} ,a.customerid)
+        </if>
+		<if test="condition.applydeptid != null" >
+         and a.applydeptid = #{condition.applydeptid}
+      	</if>
+        <if test="condition.status != null" >
+            and a.status = #{condition.status}
+        </if>
+      <if test="condition.schedule != null" >
+        and a.schedule = #{condition.schedule}
+      </if>
+        <if test="condition.businessdate != null" >
+            <![CDATA[ and a.businessdate >= #{condition.businessdate}]]>
+        </if>
+        <if test="condition.businessdate1 != null" >
+            <![CDATA[ and a.businessdate <= #{condition.businessdate1} ]]>
+        </if>
+        
+      	<if test="condition.printsign != null and condition.queryprinttimes != null">
+      		<choose>
+      			<when test="condition.printsign == 1">
+      				<![CDATA[and printtimes = #{condition.queryprinttimes} ]]>
+      			</when>
+      			<when test="condition.printsign == 2">
+      				<![CDATA[and printtimes < #{condition.queryprinttimes} ]]>
+      			</when>
+      			<when test="condition.printsign == 3">
+      				<![CDATA[and printtimes <= #{condition.queryprinttimes} ]]>
+      			</when>
+      			<when test="condition.printsign == 4">
+      				<![CDATA[and printtimes > #{condition.queryprinttimes} ]]>
+      			</when>
+      			<when test="condition.printsign == 5">
+      				<![CDATA[and printtimes >= #{condition.queryprinttimes} ]]>
+      			</when>
+      		</choose>
+      	</if>
+		<if test="condition.printtimes != null" >
+			<choose>
+				<when test="condition.printtimes==0">
+					and (printtimes is null or printtimes=0)				
+				</when>
+				<otherwise>
+					and printtimes=#{condition.printtimes}
+				</otherwise>
+			</choose>
+      	</if>
+	    <include refid="common.Page_querySql"/>
+	  	<include refid="common.Page_dataSql"/>
+	</trim>
+	order by a.id desc 
+	<include refid="common.Page_limit"/>
+  </select>
+  <select id="getOffpriceCount" resultType="java.lang.Integer" parameterType="com.hd.agent.common.util.PageMap">
+  	select count(1) from t_sales_offprice a
+  	<if test="condition.goodsid != null" >
+  		inner join (select billid from t_sales_offprice_detail where goodsid = #{condition.goodsid}) b on a.id = b.billid  
+    </if>
+	<trim prefix="where" prefixOverrides="and|or">
+		<if test="condition.customertype != null" >
+         and a.customertype = #{condition.customertype}
+      	</if>
+		<if test="condition.customerid != null" >
+         and FIND_IN_SET(#{condition.customerid} ,a.customerid)
+      	</if>
+		<if test="condition.applydeptid != null" >
+         and a.applydeptid = #{condition.applydeptid}
+      	</if>
+        <if test="condition.status != null" >
+         and a.status = #{condition.status}
+        </if>
+      <if test="condition.schedule != null" >
+        and a.schedule = #{condition.schedule}
+      </if>
+		<if test="condition.businessdate != null" >
+         <![CDATA[ and a.businessdate >= #{condition.businessdate} ]]>
+      	</if>
+		<if test="condition.businessdate1 != null" >
+         <![CDATA[ and a.businessdate <= #{condition.businessdate1} ]]>
+      	</if>
+      	
+      	<if test="condition.printsign != null and condition.queryprinttimes != null">
+      		<choose>
+      			<when test="condition.printsign == 1">
+      				<![CDATA[and printtimes = #{condition.queryprinttimes} ]]>
+      			</when>
+      			<when test="condition.printsign == 2">
+      				<![CDATA[and printtimes < #{condition.queryprinttimes} ]]>
+      			</when>
+      			<when test="condition.printsign == 3">
+      				<![CDATA[and printtimes <= #{condition.queryprinttimes} ]]>
+      			</when>
+      			<when test="condition.printsign == 4">
+      				<![CDATA[and printtimes > #{condition.queryprinttimes} ]]>
+      			</when>
+      			<when test="condition.printsign == 5">
+      				<![CDATA[and printtimes >= #{condition.queryprinttimes} ]]>
+      			</when>
+      		</choose>
+      	</if>
+		<if test="condition.printtimes != null" >
+			<choose>
+				<when test="condition.printtimes==0">
+					and (printtimes is null or printtimes=0)				
+				</when>
+				<otherwise>
+					and printtimes=#{condition.printtimes}
+				</otherwise>
+			</choose>
+      	</if>
+	    <include refid="common.Page_querySql"/>
+	  	<include refid="common.Page_dataSql"/>
+	</trim>
+  </select>
+  <delete id="deleteOffprice" parameterType="java.lang.String" >
+    delete from t_sales_offprice
+    where id = #{id}
+  </delete>
+  <insert id="addOffprice" parameterType="com.hd.agent.sales.model.Offprice" >
+    insert into t_sales_offprice
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="businessdate != null" >
+        businessdate,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="adduserid != null" >
+        adduserid,
+      </if>
+      <if test="addusername != null" >
+        addusername,
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid,
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname,
+      </if>
+        addtime,
+      <if test="modifyuserid != null" >
+        modifyuserid,
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername,
+      </if>
+      <if test="modifytime != null" >
+        modifytime,
+      </if>
+      <if test="audituserid != null" >
+        audituserid,
+      </if>
+      <if test="auditusername != null" >
+        auditusername,
+      </if>
+      <if test="audittime != null" >
+        audittime,
+      </if>
+      <if test="stopuserid != null" >
+        stopuserid,
+      </if>
+      <if test="stopusername != null" >
+        stopusername,
+      </if>
+      <if test="stoptime != null" >
+        stoptime,
+      </if>
+      <if test="closetime != null" >
+        closetime,
+      </if>
+      <if test="printtimes != null" >
+        printtimes,
+      </if>
+      <if test="customertype != null" >
+        customertype,
+      </if>
+      <if test="customerid != null" >
+        customerid,
+      </if>
+      <if test="applydeptid != null" >
+        applydeptid,
+      </if>
+      <if test="applyuserid != null" >
+        applyuserid,
+      </if>
+      <if test="begindate != null" >
+        begindate,
+      </if>
+      <if test="enddate != null" >
+        enddate,
+      </if>
+      <if test="field01 != null" >
+        field01,
+      </if>
+      <if test="field02 != null" >
+        field02,
+      </if>
+      <if test="field03 != null" >
+        field03,
+      </if>
+      <if test="field04 != null" >
+        field04,
+      </if>
+      <if test="field05 != null" >
+        field05,
+      </if>
+      <if test="field06 != null" >
+        field06,
+      </if>
+      <if test="field07 != null" >
+        field07,
+      </if>
+      <if test="field08 != null" >
+        field08,
+      </if>
+      <if test="oaid != null" >
+        oaid,
+      </if>
+      <if test="schedule != null" >
+        schedule,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="businessdate != null" >
+        #{businessdate},
+      </if>
+      <if test="status != null" >
+        #{status},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+      <if test="adduserid != null" >
+        #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        #{adddeptname},
+      </if>
+        now(),
+      <if test="modifyuserid != null" >
+        #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        #{modifyusername},
+      </if>
+      <if test="modifytime != null" >
+        #{modifytime},
+      </if>
+      <if test="audituserid != null" >
+        #{audituserid},
+      </if>
+      <if test="auditusername != null" >
+        #{auditusername},
+      </if>
+      <if test="audittime != null" >
+        now(),
+      </if>
+      <if test="stopuserid != null" >
+        #{stopuserid},
+      </if>
+      <if test="stopusername != null" >
+        #{stopusername},
+      </if>
+      <if test="stoptime != null" >
+        #{stoptime},
+      </if>
+      <if test="closetime != null" >
+        #{closetime},
+      </if>
+      <if test="printtimes != null" >
+        #{printtimes},
+      </if>
+      <if test="customertype != null" >
+        #{customertype},
+      </if>
+      <if test="customerid != null" >
+        #{customerid},
+      </if>
+      <if test="applydeptid != null" >
+        #{applydeptid},
+      </if>
+      <if test="applyuserid != null" >
+        #{applyuserid},
+      </if>
+      <if test="begindate != null" >
+        #{begindate},
+      </if>
+      <if test="enddate != null" >
+        #{enddate},
+      </if>
+      <if test="field01 != null" >
+        #{field01},
+      </if>
+      <if test="field02 != null" >
+        #{field02},
+      </if>
+      <if test="field03 != null" >
+        #{field03},
+      </if>
+      <if test="field04 != null" >
+        #{field04},
+      </if>
+      <if test="field05 != null" >
+        #{field05},
+      </if>
+      <if test="field06 != null" >
+        #{field06},
+      </if>
+      <if test="field07 != null" >
+        #{field07},
+      </if>
+      <if test="field08 != null" >
+        #{field08},
+      </if>
+      <if test="oaid != null" >
+        #{oaid},
+      </if>
+      <if test="schedule != null" >
+        #{schedule},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateOffprice" parameterType="com.hd.agent.sales.model.Offprice" >
+    update t_sales_offprice
+    <set >
+      <if test="businessdate != null" >
+        businessdate = #{businessdate},
+      </if>
+      <if test="status != null" >
+        status = #{status},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark},
+      </if>
+      <if test="adduserid != null" >
+        adduserid = #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        addusername = #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid = #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname = #{adddeptname},
+      </if>
+      <if test="addtime != null" >
+        addtime = #{addtime},
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid = #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername = #{modifyusername},
+      </if>
+        modifytime = now(),
+      <if test="audituserid != null" >
+        audituserid = #{audituserid},
+      </if>
+      <if test="auditusername != null" >
+        auditusername = #{auditusername},
+      </if>
+      <if test="audittime != null" >
+        audittime = #{audittime},
+      </if>
+      <if test="stopuserid != null" >
+        stopuserid = #{stopuserid},
+      </if>
+      <if test="stopusername != null" >
+        stopusername = #{stopusername},
+      </if>
+      <if test="stoptime != null" >
+        stoptime = #{stoptime},
+      </if>
+      <if test="closetime != null" >
+        closetime = #{closetime},
+      </if>
+      <if test="printtimes != null" >
+        printtimes = #{printtimes},
+      </if>
+      <if test="customertype != null" >
+        customertype = #{customertype},
+      </if>
+      <if test="customerid != null" >
+        customerid = #{customerid},
+      </if>
+      <if test="applydeptid != null" >
+        applydeptid = #{applydeptid},
+      </if>
+      <if test="applyuserid != null" >
+        applyuserid = #{applyuserid},
+      </if>
+      <if test="begindate != null" >
+        begindate = #{begindate},
+      </if>
+      <if test="enddate != null" >
+        enddate = #{enddate},
+      </if>
+      <if test="field01 != null" >
+        field01 = #{field01},
+      </if>
+      <if test="field02 != null" >
+        field02 = #{field02},
+      </if>
+      <if test="field03 != null" >
+        field03 = #{field03},
+      </if>
+      <if test="field04 != null" >
+        field04 = #{field04},
+      </if>
+      <if test="field05 != null" >
+        field05 = #{field05},
+      </if>
+      <if test="field06 != null" >
+        field06 = #{field06},
+      </if>
+      <if test="field07 != null" >
+        field07 = #{field07},
+      </if>
+      <if test="field08 != null" >
+        field08 = #{field08},
+      </if>
+      <if test="oaid != null" >
+        oaid = #{oaid},
+      </if>
+      <if test="schedule != null">
+        schedule = #{schedule},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  <update id="updateOffpriceStatus" parameterType="com.hd.agent.sales.model.Offprice">
+  	 update t_sales_offprice
+    <set>
+      <if test="status != null" >
+        status = #{status},
+      </if>
+      <if test="audituserid != null" >
+        audituserid = #{audituserid},
+      </if>
+      <if test="auditusername != null" >
+        auditusername = #{auditusername},
+      </if>
+      <if test="audittime != null" >
+        audittime = now(),
+      </if>
+      <if test="stopuserid != null" >
+        stopuserid = #{stopuserid},
+      </if>
+      <if test="stopusername != null" >
+        stopusername = #{stopusername},
+      </if>
+      <if test="stoptime != null" >
+        stoptime = now(),
+      </if>
+      <if test="closetime != null" >
+        closetime = now(),
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  
+  <!-- offprice mapper -->
+  <resultMap id="BaseResultMapDetail" type="com.hd.agent.sales.model.OffpriceDetail" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="billid" property="billid" jdbcType="VARCHAR" />
+    <result column="goodsid" property="goodsid" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="lownum" property="lownum" jdbcType="INTEGER" />
+    <result column="upnum" property="upnum" jdbcType="INTEGER" />
+    <result column="offprice" property="offprice" jdbcType="DECIMAL" />
+    <result column="oldprice" property="oldprice" jdbcType="DECIMAL" />
+    <result column="field01" property="field01" jdbcType="VARCHAR" />
+    <result column="field02" property="field02" jdbcType="VARCHAR" />
+    <result column="field03" property="field03" jdbcType="VARCHAR" />
+    <result column="field04" property="field04" jdbcType="VARCHAR" />
+    <result column="field05" property="field05" jdbcType="VARCHAR" />
+    <result column="field06" property="field06" jdbcType="VARCHAR" />
+    <result column="field07" property="field07" jdbcType="VARCHAR" />
+    <result column="field08" property="field08" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List_Detail" >
+    id, billid, goodsid, remark, lownum, upnum, offprice, oldprice, field01, field02, field03, field04, field05, 
+    field06, field07, field08
+  </sql>
+  <select id="getOffpriceDetailByCustomer" resultMap="BaseResultMapDetail" parameterType="map">
+  	select 
+    a.id, a.billid, a.goodsid, a.remark, a.lownum, a.upnum, a.offprice, a.oldprice, b.begindate field01, b.enddate field02
+    from t_sales_offprice_detail a
+    left join t_sales_offprice b on a.billid = b.id
+    where (#{customerid} like CONCAT(b.customerid,'%') or b.customerid = #{customerid}) and a.goodsid = #{goodsid} and b.status = '3' 
+    <![CDATA[ and #{today} >= b.begindate]]>
+    <![CDATA[ and #{today} <= b.enddate ]]>
+    limit 0, 1
+  </select>
+  <!-- 单一客户获取促销价信息 -->
+  <select id="getOffpriceByCustomerGoodsNum" resultMap="BaseResultMapDetail" parameterType="map">
+  	SELECT z.* FROM (	
+	SELECT a.id, a.billid, a.goodsid, a.remark, a.lownum, CASE WHEN a.upnum=0 THEN 100000 WHEN a.upnum IS NULL THEN 100000 ELSE a.upnum END upnum, a.offprice, b.begindate field01, b.enddate field02 FROM t_sales_offprice_detail a INNER JOIN t_sales_offprice b ON a.billid = b.id 
+	<trim prefix="where" prefixOverrides="and|or">
+			and (
+            <if test="1==1">
+                (b.customertype = '0' )
+            </if>
+			<if test="customerid !=null">
+				or (b.customertype = '1' and FIND_IN_SET(#{customerid},b.customerid))
+			</if>
+			<if test="promotionsort !=null">
+				or (b.customertype = '2' and FIND_IN_SET(#{promotionsort},b.customerid))
+			</if>
+			<if test="customersort !=null">
+				or (b.customertype = '3' and FIND_IN_SET(#{customersort},b.customerid))
+			</if>
+			<if test="pricesort !=null">
+				or (b.customertype = '4' and FIND_IN_SET(#{pricesort},b.customerid))
+			</if>
+			<if test="salesarea !=null">
+				or (b.customertype = '5' and FIND_IN_SET(#{salesarea},b.customerid))
+			</if>
+			<if test="pcustomerid !=null">
+				or (b.customertype = '6' and FIND_IN_SET(#{pcustomerid},b.customerid))
+			</if>
+			<if test="credit !=null">
+				or (b.customertype = '7' and FIND_IN_SET(#{credit},b.customerid))
+			</if>
+			<if test="canceltype !=null">
+				or (b.customertype = '8' and FIND_IN_SET(#{canceltype},b.customerid))
+			</if>
+			)
+		<![CDATA[ AND b.begindate<= #{today} ]]>
+		<![CDATA[ AND b.enddate >= #{today} ]]>
+		AND a.goodsid = #{goodsid} 
+		AND b.status = '3'
+	</trim>
+	ORDER BY a.id desc
+	<![CDATA[ ) z WHERE z.lownum <= #{num} AND z.upnum >=#{num} LIMIT 0, 1 ]]> 
+  </select>
+  <select id="getOffpriceDetail" resultMap="BaseResultMapDetail" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List_Detail" />
+    from t_sales_offprice_detail
+    where id = #{id}
+  </select>
+  <select id="getDetailListByOffprice" resultMap="BaseResultMapDetail" parameterType="java.lang.String" >
+  	select 
+    <include refid="Base_Column_List_Detail" />
+    from t_sales_offprice_detail
+    where billid = #{id}
+  </select>
+  <delete id="deleteDetailByOffprice" parameterType="java.lang.String" >
+    delete from t_sales_offprice_detail
+    where billid = #{id}
+  </delete>
+  <insert id="addOffpriceDetail" parameterType="com.hd.agent.sales.model.OffpriceDetail" >
+    insert into t_sales_offprice_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="billid != null" >
+        billid,
+      </if>
+      <if test="goodsid != null" >
+        goodsid,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="lownum != null" >
+        lownum,
+      </if>
+      <if test="upnum != null" >
+        upnum,
+      </if>
+      <if test="offprice != null" >
+        offprice,
+      </if>
+      <if test="oldprice != null" >
+        oldprice,
+      </if>
+      <if test="field01 != null" >
+        field01,
+      </if>
+      <if test="field02 != null" >
+        field02,
+      </if>
+      <if test="field03 != null" >
+        field03,
+      </if>
+      <if test="field04 != null" >
+        field04,
+      </if>
+      <if test="field05 != null" >
+        field05,
+      </if>
+      <if test="field06 != null" >
+        field06,
+      </if>
+      <if test="field07 != null" >
+        field07,
+      </if>
+      <if test="field08 != null" >
+        field08,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="billid != null" >
+        #{billid},
+      </if>
+      <if test="goodsid != null" >
+        #{goodsid},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+      <if test="lownum != null" >
+        #{lownum},
+      </if>
+      <if test="upnum != null" >
+        #{upnum},
+      </if>
+      <if test="offprice != null" >
+        #{offprice},
+      </if>
+      <if test="oldprice != null" >
+        #{oldprice},
+      </if>
+      <if test="field01 != null" >
+        #{field01},
+      </if>
+      <if test="field02 != null" >
+        #{field02},
+      </if>
+      <if test="field03 != null" >
+        #{field03},
+      </if>
+      <if test="field04 != null" >
+        #{field04},
+      </if>
+      <if test="field05 != null" >
+        #{field05},
+      </if>
+      <if test="field06 != null" >
+        #{field06},
+      </if>
+      <if test="field07 != null" >
+        #{field07},
+      </if>
+      <if test="field08 != null" >
+        #{field08},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateOffpriceDetail" parameterType="com.hd.agent.sales.model.OffpriceDetail" >
+    update t_sales_offprice_detail
+    <set >
+      <if test="billid != null" >
+        billid = #{billid},
+      </if>
+      <if test="goodsid != null" >
+        goodsid = #{goodsid},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark},
+      </if>
+      <if test="lownum != null" >
+        lownum = #{lownum},
+      </if>
+      <if test="upnum != null" >
+        upnum = #{upnum},
+      </if>
+      <if test="offprice != null" >
+        offprice = #{offprice},
+      </if>
+      <if test="oldprice != null" >
+        oldprice = #{oldprice},
+      </if>
+      <if test="field01 != null" >
+        field01 = #{field01},
+      </if>
+      <if test="field02 != null" >
+        field02 = #{field02},
+      </if>
+      <if test="field03 != null" >
+        field03 = #{field03},
+      </if>
+      <if test="field04 != null" >
+        field04 = #{field04},
+      </if>
+      <if test="field05 != null" >
+        field05 = #{field05},
+      </if>
+      <if test="field06 != null" >
+        field06 = #{field06},
+      </if>
+      <if test="field07 != null" >
+        field07 = #{field07},
+      </if>
+      <if test="field08 != null" >
+        field08 = #{field08},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  <delete id="deleteOffpriceDetailByOA" parameterType="java.lang.String">
+  	delete from t_sales_offprice_detail
+    where billid in (select id from t_sales_offprice t where t.oaid=#{oaid})
+  </delete>
+  <delete id="deleteOffpriceByOA" parameterType="java.lang.String">
+  	delete from t_sales_offprice
+  	where oaid=#{oaid}
+  </delete>
+  <select id="selectOffPriceByOaid" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from t_sales_offprice
+    where oaid=#{oaid }
+  </select>
+  <select id="getOffpriceListBy" resultType="com.hd.agent.sales.model.Offprice" parameterType="java.util.Map">
+  	select 
+  	<include refid="Base_Column_List" />
+  	from t_sales_offprice 
+	<trim prefix="where" prefixOverrides="and|or">
+	  	<if test="dataSql!=null">	  		
+  			and ${dataSql} 
+	  	</if>
+		<if test="idarrs != null" >
+         	and find_in_set(id,#{idarrs})
+      	</if>
+      	<if test="status!=null">
+      		and status=#{status}
+      	</if>
+	  	<if test="notprint != null and notprint == 1">
+  			 and (printtimes is null or printtimes=0)	
+	  	</if>
+    </trim>
+   </select> 
+   	<update id="updateOrderPrinttimes" parameterType="com.hd.agent.sales.model.Offprice">
+		update t_sales_offprice
+	    <set>
+	      <if test="printtimes != null">
+	        printtimes = IFNULL(printtimes,0)+1,
+	      </if>
+	    </set>
+	    where id = #{id}
+	</update>
+    <select id="getOffpriceExcelList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.sales.model.OffpriceExcel">
+        SELECT t.businessdate,t.customertype,t.customerid,t.begindate,t.enddate,
+            t1.goodsid,g.name as goodsname,g.spell,g.barcode,g.mainunit,t1.lownum,t1.upnum,t1.offprice,t1.oldprice,t1.remark
+        from t_sales_offprice t
+        RIGHT JOIN t_sales_offprice_detail t1 ON t.id = t1.billid
+        LEFT join t_base_goods_info g on g.id = t1.goodsid
+        <trim prefix="where" prefixOverrides="and|or" >
+            <if test="condition.id != null" >
+                and t.id like concat('%',#{condition.id},'%')
+            </if>
+            <if test="condition.exportids != null" >
+                and FIND_IN_SET(t.id,#{condition.exportids})
+            </if>
+            <if test="condition.customertype != null" >
+                and t.customertype = #{condition.customertype}
+            </if>
+            <if test="condition.customerid != null" >
+                and FIND_IN_SET(#{condition.customerid} ,t.customerid)
+            </if>
+            <if test="condition.applydeptid != null" >
+                and t.applydeptid = #{condition.applydeptid}
+            </if>
+            <if test="condition.status != null" >
+                and t.status = #{condition.status}
+            </if>
+            <if test="condition.businessdate != null" >
+                <![CDATA[ and t.businessdate >= #{condition.businessdate} ]]>
+            </if>
+            <if test="condition.businessdate1 != null" >
+                <![CDATA[ and t.businessdate <= #{condition.businessdate1} ]]>
+            </if>
+        </trim>
+    </select>
+</mapper>

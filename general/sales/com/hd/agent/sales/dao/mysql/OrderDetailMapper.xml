@@ -1,0 +1,1149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hd.agent.sales.dao.OrderDetailMapper">
+  <resultMap id="BaseResultMap" type="com.hd.agent.sales.model.OrderDetail">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="orderid" jdbcType="VARCHAR" property="orderid" />
+    <result column="goodsid" jdbcType="VARCHAR" property="goodsid" />
+    <result column="groupid" jdbcType="VARCHAR" property="groupid" />
+    <result column="goodssort" jdbcType="VARCHAR" property="goodssort" />
+    <result column="brandid" jdbcType="VARCHAR" property="brandid" />
+    <result column="branduser" jdbcType="VARCHAR" property="branduser" />
+    <result column="branddept" jdbcType="VARCHAR" property="branddept" />
+    <result column="supplierid" jdbcType="VARCHAR" property="supplierid" />
+    <result column="supplieruser" jdbcType="VARCHAR" property="supplieruser" />
+    <result column="unitid" jdbcType="VARCHAR" property="unitid" />
+    <result column="unitname" jdbcType="VARCHAR" property="unitname" />
+    <result column="fixnum" jdbcType="DECIMAL" property="fixnum" />
+    <result column="unitnum" jdbcType="DECIMAL" property="unitnum" />
+    <result column="overnum" jdbcType="DECIMAL" property="overnum" />
+    <result column="auxunitid" jdbcType="VARCHAR" property="auxunitid" />
+    <result column="auxunitname" jdbcType="VARCHAR" property="auxunitname" />
+    <result column="auxnum" jdbcType="DECIMAL" property="auxnum" />
+    <result column="auxnumdetail" jdbcType="VARCHAR" property="auxnumdetail" />
+    <result column="fixprice" jdbcType="DECIMAL" property="fixprice" />
+    <result column="offprice" jdbcType="DECIMAL" property="offprice" />
+    <result column="taxprice" jdbcType="DECIMAL" property="taxprice" />
+    <result column="taxamount" jdbcType="DECIMAL" property="taxamount" />
+    <result column="notaxprice" jdbcType="DECIMAL" property="notaxprice" />
+    <result column="notaxamount" jdbcType="DECIMAL" property="notaxamount" />
+    <result column="costprice" jdbcType="DECIMAL" property="costprice" />
+    <result column="taxtype" jdbcType="VARCHAR" property="taxtype" />
+    <result column="tax" jdbcType="DECIMAL" property="tax" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="deliverytype" jdbcType="VARCHAR" property="deliverytype" />
+    <result column="deliverydate" jdbcType="VARCHAR" property="deliverydate" />
+    <result column="expirationdate" jdbcType="DATE" property="expirationdate" />
+    <result column="billno" jdbcType="VARCHAR" property="billno" />
+    <result column="billdetailno" jdbcType="VARCHAR" property="billdetailno" />
+    <result column="field01" jdbcType="VARCHAR" property="field01" />
+    <result column="field02" jdbcType="VARCHAR" property="field02" />
+    <result column="field03" jdbcType="VARCHAR" property="field03" />
+    <result column="field04" jdbcType="VARCHAR" property="field04" />
+    <result column="field05" jdbcType="VARCHAR" property="field05" />
+    <result column="field06" jdbcType="VARCHAR" property="field06" />
+    <result column="field07" jdbcType="VARCHAR" property="field07" />
+    <result column="field08" jdbcType="VARCHAR" property="field08" />
+    <result column="sendnummain" jdbcType="DECIMAL" property="sendnummain" />
+    <result column="sendnumaux" jdbcType="DECIMAL" property="sendnumaux" />
+    <result column="nosendnummain" jdbcType="DECIMAL" property="nosendnummain" />
+    <result column="nosendnumaux" jdbcType="DECIMAL" property="nosendnumaux" />
+    <result column="sendamountnotax" jdbcType="DECIMAL" property="sendamountnotax" />
+    <result column="sendamounttax" jdbcType="DECIMAL" property="sendamounttax" />
+    <result column="nosendamountnotax" jdbcType="DECIMAL" property="nosendamountnotax" />
+    <result column="nosendamounttax" jdbcType="DECIMAL" property="nosendamounttax" />
+    <result column="seq" jdbcType="INTEGER" property="seq" />
+    <result column="oldprice" jdbcType="DECIMAL" property="oldprice" />
+    <result column="storageid" jdbcType="VARCHAR" property="storageid" />
+    <result column="demandprice" jdbcType="DECIMAL" property="demandprice" />
+    <result column="demandamount" jdbcType="DECIMAL" property="demandamount" />
+    <result column="issupply" jdbcType="VARCHAR" property="issupply" />
+    <result column="isview" jdbcType="VARCHAR" property="isview" />
+    <result column="summarybatchid" jdbcType="VARCHAR" property="summarybatchid" />
+    <result column="storagelocationid" jdbcType="VARCHAR" property="storagelocationid" />
+    <result column="batchno" jdbcType="VARCHAR" property="batchno" />
+    <result column="produceddate" jdbcType="VARCHAR" property="produceddate" />
+    <result column="deadline" jdbcType="VARCHAR" property="deadline" />
+    <result column="relationordergoodsid" jdbcType="VARCHAR" property="relationordergoodsid" />
+    <result column="goodsMaxNum" jdbcType="VARCHAR" property="goodsMaxNum" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, orderid, goodsid,groupid,goodssort,brandid,branduser,branddept,supplierid,supplieruser,isdiscount,isbranddiscount, unitid, unitname, fixnum, unitnum, overnum, auxunitid, auxunitname, auxnum, 
+    auxnumdetail, fixprice, offprice, taxprice, taxamount, notaxprice, notaxamount,costprice, taxtype, tax, remark, 
+    deliverytype,deliverydate, expirationdate, billno, billdetailno, field01, field02, field03, 
+    field04, field05, field06, field07, field08, sendnummain, sendnumaux, nosendnummain, 
+    nosendnumaux, sendamountnotax, sendamounttax, nosendamountnotax, nosendamounttax, seq, oldprice, storageid, demandprice, demandamount,issupply,isview,
+    summarybatchid,storagelocationid,batchno, produceddate,deadline,totalbox,repartitiontype,relationordergoodsid
+  </sql>
+  <select id="getOrderDetail" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_sales_order_detail
+    where id = #{id}
+  </select>
+  <select id="getOrderDetailByOrder" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_sales_order_detail
+    where orderid = #{id} 
+    <choose>
+    	<when test="order != null">
+    		<![CDATA[ORDER BY (CASE WHEN deliverytype='1' and groupid <>'' then groupid else goodsid end) asc,deliverytype asc ]]>
+    	</when>
+    	<otherwise>
+    		order by seq
+    	</otherwise>
+    </choose>
+  </select>
+    <select id="getOrderDetailIsViewByOrder" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_sales_order_detail
+        where orderid = #{id} and isview='1'
+        <choose>
+            <when test="order != null">
+                <![CDATA[ORDER BY (CASE WHEN deliverytype='1' and groupid <>'' then groupid else goodsid end) asc,deliverytype asc ]]>
+            </when>
+            <otherwise>
+                order by seq
+            </otherwise>
+        </choose>
+    </select>
+  <select id="getOrderDetailSumListByID" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select id, goodsid,storageid,summarybatchid,storagelocationid,batchno,produceddate,deadline,sum(unitnum) as unitnum,remark
+    from t_sales_order_detail
+    where orderid = #{id} and isview='1'
+    group by goodsid,storageid,summarybatchid
+  </select>
+  <select id="getOrderDetailByOrderWithDiscount" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select * from (
+  	select t.id, t.orderid, t.goodsid,t.groupid,t.brandid,t.branduser,t.branddept,t.supplierid,t.supplieruser,t.isdiscount,t.isbranddiscount, t.unitid,
+    t.unitname, t.fixnum, t.unitnum, t.overnum, t.auxunitid, t.auxunitname, t.auxnum, t.auxnumdetail,t.totalbox, t.fixprice, t.offprice, t.taxprice,
+    t.taxamount, t.notaxprice, t.notaxamount,t.costprice, t.taxtype, t.tax, t.remark,t.deliverytype,t.deliverydate, t.expirationdate, t.billno,
+    t.billdetailno, t.field01, t.field02, t.field03, t.field04, t.field05, t.field06, t.field07, t.field08, t.sendnummain, t.sendnumaux, t.nosendnummain,
+    t.nosendnumaux, t.sendamountnotax, t.sendamounttax, t.nosendamountnotax, t.nosendamounttax, t.seq, t.oldprice, t.storageid, t.demandprice, t.demandamount,
+    t.isview,t.summarybatchid,t.storagelocationid,t.batchno, t.produceddate,t.deadline,t.repartitiontype,t.relationordergoodsid,
+    (ifnull(t1.unitnum,0)+ifnull(t2.notorderunitnum,0)) as goodsMaxNum
+    from t_sales_order_detail t
+    LEFT JOIN t_sales_relation_ordergoods t1 ON find_in_set(t1.id,t.relationordergoodsid)
+    LEFT JOIN t_sales_goodsorder_detail t2 ON t1.ordergoodsdetailid=t2.id
+
+    where t.isbranddiscount='0' and t.isview='1' and t.orderid = #{id}
+    union all
+    select t.id, t.orderid, t.goodsid,t.groupid,t.brandid,t.branduser,t.branddept,t.supplierid,t.supplieruser,t.isdiscount,t.isbranddiscount,
+    t.unitid, t.unitname, t.fixnum, t.unitnum, t.overnum, t.auxunitid, t.auxunitname, t.auxnum, t.auxnumdetail,t.totalbox, t.fixprice, t.offprice,
+    t.taxprice, sum(t.taxamount) as taxamount, t.notaxprice, sum(t.notaxamount) as notaxamount,t.costprice, t.taxtype, sum(t.tax) as tax, t.remark,
+    t.deliverytype,t.deliverydate, t.expirationdate, t.billno, t.billdetailno, t.field01, t.field02, t.field03, t.field04, t.field05, t.field06,
+    t.field07, t.field08, t.sendnummain, t.sendnumaux, t.nosendnummain, t.nosendnumaux, t.sendamountnotax, t.sendamounttax, t.nosendamountnotax,
+    t.nosendamounttax, t.seq, t.oldprice, t.storageid, t.demandprice, t.demandamount,t.isview,t.summarybatchid,t.storagelocationid,t.batchno,
+    t.produceddate,t.deadline,t.repartitiontype,t.relationordergoodsid,
+    (ifnull(t1.unitnum,0)+ifnull(t2.notorderunitnum,0)) as goodsMaxNum
+    from t_sales_order_detail t
+    LEFT JOIN t_sales_relation_ordergoods t1 ON find_in_set(t1.id,t.relationordergoodsid)
+    LEFT JOIN t_sales_goodsorder_detail t2 ON t1.ordergoodsdetailid=t2.id
+    where t.isbranddiscount='1' and t.isview='1' and t.orderid = #{id}
+    group by t.brandid
+    ) z 
+    <choose>
+    	<when test="order != null">
+    		<![CDATA[ORDER BY z.isdiscount,(CASE WHEN z.groupid <>'' then z.groupid else z.goodsid end) asc,z.deliverytype ]]>
+    	</when>
+    	<otherwise>
+    		order by z.isdiscount,z.seq,z.deliverytype
+    	</otherwise>
+    </choose>
+  </select>
+  <select id="getOrderDetailByOrderWithoutDiscount" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select * from (
+    select id, orderid, goodsid,groupid,brandid,branduser,branddept,supplierid,supplieruser,isdiscount,isbranddiscount, unitid, unitname, fixnum, unitnum, overnum, auxunitid, auxunitname, auxnum,
+    auxnumdetail,totalbox, fixprice, offprice, taxprice, taxamount, notaxprice, notaxamount,costprice, taxtype, tax, remark,
+    deliverytype,deliverydate, expirationdate, billno, billdetailno, field01, field02, field03,
+    field04, field05, field06, field07, field08, sendnummain, sendnumaux, nosendnummain,
+    nosendnumaux, sendamountnotax, sendamounttax, nosendamountnotax, nosendamounttax, seq, oldprice, storageid, isview,
+    summarybatchid,storagelocationid,batchno, produceddate,deadline,repartitiontype,relationordergoodsid
+    from t_sales_order_detail
+    where isdiscount='0' and isview='1' and orderid = #{id}
+    ) z
+    <choose>
+      <when test="order != null">
+        <![CDATA[ORDER BY z.isdiscount,(CASE WHEN z.groupid <>'' then z.groupid else z.goodsid end) asc,z.deliverytype ]]>
+      </when>
+      <otherwise>
+        order by z.isdiscount,z.seq,z.deliverytype
+      </otherwise>
+    </choose>
+  </select>
+  <select id="getOrderDetailLackList" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select id, orderid, goodsid,groupid,brandid,branduser,branddept,supplierid,supplieruser,isdiscount,isbranddiscount, unitid, unitname, fixnum, unitnum, overnum, auxunitid, auxunitname, auxnum, 
+    auxnumdetail, fixprice, offprice, taxprice, taxamount, notaxprice, notaxamount,costprice, taxtype, tax, remark, 
+    deliverytype,deliverydate, expirationdate, billno, billdetailno, field01, field02, field03, 
+    field04, field05, field06, field07, field08, sendnummain, sendnumaux, nosendnummain, 
+    nosendnumaux, sendamountnotax, sendamounttax, nosendamountnotax, nosendamounttax, seq, oldprice, storageid, demandprice, demandamount,isview,
+    summarybatchid,storagelocationid,batchno, produceddate,deadline,relationordergoodsid
+    from t_sales_order_detail
+    where isview='0' and orderid = #{id}
+  </select>
+  <select id="getOrderDetailTotal" parameterType="java.lang.String" resultType="map">
+    select sum(t1.taxamount) as taxamount , sum(t1.notaxamount) as notaxamount, sum(t1.tax) as tax,
+    GROUP_CONCAT(DISTINCT t1.remark) as detailremark,GROUP_CONCAT(DISTINCT t1.branduser) as branduser,
+    sum(t1.unitnum*g.grossweight) as totalboxweight,sum(t1.unitnum*g.singlevolume) as totalboxvolume
+    from t_sales_order  t
+    right join t_sales_order_detail t1 on t.id=t1.orderid
+    LEFT JOIN t_base_goods_info g on t1.goodsid=g.id
+    where t.id = #{id}
+  </select>
+  <delete id="deleteOrderDetail" parameterType="java.lang.String">
+    delete from t_sales_order_detail
+    where id = #{id}
+  </delete>
+  <delete id="deleteOrderDetailByOrderId" parameterType="java.lang.String">
+  	delete from t_sales_order_detail
+  	where orderid = #{id}
+  </delete>
+  <insert id="addOrderDetail" parameterType="com.hd.agent.sales.model.OrderDetail">
+    insert into t_sales_order_detail
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="orderid != null">
+        orderid,
+      </if>
+      <if test="goodsid != null">
+        goodsid,
+      </if>
+      <if test="groupid != null">
+        groupid,
+      </if>
+      <if test="goodssort != null">
+        goodssort,
+      </if>
+      <if test="brandid != null">
+        brandid,
+      </if>
+      <if test="branduser != null">
+        branduser,
+      </if>
+      <if test="branddept != null">
+        branddept,
+      </if>
+      <if test="supplierid != null">
+        supplierid,
+      </if>
+      <if test="supplieruser != null">
+        supplieruser,
+      </if>
+      <if test="isdiscount != null">
+        isdiscount,
+      </if>
+      <if test="isbranddiscount != null">
+        isbranddiscount,
+      </if>
+      <if test="unitid != null">
+        unitid,
+      </if>
+      <if test="unitname != null">
+        unitname,
+      </if>
+      <if test="fixnum != null">
+        fixnum,
+      </if>
+      <if test="unitnum != null">
+        unitnum,
+      </if>
+      <if test="overnum != null">
+        overnum,
+      </if>
+      <if test="totalbox != null">
+        totalbox,
+      </if>
+      <if test="auxunitid != null">
+        auxunitid,
+      </if>
+      <if test="auxunitname != null">
+        auxunitname,
+      </if>
+      <if test="auxnum != null">
+        auxnum,
+      </if>
+      <if test="auxnumdetail != null">
+        auxnumdetail,
+      </if>
+      <if test="fixprice != null">
+        fixprice,
+      </if>
+      <if test="offprice != null">
+        offprice,
+      </if>
+      <if test="taxprice != null">
+        taxprice,
+      </if>
+      <if test="taxamount != null">
+        taxamount,
+      </if>
+      <if test="notaxprice != null">
+        notaxprice,
+      </if>
+      <if test="notaxamount != null">
+        notaxamount,
+      </if>
+      <if test="costprice != null">
+        costprice,
+      </if>
+      <if test="taxtype != null">
+        taxtype,
+      </if>
+      <if test="tax != null">
+        tax,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="deliverytype != null">
+        deliverytype,
+      </if>
+      <if test="deliverydate != null">
+        deliverydate,
+      </if>
+      <if test="expirationdate != null">
+        expirationdate,
+      </if>
+      <if test="billno != null">
+        billno,
+      </if>
+      <if test="billdetailno != null">
+        billdetailno,
+      </if>
+      <if test="field01 != null">
+        field01,
+      </if>
+      <if test="field02 != null">
+        field02,
+      </if>
+      <if test="field03 != null">
+        field03,
+      </if>
+      <if test="field04 != null">
+        field04,
+      </if>
+      <if test="field05 != null">
+        field05,
+      </if>
+      <if test="field06 != null">
+        field06,
+      </if>
+      <if test="field07 != null">
+        field07,
+      </if>
+      <if test="field08 != null">
+        field08,
+      </if>
+      <if test="seq != null">
+        seq,
+      </if>
+      <if test="oldprice != null">
+        oldprice,
+      </if>
+      <if test="storageid != null">
+        storageid,
+      </if>
+      <if test="demandprice != null">
+        demandprice,
+      </if>
+      <if test="demandamount != null">
+        demandamount,
+      </if>
+      <if test="isview != null">
+        isview,
+      </if>
+      <if test="summarybatchid != null">
+        summarybatchid,
+      </if>
+      <if test="storagelocationid != null">
+        storagelocationid,
+      </if>
+      <if test="batchno != null">
+        batchno,
+      </if>
+      <if test="produceddate != null">
+        produceddate,
+      </if>
+      <if test="deadline != null">
+        deadline,
+      </if>
+      <if test="repartitiontype != null">
+        repartitiontype,
+      </if>
+      <if test="relationordergoodsid != null">
+        relationordergoodsid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="orderid != null">
+        #{orderid},
+      </if>
+      <if test="goodsid != null">
+        #{goodsid},
+      </if>
+      <if test="groupid != null">
+        #{groupid},
+      </if>
+      <if test="goodssort != null">
+        #{goodssort},
+      </if>
+      <if test="brandid != null">
+        #{brandid},
+      </if>
+      <if test="branduser != null">
+        #{branduser},
+      </if>
+      <if test="branddept != null">
+        #{branddept},
+      </if>
+      <if test="supplierid != null">
+        #{supplierid},
+      </if>
+      <if test="supplieruser != null">
+        #{supplieruser},
+      </if>
+      <if test="isdiscount != null">
+        #{isdiscount},
+      </if>
+      <if test="isbranddiscount != null">
+        #{isbranddiscount},
+      </if>
+      <if test="unitid != null">
+        #{unitid},
+      </if>
+      <if test="unitname != null">
+        #{unitname},
+      </if>
+      <if test="fixnum != null">
+        #{fixnum},
+      </if>
+      <if test="unitnum != null">
+        #{unitnum},
+      </if>
+      <if test="overnum != null">
+        #{overnum},
+      </if>
+      <if test="totalbox != null">
+        #{totalbox},
+      </if>
+      <if test="auxunitid != null">
+        #{auxunitid},
+      </if>
+      <if test="auxunitname != null">
+        #{auxunitname},
+      </if>
+      <if test="auxnum != null">
+        #{auxnum},
+      </if>
+      <if test="auxnumdetail != null">
+        #{auxnumdetail},
+      </if>
+      <if test="fixprice != null">
+        #{fixprice},
+      </if>
+      <if test="offprice != null">
+        #{offprice},
+      </if>
+      <if test="taxprice != null">
+        #{taxprice},
+      </if>
+      <if test="taxamount != null">
+        #{taxamount},
+      </if>
+      <if test="notaxprice != null">
+        #{notaxprice},
+      </if>
+      <if test="notaxamount != null">
+        #{notaxamount},
+      </if>
+      <if test="costprice != null">
+        #{costprice},
+      </if>
+      <if test="taxtype != null">
+        #{taxtype},
+      </if>
+      <if test="tax != null">
+        #{tax},
+      </if>
+      <if test="remark != null">
+        #{remark},
+      </if>
+      <if test="deliverytype != null">
+        #{deliverytype},
+      </if>
+      <if test="deliverydate != null">
+        #{deliverydate},
+      </if>
+      <if test="expirationdate != null">
+        #{expirationdate},
+      </if>
+      <if test="billno != null">
+        #{billno},
+      </if>
+      <if test="billdetailno != null">
+        #{billdetailno},
+      </if>
+      <if test="field01 != null">
+        #{field01},
+      </if>
+      <if test="field02 != null">
+        #{field02},
+      </if>
+      <if test="field03 != null">
+        #{field03},
+      </if>
+      <if test="field04 != null">
+        #{field04},
+      </if>
+      <if test="field05 != null">
+        #{field05},
+      </if>
+      <if test="field06 != null">
+        #{field06},
+      </if>
+      <if test="field07 != null">
+        #{field07},
+      </if>
+      <if test="field08 != null">
+        #{field08},
+      </if>
+      <if test="seq != null">
+        #{seq},
+      </if>
+      <if test="oldprice != null">
+        #{oldprice},
+      </if>
+      <if test="storageid != null">
+        #{storageid},
+      </if>
+      <if test="demandprice != null">
+        #{demandprice},
+      </if>
+      <if test="demandamount != null">
+        #{demandamount},
+      </if>
+      <if test="isview != null">
+        #{isview},
+      </if>
+      <if test="summarybatchid != null">
+        #{summarybatchid},
+      </if>
+      <if test="storagelocationid != null">
+        #{storagelocationid},
+      </if>
+      <if test="batchno != null">
+        #{batchno},
+      </if>
+      <if test="produceddate != null">
+        #{produceddate},
+      </if>
+      <if test="deadline != null">
+        #{deadline},
+      </if>
+      <if test="repartitiontype != null">
+        #{repartitiontype},
+      </if>
+      <if test="relationordergoodsid != null">
+        #{relationordergoodsid},
+      </if>
+    </trim>
+  </insert>
+  <insert id="addOrderDetailList">
+  	insert into t_sales_order_detail 
+	        (orderid,goodsid,groupid,goodssort,brandid,branduser,branddept,supplierid,supplieruser,isdiscount,isbranddiscount,unitid,unitname,fixnum,unitnum,overnum,totalbox,auxunitid,auxunitname,auxnum,auxnumdetail,fixprice,
+			offprice,taxprice,taxamount,notaxprice,notaxamount,costprice,taxtype,tax,remark,deliverytype,deliverydate,summarybatchid,storagelocationid,batchno,produceddate,deadline,expirationdate,billno,billdetailno,
+			field01,field02,field03,field04,field05,field06,field07,field08,seq,oldprice,storageid, demandprice,demandamount,isview,sendnummain,sendnumaux,sendamountnotax,sendamounttax,relationordergoodsid)
+		values
+	    <foreach collection="list" item="item" separator="," >
+	    (#{item.orderid},
+	    <choose>
+      		<when test="item.goodsid != null">#{item.goodsid},</when>
+      		<otherwise>'',</otherwise>
+      	</choose>
+      	<choose>
+      		<when test="item.groupid != null">#{item.groupid},</when>
+      		<otherwise>'',</otherwise>
+      	</choose>
+      	<choose>
+      		<when test="item.goodssort != null">#{item.goodssort},</when>
+      		<otherwise>'',</otherwise>
+      	</choose>
+      	<choose>
+      		<when test="item.brandid != null"> #{item.brandid},</when>
+      		<otherwise>'',</otherwise>
+      	</choose>
+      	<choose>
+      		<when test="item.branduser != null"> #{item.branduser},</when>
+      		<otherwise>'',</otherwise>
+      	</choose>
+      	<choose>
+      		<when test="item.branddept != null"> #{item.branddept},</when>
+      		<otherwise>'',</otherwise>
+      	</choose>
+      	<choose>
+      		<when test="item.supplierid != null"> #{item.supplierid},</when>
+      		<otherwise>'',</otherwise>
+      	</choose>
+      	<choose>
+      		<when test="item.supplieruser != null"> #{item.supplieruser},</when>
+      		<otherwise>'',</otherwise>
+      	</choose>
+      	<choose>
+      		<when test="item.isdiscount != null"> #{item.isdiscount},</when>
+      		<otherwise>'0',</otherwise>
+      	</choose>
+      	<choose>
+      		<when test="item.isbranddiscount != null"> #{item.isbranddiscount},</when>
+      		<otherwise>'0',</otherwise>
+      	</choose>
+	    #{item.unitid},#{item.unitname},
+      	<choose>
+      		<when test="item.fixnum != null"> #{item.fixnum},</when>
+      		<otherwise>0,</otherwise>
+      	</choose>
+      	<choose>
+      		<when test="item.unitnum != null"> #{item.unitnum},</when>
+      		<otherwise>0,</otherwise>
+      	</choose>
+      	<choose>
+      		<when test="item.overnum != null"> #{item.overnum},</when>
+      		<otherwise>0,</otherwise>
+      	</choose>
+      	<choose>
+      		<when test="item.totalbox != null"> #{item.totalbox},</when>
+      		<otherwise>0,</otherwise>
+      	</choose>
+      	<choose>
+      		<when test="item.auxunitid != null"> #{item.auxunitid},</when>
+      		<otherwise>'',</otherwise>
+      	</choose>
+      	<choose>
+      		<when test="item.auxunitname != null"> #{item.auxunitname},</when>
+      		<otherwise>'',</otherwise>
+      	</choose>
+      	<choose>
+      		<when test="item.auxnum != null"> #{item.auxnum},</when>
+      		<otherwise>0,</otherwise>
+      	</choose>
+      	<choose>
+      		<when test="item.auxnumdetail != null"> #{item.auxnumdetail},</when>
+      		<otherwise>'',</otherwise>
+      	</choose>
+      	<choose>
+      		<when test="item.fixprice != null"> #{item.fixprice},</when>
+      		<otherwise>0,</otherwise>
+      	</choose>
+      	<choose>
+      		<when test="item.offprice != null"> #{item.offprice},</when>
+      		<otherwise>0,</otherwise>
+      	</choose>
+      	<choose>
+      		<when test="item.taxprice != null"> #{item.taxprice},</when>
+      		<otherwise>0,</otherwise>
+      	</choose>
+      	<choose>
+      		<when test="item.taxamount != null"> #{item.taxamount},</when>
+      		<otherwise>0,</otherwise>
+      	</choose>
+      	<choose>
+      		<when test="item.notaxprice != null"> #{item.notaxprice},</when>
+      		<otherwise>0,</otherwise>
+      	</choose>
+      	<choose>
+      		<when test="item.notaxamount != null"> #{item.notaxamount},</when>
+      		<otherwise>0,</otherwise>
+      	</choose>
+      	<choose>
+      		<when test="item.costprice != null"> #{item.costprice},</when>
+      		<otherwise>0,</otherwise>
+      	</choose>
+      	<choose>
+      		<when test="item.taxtype != null"> #{item.taxtype},</when>
+      		<otherwise>'',</otherwise>
+      	</choose>
+      	<choose>
+      		<when test="item.tax != null"> #{item.tax},</when>
+      		<otherwise>0,</otherwise>
+      	</choose>
+      	<choose>
+      		<when test="item.remark != null"> #{item.remark},</when>
+      		<otherwise>'',</otherwise>
+      	</choose>
+      	<choose>
+      		<when test="item.deliverytype != null"> #{item.deliverytype},</when>
+      		<otherwise>'0',</otherwise>
+      	</choose>
+      	<choose>
+      		<when test="item.deliverydate != null"> #{item.deliverydate},</when>
+      		<otherwise>'',</otherwise>
+      	</choose>
+      	<choose>
+      		<when test="item.summarybatchid != null"> #{item.summarybatchid},</when>
+      		<otherwise>'',</otherwise>
+      	</choose>
+      	<choose>
+      		<when test="item.storagelocationid != null"> #{item.storagelocationid},</when>
+      		<otherwise>'',</otherwise>
+      	</choose>
+      	<choose>
+      		<when test="item.batchno != null"> #{item.batchno},</when>
+      		<otherwise>'',</otherwise>
+      	</choose>
+      	<choose>
+      		<when test="item.produceddate != null"> #{item.produceddate},</when>
+      		<otherwise>'',</otherwise>
+      	</choose>
+      	<choose>
+      		<when test="item.deadline != null"> #{item.deadline},</when>
+      		<otherwise>'',</otherwise>
+      	</choose>
+      	<choose>
+      		<when test="item.expirationdate != null"> #{item.expirationdate},</when>
+      		<otherwise>null,</otherwise>
+      	</choose>
+      	<choose>
+      		<when test="item.billno != null"> #{item.billno},</when>
+      		<otherwise>'',</otherwise>
+      	</choose>
+      	<choose>
+      		<when test="item.billdetailno != null"> #{item.billdetailno},</when>
+      		<otherwise>'',</otherwise>
+      	</choose>
+		 #{item.field01}, #{item.field02}, #{item.field03}, 
+		 #{item.field04}, #{item.field05}, #{item.field06}, #{item.field07}, #{item.field08},
+		 <choose>
+      		<when test="item.seq != null"> #{item.seq},</when>
+      		<otherwise>0,</otherwise>
+      	</choose>
+      	<choose>
+      		<when test="item.oldprice != null"> #{item.oldprice},</when>
+      		<otherwise>0,</otherwise>
+      	</choose>
+      	<choose>
+      		<when test="item.storageid != null"> #{item.storageid},</when>
+      		<otherwise>'',</otherwise>
+      	</choose>
+      	<choose>
+      		<when test="item.demandprice != null"> #{item.demandprice},</when>
+      		<otherwise>0,</otherwise>
+      	</choose>
+      	<choose>
+      		<when test="item.demandamount != null"> #{item.demandamount},</when>
+      		<otherwise>0,</otherwise>
+      	</choose>
+      	<choose>
+      		<when test="item.isview != null"> #{item.isview},</when>
+      		<otherwise>'1',</otherwise>
+      	</choose>
+        <choose>
+            <when test="item.sendnummain != null"> #{item.sendnummain},</when>
+            <otherwise>0,</otherwise>
+        </choose>
+        <choose>
+            <when test="item.sendnumaux != null"> #{item.sendnumaux},</when>
+            <otherwise>0,</otherwise>
+        </choose>
+        <choose>
+            <when test="item.sendamountnotax != null"> #{item.sendamountnotax},</when>
+            <otherwise>0,</otherwise>
+        </choose>
+        <choose>
+            <when test="item.sendamounttax != null"> #{item.sendamounttax},</when>
+            <otherwise>0,</otherwise>
+        </choose>
+          <choose>
+            <when test="item.relationordergoodsid != null"> #{item.relationordergoodsid}</when>
+            <otherwise>0</otherwise>
+          </choose>
+         )
+		</foreach>
+  </insert>
+  <update id="updateOrderDetail" parameterType="com.hd.agent.sales.model.OrderDetail">
+    update t_sales_order_detail
+    <set>
+      <if test="orderid != null">
+        orderid = #{orderid},
+      </if>
+      <if test="goodsid != null">
+        goodsid = #{goodsid},
+      </if>
+      <if test="groupid != null">
+        groupid = #{groupid},
+      </if>
+      <if test="goodssort != null">
+        goodssort = #{goodssort},
+      </if>
+      <if test="supplierid != null">
+        supplierid = #{supplierid},
+      </if>
+      <if test="supplieruser != null">
+        supplieruser = #{supplieruser},
+      </if>
+      <if test="isdiscount != null">
+        isdiscount = #{isdiscount},
+      </if>
+      <if test="isbranddiscount != null">
+        isbranddiscount = #{isbranddiscount},
+      </if>
+      <if test="unitid != null">
+        unitid = #{unitid},
+      </if>
+      <if test="unitname != null">
+        unitname = #{unitname},
+      </if>
+      <if test="unitnum != null">
+        unitnum = #{unitnum},
+      </if>
+      <if test="overnum != null">
+        overnum = #{overnum},
+      </if>
+      <if test="totalbox != null">
+        totalbox = #{totalbox},
+      </if>
+      <if test="auxunitid != null">
+        auxunitid = #{auxunitid},
+      </if>
+      <if test="auxunitname != null">
+        auxunitname = #{auxunitname},
+      </if>
+      <if test="auxnum != null">
+        auxnum = #{auxnum},
+      </if>
+      <if test="auxnumdetail != null">
+        auxnumdetail = #{auxnumdetail},
+      </if>
+      <if test="fixprice != null">
+        fixprice = #{fixprice},
+      </if>
+      <if test="offprice != null">
+        offprice = #{offprice},
+      </if>
+      <if test="taxprice != null">
+        taxprice = #{taxprice},
+      </if>
+      <if test="taxamount != null">
+        taxamount = #{taxamount},
+      </if>
+      <if test="notaxprice != null">
+        notaxprice = #{notaxprice},
+      </if>
+      <if test="notaxamount != null">
+        notaxamount = #{notaxamount},
+      </if>
+      <if test="costprice != null">
+        costprice = #{costprice},
+      </if>
+      <if test="taxtype != null">
+        taxtype = #{taxtype},
+      </if>
+      <if test="tax != null">
+        tax = #{tax},
+      </if>
+      <if test="remark != null">
+        remark = #{remark},
+      </if>
+      <if test="deliverytype != null">
+        deliverytype = #{deliverytype},
+      </if>
+      <if test="deliverydate != null">
+        deliverydate = #{deliverydate},
+      </if>
+      <if test="summarybatchid != null">
+        summarybatchid = #{summarybatchid},
+      </if>
+      <if test="storagelocationid != null">
+        storagelocationid = #{storagelocationid},
+      </if>
+      <if test="batchno != null">
+        batchno = #{batchno},
+      </if>
+      <if test="produceddate != null">
+        produceddate = #{produceddate},
+      </if>
+      <if test="deadline != null">
+        deadline = #{deadline},
+      </if>
+      <if test="expirationdate != null">
+        expirationdate = #{expirationdate},
+      </if>
+      <if test="billno != null">
+        billno = #{billno},
+      </if>
+      <if test="billdetailno != null">
+        billdetailno = #{billdetailno},
+      </if>
+      <if test="field01 != null">
+        field01 = #{field01},
+      </if>
+      <if test="field02 != null">
+        field02 = #{field02},
+      </if>
+      <if test="field03 != null">
+        field03 = #{field03},
+      </if>
+      <if test="field04 != null">
+        field04 = #{field04},
+      </if>
+      <if test="field05 != null">
+        field05 = #{field05},
+      </if>
+      <if test="field06 != null">
+        field06 = #{field06},
+      </if>
+      <if test="field07 != null">
+        field07 = #{field07},
+      </if>
+      <if test="field08 != null">
+        field08 = #{field08},
+      </if>
+      <if test="seq != null">
+        seq = #{seq},
+      </if>
+      <if test="storageid != null">
+        storageid = #{storageid},
+      </if>
+      <if test="isview != null">
+        isview = #{isview},
+      </if>
+      <if test="relationordergoodsid != null">
+        relationordergoodsid = #{relationordergoodsid},
+      </if>
+
+    </set>
+    where id = #{id}
+  </update>
+  <update id="updateOrderDetailBack" parameterType="com.hd.agent.sales.model.OrderDetail">
+  	update t_sales_order_detail
+    <set>
+      <if test="sendnummain != null">
+        sendnummain = #{sendnummain},
+      </if>
+      <if test="sendnumaux != null">
+        sendnumaux = #{sendnumaux},
+      </if>
+      <if test="nosendnummain != null">
+        nosendnummain = #{nosendnummain},
+      </if>
+      <if test="nosendnumaux != null">
+        nosendnumaux = #{nosendnumaux},
+      </if>
+      <if test="sendamountnotax != null">
+        sendamountnotax = #{sendamountnotax},
+      </if>
+      <if test="sendamounttax != null">
+        sendamounttax = #{sendamounttax},
+      </if>
+      <if test="nosendamountnotax != null">
+        nosendamountnotax = #{nosendamountnotax},
+      </if>
+      <if test="nosendamounttax != null">
+        nosendamounttax = #{nosendamounttax},
+      </if>
+    </set>
+    where orderid = #{orderid} and id = #{id} 
+  </update>
+  <select id="getOrderDetailListByOrderidAndBrandid" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from t_sales_order_detail
+    where brandid=#{brandid} and orderid = #{orderid}
+  </select>
+  <select id="getOrderDetailDiscount" parameterType="java.lang.String" resultType="int">
+  	select count(1) from t_sales_order_detail
+  	where isdiscount='1' and orderid = #{orderid} 
+  </select>
+  <select id="getOrderDetailZeroCount" parameterType="java.lang.String" resultType="int">
+  	select count(1) from t_sales_order_detail
+  	where unitnum>0 and taxamount=0 and isdiscount='0' and orderid = #{orderid} and deliverytype='0'
+  </select>
+  <update id="updateOrderDetailIssupply" parameterType="java.lang.String">
+  	update t_sales_order_detail
+  	set issupply='1' where id=#{id}
+  </update>
+  <select id="getOrderVersionByID" parameterType="java.lang.String" resultType="int">
+      select if(version is null,0,max(version)) as version from t_sales_order_v where id=#{id}
+  </select>
+  <select id="getOrderVersionVid" parameterType="java.lang.String" resultType="int">
+        select vid from t_sales_order_v where id=#{id} and version=#{version}
+  </select>
+
+  <insert id="addOrderWithVersion" parameterType="java.lang.String">
+      insert into t_sales_order_v (version,id, businessdate, status, remark, adduserid, addusername, adddeptid, adddeptname,
+	    addtime, modifyuserid, modifyusername, modifytime, audituserid, auditusername, audittime,
+	    stopuserid, stopusername, stoptime, closetime, printtimes, customerid,pcustomerid,customersort, handlerid,sourceid,sourcetype,isgoodsseq,
+	    salesarea,salesdept, salesuser, settletype, paytype,storageid, field01, field02, field03, field04, field05,
+	    field06, field07, field08, isrefer,indooruserid, demandtime,phprinttimes)
+      select ${version},id, businessdate, status, remark, adduserid, addusername, adddeptid, adddeptname,
+	    addtime, modifyuserid, modifyusername, modifytime, audituserid, auditusername, audittime,
+	    stopuserid, stopusername, stoptime, closetime, printtimes, customerid,pcustomerid,customersort, handlerid,sourceid,sourcetype,isgoodsseq,
+	    salesarea,salesdept, salesuser, settletype, paytype,storageid, field01, field02, field03, field04, field05,
+	    field06, field07, field08, isrefer,indooruserid, demandtime,phprinttimes
+	    from t_sales_order where id=#{id}
+  </insert>
+  <insert id="addOrderDetailWithVersion" parameterType="java.lang.String">
+      insert into t_sales_order_detail_v(version,id, orderid, goodsid,groupid,brandid,branduser,branddept,supplierid,supplieruser,isdiscount,isbranddiscount, unitid, unitname, fixnum, unitnum, overnum, auxunitid, auxunitname, auxnum,
+        auxnumdetail, fixprice, offprice, taxprice, taxamount, notaxprice, notaxamount,costprice, taxtype, tax, remark,
+        deliverytype,deliverydate, summarybatchid,storagelocationid,batchno,produceddate,deadline,expirationdate, billno, billdetailno, field01, field02, field03,
+        field04, field05, field06, field07, field08, sendnummain, sendnumaux, nosendnummain,
+        nosendnumaux, sendamountnotax, sendamounttax, nosendamountnotax, nosendamounttax, seq, oldprice, storageid, demandprice, demandamount,isview)
+      select ${version},id, orderid, goodsid,groupid,brandid,branduser,branddept,supplierid,supplieruser,isdiscount,isbranddiscount, unitid, unitname, fixnum, unitnum, overnum, auxunitid, auxunitname, auxnum,
+        auxnumdetail, fixprice, offprice, taxprice, taxamount, notaxprice, notaxamount,costprice, taxtype, tax, remark,
+        deliverytype,deliverydate, summarybatchid,storagelocationid,batchno,produceddate,deadline,expirationdate, billno, billdetailno, field01, field02, field03,
+        field04, field05, field06, field07, field08, sendnummain, sendnumaux, nosendnummain,
+        nosendnumaux, sendamountnotax, sendamounttax, nosendamountnotax, nosendamounttax, seq, oldprice, storageid, demandprice, demandamount,isview
+        from t_sales_order_detail where orderid=#{id}
+  </insert>
+    <select id="showOrderVersionList" parameterType="java.lang.String" resultType="com.hd.agent.sales.model.Order">
+        select vid,version,id, businessdate, status, remark, adduserid, addusername, adddeptid, adddeptname,
+	    addtime, modifyuserid, modifyusername, modifytime, audituserid, auditusername, audittime,
+	    stopuserid, stopusername, stoptime, closetime, printtimes, customerid,pcustomerid,customersort, handlerid,sourceid,sourcetype,isgoodsseq,
+	    salesarea,salesdept, salesuser, settletype, paytype,storageid, field01, field02, field03, field04, field05,
+	    field06, field07, field08, isrefer,indooruserid, demandtime,phprinttimes
+	    from t_sales_order_v where id=#{id}
+    </select>
+    <select id="getOrderVersionDetailTotal" parameterType="java.lang.String" resultType="map">
+        select sum(taxamount) taxamount, sum(notaxamount) notaxamount, sum(tax) tax
+        from t_sales_order_detail_v where orderid = #{id} and version=#{version}
+    </select>
+    <select id="getOrderVersion" parameterType="java.lang.String" resultType="com.hd.agent.sales.model.Order">
+      select vid,version,id, businessdate, status, remark, adduserid, addusername, adddeptid, adddeptname,
+	    addtime, modifyuserid, modifyusername, modifytime, audituserid, auditusername, audittime,
+	    stopuserid, stopusername, stoptime, closetime, printtimes, customerid,pcustomerid,customersort, handlerid,sourceid,sourcetype,isgoodsseq,
+	    salesarea,salesdept, salesuser, settletype, paytype,storageid, field01, field02, field03, field04, field05,
+	    field06, field07, field08, isrefer,indooruserid, demandtime,phprinttimes
+	    from t_sales_order_v where id=#{id} and version=#{version}
+    </select>
+    <select id="getOrderVersionDetailByOrderWithDiscount" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from (
+        select id, orderid, goodsid,groupid,brandid,branduser,branddept,supplierid,supplieruser,isdiscount,isbranddiscount, unitid, unitname, fixnum, unitnum, overnum, auxunitid, auxunitname, auxnum,
+        auxnumdetail, fixprice, offprice, taxprice, taxamount, notaxprice, notaxamount,costprice, taxtype, tax, remark,
+        deliverytype,deliverydate, summarybatchid,storagelocationid,batchno,produceddate,deadline,expirationdate, billno, billdetailno, field01, field02, field03,
+        field04, field05, field06, field07, field08, sendnummain, sendnumaux, nosendnummain,
+        nosendnumaux, sendamountnotax, sendamounttax, nosendamountnotax, nosendamounttax, seq, oldprice, storageid, demandprice, demandamount,isview
+        from t_sales_order_detail_v
+        where isbranddiscount='0' and isview='1' and orderid = #{id} and version=#{version}
+        union all
+        select id, orderid, goodsid,groupid,brandid,branduser,branddept,supplierid,supplieruser,isdiscount,isbranddiscount, unitid, unitname, fixnum, unitnum, overnum, auxunitid, auxunitname, auxnum,
+        auxnumdetail, fixprice, offprice, taxprice, sum(taxamount) as taxamount, notaxprice, sum(notaxamount) as notaxamount,costprice, taxtype, tax, remark,
+        deliverytype,deliverydate, summarybatchid,storagelocationid,batchno,produceddate,deadline,expirationdate, billno, billdetailno, field01, field02, field03,
+        field04, field05, field06, field07, field08, sendnummain, sendnumaux, nosendnummain,
+        nosendnumaux, sendamountnotax, sendamounttax, nosendamountnotax, nosendamounttax, seq, oldprice, storageid, demandprice, demandamount,isview
+        from t_sales_order_detail_v
+        where isbranddiscount='1' and isview='1' and orderid = #{id} and version=#{version}
+        group by brandid
+        ) z
+        <choose>
+            <when test="order != null">
+                <![CDATA[ORDER BY (CASE WHEN (z.deliverytype='1'or z.deliverytype='2') and z.groupid <>'' then z.groupid else z.goodsid end) asc,z.deliverytype asc ]]>
+            </when>
+            <otherwise>
+                order by z.seq
+            </otherwise>
+        </choose>
+    </select>
+    <select id="getOrderPromotionFullFreeList" resultType="map">
+		select t.groupid,t1.billid,t.goodsid,t.unitnum,t.taxprice,t.taxamount,t2.unitnum as basenum,t1.begindate,t1.enddate from t_sales_order_detail t,t_sales_promotion_package_group t1,t_sales_promotion_package_group_detail t2
+		where t.orderid=#{orderid} and t.groupid=t1.groupid and t.groupid=t2.groupid
+		and t.goodsid=t2.goodsid and t1.ptype='3' and t.deliverytype='0' and t2.gtype='1'
+    </select>
+    <select id="getOrderPromotionGroupList" resultType="map">
+        select t.groupid,t1.billid,t.goodsid,t.unitnum,t.taxprice,t.taxamount,t2.unitnum as basenum,t1.begindate,t1.enddate
+        from t_sales_order_detail t,t_sales_promotion_package_group t1,t_sales_promotion_package_group_detail t2
+        where t.orderid=#{orderid} and t.groupid=t1.groupid and t.groupid=t2.groupid
+        and t.goodsid=t2.goodsid  and ((t.deliverytype='1' and (t1.ptype='1' or t1.ptype='3') and t2.gtype='2') or t1.ptype='2')
+        GROUP BY t.groupid,t1.billid
+    </select>
+    <select id="getOrderPromotionGroupByGroupid" resultType="map">
+        select t.groupid,t1.billid,t.goodsid,t.unitnum,t.taxprice,t.taxamount,t2.unitnum as basenum,t1.begindate,t1.enddate from t_sales_order_detail t,t_sales_promotion_package_group t1,t_sales_promotion_package_group_detail t2
+        where t.orderid=#{orderid} and t.groupid=t1.groupid and t.groupid=t2.groupid and t.groupid=#{groupid}
+        and t.goodsid=t2.goodsid and (t.deliverytype='1' or t1.ptype='2')
+        GROUP BY t.groupid,t1.billid
+    </select>
+    <select id="getGoodsSalesInfoByCustomeridAndGoodsid" resultType="map">
+		select sum(z.unitnum) as unitnum,sum(z.taxamount) as taxamount from (
+        select t1.unitnum as unitnum,t1.taxamount as taxamount
+        from t_sales_order t
+        RIGHT JOIN t_sales_order_detail t1 on t.id = t1.orderid
+        <![CDATA[
+		where t.customerid=#{customerid} and t1.goodsid=#{goodsid} and t1.deliverytype<>'1'
+		and (t1.groupid=#{groupid} or t1.groupid='')
+		and t.businessdate>=#{beginDate} and t.businessdate<=#{endDate} and t.status='2' ]]>
+        UNION  ALL
+        select t1.unitnum as unitnum,t1.taxamount as taxamount
+        from t_sales_dispatchbill t
+        RIGHT JOIN t_sales_dispatchbill_detail t1 on t.id = t1.billid
+        <![CDATA[
+		where t.customerid=#{customerid} and t1.goodsid=#{goodsid} and t1.deliverytype<>'1'
+		and (t1.groupid=#{groupid} or t1.groupid='')
+		and t.businessdate>=#{beginDate} and t.businessdate<=#{endDate} and t.status='2' ]]>
+        UNION  ALL
+        select t1.unitnum as unitnum,t1.taxamount as taxamount
+        from t_storage_saleout t
+        RIGHT JOIN t_storage_saleout_detail t1 on t.id = t1.saleoutid
+        <![CDATA[
+		where t.customerid=#{customerid} and t1.goodsid=#{goodsid} and t1.deliverytype<>'1'
+		and (t1.groupid=#{groupid} or t1.groupid='')
+		and t.businessdate>=#{beginDate} and t.businessdate<=#{endDate} and (t.status='2' or t.status='3' or t.status='4') ]]>
+        union ALL
+        select -t.unitnum,-t.amount astaxamount
+        from t_sales_promotion_fullfree t
+        where t.customerid=#{customerid} and t.goodsid=#{goodsid}
+        <if test="orderid != null">
+            <![CDATA[and t.orderid<>#{orderid}]]>
+        </if>
+        <![CDATA[
+        and t.groupid=#{groupid}
+		and t.addtime>=#{beginDate} and t.addtime<=#{endDate}]]>
+        )z
+		
+	</select>
+    <insert id="addCustomerFullFreeLog">
+    	insert into t_sales_promotion_fullfree(customerid,orderid,goodsid,groupid,unitnum,amount,addtime)
+    	values (#{customerid},#{orderid},#{goodsid},#{groupid},#{unitnum},#{amount},now())
+    </insert>
+    <delete id="deleteCustomerFullFreeLog">
+    	delete from t_sales_promotion_fullfree where orderid = #{orderid}
+    </delete>
+    
+  <select id="getOrderDetailPrintBy" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select z.* from (
+    	select
+	    id, orderid, goodsid,groupid,goodssort,brandid,branduser,branddept,supplierid,supplieruser,isdiscount,isbranddiscount, unitid, unitname, fixnum, unitnum, overnum, auxunitid, auxunitname, auxnum, 
+	    auxnumdetail, fixprice, offprice, taxprice, taxamount, notaxprice, notaxamount,costprice, taxtype, tax, remark, 
+	    deliverytype,deliverydate, expirationdate, billno, billdetailno, field01, field02, field03, 
+	    field04, field05, field06, field07, field08, sendnummain, sendnumaux, nosendnummain, 
+	    nosendnumaux, sendamountnotax, sendamounttax, nosendamountnotax, nosendamounttax, seq, oldprice, storageid, demandprice, demandamount,issupply,isview,
+	    summarybatchid,storagelocationid,batchno, produceddate,deadline
+	    from t_sales_order_detail where
+	    <trim prefixOverrides="and|or" >
+    		<if test="1==1">
+    			and isbranddiscount='0' and isview='1' and  orderid = #{orderid}
+    		</if>
+    	</trim>
+		union all
+		select
+	    id, orderid, goodsid,groupid,goodssort,brandid,branduser,branddept,supplierid,supplieruser,isdiscount,isbranddiscount, unitid, unitname, fixnum, unitnum, overnum, auxunitid, auxunitname, auxnum, 
+	    auxnumdetail, fixprice, offprice, taxprice,  sum(taxamount) as taxamount, notaxprice, sum(notaxamount) as notaxamount,costprice, taxtype, tax, remark, 
+	    deliverytype,deliverydate, expirationdate, billno, billdetailno, field01, field02, field03, 
+	    field04, field05, field06, field07, field08, sendnummain, sendnumaux, nosendnummain, 
+	    nosendnumaux, sendamountnotax, sendamounttax, nosendamountnotax, nosendamounttax, seq, oldprice, storageid, demandprice, demandamount,issupply,isview,
+	    summarybatchid,storagelocationid,batchno, produceddate,deadline
+	    from t_sales_order_detail where
+	    <trim prefixOverrides="and|or" >
+    		<if test="1==1">
+    			and isbranddiscount='1' and isview='1' and  orderid = #{orderid}
+    		</if>
+    	</trim>
+		group by brandid 
+    )z
+	    <choose>
+	    	<when test="orderseq != null">
+	    		<![CDATA[ORDER BY z.isdiscount,(CASE WHEN z.deliverytype='1' and z.groupid <>'' then z.groupid else z.goodsid end) asc,z.deliverytype ASC]]>
+	    	</when>
+	    	<otherwise>
+	    		ORDER BY z.isdiscount, z.seq ASC
+	    	</otherwise>
+	    </choose>
+  </select>
+</mapper>

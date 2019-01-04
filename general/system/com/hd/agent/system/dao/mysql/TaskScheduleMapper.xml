@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hd.agent.system.dao.TaskScheduleMapper">
+	<insert id="addTaskList" parameterType="com.hd.agent.system.model.TaskList">
+		insert into t_sys_task_list
+	    <trim prefix="(" suffix=")" suffixOverrides=",">
+	      <if test="id != null">
+	        id,
+	      </if>
+	      <if test="name != null">
+	        name,
+	      </if>
+	      <if test="classpath != null">
+	        classpath,
+	      </if>
+	      <if test="type != null">
+	        type,
+	      </if>
+	      <if test="state != null">
+	        state,
+	      </if>
+	      <if test="1==1">
+	        addtime,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides=",">
+	      <if test="id != null">
+	        #{id},
+	      </if>
+	      <if test="name != null">
+	        #{name},
+	      </if>
+	      <if test="classpath != null">
+	        #{classpath},
+	      </if>
+	      <if test="type != null">
+	        #{type},
+	      </if>
+	      <if test="state != null">
+	        #{state},
+	      </if>
+	      <if test="1==1">
+	        now(),
+	      </if>
+	    </trim>
+	</insert>
+	<select id="showTaskListData" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.system.model.TaskList">
+		select id, name, classpath, type, state, addtime 
+		from t_sys_task_list
+		<trim prefix="where" prefixOverrides="and|or">
+	      <if test="condition.name != null">
+	         and name like CONCAT('%',#{condition.name},'%')
+	      </if>
+	      <if test="condition.type != null">
+	         and type = #{condition.type}
+	      </if>
+	      <if test="condition.state != null">
+	         and state = #{condition.state}
+	      </if>
+	    </trim>
+	    <include refid="common.Page_limit" />
+	</select>
+	<select id="showTaskListCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+		select count(1) from t_sys_task_list
+		<trim prefix="where" prefixOverrides="and|or">
+	      <if test="condition.name != null">
+	         and name like CONCAT('%',#{condition.name},'%')
+	      </if>
+	      <if test="condition.type != null">
+	         and type = #{condition.type}
+	      </if>
+	      <if test="condition.state != null">
+	         and state = #{condition.state}
+	      </if>
+	    </trim>
+	</select>
+	<select id="showTaskListInfo" parameterType="java.lang.String" resultType="com.hd.agent.system.model.TaskList">
+		select id, name, classpath, type, state, addtime 
+		from t_sys_task_list where id=#{id}
+	</select>
+	<update id="editTaskList" parameterType="com.hd.agent.system.model.TaskList">
+		update t_sys_task_list
+		<set>
+	      <if test="name != null">
+	        name = #{name},
+	      </if>
+	      <if test="classpath != null">
+	        classpath = #{classpath},
+	      </if>
+	      <if test="type != null">
+	        type = #{type},
+	      </if>
+	      <if test="state != null">
+	        state = #{state},
+	      </if>
+	    </set>
+	    where id = #{id}
+	</update>
+	<delete id="deleteTaskList" parameterType="java.lang.String">
+		delete from t_sys_task_list where id=#{id}
+	</delete>
+	<update id="openTaskList" parameterType="java.lang.String">
+		update t_sys_task_list set state='1' where id=#{id}
+	</update>
+	<update id="closeTaskList" parameterType="java.lang.String">
+		update t_sys_task_list set state='0' where id=#{id}
+	</update>
+	<select id="getTaskListData" parameterType="java.lang.String" resultType="com.hd.agent.system.model.TaskList">
+		select id, name, classpath, type, state, addtime 
+		from t_sys_task_list
+		<trim prefix="where" prefixOverrides="and|or">
+	      <if test="type != null">
+	         and type = #{type}
+	      </if>
+	      <if test="1==1">
+	         and state = '1'
+	      </if>
+	    </trim>
+	</select>
+	
+	<insert id="addTaskSchedule" parameterType="com.hd.agent.system.model.TaskSchedule" >
+	    insert into t_sys_task_schedule
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="taskid != null" >
+	        taskid,
+	      </if>
+	      <if test="tasklistid != null" >
+	        tasklistid,
+	      </if>
+	      <if test="taskname != null" >
+	        taskname,
+	      </if>
+	      <if test="team != null" >
+	        team,
+	      </if>
+	      <if test="classpath != null" >
+	        classpath,
+	      </if>
+	      <if test="type != null" >
+	        type,
+	      </if>
+	      <if test="triggertime != null" >
+	        triggertime,
+	      </if>
+	      <if test="state != null" >
+	        state,
+	      </if>
+	      <if test="1==1" >
+	        addtime,
+	      </if>
+	      <if test="times != null" >
+	        times,
+	      </if>
+			<if test="roottaskid != null" >
+				roottaskid,
+			</if>
+			<if test="isalert != null" >
+				isalert,
+			</if>
+			<if test="alerturl != null" >
+				alerturl,
+			</if>
+			<if test="sendroleid != null" >
+				sendroleid,
+			</if>
+			<if test="senduserid != null" >
+				senduserid,
+			</if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="taskid != null" >
+	        #{taskid},
+	      </if>
+	      <if test="tasklistid != null" >
+	        #{tasklistid},
+	      </if>
+	      <if test="taskname != null" >
+	        #{taskname},
+	      </if>
+	      <if test="team != null" >
+	        #{team},
+	      </if>
+	      <if test="classpath != null" >
+	        #{classpath},
+	      </if>
+	      <if test="type != null" >
+	        #{type},
+	      </if>
+	      <if test="triggertime != null" >
+	        #{triggertime},
+	      </if>
+	      <if test="state != null" >
+	        #{state},
+	      </if>
+	      <if test="1==1" >
+	        now(),
+	      </if>
+	      <if test="times != null" >
+	        #{times},
+	      </if>
+			<if test="roottaskid != null" >
+				#{roottaskid},
+			</if>
+			<if test="isalert != null" >
+				#{isalert},
+			</if>
+			<if test="alerturl != null" >
+				#{alerturl},
+			</if>
+			<if test="sendroleid != null" >
+				#{sendroleid},
+			</if>
+			<if test="senduserid != null" >
+				#{senduserid},
+			</if>
+	    </trim>
+  	</insert>
+  	<select id="showTaskScheduleList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.system.model.TaskSchedule">
+  		select taskid, tasklistid, taskname, team, classpath, type, triggertime, state, addtime, times,roottaskid,isalert,alerturl,sendroleid,senduserid
+  		from t_sys_task_schedule
+  		<trim prefix="where" prefixOverrides="and|or">
+	      <if test="condition.tasklistid != null">
+	         and tasklistid = #{condition.tasklistid}
+	      </if>
+			<if test="condition.roottaskid != null">
+				and roottaskid = #{condition.roottaskid}
+			</if>
+	      <if test="condition.taskname != null">
+	         and taskname like CONCAT('%',#{condition.taskname},'%')
+	      </if>
+	      <if test="condition.team != null">
+	         and team like CONCAT('%',#{condition.team},'%')
+	      </if>
+	      <if test="condition.type != null">
+	         and type = #{condition.type}
+	      </if>
+	      <if test="condition.state != null">
+	         and state = #{condition.state}
+	      </if>
+	    </trim>
+	    <include refid="common.Page_limit" />
+  	</select>
+  	<select id="showTaskScheduleCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  		select count(1) from t_sys_task_schedule
+  		<trim prefix="where" prefixOverrides="and|or">
+	      <if test="condition.tasklistid != null">
+	         and tasklistid = #{condition.tasklistid}
+	      </if>
+	      <if test="condition.taskname != null">
+	         and taskname like CONCAT('%',#{condition.taskname},'%')
+	      </if>
+	      <if test="condition.team != null">
+	         and team like CONCAT('%',#{condition.team},'%')
+	      </if>
+	      <if test="condition.type != null">
+	         and type = #{condition.type}
+	      </if>
+	      <if test="condition.state != null">
+	         and state = #{condition.state}
+	      </if>
+	    </trim>
+  	</select>
+  	<select id="getTaskSchedule" parameterType="java.lang.String" resultType="com.hd.agent.system.model.TaskSchedule">
+  		select  taskid, tasklistid, taskname, team, classpath, type, triggertime, state, addtime, times,roottaskid,isalert,alerturl,sendroleid,senduserid
+  		from t_sys_task_schedule where taskid=#{taskid} and team=#{team}
+  	</select>
+  	<update id="startTaskSchedule" parameterType="java.lang.String">
+  		update t_sys_task_schedule set state='1' where taskid = #{taskid} and team=#{team}
+  	</update>
+  	<update id="pauseTaskSchedule" parameterType="java.lang.String">
+  		update t_sys_task_schedule set state='2' where taskid = #{taskid} and team=#{team}
+  	</update>
+  	<update id="cancelTaskSchedule" parameterType="java.lang.String">
+  		update t_sys_task_schedule set state='3' where taskid = #{taskid} and team=#{team}
+  	</update>
+  	<delete id="deleteTaskSchedule" parameterType="java.lang.String">
+  		delete from t_sys_task_schedule where taskid = #{taskid} and team=#{team}
+  	</delete>
+  	<update id="updateTaskScheduleTimes" parameterType="java.lang.String">
+  		update t_sys_task_schedule set times=times+1 where taskid = #{taskid} and team=#{team}
+  	</update>
+  	<insert id="addTaskLog" parameterType="com.hd.agent.system.model.TaskLog">
+	   insert into t_sys_task_log
+	    <trim prefix="(" suffix=")" suffixOverrides=",">
+	      <if test="id != null">
+	        id,
+	      </if>
+	      <if test="taskid != null">
+	        taskid,
+	      </if>
+	      <if test="taskname != null">
+	        taskname,
+	      </if>
+	      <if test="team != null">
+	        team,
+	      </if>
+	      <if test="1==1">
+	        executetime,
+	      </if>
+	      <if test="state != null">
+	        state,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides=",">
+	      <if test="id != null">
+	        #{id},
+	      </if>
+	      <if test="taskid != null">
+	        #{taskid},
+	      </if>
+	      <if test="taskname != null">
+	        #{taskname},
+	      </if>
+	      <if test="team != null">
+	        #{team},
+	      </if>
+	      <if test="1==1">
+	        now(),
+	      </if>
+	      <if test="state != null">
+	        #{state},
+	      </if>
+	    </trim>
+  	</insert>
+  	<update id="setTaskScheduleOver" parameterType="java.lang.String">
+  		update t_sys_task_schedule set state='0' where taskid = #{taskid} and team=#{team}
+  	</update>
+  	<update id="editTaskSchedule" parameterType="com.hd.agent.system.model.TaskSchedule">
+  		update t_sys_task_schedule
+	    <set>
+	      <if test="tasklistid != null">
+	        tasklistid = #{tasklistid},
+	      </if>
+	      <if test="taskname != null">
+	        taskname = #{taskname},
+	      </if>
+	      <if test="team != null">
+	        team = #{team},
+	      </if>
+	      <if test="classpath != null">
+	        classpath = #{classpath},
+	      </if>
+	      <if test="type != null">
+	        type = #{type},
+	      </if>
+	      <if test="triggertime != null">
+	        triggertime = #{triggertime},
+	      </if>
+			<if test="isalert != null">
+				isalert = #{isalert},
+			</if>
+			<if test="alerturl != null">
+				alerturl = #{alerturl},
+			</if>
+			<if test="sendroleid != null">
+				sendroleid = #{sendroleid},
+			</if>
+			<if test="senduserid != null">
+				senduserid = #{senduserid},
+			</if>
+	    </set>
+	    where taskid = #{taskid}
+  	</update>
+  	<select id="showTaskLogsList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.system.model.TaskLog">
+  		select id,  taskid, taskname, team, executetime, state
+  		from t_sys_task_log
+  		where taskid=#{condition.taskid} and team=#{condition.team}
+  		<include refid="common.Page_limit" />
+  	</select>
+  	<select id="showTaskLogsCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  		select count(1) from t_sys_task_log
+  		where taskid=#{condition.taskid} and team=#{condition.team}
+  	</select>
+	<select id="getNeedAutoStartTaskScheduleList" resultType="com.hd.agent.system.model.TaskSchedule">
+		SELECT taskid, tasklistid, taskname, team, classpath, type, triggertime, state, addtime, times,roottaskid,isalert,alerturl,sendroleid,senduserid
+  		from t_sys_task_schedule
+  		where state = '8'
+	</select>
+</mapper>

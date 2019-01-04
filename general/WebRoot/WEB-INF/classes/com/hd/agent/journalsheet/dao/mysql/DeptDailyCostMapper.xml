@@ -1,0 +1,1037 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.journalsheet.dao.DeptDailyCostMapper" >
+	<sql id="Base_Column_List" >
+	    id, year, month, businessdate, status, remark, adduserid, addusername, addtime, modifyuserid, 
+	    modifyusername, modifytime, audituserid, auditusername, audittime, oaid, costsort, 
+	    deptid, amount, bankid, isbankpay,upamount,oppname,oppbank,oppbankno,brandid,supplierid,
+	    unitid,unitnum,taxprice,printtimes,salesuser,vouchertimes
+	</sql>
+	<insert id="addDeptDailyCost" parameterType="com.hd.agent.journalsheet.model.DeptDailyCost" >
+	    insert into t_js_dept_dailycost
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="id != null" >
+	        id,
+	      </if>
+	      <if test="year != null" >
+	        year,
+	      </if>
+	      <if test="month != null" >
+	        month,
+	      </if>
+	      <if test="businessdate != null" >
+	        businessdate,
+	      </if>
+	      <if test="status != null" >
+	        status,
+	      </if>
+	      <if test="remark != null" >
+	        remark,
+	      </if>
+	      <if test="adduserid != null" >
+	        adduserid,
+	      </if>
+	      <if test="addusername != null" >
+	        addusername,
+	      </if>
+	      <if test="1==1" >
+	        addtime,
+	      </if>
+	      <if test="modifyuserid != null" >
+	        modifyuserid,
+	      </if>
+	      <if test="modifyusername != null" >
+	        modifyusername,
+	      </if>
+	      <if test="modifytime != null" >
+	        modifytime,
+	      </if>
+	      <if test="audituserid != null" >
+	        audituserid,
+	      </if>
+	      <if test="auditusername != null" >
+	        auditusername,
+	      </if>
+	      <if test="audittime != null" >
+	        audittime,
+	      </if>
+	      <if test="oaid != null" >
+	        oaid,
+	      </if>
+	      <if test="costsort != null" >
+	        costsort,
+	      </if>
+	      <if test="deptid != null" >
+	        deptid,
+	      </if>
+	      <if test="amount != null" >
+	        amount,
+	      </if>
+	      <if test="bankid != null" >
+	        bankid,
+	      </if>
+	      <if test="isbankpay != null" >
+	        isbankpay,
+	      </if>
+	      <if test="upamount != null" >
+	        upamount,
+	      </if>
+	      <if test="oppname != null" >
+	        oppname,
+	      </if>
+	      <if test="oppbank != null" >
+	        oppbank,
+	      </if>
+	      <if test="oppbankno != null" >
+	        oppbankno,
+	      </if>
+	      <if test="supplierid != null" >
+	        supplierid,
+	      </if>
+	      <if test="brandid != null" >
+	        brandid,
+	      </if>
+	      <if test="unitid != null" >
+	        unitid,
+	      </if>
+	      <if test="unitnum != null" >
+	        unitnum,
+	      </if>
+	      <if test="taxprice != null" >
+	        taxprice,
+	      </if>
+          <if test="salesuser != null" >
+              salesuser,
+          </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="id != null" >
+	        #{id},
+	      </if>
+	      <if test="year != null" >
+	        #{year},
+	      </if>
+	      <if test="month != null" >
+	        #{month},
+	      </if>
+	      <if test="businessdate != null" >
+	        #{businessdate},
+	      </if>
+	      <if test="status != null" >
+	        #{status},
+	      </if>
+	      <if test="remark != null" >
+	        #{remark},
+	      </if>
+	      <if test="adduserid != null" >
+	        #{adduserid},
+	      </if>
+	      <if test="addusername != null" >
+	        #{addusername},
+	      </if>
+	      <if test="1==1" >
+	        now(),
+	      </if>
+	      <if test="modifyuserid != null" >
+	        #{modifyuserid},
+	      </if>
+	      <if test="modifyusername != null" >
+	        #{modifyusername},
+	      </if>
+	      <if test="modifytime != null" >
+	        #{modifytime},
+	      </if>
+	      <if test="audituserid != null" >
+	        #{audituserid},
+	      </if>
+	      <if test="auditusername != null" >
+	        #{auditusername},
+	      </if>
+	      <if test="audittime != null" >
+	        now(),
+	      </if>
+	      <if test="oaid != null" >
+	        #{oaid},
+	      </if>
+	      <if test="costsort != null" >
+	        #{costsort},
+	      </if>
+	      <if test="deptid != null" >
+	        #{deptid},
+	      </if>
+	      <if test="amount != null" >
+	        #{amount},
+	      </if>
+	      <if test="bankid != null" >
+	        #{bankid},
+	      </if>
+	      <if test="isbankpay != null" >
+	        #{isbankpay},
+	      </if>
+	      <if test="upamount != null" >
+	        #{upamount},
+	      </if>
+	      <if test="oppname != null" >
+	        #{oppname},
+	      </if>
+	      <if test="oppbank != null" >
+	        #{oppbank},
+	      </if>
+	      <if test="oppbankno != null" >
+	        #{oppbankno},
+	      </if>
+	      <if test="supplierid != null" >
+	        #{supplierid},
+	      </if>
+	      <if test="brandid != null" >
+	        #{brandid},
+	      </if>
+	      <if test="unitid != null" >
+	        #{unitid},
+	      </if>
+	      <if test="unitnum != null" >
+	        #{unitnum},
+	      </if>
+	      <if test="taxprice != null" >
+	        #{taxprice},
+	      </if>
+          <if test="salesuser != null">
+              #{salesuser},
+          </if>
+	    </trim>
+	</insert>
+	<sql id="showDeptDailyCostList_Where_SQL">
+		<if test="condition.businessdate1 != null" >
+	         and businessdate >= #{condition.businessdate1}
+	      </if>
+	      <if test="condition.businessdate2 != null" >
+	        <![CDATA[and businessdate <= #{condition.businessdate2} ]]>
+	      </if>
+	      <if test="condition.oaid != null" >
+	         and oaid like '%${condition.oaid}%'
+	      </if>
+	      <if test="condition.deptid!= null" >
+	         and deptid like '${condition.deptid}%'
+	      </if>
+	      <if test="condition.costsort!= null" >
+	         and costsort=#{condition.costsort}
+	      </if>
+	      <if test="condition.bankid!= null" >
+	         and bankid=#{condition.bankid}
+	      </if>
+	      <if test="condition.isbankpay != null" >
+	         and isbankpay=#{condition.isbankpay}
+	      </if>
+	      <if test="condition.status != null" >
+	         and status=#{condition.status}
+	      </if>
+	      <if test="condition.statusarr != null" >
+	         and FIND_IN_SET(status,#{condition.statusarr})
+	      </if>
+		  <if test="condition.salesuser != null" >
+			and FIND_IN_SET(salesuser,#{condition.salesuser})
+		  </if>
+		<if test="condition.personnelid != null" >
+			and salesuser=#{condition.personnelid}
+		</if>
+
+	      <if test="condition.costsortlike!= null" >
+	         and costsort like concat(#{condition.costsortlike},'%')
+	      </if>
+	      <if test="condition.billtime != null">
+	      	<![CDATA[ and DATE_FORMAT(addtime, '%Y-%m-%d') = #{condition.billtime} ]]>
+	      </if>
+	      <if test="condition.brandid != null" >
+	         and brandid=#{condition.brandid}
+	      </if>
+	      <if test="condition.supplierid != null" >
+	         and supplierid=#{condition.supplierid}
+	      </if>
+      	  <if test="condition.emptysupplier == 1">
+      	  	and length(supplierid)=0
+      	  </if>
+	      <if test="condition.printsign != null and condition.queryprinttimes != null">
+      		<choose>
+      			<when test="condition.printsign == 1">
+      				<![CDATA[and printtimes = #{condition.queryprinttimes} ]]>
+      			</when>
+      			<when test="condition.printsign == 2">
+      				<![CDATA[and printtimes < #{condition.queryprinttimes} ]]>
+      			</when>
+      			<when test="condition.printsign == 3">
+      				<![CDATA[and printtimes <= #{condition.queryprinttimes} ]]>
+      			</when>
+      			<when test="condition.printsign == 4">
+      				<![CDATA[and printtimes > #{condition.queryprinttimes} ]]>
+      			</when>
+      			<when test="condition.printsign == 5">
+      				<![CDATA[and printtimes >= #{condition.queryprinttimes} ]]>
+      			</when>
+      		</choose>
+      	</if>
+	</sql>
+  	<select id="showDeptDailyCostList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.journalsheet.model.DeptDailyCost">
+	  	select <include refid="Base_Column_List"/>
+	  	from t_js_dept_dailycost
+	  	<trim prefix="where" prefixOverrides="and|or" >
+	  	  <include refid="showDeptDailyCostList_Where_SQL"></include>
+		  <include refid="common.Page_dataSql"/>	      
+	    </trim>
+		<if test="condition.isPageFlag !='true'">
+	    	<include refid="common.Page_limit" />
+		</if>
+  	</select>
+  	<select id="showDeptDailyCostListCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  		select count(1) from  t_js_dept_dailycost
+	  	<trim prefix="where" prefixOverrides="and|or" >
+	  	  <include refid="showDeptDailyCostList_Where_SQL"></include>
+		  <include refid="common.Page_dataSql"/>
+	    </trim>
+  	</select>  	
+  	<select id="showDeptDailyCostListSum" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.journalsheet.model.DeptDailyCost">
+	  	select 
+	  	'' as id,'' as costsort,'' as deptid,sum(amount) as amount,sum(unitnum) as unitnum
+	  	from t_js_dept_dailycost
+	  	<trim prefix="where" prefixOverrides="and|or" >
+	  	  <include refid="showDeptDailyCostList_Where_SQL"></include>
+		  <include refid="common.Page_dataSql"/>	      
+	    </trim>
+  	</select>
+  	<select id="getDeptDailyCostInfo" parameterType="java.lang.String" resultType="com.hd.agent.journalsheet.model.DeptDailyCost">
+  		select <include refid="Base_Column_List"/> from t_js_dept_dailycost where id=#{id}
+  	</select>
+  	<update id="editDeptDailyCost" parameterType="com.hd.agent.journalsheet.model.DeptDailyCost">
+  		update t_js_dept_dailycost
+	    <set >
+	      <if test="year != null" >
+	        year = #{year},
+	      </if>
+	      <if test="month != null" >
+	        month = #{month},
+	      </if>
+	      <if test="businessdate != null" >
+	        businessdate = #{businessdate},
+	      </if>
+	      <if test="status != null" >
+	        status = #{status},
+	      </if>
+	      <if test="remark != null" >
+	        remark = #{remark},
+	      </if>
+	      <if test="modifyuserid != null" >
+	        modifyuserid = #{modifyuserid},
+	      </if>
+	      <if test="modifyusername != null" >
+	        modifyusername = #{modifyusername},
+	      </if>
+	      <if test="modifytime != null" >
+	        modifytime = now(),
+	      </if>
+	      <if test="oaid != null" >
+	        oaid = #{oaid},
+	      </if>
+	      <if test="costsort != null" >
+	        costsort = #{costsort},
+	      </if>
+	      <if test="deptid != null" >
+	        deptid = #{deptid},
+	      </if>
+	      <if test="amount != null" >
+	        amount = #{amount},
+	      </if>
+	      <if test="bankid != null" >
+	        bankid = #{bankid},
+	      </if>
+	      <if test="isbankpay != null" >
+	        isbankpay = #{isbankpay},
+	      </if>
+	      <if test="upamount != null" >
+	        upamount = #{upamount},
+	      </if>
+	      <if test="oppname != null" >
+	        oppname = #{oppname},
+	      </if>
+	      <if test="oppbank != null" >
+	        oppbank = #{oppbank},
+	      </if>
+	      <if test="oppbankno != null" >
+	        oppbankno = #{oppbankno},
+	      </if>
+	      <if test="supplierid != null" >
+	        supplierid=#{supplierid},
+	      </if>
+	      <if test="brandid != null" >
+	        brandid=#{brandid},
+	      </if>
+	      <if test="unitid != null" >
+	        unitid=#{unitid},
+	      </if>
+	      <if test="unitnum != null" >
+	        unitnum=#{unitnum},
+	      </if>
+	      <if test="taxprice != null" >
+	        taxprice=#{taxprice},
+	      </if>
+          <if test="salesuser != null" >
+              salesuser=#{salesuser},
+          </if>
+		  <if test="vouchertimes != null" >
+			  vouchertimes=#{vouchertimes},
+		  </if>
+	    </set>
+	    where id = #{id}
+  	</update>
+  	<delete id="deleteDeptDailyCost" parameterType="java.lang.String">
+  		delete from t_js_dept_dailycost where id=#{id}
+  	</delete>
+  	<update id="auditDeptDailyCost" parameterType="java.lang.String">
+  		update t_js_dept_dailycost t
+  		set t.status='3',t.audituserid=#{userid},t.auditusername=#{username},t.audittime=now()
+  		where t.id=#{id}
+  	</update>
+  	<update id="oppauditDeptDailyCost" parameterType="java.lang.String">
+  		update t_js_dept_dailycost t
+  		set t.status='2',t.audituserid='',t.auditusername='',t.audittime=null
+  		where t.id=#{id}
+  	</update>
+  	<select id="getDeptDailyCostSumByDeptid" parameterType="java.lang.String" resultType="com.hd.agent.journalsheet.model.DeptDailyCost">
+  		select t.year,t.month,t.costsort, t.deptid, sum(t.amount) as amount
+	    from t_js_dept_dailycost t
+	    where t.deptid like '${deptid}%' and t.year=#{year} and t.month=#{month} and (t.status='3' or t.status='4')
+	    and ( t.supplierid is null or length(t.supplierid)=0)
+	    group by t.costsort
+  	</select>
+  	
+  	<insert id="addDeptDailyCostSupplier" parameterType="com.hd.agent.journalsheet.model.DeptDailyCostSupplier" >
+	    insert into t_js_dept_dailycost_supplier
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="id != null" >
+	        id,
+	      </if>
+	      <if test="year != null" >
+	        year,
+	      </if>
+	      <if test="month != null" >
+	        month,
+	      </if>
+	      <if test="businessdate != null" >
+	        businessdate,
+	      </if>
+	      <if test="supplierid != null" >
+	        supplierid,
+	      </if>
+	      <if test="deptid != null" >
+	        deptid,
+	      </if>
+	      <if test="amount != null" >
+	        amount,
+	      </if>
+	      <if test="costsort != null" >
+	        costsort,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="id != null" >
+	        #{id},
+	      </if>
+	      <if test="year != null" >
+	        #{year},
+	      </if>
+	      <if test="month != null" >
+	        #{month},
+	      </if>
+	      <if test="businessdate != null" >
+	        #{businessdate},
+	      </if>
+	      <if test="supplierid != null" >
+	        #{supplierid},
+	      </if>
+	      <if test="deptid != null" >
+	        #{deptid},
+	      </if>
+	      <if test="amount != null" >
+	        #{amount},
+	      </if>
+	      <if test="costsort != null" >
+	        #{costsort},
+	      </if>
+	    </trim>
+	  </insert>
+	  <delete id="deleteDeptDailyCostSupplier" parameterType="java.lang.String">
+	  	delete from t_js_dept_dailycost_supplier 
+	  	where year=#{year} and month=#{month}
+	  </delete>
+	  <update id="closeDeptDailyCost" parameterType="java.lang.String">
+	  	update t_js_dept_dailycost t
+  		set t.status='4'
+  		where t.year=#{year} and t.month=#{month}
+	  </update>
+	  
+  <select id="getDeptDailyCostSumsAll" parameterType="Map" resultType="Map">  	
+ 	select 
+  	sum(amount) as amount
+  	from t_js_dept_dailycost
+  	<trim prefix="where" prefixOverrides="and|or" >
+	    <if test="begintime != null">
+		    and STR_TO_DATE(businessdate,'%Y-%m') >= STR_TO_DATE(#{begintime},'%Y-%m')
+	    </if>
+	    <if test="endtime != null">
+		   <![CDATA[and STR_TO_DATE(businessdate,'%Y-%m') <= STR_TO_DATE(#{endtime},'%Y-%m')]]>
+	    </if>
+	  	<if test="businessyearmonth != null">
+		 	<![CDATA[and businessdate like '${businessyearmonth}%']]>
+	  	</if>
+		<if test="deptid!= null" >
+			and deptid like '${deptid}%'
+		</if>
+		<if test="salesdeptid!= null" >
+			and deptid like '${salesdeptid}%'
+		</if>
+	    <choose>
+	    	<when test="isAudit==1">
+	    		and ((status!='3' and status!='4') or status is null)
+	    	</when>
+	    	<when test="isAudit==2">
+	    		and (status='3' or status='4')
+	    	</when>
+	    </choose>
+		<if test="supplierid!= null" >
+			and supplierid=#{supplierid}
+		</if>
+    </trim>	  	
+  </select>
+	<select id="getDeptDailyCostSupplierSum" parameterType="Map" resultType="Map">
+		select
+		sum(amount) as amount
+		from t_js_dept_dailycost_supplier
+		<trim prefix="where" prefixOverrides="and|or" >
+			<if test="begintime != null">
+				and STR_TO_DATE(businessdate,'%Y-%m') >= STR_TO_DATE(#{begintime},'%Y-%m')
+			</if>
+			<if test="endtime != null">
+				<![CDATA[and STR_TO_DATE(businessdate,'%Y-%m') <= STR_TO_DATE(#{endtime},'%Y-%m')]]>
+			</if>
+			<if test="businessyearmonth != null">
+				<![CDATA[and businessdate like '${businessyearmonth}%']]>
+			</if>
+			<if test="deptid!= null" >
+				and deptid like '${deptid}%'
+			</if>
+			<if test="supplierid!= null" >
+				and supplierid=#{supplierid}
+			</if>
+		</trim>
+	</select>
+  
+  <!-- 报表 ################################################################# -->
+  <!-- 部门日常费用明细报表 -->
+  <select id="getDeptDailyCostReportPageList" parameterType="map" resultType="Map">
+  	select '1' as type,t.id,t.pid,t.name,t.leaf,sum(IF(t1.deptid=t.id,t1.amount,0)) as leafamount,sum(t1.amount) as totalamount 
+  	from t_base_department t
+	LEFT JOIN t_js_dept_dailycost t1 on t1.deptid like CONCAT(t.id,'%') and (t1.status='3' or t1.status='4')
+	<trim prefix="where" prefixOverrides="and|or" >
+		<if test="deptid !=null">
+	  		and t.id like CONCAT(#{deptid},'%')
+		</if>  
+		<if test="sdeptid !=null">
+	  		and t.id like CONCAT(#{sdeptid},'%')
+		</if>  
+		<if test="subjectid !=null">
+	  		and t1.costsort like CONCAT(#{subjectid},'%')
+		</if>
+	  	<if test="businessdate1 != null" >
+       		<![CDATA[and t1.businessdate >= #{businessdate1} ]]>
+   		</if>
+   		<if test="businessdate2 != null" >
+      		<![CDATA[and t1.businessdate <= #{businessdate2} ]]>
+   	 	</if>
+   	 	<if test="dataSql != null" >
+   	 		and ${dataSql}
+   	 	</if>
+  	</trim>
+	GROUP BY t.id
+	<!--HAVING sum(t1.amount)>0-->
+	order by t.id
+  </select>
+  <select id="getDeptDailySubjectList"  resultType="Map">
+	select '2' as type,t.thisname as name,t1.deptid,t.id as sid,t.name as subjectname,t.pid,t.leaf,sum(t1.amount) as totalamount,sum(IF(t1.costsort=t.id,t1.amount,0)) as subamount from t_js_departmentcosts_subject t
+	LEFT  JOIN t_js_dept_dailycost t1 on t1.costsort like CONCAT(t.id,'%') and t1.deptid=#{deptid} and (t1.status='3' or t1.status='4')
+	<trim prefix="where" prefixOverrides="and|or" >
+		<if test="con.deptid !=null">
+	  		and t1.deptid like CONCAT(#{con.deptid},'%')
+		</if>  
+		<if test="con.subjectid !=null">
+	  		and t1.costsort like CONCAT(#{con.subjectid},'%')
+		</if>
+	  	<if test="con.businessdate1 != null" >
+       		<![CDATA[and t1.businessdate >= #{con.businessdate1} ]]>
+   		</if>
+   		<if test="con.businessdate2 != null" >
+      		<![CDATA[and t1.businessdate <= #{con.businessdate2} ]]>
+   	 	</if>
+   	 	<if test="con.dataSql != null" >
+   	 		and ${con.dataSql}
+   	 	</if>
+  	</trim>
+	group by t.id
+	order by t.id
+  </select>
+  <select id="getDeptDailySubjectListData" resultType="Map">
+  	select '' as name,t1.deptid,t.id as sid,t.name as subjectname,t.pid,t.leaf,sum(t1.amount) as amount 
+	from t_js_dept_dailycost t1
+	LEFT JOIN t_js_departmentcosts_subject t on t1.costsort=t.id
+	<trim prefix="where" prefixOverrides="and|or" >
+		<if test="1==1">
+			and (t1.status='3' or t1.status='4')
+		</if>
+		<if test="deptid !=null">
+	  		and t1.deptid = #{deptid}
+		</if>  
+		<if test="con.subjectid !=null">
+	  		and t1.costsort like CONCAT(#{con.subjectid},'%')
+		</if>
+	  	<if test="con.businessdate1 != null" >
+       		<![CDATA[and t1.businessdate >= #{con.businessdate1} ]]>
+   		</if>
+   		<if test="con.businessdate2 != null" >
+      		<![CDATA[and t1.businessdate <= #{con.businessdate2} ]]>
+   	 	</if>
+   	 	<if test="con.dataSql != null" >
+   	 		and ${con.dataSql}
+   	 	</if>
+  	</trim>
+	GROUP BY t1.costsort
+	order by t1.costsort
+  </select>
+  <select id="getDeptDailyCostReportPageSums" resultType="Map">
+  	SELECT '' as deptid,'' as deptname,'' as subjectid,'' as subjectname,'' as subjectpid,sum(t1.amount) as amount,SUM(t1.amount) as totalamount
+	FROM t_js_dept_dailycost t1
+	<trim prefix="where" prefixOverrides="and|or" >
+	  	<if test="1==1">
+	  		AND (t1.status='3' or t1.status='4')
+	  	</if>
+	  	<if test="sdeptid !=null">
+	  		and t1.deptid like CONCAT(#{sdeptid},'%')
+		</if>
+	  	<if test="deptid !=null">
+	  		and t1.deptid like CONCAT(#{deptid},'%')
+		</if>
+		<if test="subjectid !=null">
+ 				and t1.costsort like CONCAT(#{subjectid},'%')
+ 			</if>  
+	  	<if test="businessdate1 != null" >
+       		<![CDATA[and t1.businessdate >= #{businessdate1} ]]>
+    	</if>
+    	<if test="businessdate2 != null" >
+      		<![CDATA[and t1.businessdate <= #{businessdate2} ]]>
+   	 	</if>
+    	<if test="dataSql != null" >
+   	 		and ${dataSql}
+   	 	</if>
+  	  </trim>			 
+  </select> 
+  
+  <sql id="deptDailyCostYearReportPageList_Sql">
+  	  select d.costsort as subjectid,s.name as subjectname,year,deptid,sum(amount) as totalamount
+  	  <if test="condition.dyncSubjectIfSumColumn !=null">
+		${condition.dyncSubjectIfSumColumn}
+	  </if>
+	  from t_js_dept_dailycost d
+	  inner join t_js_departmentcosts_subject s on d.costsort=s.code
+	  <trim prefix="where" prefixOverrides="and|or" >
+	  	<if test="1==1">
+	  		and (d.status='3' or d.status='4') and s.state='1'
+	  	</if>
+	  	<if test="condition.year != null">
+	  		and d.year=#{condition.year}
+	  	</if>
+	  	<if test="condition.subjectid != null">
+	  		and d.costsort like CONCAT(#{condition.subjectid},'%')
+	  	</if>
+	  	<if test="condition.deptid !=null">
+	  		and d.deptid like CONCAT(#{condition.deptid},'%')
+	  	</if>
+		<include refid="common.Page_dataSql"/>      	
+  	  </trim>
+  	  <if test="condition.isSumAll !='true'">
+	  	group by d.costsort,year,deptid
+	  </if>
+  </sql>
+  <select id="getDeptDailyCostYearReportPageList" parameterType="com.hd.agent.common.util.PageMap" resultType="Map">
+  	select subjectid,subjectname,year,deptid,totalamount
+  	<if test="condition.dyncSubjectColumn !=null">
+		${condition.dyncSubjectColumn}
+	</if>
+  	from (
+  		<if test="condition.groupBycols!=null">
+	  		select subjectid,subjectname,year,deptid,sum(totalamount) as totalamount
+		  	<if test="condition.dyncSubjectOnlySumColumn !=null">
+				${condition.dyncSubjectOnlySumColumn}
+			</if>
+		  	from (	  	
+  		</if>
+  			<include refid="deptDailyCostYearReportPageList_Sql"/>
+  		<if test="condition.groupBycols!=null">
+  			) t
+	  		group by ${condition.groupBycols}
+  		</if>
+  	) t
+  	<choose>
+		<when test="condition.isPageflag !='true'">
+			<include refid="common.Page_limit" />
+		</when>
+		<when test="condition.showOrderOnly == 'true' ">
+			<include refid="common.Page_OrderOnly" />
+		</when>
+	</choose>
+  </select>
+  <select id="getDeptDailyCostYearReportPageCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  	select 
+  	count(*)
+  	from (
+  		select subjectid,subjectname,year,deptid,totalamount
+	  	<if test="condition.dyncSubjectColumn !=null">
+			${condition.dyncSubjectColumn}
+		</if>
+	  	from (
+	  		<if test="condition.groupBycols!=null">
+		  		select subjectid,subjectname,year,deptid,sum(totalamount) as totalamount
+			  	<if test="condition.dyncSubjectOnlySumColumn !=null">
+					${condition.dyncSubjectOnlySumColumn}
+				</if>
+			  	from (	  	
+	  		</if>
+	  			<include refid="deptDailyCostYearReportPageList_Sql"/>
+	  		<if test="condition.groupBycols!=null">
+	  			) t
+	  			group by ${condition.groupBycols}
+	  		</if>
+	  	) t
+  	)t
+  </select>
+  <select id="getDeptDailyCostYearReportPageSums" parameterType="com.hd.agent.common.util.PageMap" resultType="Map">
+  	<include refid="deptDailyCostYearReportPageList_Sql"/>
+  </select>
+  
+  <!-- 费用对应的供应商分摊报表 -->
+  <sql id="deptDailySupplierCostReportPageList_Sql">
+  	  select d.costsort as subjectid,s.name as subjectname,year,deptid,sum(amount) as totalamount,d.supplierid
+  	  <if test="condition.dyncSubjectIfSumColumn !=null">
+		${condition.dyncSubjectIfSumColumn}
+	  </if>
+	  from t_js_dept_dailycost_supplier d
+	  inner join t_js_departmentcosts_subject s on d.costsort=s.id
+	  <trim prefix="where" prefixOverrides="and|or" >
+	  	<if test="1==1">
+	  		and s.state='1'
+	  	</if>
+	  	<if test="condition.year != null">
+	  		and d.year=#{condition.year}
+	  	</if>
+	  	<if test="condition.deptid !=null">
+	  		and d.deptid like CONCAT(#{condition.deptid},'%')
+	  	</if>
+	  	<if test="condition.subjectid != null">
+	  		and d.costsort like CONCAT(#{condition.subjectid},'%')
+	  	</if>
+	  	<if test="condition.selsupplierid !=null">
+	  		and d.supplierid=#{condition.selsupplierid}
+	  	</if>
+	  	<if test="condition.supplierid !=null">
+	  		and d.supplierid=#{condition.supplierid}
+	  	</if>
+		<include refid="common.Page_dataSql"/>      	
+  	  </trim>
+  	  <if test="condition.isSumAll !='true'">
+	  		group by d.year,d.supplierid
+	  </if>
+  </sql>
+  <select id="getDeptDailySupplierCostReportPageList" parameterType="com.hd.agent.common.util.PageMap" resultType="Map">
+  	select subjectid,subjectname,year,deptid,totalamount,supplierid
+  	<if test="condition.dyncSubjectColumn !=null">
+		${condition.dyncSubjectColumn}
+	</if>
+  	from (
+  		<if test="condition.groupBycols!=null">
+	  		select subjectid,subjectname,year,deptid,sum(totalamount) as totalamount,supplierid
+		  	<if test="condition.dyncSubjectOnlySumColumn !=null">
+				${condition.dyncSubjectOnlySumColumn}
+			</if>
+		  	from (	  	
+  		</if>
+  			<include refid="deptDailySupplierCostReportPageList_Sql"/>
+  		<if test="condition.groupBycols!=null">
+  			) t
+	  		group by ${condition.groupBycols}
+  		</if>
+  	) t
+  	<choose>
+		<when test="condition.showOrderOnly == 'true' ">
+			<include refid="common.Page_OrderOnly" />
+		</when>
+	</choose>
+  </select>
+  <select id="getDeptDailySupplierCostReportPageCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  	select 
+  	count(*)
+  	from (
+  		select subjectid,subjectname,year,deptid,totalamount,supplierid
+	  	<if test="condition.dyncSubjectColumn !=null">
+			${condition.dyncSubjectColumn}
+		</if>
+	  	from (
+	  		<if test="condition.groupBycols!=null">
+		  		select subjectid,subjectname,year,deptid,sum(totalamount) as totalamount,supplierid
+			  	<if test="condition.dyncSubjectOnlySumColumn !=null">
+					${condition.dyncSubjectOnlySumColumn}
+				</if>
+			  	from (	  	
+	  		</if>
+	  			<include refid="deptDailySupplierCostReportPageList_Sql"/>
+	  		<if test="condition.groupBycols!=null">
+	  			) t
+	  			group by ${condition.groupBycols}
+	  		</if>
+	  	) t
+  	)t
+  </select>
+  <select id="getDeptDailySupplierCostReportPageSums" parameterType="com.hd.agent.common.util.PageMap" resultType="Map">
+  	<include refid="deptDailySupplierCostReportPageList_Sql"/>
+  </select>
+  <select id="getSupplierSubjectReportList" parameterType="com.hd.agent.common.util.PageMap" resultType="Map">
+  	  select s.id,s.pid,s.thisname as name,s.name as subjectname,year,deptid,sum(d.amount) as totalamount,sum(IF(d.costsort=s.id,d.amount,0)) as subamount,d.supplierid
+  	  <if test="condition.dyncSubjectIfSumColumn !=null">
+		${condition.dyncSubjectIfSumColumn}
+	  </if>
+	  from t_js_departmentcosts_subject s
+	  left join t_js_dept_dailycost_supplier d on d.costsort like CONCAT(s.id,'%') 
+	  <trim prefix="where" prefixOverrides="and|or" >
+	  	<if test="1==1">
+	  		and s.state='1'
+	  	</if>
+	  	<if test="condition.year != null">
+	  		and d.year=#{condition.year}
+	  	</if>
+	  	<if test="condition.deptid !=null">
+	  		and d.deptid like CONCAT(#{condition.deptid},'%')
+	  	</if>
+	  	<if test="condition.subjectid != null">
+	  		and d.costsort like CONCAT(#{condition.subjectid},'%')
+	  	</if>
+	  	<if test="condition.selsupplierid !=null">
+	  		and d.supplierid=#{condition.selsupplierid}
+	  	</if>
+	  	<if test="condition.supplierid !=null">
+	  		and d.supplierid=#{condition.supplierid}
+	  	</if>
+		<include refid="common.Page_dataSql"/>      	
+  	  </trim>
+ 	  group by d.year,s.id
+	  order by s.id
+  </select>
+  <select id="getSupplierSubjectDetailData" parameterType="com.hd.agent.common.util.PageMap" resultType="Map">
+  	select d.year,s.id,s.pid,s.thisname as name,s.name as subjectname,year,deptid,sum(d.amount) as totalamount
+  	  <if test="condition.dyncSubjectIfSumColumn !=null">
+		${condition.dyncSubjectIfSumColumn}
+	  </if>
+	  from t_js_dept_dailycost_supplier d
+	  left join t_js_departmentcosts_subject s on d.costsort =s.id
+	  <trim prefix="where" prefixOverrides="and|or" >
+	  	<if test="1==1">
+	  		and s.state='1'
+	  	</if>
+	  	<if test="condition.year != null">
+	  		and d.year=#{condition.year}
+	  	</if>
+	  	<if test="condition.deptid !=null">
+	  		and d.deptid like CONCAT(#{condition.deptid},'%')
+	  	</if>
+	  	<if test="condition.subjectid != null">
+	  		and d.costsort like CONCAT(#{condition.subjectid},'%')
+	  	</if>
+	  	<if test="condition.selsupplierid !=null">
+	  		and d.supplierid=#{condition.selsupplierid}
+	  	</if>
+	  	<if test="condition.supplierid !=null">
+	  		and d.supplierid=#{condition.supplierid}
+	  	</if>
+		<include refid="common.Page_dataSql"/>      	
+  	  </trim>
+ 	  group by d.year,s.id
+	  order by s.id
+  </select>
+	<select id="selectDeptDailyCostByOaid" parameterType="java.lang.String" resultType="com.hd.agent.journalsheet.model.DeptDailyCost">
+		select <include refid="Base_Column_List"/>
+		from t_js_dept_dailycost
+		where oaid = #{oaid }
+	</select>	
+  	<select id="showDeptDailyCostListBy" parameterType="Map" resultType="com.hd.agent.journalsheet.model.DeptDailyCost">
+	  	select <include refid="Base_Column_List"/>
+	  	from t_js_dept_dailycost
+	  	<trim prefix="where" prefixOverrides="and|or" >
+		 	<if test="dataSql != null">
+		  		and ${dataSql}
+		  	</if>
+  			<if test="idarrs!=null">
+  				and find_in_set(id,#{idarrs})
+  			</if>
+  			<if test="status!=null">
+  				and status=#{status}
+  			</if>
+  			<if test="statusarr!=null">
+			   and FIND_IN_SET(status,#{statusarr})
+  			</if>	
+			<if test="deptid!= null" >
+			   and deptid like '${deptid}%'
+			</if>
+			<if test="costsort!= null" >
+			   and costsort=#{costsort}
+			</if>
+			<if test="costsortlike!= null" >
+			   and costsort like concat(#{costsortlike},'%')
+			</if>
+			<if test="theyear!= null" >
+			   and year = #{theyear}
+			</if>
+			<if test="themonth!= null" >
+			   and month = #{themonth}
+			</if>
+			<if test="notEmptySupplier==1">
+			   <![CDATA[and length(supplierid)>0]]>
+			</if>     
+	    </trim>
+  	</select>
+  		
+  	<update id="updateDeptDailyCostPrinttimes" parameterType="com.hd.agent.journalsheet.model.DeptDailyCost">
+		update t_js_dept_dailycost
+	    <set>
+	      <if test="printtimes != null">
+	        printtimes = IFNULL(printtimes,0)+1,
+	      </if>
+		  <if test="vouchertimes != null">
+			  vouchertimes = IFNULL(vouchertimes,0)+1,
+		  </if>
+	    </set>
+	    where id = #{id}
+  </update>
+
+    <select id="getDeptDailyCostSumData" resultType="java.util.Map">
+        select businessdate,supplierid,sum(amount) as taxamount,count(id) as billnums
+        from t_js_dept_dailycost
+        where
+        <if test="list != null">
+             id in
+            <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="list == null">
+            1>2
+        </if>
+        group by supplierid,businessdate
+    </select>
+
+	<select id="getDeptDailyCostSumDataForThird" resultType="java.util.Map">
+		select id,businessdate,supplierid,amount as taxamount,costsort,bankid
+		from t_js_dept_dailycost
+		where
+		<if test="list != null">
+			id in
+			<foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		<if test="list == null">
+			1>2
+		</if>
+	</select>
+	<!-- 日常日常费用明细报表 -->
+	<select id="getPersonnelDailyCostReportPageList" parameterType="map" resultType="Map">
+		select '1' as type,t.id as personnelid,t.name,sum(t1.amount) as totalamount,'' as subjectname
+		from t_base_personnel t
+		RIGHT JOIN t_js_dept_dailycost t1 on t1.salesuser = t.id
+		inner join t_js_departmentcosts_subject s on t1.costsort=s.id
+		<trim prefix="where" prefixOverrides="and|or" >
+			<if test="spersonnelid !=null">
+				and t1.salesuser =#{spersonnelid}
+			</if>
+			<if test="salesuser !=null">
+				and t.id =#{salesuser}
+			</if>
+			<if test="subjectid !=null">
+				and t1.costsort like CONCAT(#{subjectid},'%')
+			</if>
+			<if test="businessdate1 != null" >
+				<![CDATA[and t1.businessdate >= #{businessdate1} ]]>
+			</if>
+			<if test="businessdate2 != null" >
+				<![CDATA[and t1.businessdate <= #{businessdate2} ]]>
+			</if>
+			<if test="dataSql != null" >
+				and ${dataSql}
+			</if>
+			<if test="1==1">
+				and (t1.status='3' or t1.status='4')
+			</if>
+		</trim>
+		GROUP BY t.id
+		order by t.id
+	</select>
+	<select id="getPersonnelDailySubjectList"  resultType="Map">
+		select '2' as type,s.name as name,t.salesuser,s.id as sid,s.name as subjectname,sum(t.amount) as subamount,sum(t.amount) as totalamount
+		FROM t_js_dept_dailycost t
+		LEFT JOIN t_base_personnel t1 ON t.salesuser=t1.id
+		inner join t_js_departmentcosts_subject s on t.costsort=s.id
+		<trim prefix="where" prefixOverrides="and|or" >
+			<if test="personnelid !=null">
+				and t.salesuser =#{personnelid}
+			</if>
+			<if test="con.subjectid !=null">
+				and t.costsort like CONCAT(#{con.subjectid},'%')
+			</if>
+			<if test="con.businessdate1 != null" >
+				<![CDATA[and t.businessdate >= #{con.businessdate1} ]]>
+			</if>
+			<if test="con.businessdate2 != null" >
+				<![CDATA[and t.businessdate <= #{con.businessdate2} ]]>
+			</if>
+			<if test="con.dataSql != null" >
+				and ${con.dataSql}
+			</if>
+			<if test="1==1">
+				and (t.status='3' or t.status='4')
+			</if>
+
+		</trim>
+		group by t.costsort
+		order by t.costsort
+	</select>
+	<select id="getPersonnelDailyCostReportPageSums" resultType="Map">
+		SELECT '' as deptid,'' as deptname,'' as subjectid,'' as subjectname,'' as subjectpid,sum(t1.amount) as subamount,SUM(t1.amount) as totalamount
+		FROM t_js_dept_dailycost t1
+		<trim prefix="where" prefixOverrides="and|or" >
+			<if test="1==1">
+				AND (t1.status='3' or t1.status='4')
+			</if>
+			<if test="spersonnelid !=null">
+				and t1.salesuser =#{spersonnelid}
+			</if>
+			<if test="salesuser !=null">
+				and t1.salesuser like CONCAT(#{salesuser},'%')
+			</if>
+			<if test="subjectid !=null">
+				and t1.costsort like CONCAT(#{subjectid},'%')
+			</if>
+			<if test="businessdate1 != null" >
+				<![CDATA[and t1.businessdate >= #{businessdate1} ]]>
+			</if>
+			<if test="businessdate2 != null" >
+				<![CDATA[and t1.businessdate <= #{businessdate2} ]]>
+			</if>
+			<if test="dataSql != null" >
+				and ${dataSql}
+			</if>
+		</trim>
+	</select>
+
+</mapper>

@@ -1,0 +1,1793 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hd.agent.report.dao.BuySaleReportMapper">
+    <!-- 处理每日进销存数据 -->
+    <delete id="clearBuySaleReportData">
+        TRUNCATE TABLE t_report_storage_day
+    </delete>
+    <select id="getBuySaleReportDayCountByDate" parameterType="java.lang.String" resultType="int">
+        select count(1) FROM t_report_storage_day t where t.businessdate = #{yesdate}
+    </select>
+    <insert id="addBuySaleReportDay" parameterType="java.util.Map">
+        DELETE FROM t_report_storage_day WHERE businessdate = '${businessdate}';
+
+        insert into t_report_storage_day ( businessdate,goodsid,brandid,deptid,barcode,supplierid,storageid,unitid,
+        price,initnum,inittotalbox,initamount,initnotaxamount,isdiscount,
+        buyinnum,buyintotalbox,buyinamount,buyinnotaxamount,buyoutnum,buyouttotalbox,buyoutamount,buyoutnotaxamount,enternum,entertotalbox,enteramount,enternotaxamount,
+        saleoutnum,saleouttotalbox,saleoutamount,saleoutnotaxamount,saleinnum,saleintotalbox,saleinamount,saleinnotaxamount,outnum,outtotalbox,outamount,outnotaxamount,costoutamount,costnotaxoutamount,
+        allocateinnum,allocateintotalbox,allocateinamount,allocateinnotaxamount,allocateoutnum,allocateouttotalbox,allocateoutamount,allocateoutnotaxamount,
+        lossnum,losstotalbox,lossamount,lossnotaxamount,costlossamount,costnotaxlossamount,
+        endnum,endtotalbox,endamount,endnotaxamount,addtime)
+        select '${businessdate}',z.goodsid,z.brandid,z.deptid,z.barcode,z.supplierid,z.storageid,z.unitid,
+        IF(sum(z.initnum+(z.buyinnum+z.buyoutnum)-(z.saleoutnum + z.saleinnum)+(z.allocateinnum+z.allocateoutnum)+z.lossnum)!=0,
+          sum(z.initamount+(z.buyinamount+z.buyoutamount)-z.costoutamount+(z.allocateinamount+z.allocateoutamount)+z.costlossamount)/sum(z.initnum+(z.buyinnum+z.buyoutnum)-(z.saleoutnum + z.saleinnum)+(z.allocateinnum+z.allocateoutnum)+z.lossnum)
+        ,0) as price,
+        sum(z.initnum) as initnum,sum(z.inittotalbox) as inittotalbox,sum(z.initamount) as initamount,sum(z.initnotaxamount) as initnotaxamount,z.isdiscount,
+        sum(z.buyinnum) as buyinnum,sum(z.buyintotalbox) as buyintotalbox,sum(z.buyinamount) as buyinamount,sum(z.buyinnotaxamount) as buyinnotaxamount,
+        sum(z.buyoutnum) as buyoutnum,sum(z.buyouttotalbox) as buyouttotalbox,sum(z.buyoutamount) as buyoutamount,sum(z.buyoutnotaxamount) as buyoutnotaxamount,
+        SUM(z.buyinnum + z.buyoutnum) as enternum,SUM(z.buyintotalbox + z.buyouttotalbox) as entertotalbox,SUM(z.buyinamount + z.buyoutamount) as enteramount,SUM(z.buyinnotaxamount + z.buyoutnotaxamount) as enternotaxamount,
+        SUM(z.saleoutnum) as saleoutnum,SUM(z.saleouttotalbox) as saleouttotalbox,SUM(z.saleoutamount) as saleoutamount,SUM(z.saleoutnotaxamount) as saleoutnotaxamount,
+        SUM(z.saleinnum) as saleinnum,SUM(z.saleintotalbox) as saleintotalbox,SUM(z.saleinamount) as saleinamount,SUM(z.saleinnotaxamount) as saleinnotaxamount,
+        SUM(z.saleoutnum + z.saleinnum) as outnum,SUM(z.saleouttotalbox + z.saleintotalbox) as outtotalbox,SUM(z.saleoutamount + z.saleinamount) as outamount,SUM(z.saleoutnotaxamount + z.saleinnotaxamount) as outnotaxamount,SUM(z.costoutamount) as costoutamount,SUM(z.costnotaxoutamount) as costnotaxoutamount,
+        SUM(z.allocateinnum) as allocateinnum,SUM(z.allocateintotalbox) as allocateintotalbox,SUM(z.allocateinamount) as allocateinamount,SUM(z.allocateinnotaxamount) as allocateinnotaxamount,
+        SUM(z.allocateoutnum) as allocateoutnum,SUM(z.allocateouttotalbox) as allocateouttotalbox,SUM(z.allocateoutamount) as allocateoutamount,SUM(z.allocateoutnotaxamount) as allocateoutnotaxamount,
+        sum(z.lossnum) as lossnum,sum(z.losstotalbox) as losstotalbox,sum(z.lossamount) as lossamount,sum(z.lossnotaxamount) as lossnotaxamount, sum(z.costlossamount) as costlossamount, sum(z.costnotaxlossamount) as costnotaxlossamount,
+        sum(z.initnum+(z.buyinnum+z.buyoutnum)-(z.saleoutnum + z.saleinnum)+(z.allocateinnum+z.allocateoutnum)+z.lossnum) as endnum,
+        sum(z.inittotalbox+(z.buyintotalbox+z.buyouttotalbox)-(z.saleouttotalbox + z.saleintotalbox)+(z.allocateintotalbox+z.allocateouttotalbox)+z.losstotalbox) as endtotalbox,
+        sum(z.initamount+(z.buyinamount+z.buyoutamount)-z.costoutamount+(z.allocateinamount+z.allocateoutamount)+z.costlossamount) as endamount,
+        sum(z.initnotaxamount+(z.buyinnotaxamount+z.buyoutnotaxamount)-z.costnotaxoutamount+(z.allocateinnotaxamount+z.allocateoutnotaxamount)+z.costnotaxlossamount) as endnotaxamount,
+        now()
+        from (
+        select t.goodsid,t.brandid,t.deptid,t.barcode,t.supplierid,t.storageid,t.unitid,'' as unitname,g.newstorageprice as price,
+        IF(${_storageday_count}>0,t.endnum,0) as initnum,IF(${_storageday_count}>0,t.endtotalbox,0) as inittotalbox,IF(${_storageday_count}>0,t.endamount,0) as initamount,IF(${_storageday_count}>0,t.endnotaxamount,0) as initnotaxamount,t.isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount,0 as costnotaxlossamount
+        from t_report_storage_day t
+        LEFT JOIN t_base_goods_info g on t.goodsid=g.id
+        where t.businessdate = '${yesdate}'
+        UNION ALL
+        select t.goodsid,g.brand as brandid,g.deptid,g.barcode,g.defaultsupplier as supplierid,t.storageid,g.mainunit as unitid,t.unitname as unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        SUM(t.unitnum) as buyinnum,SUM(t.auxnum) as buyintotalbox,SUM(t.unitamount) as buyinamount,SUM(t.notaxamount) as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount,0 as costnotaxlossamount
+        from t_storage_stockinit t
+        LEFT JOIN t_base_goods_info g on t.goodsid=g.id
+        where t.status='3' and DATE_FORMAT(t.audittime,'%Y-%m-%d') = '${businessdate}'
+        GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+        select t1.goodsid,t1.brandid,g.deptid,g.barcode,t.supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        SUM(t1.unitnum) as buyinnum,SUM(t1.totalbox) as buyintotalbox,SUM(t1.taxamount) as buyinamount,SUM(t1.notaxamount) as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount,0 as costnotaxlossamount
+        from t_purchase_arrivalorder t
+        RIGHT JOIN t_purchase_arrivalorder_detail t1 on t.id=t1.orderid
+        LEFT JOIN t_base_goods_info g on t1.goodsid=g.id where (t.status='3' or t.status='4') and t.businessdate = '${businessdate}'
+        GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+        select t1.goodsid,t1.brandid,g.deptid,g.barcode,t.supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        SUM(-t1.unitnum) as buyoutnum,SUM(-t1.totalbox) as buyouttotalbox,SUM(-t1.taxamount) as buyoutamount,SUM(-t1.notaxamount) as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount,0 as costnotaxlossamount
+        from t_storage_purchasereject_out t
+        RIGHT JOIN t_storage_purchasereject_out_detail t1 on t.id=t1.orderid
+        LEFT JOIN t_base_goods_info g on t1.goodsid=g.id where (t.status='3' or t.status='4') and t.ischeck='1' and t.businessdate = '${businessdate}'
+        GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+        select t1.goodsid,t1.brandid,g.deptid,g.barcode,t1.supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        SUM(t1.unitnum) as saleoutnum,SUM(t1.totalbox) as saleouttotalbox,SUM(t1.taxamount) as saleoutamount,SUM(t1.notaxamount) as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,SUM(t1.costprice*t1.unitnum) as costoutamount,SUM((t1.costprice*t1.unitnum)/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount,0 as costnotaxlossamount
+        from t_storage_saleout t
+        RIGHT JOIN t_storage_saleout_detail t1 on t.id=t1.saleoutid
+        LEFT JOIN t_base_goods_info g on t1.goodsid=g.id
+        LEFT JOIN t_base_finance_taxtype ty ON g.defaulttaxtype = ty.id where (t.status='3' or t.status='4') and t.businessdate = '${businessdate}'
+        GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+        select t1.goodsid,t1.brandid,g.deptid,g.barcode,t1.supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        SUM(-t1.unitnum) as saleinnum,SUM(-t1.totalbox) as saleintotalbox,SUM(-t1.taxamount) as saleinamount,SUM(-t1.notaxamount) as saleinnotaxamount,SUM(-t1.costprice*t1.unitnum) as costoutamount,SUM((-t1.costprice*t1.unitnum)/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount,0 as costnotaxlossamount
+        from t_storage_salereject_enter t
+        RIGHT JOIN t_storage_salereject_enter_detail t1 on t.id=t1.salerejectid
+        LEFT JOIN t_base_goods_info g on t1.goodsid=g.id
+        LEFT JOIN t_base_finance_taxtype ty ON g.defaulttaxtype = ty.id where (t.status='3' or t.status='4') and t.ischeck='1' and t.businessdate = '${businessdate}'
+        GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+        select t.brandid as goodsid,t.brandid,b.deptid,'' as barcode,b.supplierid,'' as storageid,'' as unitid,'' as unitname,0 as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'1' as isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,SUM(t.amount) as saleinamount,SUM(t.notaxamount) as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount,0 as costnotaxlossamount
+        from t_account_customer_push_balance t
+        LEFT JOIN t_base_goods_brand b ON t.brandid = b.id where (t.status='3' or t.status='4') and t.businessdate = '${businessdate}'
+        GROUP BY brandid,supplierid
+        UNION ALL
+        select t1.goodsid,g.brand,g.deptid,g.barcode,g.defaultsupplier as supplierid,t.enterstorageid as storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        SUM(t1.unitnum) as allocateinnum,SUM(t1.totalbox) as allocateintotalbox,SUM(t1.taxamount) as allocateinamount,SUM(t1.notaxamount) as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount,0 as costnotaxlossamount
+        from t_storage_allocate_out t
+        RIGHT JOIN t_storage_allocate_out_detail t1 on t.id = t1.billno
+        LEFT JOIN t_base_goods_info g on t1.goodsid=g.id where (t.status='3' or t.status='4') and t.businessdate = '${businessdate}'
+        GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+        select t1.goodsid,g.brand,g.deptid,g.barcode,g.defaultsupplier as supplierid,t.outstorageid as storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        SUM(-t1.unitnum) as allocateoutnum,SUM(-t1.totalbox) as allocateouttotalbox,SUM(-t1.taxamount) as allocateoutamount,SUM(-t1.notaxamount) as allocateoutnotaxamount,
+        0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount,0 as costnotaxlossamount
+        from t_storage_allocate_out t
+        RIGHT JOIN t_storage_allocate_out_detail t1 on t.id = t1.billno
+        LEFT JOIN t_base_goods_info g on t1.goodsid=g.id where (t.status='3' or t.status='4') and t.businessdate = '${businessdate}'
+        GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+        select t1.goodsid,t1.brandid,g.deptid,g.barcode,g.defaultsupplier as supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        SUM(-t1.unitnum) as lossnum,SUM(-t1.totalbox) as losstotalbox,SUM(-t1.taxamount) as lossamount,SUM(-t1.notaxamount) as lossnotaxamount, SUM(-t1.costprice*t1.unitnum) as costlossamount,SUM((-t1.costprice*t1.unitnum)/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as costnotaxlossamount
+        from t_storage_other_out t
+        RIGHT JOIN t_storage_other_out_detail t1 on t.id=t1.billid
+        LEFT JOIN t_base_goods_info g on t1.goodsid=g.id
+        LEFT JOIN t_base_finance_taxtype ty ON g.defaulttaxtype = ty.id where (t.status='3' or t.status='4') and t.businessdate = '${businessdate}'
+        GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+        select t1.goodsid,t1.brandid,g.deptid,g.barcode,g.defaultsupplier as supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        SUM(t1.unitnum) as lossnum,SUM(t1.totalbox) as losstotalbox,SUM(t1.taxamount) as lossamount,SUM(t1.notaxamount) as lossnotaxamount, SUM(t1.costprice*t1.unitnum) as costlossamount,SUM((t1.costprice*t1.unitnum)/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as costnotaxlossamount
+        from t_storage_other_enter t
+        RIGHT JOIN t_storage_other_enter_detail t1 on t.id=t1.billid
+        LEFT JOIN t_base_goods_info g on t1.goodsid=g.id
+        LEFT JOIN t_base_finance_taxtype ty ON g.defaulttaxtype = ty.id where (t.status='3' or t.status='4') and t.businessdate = '${businessdate}'
+        GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+        SELECT t1.goodsid,t1.brandid,g.deptid,g.barcode,g.defaultsupplier as supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        SUM(t1.adjustnum) as lossnum,SUM(t1.totalbox) as losstotalbox,SUM(t1.amount) as lossamount,SUM(t1.amount/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as lossnotaxamount, SUM(t1.price*t1.adjustnum) as costlossamount, SUM((t1.price*t1.adjustnum)/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as costnotaxlossamount
+        from t_storage_adjustments t
+        RIGHT JOIN t_storage_adjustments_detail t1 on t.id=t1.adjustmentsid
+        LEFT JOIN t_base_goods_info g on t1.goodsid=g.id
+        LEFT JOIN t_base_finance_taxtype ty ON g.defaulttaxtype = ty.id where t.status='4' and t.billtype='1' and t.businessdate = '${businessdate}'
+        GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+        SELECT t1.goodsid,t1.brandid,g.deptid,g.barcode,g.defaultsupplier as supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        SUM(-t1.adjustnum) as lossnum,SUM(-t1.totalbox) as losstotalbox,SUM(-t1.amount) as lossamount,SUM(-t1.amount/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as lossnotaxamount, SUM(-t1.price*t1.adjustnum) as costlossamount, SUM((-t1.price*t1.adjustnum)/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as costnotaxlossamount
+        from t_storage_adjustments t
+        RIGHT JOIN t_storage_adjustments_detail t1 on t.id=t1.adjustmentsid
+        LEFT JOIN t_base_goods_info g on t1.goodsid=g.id
+        LEFT JOIN t_base_finance_taxtype ty ON g.defaulttaxtype = ty.id where t.status='4' and t.billtype='2' and t.businessdate = '${businessdate}'
+        GROUP BY goodsid,storageid,supplierid
+        )z group by goodsid,storageid,supplierid;
+    </insert>
+    
+    <update id="updateBuySaleReprotDayPrice">
+        update t_report_storage_day t,t_storage_summary t1,t_base_storage_info s
+        set t.price=t1.costprice
+        where t.storageid=t1.storageid and t.storageid=s.id and s.isaloneaccount='1' and t.goodsid=t1.goodsid and t.businessdate=#{date}
+    </update>
+    
+    <insert id="addBuySaleReportDayHD" parameterType="java.util.Map">
+        DELETE FROM t_report_storage_day WHERE businessdate = '${businessdate}';
+
+        insert into t_report_storage_day ( businessdate,goodsid,brandid,deptid,barcode,supplierid,storageid,unitid,
+        price,initnum,inittotalbox,initamount,initnotaxamount,isdiscount,
+        buyinnum,buyintotalbox,buyinamount,buyinnotaxamount,buyoutnum,buyouttotalbox,buyoutamount,buyoutnotaxamount,enternum,entertotalbox,enteramount,enternotaxamount,
+        saleoutnum,saleouttotalbox,saleoutamount,saleoutnotaxamount,saleinnum,saleintotalbox,saleinamount,saleinnotaxamount,outnum,outtotalbox,outamount,outnotaxamount,costoutamount,costnotaxoutamount,
+        allocateinnum,allocateintotalbox,allocateinamount,allocateinnotaxamount,allocateoutnum,allocateouttotalbox,allocateoutamount,allocateoutnotaxamount,
+        lossnum,losstotalbox,lossamount,lossnotaxamount,costlossamount,costnotaxlossamount,
+        endnum,endtotalbox,endamount,endnotaxamount,addtime)
+        select '${businessdate}',z.goodsid,z.brandid,z.deptid,z.barcode,z.supplierid,z.storageid,z.unitid,
+        IF(sum(z.initnum+(z.buyinnum+z.buyoutnum)-(z.saleoutnum + z.saleinnum)+(z.allocateinnum+z.allocateoutnum)+z.lossnum)!=0,
+          sum(z.initamount+(z.buyinamount+z.buyoutamount)-z.costoutamount+(z.allocateinamount+z.allocateoutamount)+z.costlossamount)/sum(z.initnum+(z.buyinnum+z.buyoutnum)-(z.saleoutnum + z.saleinnum)+(z.allocateinnum+z.allocateoutnum)+z.lossnum)
+        ,0) as price,
+        sum(z.initnum) as initnum,sum(z.inittotalbox) as inittotalbox,sum(z.initamount) as initamount,sum(z.initnotaxamount) as initnotaxamount,z.isdiscount,
+        sum(z.buyinnum) as buyinnum,sum(z.buyintotalbox) as buyintotalbox,sum(z.buyinamount) as buyinamount,sum(z.buyinnotaxamount) as buyinnotaxamount,
+        sum(z.buyoutnum) as buyoutnum,sum(z.buyouttotalbox) as buyouttotalbox,sum(z.buyoutamount) as buyoutamount,sum(z.buyoutnotaxamount) as buyoutnotaxamount,
+        SUM(z.buyinnum + z.buyoutnum) as enternum,SUM(z.buyintotalbox + z.buyouttotalbox) as entertotalbox,SUM(z.buyinamount + z.buyoutamount) as enteramount,SUM(z.buyinnotaxamount + z.buyoutnotaxamount) as enternotaxamount,
+        SUM(z.saleoutnum) as saleoutnum,SUM(z.saleouttotalbox) as saleouttotalbox,SUM(z.saleoutamount) as saleoutamount,SUM(z.saleoutnotaxamount) as saleoutnotaxamount,
+        SUM(z.saleinnum) as saleinnum,SUM(z.saleintotalbox) as saleintotalbox,SUM(z.saleinamount) as saleinamount,SUM(z.saleinnotaxamount) as saleinnotaxamount,
+        SUM(z.saleoutnum + z.saleinnum) as outnum,SUM(z.saleouttotalbox + z.saleintotalbox) as outtotalbox,SUM(z.saleoutamount + z.saleinamount) as outamount,SUM(z.saleoutnotaxamount + z.saleinnotaxamount) as outnotaxamount,SUM(z.costoutamount) as costoutamount,SUM(z.costnotaxoutamount) as costnotaxoutamount,
+        SUM(z.allocateinnum) as allocateinnum,SUM(z.allocateintotalbox) as allocateintotalbox,SUM(z.allocateinamount) as allocateinamount,SUM(z.allocateinnotaxamount) as allocateinnotaxamount,
+        SUM(z.allocateoutnum) as allocateoutnum,SUM(z.allocateouttotalbox) as allocateouttotalbox,SUM(z.allocateoutamount) as allocateoutamount,SUM(z.allocateoutnotaxamount) as allocateoutnotaxamount,
+        sum(z.lossnum) as lossnum,sum(z.losstotalbox) as losstotalbox,sum(z.lossamount) as lossamount,sum(z.lossnotaxamount) as lossnotaxamount, sum(z.costlossamount) as costlossamount, sum(z.costnotaxlossamount) as costnotaxlossamount,
+        sum(z.initnum+(z.buyinnum+z.buyoutnum)-(z.saleoutnum + z.saleinnum)+(z.allocateinnum+z.allocateoutnum)+z.lossnum) as endnum,
+        sum(z.inittotalbox+(z.buyintotalbox+z.buyouttotalbox)-(z.saleouttotalbox + z.saleintotalbox)+(z.allocateintotalbox+z.allocateouttotalbox)+z.losstotalbox) as endtotalbox,
+        sum(z.initamount+(z.buyinamount+z.buyoutamount)-z.costoutamount+(z.allocateinamount+z.allocateoutamount)+z.costlossamount) as endamount,
+        sum(z.initnotaxamount+(z.buyinnotaxamount+z.buyoutnotaxamount)-z.costnotaxoutamount+(z.allocateinnotaxamount+z.allocateoutnotaxamount)+z.costnotaxlossamount) as endnotaxamount,
+        now()
+        from (
+        select t.goodsid,t.brandid,t.deptid,t.barcode,t.supplierid,t.storageid,t.unitid,'' as unitname,g.newstorageprice as price,
+        IF(${_storageday_count}>0,t.endnum,0) as initnum,IF(${_storageday_count}>0,t.endtotalbox,0) as inittotalbox,IF(${_storageday_count}>0,t.endamount,0) as initamount,IF(${_storageday_count}>0,t.endnotaxamount,0) as initnotaxamount,t.isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount,0 as costnotaxlossamount
+        from t_report_storage_day t
+        LEFT JOIN t_base_goods_info g on t.goodsid=g.id
+        where t.businessdate = '${yesdate}'
+        UNION ALL
+        select t.goodsid,g.brand as brandid,g.deptid,g.barcode,g.defaultsupplier as supplierid,t.storageid,g.mainunit as unitid,t.unitname as unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        SUM(t.unitnum) as buyinnum,SUM(t.auxnum) as buyintotalbox,SUM(t.unitamount) as buyinamount,SUM(t.notaxamount) as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount,0 as costnotaxlossamount
+        from t_storage_stockinit t
+        LEFT JOIN t_base_goods_info g on t.goodsid=g.id
+        where t.status='3' and DATE_FORMAT(t.audittime,'%Y-%m-%d') = '${businessdate}'
+        GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+        select t1.goodsid,t1.brandid,g.deptid,g.barcode,t.supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        SUM(t1.unitnum) as buyinnum,SUM(t1.totalbox) as buyintotalbox,SUM(t1.taxamount) as buyinamount,SUM(t1.notaxamount) as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount,0 as costnotaxlossamount
+        from t_purchase_arrivalorder t
+        RIGHT JOIN t_purchase_arrivalorder_detail t1 on t.id=t1.orderid
+        LEFT JOIN t_base_goods_info g on t1.goodsid=g.id where (t.status='3' or t.status='4') and t.businessdate = '${businessdate}'
+        GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+        select t1.goodsid,t1.brandid,g.deptid,g.barcode,t.supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        SUM(-t1.unitnum) as buyoutnum,SUM(-t1.totalbox) as buyouttotalbox,SUM(-t1.taxamount) as buyoutamount,SUM(-t1.notaxamount) as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount,0 as costnotaxlossamount
+        from t_storage_purchasereject_out t
+        RIGHT JOIN t_storage_purchasereject_out_detail t1 on t.id=t1.orderid
+        LEFT JOIN t_base_goods_info g on t1.goodsid=g.id where (t.status='3' or t.status='4') and t.ischeck='1' and t.businessdate = '${businessdate}'
+        GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+        select t1.goodsid,t1.brandid,g.deptid,g.barcode,t1.supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        SUM(t1.unitnum) as saleoutnum,SUM(t1.totalbox) as saleouttotalbox,SUM(t1.taxamount) as saleoutamount,SUM(t1.notaxamount) as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,SUM(t1.realcostprice*t1.unitnum) as costoutamount,SUM((t1.realcostprice*t1.unitnum)/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount,0 as costnotaxlossamount
+        from t_storage_saleout t
+        RIGHT JOIN t_storage_saleout_detail t1 on t.id=t1.saleoutid
+        LEFT JOIN t_base_goods_info g on t1.goodsid=g.id
+        LEFT JOIN t_base_finance_taxtype ty ON g.defaulttaxtype = ty.id where (t.status='3' or t.status='4') and t.businessdate = '${businessdate}'
+        GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+        select t1.goodsid,t1.brandid,g.deptid,g.barcode,t1.supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        SUM(-t1.unitnum) as saleinnum,SUM(-t1.totalbox) as saleintotalbox,SUM(-t1.taxamount) as saleinamount,SUM(-t1.notaxamount) as saleinnotaxamount,SUM(-t1.realcostprice*t1.unitnum) as costoutamount,SUM((-t1.realcostprice*t1.unitnum)/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount,0 as costnotaxlossamount
+        from t_storage_salereject_enter t
+        RIGHT JOIN t_storage_salereject_enter_detail t1 on t.id=t1.salerejectid
+        LEFT JOIN t_base_goods_info g on t1.goodsid=g.id
+        LEFT JOIN t_base_finance_taxtype ty ON g.defaulttaxtype = ty.id where (t.status='3' or t.status='4') and t.ischeck='1' and t.businessdate = '${businessdate}'
+        GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+        select t.brandid as goodsid,t.brandid,b.deptid,'' as barcode,b.supplierid,'' as storageid,'' as unitid,'' as unitname,0 as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'1' as isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,SUM(t.amount) as saleinamount,SUM(t.notaxamount) as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount,0 as costnotaxlossamount
+        from t_account_customer_push_balance t
+        LEFT JOIN t_base_goods_brand b ON t.brandid = b.id where (t.status='3' or t.status='4') and t.businessdate = '${businessdate}'
+        GROUP BY brandid,supplierid
+        UNION ALL
+        select t1.goodsid,g.brand,g.deptid,g.barcode,g.defaultsupplier as supplierid,t.enterstorageid as storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        SUM(t1.unitnum) as allocateinnum,SUM(t1.totalbox) as allocateintotalbox,SUM(t1.taxamount) as allocateinamount,SUM(t1.notaxamount) as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount,0 as costnotaxlossamount
+        from t_storage_allocate_out t
+        RIGHT JOIN t_storage_allocate_out_detail t1 on t.id = t1.billno
+        LEFT JOIN t_base_goods_info g on t1.goodsid=g.id where (t.status='3' or t.status='4') and t.businessdate = '${businessdate}'
+        GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+        select t1.goodsid,g.brand,g.deptid,g.barcode,g.defaultsupplier as supplierid,t.outstorageid as storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        SUM(-t1.unitnum) as allocateoutnum,SUM(-t1.totalbox) as allocateouttotalbox,SUM(-t1.costprice*t1.unitnum) as allocateoutamount,SUM(-t1.notaxamount) as allocateoutnotaxamount,
+        0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount,0 as costnotaxlossamount
+        from t_storage_allocate_out t
+        RIGHT JOIN t_storage_allocate_out_detail t1 on t.id = t1.billno
+        LEFT JOIN t_base_goods_info g on t1.goodsid=g.id where (t.status='3' or t.status='4') and t.businessdate = '${businessdate}'
+        GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+        select t1.goodsid,t1.brandid,g.deptid,g.barcode,g.defaultsupplier as supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        SUM(-t1.unitnum) as lossnum,SUM(-t1.totalbox) as losstotalbox,SUM(-t1.taxamount) as lossamount,SUM(-t1.notaxamount) as lossnotaxamount, SUM(-t1.realcostprice*t1.unitnum) as costlossamount,SUM((-t1.realcostprice*t1.unitnum)/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as costnotaxlossamount
+        from t_storage_other_out t
+        RIGHT JOIN t_storage_other_out_detail t1 on t.id=t1.billid
+        LEFT JOIN t_base_goods_info g on t1.goodsid=g.id
+        LEFT JOIN t_base_finance_taxtype ty ON g.defaulttaxtype = ty.id where (t.status='3' or t.status='4') and t.businessdate = '${businessdate}'
+        GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+        select t1.goodsid,t1.brandid,g.deptid,g.barcode,g.defaultsupplier as supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        SUM(t1.unitnum) as lossnum,SUM(t1.totalbox) as losstotalbox,SUM(t1.taxamount) as lossamount,SUM(t1.notaxamount) as lossnotaxamount, SUM(t1.realcostprice*t1.unitnum) as costlossamount,SUM((t1.realcostprice*t1.unitnum)/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as costnotaxlossamount
+        from t_storage_other_enter t
+        RIGHT JOIN t_storage_other_enter_detail t1 on t.id=t1.billid
+        LEFT JOIN t_base_goods_info g on t1.goodsid=g.id
+        LEFT JOIN t_base_finance_taxtype ty ON g.defaulttaxtype = ty.id where (t.status='3' or t.status='4') and t.businessdate = '${businessdate}'
+        GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+        SELECT t1.goodsid,t1.brandid,g.deptid,g.barcode,g.defaultsupplier as supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        SUM(t1.adjustnum) as lossnum,SUM(t1.totalbox) as losstotalbox,SUM(t1.amount) as lossamount,SUM(t1.amount/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as lossnotaxamount, SUM(t1.price*t1.adjustnum) as costlossamount, SUM((t1.price*t1.adjustnum)/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as costnotaxlossamount
+        from t_storage_adjustments t
+        RIGHT JOIN t_storage_adjustments_detail t1 on t.id=t1.adjustmentsid
+        LEFT JOIN t_base_goods_info g on t1.goodsid=g.id
+        LEFT JOIN t_base_finance_taxtype ty ON g.defaulttaxtype = ty.id where t.status='4' and t.billtype='1' and t.businessdate = '${businessdate}'
+        GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+        SELECT t1.goodsid,t1.brandid,g.deptid,g.barcode,g.defaultsupplier as supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        SUM(-t1.adjustnum) as lossnum,SUM(-t1.totalbox) as losstotalbox,SUM(-t1.amount) as lossamount,SUM(-t1.amount/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as lossnotaxamount, SUM(-t1.price*t1.adjustnum) as costlossamount, SUM((-t1.price*t1.adjustnum)/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as costnotaxlossamount
+        from t_storage_adjustments t
+        RIGHT JOIN t_storage_adjustments_detail t1 on t.id=t1.adjustmentsid
+        LEFT JOIN t_base_goods_info g on t1.goodsid=g.id
+        LEFT JOIN t_base_finance_taxtype ty ON g.defaulttaxtype = ty.id where t.status='4' and t.billtype='2' and t.businessdate = '${businessdate}'
+        GROUP BY goodsid,storageid,supplierid
+        )z group by goodsid,storageid,supplierid;
+    </insert>
+
+    <!-- 处理每月进销存数据 -->
+    <delete id="clearBuySaleReportMonthData">
+        TRUNCATE TABLE t_report_storage_month
+    </delete>
+    <select id="getBuySaleReportMonthCountByDate" parameterType="java.lang.String" resultType="int">
+        select count(1) FROM t_report_storage_month t where t.businessdate = #{yesmonth}
+    </select>
+    <insert id="addBuySaleReportMonth" parameterType="java.util.Map">
+        DELETE FROM t_report_storage_month WHERE businessdate = '${daymonth}';
+
+        insert into t_report_storage_month (businessdate,goodsid,brandid,deptid,barcode,supplierid,storageid,unitid,price,
+        initnum,inittotalbox,initamount,initnotaxamount,isdiscount,
+        buyinnum,buyintotalbox,buyinamount,buyinnotaxamount,buyoutnum,buyouttotalbox,buyoutamount,buyoutnotaxamount,enternum,entertotalbox,enteramount,enternotaxamount,
+        saleoutnum,saleouttotalbox,saleoutamount,saleoutnotaxamount,saleinnum,saleintotalbox,saleinamount,saleinnotaxamount,outnum,outtotalbox,outamount,outnotaxamount,costoutamount,costnotaxoutamount,
+        allocateinnum,allocateintotalbox,allocateinamount,allocateinnotaxamount,allocateoutnum,allocateouttotalbox,allocateoutamount,allocateoutnotaxamount,
+        lossnum,losstotalbox,lossamount,lossnotaxamount,costlossamount,costnotaxlossamount,
+        endnum,endtotalbox,endamount,endnotaxamount,addtime)
+		select '${daymonth}',z.goodsid,z.brandid,z.deptid,z.barcode,z.supplierid,z.storageid,z.unitid,
+        IF(sum(z.initnum+(z.buyinnum+z.buyoutnum)-(z.saleoutnum + z.saleinnum)+(z.allocateinnum+z.allocateoutnum)+z.lossnum)!=0,
+          sum(z.initamount+(z.buyinamount+z.buyoutamount)-z.costoutamount+(z.allocateinamount+z.allocateoutamount)+z.costlossamount)/sum(z.initnum+(z.buyinnum+z.buyoutnum)-(z.saleoutnum + z.saleinnum)+(z.allocateinnum+z.allocateoutnum)+z.lossnum)
+        ,0) as price,
+		sum(z.initnum) as initnum,sum(z.inittotalbox) as inittotalbox,sum(z.initamount) as initamount,sum(z.initnotaxamount) as initnotaxamount,z.isdiscount,
+		sum(z.buyinnum) as buyinnum,sum(z.buyintotalbox) as buyintotalbox,sum(z.buyinamount) as buyinamount,sum(z.buyinnotaxamount) as buyinnotaxamount,
+		sum(z.buyoutnum) as buyoutnum,sum(z.buyouttotalbox) as buyouttotalbox,sum(z.buyoutamount) as buyoutamount,sum(z.buyoutnotaxamount) as buyoutnotaxamount,
+		SUM(z.buyinnum + z.buyoutnum) as enternum,SUM(z.buyintotalbox + z.buyouttotalbox) as entertotalbox,SUM(z.buyinamount + z.buyoutamount) as enteramount,SUM(z.buyinnotaxamount + z.buyoutnotaxamount) as enternotaxamount,
+		SUM(z.saleoutnum) as saleoutnum,SUM(z.saleouttotalbox) as saleouttotalbox,SUM(z.saleoutamount) as saleoutamount,SUM(z.saleoutnotaxamount) as saleoutnotaxamount,
+		SUM(z.saleinnum) as saleinnum,SUM(z.saleintotalbox) as saleintotalbox,SUM(z.saleinamount) as saleinamount,SUM(z.saleinnotaxamount) as saleinnotaxamount,
+		SUM(z.saleoutnum + z.saleinnum) as outnum,SUM(z.saleouttotalbox + z.saleintotalbox) as outtotalbox,SUM(z.saleoutamount + z.saleinamount) as outamount,SUM(z.saleoutnotaxamount + z.saleinnotaxamount) as outnotaxamount,SUM(z.costoutamount) as costoutamount,SUM(z.costnotaxoutamount) as costnotaxoutamount,
+		SUM(z.allocateinnum) as allocateinnum,SUM(z.allocateintotalbox) as allocateintotalbox,SUM(z.allocateinamount) as allocateinamount,SUM(z.allocateinnotaxamount) as allocateinnotaxamount,
+		SUM(z.allocateoutnum) as allocateoutnum,SUM(z.allocateouttotalbox) as allocateouttotalbox,SUM(z.allocateoutamount) as allocateoutamount,SUM(z.allocateoutnotaxamount) as allocateoutnotaxamount,
+		sum(z.lossnum) as lossnum,sum(z.losstotalbox) as losstotalbox,sum(z.lossamount) as lossamount,sum(z.lossnotaxamount) as lossnotaxamount, sum(z.costlossamount) as costlossamount,sum(z.costnotaxlossamount) as costnotaxlossamount,
+		sum(z.initnum+(z.buyinnum+z.buyoutnum)-(z.saleoutnum + z.saleinnum)+(z.allocateinnum+z.allocateoutnum)+z.lossnum) as endnum,
+		sum(z.inittotalbox+(z.buyintotalbox+z.buyouttotalbox)-(z.saleouttotalbox + z.saleintotalbox)+(z.allocateintotalbox+z.allocateouttotalbox)+z.losstotalbox) as endtotalbox,
+		sum(z.initamount+(z.buyinamount+z.buyoutamount)-z.costoutamount+(z.allocateinamount+z.allocateoutamount)+z.costlossamount) as endamount,
+		sum(z.initnotaxamount+(z.buyinnotaxamount+z.buyoutnotaxamount)-z.costnotaxoutamount+(z.allocateinnotaxamount+z.allocateoutnotaxamount)+z.costnotaxlossamount) as endnotaxamount,
+		now()
+		from (
+		select t.goodsid,t.brandid,t.deptid,t.barcode,t.supplierid,t.storageid,t.unitid,'' as unitname,g.newstorageprice as price,
+		IF(${_storageday_count}>0,t.endnum,0) as initnum,IF(${_storageday_count}>0,t.endtotalbox,0) as inittotalbox,IF(${_storageday_count}>0,t.endamount,0) as initamount,IF(${_storageday_count}>0,t.endnotaxamount,0) as initnotaxamount,t.isdiscount,
+		0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+		0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+		0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+		0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+		0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+		0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+		0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount,0 as costnotaxlossamount
+		from t_report_storage_month t
+		LEFT JOIN t_base_goods_info g on t.goodsid=g.id
+		where t.businessdate = '${yesmonth}'
+        UNION ALL
+		select t.goodsid,g.brand as brandid,g.deptid,g.barcode,g.defaultsupplier as supplierid,t.storageid,g.mainunit as unitid,t.unitname as unitname,g.newstorageprice as price,
+		0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+		SUM(t.unitnum) as buyinnum,SUM(t.auxnum) as buyintotalbox,SUM(t.unitamount) as buyinamount,SUM(t.notaxamount) as buyinnotaxamount,
+		0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+		0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+		0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+		0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+		0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+		0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount, 0 as costnotaxlossamount
+		from t_storage_stockinit t
+		LEFT JOIN t_base_goods_info g on t.goodsid=g.id
+		where t.status='3' and DATE_FORMAT(t.audittime,'%Y-%m-%d') LIKE '${daymonth}%'
+		GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+		select t1.goodsid,t1.brandid,g.deptid,g.barcode,t.supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+		0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+		SUM(t1.unitnum) as buyinnum,SUM(t1.totalbox) as buyintotalbox,SUM(t1.taxamount) as buyinamount,SUM(t1.notaxamount) as buyinnotaxamount,
+		0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+		0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+		0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+		0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+		0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+		0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount, 0 as costnotaxlossamount
+		from t_purchase_arrivalorder t
+		RIGHT JOIN t_purchase_arrivalorder_detail t1 on t.id=t1.orderid
+		LEFT JOIN t_base_goods_info g on t1.goodsid=g.id where (t.status='3' or t.status='4') and t.businessdate LIKE '${daymonth}%'
+		GROUP BY goodsid,storageid,supplierid
+	    UNION ALL
+		select t1.goodsid,t1.brandid,g.deptid,g.barcode,t.supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+		0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+		0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+		SUM(-t1.unitnum) as buyoutnum,SUM(-t1.totalbox) as buyouttotalbox,SUM(-t1.taxamount) as buyoutamount,SUM(-t1.notaxamount) as buyoutnotaxamount,
+		0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+		0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+		0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+		0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+		0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount, 0 as costnotaxlossamount
+		from t_storage_purchasereject_out t
+		RIGHT JOIN t_storage_purchasereject_out_detail t1 on t.id=t1.orderid
+		LEFT JOIN t_base_goods_info g on t1.goodsid=g.id where (t.status='3' or t.status='4') and t.ischeck='1' and t.businessdate LIKE '${daymonth}%'
+		GROUP BY goodsid,storageid,supplierid
+	    UNION ALL
+		select t1.goodsid,t1.brandid,g.deptid,g.barcode,t1.supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+		0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+		0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+		0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+		SUM(t1.unitnum) as saleoutnum,SUM(t1.totalbox) as saleouttotalbox,SUM(t1.taxamount) as saleoutamount,SUM(t1.notaxamount) as saleoutnotaxamount,
+		0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,SUM(t1.costprice*t1.unitnum) as costoutamount,SUM((t1.costprice*t1.unitnum)/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as costnotaxoutamount,
+		0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+		0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+		0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount, 0 as costnotaxlossamount
+		from t_storage_saleout t
+		RIGHT JOIN t_storage_saleout_detail t1 on t.id=t1.saleoutid
+		LEFT JOIN t_base_goods_info g on t1.goodsid=g.id
+		LEFT JOIN t_base_finance_taxtype ty ON g.defaulttaxtype = ty.id where (t.status='3' or t.status='4') and t.businessdate LIKE '${daymonth}%'
+		GROUP BY goodsid,storageid,supplierid
+	    UNION ALL
+		select t1.goodsid,t1.brandid,g.deptid,g.barcode,t1.supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+		0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+		0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+		0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+		0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+		SUM(-t1.unitnum) as saleinnum,SUM(-t1.totalbox) as saleintotalbox,SUM(-t1.taxamount) as saleinamount,SUM(-t1.notaxamount) as saleinnotaxamount,SUM(-t1.costprice*t1.unitnum) as costoutamount,SUM((-t1.costprice*t1.unitnum)/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as costnotaxoutamount,
+		0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+		0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+		0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount, 0 as costnotaxlossamount
+		from t_storage_salereject_enter t
+		RIGHT JOIN t_storage_salereject_enter_detail t1 on t.id=t1.salerejectid
+		LEFT JOIN t_base_goods_info g on t1.goodsid=g.id
+		LEFT JOIN t_base_finance_taxtype ty ON g.defaulttaxtype = ty.id where (t.status='3' or t.status='4') and t.ischeck='1' and t.businessdate LIKE '${daymonth}%'
+		GROUP BY goodsid,storageid,supplierid
+	    UNION ALL
+		select t.brandid as goodsid,t.brandid,b.deptid,'' as barcode,b.supplierid,'' as storageid,'' as unitid,'' as unitname,0 as price,
+		0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'1' as isdiscount,
+		0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+		0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+		0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+		0 as saleinnum,0 as saleintotalbox,SUM(t.amount) as saleinamount,SUM(t.notaxamount) as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+		0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+		0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+		0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount, 0 as costnotaxlossamount
+		from t_account_customer_push_balance t
+		LEFT JOIN t_base_goods_brand b ON t.brandid = b.id where (t.status='3' or t.status='4') and t.businessdate LIKE '${daymonth}%'
+		GROUP BY brandid,supplierid
+        UNION ALL
+		select t1.goodsid,g.brand,g.deptid,g.barcode,g.defaultsupplier as supplierid,t.enterstorageid as storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+		0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+		0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+		0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+		0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+		0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+		SUM(t1.unitnum) as allocateinnum,SUM(t1.totalbox) as allocateintotalbox,SUM(t1.taxamount) as allocateinamount,SUM(t1.notaxamount) as allocateinnotaxamount,
+		0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+		0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount, 0 as costnotaxlossamount
+		from t_storage_allocate_out t
+		RIGHT JOIN t_storage_allocate_out_detail t1 on t.id = t1.billno
+		LEFT JOIN t_base_goods_info g on t1.goodsid=g.id where (t.status='3' or t.status='4') and t.businessdate LIKE '${daymonth}%'
+		GROUP BY goodsid,storageid,supplierid
+	    UNION ALL
+		select t1.goodsid,g.brand,g.deptid,g.barcode,g.defaultsupplier as supplierid,t.outstorageid as storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+		0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+		0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+		0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+		0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+		0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+		0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+		SUM(-t1.unitnum) as allocateoutnum,SUM(-t1.totalbox) as allocateouttotalbox,SUM(-t1.taxamount) as allocateoutamount,SUM(-t1.notaxamount) as allocateoutnotaxamount,
+		0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount, 0 as costnotaxlossamount
+		from t_storage_allocate_out t
+		RIGHT JOIN t_storage_allocate_out_detail t1 on t.id = t1.billno
+		LEFT JOIN t_base_goods_info g on t1.goodsid=g.id where (t.status='3' or t.status='4') and t.businessdate LIKE '${daymonth}%'
+		GROUP BY goodsid,storageid,supplierid
+	    UNION ALL
+		select t1.goodsid,t1.brandid,g.deptid,g.barcode,g.defaultsupplier as supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+		0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+		0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+		0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+		0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+		0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+		0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+		0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+		SUM(-t1.unitnum) as lossnum,SUM(-t1.totalbox) as losstotalbox,SUM(-t1.taxamount) as lossamount,SUM(-t1.notaxamount) as lossnotaxamount, SUM(-t1.costprice*t1.unitnum) as costlossamount, SUM((-t1.costprice*t1.unitnum)/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as costnotaxlossamount
+		from t_storage_other_out t
+		RIGHT JOIN t_storage_other_out_detail t1 on t.id=t1.billid
+		LEFT JOIN t_base_goods_info g on t1.goodsid=g.id
+		LEFT JOIN t_base_finance_taxtype ty ON g.defaulttaxtype = ty.id where (t.status='3' or t.status='4') and t.businessdate LIKE '${daymonth}%'
+		GROUP BY goodsid,storageid,supplierid
+	    UNION ALL
+		select t1.goodsid,t1.brandid,g.deptid,g.barcode,g.defaultsupplier as supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+		0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+		0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+		0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+		0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+		0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+		0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+		0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+		SUM(t1.unitnum) as lossnum,SUM(t1.totalbox) as losstotalbox,SUM(t1.taxamount) as lossamount,SUM(t1.notaxamount) as lossnotaxamount, SUM(t1.costprice*t1.unitnum) as costlossamount, SUM((t1.costprice*t1.unitnum)/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as costnotaxlossamount
+		from t_storage_other_enter t
+		RIGHT JOIN t_storage_other_enter_detail t1 on t.id=t1.billid
+		LEFT JOIN t_base_goods_info g on t1.goodsid=g.id
+		LEFT JOIN t_base_finance_taxtype ty ON g.defaulttaxtype = ty.id where (t.status='3' or t.status='4') and t.businessdate LIKE '${daymonth}%'
+		GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+		SELECT t1.goodsid,t1.brandid,g.deptid,g.barcode,g.defaultsupplier as supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+		0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+		0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+		0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+		0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+		0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+		0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+		0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+		SUM(t1.adjustnum) as lossnum,SUM(t1.totalbox) as losstotalbox,SUM(t1.amount) as lossamount,SUM(t1.amount/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as lossnotaxamount, SUM(t1.price*t1.adjustnum) as costlossamount, SUM((t1.price*t1.adjustnum)/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as costnotaxlossamount
+		from t_storage_adjustments t
+		RIGHT JOIN t_storage_adjustments_detail t1 on t.id=t1.adjustmentsid
+		LEFT JOIN t_base_goods_info g on t1.goodsid=g.id
+		LEFT JOIN t_base_finance_taxtype ty ON g.defaulttaxtype = ty.id where t.status='4' and t.billtype='1' and t.businessdate LIKE '${daymonth}%'
+		GROUP BY goodsid,storageid,supplierid
+	    UNION ALL
+		SELECT t1.goodsid,t1.brandid,g.deptid,g.barcode,g.defaultsupplier as supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+		0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+		0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+		0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+		0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+		0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+		0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+		0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+		SUM(-t1.adjustnum) as lossnum,SUM(-t1.totalbox) as losstotalbox,SUM(-t1.amount) as lossamount,SUM(-t1.amount/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as lossnotaxamount, SUM(-t1.price*t1.adjustnum) as costlossamount, SUM((-t1.price*t1.adjustnum)/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as costnotaxlossamount
+		from t_storage_adjustments t
+		RIGHT JOIN t_storage_adjustments_detail t1 on t.id=t1.adjustmentsid
+		LEFT JOIN t_base_goods_info g on t1.goodsid=g.id
+		LEFT JOIN t_base_finance_taxtype ty ON g.defaulttaxtype = ty.id where t.status='4' and t.billtype='2' and t.businessdate LIKE '${daymonth}%'
+		GROUP BY goodsid,storageid,supplierid
+		) z group by goodsid,storageid,supplierid;
+    </insert>
+    <update id="updateBuySaleReprotMonthPrice">
+        update t_report_storage_month t,t_storage_summary t1,t_base_storage_info s
+        set t.price=t1.costprice
+        where t.storageid=t1.storageid and t.storageid=s.id and s.isaloneaccount='1' and t.goodsid=t1.goodsid and t.businessdate=#{daymonth}
+    </update>
+    <insert id="addBuySaleReportMonthHD" parameterType="java.util.Map">
+        DELETE FROM t_report_storage_month WHERE businessdate = '${daymonth}';
+
+        insert into t_report_storage_month (businessdate,goodsid,brandid,deptid,barcode,supplierid,storageid,unitid,price,
+        initnum,inittotalbox,initamount,initnotaxamount,isdiscount,
+        buyinnum,buyintotalbox,buyinamount,buyinnotaxamount,buyoutnum,buyouttotalbox,buyoutamount,buyoutnotaxamount,enternum,entertotalbox,enteramount,enternotaxamount,
+        saleoutnum,saleouttotalbox,saleoutamount,saleoutnotaxamount,saleinnum,saleintotalbox,saleinamount,saleinnotaxamount,outnum,outtotalbox,outamount,outnotaxamount,costoutamount,costnotaxoutamount,
+        allocateinnum,allocateintotalbox,allocateinamount,allocateinnotaxamount,allocateoutnum,allocateouttotalbox,allocateoutamount,allocateoutnotaxamount,
+        lossnum,losstotalbox,lossamount,lossnotaxamount,costlossamount,costnotaxlossamount,
+        endnum,endtotalbox,endamount,endnotaxamount,addtime)
+        select '${daymonth}',z.goodsid,z.brandid,z.deptid,z.barcode,z.supplierid,z.storageid,z.unitid,
+        IF(sum(z.initnum+(z.buyinnum+z.buyoutnum)-(z.saleoutnum + z.saleinnum)+(z.allocateinnum+z.allocateoutnum)+z.lossnum)!=0,
+          sum(z.initamount+(z.buyinamount+z.buyoutamount)-z.costoutamount+(z.allocateinamount+z.allocateoutamount)+z.costlossamount)/sum(z.initnum+(z.buyinnum+z.buyoutnum)-(z.saleoutnum + z.saleinnum)+(z.allocateinnum+z.allocateoutnum)+z.lossnum)
+        ,0) as price,
+        sum(z.initnum) as initnum,sum(z.inittotalbox) as inittotalbox,sum(z.initamount) as initamount,sum(z.initnotaxamount) as initnotaxamount,z.isdiscount,
+        sum(z.buyinnum) as buyinnum,sum(z.buyintotalbox) as buyintotalbox,sum(z.buyinamount) as buyinamount,sum(z.buyinnotaxamount) as buyinnotaxamount,
+        sum(z.buyoutnum) as buyoutnum,sum(z.buyouttotalbox) as buyouttotalbox,sum(z.buyoutamount) as buyoutamount,sum(z.buyoutnotaxamount) as buyoutnotaxamount,
+        SUM(z.buyinnum + z.buyoutnum) as enternum,SUM(z.buyintotalbox + z.buyouttotalbox) as entertotalbox,SUM(z.buyinamount + z.buyoutamount) as enteramount,SUM(z.buyinnotaxamount + z.buyoutnotaxamount) as enternotaxamount,
+        SUM(z.saleoutnum) as saleoutnum,SUM(z.saleouttotalbox) as saleouttotalbox,SUM(z.saleoutamount) as saleoutamount,SUM(z.saleoutnotaxamount) as saleoutnotaxamount,
+        SUM(z.saleinnum) as saleinnum,SUM(z.saleintotalbox) as saleintotalbox,SUM(z.saleinamount) as saleinamount,SUM(z.saleinnotaxamount) as saleinnotaxamount,
+        SUM(z.saleoutnum + z.saleinnum) as outnum,SUM(z.saleouttotalbox + z.saleintotalbox) as outtotalbox,SUM(z.saleoutamount + z.saleinamount) as outamount,SUM(z.saleoutnotaxamount + z.saleinnotaxamount) as outnotaxamount,SUM(z.costoutamount) as costoutamount,SUM(z.costnotaxoutamount) as costnotaxoutamount,
+        SUM(z.allocateinnum) as allocateinnum,SUM(z.allocateintotalbox) as allocateintotalbox,SUM(z.allocateinamount) as allocateinamount,SUM(z.allocateinnotaxamount) as allocateinnotaxamount,
+        SUM(z.allocateoutnum) as allocateoutnum,SUM(z.allocateouttotalbox) as allocateouttotalbox,SUM(z.allocateoutamount) as allocateoutamount,SUM(z.allocateoutnotaxamount) as allocateoutnotaxamount,
+        sum(z.lossnum) as lossnum,sum(z.losstotalbox) as losstotalbox,sum(z.lossamount) as lossamount,sum(z.lossnotaxamount) as lossnotaxamount, sum(z.costlossamount) as costlossamount,sum(z.costnotaxlossamount) as costnotaxlossamount,
+        sum(z.initnum+(z.buyinnum+z.buyoutnum)-(z.saleoutnum + z.saleinnum)+(z.allocateinnum+z.allocateoutnum)+z.lossnum) as endnum,
+        sum(z.inittotalbox+(z.buyintotalbox+z.buyouttotalbox)-(z.saleouttotalbox + z.saleintotalbox)+(z.allocateintotalbox+z.allocateouttotalbox)+z.losstotalbox) as endtotalbox,
+        sum(z.initamount+(z.buyinamount+z.buyoutamount)-z.costoutamount+(z.allocateinamount+z.allocateoutamount)+z.costlossamount) as endamount,
+        sum(z.initnotaxamount+(z.buyinnotaxamount+z.buyoutnotaxamount)-z.costnotaxoutamount+(z.allocateinnotaxamount+z.allocateoutnotaxamount)+z.costnotaxlossamount) as endnotaxamount,
+        now()
+        from (
+        select t.goodsid,t.brandid,t.deptid,t.barcode,t.supplierid,t.storageid,t.unitid,'' as unitname,g.newstorageprice as price,
+        IF(${_storageday_count}>0,t.endnum,0) as initnum,IF(${_storageday_count}>0,t.endtotalbox,0) as inittotalbox,IF(${_storageday_count}>0,t.endamount,0) as initamount,IF(${_storageday_count}>0,t.endnotaxamount,0) as initnotaxamount,t.isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount,0 as costnotaxlossamount
+        from t_report_storage_month t
+        LEFT JOIN t_base_goods_info g on t.goodsid=g.id
+        where t.businessdate = '${yesmonth}'
+        UNION ALL
+        select t.goodsid,g.brand as brandid,g.deptid,g.barcode,g.defaultsupplier as supplierid,t.storageid,g.mainunit as unitid,t.unitname as unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        SUM(t.unitnum) as buyinnum,SUM(t.auxnum) as buyintotalbox,SUM(t.unitamount) as buyinamount,SUM(t.notaxamount) as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount, 0 as costnotaxlossamount
+        from t_storage_stockinit t
+        LEFT JOIN t_base_goods_info g on t.goodsid=g.id
+        where t.status='3' and t.audittime LIKE '${daymonth}%'
+        GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+        select t1.goodsid,t1.brandid,g.deptid,g.barcode,t.supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        SUM(t1.unitnum) as buyinnum,SUM(t1.totalbox) as buyintotalbox,SUM(t1.taxamount) as buyinamount,SUM(t1.notaxamount) as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount, 0 as costnotaxlossamount
+        from t_purchase_arrivalorder t
+        RIGHT JOIN t_purchase_arrivalorder_detail t1 on t.id=t1.orderid
+        LEFT JOIN t_base_goods_info g on t1.goodsid=g.id where (t.status='3' or t.status='4') and t.businessdate LIKE '${daymonth}%'
+        GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+        select t1.goodsid,t1.brandid,g.deptid,g.barcode,t.supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        SUM(-t1.unitnum) as buyoutnum,SUM(-t1.totalbox) as buyouttotalbox,SUM(-t1.taxamount) as buyoutamount,SUM(-t1.notaxamount) as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount, 0 as costnotaxlossamount
+        from t_storage_purchasereject_out t
+        RIGHT JOIN t_storage_purchasereject_out_detail t1 on t.id=t1.orderid
+        LEFT JOIN t_base_goods_info g on t1.goodsid=g.id where (t.status='3' or t.status='4') and t.ischeck='1' and t.businessdate LIKE '${daymonth}%'
+        GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+        select t1.goodsid,t1.brandid,g.deptid,g.barcode,t1.supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        SUM(t1.unitnum) as saleoutnum,SUM(t1.totalbox) as saleouttotalbox,SUM(t1.taxamount) as saleoutamount,SUM(t1.notaxamount) as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,SUM(t1.realcostprice*t1.unitnum) as costoutamount,SUM((t1.realcostprice*t1.unitnum)/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount, 0 as costnotaxlossamount
+        from t_storage_saleout t
+        RIGHT JOIN t_storage_saleout_detail t1 on t.id=t1.saleoutid
+        LEFT JOIN t_base_goods_info g on t1.goodsid=g.id
+        LEFT JOIN t_base_finance_taxtype ty ON g.defaulttaxtype = ty.id where (t.status='3' or t.status='4') and t.businessdate LIKE '${daymonth}%'
+        GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+        select t1.goodsid,t1.brandid,g.deptid,g.barcode,t1.supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        SUM(-t1.unitnum) as saleinnum,SUM(-t1.totalbox) as saleintotalbox,SUM(-t1.taxamount) as saleinamount,SUM(-t1.notaxamount) as saleinnotaxamount,SUM(-t1.realcostprice*t1.unitnum) as costoutamount,SUM((-t1.realcostprice*t1.unitnum)/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount, 0 as costnotaxlossamount
+        from t_storage_salereject_enter t
+        RIGHT JOIN t_storage_salereject_enter_detail t1 on t.id=t1.salerejectid
+        LEFT JOIN t_base_goods_info g on t1.goodsid=g.id
+        LEFT JOIN t_base_finance_taxtype ty ON g.defaulttaxtype = ty.id where (t.status='3' or t.status='4') and t.ischeck='1' and t.businessdate LIKE '${daymonth}%'
+        GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+        select t.brandid as goodsid,t.brandid,b.deptid,'' as barcode,b.supplierid,'' as storageid,'' as unitid,'' as unitname,0 as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'1' as isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,SUM(t.amount) as saleinamount,SUM(t.notaxamount) as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount, 0 as costnotaxlossamount
+        from t_account_customer_push_balance t
+        LEFT JOIN t_base_goods_brand b ON t.brandid = b.id where (t.status='3' or t.status='4') and t.businessdate LIKE '${daymonth}%'
+        GROUP BY brandid,supplierid
+        UNION ALL
+        select t1.goodsid,g.brand,g.deptid,g.barcode,g.defaultsupplier as supplierid,t.enterstorageid as storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        SUM(t1.unitnum) as allocateinnum,SUM(t1.totalbox) as allocateintotalbox,SUM(t1.taxamount) as allocateinamount,SUM(t1.notaxamount) as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount, 0 as costnotaxlossamount
+        from t_storage_allocate_out t
+        RIGHT JOIN t_storage_allocate_out_detail t1 on t.id = t1.billno
+        LEFT JOIN t_base_goods_info g on t1.goodsid=g.id where (t.status='3' or t.status='4') and t.businessdate LIKE '${daymonth}%'
+        GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+        select t1.goodsid,g.brand,g.deptid,g.barcode,g.defaultsupplier as supplierid,t.outstorageid as storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        SUM(-t1.unitnum) as allocateoutnum,SUM(-t1.totalbox) as allocateouttotalbox,SUM(-t1.costprice*t1.unitnum) as allocateoutamount,SUM(-t1.notaxamount) as allocateoutnotaxamount,
+        0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount, 0 as costnotaxlossamount
+        from t_storage_allocate_out t
+        RIGHT JOIN t_storage_allocate_out_detail t1 on t.id = t1.billno
+        LEFT JOIN t_base_goods_info g on t1.goodsid=g.id where (t.status='3' or t.status='4') and t.businessdate LIKE '${daymonth}%'
+        GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+        select t1.goodsid,t1.brandid,g.deptid,g.barcode,g.defaultsupplier as supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        SUM(-t1.unitnum) as lossnum,SUM(-t1.totalbox) as losstotalbox,SUM(-t1.taxamount) as lossamount,SUM(-t1.notaxamount) as lossnotaxamount, SUM(-t1.realcostprice*t1.unitnum) as costlossamount, SUM((-t1.realcostprice*t1.unitnum)/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as costnotaxlossamount
+        from t_storage_other_out t
+        RIGHT JOIN t_storage_other_out_detail t1 on t.id=t1.billid
+        LEFT JOIN t_base_goods_info g on t1.goodsid=g.id
+        LEFT JOIN t_base_finance_taxtype ty ON g.defaulttaxtype = ty.id where (t.status='3' or t.status='4') and t.businessdate LIKE '${daymonth}%'
+        GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+        select t1.goodsid,t1.brandid,g.deptid,g.barcode,g.defaultsupplier as supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        SUM(t1.unitnum) as lossnum,SUM(t1.totalbox) as losstotalbox,SUM(t1.taxamount) as lossamount,SUM(t1.notaxamount) as lossnotaxamount, SUM(t1.realcostprice*t1.unitnum) as costlossamount, SUM((t1.realcostprice*t1.unitnum)/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as costnotaxlossamount
+        from t_storage_other_enter t
+        RIGHT JOIN t_storage_other_enter_detail t1 on t.id=t1.billid
+        LEFT JOIN t_base_goods_info g on t1.goodsid=g.id
+        LEFT JOIN t_base_finance_taxtype ty ON g.defaulttaxtype = ty.id where (t.status='3' or t.status='4') and t.businessdate LIKE '${daymonth}%'
+        GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+        SELECT t1.goodsid,t1.brandid,g.deptid,g.barcode,g.defaultsupplier as supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        SUM(t1.adjustnum) as lossnum,SUM(t1.totalbox) as losstotalbox,SUM(t1.amount) as lossamount,SUM(t1.amount/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as lossnotaxamount, SUM(t1.price*t1.adjustnum) as costlossamount, SUM((t1.price*t1.adjustnum)/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as costnotaxlossamount
+        from t_storage_adjustments t
+        RIGHT JOIN t_storage_adjustments_detail t1 on t.id=t1.adjustmentsid
+        LEFT JOIN t_base_goods_info g on t1.goodsid=g.id
+        LEFT JOIN t_base_finance_taxtype ty ON g.defaulttaxtype = ty.id where t.status='4' and t.billtype='1' and t.businessdate LIKE '${daymonth}%'
+        GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+        SELECT t1.goodsid,t1.brandid,g.deptid,g.barcode,g.defaultsupplier as supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        SUM(-t1.adjustnum) as lossnum,SUM(-t1.totalbox) as losstotalbox,SUM(-t1.amount) as lossamount,SUM(-t1.amount/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as lossnotaxamount, SUM(-t1.price*t1.adjustnum) as costlossamount, SUM((-t1.price*t1.adjustnum)/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as costnotaxlossamount
+        from t_storage_adjustments t
+        RIGHT JOIN t_storage_adjustments_detail t1 on t.id=t1.adjustmentsid
+        LEFT JOIN t_base_goods_info g on t1.goodsid=g.id
+        LEFT JOIN t_base_finance_taxtype ty ON g.defaulttaxtype = ty.id where t.status='4' and t.billtype='2' and t.businessdate LIKE '${daymonth}%'
+        GROUP BY goodsid,storageid,supplierid
+        ) z group by goodsid,storageid,supplierid;
+    </insert>
+
+    <!-- 处理实际每日进销存数据 -->
+    <delete id="clearRealBuySaleReportData">
+        TRUNCATE TABLE t_report_storage_day_real
+    </delete>
+    <select id="getRealBuySaleReportDayCountByDate" parameterType="java.lang.String" resultType="int">
+        select count(1) FROM t_report_storage_day_real t where t.businessdate = #{yesdate}
+    </select>
+    <insert id="addRealBuySaleReportDay" parameterType="java.util.Map">
+        DELETE FROM t_report_storage_day_real WHERE businessdate = '${businessdate}';
+
+        insert into t_report_storage_day_real (businessdate,goodsid,brandid,deptid,barcode,supplierid,storageid,unitid,
+        price,initnum,inittotalbox,initamount,initnotaxamount,isdiscount,
+        buyinnum,buyintotalbox,buyinamount,buyinnotaxamount,buyoutnum,buyouttotalbox,buyoutamount,buyoutnotaxamount,enternum,entertotalbox,enteramount,enternotaxamount,
+        saleoutnum,saleouttotalbox,saleoutamount,saleoutnotaxamount,saleinnum,saleintotalbox,saleinamount,saleinnotaxamount,outnum,outtotalbox,outamount,outnotaxamount,costoutamount,costnotaxoutamount,
+        allocateinnum,allocateintotalbox,allocateinamount,allocateinnotaxamount,allocateoutnum,allocateouttotalbox,allocateoutamount,allocateoutnotaxamount,
+        lossnum,losstotalbox,lossamount,lossnotaxamount,costlossamount,costnotaxlossamount,
+        endnum,endtotalbox,endamount,endnotaxamount,addtime)
+        select '${businessdate}',z.goodsid,z.brandid,z.deptid,z.barcode,z.supplierid,z.storageid,z.unitid,
+        IF(sum(z.initnum+(z.buyinnum+z.buyoutnum)-(z.saleoutnum + z.saleinnum)+(z.allocateinnum+z.allocateoutnum)+z.lossnum)!=0,
+          sum(z.initamount+(z.buyinamount+z.buyoutamount)-z.costoutamount+(z.allocateinamount+z.allocateoutamount)+z.costlossamount)/sum(z.initnum+(z.buyinnum+z.buyoutnum)-(z.saleoutnum + z.saleinnum)+(z.allocateinnum+z.allocateoutnum)+z.lossnum)
+        ,0) as price,
+        sum(z.initnum) as initnum,sum(z.inittotalbox) as inittotalbox,sum(z.initamount) as initamount,sum(z.initnotaxamount) as initnotaxamount,z.isdiscount,
+        sum(z.buyinnum) as buyinnum,sum(z.buyintotalbox) as buyintotalbox,sum(z.buyinamount) as buyinamount,sum(z.buyinnotaxamount) as buyinnotaxamount,
+        sum(z.buyoutnum) as buyoutnum,sum(z.buyouttotalbox) as buyouttotalbox,sum(z.buyoutamount) as buyoutamount,sum(z.buyoutnotaxamount) as buyoutnotaxamount,
+        SUM(z.buyinnum + z.buyoutnum) as enternum,SUM(z.buyintotalbox + z.buyouttotalbox) as entertotalbox,SUM(z.buyinamount + z.buyoutamount) as enteramount,SUM(z.buyinnotaxamount + z.buyoutnotaxamount) as enternotaxamount,
+        SUM(z.saleoutnum) as saleoutnum,SUM(z.saleouttotalbox) as saleouttotalbox,SUM(z.saleoutamount) as saleoutamount,SUM(z.saleoutnotaxamount) as saleoutnotaxamount,
+        SUM(z.saleinnum) as saleinnum,SUM(z.saleintotalbox) as saleintotalbox,SUM(z.saleinamount) as saleinamount,SUM(z.saleinnotaxamount) as saleinnotaxamount,
+        SUM(z.saleoutnum + z.saleinnum) as outnum,SUM(z.saleouttotalbox + z.saleintotalbox) as outtotalbox,SUM(z.saleoutamount + z.saleinamount) as outamount,SUM(z.saleoutnotaxamount + z.saleinnotaxamount) as outnotaxamount,SUM(z.costoutamount) as costoutamount,SUM(z.costnotaxoutamount) as costnotaxoutamount,
+        SUM(z.allocateinnum) as allocateinnum,SUM(z.allocateintotalbox) as allocateintotalbox,SUM(z.allocateinamount) as allocateinamount,SUM(z.allocateinnotaxamount) as allocateinnotaxamount,
+        SUM(z.allocateoutnum) as allocateoutnum,SUM(z.allocateouttotalbox) as allocateouttotalbox,SUM(z.allocateoutamount) as allocateoutamount,SUM(z.allocateoutnotaxamount) as allocateoutnotaxamount,
+        sum(z.lossnum) as lossnum,sum(z.losstotalbox) as losstotalbox,sum(z.lossamount) as lossamount,sum(z.lossnotaxamount) as lossnotaxamount, sum(z.costlossamount) as costlossamount, sum(z.costnotaxlossamount) as costnotaxlossamount,
+        sum(z.initnum+(z.buyinnum+z.buyoutnum)-(z.saleoutnum + z.saleinnum)+(z.allocateinnum+z.allocateoutnum)+z.lossnum) as endnum,
+        sum(z.inittotalbox+(z.buyintotalbox+z.buyouttotalbox)-(z.saleouttotalbox + z.saleintotalbox)+(z.allocateintotalbox+z.allocateouttotalbox)+z.losstotalbox) as endtotalbox,
+        sum(z.initamount+(z.buyinamount+z.buyoutamount)-z.costoutamount+(z.allocateinamount+z.allocateoutamount)+z.costlossamount) as endamount,
+        sum(z.initnotaxamount+(z.buyinnotaxamount+z.buyoutnotaxamount)-z.costnotaxoutamount+(z.allocateinnotaxamount+z.allocateoutnotaxamount)+z.costnotaxlossamount) as endnotaxamount,
+        now()
+        from (
+        select t.goodsid,t.brandid,t.deptid,t.barcode,t.supplierid,t.storageid,t.unitid,'' as unitname,g.newstorageprice as price,
+        IF(${_storageday_count}>0,t.endnum,0) as initnum,IF(${_storageday_count}>0,t.endtotalbox,0) as inittotalbox,IF(${_storageday_count}>0,t.endamount,0) as initamount,IF(${_storageday_count}>0,t.endnotaxamount,0) as initnotaxamount,t.isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount,0 as costnotaxlossamount
+        from t_report_storage_day_real t
+        LEFT JOIN t_base_goods_info g on t.goodsid=g.id
+        where t.businessdate = '${yesdate}'
+        UNION ALL
+        select t.goodsid,g.brand as brandid,g.deptid,g.barcode,g.defaultsupplier as supplierid,t.storageid,g.mainunit as unitid,t.unitname as unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        SUM(t.unitnum) as buyinnum,SUM(t.auxnum) as buyintotalbox,SUM(t.unitamount) as buyinamount,SUM(t.notaxamount) as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount,0 as costnotaxlossamount
+        from t_storage_stockinit t
+        LEFT JOIN t_base_goods_info g on t.goodsid=g.id
+        where t.status='3' and DATE_FORMAT(t.audittime,'%Y-%m-%d') = STR_TO_DATE('${businessdate}','%Y-%m-%d')
+        GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+        select t1.goodsid,t1.brandid,g.deptid,g.barcode,t.supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        SUM(t1.unitnum) as buyinnum,SUM(t1.totalbox) as buyintotalbox,SUM(t1.taxamount) as buyinamount,SUM(t1.notaxamount) as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount,0 as costnotaxlossamount
+        from t_storage_purchase_enter t
+        RIGHT JOIN t_storage_purchase_enter_detail t1 on t.id=t1.purchaseenterid
+        LEFT JOIN t_base_goods_info g on t1.goodsid=g.id where (t.status='3' or t.status='4') and t.businessdate = '${businessdate}'
+        GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+        select t1.goodsid,t1.brandid,g.deptid,g.barcode,t.supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        SUM(-t1.unitnum) as buyoutnum,SUM(-t1.totalbox) as buyouttotalbox,SUM(-t1.taxamount) as buyoutamount,SUM(-t1.notaxamount) as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount,0 as costnotaxlossamount
+        from t_storage_purchasereject_out t
+        RIGHT JOIN t_storage_purchasereject_out_detail t1 on t.id=t1.orderid
+        LEFT JOIN t_base_goods_info g on t1.goodsid=g.id where (t.status='3' or t.status='4') and DATE_FORMAT(t.audittime,'%Y-%m-%d') = STR_TO_DATE('${businessdate}','%Y-%m-%d')
+        GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+        select t1.goodsid,t1.brandid,g.deptid,g.barcode,t1.supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        SUM(t1.unitnum) as saleoutnum,SUM(t1.totalbox) as saleouttotalbox,SUM(t1.taxamount) as saleoutamount,SUM(t1.notaxamount) as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,SUM(t1.costprice*t1.unitnum) as costoutamount,SUM((t1.costprice*t1.unitnum)/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount,0 as costnotaxlossamount
+        from t_storage_saleout t
+        RIGHT JOIN t_storage_saleout_detail t1 on t.id=t1.saleoutid
+        LEFT JOIN t_base_goods_info g on t1.goodsid=g.id
+        LEFT JOIN t_base_finance_taxtype ty ON g.defaulttaxtype = ty.id where (t.status='3' or t.status='4') and t.businessdate = '${businessdate}'
+        GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+        select t1.goodsid,t1.brandid,g.deptid,g.barcode,t1.supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        SUM(-t1.unitnum) as saleinnum,SUM(-t1.totalbox) as saleintotalbox,SUM(-t1.taxamount) as saleinamount,SUM(-t1.notaxamount) as saleinnotaxamount,SUM(-t1.costprice*t1.unitnum) as costoutamount,SUM((-t1.costprice*t1.unitnum)/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount,0 as costnotaxlossamount
+        from t_storage_salereject_enter t
+        RIGHT JOIN t_storage_salereject_enter_detail t1 on t.id=t1.salerejectid
+        LEFT JOIN t_base_goods_info g on t1.goodsid=g.id
+        LEFT JOIN t_base_finance_taxtype ty ON g.defaulttaxtype = ty.id where (t.status='3' or t.status='4') and DATE_FORMAT(t.audittime,'%Y-%m-%d') = STR_TO_DATE('${businessdate}','%Y-%m-%d')
+        GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+        select t.brandid as goodsid,t.brandid,b.deptid,'' as barcode,b.supplierid,'' as storageid,'' as unitid,'' as unitname,0 as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'1' as isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,SUM(t.amount) as saleinamount,SUM(t.notaxamount) as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount,0 as costnotaxlossamount
+        from t_account_customer_push_balance t
+        LEFT JOIN t_base_goods_brand b ON t.brandid = b.id where (t.status='3' or t.status='4') and t.businessdate = '${businessdate}'
+        GROUP BY brandid,supplierid
+        UNION ALL
+        select t1.goodsid,g.brand,g.deptid,g.barcode,g.defaultsupplier as supplierid,t.enterstorageid as storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        SUM(t1.unitnum) as allocateinnum,SUM(t1.totalbox) as allocateintotalbox,SUM(t1.taxamount) as allocateinamount,SUM(t1.notaxamount) as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount,0 as costnotaxlossamount
+        from t_storage_allocate_out t
+        RIGHT JOIN t_storage_allocate_out_detail t1 on t.id = t1.billno
+        LEFT JOIN t_base_goods_info g on t1.goodsid=g.id where (t.status='3' or t.status='4') and t.businessdate = '${businessdate}'
+        GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+        select t1.goodsid,g.brand,g.deptid,g.barcode,g.defaultsupplier as supplierid,t.outstorageid as storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        SUM(-t1.unitnum) as allocateoutnum,SUM(-t1.totalbox) as allocateouttotalbox,SUM(-t1.taxamount) as allocateoutamount,SUM(-t1.notaxamount) as allocateoutnotaxamount,
+        0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount,0 as costnotaxlossamount
+        from t_storage_allocate_out t
+        RIGHT JOIN t_storage_allocate_out_detail t1 on t.id = t1.billno
+        LEFT JOIN t_base_goods_info g on t1.goodsid=g.id where (t.status='3' or t.status='4') and t.businessdate = '${businessdate}'
+        GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+        select t1.goodsid,t1.brandid,g.deptid,g.barcode,g.defaultsupplier as supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        SUM(-t1.unitnum) as lossnum,SUM(-t1.totalbox) as losstotalbox,SUM(-t1.taxamount) as lossamount,SUM(-t1.notaxamount) as lossnotaxamount, SUM(-t1.costprice*t1.unitnum) as costlossamount,SUM((-t1.costprice*t1.unitnum)/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as costnotaxlossamount
+        from t_storage_other_out t
+        RIGHT JOIN t_storage_other_out_detail t1 on t.id=t1.billid
+        LEFT JOIN t_base_goods_info g on t1.goodsid=g.id
+        LEFT JOIN t_base_finance_taxtype ty ON g.defaulttaxtype = ty.id where (t.status='3' or t.status='4') and t.businessdate = '${businessdate}'
+        GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+        select t1.goodsid,t1.brandid,g.deptid,g.barcode,g.defaultsupplier as supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        SUM(t1.unitnum) as lossnum,SUM(t1.totalbox) as losstotalbox,SUM(t1.taxamount) as lossamount,SUM(t1.notaxamount) as lossnotaxamount, SUM(t1.costprice*t1.unitnum) as costlossamount,SUM((t1.costprice*t1.unitnum)/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as costnotaxlossamount
+        from t_storage_other_enter t
+        RIGHT JOIN t_storage_other_enter_detail t1 on t.id=t1.billid
+        LEFT JOIN t_base_goods_info g on t1.goodsid=g.id
+        LEFT JOIN t_base_finance_taxtype ty ON g.defaulttaxtype = ty.id where (t.status='3' or t.status='4') and t.businessdate = '${businessdate}'
+        GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+        SELECT t1.goodsid,t1.brandid,g.deptid,g.barcode,g.defaultsupplier as supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        SUM(t1.adjustnum) as lossnum,SUM(t1.totalbox) as losstotalbox,SUM(t1.amount) as lossamount,SUM(t1.amount/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as lossnotaxamount, SUM(t1.price*t1.adjustnum) as costlossamount, SUM((t1.price*t1.adjustnum)/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as costnotaxlossamount
+        from t_storage_adjustments t
+        RIGHT JOIN t_storage_adjustments_detail t1 on t.id=t1.adjustmentsid
+        LEFT JOIN t_base_goods_info g on t1.goodsid=g.id
+        LEFT JOIN t_base_finance_taxtype ty ON g.defaulttaxtype = ty.id where t.status='4' and t.billtype='1' and t.businessdate = '${businessdate}'
+        GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+        SELECT t1.goodsid,t1.brandid,g.deptid,g.barcode,g.defaultsupplier as supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        SUM(-t1.adjustnum) as lossnum,SUM(-t1.totalbox) as losstotalbox,SUM(-t1.amount) as lossamount,SUM(-t1.amount/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as lossnotaxamount, SUM(-t1.price*t1.adjustnum) as costlossamount, SUM((-t1.price*t1.adjustnum)/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as costnotaxlossamount
+        from t_storage_adjustments t
+        RIGHT JOIN t_storage_adjustments_detail t1 on t.id=t1.adjustmentsid
+        LEFT JOIN t_base_goods_info g on t1.goodsid=g.id
+        LEFT JOIN t_base_finance_taxtype ty ON g.defaulttaxtype = ty.id where t.status='4' and t.billtype='2' and t.businessdate = '${businessdate}'
+        GROUP BY goodsid,storageid,supplierid
+        )z group by goodsid,storageid,supplierid;
+    </insert>
+    <update id="updateRealBuySaleReprotDayPrice">
+        update t_report_storage_day_real t,t_storage_summary t1,t_base_storage_info s
+        set t.price=t1.costprice
+        where t.storageid=t1.storageid and t.storageid=s.id and s.isaloneaccount='1' and t.goodsid=t1.goodsid and t.businessdate=#{date}
+    </update>
+    <insert id="addRealBuySaleReportDayHD" parameterType="java.util.Map">
+        DELETE FROM t_report_storage_day_real WHERE businessdate = '${businessdate}';
+
+        insert into t_report_storage_day_real (businessdate,goodsid,brandid,deptid,barcode,supplierid,storageid,unitid,
+        price,initnum,inittotalbox,initamount,initnotaxamount,isdiscount,
+        buyinnum,buyintotalbox,buyinamount,buyinnotaxamount,buyoutnum,buyouttotalbox,buyoutamount,buyoutnotaxamount,enternum,entertotalbox,enteramount,enternotaxamount,
+        saleoutnum,saleouttotalbox,saleoutamount,saleoutnotaxamount,saleinnum,saleintotalbox,saleinamount,saleinnotaxamount,outnum,outtotalbox,outamount,outnotaxamount,costoutamount,costnotaxoutamount,
+        allocateinnum,allocateintotalbox,allocateinamount,allocateinnotaxamount,allocateoutnum,allocateouttotalbox,allocateoutamount,allocateoutnotaxamount,
+        lossnum,losstotalbox,lossamount,lossnotaxamount,costlossamount,costnotaxlossamount,
+        endnum,endtotalbox,endamount,endnotaxamount,addtime)
+        select '${businessdate}',z.goodsid,z.brandid,z.deptid,z.barcode,z.supplierid,z.storageid,z.unitid,
+        IF(sum(z.initnum+(z.buyinnum+z.buyoutnum)-(z.saleoutnum + z.saleinnum)+(z.allocateinnum+z.allocateoutnum)+z.lossnum)!=0,
+          sum(z.initamount+(z.buyinamount+z.buyoutamount)-z.costoutamount+(z.allocateinamount+z.allocateoutamount)+z.costlossamount)/sum(z.initnum+(z.buyinnum+z.buyoutnum)-(z.saleoutnum + z.saleinnum)+(z.allocateinnum+z.allocateoutnum)+z.lossnum)
+        ,0) as price,
+        sum(z.initnum) as initnum,sum(z.inittotalbox) as inittotalbox,sum(z.initamount) as initamount,sum(z.initnotaxamount) as initnotaxamount,z.isdiscount,
+        sum(z.buyinnum) as buyinnum,sum(z.buyintotalbox) as buyintotalbox,sum(z.buyinamount) as buyinamount,sum(z.buyinnotaxamount) as buyinnotaxamount,
+        sum(z.buyoutnum) as buyoutnum,sum(z.buyouttotalbox) as buyouttotalbox,sum(z.buyoutamount) as buyoutamount,sum(z.buyoutnotaxamount) as buyoutnotaxamount,
+        SUM(z.buyinnum + z.buyoutnum) as enternum,SUM(z.buyintotalbox + z.buyouttotalbox) as entertotalbox,SUM(z.buyinamount + z.buyoutamount) as enteramount,SUM(z.buyinnotaxamount + z.buyoutnotaxamount) as enternotaxamount,
+        SUM(z.saleoutnum) as saleoutnum,SUM(z.saleouttotalbox) as saleouttotalbox,SUM(z.saleoutamount) as saleoutamount,SUM(z.saleoutnotaxamount) as saleoutnotaxamount,
+        SUM(z.saleinnum) as saleinnum,SUM(z.saleintotalbox) as saleintotalbox,SUM(z.saleinamount) as saleinamount,SUM(z.saleinnotaxamount) as saleinnotaxamount,
+        SUM(z.saleoutnum + z.saleinnum) as outnum,SUM(z.saleouttotalbox + z.saleintotalbox) as outtotalbox,SUM(z.saleoutamount + z.saleinamount) as outamount,SUM(z.saleoutnotaxamount + z.saleinnotaxamount) as outnotaxamount,SUM(z.costoutamount) as costoutamount,SUM(z.costnotaxoutamount) as costnotaxoutamount,
+        SUM(z.allocateinnum) as allocateinnum,SUM(z.allocateintotalbox) as allocateintotalbox,SUM(z.allocateinamount) as allocateinamount,SUM(z.allocateinnotaxamount) as allocateinnotaxamount,
+        SUM(z.allocateoutnum) as allocateoutnum,SUM(z.allocateouttotalbox) as allocateouttotalbox,SUM(z.allocateoutamount) as allocateoutamount,SUM(z.allocateoutnotaxamount) as allocateoutnotaxamount,
+        sum(z.lossnum) as lossnum,sum(z.losstotalbox) as losstotalbox,sum(z.lossamount) as lossamount,sum(z.lossnotaxamount) as lossnotaxamount, sum(z.costlossamount) as costlossamount, sum(z.costnotaxlossamount) as costnotaxlossamount,
+        sum(z.initnum+(z.buyinnum+z.buyoutnum)-(z.saleoutnum + z.saleinnum)+(z.allocateinnum+z.allocateoutnum)+z.lossnum) as endnum,
+        sum(z.inittotalbox+(z.buyintotalbox+z.buyouttotalbox)-(z.saleouttotalbox + z.saleintotalbox)+(z.allocateintotalbox+z.allocateouttotalbox)+z.losstotalbox) as endtotalbox,
+        sum(z.initamount+(z.buyinamount+z.buyoutamount)-z.costoutamount+(z.allocateinamount+z.allocateoutamount)+z.costlossamount) as endamount,
+        sum(z.initnotaxamount+(z.buyinnotaxamount+z.buyoutnotaxamount)-z.costnotaxoutamount+(z.allocateinnotaxamount+z.allocateoutnotaxamount)+z.costnotaxlossamount) as endnotaxamount,
+        now()
+        from (
+        select t.goodsid,t.brandid,t.deptid,t.barcode,t.supplierid,t.storageid,t.unitid,'' as unitname,g.newstorageprice as price,
+        IF(${_storageday_count}>0,t.endnum,0) as initnum,IF(${_storageday_count}>0,t.endtotalbox,0) as inittotalbox,IF(${_storageday_count}>0,t.endamount,0) as initamount,IF(${_storageday_count}>0,t.endnotaxamount,0) as initnotaxamount,t.isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount,0 as costnotaxlossamount
+        from t_report_storage_day_real t
+        LEFT JOIN t_base_goods_info g on t.goodsid=g.id
+        where t.businessdate = '${yesdate}'
+        UNION ALL
+        select t.goodsid,g.brand as brandid,g.deptid,g.barcode,g.defaultsupplier as supplierid,t.storageid,g.mainunit as unitid,t.unitname as unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        SUM(t.unitnum) as buyinnum,SUM(t.auxnum) as buyintotalbox,SUM(t.unitamount) as buyinamount,SUM(t.notaxamount) as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount,0 as costnotaxlossamount
+        from t_storage_stockinit t
+        LEFT JOIN t_base_goods_info g on t.goodsid=g.id
+        where t.status='3' and DATE_FORMAT(t.audittime,'%Y-%m-%d') = STR_TO_DATE('${businessdate}','%Y-%m-%d')
+        GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+        select t1.goodsid,t1.brandid,g.deptid,g.barcode,t.supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        SUM(t1.unitnum) as buyinnum,SUM(t1.totalbox) as buyintotalbox,SUM(t1.taxamount) as buyinamount,SUM(t1.notaxamount) as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount,0 as costnotaxlossamount
+        from t_storage_purchase_enter t
+        RIGHT JOIN t_storage_purchase_enter_detail t1 on t.id=t1.purchaseenterid
+        LEFT JOIN t_base_goods_info g on t1.goodsid=g.id where (t.status='3' or t.status='4') and t.businessdate = '${businessdate}'
+        GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+        select t1.goodsid,t1.brandid,g.deptid,g.barcode,t.supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        SUM(-t1.unitnum) as buyoutnum,SUM(-t1.totalbox) as buyouttotalbox,SUM(-t1.taxamount) as buyoutamount,SUM(-t1.notaxamount) as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount,0 as costnotaxlossamount
+        from t_storage_purchasereject_out t
+        RIGHT JOIN t_storage_purchasereject_out_detail t1 on t.id=t1.orderid
+        LEFT JOIN t_base_goods_info g on t1.goodsid=g.id where (t.status='3' or t.status='4') and DATE_FORMAT(t.audittime,'%Y-%m-%d') = STR_TO_DATE('${businessdate}','%Y-%m-%d')
+        GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+        select t1.goodsid,t1.brandid,g.deptid,g.barcode,t1.supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        SUM(t1.unitnum) as saleoutnum,SUM(t1.totalbox) as saleouttotalbox,SUM(t1.taxamount) as saleoutamount,SUM(t1.notaxamount) as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,SUM(t1.realcostprice*t1.unitnum) as costoutamount,SUM((t1.realcostprice*t1.unitnum)/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount,0 as costnotaxlossamount
+        from t_storage_saleout t
+        RIGHT JOIN t_storage_saleout_detail t1 on t.id=t1.saleoutid
+        LEFT JOIN t_base_goods_info g on t1.goodsid=g.id
+        LEFT JOIN t_base_finance_taxtype ty ON g.defaulttaxtype = ty.id where (t.status='3' or t.status='4') and t.businessdate = '${businessdate}'
+        GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+        select t1.goodsid,t1.brandid,g.deptid,g.barcode,t1.supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        SUM(-t1.unitnum) as saleinnum,SUM(-t1.totalbox) as saleintotalbox,SUM(-t1.taxamount) as saleinamount,SUM(-t1.notaxamount) as saleinnotaxamount,SUM(-t1.realcostprice*t1.unitnum) as costoutamount,SUM((-t1.realcostprice*t1.unitnum)/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount,0 as costnotaxlossamount
+        from t_storage_salereject_enter t
+        RIGHT JOIN t_storage_salereject_enter_detail t1 on t.id=t1.salerejectid
+        LEFT JOIN t_base_goods_info g on t1.goodsid=g.id
+        LEFT JOIN t_base_finance_taxtype ty ON g.defaulttaxtype = ty.id where (t.status='3' or t.status='4') and DATE_FORMAT(t.audittime,'%Y-%m-%d') = STR_TO_DATE('${businessdate}','%Y-%m-%d')
+        GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+        select t.brandid as goodsid,t.brandid,b.deptid,'' as barcode,b.supplierid,'' as storageid,'' as unitid,'' as unitname,0 as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'1' as isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,SUM(t.amount) as saleinamount,SUM(t.notaxamount) as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount,0 as costnotaxlossamount
+        from t_account_customer_push_balance t
+        LEFT JOIN t_base_goods_brand b ON t.brandid = b.id where (t.status='3' or t.status='4') and t.businessdate = '${businessdate}'
+        GROUP BY brandid,supplierid
+        UNION ALL
+        select t1.goodsid,g.brand,g.deptid,g.barcode,g.defaultsupplier as supplierid,t.enterstorageid as storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        SUM(t1.unitnum) as allocateinnum,SUM(t1.totalbox) as allocateintotalbox,SUM(t1.taxamount) as allocateinamount,SUM(t1.notaxamount) as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount,0 as costnotaxlossamount
+        from t_storage_allocate_out t
+        RIGHT JOIN t_storage_allocate_out_detail t1 on t.id = t1.billno
+        LEFT JOIN t_base_goods_info g on t1.goodsid=g.id where (t.status='3' or t.status='4') and t.businessdate = '${businessdate}'
+        GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+        select t1.goodsid,g.brand,g.deptid,g.barcode,g.defaultsupplier as supplierid,t.outstorageid as storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        SUM(-t1.unitnum) as allocateoutnum,SUM(-t1.totalbox) as allocateouttotalbox,SUM(-t1.costprice*t1.unitnum) as allocateoutamount,SUM(-t1.notaxamount) as allocateoutnotaxamount,
+        0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount,0 as costnotaxlossamount
+        from t_storage_allocate_out t
+        RIGHT JOIN t_storage_allocate_out_detail t1 on t.id = t1.billno
+        LEFT JOIN t_base_goods_info g on t1.goodsid=g.id where (t.status='3' or t.status='4') and t.businessdate = '${businessdate}'
+        GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+        select t1.goodsid,t1.brandid,g.deptid,g.barcode,g.defaultsupplier as supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        SUM(-t1.unitnum) as lossnum,SUM(-t1.totalbox) as losstotalbox,SUM(-t1.taxamount) as lossamount,SUM(-t1.notaxamount) as lossnotaxamount, SUM(-t1.realcostprice*t1.unitnum) as costlossamount,SUM((-t1.realcostprice*t1.unitnum)/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as costnotaxlossamount
+        from t_storage_other_out t
+        RIGHT JOIN t_storage_other_out_detail t1 on t.id=t1.billid
+        LEFT JOIN t_base_goods_info g on t1.goodsid=g.id
+        LEFT JOIN t_base_finance_taxtype ty ON g.defaulttaxtype = ty.id where (t.status='3' or t.status='4') and t.businessdate = '${businessdate}'
+        GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+        select t1.goodsid,t1.brandid,g.deptid,g.barcode,g.defaultsupplier as supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        SUM(t1.unitnum) as lossnum,SUM(t1.totalbox) as losstotalbox,SUM(t1.taxamount) as lossamount,SUM(t1.notaxamount) as lossnotaxamount, SUM(t1.realcostprice*t1.unitnum) as costlossamount,SUM((t1.realcostprice*t1.unitnum)/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as costnotaxlossamount
+        from t_storage_other_enter t
+        RIGHT JOIN t_storage_other_enter_detail t1 on t.id=t1.billid
+        LEFT JOIN t_base_goods_info g on t1.goodsid=g.id
+        LEFT JOIN t_base_finance_taxtype ty ON g.defaulttaxtype = ty.id where (t.status='3' or t.status='4') and t.businessdate = '${businessdate}'
+        GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+        SELECT t1.goodsid,t1.brandid,g.deptid,g.barcode,g.defaultsupplier as supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        SUM(t1.adjustnum) as lossnum,SUM(t1.totalbox) as losstotalbox,SUM(t1.amount) as lossamount,SUM(t1.amount/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as lossnotaxamount, SUM(t1.price*t1.adjustnum) as costlossamount, SUM((t1.price*t1.adjustnum)/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as costnotaxlossamount
+        from t_storage_adjustments t
+        RIGHT JOIN t_storage_adjustments_detail t1 on t.id=t1.adjustmentsid
+        LEFT JOIN t_base_goods_info g on t1.goodsid=g.id
+        LEFT JOIN t_base_finance_taxtype ty ON g.defaulttaxtype = ty.id where t.status='4' and t.billtype='1' and t.businessdate = '${businessdate}'
+        GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+        SELECT t1.goodsid,t1.brandid,g.deptid,g.barcode,g.defaultsupplier as supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        SUM(-t1.adjustnum) as lossnum,SUM(-t1.totalbox) as losstotalbox,SUM(-t1.amount) as lossamount,SUM(-t1.amount/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as lossnotaxamount, SUM(-t1.price*t1.adjustnum) as costlossamount, SUM((-t1.price*t1.adjustnum)/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as costnotaxlossamount
+        from t_storage_adjustments t
+        RIGHT JOIN t_storage_adjustments_detail t1 on t.id=t1.adjustmentsid
+        LEFT JOIN t_base_goods_info g on t1.goodsid=g.id
+        LEFT JOIN t_base_finance_taxtype ty ON g.defaulttaxtype = ty.id where t.status='4' and t.billtype='2' and t.businessdate = '${businessdate}'
+        GROUP BY goodsid,storageid,supplierid
+        )z group by goodsid,storageid,supplierid;
+    </insert>
+
+    <!-- 处理实际每月进销存数据 -->
+    <delete id="clearRealBuySaleReportMonthData">
+        TRUNCATE TABLE t_report_storage_month_real
+    </delete>
+    <select id="getRealBuySaleReportMonthCountByDate" parameterType="java.lang.String" resultType="int">
+        select count(1) FROM t_report_storage_month_real t where t.businessdate = #{yesmonth}
+    </select>
+    <insert id="addRealBuySaleReportMonth" parameterType="java.util.Map">
+        DELETE FROM t_report_storage_month_real WHERE businessdate = '${daymonth}';
+
+        insert into t_report_storage_month_real (businessdate,goodsid,brandid,deptid,barcode,supplierid,storageid,unitid,price,
+        initnum,inittotalbox,initamount,initnotaxamount,isdiscount,
+        buyinnum,buyintotalbox,buyinamount,buyinnotaxamount,buyoutnum,buyouttotalbox,buyoutamount,buyoutnotaxamount,enternum,entertotalbox,enteramount,enternotaxamount,
+        saleoutnum,saleouttotalbox,saleoutamount,saleoutnotaxamount,saleinnum,saleintotalbox,saleinamount,saleinnotaxamount,outnum,outtotalbox,outamount,outnotaxamount,costoutamount,costnotaxoutamount,
+        allocateinnum,allocateintotalbox,allocateinamount,allocateinnotaxamount,allocateoutnum,allocateouttotalbox,allocateoutamount,allocateoutnotaxamount,
+        lossnum,losstotalbox,lossamount,lossnotaxamount,costlossamount,costnotaxlossamount,
+        endnum,endtotalbox,endamount,endnotaxamount,addtime)
+        select '${daymonth}',z.goodsid,z.brandid,z.deptid,z.barcode,z.supplierid,z.storageid,z.unitid,
+        IF(sum(z.initnum+(z.buyinnum+z.buyoutnum)-(z.saleoutnum + z.saleinnum)+(z.allocateinnum+z.allocateoutnum)+z.lossnum)!=0,
+          sum(z.initamount+(z.buyinamount+z.buyoutamount)-z.costoutamount+(z.allocateinamount+z.allocateoutamount)+z.costlossamount)/sum(z.initnum+(z.buyinnum+z.buyoutnum)-(z.saleoutnum + z.saleinnum)+(z.allocateinnum+z.allocateoutnum)+z.lossnum)
+        ,0) as price,
+		sum(z.initnum) as initnum,sum(z.inittotalbox) as inittotalbox,sum(z.initamount) as initamount,sum(z.initnotaxamount) as initnotaxamount,z.isdiscount,
+		sum(z.buyinnum) as buyinnum,sum(z.buyintotalbox) as buyintotalbox,sum(z.buyinamount) as buyinamount,sum(z.buyinnotaxamount) as buyinnotaxamount,
+		sum(z.buyoutnum) as buyoutnum,sum(z.buyouttotalbox) as buyouttotalbox,sum(z.buyoutamount) as buyoutamount,sum(z.buyoutnotaxamount) as buyoutnotaxamount,
+		SUM(z.buyinnum + z.buyoutnum) as enternum,SUM(z.buyintotalbox + z.buyouttotalbox) as entertotalbox,SUM(z.buyinamount + z.buyoutamount) as enteramount,SUM(z.buyinnotaxamount + z.buyoutnotaxamount) as enternotaxamount,
+		SUM(z.saleoutnum) as saleoutnum,SUM(z.saleouttotalbox) as saleouttotalbox,SUM(z.saleoutamount) as saleoutamount,SUM(z.saleoutnotaxamount) as saleoutnotaxamount,
+		SUM(z.saleinnum) as saleinnum,SUM(z.saleintotalbox) as saleintotalbox,SUM(z.saleinamount) as saleinamount,SUM(z.saleinnotaxamount) as saleinnotaxamount,
+		SUM(z.saleoutnum + z.saleinnum) as outnum,SUM(z.saleouttotalbox + z.saleintotalbox) as outtotalbox,SUM(z.saleoutamount + z.saleinamount) as outamount,SUM(z.saleoutnotaxamount + z.saleinnotaxamount) as outnotaxamount,SUM(z.costoutamount) as costoutamount,SUM(z.costnotaxoutamount) as costnotaxoutamount,
+		SUM(z.allocateinnum) as allocateinnum,SUM(z.allocateintotalbox) as allocateintotalbox,SUM(z.allocateinamount) as allocateinamount,SUM(z.allocateinnotaxamount) as allocateinnotaxamount,
+		SUM(z.allocateoutnum) as allocateoutnum,SUM(z.allocateouttotalbox) as allocateouttotalbox,SUM(z.allocateoutamount) as allocateoutamount,SUM(z.allocateoutnotaxamount) as allocateoutnotaxamount,
+		sum(z.lossnum) as lossnum,sum(z.losstotalbox) as losstotalbox,sum(z.lossamount) as lossamount,sum(z.lossnotaxamount) as lossnotaxamount, sum(z.costlossamount) as costlossamount,sum(z.costnotaxlossamount) as costnotaxlossamount,
+		sum(z.initnum+(z.buyinnum+z.buyoutnum)-(z.saleoutnum + z.saleinnum)+(z.allocateinnum+z.allocateoutnum)+z.lossnum) as endnum,
+		sum(z.inittotalbox+(z.buyintotalbox+z.buyouttotalbox)-(z.saleouttotalbox + z.saleintotalbox)+(z.allocateintotalbox+z.allocateouttotalbox)+z.losstotalbox) as endtotalbox,
+		sum(z.initamount+(z.buyinamount+z.buyoutamount)-z.costoutamount+(z.allocateinamount+z.allocateoutamount)+z.costlossamount) as endamount,
+		sum(z.initnotaxamount+(z.buyinnotaxamount+z.buyoutnotaxamount)-z.costnotaxoutamount+(z.allocateinnotaxamount+z.allocateoutnotaxamount)+z.costnotaxlossamount) as endnotaxamount,
+		now()
+		from (
+		select t.goodsid,t.brandid,t.deptid,t.barcode,t.supplierid,t.storageid,t.unitid,'' as unitname,g.newstorageprice as price,
+		IF(${_storageday_count}>0,t.endnum,0) as initnum,IF(${_storageday_count}>0,t.endtotalbox,0) as inittotalbox,IF(${_storageday_count}>0,t.endamount,0) as initamount,IF(${_storageday_count}>0,t.endnotaxamount,0) as initnotaxamount,t.isdiscount,
+		0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+		0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+		0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+		0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+		0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+		0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+		0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount,0 as costnotaxlossamount
+		from t_report_storage_month_real t
+		LEFT JOIN t_base_goods_info g on t.goodsid=g.id
+		where t.businessdate = '${yesmonth}'
+		UNION ALL
+		select t.goodsid,g.brand as brandid,g.deptid,g.barcode,g.defaultsupplier as supplierid,t.storageid,g.mainunit as unitid,t.unitname as unitname,g.newstorageprice as price,
+		0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+		SUM(t.unitnum) as buyinnum,SUM(t.auxnum) as buyintotalbox,SUM(t.unitamount) as buyinamount,SUM(t.notaxamount) as buyinnotaxamount,
+		0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+		0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+		0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+		0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+		0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+		0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount, 0 as costnotaxlossamount
+		from t_storage_stockinit t
+		LEFT JOIN t_base_goods_info g on t.goodsid=g.id
+		where t.status='3' and t.audittime LIKE '${daymonth}%'
+		GROUP BY goodsid,storageid,supplierid
+	    UNION ALL
+		select t1.goodsid,t1.brandid,g.deptid,g.barcode,t.supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+		0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+		SUM(t1.unitnum) as buyinnum,SUM(t1.totalbox) as buyintotalbox,SUM(t1.taxamount) as buyinamount,SUM(t1.notaxamount) as buyinnotaxamount,
+		0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+		0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+		0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+		0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+		0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+		0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount, 0 as costnotaxlossamount
+		from t_storage_purchase_enter t
+		RIGHT JOIN t_storage_purchase_enter_detail t1 on t.id=t1.purchaseenterid
+		LEFT JOIN t_base_goods_info g on t1.goodsid=g.id where (t.status='3' or t.status='4') and t.businessdate LIKE '${daymonth}%'
+		GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+		select t1.goodsid,t1.brandid,g.deptid,g.barcode,t.supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+		0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+		0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+		SUM(-t1.unitnum) as buyoutnum,SUM(-t1.totalbox) as buyouttotalbox,SUM(-t1.taxamount) as buyoutamount,SUM(-t1.notaxamount) as buyoutnotaxamount,
+		0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+		0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+		0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+		0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+		0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount, 0 as costnotaxlossamount
+		from t_storage_purchasereject_out t
+		RIGHT JOIN t_storage_purchasereject_out_detail t1 on t.id=t1.orderid
+		LEFT JOIN t_base_goods_info g on t1.goodsid=g.id where (t.status='3' or t.status='4') and t.audittime LIKE '${daymonth}%'
+		GROUP BY goodsid,storageid,supplierid
+	    UNION ALL
+		select t1.goodsid,t1.brandid,g.deptid,g.barcode,t1.supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+		0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+		0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+		0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+		SUM(t1.unitnum) as saleoutnum,SUM(t1.totalbox) as saleouttotalbox,SUM(t1.taxamount) as saleoutamount,SUM(t1.notaxamount) as saleoutnotaxamount,
+		0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,SUM(t1.costprice*t1.unitnum) as costoutamount,SUM((t1.costprice*t1.unitnum)/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as costnotaxoutamount,
+		0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+		0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+		0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount, 0 as costnotaxlossamount
+		from t_storage_saleout t
+		RIGHT JOIN t_storage_saleout_detail t1 on t.id=t1.saleoutid
+		LEFT JOIN t_base_goods_info g on t1.goodsid=g.id
+		LEFT JOIN t_base_finance_taxtype ty ON g.defaulttaxtype = ty.id where (t.status='3' or t.status='4') and t.businessdate LIKE '${daymonth}%'
+		GROUP BY goodsid,storageid,supplierid
+	    UNION ALL
+		select t1.goodsid,t1.brandid,g.deptid,g.barcode,t1.supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+		0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+		0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+		0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+		0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+		SUM(-t1.unitnum) as saleinnum,SUM(-t1.totalbox) as saleintotalbox,SUM(-t1.taxamount) as saleinamount,SUM(-t1.notaxamount) as saleinnotaxamount,SUM(-t1.costprice*t1.unitnum) as costoutamount,SUM((-t1.costprice*t1.unitnum)/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as costnotaxoutamount,
+		0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+		0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+		0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount, 0 as costnotaxlossamount
+		from t_storage_salereject_enter t
+		RIGHT JOIN t_storage_salereject_enter_detail t1 on t.id=t1.salerejectid
+		LEFT JOIN t_base_goods_info g on t1.goodsid=g.id
+		LEFT JOIN t_base_finance_taxtype ty ON g.defaulttaxtype = ty.id where (t.status='3' or t.status='4') and t.audittime LIKE '${daymonth}%'
+		GROUP BY goodsid,storageid,supplierid
+	    UNION ALL
+		select t.brandid as goodsid,t.brandid,b.deptid,'' as barcode,b.supplierid,'' as storageid,'' as unitid,'' as unitname,0 as price,
+		0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'1' as isdiscount,
+		0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+		0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+		0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+		0 as saleinnum,0 as saleintotalbox,SUM(t.amount) as saleinamount,SUM(t.notaxamount) as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+		0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+		0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+		0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount, 0 as costnotaxlossamount
+		from t_account_customer_push_balance t
+		LEFT JOIN t_base_goods_brand b ON t.brandid = b.id where (t.status='3' or t.status='4') and t.businessdate LIKE '${daymonth}%'
+		GROUP BY brandid,supplierid
+	    UNION ALL
+		select t1.goodsid,g.brand,g.deptid,g.barcode,g.defaultsupplier as supplierid,t.enterstorageid as storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+		0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+		0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+		0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+		0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+		0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+		SUM(t1.unitnum) as allocateinnum,SUM(t1.totalbox) as allocateintotalbox,SUM(t1.taxamount) as allocateinamount,SUM(t1.notaxamount) as allocateinnotaxamount,
+		0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+		0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount, 0 as costnotaxlossamount
+		from t_storage_allocate_out t
+		RIGHT JOIN t_storage_allocate_out_detail t1 on t.id = t1.billno
+		LEFT JOIN t_base_goods_info g on t1.goodsid=g.id where (t.status='3' or t.status='4') and t.businessdate LIKE '${daymonth}%'
+		GROUP BY goodsid,storageid,supplierid
+	    UNION ALL
+		select t1.goodsid,g.brand,g.deptid,g.barcode,g.defaultsupplier as supplierid,t.outstorageid as storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+		0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+		0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+		0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+		0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+		0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+		0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+		SUM(-t1.unitnum) as allocateoutnum,SUM(-t1.totalbox) as allocateouttotalbox,SUM(-t1.costprice*t1.unitnum) as allocateoutamount,SUM(-t1.notaxamount) as allocateoutnotaxamount,
+		0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount, 0 as costnotaxlossamount
+		from t_storage_allocate_out t
+		RIGHT JOIN t_storage_allocate_out_detail t1 on t.id = t1.billno
+		LEFT JOIN t_base_goods_info g on t1.goodsid=g.id where (t.status='3' or t.status='4') and t.businessdate LIKE '${daymonth}%'
+		GROUP BY goodsid,storageid,supplierid
+	    UNION ALL
+		select t1.goodsid,t1.brandid,g.deptid,g.barcode,g.defaultsupplier as supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+		0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+		0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+		0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+		0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+		0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+		0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+		0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+		SUM(-t1.unitnum) as lossnum,SUM(-t1.totalbox) as losstotalbox,SUM(-t1.taxamount) as lossamount,SUM(-t1.notaxamount) as lossnotaxamount, SUM(-t1.costprice*t1.unitnum) as costlossamount, SUM((-t1.costprice*t1.unitnum)/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as costnotaxlossamount
+		from t_storage_other_out t
+		RIGHT JOIN t_storage_other_out_detail t1 on t.id=t1.billid
+		LEFT JOIN t_base_goods_info g on t1.goodsid=g.id
+		LEFT JOIN t_base_finance_taxtype ty ON g.defaulttaxtype = ty.id where (t.status='3' or t.status='4') and t.businessdate LIKE '${daymonth}%'
+		GROUP BY goodsid,storageid,supplierid
+	    UNION ALL
+		select t1.goodsid,t1.brandid,g.deptid,g.barcode,g.defaultsupplier as supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+		0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+		0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+		0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+		0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+		0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+		0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+		0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+		SUM(t1.unitnum) as lossnum,SUM(t1.totalbox) as losstotalbox,SUM(t1.taxamount) as lossamount,SUM(t1.notaxamount) as lossnotaxamount, SUM(t1.costprice*t1.unitnum) as costlossamount, SUM((t1.costprice*t1.unitnum)/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as costnotaxlossamount
+		from t_storage_other_enter t
+		RIGHT JOIN t_storage_other_enter_detail t1 on t.id=t1.billid
+		LEFT JOIN t_base_goods_info g on t1.goodsid=g.id
+		LEFT JOIN t_base_finance_taxtype ty ON g.defaulttaxtype = ty.id where (t.status='3' or t.status='4') and t.businessdate LIKE '${daymonth}%'
+		GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+		SELECT t1.goodsid,t1.brandid,g.deptid,g.barcode,g.defaultsupplier as supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+		0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+		0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+		0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+		0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+		0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+		0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+		0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+		SUM(t1.adjustnum) as lossnum,SUM(t1.totalbox) as losstotalbox,SUM(t1.amount) as lossamount,SUM(t1.amount/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as lossnotaxamount, SUM(t1.price*t1.adjustnum) as costlossamount, SUM((t1.price*t1.adjustnum)/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as costnotaxlossamount
+		from t_storage_adjustments t
+		RIGHT JOIN t_storage_adjustments_detail t1 on t.id=t1.adjustmentsid
+		LEFT JOIN t_base_goods_info g on t1.goodsid=g.id
+		LEFT JOIN t_base_finance_taxtype ty ON g.defaulttaxtype = ty.id where t.status='4' and t.billtype='1' and t.businessdate LIKE '${daymonth}%'
+		GROUP BY goodsid,storageid,supplierid
+	    UNION ALL
+		SELECT t1.goodsid,t1.brandid,g.deptid,g.barcode,g.defaultsupplier as supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+		0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+		0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+		0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+		0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+		0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+		0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+		0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+		SUM(-t1.adjustnum) as lossnum,SUM(-t1.totalbox) as losstotalbox,SUM(-t1.amount) as lossamount,SUM(-t1.amount/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as lossnotaxamount, SUM(-t1.price*t1.adjustnum) as costlossamount, SUM((-t1.price*t1.adjustnum)/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as costnotaxlossamount
+		from t_storage_adjustments t
+		RIGHT JOIN t_storage_adjustments_detail t1 on t.id=t1.adjustmentsid
+		LEFT JOIN t_base_goods_info g on t1.goodsid=g.id
+		LEFT JOIN t_base_finance_taxtype ty ON g.defaulttaxtype = ty.id where t.status='4' and t.billtype='2' and t.businessdate LIKE '${daymonth}%'
+		GROUP BY goodsid,storageid,supplierid
+		) z group by goodsid,storageid,supplierid;
+    </insert>
+    <update id="updateRealBuySaleReprotMonthPrice">
+        update t_report_storage_month_real t,t_storage_summary t1,t_base_storage_info s
+        set t.price=t1.costprice
+        where t.storageid=t1.storageid and t.storageid=s.id and s.isaloneaccount='1' and t.goodsid=t1.goodsid and t.businessdate=#{daymonth}
+    </update>
+    <insert id="addRealBuySaleReportMonthHD" parameterType="java.util.Map">
+        DELETE FROM t_report_storage_month_real WHERE businessdate = '${daymonth}';
+
+        insert into t_report_storage_month_real (businessdate,goodsid,brandid,deptid,barcode,supplierid,storageid,unitid,price,
+        initnum,inittotalbox,initamount,initnotaxamount,isdiscount,
+        buyinnum,buyintotalbox,buyinamount,buyinnotaxamount,buyoutnum,buyouttotalbox,buyoutamount,buyoutnotaxamount,enternum,entertotalbox,enteramount,enternotaxamount,
+        saleoutnum,saleouttotalbox,saleoutamount,saleoutnotaxamount,saleinnum,saleintotalbox,saleinamount,saleinnotaxamount,outnum,outtotalbox,outamount,outnotaxamount,costoutamount,costnotaxoutamount,
+        allocateinnum,allocateintotalbox,allocateinamount,allocateinnotaxamount,allocateoutnum,allocateouttotalbox,allocateoutamount,allocateoutnotaxamount,
+        lossnum,losstotalbox,lossamount,lossnotaxamount,costlossamount,costnotaxlossamount,
+        endnum,endtotalbox,endamount,endnotaxamount,addtime)
+        select '${daymonth}',z.goodsid,z.brandid,z.deptid,z.barcode,z.supplierid,z.storageid,z.unitid,
+        IF(sum(z.initnum+(z.buyinnum+z.buyoutnum)-(z.saleoutnum + z.saleinnum)+(z.allocateinnum+z.allocateoutnum)+z.lossnum)!=0,
+          sum(z.initamount+(z.buyinamount+z.buyoutamount)-z.costoutamount+(z.allocateinamount+z.allocateoutamount)+z.costlossamount)/sum(z.initnum+(z.buyinnum+z.buyoutnum)-(z.saleoutnum + z.saleinnum)+(z.allocateinnum+z.allocateoutnum)+z.lossnum)
+        ,0) as price,
+        sum(z.initnum) as initnum,sum(z.inittotalbox) as inittotalbox,sum(z.initamount) as initamount,sum(z.initnotaxamount) as initnotaxamount,z.isdiscount,
+        sum(z.buyinnum) as buyinnum,sum(z.buyintotalbox) as buyintotalbox,sum(z.buyinamount) as buyinamount,sum(z.buyinnotaxamount) as buyinnotaxamount,
+        sum(z.buyoutnum) as buyoutnum,sum(z.buyouttotalbox) as buyouttotalbox,sum(z.buyoutamount) as buyoutamount,sum(z.buyoutnotaxamount) as buyoutnotaxamount,
+        SUM(z.buyinnum + z.buyoutnum) as enternum,SUM(z.buyintotalbox + z.buyouttotalbox) as entertotalbox,SUM(z.buyinamount + z.buyoutamount) as enteramount,SUM(z.buyinnotaxamount + z.buyoutnotaxamount) as enternotaxamount,
+        SUM(z.saleoutnum) as saleoutnum,SUM(z.saleouttotalbox) as saleouttotalbox,SUM(z.saleoutamount) as saleoutamount,SUM(z.saleoutnotaxamount) as saleoutnotaxamount,
+        SUM(z.saleinnum) as saleinnum,SUM(z.saleintotalbox) as saleintotalbox,SUM(z.saleinamount) as saleinamount,SUM(z.saleinnotaxamount) as saleinnotaxamount,
+        SUM(z.saleoutnum + z.saleinnum) as outnum,SUM(z.saleouttotalbox + z.saleintotalbox) as outtotalbox,SUM(z.saleoutamount + z.saleinamount) as outamount,SUM(z.saleoutnotaxamount + z.saleinnotaxamount) as outnotaxamount,SUM(z.costoutamount) as costoutamount,SUM(z.costnotaxoutamount) as costnotaxoutamount,
+        SUM(z.allocateinnum) as allocateinnum,SUM(z.allocateintotalbox) as allocateintotalbox,SUM(z.allocateinamount) as allocateinamount,SUM(z.allocateinnotaxamount) as allocateinnotaxamount,
+        SUM(z.allocateoutnum) as allocateoutnum,SUM(z.allocateouttotalbox) as allocateouttotalbox,SUM(z.allocateoutamount) as allocateoutamount,SUM(z.allocateoutnotaxamount) as allocateoutnotaxamount,
+        sum(z.lossnum) as lossnum,sum(z.losstotalbox) as losstotalbox,sum(z.lossamount) as lossamount,sum(z.lossnotaxamount) as lossnotaxamount, sum(z.costlossamount) as costlossamount,sum(z.costnotaxlossamount) as costnotaxlossamount,
+        sum(z.initnum+(z.buyinnum+z.buyoutnum)-(z.saleoutnum + z.saleinnum)+(z.allocateinnum+z.allocateoutnum)+z.lossnum) as endnum,
+        sum(z.inittotalbox+(z.buyintotalbox+z.buyouttotalbox)-(z.saleouttotalbox + z.saleintotalbox)+(z.allocateintotalbox+z.allocateouttotalbox)+z.losstotalbox) as endtotalbox,
+        sum(z.initamount+(z.buyinamount+z.buyoutamount)-z.costoutamount+(z.allocateinamount+z.allocateoutamount)+z.costlossamount) as endamount,
+        sum(z.initnotaxamount+(z.buyinnotaxamount+z.buyoutnotaxamount)-z.costnotaxoutamount+(z.allocateinnotaxamount+z.allocateoutnotaxamount)+z.costnotaxlossamount) as endnotaxamount,
+        now()
+        from (
+        select t.goodsid,t.brandid,t.deptid,t.barcode,t.supplierid,t.storageid,t.unitid,'' as unitname,g.newstorageprice as price,
+        IF(${_storageday_count}>0,t.endnum,0) as initnum,IF(${_storageday_count}>0,t.endtotalbox,0) as inittotalbox,IF(${_storageday_count}>0,t.endamount,0) as initamount,IF(${_storageday_count}>0,t.endnotaxamount,0) as initnotaxamount,t.isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount,0 as costnotaxlossamount
+        from t_report_storage_month_real t
+        LEFT JOIN t_base_goods_info g on t.goodsid=g.id
+        where t.businessdate = '${yesmonth}'
+        UNION ALL
+        select t.goodsid,g.brand as brandid,g.deptid,g.barcode,g.defaultsupplier as supplierid,t.storageid,g.mainunit as unitid,t.unitname as unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        SUM(t.unitnum) as buyinnum,SUM(t.auxnum) as buyintotalbox,SUM(t.unitamount) as buyinamount,SUM(t.notaxamount) as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount, 0 as costnotaxlossamount
+        from t_storage_stockinit t
+        LEFT JOIN t_base_goods_info g on t.goodsid=g.id
+        where t.status='3' and t.audittime LIKE '${daymonth}%'
+        GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+        select t1.goodsid,t1.brandid,g.deptid,g.barcode,t.supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        SUM(t1.unitnum) as buyinnum,SUM(t1.totalbox) as buyintotalbox,SUM(t1.taxamount) as buyinamount,SUM(t1.notaxamount) as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount, 0 as costnotaxlossamount
+        from t_storage_purchase_enter t
+        RIGHT JOIN t_storage_purchase_enter_detail t1 on t.id=t1.purchaseenterid
+        LEFT JOIN t_base_goods_info g on t1.goodsid=g.id where (t.status='3' or t.status='4') and t.businessdate LIKE '${daymonth}%'
+        GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+        select t1.goodsid,t1.brandid,g.deptid,g.barcode,t.supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        SUM(-t1.unitnum) as buyoutnum,SUM(-t1.totalbox) as buyouttotalbox,SUM(-t1.taxamount) as buyoutamount,SUM(-t1.notaxamount) as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount, 0 as costnotaxlossamount
+        from t_storage_purchasereject_out t
+        RIGHT JOIN t_storage_purchasereject_out_detail t1 on t.id=t1.orderid
+        LEFT JOIN t_base_goods_info g on t1.goodsid=g.id where (t.status='3' or t.status='4') and t.audittime LIKE '${daymonth}%'
+        GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+        select t1.goodsid,t1.brandid,g.deptid,g.barcode,t1.supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        SUM(t1.unitnum) as saleoutnum,SUM(t1.totalbox) as saleouttotalbox,SUM(t1.taxamount) as saleoutamount,SUM(t1.notaxamount) as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,SUM(t1.realcostprice*t1.unitnum) as costoutamount,SUM((t1.realcostprice*t1.unitnum)/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount, 0 as costnotaxlossamount
+        from t_storage_saleout t
+        RIGHT JOIN t_storage_saleout_detail t1 on t.id=t1.saleoutid
+        LEFT JOIN t_base_goods_info g on t1.goodsid=g.id
+        LEFT JOIN t_base_finance_taxtype ty ON g.defaulttaxtype = ty.id where (t.status='3' or t.status='4') and t.businessdate LIKE '${daymonth}%'
+        GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+        select t1.goodsid,t1.brandid,g.deptid,g.barcode,t1.supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        SUM(-t1.unitnum) as saleinnum,SUM(-t1.totalbox) as saleintotalbox,SUM(-t1.taxamount) as saleinamount,SUM(-t1.notaxamount) as saleinnotaxamount,SUM(-t1.realcostprice*t1.unitnum) as costoutamount,SUM((-t1.realcostprice*t1.unitnum)/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount, 0 as costnotaxlossamount
+        from t_storage_salereject_enter t
+        RIGHT JOIN t_storage_salereject_enter_detail t1 on t.id=t1.salerejectid
+        LEFT JOIN t_base_goods_info g on t1.goodsid=g.id
+        LEFT JOIN t_base_finance_taxtype ty ON g.defaulttaxtype = ty.id where (t.status='3' or t.status='4') and t.audittime LIKE '${daymonth}%'
+        GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+        select t.brandid as goodsid,t.brandid,b.deptid,'' as barcode,b.supplierid,'' as storageid,'' as unitid,'' as unitname,0 as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'1' as isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,SUM(t.amount) as saleinamount,SUM(t.notaxamount) as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount, 0 as costnotaxlossamount
+        from t_account_customer_push_balance t
+        LEFT JOIN t_base_goods_brand b ON t.brandid = b.id where (t.status='3' or t.status='4') and t.businessdate LIKE '${daymonth}%'
+        GROUP BY brandid,supplierid
+        UNION ALL
+        select t1.goodsid,g.brand,g.deptid,g.barcode,g.defaultsupplier as supplierid,t.enterstorageid as storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        SUM(t1.unitnum) as allocateinnum,SUM(t1.totalbox) as allocateintotalbox,SUM(t1.taxamount) as allocateinamount,SUM(t1.notaxamount) as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount, 0 as costnotaxlossamount
+        from t_storage_allocate_out t
+        RIGHT JOIN t_storage_allocate_out_detail t1 on t.id = t1.billno
+        LEFT JOIN t_base_goods_info g on t1.goodsid=g.id where (t.status='3' or t.status='4') and t.businessdate LIKE '${daymonth}%'
+        GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+        select t1.goodsid,g.brand,g.deptid,g.barcode,g.defaultsupplier as supplierid,t.outstorageid as storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        SUM(-t1.unitnum) as allocateoutnum,SUM(-t1.totalbox) as allocateouttotalbox,SUM(-t1.taxamount) as allocateoutamount,SUM(-t1.notaxamount) as allocateoutnotaxamount,
+        0 as lossnum,0 as losstotalbox,0 as lossamount,0 as lossnotaxamount, 0 as costlossamount, 0 as costnotaxlossamount
+        from t_storage_allocate_out t
+        RIGHT JOIN t_storage_allocate_out_detail t1 on t.id = t1.billno
+        LEFT JOIN t_base_goods_info g on t1.goodsid=g.id where (t.status='3' or t.status='4') and t.businessdate LIKE '${daymonth}%'
+        GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+        select t1.goodsid,t1.brandid,g.deptid,g.barcode,g.defaultsupplier as supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        SUM(-t1.unitnum) as lossnum,SUM(-t1.totalbox) as losstotalbox,SUM(-t1.taxamount) as lossamount,SUM(-t1.notaxamount) as lossnotaxamount, SUM(-t1.realcostprice*t1.unitnum) as costlossamount, SUM((-t1.realcostprice*t1.unitnum)/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as costnotaxlossamount
+        from t_storage_other_out t
+        RIGHT JOIN t_storage_other_out_detail t1 on t.id=t1.billid
+        LEFT JOIN t_base_goods_info g on t1.goodsid=g.id
+        LEFT JOIN t_base_finance_taxtype ty ON g.defaulttaxtype = ty.id where (t.status='3' or t.status='4') and t.businessdate LIKE '${daymonth}%'
+        GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+        select t1.goodsid,t1.brandid,g.deptid,g.barcode,g.defaultsupplier as supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        SUM(t1.unitnum) as lossnum,SUM(t1.totalbox) as losstotalbox,SUM(t1.taxamount) as lossamount,SUM(t1.notaxamount) as lossnotaxamount, SUM(t1.realcostprice*t1.unitnum) as costlossamount, SUM((t1.realcostprice*t1.unitnum)/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as costnotaxlossamount
+        from t_storage_other_enter t
+        RIGHT JOIN t_storage_other_enter_detail t1 on t.id=t1.billid
+        LEFT JOIN t_base_goods_info g on t1.goodsid=g.id
+        LEFT JOIN t_base_finance_taxtype ty ON g.defaulttaxtype = ty.id where (t.status='3' or t.status='4') and t.businessdate LIKE '${daymonth}%'
+        GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+        SELECT t1.goodsid,t1.brandid,g.deptid,g.barcode,g.defaultsupplier as supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        SUM(t1.adjustnum) as lossnum,SUM(t1.totalbox) as losstotalbox,SUM(t1.amount) as lossamount,SUM(t1.amount/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as lossnotaxamount, SUM(t1.price*t1.adjustnum) as costlossamount, SUM((t1.price*t1.adjustnum)/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as costnotaxlossamount
+        from t_storage_adjustments t
+        RIGHT JOIN t_storage_adjustments_detail t1 on t.id=t1.adjustmentsid
+        LEFT JOIN t_base_goods_info g on t1.goodsid=g.id
+        LEFT JOIN t_base_finance_taxtype ty ON g.defaulttaxtype = ty.id where t.status='4' and t.billtype='1' and t.businessdate LIKE '${daymonth}%'
+        GROUP BY goodsid,storageid,supplierid
+        UNION ALL
+        SELECT t1.goodsid,t1.brandid,g.deptid,g.barcode,g.defaultsupplier as supplierid,t.storageid,t1.unitid,t1.unitname,g.newstorageprice as price,
+        0 as initnum,0 as inittotalbox,0 as initamount,0 as initnotaxamount,'0' as isdiscount,
+        0 as buyinnum,0 as buyintotalbox,0 as buyinamount,0 as buyinnotaxamount,
+        0 as buyoutnum,0 as buyouttotalbox,0 as buyoutamount,0 as buyoutnotaxamount,
+        0 as saleoutnum,0 as saleouttotalbox,0 as saleoutamount,0 as saleoutnotaxamount,
+        0 as saleinnum,0 as saleintotalbox,0 as saleinamount,0 as saleinnotaxamount,0 as costoutamount,0 as costnotaxoutamount,
+        0 as allocateinnum,0 as allocateintotalbox,0 as allocateinamount,0 as allocateinnotaxamount,
+        0 as allocateoutnum,0 as allocateouttotalbox,0 as allocateoutamount,0 as allocateoutnotaxamount,
+        SUM(-t1.adjustnum) as lossnum,SUM(-t1.totalbox) as losstotalbox,SUM(-t1.amount) as lossamount,SUM(-t1.amount/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as lossnotaxamount, SUM(-t1.price*t1.adjustnum) as costlossamount, SUM((-t1.price*t1.adjustnum)/(1+IF(ty.rate IS NOT NULL,ty.rate,17)/100)) as costnotaxlossamount
+        from t_storage_adjustments t
+        RIGHT JOIN t_storage_adjustments_detail t1 on t.id=t1.adjustmentsid
+        LEFT JOIN t_base_goods_info g on t1.goodsid=g.id
+        LEFT JOIN t_base_finance_taxtype ty ON g.defaulttaxtype = ty.id where t.status='4' and t.billtype='2' and t.businessdate LIKE '${daymonth}%'
+        GROUP BY goodsid,storageid,supplierid
+        ) z group by goodsid,storageid,supplierid;
+    </insert>
+</mapper>

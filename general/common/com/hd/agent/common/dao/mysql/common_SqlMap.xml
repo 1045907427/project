@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="common" >
+  <sql id="Page_Column">
+	<if test="cols!=null">
+		<trim prefix="" prefixOverrides=",">
+ 			${cols}
+ 		</trim>
+	</if>
+  </sql>
+  <sql id="Page_querySql">
+  	<if test="querySql != null">
+  		and ${querySql}
+  	</if>
+  </sql>
+  <sql id="Page_dataSql">
+  	<if test="dataSql != null">
+  		and ${dataSql}
+  	</if>
+  </sql>
+  <sql id="Page_limit" >
+  	<choose>
+  		<when test="orderSql !=null and orderSql!=''">
+  			order by ${orderSql}
+  		</when>
+  		<otherwise>
+  			<if test="condition.sort !=null and condition.order !=null">
+		      	order by ${condition.sort} ${condition.order}
+		     </if>
+  		</otherwise>
+  	</choose>
+    <if test="startNum != null and rows != null" >
+      <![CDATA[ limit #{startNum} , #{rows} ]]>
+    </if>
+  </sql>
+  <sql id="Page_OrderOnly" >
+  	<choose>
+  		<when test="orderSql !=null and orderSql!=''">
+  			order by ${orderSql}
+  		</when>
+  		<otherwise>
+            <if test="condition.sort != null">
+                <choose>
+                    <when test="condition.order != null">
+                        order by ${condition.sort} ${condition.order}
+                    </when>
+                    <otherwise>
+                        order by ${condition.sort} ASC
+                    </otherwise>
+                </choose>
+            </if>
+  		</otherwise>
+  	</choose>
+  </sql>
+  <sql id="Page_LimitOnly" >
+    <if test="startNum != null and rows != null" >
+      <![CDATA[ limit #{startNum} , #{rows} ]]>
+    </if>
+  </sql>
+  
+</mapper>

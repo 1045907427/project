@@ -1,0 +1,586 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.accesscontrol.dao.AccessControlMapper" >
+	<cache type="org.mybatis.caches.ehcache.EhcacheCache"/> 
+	<select id="getAllAuthorityList" resultType="java.lang.String">
+		select authorityid from t_ac_authority where state ='1'
+	</select>
+	<select id="getOperateListFromAuthority" parameterType="java.lang.String" resultType="java.lang.String">
+		select t2.url from t_ac_authoper t,t_ac_authority t1,t_ac_operate t2
+		where t1.authorityid = t.authorityid
+		and t2.operateid = t.operateid
+		and t2.state = '1'
+		and t1.authorityid = #{authorityid}
+		and t1.state='1'
+	</select>
+	<select id="getAllOperateList" resultType="java.lang.String">
+		select url from t_ac_operate
+	</select>
+	<select id="showMenuCloseList" parameterType="java.lang.String" resultType="com.hd.agent.accesscontrol.model.Operate">
+		select t.operateid, t.operatename, t.description, t.url,t.tablename, t.type, t.state, t1.operatename as pid, t.moduleid,t.image, t.addtime, t.adduserid,
+    	t.modifytime, t.modifyuserid,t.seq from t_ac_operate t
+    	left join t_ac_operate t1 on t.pid=t1.operateid
+    	where  t.type='0' and t.state='0'
+    	order by t.pid,t.seq
+	</select>
+	<select id="showMenuCloseListByMap" parameterType="map" resultType="com.hd.agent.accesscontrol.model.Operate">
+		select t.operateid, t.operatename, t.description, t.url,t.tablename, t.type, t.state, t1.operatename as pid, t.moduleid,t.image, t.addtime, t.adduserid,
+		t.modifytime, t.modifyuserid,t.seq from t_ac_operate t
+		left join t_ac_operate t1 on t.pid=t1.operateid
+		where
+		<trim prefixOverrides="and|or" >
+			<if test="1==1">
+				and t.type='0' and t.state='0'
+			</if>
+			<if test="operatename != null">
+				and t.operatename like CONCAT('%',#{operatename},'%')
+			</if>
+			<if test="url != null">
+				and t.url like CONCAT('%',#{url},'%')
+			</if>
+		</trim>
+		order by t.pid,t.seq
+	</select>
+	<select id="showMenuList" parameterType="java.lang.String" resultType="com.hd.agent.accesscontrol.model.Operate">
+		select operateid, operatename, description, url,tablename, type, state, pid, moduleid,image, addtime, adduserid,
+    	modifytime, modifyuserid,seq 
+    	from t_ac_operate where state = #{state} and type='0'
+    	order by seq
+	</select>
+    <select id="showMenuTreeByUserid" parameterType="java.lang.String" resultType="com.hd.agent.accesscontrol.model.Operate">
+        select DISTINCT t.operateid, t.operatename, t.description, t.url,t.tablename, t.type, t.state, t.pid, t.moduleid,t.image, t.addtime, t.adduserid,
+        t.modifytime, t.modifyuserid,t.seq
+        from t_ac_operate t,t_ac_authoper t1,t_ac_userauthority t2
+        where  t2.authorityid=t1.authorityid and t1.operateid=t.operateid and t2.userid=#{userid} and t.state =#{state}
+        <if test="buttontype == null">
+            and t.type='0'
+        </if>
+        order by seq
+    </select>
+    <select id="showMenuTreeByRoleids" parameterType="java.lang.String" resultType="com.hd.agent.accesscontrol.model.Operate">
+        select DISTINCT t.operateid, t.operatename, t.description, t.url,t.tablename, t.type, t.state, t.pid, t.moduleid,t.image, t.addtime, t.adduserid,
+        t.modifytime, t.modifyuserid,t.seq
+        from t_ac_operate t,t_ac_authoper t1
+        where  t1.operateid=t.operateid and  FIND_IN_SET(t1.authorityid,#{roleids}) and t.state =#{state}
+        order by seq
+    </select>
+	<select id="showOperateTree" parameterType="java.lang.String" resultType="com.hd.agent.accesscontrol.model.Operate">
+		select operateid, operatename, description, url,tablename, type, state, pid, moduleid,image, addtime, adduserid,
+    	modifytime, modifyuserid,seq 
+    	from t_ac_operate where state = #{state} 
+    	order by seq
+	</select>
+	<select id="showOperateChecked" parameterType="java.lang.String" resultType="com.hd.agent.accesscontrol.model.Operate" useCache="false">
+		select t.operateid, t.operatename, t.description, t.url,t.tablename, t.type, t.state, t.pid, t.moduleid,t.image, t.addtime, t.adduserid,
+    	t.modifytime, t.modifyuserid,seq 
+    	from t_ac_operate t,t_ac_authoper t1
+    	where t.operateid=t1.operateid and t1.authorityid=#{authorityid} and t.state='1'
+	</select>
+	<select id="showOperListByMenu" parameterType="java.lang.String" resultType="com.hd.agent.accesscontrol.model.Operate" useCache="false">
+		select operateid, operatename, description, url,tablename, type, state, pid, moduleid,image, addtime, adduserid,
+    	modifytime, modifyuserid,seq from t_ac_operate where pid = #{pid} and type='1'
+    	order by seq
+	</select>
+	<select id="showOperateInfo" parameterType="java.lang.String" resultType="com.hd.agent.accesscontrol.model.Operate" useCache="false">
+		select operateid, operatename, description, url,tablename, type, state, pid, moduleid,image, addtime, adduserid,
+    	modifytime, modifyuserid,seq from t_ac_operate where operateid=#{operateid}
+	</select>
+	<insert id="addOperate" parameterType="com.hd.agent.accesscontrol.model.Operate">
+		<selectKey resultType="java.lang.String" keyProperty="operateid" order="BEFORE" >
+	      select uuid_short()
+	    </selectKey>
+		insert into t_ac_operate
+	    <trim prefix="(" suffix=")" suffixOverrides=",">
+	      <if test="operateid != null">
+	        operateid,
+	      </if>
+	      <if test="operatename != null">
+	        operatename,
+	      </if>
+	      <if test="description != null">
+	        description,
+	      </if>
+	      <if test="url != null">
+	        url,
+	      </if>
+           <if test="tablename != null">
+               tablename,
+           </if>
+	      <if test="type != null">
+	        type,
+	      </if>
+	      <if test="state != null">
+	        state,
+	      </if>
+	      <if test="pid != null">
+	        pid,
+	      </if>
+	      <if test="moduleid != null">
+	        moduleid,
+	      </if>
+	      <if test="image != null">
+	        image,
+	      </if>
+	      <if test="seq != null">
+	        seq,
+	      </if>
+	      <if test="1==1">
+	        addtime,
+	      </if>
+	      <if test="adduserid != null">
+	        adduserid,
+	      </if>
+	      <if test="modifytime != null">
+	        modifytime,
+	      </if>
+	      <if test="modifyuserid != null">
+	        modifyuserid,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides=",">
+	      <if test="operateid != null">
+	        #{operateid},
+	      </if>
+	      <if test="operatename != null">
+	        #{operatename},
+	      </if>
+	      <if test="description != null">
+	        #{description},
+	      </if>
+	      <if test="url != null">
+	        #{url},
+	      </if>
+          <if test="tablename != null">
+            #{tablename},
+          </if>
+	      <if test="type != null">
+	        #{type},
+	      </if>
+	      <if test="state != null">
+	        #{state},
+	      </if>
+	      <if test="pid != null">
+	        #{pid},
+	      </if>
+	      <if test="moduleid != null">
+	        #{moduleid},
+	      </if>
+	      <if test="image != null">
+	        #{image},
+	      </if>
+	      <if test="seq != null">
+	        #{seq},
+	      </if>
+	      <if test="1==1">
+	        now(),
+	      </if>
+	      <if test="adduserid != null">
+	        #{adduserid},
+	      </if>
+	      <if test="modifytime != null">
+	        #{modifytime},
+	      </if>
+	      <if test="modifyuserid != null">
+	        #{modifyuserid},
+	      </if>
+	    </trim>
+    </insert>
+	  <delete id="deleteOperate" parameterType="java.lang.String">
+	  	delete from t_ac_operate where operateid = #{operateid}
+	  </delete>
+	  <delete id="deleteOperAfterMenu" parameterType="java.lang.String">
+	  	delete from t_ac_operate where pid = #{operateid} and type='1'
+	  </delete>
+	  <select id="getOperateListByoperateid" parameterType="java.lang.String" resultType="com.hd.agent.accesscontrol.model.Operate">
+	  	select operateid, operatename, description, url,tablename, type, state, pid, moduleid,image, addtime, adduserid,
+    	modifytime, modifyuserid,seq 
+    	from t_ac_operate where pid = #{operateid}
+	  </select>
+	  <update id="closeOperate" parameterType="java.lang.String">
+	  	update t_ac_operate set state='0' where operateid = #{operateid}
+	  </update>
+	  <update id="closeOperateBypid" parameterType="java.lang.String">
+	  	update t_ac_operate set state='0' where pid = #{pid}
+	  </update>
+	  <update id="openOperate" parameterType="java.lang.String">
+	  	update t_ac_operate set state='1' where operateid = #{operateid}
+	  </update>
+	<update id="closeOperateByIds" parameterType="java.lang.String">
+		update t_ac_operate t. set state='1'
+		where FIND_IN_SET(operateid,#{operateidarrs})
+	</update>
+	<update id="openOperateByIds" parameterType="java.lang.String">
+		update t_ac_operate t set state='1'
+		where FIND_IN_SET(operateid,#{operateidarrs})
+	</update>
+	  <update id="editOperate" parameterType="com.hd.agent.accesscontrol.model.Operate">
+	  	update t_ac_operate
+	    <set>
+	      <if test="operatename != null">
+	        operatename = #{operatename},
+	      </if>
+	      <if test="description != null">
+	        description = #{description},
+	      </if>
+	      <if test="url != null">
+	        url = #{url},
+	      </if>
+          <if test="tablename != null">
+            tablename = #{tablename},
+          </if>
+	      <if test="type != null">
+	        type = #{type},
+	      </if>
+	      <if test="state != null">
+	        state = #{state},
+	      </if>
+	      <if test="pid != null">
+	        pid = #{pid},
+	      </if>
+	      <if test="moduleid != null">
+	        moduleid = #{moduleid},
+	      </if>
+	      <if test="image != null">
+	        image = #{image},
+	      </if>
+	      <if test="seq != null">
+	        seq = #{seq},
+	      </if>
+	      <if test="1==1">
+	        modifytime = now(),
+	      </if>
+	      <if test="modifyuserid != null">
+	        modifyuserid = #{modifyuserid},
+	      </if>
+	    </set>
+	    where operateid = #{operateid}
+	  </update>
+	  <select id="showAuthorityList" parameterType="java.lang.String" resultType="com.hd.agent.accesscontrol.model.Authority">
+	  	select t.authorityid, t.authorityname, t.description,t.alias, t.state, t.addtime, t.adduserid, t.modifytime, t.modifyuserid
+	  	from t_ac_authority t 
+	    <trim prefix="where" prefixOverrides="and|or" >
+	      <if test="dataSql != null">
+	        and ${dataSql}
+	      </if>
+	      <if test="state != null">
+        	and t.state=#{state}
+      	  </if>
+	    </trim>
+	  	order by addtime
+	  </select>
+	  <select id="getAuthorityid" resultType="java.lang.String">
+	  	select uuid_short()
+	  </select>
+	  <insert id="addAuthority" parameterType="com.hd.agent.accesscontrol.model.Authority">
+	  	insert into t_ac_authority
+	    <trim prefix="(" suffix=")" suffixOverrides=",">
+	        authorityid,
+	      <if test="authorityname != null">
+	        authorityname,
+	      </if>
+	      <if test="description != null">
+	        description,
+	      </if>
+	      <if test="alias != null">
+	        alias,
+	      </if>
+	      <if test="state != null">
+	        state,
+	      </if>
+	      <if test="1==1">
+	        addtime,
+	      </if>
+	      <if test="adduserid != null">
+	        adduserid,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides=",">
+	        #{authorityid},
+	      <if test="authorityname != null">
+	        #{authorityname},
+	      </if>
+	      <if test="description != null">
+	        #{description},
+	      </if>
+	      <if test="alias != null">
+	        #{alias},
+	      </if>
+	      <if test="state != null">
+	        #{state},
+	      </if>
+	      <if test="1==1">
+	        now(),
+	      </if>
+	      <if test="adduserid != null">
+	        #{adduserid},
+	      </if>
+	    </trim>
+	  </insert>
+	  <insert id="addAuthOper" parameterType="java.lang.String">
+	  	<selectKey resultType="java.lang.String" keyProperty="authoperid" order="BEFORE" >
+	      select uuid_short()
+	    </selectKey>
+	  	insert into t_ac_authoper
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	        authoperid,
+	      <if test="authorityid != null" >
+	        authorityid,
+	      </if>
+	      <if test="operateid != null" >
+	        operateid,
+	      </if>
+	      <if test="1==1" >
+	        addtime,
+	      </if>
+	      <if test="adduserid != null" >
+	        adduserid,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	        #{authoperid},
+	      <if test="authorityid != null" >
+	        #{authorityid},
+	      </if>
+	      <if test="operateid != null" >
+	        #{operateid},
+	      </if>
+	      <if test="1==1" >
+	        now(),
+	      </if>
+	      <if test="adduserid != null" >
+	        #{adduserid},
+	      </if>
+	    </trim>
+	  </insert>
+	  <update id="setAuthorityState" parameterType="java.lang.String">
+	  	update t_ac_authority set state=#{state} where authorityid = #{authorityid}
+	  </update>
+	  <delete id="deleteAuthority" parameterType="java.lang.String">
+	  	delete from t_ac_authority where authorityid=#{authorityid}
+	  </delete>
+	  <delete id="deleteAuthOper" parameterType="java.lang.String">
+	  	delete from t_ac_authoper where authorityid = #{authorityid}
+	  </delete>
+	  <select id="showAuthorityInfo" parameterType="java.lang.String" resultType="com.hd.agent.accesscontrol.model.Authority" useCache="false">
+	  	select authorityid, authorityname, description,alias, state, addtime, adduserid, modifytime, modifyuserid 
+	  	from t_ac_authority where authorityid=#{authorityid}
+	  </select>
+	  <select id="getAuthorityListByName" parameterType="String" resultType="com.hd.agent.accesscontrol.model.Authority">
+	  	select authorityid, authorityname, description,alias, state, addtime, adduserid, modifytime, modifyuserid 
+	  	from t_ac_authority 
+		where  authorityname=#{name} limit 1
+	  </select>
+	  <update id="editAuthority" parameterType="com.hd.agent.accesscontrol.model.Authority">
+	  	update t_ac_authority
+	    <set>
+	      <if test="authorityname != null">
+	        authorityname = #{authorityname},
+	      </if>
+	      <if test="description != null">
+	        description = #{description},
+	      </if>
+	      <if test="alias != null">
+	        alias = #{alias},
+	      </if>
+	      <if test="state != null">
+	        state = #{state},
+	      </if>
+	      <if test="1==1">
+	        modifytime = now(),
+	      </if>
+	      <if test="modifyuserid != null">
+	        modifyuserid = #{modifyuserid},
+	      </if>
+	    </set>
+	    where authorityid = #{authorityid}
+	  </update>
+	  <insert id="addAccessColumn" parameterType="com.hd.agent.accesscontrol.model.AccessColumn">
+	  	<selectKey resultType="java.lang.String" keyProperty="columnid" order="BEFORE" >
+	      select uuid_short()
+	    </selectKey>
+	  	insert into t_ac_column
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	        columnid,
+	      <if test="tablename != null" >
+	        tablename,
+	      </if>
+	      <if test="tabledescname != null" >
+	        tabledescname,
+	      </if>
+	      <if test="description != null" >
+	        description,
+	      </if>
+	      <if test="state != null" >
+	        state,
+	      </if>
+	      <if test="1==1" >
+	        addtime,
+	      </if>
+	      <if test="adduserid != null" >
+	        adduserid,
+	      </if>
+	      <if test="collist != null" >
+	        collist,
+	      </if>
+	      <if test="collistname != null" >
+	        collistname,
+	      </if>
+	      <if test="editcollist != null" >
+	        editcollist,
+	      </if>
+	      <if test="editcollistname != null" >
+	        editcollistname,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	        #{columnid},
+	      <if test="tablename != null" >
+	        #{tablename},
+	      </if>
+	      <if test="tabledescname != null" >
+	        #{tabledescname},
+	      </if>
+	      <if test="description != null" >
+	        #{description},
+	      </if>
+	      <if test="state != null" >
+	        #{state},
+	      </if>
+	      <if test="1==1" >
+	        now(),
+	      </if>
+	      <if test="adduserid != null" >
+	        #{adduserid},
+	      </if>
+	      <if test="collist != null" >
+	        #{collist},
+	      </if>
+	      <if test="collistname != null" >
+	        #{collistname},
+	      </if>
+	      <if test="editcollist != null" >
+	        #{editcollist},
+	      </if>
+	      <if test="editcollistname != null" >
+	        #{editcollistname},
+	      </if>
+	    </trim>
+	  </insert>
+	  <insert id="addAuthorityCol" parameterType="java.lang.String">
+	  	<selectKey resultType="java.lang.String" keyProperty="authcolid" order="BEFORE" >
+	      select uuid_short()
+	    </selectKey>
+	  	insert into t_ac_authcol
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	        authcolid,
+	      <if test="authorityid != null" >
+	        authorityid,
+	      </if>
+	      <if test="columnid != null" >
+	        columnid,
+	      </if>
+	      <if test="1==1" >
+	        addtime,
+	      </if>
+	      <if test="adduserid != null" >
+	        adduserid,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	        #{authcolid},
+	      <if test="authorityid != null" >
+	        #{authorityid},
+	      </if>
+	      <if test="columnid != null" >
+	        #{columnid},
+	      </if>
+	      <if test="1==1" >
+	        now(),
+	      </if>
+	      <if test="adduserid != null" >
+	        #{adduserid},
+	      </if>
+	    </trim>
+	  </insert>
+	  <select id="showAuthorityColumnList" parameterType="java.lang.String" resultType="com.hd.agent.accesscontrol.model.AccessColumn">
+	  	select t.columnid, t.tablename, t.tabledescname, t.description, t.state, t.addtime, t.adduserid, t.modifytime, t.modifyuserid,t.collist,t.collistname,t.editcollist,t.editcollistname
+	  	from t_ac_column t,t_ac_authcol t1 
+    	where t.columnid=t1.columnid and t1.authorityid=#{authorityid}
+	  </select>
+	  <delete id="deleteAuthorityColumn" parameterType="java.lang.String">
+	  	delete from t_ac_authcol where authorityid=#{authorityid} and columnid=#{columnid}
+	  </delete>
+	  <delete id="deleteAccessColumn" parameterType="java.lang.String">
+	  	delete from t_ac_column where columnid = #{columnid}
+	  </delete>
+	  <select id="showAccessColumnsByAuthoritys" parameterType="java.util.Map" resultType="com.hd.agent.accesscontrol.model.AccessColumn">
+	  	select DISTINCT t.columnid, t.tablename, t.tabledescname, t.description, t.state, t.addtime, t.adduserid, t.modifytime, t.modifyuserid,t.collist,t.collistname,t.editcollist,t.editcollistname
+	  	from t_ac_column t,t_ac_authcol t1 
+	  	where t.columnid=t1.columnid and t1.authorityid in
+		  	<foreach item="authorityList" index="index" collection="authorityList" open="(" separator="," close=")">
+		  		#{authorityList} 
+			</foreach>
+		and tablename = #{tablename}
+	  </select>
+	  <select id="showUserMenuTree" parameterType="java.util.List" resultType="com.hd.agent.accesscontrol.model.Operate" useCache="true">
+	  	select DISTINCT t.operateid, t.operatename, t.description, t.url,t.tablename, t.type, t.state, t.pid, t.moduleid,t.image, t.addtime, t.adduserid,
+    	t.modifytime, t.modifyuserid,t.seq 
+    	from t_ac_operate t,t_ac_authoper t1
+    	where t.operateid =t1.operateid and t1.authorityid in
+    		<foreach item="authorityList" index="index" collection="authorityList" open="(" separator="," close=")">
+		  		#{authorityList} 
+			</foreach>
+    	and state = '1' and type='0'
+    	order by seq
+	  </select>
+	<select id="showUserOperate" parameterType="java.util.List" resultType="com.hd.agent.accesscontrol.model.Operate" useCache="true">
+		select DISTINCT t.operateid, t.operatename, t.description, t.url,t.tablename, t.type, t.state, t.pid, t.moduleid,t.image, t.addtime, t.adduserid,
+    	t.modifytime, t.modifyuserid,t.seq
+    	from t_ac_operate t,t_ac_authoper t1
+    	where t.operateid =t1.operateid and t1.authorityid in
+    		<foreach item="authorityList" index="index" collection="authorityList" open="(" separator="," close=")">
+		  		#{authorityList}
+			</foreach>
+    	and state = '1'
+    	order by seq
+	</select>
+	  <select id="getAuthorityNameCount" parameterType="java.lang.String" resultType="int" useCache="false">
+	  	select count(1) from t_ac_authority where authorityname=#{name}
+	  </select>
+	  <select id="getAuthorityListByIds" parameterType="String" resultType="com.hd.agent.accesscontrol.model.Authority" useCache="false">
+	  	select authorityid, authorityname, description,alias, state, addtime, adduserid, modifytime, modifyuserid 
+	  	from t_ac_authority 
+		where authorityid in 
+		<foreach item="ids" index="index" collection="ids" open="(" separator="," close=")">
+		  		#{ids} 
+			</foreach>
+	  </select>
+	  <select id="getOperateByURL" parameterType="java.lang.String" resultType="com.hd.agent.accesscontrol.model.Operate">
+	  	select operateid, operatename, description, url,tablename, type, state, pid, moduleid,image, addtime, adduserid,
+    	modifytime, modifyuserid,seq 
+    	from t_ac_operate where url=#{url} and state='1'
+	  </select>
+	  <select id="getOperateButtonsByAuthority" parameterType="java.util.List" resultType="java.lang.String">
+	  	select distinct url from t_ac_operate 
+    	where operateid not in (select operateid from t_ac_authoper where authorityid in
+    		<foreach item="list" index="index" collection="list" open="(" separator="," close=")">
+		  		#{list} 
+			</foreach>
+    	)
+    	and state = '1' and type='1'
+	  </select>
+      <delete id="deleteOperateHelpByMD5">
+          delete from t_ac_operate_help where md5url=#{md5url}
+      </delete>
+      <insert id="saveOperateHelp" parameterType="com.hd.agent.accesscontrol.model.OperateHelp">
+          insert into t_ac_operate_help(operateid,md5url,title,content,addtime)
+          values(#{operateid},#{md5url},#{title},#{content},now())
+      </insert>
+      <select id="getOperateHelp" resultType="com.hd.agent.accesscontrol.model.OperateHelp">
+          select * from t_ac_operate_help where operateid=#{operateid}
+      </select>
+        <select id="getOperateHelpByMD5" resultType="com.hd.agent.accesscontrol.model.OperateHelp">
+            select * from t_ac_operate_help where md5url=#{md5url}
+        </select>
+
+</mapper>

@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.oa.dao.OaCustomerMapper" >
+    <resultMap id="BaseResultMap" type="com.hd.agent.oa.model.OaCustomer" >
+        <id column="id" property="id" jdbcType="VARCHAR" />
+        <result column="businessdate" property="businessdate" jdbcType="VARCHAR" />
+        <result column="status" property="status" jdbcType="VARCHAR" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="adduserid" property="adduserid" jdbcType="VARCHAR" />
+        <result column="addusername" property="addusername" jdbcType="VARCHAR" />
+        <result column="adddeptid" property="adddeptid" jdbcType="VARCHAR" />
+        <result column="adddeptname" property="adddeptname" jdbcType="VARCHAR" />
+        <result column="addtime" property="addtime" jdbcType="TIMESTAMP" />
+        <result column="modifyuserid" property="modifyuserid" jdbcType="VARCHAR" />
+        <result column="modifyusername" property="modifyusername" jdbcType="VARCHAR" />
+        <result column="modifytime" property="modifytime" jdbcType="TIMESTAMP" />
+        <result column="audituserid" property="audituserid" jdbcType="VARCHAR" />
+        <result column="auditusername" property="auditusername" jdbcType="VARCHAR" />
+        <result column="audittime" property="audittime" jdbcType="TIMESTAMP" />
+        <result column="stopuserid" property="stopuserid" jdbcType="VARCHAR" />
+        <result column="stopusername" property="stopusername" jdbcType="VARCHAR" />
+        <result column="stoptime" property="stoptime" jdbcType="TIMESTAMP" />
+        <result column="closetime" property="closetime" jdbcType="TIMESTAMP" />
+        <result column="printtimes" property="printtimes" jdbcType="INTEGER" />
+        <result column="customerid" property="customerid" jdbcType="VARCHAR" />
+        <result column="customername" property="customername" jdbcType="VARCHAR" />
+        <result column="shortname" property="shortname" jdbcType="VARCHAR" />
+        <result column="shortcode" property="shortcode" jdbcType="VARCHAR" />
+        <result column="abclevel" property="abclevel" jdbcType="VARCHAR" />
+        <result column="telphone" property="telphone" jdbcType="VARCHAR" />
+        <result column="faxno" property="faxno" jdbcType="VARCHAR" />
+        <result column="email" property="email" jdbcType="VARCHAR" />
+        <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+        <result column="website" property="website" jdbcType="VARCHAR" />
+        <result column="person" property="person" jdbcType="VARCHAR" />
+        <result column="personmobile" property="personmobile" jdbcType="VARCHAR" />
+        <result column="personcard" property="personcard" jdbcType="VARCHAR" />
+        <result column="nature" property="nature" jdbcType="VARCHAR" />
+        <result column="fund" property="fund" jdbcType="DECIMAL" />
+        <result column="setupdate" property="setupdate" jdbcType="VARCHAR" />
+        <result column="staffnum" property="staffnum" jdbcType="VARCHAR" />
+        <result column="turnoveryear" property="turnoveryear" jdbcType="DECIMAL" />
+        <result column="firstbusinessdate" property="firstbusinessdate" jdbcType="VARCHAR" />
+        <result column="salesarea" property="salesarea" jdbcType="VARCHAR" />
+        <result column="customersort" property="customersort" jdbcType="VARCHAR" />
+        <result column="contact" property="contact" jdbcType="VARCHAR" />
+        <result column="address" property="address" jdbcType="VARCHAR" />
+        <result column="promotionsort" property="promotionsort" jdbcType="CHAR" />
+        <result column="zip" property="zip" jdbcType="VARCHAR" />
+        <result column="taxno" property="taxno" jdbcType="VARCHAR" />
+        <result column="bank" property="bank" jdbcType="VARCHAR" />
+        <result column="cardno" property="cardno" jdbcType="VARCHAR" />
+        <result column="caraccount" property="caraccount" jdbcType="VARCHAR" />
+        <result column="storearea" property="storearea" jdbcType="DECIMAL" />
+        <result column="ischain" property="ischain" jdbcType="CHAR" />
+        <result column="countylevel" property="countylevel" jdbcType="VARCHAR" />
+        <result column="villagetown" property="villagetown" jdbcType="VARCHAR" />
+        <result column="credit" property="credit" jdbcType="DECIMAL" />
+        <result column="creditrating" property="creditrating" jdbcType="CHAR" />
+        <result column="reconciliationdate" property="reconciliationdate" jdbcType="VARCHAR" />
+        <result column="billingdate" property="billingdate" jdbcType="VARCHAR" />
+        <result column="arrivalamountdate" property="arrivalamountdate" jdbcType="VARCHAR" />
+        <result column="tickettype" property="tickettype" jdbcType="CHAR" />
+        <result column="creditdate" property="creditdate" jdbcType="VARCHAR" />
+        <result column="salesmonth" property="salesmonth" jdbcType="DECIMAL" />
+        <result column="targetsales" property="targetsales" jdbcType="DECIMAL" />
+        <result column="yearback" property="yearback" jdbcType="DECIMAL" />
+        <result column="monthback" property="monthback" jdbcType="DECIMAL" />
+        <result column="dispatchingamount" property="dispatchingamount" jdbcType="DECIMAL" />
+        <result column="sixone" property="sixone" jdbcType="DECIMAL" />
+        <result column="settlement" property="settlement" jdbcType="VARCHAR" />
+        <result column="settletype" property="settletype" jdbcType="VARCHAR" />
+        <result column="settleday" property="settleday" jdbcType="VARCHAR" />
+        <result column="paytype" property="paytype" jdbcType="VARCHAR" />
+        <result column="iscash" property="iscash" jdbcType="CHAR" />
+        <result column="islongterm" property="islongterm" jdbcType="CHAR" />
+        <result column="billing" property="billing" jdbcType="VARCHAR" />
+        <result column="billtype" property="billtype" jdbcType="VARCHAR" />
+        <result column="overcontrol" property="overcontrol" jdbcType="VARCHAR" />
+        <result column="overgracedate" property="overgracedate" jdbcType="INTEGER" />
+        <result column="canceltype" property="canceltype" jdbcType="VARCHAR" />
+        <result column="salesdeptid" property="salesdeptid" jdbcType="VARCHAR" />
+        <result column="salesdeptname" property="salesdeptname" jdbcType="VARCHAR" />
+        <result column="salesuserid" property="salesuserid" jdbcType="VARCHAR" />
+        <result column="salesusername" property="salesusername" jdbcType="VARCHAR" />
+        <result column="pricesort" property="pricesort" jdbcType="VARCHAR" />
+        <result column="tallyuserid" property="tallyuserid" jdbcType="VARCHAR" />
+        <result column="tallyusername" property="tallyusername" jdbcType="VARCHAR" />
+        <result column="indoorstaff" property="indoorstaff" jdbcType="VARCHAR" />
+        <result column="payeeid" property="payeeid" jdbcType="VARCHAR" />
+        <result column="checker" property="checker" jdbcType="VARCHAR" />
+        <result column="checkmobile" property="checkmobile" jdbcType="VARCHAR" />
+        <result column="checkemail" property="checkemail" jdbcType="VARCHAR" />
+        <result column="payer" property="payer" jdbcType="VARCHAR" />
+        <result column="payermobile" property="payermobile" jdbcType="VARCHAR" />
+        <result column="payeremail" property="payeremail" jdbcType="VARCHAR" />
+        <result column="shopmanager" property="shopmanager" jdbcType="VARCHAR" />
+        <result column="shopmanagermobile" property="shopmanagermobile" jdbcType="VARCHAR" />
+        <result column="gsreceipter" property="gsreceipter" jdbcType="VARCHAR" />
+        <result column="gsreceiptermobile" property="gsreceiptermobile" jdbcType="VARCHAR" />
+        <result column="margin" property="margin" jdbcType="DECIMAL" />
+        <result column="field01" property="field01" jdbcType="VARCHAR" />
+        <result column="field02" property="field02" jdbcType="VARCHAR" />
+        <result column="field03" property="field03" jdbcType="VARCHAR" />
+        <result column="field04" property="field04" jdbcType="VARCHAR" />
+        <result column="field05" property="field05" jdbcType="VARCHAR" />
+        <result column="field06" property="field06" jdbcType="VARCHAR" />
+        <result column="field07" property="field07" jdbcType="VARCHAR" />
+        <result column="field08" property="field08" jdbcType="VARCHAR" />
+        <result column="field09" property="field09" jdbcType="VARCHAR" />
+        <result column="field10" property="field10" jdbcType="VARCHAR" />
+        <result column="field11" property="field11" jdbcType="VARCHAR" />
+        <result column="field12" property="field12" jdbcType="VARCHAR" />
+        <result column="islast" property="islast" jdbcType="VARCHAR" />
+        <result column="demand" property="demand" jdbcType="VARCHAR" />
+        <result column="talkresult" property="talkresult" jdbcType="VARCHAR" />
+        <result column="feedback" property="feedback" jdbcType="VARCHAR" />
+        <result column="pactdeadline" property="pactdeadline" jdbcType="VARCHAR" />
+        <result column="auditname1" property="auditname1" jdbcType="VARCHAR" />
+        <result column="auditdate1" property="auditdate1" jdbcType="VARCHAR" />
+        <result column="auditname2" property="auditname2" jdbcType="VARCHAR" />
+        <result column="auditdate2" property="auditdate2" jdbcType="VARCHAR" />
+        <result column="auditname3" property="auditname3" jdbcType="VARCHAR" />
+        <result column="auditdate3" property="auditdate3" jdbcType="VARCHAR" />
+        <result column="auditname4" property="auditname4" jdbcType="VARCHAR" />
+        <result column="auditdate4" property="auditdate4" jdbcType="VARCHAR" />
+        <result column="auditname5" property="auditname5" jdbcType="VARCHAR" />
+        <result column="auditdate5" property="auditdate5" jdbcType="VARCHAR" />
+        <result column="auditname6" property="auditname6" jdbcType="VARCHAR" />
+        <result column="auditdate6" property="auditdate6" jdbcType="VARCHAR" />
+        <result column="auditname7" property="auditname7" jdbcType="VARCHAR" />
+        <result column="auditdate7" property="auditdate7" jdbcType="VARCHAR" />
+        <result column="auditname8" property="auditname8" jdbcType="VARCHAR" />
+        <result column="auditdate8" property="auditdate8" jdbcType="VARCHAR" />
+        <result column="pcustomerid" property="pcustomerid" jdbcType="VARCHAR" />
+        <result column="licenseno" property="licenseno" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <!-- T_OA_CUSTOMER列 -->
+    <sql id="commonCustomerCols">
+        id, businessdate, status, remark, adduserid, addusername, adddeptid, adddeptname, addtime, modifyuserid,
+        modifyusername, modifytime, audituserid, auditusername, audittime, stopuserid, stopusername, stoptime,
+        closetime, printtimes, customerid, customername, shortname, shortcode, abclevel, telphone, faxno, email,
+        mobile, website, person, personmobile, personcard, nature, fund, setupdate, staffnum, turnoveryear,
+        firstbusinessdate, salesarea, customersort, contact, address, promotionsort, zip, taxno, bank, cardno,
+        caraccount, storearea, ischain, countylevel, villagetown, credit, creditrating, reconciliationdate,
+        billingdate, arrivalamountdate, tickettype, creditdate, salesmonth, targetsales, yearback, monthback,
+        dispatchingamount, sixone, settlement, settletype, settleday, paytype, iscash, islongterm, billing,
+        billtype, overcontrol, overgracedate, canceltype, salesdeptid, salesdeptname, salesuserid, salesusername,
+        pricesort, tallyuserid, tallyusername, indoorstaff, payeeid, checker, checkmobile, checkemail, payer,
+        payermobile, payeremail, shopmanager, shopmanagermobile, gsreceipter, gsreceiptermobile, margin, field01,
+        field02, field03, field04, field05, field06, field07, field08, field09, field10, field11, field12, islast,
+        demand, talkresult, feedback, pactdeadline, auditname1, auditdate1, auditname2, auditdate2, auditname3,
+        auditdate3, auditname4, auditdate4, auditname5, auditdate5, auditname6, auditdate6, auditname7, auditdate7,
+        auditname8, auditdate8, pcustomerid, licenseno
+    </sql>
+    <!-- 工作流更新字段 -->
+    <sql id="assigneeUpdCols">
+        <trim prefix="set " suffixOverrides=",">
+            <if test="pricesort != null">
+                pricesort = #{pricesort },
+            </if>
+            <if test="salesuserid != null">
+                salesuserid = #{salesuserid },
+            </if>
+            <if test="salesarea != null">
+                salesarea = #{salesarea },
+            </if>
+            <if test="customersort != null">
+                customersort = #{customersort },
+            </if>
+            <if test="payeeid != null">
+                payeeid = #{payeeid },
+            </if>
+            <if test="indoorstaff != null">
+                indoorstaff = #{indoorstaff },
+            </if>
+            <if test="promotionsort != null">
+                promotionsort = #{promotionsort },
+            </if>
+            <if test="creditrating != null">
+                creditrating = #{creditrating },
+            </if>
+            <if test="settletype != null">
+                settletype = #{settletype },
+            </if>
+            <if test="settleday != null">
+                settleday = #{settleday },
+            </if>
+            <if test="credit != null">
+                credit = #{credit },
+            </if>
+            <if test="canceltype != null">
+                canceltype = #{canceltype },
+            </if>
+            <if test="iscash != null">
+                iscash = #{iscash },
+            </if>
+            <if test="islongterm != null">
+                islongterm = #{islongterm },
+            </if>
+        </trim>
+    </sql>
+
+    <select id="selectOaCustomerList" resultMap="BaseResultMap" parameterType="com.hd.agent.common.util.PageMap">
+        select <include refid="commonCustomerCols"/>
+        from t_oa_customer a
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="condition.customerid != null" >
+                and a.customerid = #{condition.customerid}
+            </if>
+            <if test="condition.customername != null" >
+                and a.customername like concat('%', #{condition.customername}, '%')
+            </if>
+            <if test="condition.shortcode != null" >
+                and a.shortcode = #{condition.shortcode}
+            </if>
+            <if test="condition.shortname != null" >
+                and a. = #{condition.shortname}
+            </if>
+            <include refid="common.Page_querySql"/>
+            <include refid="common.Page_dataSql"/>
+        </trim>
+        order by a.id
+        <include refid="common.Page_limit"/>
+    </select>
+
+    <select id="selectOaCustomerListCount" resultType="java.lang.Integer" parameterType="com.hd.agent.common.util.PageMap">
+        select count(9)
+        from t_oa_customer a
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="condition.customerid != null" >
+                and a.customerid = #{condition.customerid}
+            </if>
+            <if test="condition.customername != null" >
+                and a.customername like concat('%', #{condition.customername}, '%')
+            </if>
+            <if test="condition.shortcode != null" >
+                and a.shortcode = #{condition.shortcode}
+            </if>
+            <if test="condition.shortname != null" >
+                and a. = #{condition.shortname}
+            </if>
+            <include refid="common.Page_querySql"/>
+            <include refid="common.Page_dataSql"/>
+        </trim>
+    </select>
+
+    <select id="selectOaCustomer" parameterType="String" resultMap="BaseResultMap">
+        select <include refid="commonCustomerCols"/>
+        from t_oa_customer a
+        where id = #{id }
+    </select>
+
+    <insert id="insertOaCustomer" parameterType="com.hd.agent.oa.model.OaCustomer">
+        insert into t_oa_customer
+        (id, businessdate, status, remark, adduserid, addusername, adddeptid, adddeptname, addtime, modifyuserid, modifyusername, modifytime, audituserid, auditusername, audittime, stopuserid, stopusername, stoptime, closetime, printtimes, customerid, customername, shortname, shortcode, abclevel, telphone, faxno, email, mobile, website, person, personmobile, personcard, nature, fund, setupdate, staffnum, turnoveryear, firstbusinessdate, salesarea, customersort, contact, address, promotionsort, zip, taxno, bank, cardno, caraccount, storearea, ischain, countylevel, villagetown, credit, creditrating, reconciliationdate, billingdate, arrivalamountdate, tickettype, creditdate, salesmonth, targetsales, yearback, monthback, dispatchingamount, sixone, settlement, settletype, settleday, paytype, iscash, islongterm, billing, billtype, overcontrol, overgracedate, canceltype, salesdeptid, salesdeptname, salesuserid, salesusername, pricesort, tallyuserid, tallyusername, indoorstaff, payeeid, checker, checkmobile, checkemail, payer, payermobile, payeremail, shopmanager, shopmanagermobile, gsreceipter, gsreceiptermobile, margin, field01, field02, field03, field04, field05, field06, field07, field08, field09, field10, field11, field12, islast, demand, talkresult, feedback, pactdeadline, auditname1, auditdate1, auditname2, auditdate2, auditname3, auditdate3, auditname4, auditdate4, auditname5, auditdate5, auditname6, auditdate6, auditname7, auditdate7, auditname8, auditdate8, pcustomerid, licenseno)
+        values(#{id }, #{businessdate }, #{status }, #{remark }, #{adduserid }, #{addusername }, #{adddeptid }, #{adddeptname }, now(), #{modifyuserid }, #{modifyusername }, #{modifytime }, #{audituserid }, #{auditusername }, #{audittime }, #{stopuserid }, #{stopusername }, #{stoptime }, #{closetime }, #{printtimes }, #{customerid }, #{customername }, #{shortname }, #{shortcode }, #{abclevel }, #{telphone }, #{faxno }, #{email }, #{mobile }, #{website }, #{person }, #{personmobile }, #{personcard }, #{nature }, #{fund }, #{setupdate }, #{staffnum }, #{turnoveryear }, #{firstbusinessdate }, #{salesarea }, #{customersort }, #{contact }, #{address }, #{promotionsort }, #{zip }, #{taxno }, #{bank }, #{cardno }, #{caraccount }, #{storearea }, #{ischain }, #{countylevel }, #{villagetown }, #{credit }, #{creditrating }, #{reconciliationdate }, #{billingdate }, #{arrivalamountdate }, #{tickettype }, #{creditdate }, #{salesmonth }, #{targetsales }, #{yearback }, #{monthback }, #{dispatchingamount }, #{sixone }, #{settlement }, #{settletype }, #{settleday }, #{paytype }, #{iscash }, #{islongterm }, #{billing }, #{billtype }, #{overcontrol }, #{overgracedate }, #{canceltype }, #{salesdeptid }, #{salesdeptname }, #{salesuserid }, #{salesusername }, #{pricesort }, #{tallyuserid }, #{tallyusername }, #{indoorstaff }, #{payeeid }, #{checker }, #{checkmobile }, #{checkemail }, #{payer }, #{payermobile }, #{payeremail }, #{shopmanager }, #{shopmanagermobile }, #{gsreceipter }, #{gsreceiptermobile }, #{margin }, #{field01 }, #{field02 }, #{field03 }, #{field04 }, #{field05 }, #{field06 }, #{field07 }, #{field08 }, #{field09 }, #{field10 }, #{field11 }, #{field12 }, #{islast }, #{demand }, #{talkresult }, #{feedback }, #{pactdeadline }, #{auditname1 }, #{auditdate1 }, #{auditname2 }, #{auditdate2 }, #{auditname3 }, #{auditdate3 }, #{auditname4 }, #{auditdate4 }, #{auditname5 }, #{auditdate5 }, #{auditname6 }, #{auditdate6 }, #{auditname7 }, #{auditdate7 }, #{auditname8 }, #{auditdate8 }, #{pcustomerid }, #{licenseno })
+    </insert>
+
+    <select id="selectExistedCustomerCount" parameterType="String" resultType="int">
+        SELECT count(1)
+        FROM
+        (
+            SELECT customerid
+            FROM t_oa_customer c
+            left join t_act_process p on c.id = p.businessid
+            WHERE c.id <![CDATA[ <> ]]> #{id } and p.id is not null
+            union all
+            select id customerid
+            from t_base_sales_customer
+        ) customer_cnt
+        WHERE customerid = #{customerid }
+    </select>
+
+    <select id="selectExistedCustomerNameCount" parameterType="String" resultType="int">
+        SELECT count(1)
+        FROM
+        (
+        SELECT customername
+        FROM t_oa_customer c
+        left join t_act_process p on c.id = p.businessid
+        WHERE c.id <![CDATA[ <> ]]> #{id } and p.id is not null
+        union all
+        select name customername
+        from t_base_sales_customer
+        ) customer_cnt
+        WHERE customername = #{customername }
+    </select>
+
+    <update id="updateChkSts" parameterType="com.hd.agent.oa.model.OaCustomer">
+        update t_oa_customer
+        set status = #{status }
+        where id = #{id }
+    </update>
+
+    <update id="updateOaCustomer" parameterType="com.hd.agent.oa.model.OaCustomer">
+        update t_oa_customer
+        <set>
+            customerid = #{customerid },
+            customername = #{customername },
+            shortcode = #{shortcode },
+            shortname = #{shortname },
+            contact = #{contact },
+            mobile = #{mobile },
+            address = #{address },
+            fund = #{fund },
+            storearea = #{storearea },
+            remark = #{remark },
+            demand = #{demand },
+            talkresult = #{talkresult },
+            feedback = #{feedback },
+            pactdeadline = #{pactdeadline },
+            pricesort = #{pricesort },
+            salesuserid = #{salesuserid },
+            salesarea = #{salesarea },
+            customersort = #{customersort },
+            payeeid = #{payeeid },
+            indoorstaff = #{indoorstaff },
+            creditrating = #{creditrating },
+            settletype = #{settletype },
+            settleday = #{settleday },
+            credit = #{credit },
+            canceltype = #{canceltype },
+            iscash = #{iscash },
+            islongterm = #{islongterm },
+            promotionsort = #{promotionsort },
+            modifyuserid = #{modifyuserid },
+            modifyusername = #{modifyusername },
+            modifytime = now(),
+            pcustomerid = #{pcustomerid },
+            salesdeptid = #{salesdeptid },
+            licenseno = #{licenseno }
+        </set>
+        where id = #{id }
+    </update>
+
+    <delete id="deleteOaCustomer" parameterType="String">
+        delete from t_oa_customer where id = #{id }
+    </delete>
+    <delete id="deletePersonListByBillid" parameterType="java.lang.String">
+        delete from t_oa_customer_brandandcustomer where billid = #{billid }
+    </delete>
+    <select id="selectPersonListByBillid" parameterType="java.lang.String" resultType="java.util.Map">
+        SELECT DISTINCT t.personid ,t1.belongdeptid
+        from t_oa_customer_brandandcustomer t
+        LEFT JOIN t_base_personnel t1 ON t1.id = t.personid
+        WHERE t.billid = #{billid }
+    </select>
+    <insert id="addPsnBrandAndCustomerFromTbrandAndTcustomerBypsnWithcst" parameterType="java.lang.String">
+        INSERT INTO t_oa_customer_brandandcustomer (personid, /*brandid,*/ billid, sign, addtime)
+        values(#{personid}, #{billid }, '1', now())
+    </insert>
+
+</mapper>

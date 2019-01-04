@@ -1,0 +1,469 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.crm.dao.CrmVisitReportMapper" >
+    <sql id="v_crm_visit_plan">
+        <![CDATA[
+        select `t1`.`personid` AS `personid`,`t1`.`leadid` AS `leadid`,`t1`.`state` AS `state`,2 AS `WEEKDAY`,`t2`.`day1` AS `customerid`,(select `p`.`belongdeptid` from `t_base_personnel` `p` where (`t1`.`personid` = `p`.`id`)) AS `deptid`,(select `c`.`customersort` from `t_base_sales_customer` `c` where (`c`.`id` = `t2`.`day1`)) AS `customersort`,(select `c`.`salesarea` from `t_base_sales_customer` `c` where (`c`.`id` = `t2`.`day1`)) AS `salesarea` from (`t_crm_visit_plan` `t1` left join `t_crm_visit_plan_detail` `t2` on((`t1`.`id` = `t2`.`billid`))) where ((`t2`.`day1` is not null) and (`t1`.`state` in ('1','0')) and (`t2`.`day1` <> '')) union all select `t1`.`personid` AS `personid`,`t1`.`leadid` AS `leadid`,`t1`.`state` AS `state`,3 AS `WEEKDAY`,`t2`.`day2` AS `customerid`,(select `p`.`belongdeptid` from `t_base_personnel` `p` where (`t1`.`personid` = `p`.`id`)) AS `deptid`,(select `c`.`customersort` from `t_base_sales_customer` `c` where (`c`.`id` = `t2`.`day2`)) AS `customersort`,(select `c`.`salesarea` from `t_base_sales_customer` `c` where (`c`.`id` = `t2`.`day2`)) AS `salesarea` from (`t_crm_visit_plan` `t1` left join `t_crm_visit_plan_detail` `t2` on((`t1`.`id` = `t2`.`billid`))) where ((`t2`.`day2` is not null) and (`t1`.`state` in ('1','0')) and (`t2`.`day2` <> '')) union all select `t1`.`personid` AS `personid`,`t1`.`leadid` AS `leadid`,`t1`.`state` AS `state`,4 AS `WEEKDAY`,`t2`.`day3` AS `customerid`,(select `p`.`belongdeptid` from `t_base_personnel` `p` where (`t1`.`personid` = `p`.`id`)) AS `deptid`,(select `c`.`customersort` from `t_base_sales_customer` `c` where (`c`.`id` = `t2`.`day3`)) AS `customersort`,(select `c`.`salesarea` from `t_base_sales_customer` `c` where (`c`.`id` = `t2`.`day3`)) AS `salesarea` from (`t_crm_visit_plan` `t1` left join `t_crm_visit_plan_detail` `t2` on((`t1`.`id` = `t2`.`billid`))) where ((`t2`.`day3` is not null) and (`t1`.`state` in ('1','0')) and (`t2`.`day3` <> '')) union all select `t1`.`personid` AS `personid`,`t1`.`leadid` AS `leadid`,`t1`.`state` AS `state`,5 AS `WEEKDAY`,`t2`.`day4` AS `customerid`,(select `p`.`belongdeptid` from `t_base_personnel` `p` where (`t1`.`personid` = `p`.`id`)) AS `deptid`,(select `c`.`customersort` from `t_base_sales_customer` `c` where (`c`.`id` = `t2`.`day4`)) AS `customersort`,(select `c`.`salesarea` from `t_base_sales_customer` `c` where (`c`.`id` = `t2`.`day4`)) AS `salesarea` from (`t_crm_visit_plan` `t1` left join `t_crm_visit_plan_detail` `t2` on((`t1`.`id` = `t2`.`billid`))) where ((`t2`.`day4` is not null) and (`t1`.`state` in ('1','0')) and (`t2`.`day4` <> '')) union all select `t1`.`personid` AS `personid`,`t1`.`leadid` AS `leadid`,`t1`.`state` AS `state`,6 AS `WEEKDAY`,`t2`.`day5` AS `customerid`,(select `p`.`belongdeptid` from `t_base_personnel` `p` where (`t1`.`personid` = `p`.`id`)) AS `deptid`,(select `c`.`customersort` from `t_base_sales_customer` `c` where (`c`.`id` = `t2`.`day5`)) AS `customersort`,(select `c`.`salesarea` from `t_base_sales_customer` `c` where (`c`.`id` = `t2`.`day5`)) AS `salesarea` from (`t_crm_visit_plan` `t1` left join `t_crm_visit_plan_detail` `t2` on((`t1`.`id` = `t2`.`billid`))) where ((`t2`.`day5` is not null) and (`t1`.`state` in ('1','0')) and (`t2`.`day5` <> '')) union all select `t1`.`personid` AS `personid`,`t1`.`leadid` AS `leadid`,`t1`.`state` AS `state`,7 AS `WEEKDAY`,`t2`.`day6` AS `customerid`,(select `p`.`belongdeptid` from `t_base_personnel` `p` where (`t1`.`personid` = `p`.`id`)) AS `deptid`,(select `c`.`customersort` from `t_base_sales_customer` `c` where (`c`.`id` = `t2`.`day6`)) AS `customersort`,(select `c`.`salesarea` from `t_base_sales_customer` `c` where (`c`.`id` = `t2`.`day6`)) AS `salesarea` from (`t_crm_visit_plan` `t1` left join `t_crm_visit_plan_detail` `t2` on((`t1`.`id` = `t2`.`billid`))) where ((`t2`.`day6` is not null) and (`t1`.`state` in ('1','0')) and (`t2`.`day6` <> '')) union all select `t1`.`personid` AS `personid`,`t1`.`leadid` AS `leadid`,`t1`.`state` AS `state`,1 AS `WEEKDAY`,`t2`.`day7` AS `customerid`,(select `p`.`belongdeptid` from `t_base_personnel` `p` where (`t1`.`personid` = `p`.`id`)) AS `deptid`,(select `c`.`customersort` from `t_base_sales_customer` `c` where (`c`.`id` = `t2`.`day7`)) AS `customersort`,(select `c`.`salesarea` from `t_base_sales_customer` `c` where (`c`.`id` = `t2`.`day7`)) AS `salesarea` from (`t_crm_visit_plan` `t1` left join `t_crm_visit_plan_detail` `t2` on((`t1`.`id` = `t2`.`billid`))) where ((`t2`.`day7` is not null) and (`t1`.`state` in ('1','0')) and (`t2`.`day7` <> ''))
+        ]]>
+    </sql>
+    <sql id="getVisitReportList_sql">
+        select
+            #{condition.month } month,
+            t.*,
+            (plan01 + plan02 + plan03 + plan04 + plan05 + plan06 + plan07 + plan08 + plan09 + plan10 + plan11 + plan12 + plan13 + plan14 + plan15 + plan16 + plan17 + plan18 + plan19 + plan20 + plan21 + plan22 + plan23 + plan24 + plan25 + plan26 + plan27 + plan28 + plan29 + plan30 + plan31) plan,
+            concat(round((isplan01 + isplan02 + isplan03 + isplan04 + isplan05 + isplan06 + isplan07 + isplan08 + isplan09 + isplan10 + isplan11 + isplan12 + isplan13 + isplan14 + isplan15 + isplan16 + isplan17 + isplan18 + isplan19 + isplan20 + isplan21 + isplan22 + isplan23 + isplan24 + isplan25 + isplan26 + isplan27 + isplan28 + isplan29 + isplan30 + isplan31) / (plan01 + plan02 + plan03 + plan04 + plan05 + plan06 + plan07 + plan08 + plan09 + plan10 + plan11 + plan12 + plan13 + plan14 + plan15 + plan16 + plan17 + plan18 + plan19 + plan20 + plan21 + plan22 + plan23 + plan24 + plan25 + plan26 + plan27 + plan28 + plan29 + plan30 + plan31) * 100, 2), '%') rate,
+            concat(round(isplan01 / plan01 * 100, 2), '%') rate01,
+            concat(round(isplan02 / plan02 * 100, 2), '%') rate02,
+            concat(round(isplan03 / plan03 * 100, 2), '%') rate03,
+            concat(round(isplan04 / plan04 * 100, 2), '%') rate04,
+            concat(round(isplan05 / plan05 * 100, 2), '%') rate05,
+            concat(round(isplan06 / plan06 * 100, 2), '%') rate06,
+            concat(round(isplan07 / plan07 * 100, 2), '%') rate07,
+            concat(round(isplan08 / plan08 * 100, 2), '%') rate08,
+            concat(round(isplan09 / plan09 * 100, 2), '%') rate09,
+            concat(round(isplan10 / plan10 * 100, 2), '%') rate10,
+            concat(round(isplan11 / plan11 * 100, 2), '%') rate11,
+            concat(round(isplan12 / plan12 * 100, 2), '%') rate12,
+            concat(round(isplan13 / plan13 * 100, 2), '%') rate13,
+            concat(round(isplan14 / plan14 * 100, 2), '%') rate14,
+            concat(round(isplan15 / plan15 * 100, 2), '%') rate15,
+            concat(round(isplan16 / plan16 * 100, 2), '%') rate16,
+            concat(round(isplan17 / plan17 * 100, 2), '%') rate17,
+            concat(round(isplan18 / plan18 * 100, 2), '%') rate18,
+            concat(round(isplan19 / plan19 * 100, 2), '%') rate19,
+            concat(round(isplan20 / plan20 * 100, 2), '%') rate20,
+            concat(round(isplan21 / plan21 * 100, 2), '%') rate21,
+            concat(round(isplan22 / plan22 * 100, 2), '%') rate22,
+            concat(round(isplan23 / plan23 * 100, 2), '%') rate23,
+            concat(round(isplan24 / plan24 * 100, 2), '%') rate24,
+            concat(round(isplan25 / plan25 * 100, 2), '%') rate25,
+            concat(round(isplan26 / plan26 * 100, 2), '%') rate26,
+            concat(round(isplan27 / plan27 * 100, 2), '%') rate27,
+            concat(round(isplan28 / plan28 * 100, 2), '%') rate28,
+            concat(round(isplan29 / plan29 * 100, 2), '%') rate29,
+            concat(round(isplan30 / plan30 * 100, 2), '%') rate30,
+            concat(round(isplan31 / plan31 * 100, 2), '%') rate31
+        from
+        (
+            select
+                ${condition.groupcols },
+                /* 线路内+线路外 */
+                count(distinct(case when right(t.businessdate, 2) = '01' then concat(t.customerid, t.personid) else null end)) day01_sum,
+                count(distinct(case when right(t.businessdate, 2) = '02' then concat(t.customerid, t.personid) else null end)) day02_sum,
+                count(distinct(case when right(t.businessdate, 2) = '03' then concat(t.customerid, t.personid) else null end)) day03_sum,
+                count(distinct(case when right(t.businessdate, 2) = '04' then concat(t.customerid, t.personid) else null end)) day04_sum,
+                count(distinct(case when right(t.businessdate, 2) = '05' then concat(t.customerid, t.personid) else null end)) day05_sum,
+                count(distinct(case when right(t.businessdate, 2) = '06' then concat(t.customerid, t.personid) else null end)) day06_sum,
+                count(distinct(case when right(t.businessdate, 2) = '07' then concat(t.customerid, t.personid) else null end)) day07_sum,
+                count(distinct(case when right(t.businessdate, 2) = '08' then concat(t.customerid, t.personid) else null end)) day08_sum,
+                count(distinct(case when right(t.businessdate, 2) = '09' then concat(t.customerid, t.personid) else null end)) day09_sum,
+                count(distinct(case when right(t.businessdate, 2) = '10' then concat(t.customerid, t.personid) else null end)) day10_sum,
+                count(distinct(case when right(t.businessdate, 2) = '11' then concat(t.customerid, t.personid) else null end)) day11_sum,
+                count(distinct(case when right(t.businessdate, 2) = '12' then concat(t.customerid, t.personid) else null end)) day12_sum,
+                count(distinct(case when right(t.businessdate, 2) = '13' then concat(t.customerid, t.personid) else null end)) day13_sum,
+                count(distinct(case when right(t.businessdate, 2) = '14' then concat(t.customerid, t.personid) else null end)) day14_sum,
+                count(distinct(case when right(t.businessdate, 2) = '15' then concat(t.customerid, t.personid) else null end)) day15_sum,
+                count(distinct(case when right(t.businessdate, 2) = '16' then concat(t.customerid, t.personid) else null end)) day16_sum,
+                count(distinct(case when right(t.businessdate, 2) = '17' then concat(t.customerid, t.personid) else null end)) day17_sum,
+                count(distinct(case when right(t.businessdate, 2) = '18' then concat(t.customerid, t.personid) else null end)) day18_sum,
+                count(distinct(case when right(t.businessdate, 2) = '19' then concat(t.customerid, t.personid) else null end)) day19_sum,
+                count(distinct(case when right(t.businessdate, 2) = '20' then concat(t.customerid, t.personid) else null end)) day20_sum,
+                count(distinct(case when right(t.businessdate, 2) = '21' then concat(t.customerid, t.personid) else null end)) day21_sum,
+                count(distinct(case when right(t.businessdate, 2) = '22' then concat(t.customerid, t.personid) else null end)) day22_sum,
+                count(distinct(case when right(t.businessdate, 2) = '23' then concat(t.customerid, t.personid) else null end)) day23_sum,
+                count(distinct(case when right(t.businessdate, 2) = '24' then concat(t.customerid, t.personid) else null end)) day24_sum,
+                count(distinct(case when right(t.businessdate, 2) = '25' then concat(t.customerid, t.personid) else null end)) day25_sum,
+                count(distinct(case when right(t.businessdate, 2) = '26' then concat(t.customerid, t.personid) else null end)) day26_sum,
+                count(distinct(case when right(t.businessdate, 2) = '27' then concat(t.customerid, t.personid) else null end)) day27_sum,
+                count(distinct(case when right(t.businessdate, 2) = '28' then concat(t.customerid, t.personid) else null end)) day28_sum,
+                count(distinct(case when right(t.businessdate, 2) = '29' then concat(t.customerid, t.personid) else null end)) day29_sum,
+                count(distinct(case when right(t.businessdate, 2) = '30' then concat(t.customerid, t.personid) else null end)) day30_sum,
+                count(distinct(case when right(t.businessdate, 2) = '31' then concat(t.customerid, t.personid) else null end)) day31_sum,
+                count(distinct(concat(t.customerid, t.personid))) total_sum,
+                /* 线路内 */
+                count(distinct(case when right(t.businessdate, 2) = '01' and t.isplan = '1' then concat(t.customerid, t.personid) else null end)) isplan01,
+                count(distinct(case when right(t.businessdate, 2) = '02' and t.isplan = '1' then concat(t.customerid, t.personid) else null end)) isplan02,
+                count(distinct(case when right(t.businessdate, 2) = '03' and t.isplan = '1' then concat(t.customerid, t.personid) else null end)) isplan03,
+                count(distinct(case when right(t.businessdate, 2) = '04' and t.isplan = '1' then concat(t.customerid, t.personid) else null end)) isplan04,
+                count(distinct(case when right(t.businessdate, 2) = '05' and t.isplan = '1' then concat(t.customerid, t.personid) else null end)) isplan05,
+                count(distinct(case when right(t.businessdate, 2) = '06' and t.isplan = '1' then concat(t.customerid, t.personid) else null end)) isplan06,
+                count(distinct(case when right(t.businessdate, 2) = '07' and t.isplan = '1' then concat(t.customerid, t.personid) else null end)) isplan07,
+                count(distinct(case when right(t.businessdate, 2) = '08' and t.isplan = '1' then concat(t.customerid, t.personid) else null end)) isplan08,
+                count(distinct(case when right(t.businessdate, 2) = '09' and t.isplan = '1' then concat(t.customerid, t.personid) else null end)) isplan09,
+                count(distinct(case when right(t.businessdate, 2) = '10' and t.isplan = '1' then concat(t.customerid, t.personid) else null end)) isplan10,
+                count(distinct(case when right(t.businessdate, 2) = '11' and t.isplan = '1' then concat(t.customerid, t.personid) else null end)) isplan11,
+                count(distinct(case when right(t.businessdate, 2) = '12' and t.isplan = '1' then concat(t.customerid, t.personid) else null end)) isplan12,
+                count(distinct(case when right(t.businessdate, 2) = '13' and t.isplan = '1' then concat(t.customerid, t.personid) else null end)) isplan13,
+                count(distinct(case when right(t.businessdate, 2) = '14' and t.isplan = '1' then concat(t.customerid, t.personid) else null end)) isplan14,
+                count(distinct(case when right(t.businessdate, 2) = '15' and t.isplan = '1' then concat(t.customerid, t.personid) else null end)) isplan15,
+                count(distinct(case when right(t.businessdate, 2) = '16' and t.isplan = '1' then concat(t.customerid, t.personid) else null end)) isplan16,
+                count(distinct(case when right(t.businessdate, 2) = '17' and t.isplan = '1' then concat(t.customerid, t.personid) else null end)) isplan17,
+                count(distinct(case when right(t.businessdate, 2) = '18' and t.isplan = '1' then concat(t.customerid, t.personid) else null end)) isplan18,
+                count(distinct(case when right(t.businessdate, 2) = '19' and t.isplan = '1' then concat(t.customerid, t.personid) else null end)) isplan19,
+                count(distinct(case when right(t.businessdate, 2) = '20' and t.isplan = '1' then concat(t.customerid, t.personid) else null end)) isplan20,
+                count(distinct(case when right(t.businessdate, 2) = '21' and t.isplan = '1' then concat(t.customerid, t.personid) else null end)) isplan21,
+                count(distinct(case when right(t.businessdate, 2) = '22' and t.isplan = '1' then concat(t.customerid, t.personid) else null end)) isplan22,
+                count(distinct(case when right(t.businessdate, 2) = '23' and t.isplan = '1' then concat(t.customerid, t.personid) else null end)) isplan23,
+                count(distinct(case when right(t.businessdate, 2) = '24' and t.isplan = '1' then concat(t.customerid, t.personid) else null end)) isplan24,
+                count(distinct(case when right(t.businessdate, 2) = '25' and t.isplan = '1' then concat(t.customerid, t.personid) else null end)) isplan25,
+                count(distinct(case when right(t.businessdate, 2) = '26' and t.isplan = '1' then concat(t.customerid, t.personid) else null end)) isplan26,
+                count(distinct(case when right(t.businessdate, 2) = '27' and t.isplan = '1' then concat(t.customerid, t.personid) else null end)) isplan27,
+                count(distinct(case when right(t.businessdate, 2) = '28' and t.isplan = '1' then concat(t.customerid, t.personid) else null end)) isplan28,
+                count(distinct(case when right(t.businessdate, 2) = '29' and t.isplan = '1' then concat(t.customerid, t.personid) else null end)) isplan29,
+                count(distinct(case when right(t.businessdate, 2) = '30' and t.isplan = '1' then concat(t.customerid, t.personid) else null end)) isplan30,
+                count(distinct(case when right(t.businessdate, 2) = '31' and t.isplan = '1' then concat(t.customerid, t.personid) else null end)) isplan31,
+                count(distinct(case when t.isplan = '1' then concat(t.customerid, t.personid) else null end)) isplan,
+                /* 线路外 */
+                count(distinct(case when right(t.businessdate, 2) = '01' and t.isplan = '0' then concat(t.customerid, t.personid) else null end)) noplan01,
+                count(distinct(case when right(t.businessdate, 2) = '02' and t.isplan = '0' then concat(t.customerid, t.personid) else null end)) noplan02,
+                count(distinct(case when right(t.businessdate, 2) = '03' and t.isplan = '0' then concat(t.customerid, t.personid) else null end)) noplan03,
+                count(distinct(case when right(t.businessdate, 2) = '04' and t.isplan = '0' then concat(t.customerid, t.personid) else null end)) noplan04,
+                count(distinct(case when right(t.businessdate, 2) = '05' and t.isplan = '0' then concat(t.customerid, t.personid) else null end)) noplan05,
+                count(distinct(case when right(t.businessdate, 2) = '06' and t.isplan = '0' then concat(t.customerid, t.personid) else null end)) noplan06,
+                count(distinct(case when right(t.businessdate, 2) = '07' and t.isplan = '0' then concat(t.customerid, t.personid) else null end)) noplan07,
+                count(distinct(case when right(t.businessdate, 2) = '08' and t.isplan = '0' then concat(t.customerid, t.personid) else null end)) noplan08,
+                count(distinct(case when right(t.businessdate, 2) = '09' and t.isplan = '0' then concat(t.customerid, t.personid) else null end)) noplan09,
+                count(distinct(case when right(t.businessdate, 2) = '10' and t.isplan = '0' then concat(t.customerid, t.personid) else null end)) noplan10,
+                count(distinct(case when right(t.businessdate, 2) = '11' and t.isplan = '0' then concat(t.customerid, t.personid) else null end)) noplan11,
+                count(distinct(case when right(t.businessdate, 2) = '12' and t.isplan = '0' then concat(t.customerid, t.personid) else null end)) noplan12,
+                count(distinct(case when right(t.businessdate, 2) = '13' and t.isplan = '0' then concat(t.customerid, t.personid) else null end)) noplan13,
+                count(distinct(case when right(t.businessdate, 2) = '14' and t.isplan = '0' then concat(t.customerid, t.personid) else null end)) noplan14,
+                count(distinct(case when right(t.businessdate, 2) = '15' and t.isplan = '0' then concat(t.customerid, t.personid) else null end)) noplan15,
+                count(distinct(case when right(t.businessdate, 2) = '16' and t.isplan = '0' then concat(t.customerid, t.personid) else null end)) noplan16,
+                count(distinct(case when right(t.businessdate, 2) = '17' and t.isplan = '0' then concat(t.customerid, t.personid) else null end)) noplan17,
+                count(distinct(case when right(t.businessdate, 2) = '18' and t.isplan = '0' then concat(t.customerid, t.personid) else null end)) noplan18,
+                count(distinct(case when right(t.businessdate, 2) = '19' and t.isplan = '0' then concat(t.customerid, t.personid) else null end)) noplan19,
+                count(distinct(case when right(t.businessdate, 2) = '20' and t.isplan = '0' then concat(t.customerid, t.personid) else null end)) noplan20,
+                count(distinct(case when right(t.businessdate, 2) = '21' and t.isplan = '0' then concat(t.customerid, t.personid) else null end)) noplan21,
+                count(distinct(case when right(t.businessdate, 2) = '22' and t.isplan = '0' then concat(t.customerid, t.personid) else null end)) noplan22,
+                count(distinct(case when right(t.businessdate, 2) = '23' and t.isplan = '0' then concat(t.customerid, t.personid) else null end)) noplan23,
+                count(distinct(case when right(t.businessdate, 2) = '24' and t.isplan = '0' then concat(t.customerid, t.personid) else null end)) noplan24,
+                count(distinct(case when right(t.businessdate, 2) = '25' and t.isplan = '0' then concat(t.customerid, t.personid) else null end)) noplan25,
+                count(distinct(case when right(t.businessdate, 2) = '26' and t.isplan = '0' then concat(t.customerid, t.personid) else null end)) noplan26,
+                count(distinct(case when right(t.businessdate, 2) = '27' and t.isplan = '0' then concat(t.customerid, t.personid) else null end)) noplan27,
+                count(distinct(case when right(t.businessdate, 2) = '28' and t.isplan = '0' then concat(t.customerid, t.personid) else null end)) noplan28,
+                count(distinct(case when right(t.businessdate, 2) = '29' and t.isplan = '0' then concat(t.customerid, t.personid) else null end)) noplan29,
+                count(distinct(case when right(t.businessdate, 2) = '30' and t.isplan = '0' then concat(t.customerid, t.personid) else null end)) noplan30,
+                count(distinct(case when right(t.businessdate, 2) = '31' and t.isplan = '0' then concat(t.customerid, t.personid) else null end)) noplan31,
+                count(distinct(case when t.isplan = '0' then concat(t.customerid, t.personid) else null end)) total_noplan,
+                /* 计划数量 */
+                count(DISTINCT(case when DAYOFWEEK(concat(#{condition.month}, '-01')) = t.weekday then concat(t.plancustomerid, t.personid) else null end)) plan01,
+                count(DISTINCT(case when DAYOFWEEK(concat(#{condition.month}, '-02')) = t.weekday then concat(t.plancustomerid, t.personid) else null end)) plan02,
+                count(DISTINCT(case when DAYOFWEEK(concat(#{condition.month}, '-03')) = t.weekday then concat(t.plancustomerid, t.personid) else null end)) plan03,
+                count(DISTINCT(case when DAYOFWEEK(concat(#{condition.month}, '-04')) = t.weekday then concat(t.plancustomerid, t.personid) else null end)) plan04,
+                count(DISTINCT(case when DAYOFWEEK(concat(#{condition.month}, '-05')) = t.weekday then concat(t.plancustomerid, t.personid) else null end)) plan05,
+                count(DISTINCT(case when DAYOFWEEK(concat(#{condition.month}, '-06')) = t.weekday then concat(t.plancustomerid, t.personid) else null end)) plan06,
+                count(DISTINCT(case when DAYOFWEEK(concat(#{condition.month}, '-07')) = t.weekday then concat(t.plancustomerid, t.personid) else null end)) plan07,
+                count(DISTINCT(case when DAYOFWEEK(concat(#{condition.month}, '-08')) = t.weekday then concat(t.plancustomerid, t.personid) else null end)) plan08,
+                count(DISTINCT(case when DAYOFWEEK(concat(#{condition.month}, '-09')) = t.weekday then concat(t.plancustomerid, t.personid) else null end)) plan09,
+                count(DISTINCT(case when DAYOFWEEK(concat(#{condition.month}, '-10')) = t.weekday then concat(t.plancustomerid, t.personid) else null end)) plan10,
+                count(DISTINCT(case when DAYOFWEEK(concat(#{condition.month}, '-11')) = t.weekday then concat(t.plancustomerid, t.personid) else null end)) plan11,
+                count(DISTINCT(case when DAYOFWEEK(concat(#{condition.month}, '-12')) = t.weekday then concat(t.plancustomerid, t.personid) else null end)) plan12,
+                count(DISTINCT(case when DAYOFWEEK(concat(#{condition.month}, '-13')) = t.weekday then concat(t.plancustomerid, t.personid) else null end)) plan13,
+                count(DISTINCT(case when DAYOFWEEK(concat(#{condition.month}, '-14')) = t.weekday then concat(t.plancustomerid, t.personid) else null end)) plan14,
+                count(DISTINCT(case when DAYOFWEEK(concat(#{condition.month}, '-15')) = t.weekday then concat(t.plancustomerid, t.personid) else null end)) plan15,
+                count(DISTINCT(case when DAYOFWEEK(concat(#{condition.month}, '-16')) = t.weekday then concat(t.plancustomerid, t.personid) else null end)) plan16,
+                count(DISTINCT(case when DAYOFWEEK(concat(#{condition.month}, '-17')) = t.weekday then concat(t.plancustomerid, t.personid) else null end)) plan17,
+                count(DISTINCT(case when DAYOFWEEK(concat(#{condition.month}, '-18')) = t.weekday then concat(t.plancustomerid, t.personid) else null end)) plan18,
+                count(DISTINCT(case when DAYOFWEEK(concat(#{condition.month}, '-19')) = t.weekday then concat(t.plancustomerid, t.personid) else null end)) plan19,
+                count(DISTINCT(case when DAYOFWEEK(concat(#{condition.month}, '-20')) = t.weekday then concat(t.plancustomerid, t.personid) else null end)) plan20,
+                count(DISTINCT(case when DAYOFWEEK(concat(#{condition.month}, '-21')) = t.weekday then concat(t.plancustomerid, t.personid) else null end)) plan21,
+                count(DISTINCT(case when DAYOFWEEK(concat(#{condition.month}, '-22')) = t.weekday then concat(t.plancustomerid, t.personid) else null end)) plan22,
+                count(DISTINCT(case when DAYOFWEEK(concat(#{condition.month}, '-23')) = t.weekday then concat(t.plancustomerid, t.personid) else null end)) plan23,
+                count(DISTINCT(case when DAYOFWEEK(concat(#{condition.month}, '-24')) = t.weekday then concat(t.plancustomerid, t.personid) else null end)) plan24,
+                count(DISTINCT(case when DAYOFWEEK(concat(#{condition.month}, '-25')) = t.weekday then concat(t.plancustomerid, t.personid) else null end)) plan25,
+                count(DISTINCT(case when DAYOFWEEK(concat(#{condition.month}, '-26')) = t.weekday then concat(t.plancustomerid, t.personid) else null end)) plan26,
+                count(DISTINCT(case when DAYOFWEEK(concat(#{condition.month}, '-27')) = t.weekday then concat(t.plancustomerid, t.personid) else null end)) plan27,
+                count(DISTINCT(case when DAYOFWEEK(concat(#{condition.month}, '-28')) = t.weekday then concat(t.plancustomerid, t.personid) else null end)) plan28,
+                count(DISTINCT(case when DAYOFWEEK(concat(#{condition.month}, '-29')) = t.weekday then concat(t.plancustomerid, t.personid) else null end)) plan29,
+                count(DISTINCT(case when DAYOFWEEK(concat(#{condition.month}, '-30')) = t.weekday then concat(t.plancustomerid, t.personid) else null end)) plan30,
+                count(DISTINCT(case when DAYOFWEEK(concat(#{condition.month}, '-31')) = t.weekday then concat(t.plancustomerid, t.personid) else null end)) plan31
+            from
+            (
+                select vp.personid, vp.leadid, null businessdate, vp.weekday, null customerid, null isplan, vp.customerid plancustomerid, vp.deptid, vp.customersort, vp.salesarea from (<include refid="v_crm_visit_plan" /> ) vp
+                UNION ALL
+                select r.personid, r.leadid, r.businessdate, null weekday, r.customerid, r.isplan, null plancustomerid,(SELECT belongdeptid FROM t_base_personnel p WHERE r.personid = p.id) deptid, r.customersort, r.salesarea from t_crm_visit_record r
+            ) t
+            <trim prefix="where" prefixOverrides="and|or">
+                1 = 1
+                and (personid <![CDATA[ <> ]]> '' and personid is not null)
+                <if test="condition.startdate != null">
+                    and (t.businessdate <![CDATA[ >= ]]> #{condition.startdate } or t.businessdate is null)
+                </if>
+                <if test="condition.enddate != null">
+                    and (t.businessdate <![CDATA[ <= ]]> #{condition.enddate } or t.businessdate is null)
+                </if>
+                <if test="condition.customersort != null">
+                    and t.customersort = #{condition.customersort }
+                </if>
+                <if test="condition.salesarea != null">
+                    and t.salesarea = #{condition.salesarea }
+                </if>
+                <if test="condition.personid != null">
+                    and t.personid = #{condition.personid }
+                </if>
+                <if test="condition.deptid != null">
+                    and t.deptid = #{condition.deptid }
+                </if>
+                <if test="condition.leadid != null">
+                    and t.leadid = #{condition.leadid }
+                </if>
+                <include refid="common.Page_querySql"/>
+                <include refid="common.Page_dataSql"/>
+            </trim>
+            group by ${condition.groupcols }
+        )t
+    </sql>
+    <select id="getVisitReportList" parameterType="com.hd.agent.common.util.PageMap" resultType="java.util.Map">
+        select t.* from
+        (<include refid="getVisitReportList_sql"/>) t
+        <include refid="common.Page_limit"/>
+    </select>
+    <select id="getVisitReportCount" parameterType="com.hd.agent.common.util.PageMap" resultType="java.lang.Integer">
+        select count(1) from
+        (<include refid="getVisitReportList_sql"/>) t
+    </select>
+    <select id="getVisitReportSumData" parameterType="com.hd.agent.common.util.PageMap" resultType="java.util.Map">
+        select
+            ifnull(sum(day01_sum), 0) day01_sum,
+            ifnull(sum(day02_sum), 0) day02_sum,
+            ifnull(sum(day03_sum), 0) day03_sum,
+            ifnull(sum(day04_sum), 0) day04_sum,
+            ifnull(sum(day05_sum), 0) day05_sum,
+            ifnull(sum(day06_sum), 0) day06_sum,
+            ifnull(sum(day07_sum), 0) day07_sum,
+            ifnull(sum(day08_sum), 0) day08_sum,
+            ifnull(sum(day09_sum), 0) day09_sum,
+            ifnull(sum(day10_sum), 0) day10_sum,
+            ifnull(sum(day11_sum), 0) day11_sum,
+            ifnull(sum(day12_sum), 0) day12_sum,
+            ifnull(sum(day13_sum), 0) day13_sum,
+            ifnull(sum(day14_sum), 0) day14_sum,
+            ifnull(sum(day15_sum), 0) day15_sum,
+            ifnull(sum(day16_sum), 0) day16_sum,
+            ifnull(sum(day17_sum), 0) day17_sum,
+            ifnull(sum(day18_sum), 0) day18_sum,
+            ifnull(sum(day19_sum), 0) day19_sum,
+            ifnull(sum(day20_sum), 0) day20_sum,
+            ifnull(sum(day21_sum), 0) day21_sum,
+            ifnull(sum(day22_sum), 0) day22_sum,
+            ifnull(sum(day23_sum), 0) day23_sum,
+            ifnull(sum(day24_sum), 0) day24_sum,
+            ifnull(sum(day25_sum), 0) day25_sum,
+            ifnull(sum(day26_sum), 0) day26_sum,
+            ifnull(sum(day27_sum), 0) day27_sum,
+            ifnull(sum(day28_sum), 0) day28_sum,
+            ifnull(sum(day29_sum), 0) day29_sum,
+            ifnull(sum(day30_sum), 0) day30_sum,
+            ifnull(sum(day31_sum), 0) day31_sum,
+            ifnull(sum(isplan), 0) isplan,
+            ifnull(sum(isplan01), 0) isplan01,
+            ifnull(sum(isplan02), 0) isplan02,
+            ifnull(sum(isplan03), 0) isplan03,
+            ifnull(sum(isplan04), 0) isplan04,
+            ifnull(sum(isplan05), 0) isplan05,
+            ifnull(sum(isplan06), 0) isplan06,
+            ifnull(sum(isplan07), 0) isplan07,
+            ifnull(sum(isplan08), 0) isplan08,
+            ifnull(sum(isplan09), 0) isplan09,
+            ifnull(sum(isplan10), 0) isplan10,
+            ifnull(sum(isplan11), 0) isplan11,
+            ifnull(sum(isplan12), 0) isplan12,
+            ifnull(sum(isplan13), 0) isplan13,
+            ifnull(sum(isplan14), 0) isplan14,
+            ifnull(sum(isplan15), 0) isplan15,
+            ifnull(sum(isplan16), 0) isplan16,
+            ifnull(sum(isplan17), 0) isplan17,
+            ifnull(sum(isplan18), 0) isplan18,
+            ifnull(sum(isplan19), 0) isplan19,
+            ifnull(sum(isplan20), 0) isplan20,
+            ifnull(sum(isplan21), 0) isplan21,
+            ifnull(sum(isplan22), 0) isplan22,
+            ifnull(sum(isplan23), 0) isplan23,
+            ifnull(sum(isplan24), 0) isplan24,
+            ifnull(sum(isplan25), 0) isplan25,
+            ifnull(sum(isplan26), 0) isplan26,
+            ifnull(sum(isplan27), 0) isplan27,
+            ifnull(sum(isplan28), 0) isplan28,
+            ifnull(sum(isplan29), 0) isplan29,
+            ifnull(sum(isplan30), 0) isplan30,
+            ifnull(sum(isplan31), 0) isplan31,
+
+            ifnull(sum(noplan01), 0) noplan01,
+            ifnull(sum(noplan02), 0) noplan02,
+            ifnull(sum(noplan03), 0) noplan03,
+            ifnull(sum(noplan04), 0) noplan04,
+            ifnull(sum(noplan05), 0) noplan05,
+            ifnull(sum(noplan06), 0) noplan06,
+            ifnull(sum(noplan07), 0) noplan07,
+            ifnull(sum(noplan08), 0) noplan08,
+            ifnull(sum(noplan09), 0) noplan09,
+            ifnull(sum(noplan10), 0) noplan10,
+            ifnull(sum(noplan11), 0) noplan11,
+            ifnull(sum(noplan12), 0) noplan12,
+            ifnull(sum(noplan13), 0) noplan13,
+            ifnull(sum(noplan14), 0) noplan14,
+            ifnull(sum(noplan15), 0) noplan15,
+            ifnull(sum(noplan16), 0) noplan16,
+            ifnull(sum(noplan17), 0) noplan17,
+            ifnull(sum(noplan18), 0) noplan18,
+            ifnull(sum(noplan19), 0) noplan19,
+            ifnull(sum(noplan20), 0) noplan20,
+            ifnull(sum(noplan21), 0) noplan21,
+            ifnull(sum(noplan22), 0) noplan22,
+            ifnull(sum(noplan23), 0) noplan23,
+            ifnull(sum(noplan24), 0) noplan24,
+            ifnull(sum(noplan25), 0) noplan25,
+            ifnull(sum(noplan26), 0) noplan26,
+            ifnull(sum(noplan27), 0) noplan27,
+            ifnull(sum(noplan28), 0) noplan28,
+            ifnull(sum(noplan29), 0) noplan29,
+            ifnull(sum(noplan30), 0) noplan30,
+            ifnull(sum(noplan31), 0) noplan31,
+            ifnull(sum(plan), 0) plan,
+            ifnull(sum(plan01), 0) plan01,
+            ifnull(sum(plan02), 0) plan02,
+            ifnull(sum(plan03), 0) plan03,
+            ifnull(sum(plan04), 0) plan04,
+            ifnull(sum(plan05), 0) plan05,
+            ifnull(sum(plan06), 0) plan06,
+            ifnull(sum(plan07), 0) plan07,
+            ifnull(sum(plan08), 0) plan08,
+            ifnull(sum(plan09), 0) plan09,
+            ifnull(sum(plan10), 0) plan10,
+            ifnull(sum(plan11), 0) plan11,
+            ifnull(sum(plan12), 0) plan12,
+            ifnull(sum(plan13), 0) plan13,
+            ifnull(sum(plan14), 0) plan14,
+            ifnull(sum(plan15), 0) plan15,
+            ifnull(sum(plan16), 0) plan16,
+            ifnull(sum(plan17), 0) plan17,
+            ifnull(sum(plan18), 0) plan18,
+            ifnull(sum(plan19), 0) plan19,
+            ifnull(sum(plan20), 0) plan20,
+            ifnull(sum(plan21), 0) plan21,
+            ifnull(sum(plan22), 0) plan22,
+            ifnull(sum(plan23), 0) plan23,
+            ifnull(sum(plan24), 0) plan24,
+            ifnull(sum(plan25), 0) plan25,
+            ifnull(sum(plan26), 0) plan26,
+            ifnull(sum(plan27), 0) plan27,
+            ifnull(sum(plan28), 0) plan28,
+            ifnull(sum(plan29), 0) plan29,
+            ifnull(sum(plan30), 0) plan30,
+            ifnull(sum(plan31), 0) plan31,
+            ifnull(sum(total_noplan), 0) total_noplan,
+            ifnull(sum(total_sum), 0) total_sum,
+            if(ifnull(sum(plan01), 0) = 0, '', concat(round(ifnull(sum(isplan01), 0) / ifnull(sum(plan01), 0) * 100, 2), '%')) rate01,
+            if(ifnull(sum(plan02), 0) = 0, '', concat(round(ifnull(sum(isplan02), 0) / ifnull(sum(plan02), 0) * 100, 2), '%')) rate02,
+            if(ifnull(sum(plan03), 0) = 0, '', concat(round(ifnull(sum(isplan03), 0) / ifnull(sum(plan03), 0) * 100, 2), '%')) rate03,
+            if(ifnull(sum(plan04), 0) = 0, '', concat(round(ifnull(sum(isplan04), 0) / ifnull(sum(plan04), 0) * 100, 2), '%')) rate04,
+            if(ifnull(sum(plan05), 0) = 0, '', concat(round(ifnull(sum(isplan05), 0) / ifnull(sum(plan05), 0) * 100, 2), '%')) rate05,
+            if(ifnull(sum(plan06), 0) = 0, '', concat(round(ifnull(sum(isplan06), 0) / ifnull(sum(plan06), 0) * 100, 2), '%')) rate06,
+            if(ifnull(sum(plan07), 0) = 0, '', concat(round(ifnull(sum(isplan07), 0) / ifnull(sum(plan07), 0) * 100, 2), '%')) rate07,
+            if(ifnull(sum(plan08), 0) = 0, '', concat(round(ifnull(sum(isplan08), 0) / ifnull(sum(plan08), 0) * 100, 2), '%')) rate08,
+            if(ifnull(sum(plan09), 0) = 0, '', concat(round(ifnull(sum(isplan09), 0) / ifnull(sum(plan09), 0) * 100, 2), '%')) rate09,
+            if(ifnull(sum(plan10), 0) = 0, '', concat(round(ifnull(sum(isplan10), 0) / ifnull(sum(plan10), 0) * 100, 2), '%')) rate10,
+            if(ifnull(sum(plan11), 0) = 0, '', concat(round(ifnull(sum(isplan11), 0) / ifnull(sum(plan11), 0) * 100, 2), '%')) rate11,
+            if(ifnull(sum(plan12), 0) = 0, '', concat(round(ifnull(sum(isplan12), 0) / ifnull(sum(plan12), 0) * 100, 2), '%')) rate12,
+            if(ifnull(sum(plan13), 0) = 0, '', concat(round(ifnull(sum(isplan13), 0) / ifnull(sum(plan13), 0) * 100, 2), '%')) rate13,
+            if(ifnull(sum(plan14), 0) = 0, '', concat(round(ifnull(sum(isplan14), 0) / ifnull(sum(plan14), 0) * 100, 2), '%')) rate14,
+            if(ifnull(sum(plan15), 0) = 0, '', concat(round(ifnull(sum(isplan15), 0) / ifnull(sum(plan15), 0) * 100, 2), '%')) rate15,
+            if(ifnull(sum(plan16), 0) = 0, '', concat(round(ifnull(sum(isplan16), 0) / ifnull(sum(plan16), 0) * 100, 2), '%')) rate16,
+            if(ifnull(sum(plan17), 0) = 0, '', concat(round(ifnull(sum(isplan17), 0) / ifnull(sum(plan17), 0) * 100, 2), '%')) rate17,
+            if(ifnull(sum(plan18), 0) = 0, '', concat(round(ifnull(sum(isplan18), 0) / ifnull(sum(plan18), 0) * 100, 2), '%')) rate18,
+            if(ifnull(sum(plan19), 0) = 0, '', concat(round(ifnull(sum(isplan19), 0) / ifnull(sum(plan19), 0) * 100, 2), '%')) rate19,
+            if(ifnull(sum(plan20), 0) = 0, '', concat(round(ifnull(sum(isplan20), 0) / ifnull(sum(plan20), 0) * 100, 2), '%')) rate20,
+            if(ifnull(sum(plan21), 0) = 0, '', concat(round(ifnull(sum(isplan21), 0) / ifnull(sum(plan21), 0) * 100, 2), '%')) rate21,
+            if(ifnull(sum(plan22), 0) = 0, '', concat(round(ifnull(sum(isplan22), 0) / ifnull(sum(plan22), 0) * 100, 2), '%')) rate22,
+            if(ifnull(sum(plan23), 0) = 0, '', concat(round(ifnull(sum(isplan23), 0) / ifnull(sum(plan23), 0) * 100, 2), '%')) rate23,
+            if(ifnull(sum(plan24), 0) = 0, '', concat(round(ifnull(sum(isplan24), 0) / ifnull(sum(plan24), 0) * 100, 2), '%')) rate24,
+            if(ifnull(sum(plan25), 0) = 0, '', concat(round(ifnull(sum(isplan25), 0) / ifnull(sum(plan25), 0) * 100, 2), '%')) rate25,
+            if(ifnull(sum(plan26), 0) = 0, '', concat(round(ifnull(sum(isplan26), 0) / ifnull(sum(plan26), 0) * 100, 2), '%')) rate26,
+            if(ifnull(sum(plan27), 0) = 0, '', concat(round(ifnull(sum(isplan27), 0) / ifnull(sum(plan27), 0) * 100, 2), '%')) rate27,
+            if(ifnull(sum(plan28), 0) = 0, '', concat(round(ifnull(sum(isplan28), 0) / ifnull(sum(plan28), 0) * 100, 2), '%')) rate28,
+            if(ifnull(sum(plan29), 0) = 0, '', concat(round(ifnull(sum(isplan29), 0) / ifnull(sum(plan29), 0) * 100, 2), '%')) rate29,
+            if(ifnull(sum(plan30), 0) = 0, '', concat(round(ifnull(sum(isplan30), 0) / ifnull(sum(plan30), 0) * 100, 2), '%')) rate30,
+            if(ifnull(sum(plan), 0) = 0, '', concat(round(ifnull(sum(isplan), 0) / ifnull(sum(plan), 0) * 100, 2), '%')) rate
+        from
+        (<include refid="getVisitReportList_sql"/>) t
+    </select>
+    <sql id="getPersonReportList_sql">
+        select personid,
+            max(case when ri=1 then gap else 0 end) day1,
+            max(case when ri=2 then gap else 0 end) day2,
+            max(case when ri=3 then gap else 0 end) day3,
+            max(case when ri=4 then gap else 0 end) day4,
+            max(case when ri=5 then gap else 0 end) day5,
+            max(case when ri=6 then gap else 0 end) day6,
+            max(case when ri=7 then gap else 0 end) day7,
+            max(case when ri=8 then gap else 0 end) day8,
+            max(case when ri=9 then gap else 0 end) day9,
+            max(case when ri=10 then gap else 0 end) day10,
+            max(case when ri=11 then gap else 0 end) day11,
+            max(case when ri=12 then gap else 0 end) day12,
+            max(case when ri=13 then gap else 0 end) day13,
+            max(case when ri=14 then gap else 0 end) day14,
+            max(case when ri=15 then gap else 0 end) day15,
+            max(case when ri=16 then gap else 0 end) day16,
+            max(case when ri=17 then gap else 0 end) day17,
+            max(case when ri=18 then gap else 0 end) day18,
+            max(case when ri=19 then gap else 0 end) day19,
+            max(case when ri=20 then gap else 0 end) day20,
+            max(case when ri=21 then gap else 0 end) day21,
+            max(case when ri=22 then gap else 0 end) day22,
+            max(case when ri=23 then gap else 0 end) day23,
+            max(case when ri=24 then gap else 0 end) day24,
+            max(case when ri=25 then gap else 0 end) day25,
+            max(case when ri=26 then gap else 0 end) day26,
+            max(case when ri=27 then gap else 0 end) day27,
+            max(case when ri=28 then gap else 0 end) day28,
+            max(case when ri=29 then gap else 0 end) day29,
+            max(case when ri=30 then gap else 0 end) day30,
+            max(case when ri=31 then gap else 0 end) day31,
+            IFNULL(sum(gap),0) total
+        from (
+            select ri,personid,sum(gap) gap
+            from (
+                select day(r.businessdate) ri,r.personid,r.customerid,(case when r.phototime is not null then TIMESTAMPDIFF(MINUTE,r.phototime,max(d.ptime)) else TIMESTAMPDIFF(MINUTE,min(d.ptime),max(d.ptime)) end)  as  gap from t_crm_visit_record r left join t_crm_visit_record_detail d on r.id = d.billid
+        <trim prefix="where" prefixOverrides="and|or">
+            1 = 1
+            and (personid <![CDATA[ <> ]]> '' and personid is not null)
+            <if test="condition.startdate != null">
+                and (r.businessdate <![CDATA[ >= ]]> #{condition.startdate } or r.businessdate is null)
+            </if>
+            <if test="condition.enddate != null">
+                and (r.businessdate <![CDATA[ <= ]]> #{condition.enddate } or r.businessdate is null)
+            </if>
+            <if test="condition.customersort != null">
+                and r.customersort = #{condition.customersort }
+            </if>
+            <if test="condition.salesarea != null">
+                and r.salesarea = #{condition.salesarea }
+            </if>
+            <if test="condition.personid != null">
+                and r.personid = #{condition.personid }
+            </if>
+            <if test="condition.deptid != null">
+                and r.deptid = #{condition.deptid }
+            </if>
+            <if test="condition.leadid != null">
+                and r.leadid = #{condition.leadid }
+            </if>
+            <include refid="common.Page_querySql"/>
+            <include refid="common.Page_dataSql"/>
+        </trim>
+                group by r.businessdate,r.personid,r.customerid
+            ) t group by ri,personid
+        ) tt group by personid
+    </sql>
+    <select id="getPersonReportList" parameterType="com.hd.agent.common.util.PageMap" resultType="java.util.Map">
+        select t.* from
+        (<include refid="getPersonReportList_sql"/>) t
+        <include refid="common.Page_limit"/>
+    </select>
+    <select id="getPersonReportCount" parameterType="com.hd.agent.common.util.PageMap" resultType="java.lang.Integer">
+        select count(1) from
+        (<include refid="getPersonReportList_sql"/>) t
+    </select>
+</mapper>

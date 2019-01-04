@@ -1,0 +1,533 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.storage.dao.AllocateEnterMapper" >
+	<sql id="allocateEnter_Column_List">
+	    id, outstorageid, enterstorageid, businessdate, status, remark, adduserid, addusername, 
+	    adddeptid, adddeptname, addtime, modifyuserid, modifyusername, modifytime, audituserid, 
+	    auditusername, audittime, stopuserid, stopusername, stoptime, closetime, printtimes, 
+	    field01, field02, field03, field04, field05, field06, field07, field08, sourcetype, 
+	    sourceid, isrefer
+    </sql>
+    <sql id="allocateEnter_detail_Column_List">
+    	id, billno, sourceid, sourcedetailid, summarybatchid, goodsid, storageid, storagelocationid, 
+	    batchno, unitid, unitname, unitnum, auxunitid, auxunitname, auxnum, auxnumdetail, totalbox,
+	    taxprice, taxamount, notaxprice, notaxamount, taxtype, tax, remark, produceddate, 
+	    deadline, seq, field01, field02, field03, field04, field05, field06, field07, field08
+    </sql>
+  	<insert id="addAllocateEnter" parameterType="com.hd.agent.storage.model.AllocateEnter">
+	    insert into t_storage_allocate_enter
+	    <trim prefix="(" suffix=")" suffixOverrides=",">
+	      <if test="id != null">
+	        id,
+	      </if>
+	      <if test="outstorageid != null">
+	        outstorageid,
+	      </if>
+	      <if test="enterstorageid != null">
+	        enterstorageid,
+	      </if>
+	      <if test="businessdate != null">
+	        businessdate,
+	      </if>
+	      <if test="status != null">
+	        status,
+	      </if>
+	      <if test="remark != null">
+	        remark,
+	      </if>
+	      <if test="adduserid != null">
+	        adduserid,
+	      </if>
+	      <if test="addusername != null">
+	        addusername,
+	      </if>
+	      <if test="adddeptid != null">
+	        adddeptid,
+	      </if>
+	      <if test="adddeptname != null">
+	        adddeptname,
+	      </if>
+	      <if test="1==1">
+	        addtime,
+	      </if>
+	      <if test="field01 != null">
+	        field01,
+	      </if>
+	      <if test="field02 != null">
+	        field02,
+	      </if>
+	      <if test="field03 != null">
+	        field03,
+	      </if>
+	      <if test="field04 != null">
+	        field04,
+	      </if>
+	      <if test="field05 != null">
+	        field05,
+	      </if>
+	      <if test="field06 != null">
+	        field06,
+	      </if>
+	      <if test="field07 != null">
+	        field07,
+	      </if>
+	      <if test="field08 != null">
+	        field08,
+	      </if>
+	      <if test="sourcetype != null">
+	        sourcetype,
+	      </if>
+	      <if test="sourceid != null">
+	        sourceid,
+	      </if>
+	      <if test="isrefer != null">
+	        isrefer,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides=",">
+	      <if test="id != null">
+	        #{id},
+	      </if>
+	      <if test="outstorageid != null">
+	        #{outstorageid},
+	      </if>
+	      <if test="enterstorageid != null">
+	        #{enterstorageid},
+	      </if>
+	      <if test="businessdate != null">
+	        #{businessdate},
+	      </if>
+	      <if test="status != null">
+	        #{status},
+	      </if>
+	      <if test="remark != null">
+	        #{remark},
+	      </if>
+	      <if test="adduserid != null">
+	        #{adduserid},
+	      </if>
+	      <if test="addusername != null">
+	        #{addusername},
+	      </if>
+	      <if test="adddeptid != null">
+	        #{adddeptid},
+	      </if>
+	      <if test="adddeptname != null">
+	        #{adddeptname},
+	      </if>
+	      <if test="1==1">
+	        now(),
+	      </if>
+	      <if test="field01 != null">
+	        #{field01},
+	      </if>
+	      <if test="field02 != null">
+	        #{field02},
+	      </if>
+	      <if test="field03 != null">
+	        #{field03},
+	      </if>
+	      <if test="field04 != null">
+	        #{field04},
+	      </if>
+	      <if test="field05 != null">
+	        #{field05},
+	      </if>
+	      <if test="field06 != null">
+	        #{field06},
+	      </if>
+	      <if test="field07 != null">
+	        #{field07},
+	      </if>
+	      <if test="field08 != null">
+	        #{field08},
+	      </if>
+	      <if test="sourcetype != null">
+	        #{sourcetype},
+	      </if>
+	      <if test="sourceid != null">
+	        #{sourceid},
+	      </if>
+	      <if test="isrefer != null">
+	        #{isrefer},
+	      </if>
+	    </trim>
+	</insert>
+	<insert id="addAllocateEnterDetail" parameterType="com.hd.agent.storage.model.AllocateEnterDetail">
+	    insert into t_storage_allocate_enter_detail
+	    <trim prefix="(" suffix=")" suffixOverrides=",">
+	      <if test="id != null">
+	        id,
+	      </if>
+	      <if test="billno != null">
+	        billno,
+	      </if>
+	      <if test="sourceid != null">
+	        sourceid,
+	      </if>
+	      <if test="sourcedetailid != null">
+	        sourcedetailid,
+	      </if>
+	      <if test="summarybatchid != null">
+	        summarybatchid,
+	      </if>
+	      <if test="goodsid != null">
+	        goodsid,
+	      </if>
+	      <if test="storageid != null">
+	        storageid,
+	      </if>
+	      <if test="storagelocationid != null">
+	        storagelocationid,
+	      </if>
+	      <if test="batchno != null">
+	        batchno,
+	      </if>
+	      <if test="unitid != null">
+	        unitid,
+	      </if>
+	      <if test="unitname != null">
+	        unitname,
+	      </if>
+	      <if test="unitnum != null">
+	        unitnum,
+	      </if>
+	      <if test="auxunitid != null">
+	        auxunitid,
+	      </if>
+	      <if test="auxunitname != null">
+	        auxunitname,
+	      </if>
+	      <if test="auxnum != null">
+	        auxnum,
+	      </if>
+	      <if test="auxnumdetail != null">
+	        auxnumdetail,
+	      </if>
+	      <if test="totalbox != null">
+	        totalbox,
+	      </if>
+	      <if test="taxprice != null">
+	        taxprice,
+	      </if>
+	      <if test="taxamount != null">
+	        taxamount,
+	      </if>
+	      <if test="notaxprice != null">
+	        notaxprice,
+	      </if>
+	      <if test="notaxamount != null">
+	        notaxamount,
+	      </if>
+	      <if test="taxtype != null">
+	        taxtype,
+	      </if>
+	      <if test="tax != null">
+	        tax,
+	      </if>
+	      <if test="remark != null">
+	        remark,
+	      </if>
+	      <if test="produceddate != null">
+	        produceddate,
+	      </if>
+	      <if test="deadline != null">
+	        deadline,
+	      </if>
+	      <if test="seq != null">
+	        seq,
+	      </if>
+	      <if test="field01 != null">
+	        field01,
+	      </if>
+	      <if test="field02 != null">
+	        field02,
+	      </if>
+	      <if test="field03 != null">
+	        field03,
+	      </if>
+	      <if test="field04 != null">
+	        field04,
+	      </if>
+	      <if test="field05 != null">
+	        field05,
+	      </if>
+	      <if test="field06 != null">
+	        field06,
+	      </if>
+	      <if test="field07 != null">
+	        field07,
+	      </if>
+	      <if test="field08 != null">
+	        field08,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides=",">
+	      <if test="id != null">
+	        #{id},
+	      </if>
+	      <if test="billno != null">
+	        #{billno},
+	      </if>
+	      <if test="sourceid != null">
+	        #{sourceid},
+	      </if>
+	      <if test="sourcedetailid != null">
+	        #{sourcedetailid},
+	      </if>
+	      <if test="summarybatchid != null">
+	        #{summarybatchid},
+	      </if>
+	      <if test="goodsid != null">
+	        #{goodsid},
+	      </if>
+	      <if test="storageid != null">
+	        #{storageid},
+	      </if>
+	      <if test="storagelocationid != null">
+	        #{storagelocationid},
+	      </if>
+	      <if test="batchno != null">
+	        #{batchno},
+	      </if>
+	      <if test="unitid != null">
+	        #{unitid},
+	      </if>
+	      <if test="unitname != null">
+	        #{unitname},
+	      </if>
+	      <if test="unitnum != null">
+	        #{unitnum},
+	      </if>
+	      <if test="auxunitid != null">
+	        #{auxunitid},
+	      </if>
+	      <if test="auxunitname != null">
+	        #{auxunitname},
+	      </if>
+	      <if test="auxnum != null">
+	        #{auxnum},
+	      </if>
+	      <if test="auxnumdetail != null">
+	        #{auxnumdetail},
+	      </if>
+	      <if test="totalbox != null">
+	        #{totalbox},
+	      </if>
+	      <if test="taxprice != null">
+	        #{taxprice},
+	      </if>
+	      <if test="taxamount != null">
+	        #{taxamount},
+	      </if>
+	      <if test="notaxprice != null">
+	        #{notaxprice},
+	      </if>
+	      <if test="notaxamount != null">
+	        #{notaxamount},
+	      </if>
+	      <if test="taxtype != null">
+	        #{taxtype},
+	      </if>
+	      <if test="tax != null">
+	        #{tax},
+	      </if>
+	      <if test="remark != null">
+	        #{remark},
+	      </if>
+	      <if test="produceddate != null">
+	        #{produceddate},
+	      </if>
+	      <if test="deadline != null">
+	        #{deadline},
+	      </if>
+	      <if test="seq != null">
+	        #{seq},
+	      </if>
+	      <if test="field01 != null">
+	        #{field01},
+	      </if>
+	      <if test="field02 != null">
+	        #{field02},
+	      </if>
+	      <if test="field03 != null">
+	        #{field03},
+	      </if>
+	      <if test="field04 != null">
+	        #{field04},
+	      </if>
+	      <if test="field05 != null">
+	        #{field05},
+	      </if>
+	      <if test="field06 != null">
+	        #{field06},
+	      </if>
+	      <if test="field07 != null">
+	        #{field07},
+	      </if>
+	      <if test="field08 != null">
+	        #{field08},
+	      </if>
+	    </trim>
+	 </insert>
+	 <select id="getAllocateEnter" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.AllocateEnter">
+	 	select <include refid="allocateEnter_Column_List"/>
+	 	from t_storage_allocate_enter where id=#{id}
+	 </select>
+	 <select id="getAllocateEnterBySourceid" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.AllocateEnter">
+	 	select <include refid="allocateEnter_Column_List"/>
+	 	from t_storage_allocate_enter where sourceid=#{sourceid}
+	 </select>
+	 <delete id="deleteAllocateEnter" parameterType="java.lang.String">
+	 	delete from t_storage_allocate_enter where id=#{id}
+	 </delete>
+	 <delete id="deleteAllocateEnterDetail" parameterType="java.lang.String">
+	 	delete from t_storage_allocate_enter_detail where billno=#{billno}
+	 </delete>
+	 <select id="showAllocateEnterList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.storage.model.AllocateEnter">
+	 	select <include refid="allocateEnter_Column_List"/>
+	 	from t_storage_allocate_enter
+	 	<trim prefix="where" prefixOverrides="and|or">
+  		  <include refid="common.Page_querySql"/>
+	      <include refid="common.Page_dataSql"/>
+		  <if test="condition.businessdate1 != null">
+			 and businessdate >= #{condition.businessdate1}
+		  </if>
+		  <if test="condition.businessdate2 != null">
+			 <![CDATA[and businessdate <= #{condition.businessdate2}]]>
+		  </if>
+		  <if test="condition.id != null" >
+	         and id like CONCAT('%',#{condition.id},'%')
+	      </if>
+	      <if test="condition.outstorageid != null">
+	         and outstorageid = #{condition.outstorageid}
+	      </if>
+	      <if test="condition.enterstorageid != null">
+	         and enterstorageid = #{condition.enterstorageid}
+	      </if>
+	      <if test="condition.status != null">
+	         and status = #{condition.status}
+	      </if>
+	      <if test="condition.isrefer != null">
+	         and isrefer = #{condition.isrefer}
+	      </if>
+	       <choose>
+	      	<when test="condition.isClose ==0 ">
+	      		and status in("1","2")
+	      	</when>
+	      	<when test="condition.isClose ==1 ">
+	      		and status in("3","4")
+	      	</when>
+	    </choose>
+	    </trim>
+	    <include refid="common.Page_limit" />
+	 </select>
+	 <select id="showAllocateEnterCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+	 	select count(1) from t_storage_allocate_enter
+	 	<trim prefix="where" prefixOverrides="and|or">
+  		  <include refid="common.Page_querySql"/>
+	      <include refid="common.Page_dataSql"/>
+		  <if test="condition.businessdate1 != null">
+			 and businessdate >= #{condition.businessdate1}
+		  </if>
+		  <if test="condition.businessdate2 != null">
+			 <![CDATA[and businessdate <= #{condition.businessdate2}]]>
+		  </if>
+		  <if test="condition.id != null" >
+	         and id like CONCAT('%',#{condition.id},'%')
+	      </if>
+	      <if test="condition.outstorageid != null">
+	         and outstorageid = #{condition.outstorageid}
+	      </if>
+	      <if test="condition.enterstorageid != null">
+	         and enterstorageid = #{condition.enterstorageid}
+	      </if>
+	      <if test="condition.status != null">
+	         and status = #{condition.status}
+	      </if>
+	      <if test="condition.isrefer != null">
+	         and isrefer = #{condition.isrefer}
+	      </if>
+	       <choose>
+	      	<when test="condition.isClose ==0 ">
+	      		and status in("1","2")
+	      	</when>
+	      	<when test="condition.isClose ==1 ">
+	      		and status in("3","4")
+	      	</when>
+	    </choose>
+	    </trim>
+	 </select>
+	 <select id="getAllocateEnterDetailListByBillno" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.AllocateEnterDetail">
+	 	select <include refid="allocateEnter_detail_Column_List"/>
+	 	from t_storage_allocate_enter_detail where billno=#{billno}
+	 </select>
+	 <update id="editAllocateEnter" parameterType="com.hd.agent.storage.model.AllocateEnter">
+	 	update t_storage_allocate_enter
+	    <set>
+	      <if test="outstorageid != null">
+	        outstorageid = #{outstorageid},
+	      </if>
+	      <if test="enterstorageid != null">
+	        enterstorageid = #{enterstorageid},
+	      </if>
+	      <if test="businessdate != null">
+	        businessdate = #{businessdate},
+	      </if>
+	      <if test="status != null">
+	        status = #{status},
+	      </if>
+	      <if test="remark != null">
+	        remark = #{remark},
+	      </if>
+	      <if test="modifyuserid != null">
+	        modifyuserid = #{modifyuserid},
+	      </if>
+	      <if test="modifyusername != null">
+	        modifyusername = #{modifyusername},
+	      </if>
+	      <if test="1==1">
+	        modifytime = now(),
+	      </if>
+	      <if test="field01 != null">
+	        field01 = #{field01},
+	      </if>
+	      <if test="field02 != null">
+	        field02 = #{field02},
+	      </if>
+	      <if test="field03 != null">
+	        field03 = #{field03},
+	      </if>
+	      <if test="field04 != null">
+	        field04 = #{field04},
+	      </if>
+	      <if test="field05 != null">
+	        field05 = #{field05},
+	      </if>
+	      <if test="field06 != null">
+	        field06 = #{field06},
+	      </if>
+	      <if test="field07 != null">
+	        field07 = #{field07},
+	      </if>
+	      <if test="field08 != null">
+	        field08 = #{field08},
+	      </if>
+	      <if test="sourcetype != null">
+	        sourcetype = #{sourcetype},
+	      </if>
+	      <if test="sourceid != null">
+	        sourceid = #{sourceid},
+	      </if>
+	      <if test="isrefer != null">
+	        isrefer = #{isrefer},
+	      </if>
+	    </set>
+	    where id = #{id}
+	 </update>
+	 <update id="auditAllocateEnter" parameterType="java.lang.String">
+	 	update t_storage_allocate_enter set businessdate = date_format(now(), '%Y-%m-%d'),status='4',audituserid=#{userid},auditusername=#{username},audittime=now() 
+  		where id=#{id} and (status='2' or status='6')
+	 </update>
+	 
+</mapper>

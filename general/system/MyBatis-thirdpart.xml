@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!--<settings>
+        <setting name="callSettersOnNulls" value="true"/>
+    </settings>-->
+    <environments default="JDBC_THIRD">
+        <environment id="JDBC_THIRD">
+            <transactionManager type="JDBC"/>
+            <!--此处调用第三方数据库连接次数比较少,改用不适用连接池-->
+            <dataSource type="UNPOOLED">
+                <property name="driver" value="${THIRD_JDBC.driver}"/>
+                <property name="url" value="${THIRD_JDBC.url}"/>
+                <property name="username" value="${THIRD_JDBC.username}"/>
+                <property name="password" value="${THIRD_JDBC.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+        <mapper resource="${THIRD_MAPPER}" />
+    </mappers>
+</configuration>

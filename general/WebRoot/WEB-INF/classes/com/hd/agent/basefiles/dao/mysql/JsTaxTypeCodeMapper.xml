@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.basefiles.dao.JsTaxTypeCodeMapper" >
+  <cache type="org.mybatis.caches.ehcache.EhcacheCache"></cache>
+  <sql id="TypeCodePageListTypeCodeBase_Where_Clause" >
+    <if test="condition.idlike != null" >
+      and id like concat('%', #{condition.idlike},'%')
+    </if>
+    <if test="condition.mergeidlike != null" >
+      and mergeid like concat('%', #{condition.mergeidlike},'%')
+    </if>
+    <if test="condition.goodsname != null" >
+      and goodsname like concat('%', #{condition.goodsname},'%')
+    </if>
+    <if test="condition.description != null" >
+      and description  like concat('%', #{condition.description},'%')
+    </if>
+    <if test="condition.keyword != null" >
+      and keyword   like concat('%', #{condition.keyword},'%')
+    </if>
+  </sql>
+  <sql id="TypeCodeBase_Column_List" >
+    id, mergeid, goodsname, description, keyword,addusername,adduserid,addtime,modifyuserid,modifyusername,modifytime
+  </sql>
+  <select id="getJsTaxTypeCodePageList" resultType="com.hd.agent.basefiles.model.JsTaxTypeCode" parameterType="com.hd.agent.common.util.PageMap" useCache="false">
+    select
+    <include refid="TypeCodeBase_Column_List"/>
+    from t_base_jstaxtypecode
+    <trim prefix="where" prefixOverrides="and|or">
+      <include refid="TypeCodePageListTypeCodeBase_Where_Clause" />
+      <include refid="common.Page_querySql"/>
+      <include refid="common.Page_dataSql"/>
+    </trim>
+    <if test="condition.isNoPageflag == null">
+      <include refid="common.Page_limit"/>
+    </if>
+  </select>
+  <select id="getJsTaxTypeCodePageCount" resultType="int" parameterType="com.hd.agent.common.util.PageMap" useCache="false">
+    select
+    count(*)
+    from t_base_jstaxtypecode
+    <trim prefix="where" prefixOverrides="and|or">
+      <include refid="TypeCodePageListTypeCodeBase_Where_Clause" />
+      <include refid="common.Page_querySql"/>
+      <include refid="common.Page_dataSql"/>
+    </trim>
+  </select>
+  <select id="getJsTaxTypeCodeById" resultType="com.hd.agent.basefiles.model.JsTaxTypeCode" parameterType="java.lang.String" >
+    select
+    <include refid="TypeCodeBase_Column_List" />
+    from t_base_jstaxtypecode
+    where id = #{id}
+  </select>
+  <delete id="deleteJsTaxTypeCodeById" parameterType="java.lang.String" >
+    delete from t_base_jstaxtypecode
+    where id = #{id}
+  </delete>
+  <insert id="insertJsTaxTypeCode" parameterType="com.hd.agent.basefiles.model.JsTaxTypeCode" >
+    insert into t_base_jstaxtypecode
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="mergeid != null" >
+        mergeid,
+      </if>
+      <if test="goodsname != null" >
+        goodsname,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="keyword != null" >
+        keyword,
+      </if>
+      <if test="adduserid != null" >
+        adduserid,
+      </if>
+      <if test="addusername != null" >
+        addusername,
+      </if>
+      <if test="1==1" >
+        addtime,
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid,
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername,
+      </if>
+      <if test="modifytime != null" >
+        modifytime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="mergeid != null" >
+        #{mergeid},
+      </if>
+      <if test="goodsname != null" >
+        #{goodsname},
+      </if>
+      <if test="description != null" >
+        #{description},
+      </if>
+      <if test="keyword != null" >
+        #{keyword},
+      </if>
+      <if test="adduserid != null" >
+        #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        #{addusername},
+      </if>
+      <if test="1==1" >
+        <choose>
+          <when test="addtime!=null">
+            #{addtime}
+          </when>
+          <otherwise>
+            now(),
+          </otherwise>
+        </choose>
+      </if>
+      <if test="modifyuserid != null" >
+        #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        #{modifyusername},
+      </if>
+      <if test="modifytime != null" >
+        #{modifytime},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateJsTaxTypeCode" parameterType="com.hd.agent.basefiles.model.JsTaxTypeCode" >
+    update t_base_jstaxtypecode
+    <set >
+      <if test="mergeid != null" >
+        mergeid = #{mergeid},
+      </if>
+      <if test="goodsname != null" >
+        goodsname = #{goodsname},
+      </if>
+      <if test="description != null" >
+        description = #{description},
+      </if>
+      <if test="keyword != null" >
+        keyword = #{keyword},
+      </if><if test="modifyuserid != null" >
+        modifyuserid = #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername = #{modifyusername},
+      </if>
+      <if test="modifytime != null" >
+        modifytime = #{modifytime},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  <select id="isUsedJsTaxTypeCodeById" parameterType="java.lang.String" resultType="int">
+    select count(1) from t_base_jstaxtypecode where id = #{id}
+  </select>
+  <insert id="insertJsTaxTypeCodeBatch" parameterType="java.util.List" >
+    insert into t_base_jstaxtypecode ( id,mergeid, goodsname, description, keyword,adduserid,addusername, addtime)
+    values
+    <foreach collection="list" index="index" item="item" separator="," >
+      (#{item.id}, #{item.mergeid}, #{item.goodsname}, #{item.description},#{item.keyword},#{item.adduserid},#{item.addusername}, #{item.addtime})
+    </foreach>
+  </insert>
+  <select id="getGoodsJsTypeCodeList" resultType="map" useCache="false" >
+    SELECT
+    DISTINCT t.id as jstypeid,t1.barcode
+    FROM
+    t_base_jstaxtypecode t INNER JOIN t_base_goods_info t1 on t.id = t1.jstaxsortid
+  </select>
+  <sql id="UnLinkJsTypeCodeGoodsPageList_Sql">
+    <if test="1==1">
+      and (jstaxsortid is null or length(jstaxsortid)=0 or (not EXISTS(select * from t_base_jstaxtypecode t1 where t1.id=g.jstaxsortid)))
+    </if>
+    <if test="condition.idlike!=null">
+      and id like concat('%',#{condition.idlike},'%')
+    </if>
+    <if test="condition.goodsname!=null">
+      and name like concat('%',#{condition.goodsname},'%')
+    </if>
+    <if test="condition.spell!=null">
+      and spell like concat('%',#{condition.spell},'%')
+    </if>
+    <if test="condition.barcode!=null">
+      and barcode like concat('%',#{condition.barcode},'%')
+    </if>
+  </sql>
+  <select id="getUnLinkJsTypeCodeGoodsPageList" resultType="map" parameterType="com.hd.agent.common.util.PageMap" useCache="false">
+    SELECT
+    id as goodsid,name as goodsname,spell,barcode
+    FROM t_base_goods_info g
+    <trim prefix="where" prefixOverrides="and|or">
+      <include refid="UnLinkJsTypeCodeGoodsPageList_Sql" />
+      <include refid="common.Page_querySql"/>
+      <include refid="common.Page_dataSql"/>
+    </trim>
+    <if test="condition.isNoPageflag == null">
+      <include refid="common.Page_limit"/>
+    </if>
+  </select>
+  <select id="getUnLinkJsTypeCodeGoodsPageCount" resultType="int" parameterType="com.hd.agent.common.util.PageMap" useCache="false">
+    SELECT
+    count(*)
+    FROM t_base_goods_info g
+    <trim prefix="where" prefixOverrides="and|or">
+      <include refid="UnLinkJsTypeCodeGoodsPageList_Sql" />
+      <include refid="common.Page_querySql"/>
+      <include refid="common.Page_dataSql"/>
+    </trim>
+  </select>
+
+  <sql id="LinkJsTypeCodeGoodsPageList_Sql">
+    <if test="1==1">
+      and g.jstaxsortid=t.id
+    </if>
+    <if test="condition.goodsidlike!=null">
+      and g.id like concat('%',#{condition.goodsidlike},'%')
+    </if>
+    <if test="condition.goodsid!=null">
+      and g.id like concat('%',#{condition.idlike},'%')
+    </if>
+    <if test="condition.goodsname!=null">
+      and g.name like concat('%',#{condition.goodsname},'%')
+    </if>
+    <if test="condition.spell!=null">
+      and g.spell like concat('%',#{condition.spell},'%')
+    </if>
+    <if test="condition.barcode!=null">
+      and g.barcode like concat('%',#{condition.barcode},'%')
+    </if>
+    <if test="condition.jstypeidlike!=null">
+      and t.id like concat('%',#{condition.jstypeidlike},'%')
+    </if>
+    <if test="condition.jstypeid!=null">
+      and t.id =#{condition.jstypeid}
+    </if>
+    <if test="condition.jstypename!=null">
+      and t.goodsname like concat('%',#{condition.jstypename},'%')
+    </if>
+    <if test="condition.description!=null">
+      and t.description like concat('%',#{condition.description},'%')
+    </if>
+    <if test="condition.keyword!=null">
+      and t.keyword like concat('%',#{condition.keyword},'%')
+    </if>
+  </sql>
+
+  <select id="getLinkJsTypeCodeGoodsPageList" resultType="map" parameterType="com.hd.agent.common.util.PageMap" useCache="false">
+    SELECT
+    goodsid,goodsname,spell,barcode,jstypeid,jstypename,description,keyword,
+    addtime,adduserid,addusername,modifytime,modifyuserid,modifyusername
+    FROM (
+      SELECT
+      g.id as goodsid,g.name as goodsname,g.spell,g.barcode,t.id as jstypeid,
+      t.goodsname as jstypename,t.description,t.keyword as keyword,
+      t.addtime,t.adduserid,t.addusername,t.modifytime,t.modifyuserid,t.modifyusername
+      FROM t_base_goods_info g INNER JOIN t_base_jstaxtypecode t
+      <trim prefix="where" prefixOverrides="and|or">
+        <include refid="LinkJsTypeCodeGoodsPageList_Sql" />
+        <include refid="common.Page_querySql"/>
+        <include refid="common.Page_dataSql"/>
+      </trim>
+    ) z
+    <if test="condition.isNoPageflag == null">
+      <include refid="common.Page_limit"/>
+    </if>
+  </select>
+
+  <select id="getLinkJsTypeCodeGoodsPageCount" resultType="int" parameterType="com.hd.agent.common.util.PageMap" useCache="false">
+    SELECT
+    count(*)
+    FROM (
+    SELECT
+    g.id as goodsid,g.name as goodsname,g.spell,g.barcode,t.id as jstypeid,
+    t.goodsname as jstypename,t.description,t.keyword as keyword,
+    t.addtime,t.adduserid,t.addusername,t.modifytime,t.modifyuserid,t.modifyusername
+    FROM t_base_goods_info g INNER JOIN t_base_jstaxtypecode t
+    <trim prefix="where" prefixOverrides="and|or">
+      <include refid="LinkJsTypeCodeGoodsPageList_Sql" />
+      <include refid="common.Page_querySql"/>
+      <include refid="common.Page_dataSql"/>
+    </trim>
+    ) z
+  </select>
+
+</mapper>

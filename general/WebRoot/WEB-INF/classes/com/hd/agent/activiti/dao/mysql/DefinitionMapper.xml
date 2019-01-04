@@ -1,0 +1,487 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.activiti.dao.DefinitionMapper" >
+  <sql id="Base_Column_List" >
+    id, name, unkey, modelid, isdeploy, ismodify, deploymentid, definitionid, version, 
+    formtype, formkey, businessurl, endlistener, remindtype, state, type, adduserid, addusername, adddeptid, adddeptname, 
+    adddate, modifyuserid, modifyusername, modifytime, endremindtype
+  </sql>
+  <sql id="Blob_Column_List" >
+    bytes
+  </sql>
+  <select id="getDefinition" resultType="com.hd.agent.activiti.model.Definition" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_act_definition
+    where id = #{id}
+  </select>
+  <select id="getDefinitionByKey" resultType="com.hd.agent.activiti.model.Definition" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_act_definition
+    <trim prefix="where" prefixOverrides="and">
+        and unkey = #{unkey }
+        <if test="definitionid != null">
+            and definitionid = #{definitionid }
+        </if>
+        <if test="isdeploy != null">
+            and isdeploy = #{isdeploy }
+        </if>
+    </trim>
+    order by id desc limit 0, 1
+  </select>
+  <select id="getDefinitionCountByKey" resultType="java.lang.Integer" parameterType="java.lang.String">
+  	select count(1) from t_act_definition where unkey = #{key}
+  </select>
+  <select id="getDefinitionList" resultType="com.hd.agent.activiti.model.Definition" parameterType="com.hd.agent.common.util.PageMap">
+  	select
+      id,
+      name,
+      unkey,
+      modelid,
+      /*isdeploy,*/
+      /*ismodify,*/
+      deploymentid,
+      definitionid,
+      version,
+      formtype,
+      formkey,
+      businessurl,
+      endlistener,
+      remindtype,
+      state,
+      type,
+      adduserid,
+      addusername,
+      adddeptid,
+      adddeptname,
+      adddate,
+      modifyuserid,
+      modifyusername,
+      modifytime,
+      endremindtype,
+      case when exists (select 1 from t_act_definition t2 where t1.unkey = t2.unkey and t2.isdeploy = '1') then 1 else 0 end isdeploy,
+      /*case when exists (select 1 from t_act_definition t2 where t1.unkey = t2.unkey and t2.ismodify = '1') then 1 else 0 end*/ ismodify
+    from t_act_definition t1
+    where id in (
+      select max(id) id
+      from t_act_definition
+      <trim prefix="where" prefixOverrides="and|or">
+          1=1
+          <if test="condition.type != null and condition.type != ''">
+              and type = #{condition.type}
+          </if>
+  	  </trim>
+      group by unkey
+    )order by CONVERT(t1.name USING gbk)
+      <choose>
+          <when test="condition.nopage">
+          </when>
+          <otherwise>
+              <include refid="common.Page_LimitOnly" />
+          </otherwise>
+      </choose>
+  </select>
+  <select id="getDefinitionCount" resultType="java.lang.Integer" parameterType="com.hd.agent.common.util.PageMap">
+  	select count(distinct unkey) from t_act_definition
+  	<trim prefix="where" prefixOverrides="and|or" >
+  		<if test="condition.type != null and condition.type != ''">
+  			type = #{condition.type}
+  		</if>
+  	</trim>
+  </select>
+  <select id="getDefinitionTree" parameterType="java.util.Map" resultType="java.util.Map">
+      select
+        id,
+        pid,
+        name,
+        unkey,
+        isparent
+      from (
+        select
+          *
+        from (
+          SELECT
+            CONCAT('a', id) AS id,
+            pid,
+            name,
+            unkey,
+            '1' isparent,
+            0 sort
+          FROM t_act_definition_type
+          UNION ALL
+          SELECT
+            f.*,
+            '0' isparent,
+            1 sort
+          FROM
+          (
+            SELECT
+              CONCAT('b', a.id) AS id,
+              CONCAT('a', b.id) AS pid,
+              a.name,
+              a.unkey
+            FROM t_act_definition a
+            LEFT JOIN t_act_definition_type b ON a.type = b.unkey
+            WHERE
+              a.isdeploy = '1'
+              AND a.state = '1'
+              AND EXISTS (
+                SELECT 1
+                FROM t_act_auth_rule c
+                <trim prefix="where" prefixOverrides="and">
+                    and c.definitionid = a.definitionid
+                    <if test="type != null">
+                      and c.type = #{type }
+                    </if>
+                    <if test="definitionMaps != null">
+                        <foreach collection="definitionMaps" item="temp" open="and (" close=")" separator="or">
+                            (c.definitionkey = #{temp.definitionkey} and c.taskkey = #{temp.taskkey}
+                            and (c.userid is null or c.userid = '' or c.userid = #{userid })
+                            and (
+                            c.roleid is null or c.roleid = '' or FIND_IN_SET(c.roleid, #{roleid }))
+                            and (c.deptid is null or c.deptid = '' or c.deptid = #{deptid })
+                            and (c.postid is null or c.postid = '' or c.postid = #{postid })
+                            )
+                        </foreach>
+                    </if>
+                </trim>
+			  )
+		  ) f
+	    )t
+	    order by t.isparent desc, pid, id, CONVERT( name USING gbk )
+      ) t2
+      order by t2.sort, CONVERT( t2.name USING gbk )
+  </select>
+  <select id="getDefinitionTreeBAK" parameterType="java.util.Map" resultType="map">
+  	SELECT CONCAT('a', id) as id, pid, name, unkey, '1' isparent FROM t_act_definition_type UNION ALL SELECT f.*, '0' isparent FROM (SELECT CONCAT('b',a.id) as id, CONCAT('a',b.id) as pid, a.name, a.unkey FROM t_act_definition a LEFT JOIN t_act_definition_type b ON a.type = b.unkey WHERE a.isdeploy = '1' AND a.state = '1' and a.unkey in (select distinct definitionkey from t_act_auth_rule r where r.type=#{type } <include refid="common.Page_dataSql"/> )/*AND a.formtype = 'formkey'*/) f
+  	SELECT CONCAT('a', id) as id, pid, name, unkey, '1' isparent FROM t_act_definition_type UNION ALL SELECT f.*, '0' isparent FROM (SELECT CONCAT('b',a.id) as id, CONCAT('a',b.id) as pid, a.name, a.unkey FROM t_act_definition a LEFT JOIN t_act_definition_type b ON a.type = b.unkey WHERE a.isdeploy = '1' AND a.state = '1' /*AND a.formtype = 'formkey'*/) f
+  </select>
+  <delete id="deleteDefinition" parameterType="java.lang.String" >
+    delete from t_act_definition
+    where id = #{id}
+  </delete>
+  <insert id="addDefinition" parameterType="com.hd.agent.activiti.model.Definition" >
+    insert into t_act_definition
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="unkey != null" >
+        unkey,
+      </if>
+      <if test="modelid != null" >
+        modelid,
+      </if>
+      <if test="isdeploy != null" >
+        isdeploy,
+      </if>
+      <if test="ismodify != null" >
+        ismodify,
+      </if>
+      <if test="deploymentid != null" >
+        deploymentid,
+      </if>
+      <if test="definitionid != null" >
+        definitionid,
+      </if>
+      <if test="version != null" >
+        version,
+      </if>
+      <if test="formtype != null" >
+        formtype,
+      </if>
+      <if test="formkey != null" >
+        formkey,
+      </if>
+      <if test="businessurl != null" >
+        businessurl,
+      </if>
+      <if test="endlistener != null" >
+        endlistener,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="adduserid != null" >
+        adduserid,
+      </if>
+      <if test="addusername != null" >
+        addusername,
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid,
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname,
+      </if>
+        adddate,
+      <if test="modifyuserid != null" >
+        modifyuserid,
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername,
+      </if>
+      <if test="modifytime != null" >
+        modifytime,
+      </if>
+      <if test="bytes != null" >
+        bytes,
+      </if>
+      <if test="endremindtype != null" >
+        endremindtype,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="name != null" >
+        #{name},
+      </if>
+      <if test="unkey != null" >
+        #{unkey},
+      </if>
+      <if test="modelid != null" >
+        #{modelid},
+      </if>
+      <if test="isdeploy != null" >
+        #{isdeploy},
+      </if>
+      <if test="ismodify != null" >
+        #{ismodify},
+      </if>
+      <if test="deploymentid != null" >
+        #{deploymentid},
+      </if>
+      <if test="definitionid != null" >
+        #{definitionid},
+      </if>
+      <if test="version != null" >
+        #{version},
+      </if>
+      <if test="formtype != null" >
+        #{formtype},
+      </if>
+      <if test="formkey != null" >
+        #{formkey},
+      </if>
+      <if test="businessurl != null" >
+        #{businessurl},
+      </if>
+      <if test="endlistener != null" >
+        #{endlistener},
+      </if>
+      <if test="state != null" >
+        #{state},
+      </if>
+      <if test="type != null" >
+        #{type},
+      </if>
+      <if test="adduserid != null" >
+        #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        #{adddeptname},
+      </if>
+        now(),
+      <if test="modifyuserid != null" >
+        #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        #{modifyusername},
+      </if>
+      <if test="modifytime != null" >
+        #{modifytime},
+      </if>
+      <if test="bytes != null" >
+        #{bytes},
+      </if>
+      <if test="endremindtype != null" >
+        #{endremindtype},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateDefinitionByKey" parameterType="com.hd.agent.activiti.model.Definition" >
+    update t_act_definition
+    <set >
+      <if test="name != null" >
+        name = #{name},
+      </if>
+      <if test="modelid != null" >
+        modelid = #{modelid},
+      </if>
+      <if test="isdeploy != null" >
+        isdeploy = #{isdeploy},
+      </if>
+      <if test="ismodify != null" >
+        ismodify = #{ismodify},
+      </if>
+      <if test="deploymentid != null" >
+        deploymentid = #{deploymentid},
+      </if>
+      <if test="definitionid != null" >
+        definitionid = #{definitionid},
+      </if>
+      <if test="version != null" >
+        version = #{version},
+      </if>
+      <if test="formtype != null" >
+        formtype = #{formtype},
+      </if>
+      <if test="formkey != null" >
+        formkey = #{formkey},
+      </if>
+      <if test="businessurl != null" >
+        businessurl = #{businessurl},
+      </if>
+      <if test="endlistener != null" >
+        endlistener = #{endlistener},
+      </if>
+      <if test="remindtype != null" >
+        remindtype = #{remindtype},
+      </if>
+      <if test="state != null" >
+        state = #{state},
+      </if>
+      <if test="type != null" >
+        type = #{type},
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid = #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername = #{modifyusername},
+      </if>
+        modifytime = now(),
+      <if test="bytes != null" >
+        bytes = #{bytes},
+      </if>
+      <if test="endremindtype != null" >
+        endremindtype = #{endremindtype},
+      </if>
+    </set>
+    <trim prefix="where" prefixOverrides="and">
+        and unkey = #{unkey }
+        <if test="definitionid != null">
+            and definitionid = #{definitionid }
+        </if>
+    </trim>
+  </update>
+  <select id="isDefinitionExist" parameterType="java.lang.String" resultType="java.lang.Integer">
+      select count(1)
+      from t_act_definition
+      where unkey = #{unkey }
+        and modelid <![CDATA[<>]]> #{modelid }
+  </select>
+    <delete id="deleteDefinitionByUnkey" parameterType="java.lang.String">
+        delete from t_act_definition
+        where unkey = #{unkey }
+    </delete>
+    <select id="isFormReferencedByDefinition" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select
+        count(1)
+        from t_act_definition
+        where formtype = 'formkey' and formkey = #{formkey }
+    </select>
+    <select id="selectLatestDeployVersion" parameterType="java.lang.String" resultType="com.hd.agent.activiti.model.Definition">
+        select
+        <include refid="Base_Column_List"/>
+        from t_act_definition
+        <trim prefix="where" prefixOverrides="and">
+            and unkey = #{unkey }
+            <if test="definitionid != null">
+                and definitionid = #{definitionid }
+            </if>
+            and isdeploy = '1'
+        </trim>
+        order by id desc limit 0, 1
+    </select>
+    <update id="updateDefinitionById" parameterType="com.hd.agent.activiti.model.Definition" >
+        update t_act_definition
+        <set >
+            <if test="name != null" >
+                name = #{name},
+            </if>
+            <if test="modelid != null" >
+                modelid = #{modelid},
+            </if>
+            <if test="isdeploy != null" >
+                isdeploy = #{isdeploy},
+            </if>
+            <if test="ismodify != null" >
+                ismodify = #{ismodify},
+            </if>
+            <if test="deploymentid != null" >
+                deploymentid = #{deploymentid},
+            </if>
+            <if test="definitionid != null" >
+                definitionid = #{definitionid},
+            </if>
+            <if test="version != null" >
+                version = #{version},
+            </if>
+            <if test="formtype != null" >
+                formtype = #{formtype},
+            </if>
+            <if test="formkey != null" >
+                formkey = #{formkey},
+            </if>
+            <if test="businessurl != null" >
+                businessurl = #{businessurl},
+            </if>
+            <if test="endlistener != null" >
+                endlistener = #{endlistener},
+            </if>
+            <if test="remindtype != null" >
+                remindtype = #{remindtype},
+            </if>
+            <if test="state != null" >
+                state = #{state},
+            </if>
+            <if test="type != null" >
+                type = #{type},
+            </if>
+            <if test="modifyuserid != null" >
+                modifyuserid = #{modifyuserid},
+            </if>
+            <if test="modifyusername != null" >
+                modifyusername = #{modifyusername},
+            </if>
+            modifytime = now(),
+            <if test="bytes != null" >
+                bytes = #{bytes},
+            </if>
+            <if test="endremindtype != null" >
+                endremindtype = #{endremindtype},
+            </if>
+        </set>
+        <trim prefix="where" prefixOverrides="and">
+            and id = #{id }
+        </trim>
+    </update>
+    <update id="enableDefinitionVersion" parameterType="java.lang.String">
+        update t_act_definition set isdeploy = '1', ismodify = '0' where definitionid = #{definitionid }
+    </update>
+    <update id="setDefinitionAllEndeployed" parameterType="java.lang.String">
+        update t_act_definition set isdeploy = '0' where unkey = #{definitionkey }
+    </update>
+    <select id="getAllDefinitionVersions" parameterType="java.lang.String" resultType="com.hd.agent.activiti.model.Definition">
+        select
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        from t_act_definition
+        where isdeploy = '1'
+    </select>
+</mapper>

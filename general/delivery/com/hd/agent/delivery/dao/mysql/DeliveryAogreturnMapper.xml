@@ -1,0 +1,635 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.delivery.dao.DeliveryAogreturnMapper" >
+  <cache type="org.mybatis.caches.ehcache.EhcacheCache"/> 
+  <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.businessdate != null" >
+         and businessdate = #{condition.businessdate}
+      </if>
+      <if test="condition.status != null" >
+         and status = #{condition.status}
+      </if>
+      <if test="condition.remark != null" >
+         and remark = #{condition.remark}
+      </if>
+      <if test="condition.adduserid != null" >
+         and adduserid = #{condition.adduserid}
+      </if>
+      <if test="condition.addusername != null" >
+         and addusername = #{condition.addusername}
+      </if>
+      <if test="condition.adddeptid != null" >
+         and adddeptid = #{condition.adddeptid}
+      </if>
+      <if test="condition.adddeptname != null" >
+         and adddeptname = #{condition.adddeptname}
+      </if>
+      <if test="condition.addtime != null" >
+         and addtime = #{condition.addtime}
+      </if>
+      <if test="condition.modifyuserid != null" >
+         and modifyuserid = #{condition.modifyuserid}
+      </if>
+      <if test="condition.modifyusername != null" >
+         and modifyusername = #{condition.modifyusername}
+      </if>
+      <if test="condition.modifytime != null" >
+         and modifytime = #{condition.modifytime}
+      </if>
+      <if test="condition.audituserid != null" >
+         and audituserid = #{condition.audituserid}
+      </if>
+      <if test="condition.auditusername != null" >
+         and auditusername = #{condition.auditusername}
+      </if>
+      <if test="condition.audittime != null" >
+         and audittime = #{condition.audittime}
+      </if>
+      <if test="condition.stopuserid != null" >
+         and stopuserid = #{condition.stopuserid}
+      </if>
+      <if test="condition.stopusername != null" >
+         and stopusername = #{condition.stopusername}
+      </if>
+      <if test="condition.stoptime != null" >
+         and stoptime = #{condition.stoptime}
+      </if>
+      <if test="condition.closetime != null" >
+         and closetime = #{condition.closetime}
+      </if>
+      <if test="condition.printtimes != null" >
+         and printtimes = #{condition.printtimes}
+      </if>
+      <if test="condition.supplierid != null" >
+         and supplierid = #{condition.supplierid}
+      </if>
+      <if test="condition.storageid != null" >
+         and storageid = #{condition.storageid}
+      </if>
+      <if test="condition.totalvolume != null" >
+         and totalvolume = #{condition.totalvolume}
+      </if>
+      <if test="condition.totalweight != null" >
+         and totalweight = #{condition.totalweight}
+      </if>
+      <if test="condition.totalbox != null" >
+         and totalbox = #{condition.totalbox}
+      </if>
+      <if test="condition.totalamount != null" >
+         and totalamount = #{condition.totalamount}
+      </if>
+    </trim>
+  </sql>
+  <sql id="DeliveryAogreturn_Column_List" >
+    id, businessdate, status, remark, adduserid, addusername, adddeptid, adddeptname, 
+    addtime, modifyuserid, modifyusername, modifytime, audituserid, auditusername, audittime, 
+    stopuserid, stopusername, stoptime, closetime, printtimes, supplierid, storageid, 
+    totalvolume, totalweight, totalbox, totalamount
+  </sql>
+  <sql id="DeliveryAogreturnDetail_Column_List" >
+    id, billid, goodsid, goodssort, brandid, unitid, unitname, unitnum, auxunitid, auxunitname, 
+    auxnum, auxnumdetail, overnum, totalbox, price, taxamount, seq, remark ,batchno,produceddate,deadline
+    
+  </sql>
+ 
+   <!-- 退货订单操作 -->
+   <select id="getDeliveryAogreturnList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.delivery.model.DeliveryAogreturn">
+	    select  <include refid="DeliveryAogreturn_Column_List"/> 
+	    from t_delivery_aogreturn t
+	    <trim prefix="where" prefixOverrides="and|or">
+  		  <include refid="common.Page_querySql"/>
+	      <include refid="common.Page_dataSql"/>
+		  <if test="condition.businessdate1 != null">
+			 and businessdate >= #{condition.businessdate1}
+		  </if>
+		  <if test="condition.businessdate2 != null">
+			 <![CDATA[and businessdate <= #{condition.businessdate2}]]>
+		  </if>
+		  <if test="condition.id != null" >
+	         and id like CONCAT('%',#{condition.id},'%')
+	      </if>
+	      <if test="condition.addusername != null">
+	         and addusername like CONCAT ('%',#{condition.addusername},'%')
+	      </if>
+	      <if test="condition.storageid != null">
+	         and storageid = #{condition.storageid}
+	      </if>
+	      <if test="condition.status != null">
+	         and status = #{condition.status}
+	      </if>
+	      <if test="condition.supplierid != null">
+	         and supplierid = #{condition.supplierid}
+	      </if>
+	      <if test="condition.goodsid != null">
+				and EXISTS (select t1.goodsid from t_delivery_aogreturn_detail t1 where t.id=t1.billid and t1.goodsid = #{condition.goodsid})
+			</if>
+	      <if test="condition.printstatus != null">
+	      		<choose>
+	      			<when test="condition.printstatus == 1">
+	      				<![CDATA[and printtimes = '0' ]]>
+	      			</when>
+	      			<when test="condition.printstatus == 2">
+	      				<![CDATA[and printtimes > '0']]>
+	      			</when>
+	      		</choose>
+	      	</if>
+	    </trim>
+	    <include refid="common.Page_limit" />
+    </select>
+  <select id="getDeliveryAogreturnListCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  	    select count(1) from t_delivery_aogreturn t
+  	    <trim prefix="where" prefixOverrides="and|or">
+  		  <include refid="common.Page_querySql"/>
+	      <include refid="common.Page_dataSql"/>
+		  <if test="condition.businessdate1 != null">
+			 and businessdate >= #{condition.businessdate1}
+		  </if>
+		  <if test="condition.businessdate2 != null">
+			 <![CDATA[and businessdate <= #{condition.businessdate2}]]>
+		  </if>
+		  <if test="condition.id != null" >
+	         and id like CONCAT('%',#{condition.id},'%')
+	      </if>
+	      <if test="condition.addusername != null">
+	         and addusername like CONCAT ('%',#{condition.addusername},'%')
+	      </if>
+	      <if test="condition.storageid != null">
+	         and storageid = #{condition.storageid}
+	      </if>
+	      <if test="condition.status != null">
+	         and status = #{condition.status}
+	      </if>
+	      <if test="condition.supplierid != null">
+	         and supplierid = #{condition.supplierid}
+	      </if>
+	      <if test="condition.goodsid != null">
+				and EXISTS (select t1.goodsid from t_delivery_aogreturn_detail t1 where t.id=t1.billid and t1.goodsid = #{condition.goodsid})
+			</if>
+	      <if test="condition.printstatus != null">
+	      		<choose>
+	      			<when test="condition.printstatus == 1">
+	      				<![CDATA[and printtimes = '0' ]]>
+	      			</when>
+	      			<when test="condition.printstatus == 2">
+	      				<![CDATA[and printtimes > '0']]>
+	      			</when>
+	      		</choose>
+	      	</if>
+	    </trim>
+  </select>
+   <insert id="addDeliveryAogreturn" parameterType="com.hd.agent.delivery.model.DeliveryAogreturn" >
+    insert into t_delivery_aogreturn
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="businessdate != null" >
+        businessdate,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="adduserid != null" >
+        adduserid,
+      </if>
+      <if test="addusername != null" >
+        addusername,
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid,
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname,
+      </if>
+      <if test="addtime != null" >
+        addtime,
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid,
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername,
+      </if>
+      <if test="modifytime != null" >
+        modifytime,
+      </if>
+      <if test="audituserid != null" >
+        audituserid,
+      </if>
+      <if test="auditusername != null" >
+        auditusername,
+      </if>
+      <if test="audittime != null" >
+        audittime,
+      </if>
+      <if test="stopuserid != null" >
+        stopuserid,
+      </if>
+      <if test="stopusername != null" >
+        stopusername,
+      </if>
+      <if test="stoptime != null" >
+        stoptime,
+      </if>
+      <if test="closetime != null" >
+        closetime,
+      </if>
+      <if test="printtimes != null" >
+        printtimes,
+      </if>
+      <if test="supplierid != null" >
+        supplierid,
+      </if>
+      <if test="storageid != null" >
+        storageid,
+      </if>
+      <if test="totalvolume != null" >
+        totalvolume,
+      </if>
+      <if test="totalweight != null" >
+        totalweight,
+      </if>
+      <if test="totalbox != null" >
+        totalbox,
+      </if>
+      <if test="totalamount != null" >
+        totalamount,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="businessdate != null" >
+        #{businessdate},
+      </if>
+      <if test="status != null" >
+        #{status},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+      <if test="adduserid != null" >
+        #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        #{adddeptname},
+      </if>
+      <if test="addtime != null" >
+        #{addtime},
+      </if>
+      <if test="modifyuserid != null" >
+        #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        #{modifyusername},
+      </if>
+      <if test="modifytime != null" >
+        #{modifytime},
+      </if>
+      <if test="audituserid != null" >
+        #{audituserid},
+      </if>
+      <if test="auditusername != null" >
+        #{auditusername},
+      </if>
+      <if test="audittime != null" >
+        #{audittime},
+      </if>
+      <if test="stopuserid != null" >
+        #{stopuserid},
+      </if>
+      <if test="stopusername != null" >
+        #{stopusername},
+      </if>
+      <if test="stoptime != null" >
+        #{stoptime},
+      </if>
+      <if test="closetime != null" >
+        #{closetime},
+      </if>
+      <if test="printtimes != null" >
+        #{printtimes},
+      </if>
+      <if test="supplierid != null" >
+        #{supplierid},
+      </if>
+      <if test="storageid != null" >
+        #{storageid},
+      </if>
+      <if test="totalvolume != null" >
+        #{totalvolume},
+      </if>
+      <if test="totalweight != null" >
+        #{totalweight},
+      </if>
+      <if test="totalbox != null" >
+        #{totalbox},
+      </if>
+      <if test="totalamount != null" >
+        #{totalamount},
+      </if>
+    </trim>
+  </insert>
+   <insert id="addDeliveryAogreturnDetail" parameterType="com.hd.agent.delivery.model.DeliveryAogreturnDetail" >
+    insert into t_delivery_aogreturn_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="billid != null" >
+        billid,
+      </if>
+      <if test="goodsid != null" >
+        goodsid,
+      </if>
+      <if test="goodssort != null" >
+        goodssort,
+      </if>
+      <if test="brandid != null" >
+        brandid,
+      </if>
+      <if test="unitid != null" >
+        unitid,
+      </if>
+      <if test="unitname != null" >
+        unitname,
+      </if>
+      <if test="unitnum != null" >
+        unitnum,
+      </if>
+      <if test="auxunitid != null" >
+        auxunitid,
+      </if>
+      <if test="auxunitname != null" >
+        auxunitname,
+      </if>
+      <if test="auxnum != null" >
+        auxnum,
+      </if>
+      <if test="auxnumdetail != null" >
+        auxnumdetail,
+      </if>
+      <if test="overnum != null" >
+        overnum,
+      </if>
+      <if test="totalbox != null" >
+        totalbox,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="taxamount != null" >
+        taxamount,
+      </if>
+      <if test="seq != null" >
+        seq,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      
+       <if test="batchno != null" >
+        batchno,
+      </if>
+      <if test="produceddate != null" >
+        produceddate,
+      </if>
+      <if test="deadline != null" >
+        deadline,
+      </if>
+      
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="billid != null" >
+        #{billid},
+      </if>
+      <if test="goodsid != null" >
+        #{goodsid},
+      </if>
+      <if test="goodssort != null" >
+        #{goodssort},
+      </if>
+      <if test="brandid != null" >
+        #{brandid},
+      </if>
+      <if test="unitid != null" >
+        #{unitid},
+      </if>
+      <if test="unitname != null" >
+        #{unitname},
+      </if>
+      <if test="unitnum != null" >
+        #{unitnum},
+      </if>
+      <if test="auxunitid != null" >
+        #{auxunitid},
+      </if>
+      <if test="auxunitname != null" >
+        #{auxunitname},
+      </if>
+      <if test="auxnum != null" >
+        #{auxnum},
+      </if>
+      <if test="auxnumdetail != null" >
+        #{auxnumdetail},
+      </if>
+      <if test="overnum != null" >
+        #{overnum},
+      </if>
+      <if test="totalbox != null" >
+        #{totalbox},
+      </if>
+      <if test="price != null" >
+        #{price},
+      </if>
+      <if test="taxamount != null" >
+        #{taxamount},
+      </if>
+      <if test="seq != null" >
+        #{seq},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+      
+       <if test="batchno != null" >
+        #{batchno},
+      </if>
+      <if test="produceddate != null" >
+        #{produceddate},
+      </if>
+      <if test="deadline != null" >
+        #{deadline},
+      </if>
+      
+    </trim>
+  </insert>
+  <update id="auditDeliveryAogreturn" parameterType="java.lang.String">
+  		update t_delivery_aogreturn set audittime = #{date},status='3',audituserid=#{userid},auditusername=#{username},businessdate=#{businessdate}
+  		where id=#{id} and (status='2' or status='6')
+  	</update>
+  	<select id="getDeliveryAogreturnByID" parameterType="java.lang.String" resultType="com.hd.agent.delivery.model.DeliveryAogreturn">
+  		select <include refid="DeliveryAogreturn_Column_List"/>
+  		from t_delivery_aogreturn where id=#{id}
+  	</select>
+  	<select id="getDeliveryAogreturnDetailList" parameterType="java.lang.String" resultType="com.hd.agent.delivery.model.DeliveryAogreturnDetail">
+  		select <include refid="DeliveryAogreturnDetail_Column_List"/>
+  		from t_delivery_aogreturn_detail where billid=#{billid}
+  	</select>
+  	<update id="oppauditDeliveryAogreturn" parameterType="java.lang.String">
+  		update t_delivery_aogreturn set stoptime = #{date},status='2',stopuserid=#{userid},stopusername=#{username}
+  		where id=#{id} and (status='3' or status='6')
+  	</update>
+  	<delete id="deleteDeliveryAogreturn" parameterType="java.lang.String">
+		delete from t_delivery_aogreturn where id = #{id}
+	</delete>
+	<delete id="deleteDeliveryAogreturnDetail" parameterType="java.lang.String">
+		delete from t_delivery_aogreturn_detail where billid = #{billid}
+	</delete>
+	<update id="editDeliveryAogreturn" parameterType="com.hd.agent.delivery.model.DeliveryAogreturn">
+		update t_delivery_aogreturn
+		<set>
+	  <if test="modifyuserid != null" >
+          modifyuserid = #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+          modifyusername = #{modifyusername},
+      </if>
+      <if test="modifytime != null" >
+          modifytime = #{modifytime},
+      </if>
+      <if test="audituserid != null" >
+          audituserid = #{audituserid},
+      </if>
+      <if test="auditusername != null" >
+          auditusername = #{auditusername},
+      </if>
+      <if test="audittime != null" >
+          audittime = #{audittime},
+      </if>
+      <if test="stopuserid != null" >
+          stopuserid = #{stopuserid},
+      </if>
+      <if test="stopusername != null" >
+          stopusername = #{stopusername},
+      </if>
+      <if test="stoptime != null" >
+          stoptime = #{stoptime},
+      </if>
+      <if test="closetime != null" >
+          closetime = #{closetime},
+      </if>
+      <if test="printtimes != null" >
+          printtimes = #{printtimes},
+      </if>
+      <if test="supplierid != null" >
+          supplierid = #{supplierid},
+      </if>
+      <if test="storageid != null" >
+          storageid = #{storageid},
+      </if>
+      <if test="totalvolume != null" >
+          totalvolume = #{totalvolume},
+      </if>
+      <if test="totalweight != null" >
+          totalweight = #{totalweight},
+      </if>
+      <if test="totalbox != null" >
+          totalbox = #{totalbox},
+      </if>
+      <if test="totalamount != null" >
+          totalamount = #{totalamount},
+      </if>
+          <if test="remark != null" >
+            remark = #{remark},
+          </if>
+		</set>
+		where id = #{id}
+	</update>
+	<update id="closeDeliveryAogreturn" parameterType="java.lang.String">
+  		update t_delivery_aogreturn set closetime = #{date},status='4'
+  		where id=#{id}
+  	</update>
+  	<select id="getAogreturnList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.delivery.model.ExportDeliveryAogreturn">
+  	SELECT a.businessdate,a.supplierid,a.storageid,
+  	    b.goodsid,b.goodssort,b.brandid,b.unitid,b.unitname,b.unitnum,b.auxunitid,b.auxunitname,b.auxnum,b.auxnumdetail,b.overnum,b.totalbox,b.price,b.taxamount,b.remark 		
+	FROM t_delivery_aogreturn a 
+	RIGHT JOIN t_delivery_aogreturn_detail b ON a.id = b.billid
+	  <trim prefix="where" prefixOverrides="and|or">
+  		  <include refid="common.Page_querySql"/>
+	      <include refid="common.Page_dataSql"/>
+		  <if test="condition.businessdate1 != null">
+			 and a.businessdate >= #{condition.businessdate1}
+		  </if>
+		  <if test="condition.businessdate2 != null">
+			 <![CDATA[and a.businessdate <= #{condition.businessdate2}]]>
+		  </if>
+		  <if test="condition.id != null" >
+	         and a.id like CONCAT('%',#{condition.id},'%')
+	      </if>
+	      <if test="condition.addusername != null">
+	         and a.addusername like CONCAT ('%',#{condition.addusername},'%')
+	      </if>
+	      <if test="condition.storageid != null">
+	         and a.storageid = #{condition.storageid}
+	      </if>
+	      <if test="condition.status != null">
+	         and a.status = #{condition.status}
+	      </if>
+	      <if test="condition.supplierid != null">
+	         and a.supplierid = #{condition.supplierid}
+	      </if>
+	      <if test="condition.exportids != null" >
+         and FIND_IN_SET(a.id,#{condition.exportids})
+      	</if>
+	    </trim>
+    
+  </select>
+    <select id="showAogreturnListBy" parameterType="java.util.Map" resultType="com.hd.agent.delivery.model.DeliveryAogreturn">
+  		select 
+	    <include refid="DeliveryAogreturn_Column_List" />
+	    from t_delivery_aogreturn
+  		<trim prefix="where" prefixOverrides="and|or">
+		  	<if test="dataSql != null">
+		  		and ${dataSql}
+		  	</if>
+  			<if test="idarrs!=null">
+  				and find_in_set(id,#{idarrs})
+  			</if>
+  			<if test="status!=null">
+  				and status=#{status}
+  			</if>
+  			<if test="statusarr!=null">
+			   and FIND_IN_SET(status,#{statusarr})
+  			</if>
+			
+  		</trim>
+  	</select>
+  	<update id="updateAogreturnPrinttimes" parameterType="com.hd.agent.delivery.model.DeliveryAogreturn">
+		update t_delivery_aogreturn
+	    <set>
+	      <if test="printtimes != null">
+	         printtimes = #{printtimes}
+	      </if>
+	    </set>
+	    where id = #{id}
+	</update>
+	<update id="oppDeliveryOut" parameterType="java.lang.String">
+  		update t_delivery_aogreturn set status='3'
+  		where id=#{id} 
+  	</update>
+</mapper>

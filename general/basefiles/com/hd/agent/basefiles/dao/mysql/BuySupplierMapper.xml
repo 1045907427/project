@@ -1,0 +1,1627 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.basefiles.dao.BuySupplierMapper" >
+	<cache type="org.mybatis.caches.ehcache.EhcacheCache"></cache>
+	<sql id="PageList_Where_Clause">
+	  <if test="condition.id != null" >
+         and id like CONCAT('%',#{condition.id},'%')
+      </if>
+	  <if test="condition.name != null" >
+         and name like CONCAT('%',#{condition.name},'%')
+      </if>
+      <if test="condition.pinyin != null" >
+         and pinyin = #{condition.pinyin}
+      </if>
+      <if test="condition.state != null" >
+         and state = #{condition.state}
+      </if>
+      <if test="condition.remark != null" >
+         and remark = #{condition.remark}
+      </if>
+      <if test="condition.shortname != null" >
+         and shortname = #{condition.shortname}
+      </if>
+      <if test="condition.spell != null" >
+         and spell = #{condition.spell}
+      </if>
+      <if test="condition.abclevel != null" >
+         and abclevel = #{condition.abclevel}
+      </if>
+      <if test="condition.telphone != null" >
+         and telphone = #{condition.telphone}
+      </if>
+      <if test="condition.faxno != null" >
+         and faxno = #{condition.faxno}
+      </if>
+      <if test="condition.email != null" >
+         and email = #{condition.email}
+      </if>
+      <if test="condition.mobile != null" >
+         and mobile = #{condition.mobile}
+      </if>
+      <if test="condition.website != null" >
+         and website = #{condition.website}
+      </if>
+      <if test="condition.person != null" >
+         and person = #{condition.person}
+      </if>
+      <if test="condition.nature != null" >
+         and nature = #{condition.nature}
+      </if>
+      <if test="condition.fund != null" >
+         and fund = #{condition.fund}
+      </if>
+      <if test="condition.setupdate != null" >
+         and setupdate = #{condition.setupdate}
+      </if>
+      <if test="condition.staffnum != null" >
+         and staffnum = #{condition.staffnum}
+      </if>
+      <if test="condition.turnoveryear != null" >
+         and turnoveryear = #{condition.turnoveryear}
+      </if>
+      <if test="condition.firstbusinessdate != null" >
+         and firstbusinessdate = #{condition.firstbusinessdate}
+      </if>
+      <if test="condition.buyarea != null" >
+         and buyarea = #{condition.buyarea}
+      </if>
+      <if test="condition.suppliersort != null" >
+         and suppliersort = #{condition.suppliersort}
+      </if>
+       <if test="condition.contact != null" >
+         and contact = #{condition.contact}
+      </if>
+      <if test="condition.address != null" >
+         and address = #{condition.address}
+      </if>
+      <if test="condition.zip != null" >
+         and zip = #{condition.zip}
+      </if>
+      <if test="condition.taxno != null" >
+         and taxno = #{condition.taxno}
+      </if>
+      <if test="condition.bank != null" >
+         and bank = #{condition.bank}
+      </if>
+      <if test="condition.cardno != null" >
+         and cardno = #{condition.cardno}
+      </if>
+      <if test="condition.credit != null" >
+         and credit = #{condition.credit}
+      </if>
+      <if test="condition.creditdate != null" >
+         and creditdate = #{condition.creditdate}
+      </if>
+      <if test="condition.salesmonth != null" >
+         and salesmonth = #{condition.salesmonth}
+      </if>
+      <if test="condition.settletype != null" >
+         and settletype = #{condition.settletype}
+      </if>
+      <if test="condition.settleday != null" >
+         and settleday = #{condition.settleday}
+      </if>
+      <if test="condition.ownlimit != null" >
+         and ownlimit = #{condition.ownlimit}
+      </if>
+      <if test="condition.paytype != null" >
+         and paytype = #{condition.paytype}
+      </if>
+      <if test="condition.buydeptid != null" >
+         and buydeptid = #{condition.buydeptid}
+      </if>
+      <if test="condition.buyuserid != null" >
+         and buyuserid = #{condition.buyuserid}
+      </if>
+      <if test="condition.buysum != null" >
+         and buysum = #{condition.buysum}
+      </if>
+      <if test="condition.paysum != null" >
+         and paysum = #{condition.paysum}
+      </if>
+      <if test="condition.payable != null" >
+         and payable = #{condition.payable}
+      </if>
+      <if test="condition.otherduefromsum != null" >
+         and otherduefromsum = #{condition.otherduefromsum}
+      </if>
+      <if test="condition.buysumyear != null" >
+         and buysumyear = #{condition.buysumyear}
+      </if>
+      <if test="condition.paysumyear != null" >
+         and paysumyear = #{condition.paysumyear}
+      </if>
+      <if test="condition.newbuydate != null" >
+         and newbuydate = #{condition.newbuydate}
+      </if>
+      <if test="condition.newbuysum != null" >
+         and newbuysum = #{condition.newbuysum}
+      </if>
+      <if test="condition.newpaydate != null" >
+         and newpaydate = #{condition.newpaydate}
+      </if>
+      <if test="condition.newpaysum != null" >
+         and newpaysum = #{condition.newpaysum}
+      </if>
+      <if test="condition.realownsum != null" >
+         and realownsum = #{condition.realownsum}
+      </if>
+      <if test="condition.buysummonth != null" >
+         and buysummonth = #{condition.buysummonth}
+      </if>
+      <if test="condition.disabledate != null" >
+         and disabledate = #{condition.disabledate}
+      </if>      
+      <if test="condition.adduserid != null" >
+         and adduserid = #{condition.adduserid}
+      </if>
+      <if test="condition.addusername != null" >
+         and addusername = #{condition.addusername}
+      </if>
+      <if test="condition.adddeptid != null" >
+         and adddeptid = #{condition.adddeptid}
+      </if>
+      <if test="condition.adddeptname != null" >
+         and adddeptname = #{condition.adddeptname}
+      </if>
+      <if test="condition.modifyuserid != null" >
+         and modifyuserid = #{condition.modifyuserid}
+      </if>
+      <if test="condition.modifyusername != null" >
+         and modifyusername = #{condition.modifyusername}
+      </if>
+      <if test="condition.openuserid != null" >
+         and openuserid = #{condition.openuserid}
+      </if>
+      <if test="condition.openusername != null" >
+         and openusername = #{condition.openusername}
+      </if>
+      <if test="condition.closeuserid != null" >
+         and closeuserid = #{condition.closeuserid}
+      </if>
+      <if test="condition.closeusername != null" >
+         and closeusername = #{condition.closeusername}
+      </if>
+      <if test="condition.orderappend !=null ">
+      	 and orderappend = #{condition.orderappend}
+      </if>
+	</sql>
+	<sql id="Base_Column_List" >
+	    id, name, pinyin, state, remark, shortname, spell, abclevel, telphone, faxno, email, mobile, 
+	    website, person, nature, fund, setupdate, staffnum, turnoveryear, firstbusinessdate, 
+	    buyarea, suppliersort, address, zip, taxno, bank, cardno, credit, creditdate, 
+	    salesmonth, settletype, settleday, ownlimit, paytype, buydeptid, buyuserid, buysum, 
+	    paysum, payable, otherduefromsum, buysumyear, paysumyear, newbuydate, newbuysum, 
+	    newpaydate, newpaysum, realownsum, buysummonth, disabledate, field01, field02, field03, 
+	    field04, field05, field06, field07, field08, field09, adduserid, addusername, adddeptid, 
+	    adddeptname, addtime, modifyuserid, modifyusername, modifytime, openuserid, openusername, 
+	    opentime, closeuserid, closeusername, closetime,field10, field11, field12,orderappend,storageid,
+	    filiale,buyusermobile,financiallink,financialmobile,financialemail,contact,contactname,contactmobile,contactemail,
+		contactarea,contactareamobile,contactareaemail,region,regionmobile,regionemail,annualobjectives,annualrebate,
+		semiannualrebate,quarterlyrebate,monthlyrebate,breakagesubsidies,othersubsidies,recoverymode,pricediscount,
+		otherconditions,promotersplaces,promoterssalary,salesmanplaces,salesmansalary,personmobile,personcard,canceltype
+  	</sql>
+  	<select id="getBuySupplier" parameterType="java.lang.String" resultType="com.hd.agent.basefiles.model.BuySupplier">
+  		select 
+  		<include refid="Base_Column_List"/>
+  		from t_base_buy_supplier where id=#{id}
+  	</select>
+  	<select id="returnSupplierIdByName" parameterType="java.lang.String" resultType="com.hd.agent.basefiles.model.BuySupplier">
+  		select * from t_base_buy_supplier where name = #{name}
+  	</select>
+  	<select id="getBuySupplierBy" parameterType="java.util.Map" resultType="com.hd.agent.basefiles.model.BuySupplier">
+  		select 
+  		<choose>
+			<when test="authCols!=null">
+				<trim prefix="" prefixOverrides=","> 				
+					${authCols}
+ 				</trim>
+			</when>
+			<when test="authCols==null">
+  				<include refid="Base_Column_List"/>
+  			</when>
+  		</choose>
+  		from t_base_buy_supplier where
+		<trim prefixOverrides="and|or"> 		
+	      <if test="id != null" >
+	        and id = #{id}
+	      </if>       
+	   	  <if test="authDataSql != null">
+	   		and ${authDataSql}
+	   	  </if>
+	   	</trim>
+  	</select>
+  	<select id="getBuySupplierListBy" parameterType="java.util.Map" resultType="com.hd.agent.basefiles.model.BuySupplier">
+  		select 
+  		<choose>
+			<when test="authCols!=null">
+				<trim prefix="" prefixOverrides=","> 				
+					${authCols}
+ 				</trim>
+			</when>
+			<when test="authCols==null">
+  				<include refid="Base_Column_List"/>
+  			</when>
+  		</choose>
+  		from t_base_buy_supplier
+  		<trim prefix="where" prefixOverrides="and|or"> 		
+	      <if test="id != null" >
+	        and id = #{id}
+	      </if>       
+	   	  <if test="authDataSql != null">
+	   		and ${authDataSql}
+	   	  </if>
+	      <if test="idarrs != null" >
+	        and FIND_IN_SET(id,#{idarrs})
+	      </if>	   		
+	  	</trim>
+  	</select>
+  	<select id="getBuySupplierStateListBy" parameterType="java.util.Map" resultType="com.hd.agent.basefiles.model.BuySupplier">
+  		select 
+  		id,state
+  		from t_base_buy_supplier where 
+  		<trim prefixOverrides="and|or">
+	   	  <if test="authDataSql != null">
+	   		and ${authDataSql}
+	   	  </if>
+	   	  <if test="state!=null">
+	   	  	and state=#{state}
+	   	  </if>
+	   	  <if test="statearrs!=null">
+	   	  	and FIND_IN_SET(state,#{statearrs})
+	   	  </if>
+	      <if test="idarrs != null" >
+	        and FIND_IN_SET(id,#{idarrs})
+	      </if>	   		
+	  	</trim>
+  	</select>
+  	<insert id="insertBuySupplier" parameterType="com.hd.agent.basefiles.model.BuySupplier" >
+	    insert into t_base_buy_supplier
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      id,
+	      <if test="name != null" >
+	        name,
+	      </if>
+	      <if test="pinyin != null" >
+	        pinyin,
+	      </if>
+	      <if test="state != null" >
+	        state,
+	      </if>
+	      <if test="remark != null" >
+	        remark,
+	      </if>
+	      <if test="shortname != null" >
+	        shortname,
+	      </if>
+	      <if test="spell != null" >
+	        spell,
+	      </if>
+	      <if test="abclevel != null" >
+	        abclevel,
+	      </if>
+	      <if test="telphone != null" >
+	        telphone,
+	      </if>
+	      <if test="faxno != null" >
+	        faxno,
+	      </if>
+	      <if test="email != null" >
+	        email,
+	      </if>
+	      <if test="mobile != null" >
+	        mobile,
+	      </if>
+	      <if test="website != null" >
+	        website,
+	      </if>
+	      <if test="person != null" >
+	        person,
+	      </if>
+	      <if test="nature != null" >
+	        nature,
+	      </if>
+	      <if test="fund != null" >
+	        fund,
+	      </if>
+	      <if test="setupdate != null" >
+	        setupdate,
+	      </if>
+	      <if test="staffnum != null" >
+	        staffnum,
+	      </if>
+	      <if test="turnoveryear != null" >
+	        turnoveryear,
+	      </if>
+	      <if test="firstbusinessdate != null" >
+	        firstbusinessdate,
+	      </if>
+	      <if test="buyarea != null" >
+	        buyarea,
+	      </if>
+	      <if test="suppliersort != null" >
+	        suppliersort,
+	      </if>
+	      <if test="address != null" >
+	        address,
+	      </if>
+	      <if test="zip != null" >
+	        zip,
+	      </if>
+	      <if test="taxno != null" >
+	        taxno,
+	      </if>
+	      <if test="bank != null" >
+	        bank,
+	      </if>
+	      <if test="cardno != null" >
+	        cardno,
+	      </if>
+	      <if test="credit != null" >
+	        credit,
+	      </if>
+	      <if test="creditdate != null" >
+	        creditdate,
+	      </if>
+	      <if test="salesmonth != null" >
+	        salesmonth,
+	      </if>
+	      <if test="settletype != null" >
+	        settletype,
+	      </if>
+	      <if test="settleday != null" >
+	        settleday,
+	      </if>
+	      <if test="ownlimit != null" >
+	        ownlimit,
+	      </if>
+	      <if test="paytype != null" >
+	        paytype,
+	      </if>
+	      <if test="buydeptid != null" >
+	        buydeptid,
+	      </if>
+	      <if test="buyuserid != null" >
+	        buyuserid,
+	      </if>
+	      <if test="storageid != null" >
+	        storageid,
+	      </if>
+	      <if test="buysum != null" >
+	        buysum,
+	      </if>
+	      <if test="paysum != null" >
+	        paysum,
+	      </if>
+	      <if test="payable != null" >
+	        payable,
+	      </if>
+	      <if test="otherduefromsum != null" >
+	        otherduefromsum,
+	      </if>
+	      <if test="buysumyear != null" >
+	        buysumyear,
+	      </if>
+	      <if test="paysumyear != null" >
+	        paysumyear,
+	      </if>
+	      <if test="newbuydate != null" >
+	        newbuydate,
+	      </if>
+	      <if test="newbuysum != null" >
+	        newbuysum,
+	      </if>
+	      <if test="newpaydate != null" >
+	        newpaydate,
+	      </if>
+	      <if test="newpaysum != null" >
+	        newpaysum,
+	      </if>
+	      <if test="realownsum != null" >
+	        realownsum,
+	      </if>
+	      <if test="buysummonth != null" >
+	        buysummonth,
+	      </if>
+	      <if test="disabledate != null" >
+	        disabledate,
+	      </if>
+	      <if test="field01 != null" >
+	        field01,
+	      </if>
+	      <if test="field02 != null" >
+	        field02,
+	      </if>
+	      <if test="field03 != null" >
+	        field03,
+	      </if>
+	      <if test="field04 != null" >
+	        field04,
+	      </if>
+	      <if test="field05 != null" >
+	        field05,
+	      </if>
+	      <if test="field06 != null" >
+	        field06,
+	      </if>
+	      <if test="field07 != null" >
+	        field07,
+	      </if>
+	      <if test="field08 != null" >
+	        field08,
+	      </if>
+	      <if test="field09 != null" >
+	        field09,
+	      </if>
+	      <if test="adduserid != null" >
+	        adduserid,
+	      </if>
+	      <if test="addusername != null" >
+	        addusername,
+	      </if>
+	      <if test="adddeptid != null" >
+	        adddeptid,
+	      </if>
+	      <if test="adddeptname != null" >
+	        adddeptname,
+	      </if>
+	      <if test="addtime != null" >
+	        addtime,
+	      </if>
+	      <if test="modifyuserid != null" >
+	        modifyuserid,
+	      </if>
+	      <if test="modifyusername != null" >
+	        modifyusername,
+	      </if>
+	      <if test="modifytime != null" >
+	        modifytime,
+	      </if>
+	      <if test="openuserid != null" >
+	        openuserid,
+	      </if>
+	      <if test="openusername != null" >
+	        openusername,
+	      </if>
+	      <if test="opentime != null" >
+	        opentime,
+	      </if>
+	      <if test="closeuserid != null" >
+	        closeuserid,
+	      </if>
+	      <if test="closeusername != null" >
+	        closeusername,
+	      </if>
+	      <if test="closetime != null" >
+	        closetime,
+	      </if>
+	      <if test="field10 != null" >
+	        field10,
+	      </if>
+	      <if test="field11 != null" >
+	        field11,
+	      </if>
+	      <if test="field12 != null" >
+	        field12,
+	      </if>
+	      <if test="orderappend != null" >
+	        orderappend,
+	      </if>
+	      <if test="filiale != null" >
+	        filiale,
+	      </if>
+	      <if test="buyusermobile != null" >
+	        buyusermobile,
+	      </if>
+	      <if test="financiallink != null" >
+	        financiallink,
+	      </if>
+	      <if test="financialmobile != null" >
+	        financialmobile,
+	      </if>
+	      <if test="financialemail != null" >
+	        financialemail,
+	      </if>
+	      <if test="contact != null" >
+	        contact,
+	      </if>
+	      <if test="contactname != null" >
+	        contactname,
+	      </if>
+	      <if test="contactmobile != null" >
+	        contactmobile,
+	      </if>
+	      <if test="contactemail != null" >
+	        contactemail,
+	      </if>
+	      <if test="contactarea != null" >
+	        contactarea,
+	      </if>
+	      <if test="contactareamobile != null" >
+	        contactareamobile,
+	      </if>
+	      <if test="contactareaemail != null" >
+	        contactareaemail,
+	      </if>
+	      <if test="region != null" >
+	        region,
+	      </if>
+	      <if test="regionmobile != null" >
+	        regionmobile,
+	      </if>
+	      <if test="regionemail != null" >
+	        regionemail,
+	      </if>
+	      <if test="annualobjectives != null" >
+	        annualobjectives,
+	      </if>
+	      <if test="annualrebate != null" >
+	        annualrebate,
+	      </if>
+	      <if test="semiannualrebate != null" >
+	        semiannualrebate,
+	      </if>
+	      <if test="quarterlyrebate != null" >
+	        quarterlyrebate,
+	      </if>
+	      <if test="monthlyrebate != null" >
+	        monthlyrebate,
+	      </if>
+	      <if test="breakagesubsidies != null" >
+	        breakagesubsidies,
+	      </if>
+	      <if test="othersubsidies != null" >
+	        othersubsidies,
+	      </if>
+	      <if test="recoverymode != null" >
+	        recoverymode,
+	      </if>
+	      <if test="pricediscount != null" >
+	        pricediscount,
+	      </if>
+	      <if test="otherconditions != null" >
+	        otherconditions,
+	      </if>
+	      <if test="promotersplaces != null" >
+	        promotersplaces,
+	      </if>
+	      <if test="promoterssalary != null" >
+	        promoterssalary,
+	      </if>
+	      <if test="salesmanplaces != null" >
+	        salesmanplaces,
+	      </if>
+	      <if test="salesmansalary != null" >
+	        salesmansalary,
+	      </if>
+	      <if test="personmobile != null" >
+	        personmobile,
+	      </if>
+	      <if test="personcard != null" >
+	        personcard,
+	      </if>
+	      <if test="canceltype != null" >
+	        canceltype,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <choose>
+	      	<when test="id != null">
+	      		#{id},
+	      	</when>
+	      	<otherwise>
+	      		uuid_short(),
+	      	</otherwise>
+	      </choose>
+	      <if test="name != null" >
+	        #{name},
+	      </if>
+	      <if test="pinyin != null" >
+	        #{pinyin},
+	      </if>
+	      <if test="state != null" >
+	        #{state},
+	      </if>
+	      <if test="remark != null" >
+	        #{remark},
+	      </if>
+	      <if test="shortname != null" >
+	        #{shortname},
+	      </if>
+	      <if test="spell != null" >
+	        #{spell},
+	      </if>
+	      <if test="abclevel != null" >
+	        #{abclevel},
+	      </if>
+	      <if test="telphone != null" >
+	        #{telphone},
+	      </if>
+	      <if test="faxno != null" >
+	        #{faxno},
+	      </if>
+	      <if test="email != null" >
+	        #{email},
+	      </if>
+	      <if test="mobile != null" >
+	        #{mobile},
+	      </if>
+	      <if test="website != null" >
+	        #{website},
+	      </if>
+	      <if test="person != null" >
+	        #{person},
+	      </if>
+	      <if test="nature != null" >
+	        #{nature},
+	      </if>
+	      <if test="fund != null" >
+	        #{fund},
+	      </if>
+	      <if test="setupdate != null" >
+	        #{setupdate},
+	      </if>
+	      <if test="staffnum != null" >
+	        #{staffnum},
+	      </if>
+	      <if test="turnoveryear != null" >
+	        #{turnoveryear},
+	      </if>
+	      <if test="firstbusinessdate != null" >
+	        #{firstbusinessdate},
+	      </if>
+	      <if test="buyarea != null" >
+	        #{buyarea},
+	      </if>
+	      <if test="suppliersort != null" >
+	        #{suppliersort},
+	      </if>
+	      <if test="address != null" >
+	        #{address},
+	      </if>
+	      <if test="zip != null" >
+	        #{zip},
+	      </if>
+	      <if test="taxno != null" >
+	        #{taxno},
+	      </if>
+	      <if test="bank != null" >
+	        #{bank},
+	      </if>
+	      <if test="cardno != null" >
+	        #{cardno},
+	      </if>
+	      <if test="credit != null" >
+	        #{credit},
+	      </if>
+	      <if test="creditdate != null" >
+	        #{creditdate},
+	      </if>
+	      <if test="salesmonth != null" >
+	        #{salesmonth},
+	      </if>
+	      <if test="settletype != null" >
+	        #{settletype},
+	      </if>
+	      <if test="settleday != null" >
+	        #{settleday},
+	      </if>
+	      <if test="ownlimit != null" >
+	        #{ownlimit},
+	      </if>
+	      <if test="paytype != null" >
+	        #{paytype},
+	      </if>
+	      <if test="buydeptid != null" >
+	        #{buydeptid},
+	      </if>
+	      <if test="buyuserid != null" >
+	        #{buyuserid},
+	      </if>
+	      <if test="storageid != null" >
+	        #{storageid},
+	      </if>
+	      <if test="buysum != null" >
+	        #{buysum},
+	      </if>
+	      <if test="paysum != null" >
+	        #{paysum},
+	      </if>
+	      <if test="payable != null" >
+	        #{payable},
+	      </if>
+	      <if test="otherduefromsum != null" >
+	        #{otherduefromsum},
+	      </if>
+	      <if test="buysumyear != null" >
+	        #{buysumyear},
+	      </if>
+	      <if test="paysumyear != null" >
+	        #{paysumyear},
+	      </if>
+	      <if test="newbuydate != null" >
+	        #{newbuydate},
+	      </if>
+	      <if test="newbuysum != null" >
+	        #{newbuysum},
+	      </if>
+	      <if test="newpaydate != null" >
+	        #{newpaydate},
+	      </if>
+	      <if test="newpaysum != null" >
+	        #{newpaysum},
+	      </if>
+	      <if test="realownsum != null" >
+	        #{realownsum},
+	      </if>
+	      <if test="buysummonth != null" >
+	        #{buysummonth},
+	      </if>
+	      <if test="disabledate != null" >
+	        #{disabledate},
+	      </if>
+	      <if test="field01 != null" >
+	        #{field01},
+	      </if>
+	      <if test="field02 != null" >
+	        #{field02},
+	      </if>
+	      <if test="field03 != null" >
+	        #{field03},
+	      </if>
+	      <if test="field04 != null" >
+	        #{field04},
+	      </if>
+	      <if test="field05 != null" >
+	        #{field05},
+	      </if>
+	      <if test="field06 != null" >
+	        #{field06},
+	      </if>
+	      <if test="field07 != null" >
+	        #{field07},
+	      </if>
+	      <if test="field08 != null" >
+	        #{field08},
+	      </if>
+	      <if test="field09 != null" >
+	        #{field09},
+	      </if>
+	      <if test="adduserid != null" >
+	        #{adduserid},
+	      </if>
+	      <if test="addusername != null" >
+	        #{addusername},
+	      </if>
+	      <if test="adddeptid != null" >
+	        #{adddeptid},
+	      </if>
+	      <if test="adddeptname != null" >
+	        #{adddeptname},
+	      </if>
+	      <if test="addtime != null" >
+	        #{addtime},
+	      </if>
+	      <if test="modifyuserid != null" >
+	        #{modifyuserid},
+	      </if>
+	      <if test="modifyusername != null" >
+	        #{modifyusername},
+	      </if>
+	      <if test="modifytime != null" >
+	        #{modifytime},
+	      </if>
+	      <if test="openuserid != null" >
+	        #{openuserid},
+	      </if>
+	      <if test="openusername != null" >
+	        #{openusername},
+	      </if>
+	      <if test="opentime != null" >
+	        #{opentime},
+	      </if>
+	      <if test="closeuserid != null" >
+	        #{closeuserid},
+	      </if>
+	      <if test="closeusername != null" >
+	        #{closeusername},
+	      </if>
+	      <if test="closetime != null" >
+	        #{closetime},
+	      </if>
+	      <if test="field10 != null" >
+	        #{field10},
+	      </if>
+	      <if test="field11 != null" >
+	        #{field11},
+	      </if>
+	      <if test="field12 != null" >
+	        #{field12},
+	      </if>
+	      <if test="orderappend != null" >
+	        #{orderappend},
+	      </if>
+	      <if test="filiale != null" >
+	        #{filiale},
+	      </if>
+	      <if test="buyusermobile != null" >
+	        #{buyusermobile},
+	      </if>
+	      <if test="financiallink != null" >
+	        #{financiallink},
+	      </if>
+	      <if test="financialmobile != null" >
+	        #{financialmobile},
+	      </if>
+	      <if test="financialemail != null" >
+	        #{financialemail},
+	      </if>
+	      <if test="contact != null" >
+	        #{contact},
+	      </if>
+	      <if test="contactname != null" >
+	        #{contactname},
+	      </if>
+	      <if test="contactmobile != null" >
+	        #{contactmobile},
+	      </if>
+	      <if test="contactemail != null" >
+	        #{contactemail},
+	      </if>
+	      <if test="contactarea != null" >
+	        #{contactarea},
+	      </if>
+	      <if test="contactareamobile != null" >
+	        #{contactareamobile},
+	      </if>
+	      <if test="contactareaemail != null" >
+	        #{contactareaemail},
+	      </if>
+	      <if test="region != null" >
+	        #{region},
+	      </if>
+	      <if test="regionmobile != null" >
+	        #{regionmobile},
+	      </if>
+	      <if test="regionemail != null" >
+	        #{regionemail},
+	      </if>
+	      <if test="annualobjectives != null" >
+	        #{annualobjectives},
+	      </if>
+	      <if test="annualrebate != null" >
+	        #{annualrebate},
+	      </if>
+	      <if test="semiannualrebate != null" >
+	        #{semiannualrebate},
+	      </if>
+	      <if test="quarterlyrebate != null" >
+	        #{quarterlyrebate},
+	      </if>
+	      <if test="monthlyrebate != null" >
+	        #{monthlyrebate},
+	      </if>
+	      <if test="breakagesubsidies != null" >
+	        #{breakagesubsidies},
+	      </if>
+	      <if test="othersubsidies != null" >
+	        #{othersubsidies},
+	      </if>
+	      <if test="recoverymode != null" >
+	        #{recoverymode},
+	      </if>
+	      <if test="pricediscount != null" >
+	        #{pricediscount},
+	      </if>
+	      <if test="otherconditions != null" >
+	        #{otherconditions},
+	      </if>
+	      <if test="promotersplaces != null" >
+	        #{promotersplaces},
+	      </if>
+	      <if test="promoterssalary != null" >
+	        #{promoterssalary},
+	      </if>
+	      <if test="salesmanplaces != null" >
+	        #{salesmanplaces},
+	      </if>
+	      <if test="salesmansalary != null" >
+	        #{salesmansalary},
+	      </if>
+	      <if test="personmobile != null" >
+	        #{personmobile},
+	      </if>
+	      <if test="personcard != null" >
+	        #{personcard},
+	      </if>
+	      <if test="canceltype != null" >
+	        #{canceltype},
+	      </if>
+	    </trim>
+  </insert>
+  <update id="updateBuySupplier" parameterType="com.hd.agent.basefiles.model.BuySupplier" >
+    update t_base_buy_supplier
+    <set >
+      <if test="id != null" >
+        id = #{id},
+      </if>
+      <if test="name != null" >
+        name = #{name},
+      </if>
+      <if test="pinyin != null" >
+        pinyin = #{pinyin},
+      </if>
+      <if test="state != null" >
+        state = #{state},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark},
+      </if>
+      <if test="shortname != null" >
+        shortname = #{shortname},
+      </if>
+      <if test="spell != null" >
+        spell = #{spell},
+      </if>
+      <if test="abclevel != null" >
+        abclevel = #{abclevel},
+      </if>
+      <if test="telphone != null" >
+        telphone = #{telphone},
+      </if>
+      <if test="faxno != null" >
+        faxno = #{faxno},
+      </if>
+      <if test="email != null" >
+        email = #{email},
+      </if>
+      <if test="mobile != null" >
+        mobile = #{mobile},
+      </if>
+      <if test="website != null" >
+        website = #{website},
+      </if>
+      <if test="person != null" >
+        person = #{person},
+      </if>
+      <if test="nature != null" >
+        nature = #{nature},
+      </if>
+      <if test="fund != null" >
+        fund = #{fund},
+      </if>
+      <if test="setupdate != null" >
+        setupdate = #{setupdate},
+      </if>
+      <if test="staffnum != null" >
+        staffnum = #{staffnum},
+      </if>
+      <if test="turnoveryear != null" >
+        turnoveryear = #{turnoveryear},
+      </if>
+      <if test="firstbusinessdate != null" >
+        firstbusinessdate = #{firstbusinessdate},
+      </if>
+      <if test="buyarea != null" >
+        buyarea = #{buyarea},
+      </if>
+      <if test="suppliersort != null" >
+        suppliersort = #{suppliersort},
+      </if>
+      <if test="address != null" >
+        address = #{address},
+      </if>
+      <if test="zip != null" >
+        zip = #{zip},
+      </if>
+      <if test="taxno != null" >
+        taxno = #{taxno},
+      </if>
+      <if test="bank != null" >
+        bank = #{bank},
+      </if>
+      <if test="cardno != null" >
+        cardno = #{cardno},
+      </if>
+      <if test="credit != null" >
+        credit = #{credit},
+      </if>
+      <if test="creditdate != null" >
+        creditdate = #{creditdate},
+      </if>
+      <if test="salesmonth != null" >
+        salesmonth = #{salesmonth},
+      </if>
+      <if test="settletype != null" >
+        settletype = #{settletype},
+      </if>
+      <if test="settleday != null" >
+        settleday = #{settleday},
+      </if>
+      <if test="ownlimit != null" >
+        ownlimit = #{ownlimit},
+      </if>
+      <if test="paytype != null" >
+        paytype = #{paytype},
+      </if>
+      <if test="buydeptid != null" >
+        buydeptid = #{buydeptid},
+      </if>
+      <if test="buyuserid != null" >
+        buyuserid = #{buyuserid},
+      </if>
+      <if test="storageid != null" >
+	    storageid = #{storageid},
+	  </if>
+      <if test="buysum != null" >
+        buysum = #{buysum},
+      </if>
+      <if test="paysum != null" >
+        paysum = #{paysum},
+      </if>
+      <if test="payable != null" >
+        payable = #{payable},
+      </if>
+      <if test="otherduefromsum != null" >
+        otherduefromsum = #{otherduefromsum},
+      </if>
+      <if test="buysumyear != null" >
+        buysumyear = #{buysumyear},
+      </if>
+      <if test="paysumyear != null" >
+        paysumyear = #{paysumyear},
+      </if>
+      <if test="newbuydate != null" >
+        newbuydate = #{newbuydate},
+      </if>
+      <if test="newbuysum != null" >
+        newbuysum = #{newbuysum},
+      </if>
+      <if test="newpaydate != null" >
+        newpaydate = #{newpaydate},
+      </if>
+      <if test="newpaysum != null" >
+        newpaysum = #{newpaysum},
+      </if>
+      <if test="realownsum != null" >
+        realownsum = #{realownsum},
+      </if>
+      <if test="buysummonth != null" >
+        buysummonth = #{buysummonth},
+      </if>
+      <if test="disabledate != null" >
+        disabledate = #{disabledate},
+      </if>
+      <if test="field01 != null" >
+        field01 = #{field01},
+      </if>
+      <if test="field02 != null" >
+        field02 = #{field02},
+      </if>
+      <if test="field03 != null" >
+        field03 = #{field03},
+      </if>
+      <if test="field04 != null" >
+        field04 = #{field04},
+      </if>
+      <if test="field05 != null" >
+        field05 = #{field05},
+      </if>
+      <if test="field06 != null" >
+        field06 = #{field06},
+      </if>
+      <if test="field07 != null" >
+        field07 = #{field07},
+      </if>
+      <if test="field08 != null" >
+        field08 = #{field08},
+      </if>
+      <if test="field09 != null" >
+        field09 = #{field09},
+      </if>
+      <if test="adduserid != null" >
+        adduserid = #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        addusername = #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid = #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname = #{adddeptname},
+      </if>
+      <if test="addtime != null" >
+        addtime = #{addtime},
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid = #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername = #{modifyusername},
+      </if>
+      <if test="modifytime != null" >
+        modifytime = #{modifytime},
+      </if>
+      <if test="openuserid != null" >
+        openuserid = #{openuserid},
+      </if>
+      <if test="openusername != null" >
+        openusername = #{openusername},
+      </if>
+      <if test="opentime != null" >
+        opentime = #{opentime},
+      </if>
+      <if test="closeuserid != null" >
+        closeuserid = #{closeuserid},
+      </if>
+      <if test="closeusername != null" >
+        closeusername = #{closeusername},
+      </if>
+      <if test="closetime != null" >
+        closetime = #{closetime},
+      </if>
+      <if test="field10 != null" >
+        field10 = #{field10},
+      </if>
+      <if test="field11 != null" >
+        field11 = #{field11},
+      </if>
+      <if test="field12 != null" >
+        field12 = #{field12},
+      </if>
+      <if test="orderappend != null" >
+        orderappend = #{orderappend},
+      </if>
+      	<if test="filiale != null" >
+	      filiale = #{filiale},
+	    </if>
+	    <if test="buyusermobile != null" >
+	      buyusermobile = #{buyusermobile},
+	    </if>
+	    <if test="financiallink != null" >
+	      financiallink = #{financiallink},
+	    </if>
+	    <if test="financialmobile != null" >
+	      financialmobile = #{financialmobile},
+	    </if>
+	    <if test="financialemail != null" >
+	      financialemail = #{financialemail},
+	    </if>
+		<if test="contact != null" >
+	      contact = #{contact},
+	    </if>
+	    <if test="contactname != null" >
+	      contactname = #{contactname},
+	    </if>
+	    <if test="contactmobile != null" >
+	      contactmobile = #{contactmobile},
+	    </if>
+	    <if test="contactemail != null" >
+	      contactemail = #{contactemail},
+	    </if>
+	    <if test="contactarea != null" >
+	      contactarea = #{contactarea},
+	    </if>
+	    <if test="contactareamobile != null" >
+	      contactareamobile = #{contactareamobile},
+	    </if>
+	    <if test="contactareaemail != null" >
+	      contactareaemail = #{contactareaemail},
+	    </if>
+	    <if test="region != null" >
+	      region = #{region},
+	    </if>
+	    <if test="regionmobile != null" >
+	      regionmobile = #{regionmobile},
+	    </if>
+	    <if test="regionemail != null" >
+	      regionemail = #{regionemail},
+	    </if>
+	    <if test="annualobjectives != null" >
+	      annualobjectives = #{annualobjectives},
+	    </if>
+	    <if test="annualrebate != null" >
+	      annualrebate = #{annualrebate},
+	    </if>
+	    <if test="semiannualrebate != null" >
+	      semiannualrebate = #{semiannualrebate},
+	    </if>
+	    <if test="quarterlyrebate != null" >
+	      quarterlyrebate = #{quarterlyrebate},
+	    </if>
+	    <if test="monthlyrebate != null" >
+	      monthlyrebate = #{monthlyrebate},
+	    </if>
+	    <if test="breakagesubsidies != null" >
+	      breakagesubsidies = #{breakagesubsidies},
+	    </if>
+	    <if test="othersubsidies != null" >
+	      othersubsidies = #{othersubsidies},
+	    </if>
+	    <if test="recoverymode != null" >
+	      recoverymode = #{recoverymode},
+	    </if>
+	    <if test="pricediscount != null" >
+	      pricediscount = #{pricediscount},
+	    </if>
+	    <if test="otherconditions != null" >
+	      otherconditions = #{otherconditions},
+	    </if>
+	    <if test="promotersplaces != null" >
+	      promotersplaces = #{promotersplaces},
+	    </if>
+	    <if test="promoterssalary != null" >
+	      promoterssalary = #{promoterssalary},
+	    </if>
+	    <if test="salesmanplaces != null" >
+	      salesmanplaces = #{salesmanplaces},
+	    </if>
+	    <if test="salesmansalary != null" >
+	      salesmansalary = #{salesmansalary},
+	    </if>
+	    <if test="personmobile != null" >
+	      personmobile = #{personmobile},
+	    </if>
+	    <if test="personcard != null" >
+	      personcard = #{personcard},
+	    </if>
+	    <if test="canceltype != null" >
+	      canceltype = #{canceltype},
+	    </if>
+    </set>
+    where id = #{oldid}
+  </update>  
+  <update id="updateBuySupplierBy" parameterType="java.util.Map" >
+    update t_base_buy_supplier
+    <set >
+      <if test="newid != null" >
+        id = #{newid},
+      </if>
+      <if test="state != null" >
+        state = #{state},
+      </if>
+      <if test="disabledate != null" >
+        disabledate = #{disabledate},
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid = #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername = #{modifyusername},
+      </if>
+      <if test="modifytime != null" >
+        modifytime = #{modifytime},
+      </if>
+      <if test="openuserid != null" >
+        openuserid = #{openuserid},
+      </if>
+      <if test="openusername != null" >
+        openusername = #{openusername},
+      </if>
+      <if test="opentime != null" >
+        opentime = #{opentime},
+      </if>
+      <if test="closeuserid != null" >
+        closeuserid = #{closeuserid},
+      </if>
+      <if test="closeusername != null" >
+        closeusername = #{closeusername},
+      </if>
+      <if test="closetime != null" >
+        closetime = #{closetime},
+      </if>
+    </set>
+    where
+    <trim  prefixOverrides="and|or" >
+    	<if test="oldid">
+    		and id=#{oldid}
+    	</if>   	
+   	  	<if test="statearrs!=null">
+   	  		and FIND_IN_SET(state,#{statearrs})
+   	  	</if>
+   	  	<if test="wstate">
+   	  		and state=#{wstate}
+   	  	</if>    	
+	    <if test="authDataSql != null">
+	    	and ${authDataSql}
+	    </if>
+    </trim>
+  </update>
+  <delete id="deleteBuySupplier" parameterType="java.lang.String" >
+    delete from t_base_buy_supplier
+    where id = #{id}
+  </delete>
+  <delete id="deleteBuySupplierBy" parameterType="java.util.Map" >
+    delete from t_base_buy_supplier
+    where
+    <trim prefixOverrides="and|or">
+    	<if test="id!=null">
+    		and id=#{id}
+    	</if>    	       
+   	  	<if test="authDataSql != null">
+   			and ${authDataSql}
+   	  	</if>
+    </trim>
+  </delete>
+  <select id="getBuySupplierPageList"  parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.basefiles.model.BuySupplier" useCache="false">
+	  	select
+	  	<choose>
+			<when test="cols!=null">
+				<include refid="common.Page_Column"/>
+			</when>
+			<when test="cols==null">
+				*
+			</when>
+		</choose>
+		from t_base_buy_supplier		
+		<trim prefix="where" prefixOverrides="and|or" >
+	    	<include refid="PageList_Where_Clause"/>
+	    	<if test="condition.sortid != null and condition.sortid != ''">
+				and id in (select supplierid from t_base_buy_supplier_detailsort where suppliersort like CONCAT(#{condition.sortid},'%'))
+			</if>
+			<if test="condition.areaid != null and condition.areaid != ''">
+				and buyarea like CONCAT(#{condition.areaid },'%')
+			</if>
+			<include refid="common.Page_querySql"/>
+			<include refid="common.Page_dataSql"/>
+	    </trim>
+	    <include refid="common.Page_limit" /> 
+  </select>
+  <select id="getBuySupplierPageListCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  	select count(*)
+    from t_base_buy_supplier
+	<trim prefix="where" prefixOverrides="and|or" >
+    	<include refid="PageList_Where_Clause"/>
+    	<if test="condition.sortid != null and condition.sortid != ''">
+			and id in (select supplierid from t_base_buy_supplier_detailsort where suppliersort like CONCAT(#{condition.sortid},'%'))
+		</if>
+		<if test="condition.areaid != null and condition.areaid != ''">
+			and buyarea like CONCAT(#{condition.areaid },'%')
+		</if>
+		<include refid="common.Page_querySql"/>
+		<include refid="common.Page_dataSql"/>
+    </trim>
+  </select>
+  <select id="getBuySupplierCountBy" parameterType="java.util.Map" resultType="int">
+  	select count(1)
+  	 from t_base_buy_supplier
+    where
+    <trim prefixOverrides="and|or"> 		
+      <if test="id != null" >
+        and id = #{id}
+      </if>       
+   	  <if test="authDataSql != null">
+   		and ${authDataSql}
+   	  </if>
+      <if test="adduserid != null" >
+        and adduserid = #{adduserid}
+      </if>
+      <if test="name != null" >
+        and name = #{name}
+      </if>	   		
+  	</trim>
+  </select>
+  <select id="getSupplierSelectListData" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.basefiles.model.BuySupplier">
+  		select <include refid="Base_Column_List"/>
+		from t_base_buy_supplier		
+		<trim prefix="where" prefixOverrides="and|or" >
+	    	<include refid="common.Page_dataSql"/>
+	      	<if test="condition.paramRuleSql != null">and ${condition.paramRuleSql}</if>
+	      	<if test="condition.paramRuleSql == null">and 1=1</if>
+	      	<if test="condition.id != null" >
+	      		and (pinyin like CONCAT('%',#{condition.id},'%') or name like CONCAT('%',#{condition.id},'%') or spell like CONCAT(#{condition.id},'%')
+	         	or id like CONCAT(#{condition.id},'%'))
+	      	</if>
+	      	<if test="1==1" >
+	         	and state = '1'
+	      	</if>
+	    </trim>
+	    <include refid="common.Page_limit" /> 
+  </select>
+  <select id="getSupplierSelectListDataCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  		select count(1)
+		from t_base_buy_supplier		
+		<trim prefix="where" prefixOverrides="and|or" >
+	    	<include refid="common.Page_dataSql"/>
+	      	<if test="condition.paramRuleSql != null">and ${condition.paramRuleSql}</if>
+	      	<if test="condition.paramRuleSql == null">and 1=1</if>
+	      	<if test="condition.id != null" >
+	      		and (pinyin like CONCAT('%',#{condition.id},'%') or name like CONCAT('%',#{condition.id},'%') or spell like CONCAT(#{condition.id},'%')
+	         	or id like CONCAT(#{condition.id},'%'))
+	      	</if>
+	      	<if test="1==1" >
+	         	and state = '1'
+	      	</if>
+	    </trim>
+  </select>
+  <!-- 供应商档案修改后更新相关单据 -->
+  <update id="editPurchasePlannedOrder" parameterType="com.hd.agent.basefiles.model.BuySupplier">
+  	update t_purchase_plannedorder set
+  		buydeptid = #{buydeptid},
+  		buyuserid = #{buyuserid}
+  	where supplierid = #{id}
+  </update>
+  <update id="editPurchaseBuyOrder" parameterType="com.hd.agent.basefiles.model.BuySupplier">
+  	update t_purchase_buyorder set
+  		buydeptid = #{buydeptid},
+  		buyuserid = #{buyuserid}
+  	where supplierid = #{id}
+  </update>
+  <update id="editPurchaseArrivalOrder" parameterType="com.hd.agent.basefiles.model.BuySupplier">
+  	update t_purchase_arrivalorder set
+  		buydeptid = #{buydeptid},
+  		buyuserid = #{buyuserid}
+  	where supplierid = #{id}
+  </update>
+  <update id="editPurchaseReturnOrder" parameterType="com.hd.agent.basefiles.model.BuySupplier">
+  	update t_purchase_returnorder set
+  		buydeptid = #{buydeptid},
+  		buyuserid = #{buyuserid}
+  	where supplierid = #{id}
+  </update>
+  <update id="editPurchaseInvoice" parameterType="com.hd.agent.basefiles.model.BuySupplier">
+  	update t_account_purchase_invoice set
+  		buydept = #{buydeptid},
+  		buyuser = #{buyuserid}
+  	where supplierid = #{id}
+  </update>
+  <update id="editStoragePurchaseEnter" parameterType="com.hd.agent.basefiles.model.BuySupplier">
+  	update t_storage_purchase_enter set
+  		buydeptid = #{buydeptid},
+  		buyuserid = #{buyuserid}
+  	where supplierid = #{id};
+  </update>
+  <update id="editStoragePurchaserejectOut" parameterType="com.hd.agent.basefiles.model.BuySupplier">
+  	update t_storage_purchasereject_out set
+  		buydeptid = #{buydeptid},
+  		buyuserid = #{buyuserid}
+  	where supplierid = #{id}
+  </update>
+
+	<update id="editJsFundInput" parameterType="com.hd.agent.basefiles.model.BuySupplier">
+		update t_js_fundinput set
+		supplierdeptid = #{buydeptid}
+		where supplierid = #{id}
+	</update>
+
+    <select id="getAllBuySupplierList" resultType="com.hd.agent.basefiles.model.BuySupplier">
+        select
+        <include refid="Base_Column_List"/>
+        from t_base_buy_supplier where state='1' or state='0'
+    </select>
+	<select id="getSupplierListForMecshop" parameterType="java.util.Date" resultType="java.util.Map">
+		select <include refid="Base_Column_List"/>
+		from t_base_buy_supplier
+	</select>
+    <select id="getOpenedSupplierList" resultType="com.hd.agent.basefiles.model.BuySupplier">
+        select <include refid="Base_Column_List"/>
+        from t_base_buy_supplier where state = '1'
+    </select>
+
+	<update id="editMatcostsInputSupplierDeptCaseBuydeptid">
+		UPDATE t_js_matcostsinput t,t_base_buy_supplier t1
+		SET t.supplierdeptid = t1.buydeptid
+		where t.supplierid = t1.id and t1.state = '1'
+	</update>
+    <update id="editPayorderBuydeptCaseBuydeptid">
+		UPDATE t_account_purchase_payorder t,t_base_buy_supplier t1
+		SET t.buydeptid = t1.buydeptid
+		where t.supplierid = t1.id and t1.state = '1'
+	</update>
+    <update id="editCustomerPayableBuydeptCaseBuydeptid">
+        UPDATE t_js_customercost_payable t,t_base_buy_supplier t1
+        SET t.deptid = t1.buydeptid
+        where t.supplierid = t1.id and t1.state = '1'
+    </update>
+	<sql id="supplierListForPact_sql">
+	    select DISTINCT t.supplierid, a.id, a.name,a.pinyin,a.state, a.remark, a.shortname, a.settletype,a.settleday
+        from t_base_buy_supplier_brand_settletype t
+        INNER JOIN t_base_buy_supplier a ON t.supplierid = a.id
+		<trim prefix="where" prefixOverrides="and|or" >
+			<include refid="common.Page_querySql"/>
+			<include refid="common.Page_dataSql"/>
+			<if test="1 == 1">
+				and a.state = '1'
+			</if>
+			<if test="condition.id != null" >
+				and a.id like CONCAT('%', CONCAT(#{condition.id}, '%'))
+			</if>
+			<if test="condition.name != null" >
+				and a.name like CONCAT('%', CONCAT(#{condition.name}, '%'))
+			</if>
+			<if test="condition.suppliersort != null">
+				and a.suppliersort = #{condition.suppliersort}
+			</if>
+			<if test="condition.buyarea != null">
+				and a.buyarea = #{condition.buyarea}
+			</if>
+			<if test="condition.brandid != null">
+				and t.brandid = #{condition.brandid}
+			</if>
+		</trim>
+	</sql>
+	<select id="getSupplierListForPactList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.basefiles.model.BuySupplier">
+		<include refid="supplierListForPact_sql"/>
+		<include refid="common.Page_limit"/>
+	</select>
+	<select id="getSupplierListForPactCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+		SELECT count(1) from (<include refid="supplierListForPact_sql"/>) t
+	</select>
+	<delete id="deleteSupplierBrandSettletypeBySupplieridAndBrandid" parameterType="java.lang.String">
+		DELETE FROM t_base_buy_supplier_brand_settletype WHERE supplierid=#{supplierid} AND FIND_IN_SET(brandid,#{brandids})
+	</delete>
+	<insert id="addSupplierBrandSettletype" parameterType="com.hd.agent.basefiles.model.BuySupplierBrandSettletype">
+		INSERT into t_base_buy_supplier_brand_settletype
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="supplierid != null" >
+				supplierid,
+			</if>
+			<if test="brandid != null" >
+				brandid,
+			</if>
+			<if test="settletype != null" >
+				settletype,
+			</if>
+			<if test="settleday != null" >
+				settleday,
+			</if>
+			<if test="1 == 1" >
+				addtime,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="supplierid != null" >
+				#{supplierid},
+			</if>
+			<if test="brandid != null" >
+				#{brandid},
+			</if>
+			<if test="settletype != null" >
+				#{settletype},
+			</if>
+			<if test="settleday != null" >
+				#{settleday},
+			</if>
+			<if test="1 == 1" >
+				now(),
+			</if>
+		</trim>
+	</insert>
+	<select id="getSupplierBrandSettletypeList" parameterType="java.lang.String" resultType="com.hd.agent.basefiles.model.BuySupplierBrandSettletype">
+		 select id, supplierid, brandid, settletype, settleday, addtime from t_base_buy_supplier_brand_settletype
+        where supplierid=#{supplierid}
+        order by brandid
+	</select>
+	<select id="getSupplierBrandSettletypeInfo" parameterType="java.lang.String" resultType="com.hd.agent.basefiles.model.BuySupplierBrandSettletype">
+		  SELECT id,supplierid,brandid,settletype,settleday from t_base_buy_supplier_brand_settletype
+        where id = #{id}
+	</select>
+	<delete id="deleteSupplierBrandSettletype" parameterType="java.lang.String">
+		delete from t_base_buy_supplier_brand_settletype
+		where id = #{id}
+	</delete>
+	<update id="editSupplierBrandSettletype" parameterType="com.hd.agent.basefiles.model.BuySupplierBrandSettletype">
+		update t_base_buy_supplier_brand_settletype
+		<set >
+			<if test="supplierid != null" >
+				supplierid = #{supplierid},
+			</if>
+			<if test="brandid != null" >
+				brandid = #{brandid},
+			</if>
+			<if test="settletype != null" >
+				settletype = #{settletype},
+			</if>
+			<if test="settleday != null" >
+				settleday = #{settleday},
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	<select id="getSupplierBrandSettletypeBySupplieridAndBrandid" parameterType="java.lang.String" resultType="com.hd.agent.basefiles.model.BuySupplierBrandSettletype">
+		 select id, supplierid, brandid, settletype, settleday, addtime from t_base_buy_supplier_brand_settletype
+        where supplierid=#{supplierid} AND brandid=#{brandid}
+	</select>
+</mapper>

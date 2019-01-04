@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.common.dao.AttachFileMapper" >
+  <sql id="Base_Column_List" >
+    id, filename, fullpath,pdfpath,htmlpath,swfpath, oldfilename, ext, adddate, opdept, oprule, opuser,isconvert,iconverts,convertdate
+  </sql>
+  <insert id="addAttachFile" parameterType="com.hd.agent.common.model.AttachFile" >
+  	<selectKey resultType="java.lang.String" order="AFTER" keyProperty="id">
+	  SELECT LAST_INSERT_ID() AS id
+	</selectKey>
+    insert into t_ge_file
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="filename != null" >
+        filename,
+      </if>
+      <if test="fullpath != null" >
+        fullpath,
+      </if>
+      <if test="pdfpath != null" >
+        pdfpath,
+      </if>
+      <if test="htmlpath != null" >
+        htmlpath,
+      </if>
+      <if test="swfpath != null" >
+        swfpath,
+      </if>
+      <if test="oldfilename != null" >
+        oldfilename,
+      </if>
+      <if test="ext != null" >
+        ext,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="filename != null" >
+        #{filename},
+      </if>
+      <if test="fullpath != null" >
+        #{fullpath},
+      </if>
+      <if test="pdfpath != null" >
+        #{pdfpath},
+      </if>
+      <if test="htmlpath != null" >
+        #{htmlpath},
+      </if>
+      <if test="swfpath != null" >
+        #{swfpath},
+      </if>
+      <if test="oldfilename != null" >
+        #{oldfilename},
+      </if>
+      <if test="ext != null" >
+        #{ext},
+      </if>
+    </trim>
+  </insert>
+  <select id="getAttachFile" resultType="com.hd.agent.common.model.AttachFile" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_ge_file
+    where id = #{id}
+  </select>
+  <delete id="deleteAttachFile" parameterType="java.lang.String">
+  	delete from t_ge_file where FIND_IN_SET(id, #{id})
+  </delete>
+  <delete id="deleteAttachFileByid" parameterType="java.lang.String">
+      delete from t_ge_file where id=#{id}
+  </delete>
+  <select id="getAttachFileList" resultType="com.hd.agent.common.model.AttachFile" parameterType="java.util.Map" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_ge_file
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="id != null" >
+         and id = #{id}
+      </if>
+      <if test="idarrs != null" >
+         and FIND_IN_SET(id,#{idarrs})
+      </if>
+      <if test="filename != null">
+          and filename like CONCAT(#{filename},'%')
+      </if>
+      <if test="showAllList == 1" >
+         and 1==1
+      </if>      
+      <if test="jobcondition != null">
+      	<if test="1==1">
+      		and isconvert !='0'
+      	</if>
+      	<if test="wiconverts !=null ">
+      		 <![CDATA[and iconverts < #{wiconverts} ]]>
+      	</if>
+      	<if test="interdate!=null">
+	      	<choose>
+	      		<when test="interdate == 0">
+	      			and DATE_FORMAT(adddate,'%Y-%m-%d')=DATE_FORMAT(NOW(),'%Y-%m-%d')
+	      		</when>
+	      		<when test="interdate > 0">
+	      			 <![CDATA[and adddate > DATE_SUB(now(),INTERVAL #{interdate} DAY) ]]>
+	      		</when>
+	      	</choose>
+      	</if>
+      </if>
+	</trim>
+  </select>
+  <select id="getAttachFileCountByFilename" parameterType="java.lang.String" resultType="int">
+  	select count(1) from t_ge_file where filename = #{filename}
+  </select>
+  <delete id="deleteAttachFileByFilename" parameterType="java.lang.String">
+  	delete from t_ge_file where filename = #{filename}
+  </delete>
+  <update id="updateAttachFileAuth" parameterType="com.hd.agent.common.model.AttachFile" >
+  	update t_ge_file
+  	<set >
+	  <if test="opdept != null" >
+	    opdept = #{opdept},
+	  </if>
+	  <if test="oprule != null" >
+	    oprule = #{oprule},
+	  </if>
+	  <if test="opuser != null" >
+	    opuser = #{opuser},
+	  </if>
+	 </set>
+	where id = #{id}
+  </update>
+  
+  <update id="updateAttachFileConvert" parameterType="com.hd.agent.common.model.AttachFile" >
+  	update t_ge_file
+  	<set >
+	  <if test="pdfpath != null" >
+       pdfpath= #{pdfpath},
+      </if>
+      <if test="htmlpath != null" >
+       htmlpath= #{htmlpath},
+      </if>
+      <if test="swfpath != null" >
+       swfpath= #{swfpath},
+      </if>
+      <if test="isconvert != null" >
+       isconvert= #{isconvert},
+      </if>
+      <if test="iconverts != null" >
+       iconverts= #{iconverts},
+      </if>
+      <if test="convertdate != null" >
+       convertdate= #{convertdate},
+      </if>
+	 </set>
+	where id = #{id}
+  </update>
+  <select id="getAttachFilesListByPersonid" parameterType="java.util.ArrayList" resultType="com.hd.agent.common.model.AttachFile">
+  	select f.* from t_ge_file f
+  	where f.id in
+  	<foreach collection="idsArr" index="index" item="item" open="(" separator="," close=")">
+		#{item}
+	</foreach>
+  </select>
+</mapper>

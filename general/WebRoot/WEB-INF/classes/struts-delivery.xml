@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<package name="deliveryManager-delivery" extends="parent" namespace="/delivery">
+	    <!-- 配送订单 --> 
+		<action name="showDeliveryAogorderListPage" class="distributeAction" method="showDeliveryAogorderListPage">
+			<result name="success">/delivery/aogorder/deliveryAogorderListPage.jsp</result>
+		</action>
+		<action name="showDeliveryAogorderList" class="distributeAction" method="showDeliveryAogorderList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showDeliveryAogorderAddPage" class="distributeAction" method="showDeliveryAogorderAddPage">
+			<result name="success">/delivery/aogorder/deliveryAogorderPage.jsp</result>
+		</action>
+		 <action name="deliveryAogorderAddPage" class="distributeAction" method="deliveryAogorderAddPage">
+			<result name="success">/delivery/aogorder/deliveryAogorderAddPage.jsp</result>
+		</action>
+		 <action name="showDeliveryAogorderDetailAddPage" class="distributeAction" method="showDeliveryAogorderDetailAddPage">
+			<result name="success">/delivery/aogorder/deliveryAogorderDetailAddPage.jsp</result>
+		</action>
+		<action name="showDeliveryAogorderDetailEditPage" class="distributeAction" method="showDeliveryAogorderDetailEditPage">
+			<result name="success">/delivery/aogorder/deliveryAogorderDetailEditPage.jsp</result>
+		</action>
+		<action name="addDeliveryAogorderSave" class="distributeAction" method="addDeliveryAogorderSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showDeliveryAogorderEditPage" class="distributeAction" method="showDeliveryAogorderEditPage">
+			<result name="success">/delivery/aogorder/deliveryAogorderPage.jsp</result>
+		</action>
+		<action name="deliveryAogorderEditPage" class="distributeAction" method="deliveryAogorderEditPage">
+			<result name="success">/delivery/aogorder/deliveryAogorderEditPage.jsp</result>
+			<result name="viewSuccess">/delivery/aogorder/deliveryAogorderViewPage.jsp</result>
+		</action>
+		<action name="editDeliveryAogorderSave" class="distributeAction" method="editDeliveryAogorderSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteDeliveryAogorder" class="distributeAction" method="deleteDeliveryAogorder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditDeliveryAogorder" class="distributeAction" method="auditDeliveryAogorder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditsDeliveryAogorder" class="distributeAction" method="auditsDeliveryAogorder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="oppauditDeliveryAogorder" class="distributeAction" method="oppauditDeliveryAogorder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<!-- 退货订单 -->
+		<action name="showDeliveryAogreturnListPage" class="distributeAction" method="showDeliveryAogreturnListPage">
+			<result name="success">/delivery/aogreturn/deliveryAogreturnListPage.jsp</result>
+		</action>
+		<action name="showDeliveryAogreturnList" class="distributeAction" method="showDeliveryAogreturnList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showDeliveryAogreturnAddPage" class="distributeAction" method="showDeliveryAogreturnAddPage">
+			<result name="success">/delivery/aogreturn/deliveryAogreturnPage.jsp</result>
+		</action>
+		<action name="showDeliveryAogreturnDetailAddPage" class="distributeAction" method="showDeliveryAogreturnDetailAddPage">
+			<result name="success">/delivery/aogreturn/deliveryAogreturnDetailAddPage.jsp</result>
+		</action>
+		<action name="deliveryAogreturnAddPage" class="distributeAction" method="deliveryAogreturnAddPage">
+			<result name="success">/delivery/aogreturn/deliveryAogreturnAddPage.jsp</result>
+		</action>
+		<action name="addDeliveryAogreturnSave" class="distributeAction" method="addDeliveryAogreturnSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showDeliveryAogreturnDetailEditPage" class="distributeAction" method="showDeliveryAogreturnDetailEditPage">
+			<result name="success">/delivery/aogreturn/deliveryAogreturnDetailEditPage.jsp</result>
+		</action>
+		<action name="showDeliveryAogreturnEditPage" class="distributeAction" method="showDeliveryAogreturnEditPage">
+			<result name="success">/delivery/aogreturn/deliveryAogreturnPage.jsp</result>
+		</action>
+		<action name="deliveryAogreturnEditPage" class="distributeAction" method="deliveryAogreturnEditPage">
+			<result name="success">/delivery/aogreturn/deliveryAogreturnEditPage.jsp</result>
+			<result name="viewSuccess">/delivery/aogreturn/deliveryAogreturnViewPage.jsp</result>
+		</action>
+		<!-- 退货单的审核反审 -->
+		<action name="auditDeliveryAogreturn" class="distributeAction" method="auditDeliveryAogreturn">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="oppauditDeliveryAogreturn" class="distributeAction" method="oppauditDeliveryAogreturn">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditsDeliveryAogreturn" class="distributeAction" method="auditsDeliveryAogreturn">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		<action name="editDeliveryAogreturnSave" class="distributeAction" method="editDeliveryAogreturnSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteDeliveryAogreturn" class="distributeAction" method="deleteDeliveryAogreturn">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<!-- 客户订单 -->
+		<action name="showDeliveryOrderListPage" class="distributeAction" method="showDeliveryOrderListPage">
+			<result name="success">/delivery/order/deliveryOrderListPage.jsp</result>
+		</action>
+		<action name="showDeliveryOrderList" class="distributeAction" method="showDeliveryOrderList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showDeliveryOrderAddPage" class="distributeAction" method="showDeliveryOrderAddPage">
+			<result name="success">/delivery/order/deliveryOrderPage.jsp</result>
+		</action>
+		<action name="showDeliveryOrderEditPage" class="distributeAction" method="showDeliveryOrderEditPage">
+			<result name="success">/delivery/order/deliveryOrderPage.jsp</result>
+		</action>
+		<action name="deliveryOrderAddPage" class="distributeAction" method="deliveryOrderAddPage">
+			<result name="success">/delivery/order/deliveryOrderAddPage.jsp</result>
+		</action>
+		<action name="deliveryOrderEditPage" class="distributeAction" method="deliveryOrderEditPage">
+			<result name="success">/delivery/order/deliveryOrderEditPage.jsp</result>
+			<result name="viewSuccess">/delivery/order/deliveryOrderViewPage.jsp</result>
+		</action>
+		<action name="addDeliveryOrderSave" class="distributeAction" method="addDeliveryOrderSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editDeliveryOrderSave" class="distributeAction" method="editDeliveryOrderSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteDeliveryOrder" class="distributeAction" method="deleteDeliveryOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="oppauditDeliveryOrder" class="distributeAction" method="oppauditDeliveryOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditDeliveryOrder" class="distributeAction" method="auditDeliveryOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditsDeliveryOrder" class="distributeAction" method="auditsDeliveryOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		 <action name="showDeliveryOrderDetailAddPage" class="distributeAction" method="showDeliveryOrderDetailAddPage">
+			<result name="success">/delivery/order/deliveryOrderDetailAddPage.jsp</result>
+		</action>
+		<action name="showDeliveryOrderDetailEditPage" class="distributeAction" method="showDeliveryOrderDetailEditPage">
+			<result name="success">/delivery/order/deliveryOrderDetailEditPage.jsp</result>
+		</action>
+		<!-- 客户退货订单 -->
+		<action name="showDeliveryRejectbillListPage" class="distributeAction" method="showDeliveryRejectbillListPage">
+			<result name="success">/delivery/rejectbill/deliveryRejectbillListPage.jsp</result>
+		</action>
+		<action name="showDeliveryRejectbillList" class="distributeAction" method="showDeliveryRejectbillList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showDeliveryRejectbillAddPage" class="distributeAction" method="showDeliveryRejectbillAddPage">
+			<result name="success">/delivery/rejectbill/deliveryRejectbillPage.jsp</result>
+		</action>
+		<action name="showDeliveryRejectbillEditPage" class="distributeAction" method="showDeliveryRejectbillEditPage">
+			<result name="success">/delivery/rejectbill/deliveryRejectbillPage.jsp</result>
+		</action>
+		<action name="addDeliveryRejectbillSave" class="distributeAction" method="addDeliveryRejectbillSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editDeliveryRejectbillSave" class="distributeAction" method="editDeliveryRejectbillSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deliveryRejectbillAddPage" class="distributeAction" method="deliveryRejectbillAddPage">
+			<result name="success">/delivery/rejectbill/deliveryRejectbillAddPage.jsp</result>
+		</action>
+		<action name="deliveryRejectbillEditPage" class="distributeAction" method="deliveryRejectbillEditPage">
+			<result name="success">/delivery/rejectbill/deliveryRejectbillEditPage.jsp</result>
+			<result name="viewSuccess">/delivery/rejectbill/deliveryRejectbillViewPage.jsp</result>
+		</action>
+		<action name="deleteDeliveryRejectbill" class="distributeAction" method="deleteDeliveryRejectbill">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditDeliveryRejectbill" class="distributeAction" method="auditDeliveryRejectbill">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="oppauditDeliveryRejectbill" class="distributeAction" method="oppauditDeliveryRejectbill">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditsDeliveryRejectbill" class="distributeAction" method="auditsDeliveryRejectbill">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		 <action name="showDeliveryRejectbillDetailAddPage" class="distributeAction" method="showDeliveryRejectbillDetailAddPage">
+			<result name="success">/delivery/rejectbill/deliveryRejectbillDetailAddPage.jsp</result>
+		</action>
+		<action name="showDeliveryRejectbillDetailEditPage" class="distributeAction" method="showDeliveryRejectbillDetailEditPage">
+			<result name="success">/delivery/rejectbill/deliveryRejectbillDetailEditPage.jsp</result>
+		</action>
+		<action name="computNumByAux" class="distributeAction" method="computNumByAux">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="computNum" class="distributeAction" method="computNum">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getAmount" class="distributeAction" method="getAmount">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getAuxunitname" class="distributeAction" method="getAuxunitname">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="exportAogorder" class="distributeAction" method="exportAogorder"></action>
+		<action name="exportAogreturn" class="distributeAction" method="exportAogreturn"></action>
+		<action name="exportOrder" class="distributeAction" method="exportOrder"></action>
+		<action name="exportOrderList" class="distributeAction" method="exportOrderList"></action>
+		<action name="exportRejectbill" class="distributeAction" method="exportRejectbill"></action>
+		<action name="exportRejectbillList" class="distributeAction" method="exportRejectbillList"></action>
+		<action name="importAogorder" class="distributeAction" method="importAogorder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="importAogreturn" class="distributeAction" method="importAogreturn">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="importOrder" class="distributeAction" method="importOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+        <action name="showModelOrderParamPage" class="distributeAction" method="showModelOrderParamPage">
+            <result name="success">/delivery/order/modelOrderParamPage.jsp</result>
+        </action>
+        <action name="importDeliveryOrderModel" class="distributeAction" method="importDeliveryOrderModel">
+            <result name="success">/common/upload/modelMsgPage.jsp</result>
+        </action>
+		<action name="importRejectbill" class="distributeAction" method="importRejectbill">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+</struts>  

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.accesscontrol.dao.UserAuthorityMapper" >
+	<sql id="UserAuthority_Colmns">
+		userauthid, userid, authorityid, addtime, adduserid
+	</sql>
+	<!-- 新增用户权限关联 -->
+	<insert id="addUserAuthority" parameterType="com.hd.agent.accesscontrol.model.UserAuthority">
+		<selectKey resultType="java.lang.String" keyProperty="userauthid" order="BEFORE" >
+	      select uuid_short()
+	    </selectKey>
+		insert into t_ac_userauthority
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      userauthid,
+	      <if test="userid != null" >
+	        userid,
+	      </if>
+	      <if test="authorityid != null" >
+	        authorityid,
+	      </if>
+	      <if test="1 == 1" >
+	        addtime,
+	      </if>
+	      <if test="adduserid != null" >
+	        adduserid,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="userauthid != null" >
+	        #{userauthid},
+	      </if>
+	      <if test="userid != null" >
+	        #{userid},
+	      </if>
+	      <if test="authorityid != null" >
+	        #{authorityid},
+	      </if>
+	      <if test="1 == 1" >
+	        now(),
+	      </if>
+	      <if test="adduserid != null" >
+	        #{adduserid},
+	      </if>
+	    </trim>
+	  </insert>
+	<!-- 修改用户权限 -->
+	<update id="editUserAuthority" parameterType="com.hd.agent.accesscontrol.model.UserAuthority">
+		update t_ac_userauthority
+	    <set >
+	      <if test="userid != null" >
+	        userid = #{userid},
+	      </if>
+	      <if test="authorityid != null" >
+	        authorityid = #{authorityid},
+	      </if>
+	    </set>
+	    where userauthid = #{userauthid}
+	</update>
+	<!-- 显示用户权限信息 -->
+	<select id="showUserAuthorityInfo" parameterType="java.lang.String" resultType="com.hd.agent.accesscontrol.model.UserAuthority">
+		select
+		<include refid="UserAuthority_Colmns"/>
+		from t_ac_userauthority
+		where userid = #{userid}
+	</select>
+	<!-- 删除用户权限 -->
+	<delete id="deleteUserAuthority" parameterType="java.lang.String">
+		delete from t_ac_userauthority where userid = #{userid}
+	</delete>
+	<!-- 判断是否存在用户权限 -->
+	<select id="isExistUserAuthority" parameterType="java.lang.String" resultType="int">
+		select count(1) from t_ac_userauthority
+		where userid = #{userid}
+	</select>
+	<!-- 根据用户编号userid获取用户权限列表 -->
+	<select id="getUserAuthoritiesListByUserid" parameterType="java.lang.String" resultType="com.hd.agent.accesscontrol.model.UserAuthority">
+		select * from t_ac_userauthority
+		where userid = #{userid}
+	</select>
+	<!-- 根据权限id数组获取权限列表 -->
+	<select id="getAuthorityByAuthorityidArr" resultType="com.hd.agent.accesscontrol.model.Authority">
+		select * from t_ac_authority 
+		where authorityid in
+		<foreach collection="authorityidArr" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+</mapper>

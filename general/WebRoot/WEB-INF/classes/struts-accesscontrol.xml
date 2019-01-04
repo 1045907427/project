@@ -1,0 +1,561 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<!-- 首页登录页等显示 -->
+	<package name="index" extends="parent" namespace="/">
+		<action name="index" class="indexAction" method="index">
+			<result name="success">/main.jsp</result>
+			<result name="default1">/main1.jsp</result>
+			<result name="default2">/main2.jsp</result>
+		</action>
+		<action name="noLogin" class="indexAction" method="noLogin">
+			<result name="success">/common/noLogin.jsp</result>
+			<result name="json" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="sessionConcurrent" class="indexAction" method="sessionConcurrent">
+			<result name="success">/common/903.jsp</result>
+		</action>
+		<action name="login" class="indexAction" method="login">
+			<result name="success">/login.jsp</result>
+			<result name="default1">/login1.jsp</result>
+			<result name="default2">/login2.jsp</result>
+		</action>
+		<action name="logout" class="indexAction" method="logout">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showUserMenuTree" class="indexAction" method="showUserMenuTree">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="checkPwd" class="indexAction" method="checkPwd">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="noAccessPage" class="indexAction" method="noAccessPage">
+			<result name="success">/common/902.jsp</result>
+		</action>
+		<action name="logining" class="indexAction" method="logining">
+			<result name="success">/logining.jsp</result>
+			<result name="phone" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+			<result name="client" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="indexing" class="indexAction" method="indexing">
+			<result name="success">/indexing.jsp</result>
+		</action>
+		<action name="pvlogin" class="indexAction" method="pvLogin">
+			<result name="success">/account/paymentvoucher/pvLogin.jsp</result>
+		</action>
+		<action name="pvLogin" class="indexAction" method="pvLogin">
+			<result name="success">/account/paymentvoucher/pvLogin.jsp</result>
+		</action>
+		<action name="paymentVoucherMain" class="indexAction" method="paymentVoucherMain">
+			<result name="success">/account/paymentvoucher/pvMain.jsp</result>
+		</action>
+	</package>
+	<!-- 系统用户管理 -->
+	<package name="sysUser" extends="parent" namespace="/accesscontrol">
+		<action name="showSysUserJson" class="sysUserAction" method="showSysUserJson">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSysUserPage" class="sysUserAction" method="showSysUserPage">
+			<result name="success">/accesscontrol/user/sysUserList.jsp</result>
+		</action>
+		<action name="showSysUserList" class="sysUserAction" method="showSysUserList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSysUserLoginContorl" class="sysUserAction" method="showSysUserLoginContorl">
+			<result name="success">/accesscontrol/user/sysUserLoginControl.jsp</result>
+		</action>
+		<action name="showUserChooserPage" class="sysUserAction" method="showUserChooserPage">
+			<result name="success">/accesscontrol/user/userChooserPage.jsp</result>
+		</action>
+		<action name="allotSystemUser" class="sysUserAction" method="allotSystemUser">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getOnlineUserTreeList" class="sysUserAction" method="getOnlineUserTreeList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getAllUserTreeList" class="sysUserAction" method="getAllUserTreeList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSysUserAddPage" class="sysUserAction" method="showSysUserAddPage">
+			<result name="success">/accesscontrol/user/sysUserAddPage.jsp</result>
+		</action>
+		<action name="addSysUser" class="sysUserAction" method="addSysUser">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="usernameCheck" class="sysUserAction" method="usernameCheck">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSysUserEditPage" class="sysUserAction" method="showSysUserEditPage">
+			<result name="success">/accesscontrol/user/sysUserEditPage.jsp</result>
+		</action>
+		<action name="editSysUser" class="sysUserAction" method="editSysUser">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="enableSysUser" class="sysUserAction" method="enableSysUser">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="disableSysUser" class="sysUserAction" method="disableSysUser">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteSysUser" class="sysUserAction" method="deleteSysUser">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSysUserInfo" class="sysUserAction" method="showSysUserInfo">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSysUserCopyPage" class="sysUserAction" method="showSysUserCopyPage">
+			<result name="success">/accesscontrol/user/sysUserCopyPage.jsp</result>
+		</action>
+		<action name="sysUserCopyAdd" class="sysUserAction" method="sysUserCopyAdd">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="resetSysUserPwd" class="sysUserAction" method="resetSysUserPwd">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSysUserInfoPage" class="sysUserAction" method="showSysUserInfoPage">
+			<result name="success">/accesscontrol/user/sysUserInfoPage.jsp</result>
+		</action>
+		<action name="showModifyPwdPage" class="sysUserAction" method="showModifyPwdPage">
+			<result name="success">/accesscontrol/user/modifyPwdPage.jsp</result>
+		</action>
+		<action name="checkPwd" class="sysUserAction" method="checkPwd">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="modifySysUserPwd" class="sysUserAction" method="modifySysUserPwd">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showAuthorityListInSysUser" class="sysUserAction" method="showAuthorityListInSysUser">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showAuthorityListTrue" class="sysUserAction" method="showAuthorityListTrue">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSysLoginRuleList" class="sysUserAction" method="showSysLoginRuleList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSysLoginRuleAddPage" class="sysUserAction" method="showSysLoginRuleAddPage">
+			<result name="success">/accesscontrol/user/sysLoginRuleAddPage.jsp</result>
+		</action>
+		<action name="addSysLoginRule" class="sysUserAction" method="addSysLoginRule">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteSysLoginRule" class="sysUserAction" method="deleteSysLoginRule">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSysLoginRuleEditPage" class="sysUserAction" method="showSysLoginRuleEditPage">
+			<result name="success">/accesscontrol/user/sysLoginRuleEditPage.jsp</result>
+		</action>
+		<action name="updateSysLoginRule" class="sysUserAction" method="updateSysLoginRule">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="kickOutSysUser" class="sysUserAction" method="kickOutSysUser">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+        <action name="uploadlocation" class="sysUserAction" method="uploadlocation">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+		<action name="modifyAccountDate" class="sysUserAction" method="modifyAccountDate">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showAccountDatePage" class="sysUserAction" method="showAccountDatePage">
+			<result name="success">/accesscontrol/accountDatePage.jsp</result>
+		</action>
+
+	</package>
+	<package name="accessControl" extends="parent" namespace="/accesscontrol">
+		<!-- 菜单管理 -->
+		<action name="showMenuPage" class="accessControlAction" method="showMenuPage">
+			<result name="success">/accesscontrol/menu/menuPage.jsp</result>
+		</action>
+		<action name="showOperListByMenu" class="accessControlAction" method="showOperListByMenu">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showMenuTree" class="accessControlAction" method="showMenuTree">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+        <action name="showMenuTreeByUserid" class="accessControlAction" method="showMenuTreeByUserid">
+            <result name="success" type="json">
+                <param name="root">jsonArray</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="showMenuTreeByRoleids" class="accessControlAction" method="showMenuTreeByRoleids">
+            <result name="success" type="json">
+                <param name="root">jsonArray</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+		<action name="getMenuTreeForEasyui" class="accessControlAction" method="getMenuTreeForEasyui">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showOperateTree" class="accessControlAction" method="showOperateTree">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showOperateCheckedTree" class="accessControlAction"  method="showOperateCheckedTree">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showMenuCloseList" class="accessControlAction" method="showMenuCloseList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showMenuAddPage" class="accessControlAction" method="showMenuAddPage">
+			<result name="success">/accesscontrol/menu/menuAddPage.jsp</result>
+		</action>
+		<action name="showOperAddPage" class="accessControlAction" method="showOperAddPage">
+			<result name="success">/accesscontrol/menu/operAddPage.jsp</result>
+		</action>
+		<action name="addOperate" class="accessControlAction" method="addOperate">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteOperate" class="accessControlAction" method="deleteOperate">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="closeOperate" class="accessControlAction" method="closeOperate">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="openOperate" class="accessControlAction" method="openOperate">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="openOperateMulti" class="accessControlAction" method="openOperateMulti">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showMenuEditPage" class="accessControlAction" method="showMenuEditPage">
+			<result name="success">/accesscontrol/menu/menuEditPage.jsp</result>
+		</action>
+		<action name="showOperateEditPage" class="accessControlAction" method="showOperateEditPage">
+			<result name="success">/accesscontrol/menu/operateEditPage.jsp</result>
+		</action>
+		<action name="editOperate" class="accessControlAction" method="editOperate">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showMenuImageList" class="accessControlAction" method="showMenuImageList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getNotClickOperateButtonsByUser" class="accessControlAction" method="getNotClickOperateButtonsByUser">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="accessSetPage" class="accessControlAction" method="accessSetPage">
+			<result name="success">/accesscontrol/accessSetPage.jsp</result>
+		</action>
+		<action name="addAccessSet" class="accessControlAction" method="addAccessSet">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<!-- 角色管理 -->
+		<action name="showRolePage" class="accessControlAction" method="showRolePage">
+			<result name="success">/accesscontrol/role/rolePage.jsp</result>
+		</action>
+		<action name="showAuthorityList" class="accessControlAction" method="showAuthorityList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showAuthorityDeployList" class="accessControlAction" method="showAuthorityDeployList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showAuthorityAddPage" class="accessControlAction" method="showAuthorityAddPage">
+			<result name="success">/accesscontrol/role/authorityAddPage.jsp</result>
+		</action>
+		<action name="addAuthority" class="accessControlAction" method="addAuthority">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="closeAuthority" class="accessControlAction" method="closeAuthority">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="openAuthority" class="accessControlAction" method="openAuthority">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteAuthority" class="accessControlAction" method="deleteAuthority">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showAuthorityEditPage" class="accessControlAction" method="showAuthorityEditPage">
+			<result name="success">/accesscontrol/role/authorityEditPage.jsp</result>
+		</action>
+		<action name="editAuthority" class="accessControlAction" method="editAuthority">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showAccessColumnAddPage" class="accessControlAction" method="showAccessColumnAddPage">
+			<result name="success">/accesscontrol/role/accessColumnAddPage.jsp</result>
+		</action>
+		<action name="addAccessColumn" class="accessControlAction" method="addAccessColumn">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showAuthorityColumnList" class="accessControlAction" method="showAuthorityColumnList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteAccessColumn" class="accessControlAction" method="deleteAccessColumn">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getUnAddTableList" class="accessControlAction" method="getUnAddTableList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showAuthorityOpenList" class="accessControlAction" method="showAuthorityOpenList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="checkAuthorityName" class="accessControlAction" method="checkAuthorityName">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+        <action name="showOperateHelpPage" class="accessControlAction" method="showOperateHelpPage">
+            <result name="success">/accesscontrol/menu/helpEditPage.jsp</result>
+        </action>
+        <action name="saveOperateHelp" class="accessControlAction" method="saveOperateHelp">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="showOperateHelpViewPage" class="accessControlAction" method="showOperateHelpViewPage">
+            <result name="success">/accesscontrol/menu/helpViewPage.jsp</result>
+        </action>
+        <action name="showOperateHelpEditPage" class="accessControlAction" method="showOperateHelpEditPage">
+            <result name="success">/accesscontrol/menu/helpOtherEditPage.jsp</result>
+        </action>
+
+		<!-- 数据权限 -->
+		<action name="showDataPage" class="dataAccessAction" method="showDataPage">
+			<result name="success">/accesscontrol/dataAccess/dataManager.jsp</result>
+		</action>
+		<action name="showDataruleAddPage" class="dataAccessAction" method="showDataruleAddPage">
+			<result name="success">/accesscontrol/dataAccess/dataruleAddPage.jsp</result>
+		</action>
+		<action name="addDatarule" class="dataAccessAction" method="addDatarule">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showDataruleList" class="dataAccessAction" method="showDataruleList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteDatarule" class="dataAccessAction" method="deleteDatarule">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showDataruleEditPage" class="dataAccessAction" method="showDataruleEditPage">
+			<result name="success">/accesscontrol/dataAccess/dataruleEditPage.jsp</result>
+		</action>
+		<action name="editDatarule" class="dataAccessAction" method="editDatarule">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="checkDataruleTable" class="dataAccessAction" method="checkDataruleTable">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getDataruleListByUserid" class="dataAccessAction" method="getDataruleListByUserid">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showDataruleAddPageByUserid" class="dataAccessAction" method="showDataruleAddPageByUserid">
+			<result name="success">/accesscontrol/dataAccess/dataruleAddPageByUserid.jsp</result>
+		</action>
+		<action name="getDataruleOpneList" class="dataAccessAction" method="getDataruleOpneList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showDataruleEditPageByUserid" class="dataAccessAction" method="showDataruleEditPageByUserid">
+			<result name="success">/accesscontrol/dataAccess/dataruleEditPageByUserid.jsp</result>
+		</action>
+        <action name="showMenuDataRulePage" class="dataAccessAction" method="showMenuDataRulePage">
+            <result name="success">/accesscontrol/dataAccess/menuDataRulePage.jsp</result>
+        </action>
+        <action name="getDataRuleInfoByTablenameAndUserid" class="dataAccessAction" method="getDataRuleInfoByTablenameAndUserid">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="addOrUpdateDatarule" class="dataAccessAction" method="addOrUpdateDatarule">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+	</package>
+</struts>    

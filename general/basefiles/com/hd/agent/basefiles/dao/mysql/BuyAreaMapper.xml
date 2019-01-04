@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.basefiles.dao.BuyAreaMapper" >
+	<cache type="org.mybatis.caches.ehcache.EhcacheCache"></cache>
+<resultMap id="BaseResultMap" type="com.hd.agent.basefiles.model.BuyArea" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="thisid" property="thisid" jdbcType="VARCHAR" />
+    <result column="thisname" property="thisname" jdbcType="VARCHAR" />
+    <result column="pid" property="pid" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="adduserid" property="adduserid" jdbcType="VARCHAR" />
+    <result column="adddeptid" property="adddeptid" jdbcType="VARCHAR" />
+    <result column="addtime" property="addtime" jdbcType="TIMESTAMP" />
+    <result column="modifyuserid" property="modifyuserid" jdbcType="VARCHAR" />
+    <result column="modifytime" property="modifytime" jdbcType="TIMESTAMP" />
+    <result column="openuserid" property="openuserid" jdbcType="VARCHAR" />
+    <result column="opentime" property="opentime" jdbcType="TIMESTAMP" />
+    <result column="closeuserid" property="closeuserid" jdbcType="VARCHAR" />
+    <result column="closetime" property="closetime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, name, thisid, thisname, pid, state, remark, adduserid, adddeptid, addtime, modifyuserid, 
+    modifytime, openuserid, opentime, closeuserid, closetime
+  </sql>  
+  <select id="returnBuyAreaIdByName" parameterType="java.lang.String" resultType="com.hd.agent.basefiles.model.BuyArea">
+  	select * from t_base_buy_area where name = #{name}
+  </select>
+  <select id="getBuyAreaList" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from t_base_buy_area
+  </select>
+  <select id="getBuyAreaDetail" resultType="com.hd.agent.basefiles.model.BuyArea" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_base_buy_area
+    where id = #{id}
+  </select>
+  <select id="isRepeatThisName" parameterType="java.lang.String" resultType="int">
+  	select count(1) from t_base_buy_area where thisname = #{thisname}
+  </select>
+  <select id="getBuyAreaListByMap" resultType="com.hd.agent.basefiles.model.BuyArea" parameterType="java.util.Map" >
+  	select
+  	<choose>
+			<when test="cols!=null">
+				<include refid="common.Page_Column"/>
+			</when>
+			<when test="cols==null">
+				*
+			</when>
+	</choose>
+	from t_base_buy_area
+	<trim prefix="where" prefixOverrides="and|or" >
+  		<if test="parentAllChildren != null">
+        	and id like CONCAT(#{parentAllChildren}, '%')
+        </if>
+		<include refid="common.Page_dataSql"/>
+	</trim>
+  </select>
+  <delete id="deleteBuyArea" parameterType="java.lang.String" >
+    delete from t_base_buy_area
+    where id = #{id}
+  </delete>
+  <insert id="addBuyArea" parameterType="com.hd.agent.basefiles.model.BuyArea" >
+    insert into t_base_buy_area
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="thisid != null" >
+        thisid,
+      </if>
+      <if test="thisname != null" >
+        thisname,
+      </if>
+      <if test="pid != null" >
+        pid,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="adduserid != null" >
+        adduserid,
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid,
+      </if>
+        addtime,
+      <if test="openuserid != null" >
+        openuserid,
+      </if>
+      <if test="opentime != null" >
+        opentime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="name != null" >
+        #{name},
+      </if>
+      <if test="thisid != null" >
+        #{thisid},
+      </if>
+      <if test="thisname != null" >
+        #{thisname},
+      </if>
+      <if test="pid != null" >
+        #{pid},
+      </if>
+      <if test="state != null" >
+        #{state},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+      <if test="adduserid != null" >
+        #{adduserid},
+      </if>
+      <if test="adddeptid != null" >
+        #{adddeptid},
+      </if>
+        now(),
+      <if test="openuserid != null" >
+        #{openuserid},
+      </if>
+      <if test="opentime != null" >
+        #{opentime},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateBuyArea" parameterType="com.hd.agent.basefiles.model.BuyArea" >
+    update t_base_buy_area
+    <set >
+      <if test="id != null" >
+        id = #{id},
+      </if>
+      <if test="name != null" >
+        name = #{name},
+      </if>
+      <if test="thisid != null" >
+        thisid = #{thisid},
+      </if>
+      <if test="thisname != null" >
+        thisname = #{thisname},
+      </if>
+      <if test="pid != null" >
+        pid = #{pid},
+      </if>
+      <if test="state != null" >
+        state = #{state},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark},
+      </if>
+      <if test="adduserid != null" >
+        adduserid = #{adduserid},
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid = #{adddeptid},
+      </if>
+      <if test="addtime != null" >
+        addtime = #{addtime},
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid = #{modifyuserid},
+      </if>
+        modifytime = now(),
+      <if test="openuserid != null" >
+        openuserid = #{openuserid},
+      </if>
+      <if test="opentime != null" >
+        opentime = #{opentime},
+      </if>
+      <if test="closeuserid != null" >
+        closeuserid = #{closeuserid},
+      </if>
+      <if test="closetime != null" >
+        closetime = #{closetime},
+      </if>
+    </set>
+    where id = #{oldid}
+  </update>
+  <update id="updateBuyAreaBy" parameterType="java.util.Map" >
+  	update t_base_buy_area
+  	<set >  	  	
+      <if test="newid != null" >
+        id = #{newid},
+      </if>	  	
+      <if test="state != null" >
+        state = #{state},
+      </if>	
+      <if test="modifyuserid != null" >
+        modifyuserid = #{modifyuserid},
+      </if>	
+      <if test="modifyusername != null" >
+        modifyusername = #{modifyusername},
+      </if>
+      <choose>
+      	<when test="modifytime != null">modifytime = #{modifytime},</when>
+      	<when test="modifyuserid != null and modifytime == null">modifytime = now(),</when>
+      </choose>
+      <if test="openuserid != null" >
+        openuserid = #{openuserid},
+      </if>
+      <if test="openusername != null" >
+        openusername = #{openusername},
+      </if>
+      <choose>
+      	<when test="opentime != null">opentime = #{opentime},</when>
+      	<when test="opentime != null and opentime == null">opentime = now(),</when>
+      </choose>
+      <if test="closeuserid != null" >
+        closeuserid = #{closeuserid},
+      </if>
+      <if test="closeusername != null" >
+        closeusername = #{closeusername},
+      </if>
+      <choose>
+      	<when test="closetime != null">closetime = #{closetime},</when>
+      	<when test="closeuserid != null and closetime == null">closetime = now(),</when>
+      </choose>
+  	</set>
+  	where
+  	<trim prefixOverrides="and|or">  		
+      <if test="id != null" >
+        and id = #{id}
+      </if>      
+   	  <if test="authDataSql != null">
+   		and ${authDataSql}
+   	  </if>
+      <if test="wadduserid != null" >
+        adduserid = #{wadduserid},
+      </if>	   		
+  	</trim>
+  </update>
+  <select id="getBuyAreaCountBy" parameterType="java.util.Map" resultType="int">
+  	select count(*)
+    from t_base_buy_area
+    where
+    <trim prefixOverrides="and|or"> 		
+      <if test="id != null" >
+        and id = #{id}
+      </if>  		
+      <if test="thisid != null" >
+        and thisid = #{thisid}
+      </if>       
+   	  <if test="authDataSql != null">
+   		and ${authDataSql}
+   	  </if>
+      <if test="adduserid != null" >
+        adduserid = #{adduserid},
+      </if>	   		
+  	</trim> 
+  </select>
+  <select id="getBuyAreaChildList" parameterType="java.lang.String" resultType="com.hd.agent.basefiles.model.BuyArea">
+  	select * from t_base_buy_area
+  	where pid like concat(#{pid},'%')
+  </select>
+  <update id="editBuyAreaBatch" parameterType="java.util.List">
+  	<foreach collection="list" index="index" item="item">
+  		update t_base_buy_area
+	  	<set >
+	      <if test="item.id != null" >
+	        id = #{item.id},
+	      </if>
+	      <if test="item.name != null" >
+	        name = #{item.name},
+	      </if>
+	      <if test="item.thisid != null" >
+	        thisid = #{item.thisid},
+	      </if>
+	      <if test="item.thisname != null" >
+	        thisname = #{item.thisname},
+	      </if>
+	      <if test="item.pid != null" >
+	        pid = #{item.pid},
+	      </if>
+	    </set>
+	    where id = #{item.oldid};
+  	</foreach>
+  </update>
+    <select id="getBuyAreaWithoutName" resultType="com.hd.agent.basefiles.model.BuyArea">
+        select * from t_base_buy_area WHERE name = '' order by id
+    </select>
+  <select id="getBuyAreaByThisname" parameterType="java.lang.String" resultType="com.hd.agent.basefiles.model.BuyArea">
+  	select * from t_base_buy_area where thisname = #{thisname} limit 1
+  </select>
+</mapper>

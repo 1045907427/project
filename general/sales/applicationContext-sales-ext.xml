@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd 
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+	
+	<bean id="salesOrderExtService" parent="baseTransactionProxy">
+		<property name="target" ref="salesOrderExtServiceImpl"></property>
+	</bean>
+	<bean id="salesOrderExtServiceImpl" class="com.hd.agent.sales.service.impl.ext.OrderExtServiceImpl" parent="salesBaseServiceImpl"></bean>
+	
+	<bean id="salesDispatchBillExtService" parent="baseTransactionProxy">
+		<property name="target" ref="salesDispatchBillExtServiceImpl"></property>
+	</bean>
+	<bean id="salesDispatchBillExtServiceImpl" class="com.hd.agent.sales.service.impl.ext.DispatchBillExtServiceImpl" parent="salesBaseServiceImpl">
+		<property name="storageForSalesService" ref="storageForSalesService"></property>
+		<property name="receiptService" ref="salesReceiptService"></property>
+		<property name="salesOrderExtService" ref="salesOrderExtService"></property>
+	</bean>
+	
+	<bean id="salesReceiptExtService" parent="baseTransactionProxy">
+		<property name="target" ref="salesReceiptExtServiceImpl"></property>
+	</bean>
+	<bean id="salesReceiptExtServiceImpl" class="com.hd.agent.sales.service.impl.ext.ReceiptExtServiceImpl" parent="salesBaseServiceImpl"></bean>
+	
+	<bean id="salesRejectBillExtService" parent="baseTransactionProxy">
+		<property name="target" ref="salesRejectBillExtServiceImpl"></property>
+	</bean>
+	<bean id="salesRejectBillExtServiceImpl" class="com.hd.agent.sales.service.impl.ext.RejectBillExtServiceImpl" parent="salesBaseServiceImpl">
+		<property name="storageForSalesService" ref="storageForSalesService"></property>
+	</bean>
+</beans>

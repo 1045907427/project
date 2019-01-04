@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.oa.dao.OaExpensePushDetailMapper" >
+  <resultMap id="BaseDetailResultMap" type="com.hd.agent.oa.model.OaExpensePushDetail" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="billid" property="billid" jdbcType="VARCHAR" />
+    <result column="oaid" property="oaid" jdbcType="VARCHAR" />
+    <result column="customerid" property="customerid" jdbcType="VARCHAR" />
+    <result column="brandid" property="brandid" jdbcType="VARCHAR" />
+    <result column="deptid" property="deptid" jdbcType="VARCHAR" />
+    <result column="amount" property="amount" jdbcType="DECIMAL" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="brandname" property="brandname" jdbcType="VARCHAR" />
+    <result column="deptname" property="deptname" jdbcType="VARCHAR" />
+    <result column="goodsid" property="goodsid" jdbcType="VARCHAR" />
+    <result column="unitnum" property="unitnum" jdbcType="DECIMAL" />
+    <result column="oldprice" property="oldprice" jdbcType="DECIMAL" />
+    <result column="newprice" property="newprice" jdbcType="DECIMAL" />
+    <result column="buyprice" property="buyprice" jdbcType="DECIMAL" />
+    <result column="expensesort" property="expensesort" jdbcType="VARCHAR" />
+    <result column="startdate" property="startdate" jdbcType="VARCHAR" />
+    <result column="enddate" property="enddate" jdbcType="VARCHAR" />
+    <result column="pushtype" property="pushtype" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Detail_Column_List" >
+    id, billid, oaid, customerid, brandid, deptid, amount, remark, goodsid, unitnum, oldprice, newprice, expensesort, startdate, enddate, buyprice, pushtype
+  </sql>
+  <sql id="Base_Detail_Column_List2" >
+    a.id, a.billid, a.oaid, a.customerid, a.brandid, a.deptid, a.amount, a.remark, a.goodsid, a.unitnum, a.oldprice, a.newprice, a.expensesort, a.startdate, a.enddate, a.buyprice, a.pushtype
+  </sql>
+  <select id="selectOaExpensePushDetailList" resultType="com.hd.agent.oa.model.OaExpensePushDetail" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Detail_Column_List2" />,
+    b.name brandname,
+    c.name deptname,
+    d.name goodsname,
+    e.thisname expensesortname
+    from t_oa_expense_push_detail a
+    left join t_base_goods_brand b on a.brandid = b.id
+    left join t_base_department c on a.deptid = c.id
+    left join t_base_goods_info d on a.goodsid = d.id
+    left join t_base_finance_expenses_sort e on a.expensesort = e.id
+    where billid = #{billid}
+  </select>
+  <delete id="deleteOaExpensePushDetail" parameterType="java.lang.String" >
+    delete from t_oa_expense_push_detail
+    where billid = #{billid}
+  </delete>
+  <insert id="insertOaExpensePushDetail" parameterType="com.hd.agent.oa.model.OaExpensePushDetail" >
+    insert into t_oa_expense_push_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="billid != null" >
+        billid,
+      </if>
+      <if test="oaid != null" >
+        oaid,
+      </if>
+      <if test="customerid != null" >
+        customerid,
+      </if>
+      <if test="brandid != null" >
+        brandid,
+      </if>
+      <if test="deptid != null" >
+        deptid,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="goodsid != null" >
+        goodsid,
+      </if>
+      <if test="unitnum != null" >
+        unitnum,
+      </if>
+      <if test="oldprice != null" >
+        oldprice,
+      </if>
+      <if test="newprice != null" >
+        newprice,
+      </if>
+      <if test="expensesort != null" >
+        expensesort,
+      </if>
+      <if test="startdate != null" >
+        startdate,
+      </if>
+      <if test="enddate != null" >
+        enddate,
+      </if>
+      <if test="buyprice != null" >
+        buyprice,
+      </if>
+      <if test="pushtype != null" >
+        pushtype,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="billid != null" >
+        #{billid},
+      </if>
+      <if test="oaid != null" >
+        #{oaid},
+      </if>
+      <if test="customerid != null" >
+        #{customerid},
+      </if>
+      <if test="brandid != null" >
+        #{brandid},
+      </if>
+      <if test="deptid != null" >
+        #{deptid},
+      </if>
+      <if test="amount != null" >
+        #{amount},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+      <if test="goodsid != null" >
+        #{goodsid},
+      </if>
+      <if test="unitnum != null" >
+        #{unitnum},
+      </if>
+      <if test="oldprice != null" >
+        #{oldprice},
+      </if>
+      <if test="newprice != null" >
+        #{newprice},
+      </if>
+      <if test="expensesort != null" >
+        #{expensesort},
+      </if>
+      <if test="startdate != null" >
+        #{startdate},
+      </if>
+      <if test="enddate != null" >
+        #{enddate},
+      </if>
+      <if test="buyprice != null" >
+        #{buyprice},
+      </if>
+      <if test="pushtype != null" >
+        #{pushtype},
+      </if>
+    </trim>
+  </insert>
+</mapper>

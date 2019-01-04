@@ -1,0 +1,1094 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>	
+	<package name="sysDataDictionary" extends="parent" namespace="/sysDataDictionary">
+		<action name="index" class="dataRelationAction" method="index">
+			<result name="success">/main.jsp</result>
+		</action>
+		<action name="showTableInfoAllList" class="dataDictionaryAction" method="showTableInfoAllList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showTableInfoListPage" class="dataDictionaryAction" method="showTableInfoListPage">
+			<result name="success">/system/sysDataDictionary/tableInfoList.jsp</result>
+		</action>
+		<action name="showTableInfoPageList" class="dataDictionaryAction" method="showTableInfoPageList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showTableInfoAddPage" class="dataDictionaryAction" method="showTableInfoAddPage">
+			<result name="success">/system/sysDataDictionary/tableInfoAdd.jsp</result>
+		</action>		
+		<action name="tableInfoAdd" class="dataDictionaryAction" method="addTableInfo">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showTableInfoCopyPage" class="dataDictionaryAction" method="showTableInfoCopyPage">
+			<result name="success">/system/sysDataDictionary/tableInfoCopy.jsp</result>
+		</action>			
+		<action name="tableInfoCopy" class="dataDictionaryAction" method="tableInfoCopy">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>	
+		<action name="showTableInfoEditPage" class="dataDictionaryAction" method="showTableInfoEditPage">
+			<result name="success">/system/sysDataDictionary/tableInfoEdit.jsp</result>
+		</action>		
+		<action name="tableInfoEdit" class="dataDictionaryAction" method="editTableInfo">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>	
+		<action name="existsTableInfoByTablename" class="dataDictionaryAction" method="existsTableInfoByTablename">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>		
+		<action name="deleteTableInfo" class="dataDictionaryAction" method="deleteTableInfo">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>	
+		<action name="showTableInfoDBImportListPage" class="dataDictionaryAction" method="showTableInfoDBImportListPage">
+			<result name="success">/system/sysDataDictionary/tableInfoDBImportList.jsp</result>
+		</action>	
+		<action name="showTableInfoDBImportList" class="dataDictionaryAction" method="showTableInfoDBImportList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>		
+		<action name="addTableInfoDBImport" class="dataDictionaryAction" method="addTableInfoDBImport">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>			
+		<action name="deleteTableColumn" class="dataDictionaryAction" method="deleteTableColumn">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>		
+		<action name="showTableColumnPageAllList" class="dataDictionaryAction" method="showTableColumnPageAllList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showTableColumnEditPage" class="dataDictionaryAction" method="showTableColumnEditPage">
+			<result name="success">/system/sysDataDictionary/tableColumnEdit.jsp</result>
+		</action>		
+		<action name="tableColumnEdit" class="dataDictionaryAction" method="editTableColumn">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showTableColumnAddPage" class="dataDictionaryAction" method="showTableColumnAddPage">
+			<result name="success">/system/sysDataDictionary/tableColumnAdd.jsp</result>
+		</action>		
+		<action name="tableColumnAdd" class="dataDictionaryAction" method="addTableColumn">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>	
+		<action name="existsTableColumnBy" class="dataDictionaryAction" method="existsTableColumnBy">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>	
+		<action name="showTableColumnDBImportListPage" class="dataDictionaryAction" method="showTableColumnDBImportListPage">
+			<result name="success">/system/sysDataDictionary/tableColumnDBImportList.jsp</result>
+		</action>	
+		<action name="showTableColumnDBImportList" class="dataDictionaryAction" method="showTableColumnDBImportList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>		
+		<action name="showDBTableColumnList" class="dataDictionaryAction" method="showDBTableColumnList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>		
+		<action name="addTableColumnDBImport" class="dataDictionaryAction" method="addTableColumnDBImport">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>		
+		<action name="showTableRelationListPage" class="dataDictionaryAction" method="showTableRelationListPage">
+			<result name="success">/system/sysDataDictionary/tableRelationList.jsp</result>
+		</action>
+		<action name="showTableRelationPageList" class="dataDictionaryAction" method="showTableRelationPageList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showTableRelationEditPage" class="dataDictionaryAction" method="showTableRelationEditPage">
+			<result name="success">/system/sysDataDictionary/tableRelationEdit.jsp</result>
+		</action>		
+		<action name="tableRelationEdit" class="dataDictionaryAction" method="editTableRelation">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showTableRelationAddPage" class="dataDictionaryAction" method="showTableRelationAddPage">
+			<result name="success">/system/sysDataDictionary/tableRelationAdd.jsp</result>
+		</action>		
+		<action name="tableRelationAdd" class="dataDictionaryAction" method="addTableRelation">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>	
+		<action name="existsTableRelationBySubNames" class="dataDictionaryAction" method="existsTableRelationBySubNames">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>		
+		<action name="deleteTableRelation" class="dataDictionaryAction" method="deleteTableRelation">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+	<package name="sync" extends="parent" namespace="/system/sync">
+		<!-- sync -->
+		<action name="dataSync" class="syncAction" method="dataSync">
+			<result name="success">/system/sync/dataSync.jsp</result>
+		</action>
+		<action name="subDataSync" class="syncAction" method="subDataSync">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+	<package name="sysCode" extends="parent" namespace="/sysCode">
+	<!-- sysCodeAction -->
+		<action name="index" class="sysCodeAction" method="index">
+			<result name="success">/main.jsp</result>
+		</action>
+		<action name="showSysCodeListPage" class="sysCodeAction" method="showSysCodeListPage">
+			<result name="success">/system/sysCode/sysCodeListPage.jsp</result>
+		</action>
+		<action name="showSysCodeList" class="sysCodeAction" method="showSysCodeList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSysCodeTypes" class="sysCodeAction" method="showSysCodeTypes">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSysCodeInfo" class="sysCodeAction" method="showSysCodeInfo">
+			<result name="success">/system/sysCode/sysCodeInfoPage.jsp</result>
+		</action>
+		<action name="showSysCodeAddPage" class="sysCodeAction" method="showSysCodeAddPage">
+			<result name="success">/system/sysCode/sysCodeAddPage.jsp</result>
+		</action>
+		<action name="addSysCode" class="sysCodeAction" method="addSysCode">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSysCodeEditPage" class="sysCodeAction" method="showSysCodeEditPage">
+			<result name="success">/system/sysCode/sysCodeEditPage.jsp</result>
+		</action>
+		<action name="editSysCode" class="sysCodeAction" method="editSysCode">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="disableSysCode" class="sysCodeAction" method="disableSysCode">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="enableSysCode" class="sysCodeAction" method="enableSysCode">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteSysCode" class="sysCodeAction" method="deleteSysCode">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+	
+	<package name="sysParam" extends="parent" namespace="/sysParam">
+	<!-- sysParamAction -->
+		<action name="showSysParamListPage" class="sysParamAction" method="showSysParamListPage">
+			<result name="success">/system/sysParam/sysParamListPage.jsp</result>
+		</action>
+		
+		<action name="showSysParamListPage2" class="sysParamAction" method="showSysParamListPage2">
+			<result name="success">/system/sysParam/sysParamListPage2.jsp</result>
+		</action>
+		
+		
+		<action name="sysParamModualPage" class="sysParamAction" method="sysParamModualPage">
+			<result name="codemodual1">/system/sysParam/sysParamModual1.jsp</result>
+			<result name="codemodual3">/system/sysParam/sysParamModual3.jsp</result>
+			<result name="codemodual4">/system/sysParam/sysParamModual4.jsp</result>
+			<result name="codemodual5">/system/sysParam/sysParamModual5.jsp</result>
+			<result name="codemodual6">/system/sysParam/sysParamModual6.jsp</result>
+			<result name="codemodual7">/system/sysParam/sysParamModual7.jsp</result>
+			<result name="codemodual8">/system/sysParam/sysParamModual8.jsp</result>
+		</action>
+		
+		
+		<action name="showSysParamListByModualId" class="sysParamAction" method="showSysParamListByModualId">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		<action name="updateSysParamByModual" class="sysParamAction" method="updateSysParamByModual">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		<action name="showSysParamList" class="sysParamAction" method="showSysParamList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSysCodeModuleid" class="sysParamAction" method="showSysCodeModuleid">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSysParamInfo" class="sysParamAction" method="showSysParamInfo">
+			<result name="success">/system/sysParam/sysParamInfoPage.jsp</result>
+		</action>
+		<action name="showSysParamInfoByName" class="sysParamAction" method="showSysParamInfoByName">
+			<result name="success">/system/sysParam/sysParamInfoPage.jsp</result>
+		</action>
+		<action name="showSysParamAddPage" class="sysParamAction" method="showSysParamAddPage">
+			<result name="success">/system/sysParam/sysParamAddPage.jsp</result>
+		</action>
+		<action name="addSysParam" class="sysParamAction" method="addSysParam">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSysParamEditPage" class="sysParamAction" method="showSysParamEditPage">
+			<result name="success">/system/sysParam/sysParamEditPage.jsp</result>
+		</action>
+		<action name="editSysParam" class="sysParamAction" method="editSysParam">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="disableSysParam" class="sysParamAction" method="disableSysParam">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="enableSysParam" class="sysParamAction" method="enableSysParam">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="searchPname" class="sysParamAction" method="searchPname">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="searchCodeName" class="sysParamAction" method="searchCodeName">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getSysParamModuleList" class="sysParamAction" method="getSysParamModuleList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="verifyCode" class="sysParamAction" method="verifyCode">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getSysUserParam" class="sysParamAction" method="getSysUserParam">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getSysParamInfoJsonByName" class="sysParamAction" method="getSysParamInfoJsonByName">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+	
+	<package name="sysNumber" extends="parent" namespace="/sysNumber">
+		<!-- sysNumberAction -->
+		<action name="showSysNumberBillNameList" class="sysNumberAction" method="showSysNumberBillNameList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSysNumberListPage" class="sysNumberAction" method="showSysNumberListPage">
+			<result name="success">/system/sysNumber/sysNumberListPage.jsp</result>
+		</action>
+		<action name="showSysNumberListByBcode" class="sysNumberAction" method="showSysNumberListByBcode">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSysNumberInfo" class="sysNumberAction" method="showSysNumberInfo">
+			<result name="success">/system/sysNumber/sysNumberListPage.jsp</result>
+		</action>
+		<action name="addSysNumber" class="sysNumberAction" method="addSysNumber">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editSysNumber" class="sysNumberAction" method="editSysNumber">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editSerial" class="sysNumberAction" method="editSerial">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editSysNumbersAutoCreate" class="sysNumberAction" method="editSysNumbersAutoCreate">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editSysNumbersModifyFlag" class="sysNumberAction" method="editSysNumbersModifyFlag">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="enableAllSysNumbers" class="sysNumberAction" method="enableAllSysNumbers">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="disableSysNumber" class="sysNumberAction" method="disableSysNumber">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="enableSysNumber" class="sysNumberAction" method="enableSysNumber">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteSysNumber" class="sysNumberAction" method="deleteSysNumber">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		<action name="showSysCodeAddPageByType" class="sysNumberAction" method="showSysCodeAddPageByType">
+			<result name="success">/common/sysCode/sysCodeAddByType.jsp</result>
+		</action>
+		<action name="showSysCodeEditPageByType" class="sysNumberAction" method="showSysCodeEditPageByType">
+			<result name="success">/common/sysCode/sysCodeEditByType.jsp</result>
+		</action>
+		<action name="deleteBillName" class="sysNumberAction" method="deleteBillName">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getAutoCreateByBillCode" class="sysNumberAction" method="getAutoCreateByBillCode">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<!-- 单据编码设置 -->
+		<action name="sysNumberPage" class="sysNumberAction" method="sysNumberPage">
+			<result name="success">/system/sysNumber/sysNumberPage.jsp</result>
+		</action>
+		<action name="sysNumberAddPage" class="sysNumberAction" method="sysNumberAddPage">
+			<result name="success">/system/sysNumber/sysNumberAddPage.jsp</result>
+		</action>
+		<action name="sysNumberEditPage" class="sysNumberAction" method="sysNumberEditPage">
+			<result name="success">/system/sysNumber/sysNumberEditPage.jsp</result>
+		</action>
+        <action name="sysNumberCopyPage" class="sysNumberAction" method="sysNumberCopyPage">
+            <result name="success">/system/sysNumber/sysNumberCopyPage.jsp</result>
+        </action>
+		<action name="sysNumberViewPage" class="sysNumberAction" method="sysNumberViewPage">
+			<result name="success">/system/sysNumber/sysNumberViewPage.jsp</result>
+		</action>
+		<action name="sysNumberRuleAdd" class="sysNumberAction" method="sysNumberRuleAdd">
+			<result name="success">/system/sysNumber/sysNumberRuleAdd.jsp</result>
+		</action>
+		<action name="sysNumberRuleEdit" class="sysNumberAction" method="sysNumberRuleEdit">
+			<result name="success">/system/sysNumber/sysNumberRuleEdit.jsp</result>
+		</action>
+		<action name="addSysNumberRuleToList" class="sysNumberAction" method="addSysNumberRuleToList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getPreViewSysNumber" class="sysNumberAction" method="getPreViewSysNumber">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addSysNumberBill" class="sysNumberAction" method="addSysNumberBill">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getSysNumberList" class="sysNumberAction" method="getSysNumberList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getSysNumberRuleList" class="sysNumberAction" method="getSysNumberRuleList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editSysNumberRuleToList" class="sysNumberAction" method="editSysNumberRuleToList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editSysNumberBill" class="sysNumberAction" method="editSysNumberBill">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="isRepeatFixedVal" class="sysNumberAction" method="isRepeatFixedVal">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+        <action name="isRepeatBillCode" class="sysNumberAction" method="isRepeatBillCode">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="isRepeatBillName" class="sysNumberAction" method="isRepeatBillName">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+	</package>
+
+	<!-- sysNumberRule -->
+	<package name="sysNumberRule" extends="parent" namespace="/sysNumberRule">
+		<action name="showSysNumberRuleList" class="sysNumberRuleAction" method="showSysNumberRuleList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSysNumberRuleAddPage" class="sysNumberRuleAction" method="showSysNumberRuleAddPage">
+			<result name="success">/system/sysNumber/sysNumberRuleAddPage.jsp</result>
+		</action>
+		<action name="showSysNumberRuleEditPage" class="sysNumberRuleAction" method="showSysNumberRuleEditPage">
+			<result name="success">/system/sysNumber/sysNumberRuleEditPage.jsp</result>
+		</action>
+		<action name="addSysNumberRule" class="sysNumberRuleAction" method="addSysNumberRule">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editSysNumberRule" class="sysNumberRuleAction" method="editSysNumberRule">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteSysNumberRule" class="sysNumberRuleAction" method="deleteSysNumberRule">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteSysNumberRuleByNumID" class="sysNumberRuleAction" method="deleteSysNumberRuleByNumID">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+	<!-- 数据异常规则定义 -->
+	<package name="dataException" extends="parent" namespace="/system/dataexception">
+		<action name="showDataExceptionPage" class="dataExceptionAction" method="showDataExceptionPage">
+			<result name="success">/system/dataexception/dataExceptionPage.jsp</result>
+		</action>
+		<action name="showDataExceptionAddPage" class="dataExceptionAction" method="showDataExceptionAddPage">
+			<result name="success">/system/dataexception/dataExceptionAddPage.jsp</result>
+		</action>
+		<action name="addDataException" class="dataExceptionAction" method="addDataException">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showDataExceptionList" class="dataExceptionAction" method="showDataExceptionList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showDataExceptionOperateAddPage" class="dataExceptionAction" method="showDataExceptionOperateAddPage">
+			<result name="success">/system/dataexception/dataExceptionOperateAddPage.jsp</result>
+		</action>
+		<action name="addDataExceptionOperate" class="dataExceptionAction" method="addDataExceptionOperate">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showDataExceptionOperateList" class="dataExceptionAction" method="showDataExceptionOperateList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteDataExceptionOperate" class="dataExceptionAction" method="deleteDataExceptionOperate">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteDataException" class="dataExceptionAction" method="deleteDataException">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showDataExceptionEditPage" class="dataExceptionAction" method="showDataExceptionEditPage">
+			<result name="success">/system/dataexception/dataExceptionEditPage.jsp</result>
+		</action>
+		<action name="editDataException" class="dataExceptionAction" method="editDataException">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="openDataException" class="dataExceptionAction" method="openDataException">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="closeDataException" class="dataExceptionAction" method="closeDataException">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+	<!-- 参照窗口 -->
+	<package name="referWindow" extends="parent" namespace="/system/referWindow">
+		<action name="showReferenceWindowPage" class="referWindowAction" method="showReferenceWindowPage">
+			<result name="success">/system/referWindow/referenceWindowPage.jsp</result>
+		</action>
+		<action name="showReferWindowAddPage" class="referWindowAction" method="showReferWindowAddPage">
+			<result name="success">/system/referWindow/referenceWindowAddPage.jsp</result>
+		</action>
+		<action name="getReferWindowBySQL" class="referWindowAction" method="getReferWindowBySQL">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addReferWindow" class="referWindowAction" method="addReferWindow">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showReferWindowList" class="referWindowAction" method="showReferWindowList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="checkReferWindowID" class="referWindowAction" method="checkReferWindowID">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteReferWindow" class="referWindowAction" method="deleteReferWindow">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="openReferWindow" class="referWindowAction" method="openReferWindow">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="closeReferWindow" class="referWindowAction" method="closeReferWindow">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showReferWindow" class="referWindowAction" method="showReferWindow">
+			<result name="success">/system/referWindow/referWindowInfo.jsp</result>
+		</action>
+		<action name="getReferWindowData" class="referWindowAction" method="getReferWindowData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getReferWindowDataByReferid" class="referWindowAction" method="getReferWindowDataByReferid">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showReferWindowEditPage" class="referWindowAction" method="showReferWindowEditPage">
+			<result name="success">/system/referWindow/referWindowEditPage.jsp</result>
+		</action>
+		<action name="getReferWindowColumn" class="referWindowAction" method="getReferWindowColumn">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editReferWindow" class="referWindowAction" method="editReferWindow">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showReferWindowCopyPage" class="referWindowAction" method="showReferWindowCopyPage">
+			<result name="success">/system/referWindow/referWindowCopyPage.jsp</result>
+		</action>
+		<action name="getReferWindowList" class="referWindowAction" method="getReferWindowList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getReferWindowColumnList" class="referWindowAction" method="getReferWindowColumnList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getReferWindowWidget" class="referWindowAction" method="getReferWindowWidget">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getWidgetDataByReferid" class="referWindowAction" method="getWidgetDataByReferid">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+	<!-- 网络互斥 -->
+	<package name="netLock" extends="parent" namespace="/system/lock">
+		<action name="showNetLockPage" class="netLockAction" method="showNetLockPage">
+			<result name="success">/system/lock/netLockListPage.jsp</result>
+		</action>
+		<action name="showNetLockList" class="netLockAction" method="showNetLockList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteNetLocks" class="netLockAction" method="deleteNetLocks">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="isDoLockData" class="netLockAction" method="isDoLockData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="unLockData" class="netLockAction" method="unLockData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="isLockData" class="netLockAction" method="isLockData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+	<!-- 任务调度 -->
+	<package name="taskSchedule" extends="parent" namespace="/system/task">
+		<action name="showTaskListPage" class="taskScheduleAction" method="showTaskListPage">
+			<result name="success">/system/task/taskListPage.jsp</result>
+		</action>
+		<action name="showTaskListAddPage" class="taskScheduleAction" method="showTaskListAddPage">
+			<result name="success">/system/task/taskListAddPage.jsp</result>
+		</action>
+		<action name="addTaskList" class="taskScheduleAction" method="addTaskList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showTaskList" class="taskScheduleAction" method="showTaskList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showTaskListEditPage" class="taskScheduleAction" method="showTaskListEditPage">
+			<result name="success">/system/task/taskListEditPage.jsp</result>
+		</action>
+		<action name="editTaskList" class="taskScheduleAction" method="editTaskList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteTaskList" class="taskScheduleAction" method="deleteTaskList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="openTaskList" class="taskScheduleAction" method="openTaskList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="closeTaskList" class="taskScheduleAction" method="closeTaskList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getTaskListData" class="taskScheduleAction" method="getTaskListData">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<!-- 任务调度计划 -->
+		<action name="showTaskSchedulePage" class="taskScheduleAction" method="showTaskSchedulePage">
+			<result name="success">/system/task/taskSchedulePage.jsp</result>
+		</action>
+		<action name="showTaskScheduleAddPage" class="taskScheduleAction" method="showTaskScheduleAddPage">
+			<result name="success">/system/task/taskScheduleAddPage.jsp</result>
+		</action>
+		<action name="addTaskSchedule" class="taskScheduleAction" method="addTaskSchedule">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showTaskScheduleList" class="taskScheduleAction" method="showTaskScheduleList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="startTaskSchedule" class="taskScheduleAction" method="startTaskSchedule">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="pauseTaskSchedule" class="taskScheduleAction" method="pauseTaskSchedule">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="cancelTaskSchedule" class="taskScheduleAction" method="cancelTaskSchedule">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteTaskSchedule" class="taskScheduleAction" method="deleteTaskSchedule">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showTaskScheduleEditPage" class="taskScheduleAction" method="showTaskScheduleEditPage">
+			<result name="success">/system/task/taskScheduleEditPage.jsp</result>
+		</action>
+		<action name="editTaskSchedule" class="taskScheduleAction" method="editTaskSchedule">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showTaskScheduleLogsPage" class="taskScheduleAction" method="showTaskScheduleLogsPage">
+			<result name="success">/system/task/taskScheduleLogsPage.jsp</result>
+		</action>
+		<action name="showTaskLogsList" class="taskScheduleAction" method="showTaskLogsList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+        <action name="runTaskSchedule" class="taskScheduleAction" method="runTaskSchedule">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+	</package>
+	<!-- 会计期间 -->
+	<package name="accounting" extends="parent" namespace="/system/accounting">
+		<action name="accountingPage" class="accountingAction" method="accountingPage">
+			<result name="success">/system/accounting/accountingPage.jsp</result>
+		</action>
+		<action name="getAccountingTree" class="accountingAction" method="getAccountingTree">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getAccountingListByYear" class="accountingAction" method="getAccountingListByYear">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getDateList" class="accountingAction" method="getDateList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editDateList" class="accountingAction" method="editDateList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editAccounYear" class="accountingAction" method="editAccounYear">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteAccounting" class="accountingAction" method="deleteAccounting">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+        <action name="closeAccounting" class="accountingAction" method="closeAccounting">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="getDaysBetweenDate" class="accountingAction" method="getDaysBetweenDate">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="isBetweenAccounting" class="accountingAction" method="isBetweenAccounting">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+	</package>
+	<package name="updateDB" extends="parent" namespace="/system/updatedb">
+		<action name="showSysUpdateDBListPage" class="updateDBAction" method="showSysUpdateDBListPage">
+			<result name="success">/system/updatedb/updateDBListPage.jsp</result>
+		</action>
+		<action name="getSysUpdateDBPageListData" class="updateDBAction" method="getSysUpdateDBPageListData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+	<package name="sysDataSource" extends="parent" namespace="/system/sysdatasource">
+		<action name="showSysDataSourceListPage" class="sysDataSourceAction" method="showSysDataSourceListPage">
+			<result name="success">/system/sysdatasource/sysDataSourceListPage.jsp</result>
+		</action>
+		<action name="showSysDataSourcePageListData" class="sysDataSourceAction" method="showSysDataSourcePageListData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSysDataSourceAddPage" class="sysDataSourceAction" method="showSysDataSourceAddPage">
+			<result name="success">/system/sysdatasource/sysDataSourceAddPage.jsp</result>
+		</action>
+		<action name="addSysDataSource" class="sysDataSourceAction" method="addSysDataSource">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSysDataSourceEditPage" class="sysDataSourceAction" method="showSysDataSourceEditPage">
+			<result name="success">/system/sysdatasource/sysDataSourceEditPage.jsp</result>
+		</action>
+		<action name="editSysDataSource" class="sysDataSourceAction" method="editSysDataSource">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSysDataSourceViewPage" class="sysDataSourceAction" method="showSysDataSourceViewPage">
+			<result name="success">/system/sysdatasource/sysDataSourceViewPage.jsp</result>
+		</action>
+		<action name="deleteSysDataSource" class="sysDataSourceAction" method="deleteSysDataSource">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="enableSysDataSource" class="sysDataSourceAction" method="enableSysDataSource">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="testSysDataSource" class="sysDataSourceAction" method="testSysDataSource">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="disableSysDataSource" class="sysDataSourceAction" method="disableSysDataSource">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="isValidDataUsed" class="sysDataSourceAction" method="isValidDataUsed">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+
+	<package name="backupDB" extends="parent" namespace="/system/backup">
+		<action name="showBackupDBPage" class="backupDBAction" method="showBackupDBPage">
+			<result name="success">/system/backup/backupDBPage.jsp</result>
+		</action>
+		<action name="doBackup" class="backupDBAction" method="doBackup">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="saveBackup" class="backupDBAction" method="saveBackup">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="doBackup" class="backupDBAction" method="doBackup">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="doBackupFileToGzip" class="backupDBAction" method="doBackupFileToGzip">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="delete" class="backupDBAction" method="delete">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="downloadDBFile" class="backupDBAction" method="downloadDBFile">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+</struts>    

@@ -1,0 +1,1037 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.report.dao.PerformanceReportMapper" >
+	<!-- 部门考核报表开始 -->
+	<sql id="PerformanceKPISummary_Base_Column_List" >
+    id, year, month, businessdate, deptid, remark, adduserid, addusername, addtime, modifyuserid, 
+    modifyusername, modifytime, sourcefrome, salesamount, jcfhamount, hsmlamount, xjamount, 
+    xjrate, fyamount, fyrate, jlamount, jlrate, pjqmkcamount, pjkczzday, pjzjzyamount, 
+    zjlrrate, qmddfyyeamount, ddfyzyrate,status,audituserid,auditusername,audittime
+  </sql>
+  <sql id="PerformanceKPISummaryPageList_Where_Clause">
+ 	<if test="condition.begintime != null">
+	    and STR_TO_DATE(businessdate,'%Y-%m') >= STR_TO_DATE(#{condition.begintime},'%Y-%m')
+    </if>
+    <if test="condition.endtime != null">
+	   <![CDATA[and STR_TO_DATE(businessdate,'%Y-%m') <= STR_TO_DATE(#{condition.endtime},'%Y-%m')]]>
+    </if>
+    <if test="condition.deptid != null">
+	   and deptid=#{condition.deptid}
+    </if>
+  </sql>
+  <select id="getPerformanceKPISummaryPageList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.report.model.PerformanceKPISummary">
+  	select 
+  	<include refid="PerformanceKPISummary_Base_Column_List"/>
+  	from t_report_performance_kpisummary
+  	<trim prefix="where" prefixOverrides="and|or" >
+  		<include refid="common.Page_dataSql"/>
+      	<include refid="PerformanceKPISummaryPageList_Where_Clause" />
+  	</trim>
+  	<choose>
+		<when test="condition.isPageflag !='true'">
+			<include refid="common.Page_limit" />
+		</when>
+		<when test="condition.showOrderOnly == 'true' ">
+			<include refid="common.Page_OrderOnly" />
+		</when>
+	</choose>
+  </select>
+  <select id="getPerformanceKPISummaryPageCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  	select 
+  	count(*)
+  	from t_report_performance_kpisummary
+  	<trim prefix="where" prefixOverrides="and|or" >
+  		<include refid="common.Page_dataSql"/>
+      	<include refid="PerformanceKPISummaryPageList_Where_Clause" />
+  	</trim>
+  </select>
+  <select id="getPerformanceKPISummaryPageSum" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.report.model.PerformanceKPISummary">
+  	select 
+  	SUM(salesamount) as salesamount, SUM(jcfhamount) as jcfhamount, SUM(hsmlamount) as hsmlamount, SUM(xjamount) as xjamount, 
+	SUM(fyamount) as fyamount, SUM(jlamount) as jlamount, SUM(pjqmkcamount) as  pjqmkcamount, SUM(pjkczzday) as pjkczzday, 
+	SUM(pjzjzyamount) as pjzjzyamount, SUM(qmddfyyeamount) as qmddfyyeamount
+  	from t_report_performance_kpisummary
+  	<trim prefix="where" prefixOverrides="and|or" >
+  		<include refid="common.Page_dataSql"/>
+      	<include refid="PerformanceKPISummaryPageList_Where_Clause" />
+  	</trim>
+  </select>
+  <select id="getPerformanceKPISummaryCountByMap" parameterType="map" resultType="int">
+  	select count(*)
+  	from t_report_performance_kpisummary
+  	<trim prefix="where" prefixOverrides="and|or" >
+	    <if test="businessdate != null" >
+	    	and businessdate = #{businessdate}
+      	</if>     		
+	    <if test="deptid != null" >
+	    	and deptid = #{deptid}
+      	</if>  
+  	</trim>
+  </select>
+  <insert id="insertPerformanceKPISummary" parameterType="com.hd.agent.report.model.PerformanceKPISummary" >
+    insert into t_report_performance_kpisummary
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="year != null" >
+        year,
+      </if>
+      <if test="month != null" >
+        month,
+      </if>
+      <if test="businessdate != null" >
+        businessdate,
+      </if>
+      <if test="deptid != null" >
+        deptid,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="adduserid != null" >
+        adduserid,
+      </if>
+      <if test="addusername != null" >
+        addusername,
+      </if>
+      <if test="addtime != null" >
+        addtime,
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid,
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername,
+      </if>
+      <if test="modifytime != null" >
+        modifytime,
+      </if>
+      <if test="sourcefrome != null" >
+        sourcefrome,
+      </if>
+      <if test="salesamount != null" >
+        salesamount,
+      </if>
+      <if test="jcfhamount != null" >
+        jcfhamount,
+      </if>
+      <if test="hsmlamount != null" >
+        hsmlamount,
+      </if>
+      <if test="xjamount != null" >
+        xjamount,
+      </if>
+      <if test="xjrate != null" >
+        xjrate,
+      </if>
+      <if test="fyamount != null" >
+        fyamount,
+      </if>
+      <if test="fyrate != null" >
+        fyrate,
+      </if>
+      <if test="jlamount != null" >
+        jlamount,
+      </if>
+      <if test="jlrate != null" >
+        jlrate,
+      </if>
+      <if test="pjqmkcamount != null" >
+        pjqmkcamount,
+      </if>
+      <if test="pjkczzday != null" >
+        pjkczzday,
+      </if>
+      <if test="pjzjzyamount != null" >
+        pjzjzyamount,
+      </if>
+      <if test="zjlrrate != null" >
+        zjlrrate,
+      </if>
+      <if test="qmddfyyeamount != null" >
+        qmddfyyeamount,
+      </if>
+      <if test="ddfyzyrate != null" >
+        ddfyzyrate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="year != null" >
+        #{year},
+      </if>
+      <if test="month != null" >
+        #{month},
+      </if>
+      <if test="businessdate != null" >
+        #{businessdate},
+      </if>
+      <if test="deptid != null" >
+        #{deptid},
+      </if>
+      <if test="status != null" >
+        #{status},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+      <if test="adduserid != null" >
+        #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        #{addusername},
+      </if>
+      <if test="addtime != null" >
+        #{addtime},
+      </if>
+      <if test="modifyuserid != null" >
+        #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        #{modifyusername},
+      </if>
+      <if test="modifytime != null" >
+        #{modifytime},
+      </if>
+      <if test="sourcefrome != null" >
+        #{sourcefrome},
+      </if>
+      <if test="salesamount != null" >
+        #{salesamount},
+      </if>
+      <if test="jcfhamount != null" >
+        #{jcfhamount},
+      </if>
+      <if test="hsmlamount != null" >
+        #{hsmlamount},
+      </if>
+      <if test="xjamount != null" >
+        #{xjamount},
+      </if>
+      <if test="xjrate != null" >
+        #{xjrate},
+      </if>
+      <if test="fyamount != null" >
+        #{fyamount},
+      </if>
+      <if test="fyrate != null" >
+        #{fyrate},
+      </if>
+      <if test="jlamount != null" >
+        #{jlamount},
+      </if>
+      <if test="jlrate != null" >
+        #{jlrate},
+      </if>
+      <if test="pjqmkcamount != null" >
+        #{pjqmkcamount},
+      </if>
+      <if test="pjkczzday != null" >
+        #{pjkczzday},
+      </if>
+      <if test="pjzjzyamount != null" >
+        #{pjzjzyamount},
+      </if>
+      <if test="zjlrrate != null" >
+        #{zjlrrate},
+      </if>
+      <if test="qmddfyyeamount != null" >
+        #{qmddfyyeamount},
+      </if>
+      <if test="ddfyzyrate != null" >
+        #{ddfyzyrate},
+      </if>
+    </trim>    
+	<selectKey resultType="int" keyProperty="id"
+		order="AFTER">
+		select LAST_INSERT_ID() as id
+    </selectKey>
+  </insert>
+  <update id="updatePerformanceKPISummary" parameterType="com.hd.agent.report.model.PerformanceKPISummary" >
+    update t_report_performance_kpisummary
+    <set >
+      <if test="year != null" >
+        year = #{year},
+      </if>
+      <if test="month != null" >
+        month = #{month},
+      </if>
+      <if test="businessdate != null" >
+        businessdate = #{businessdate},
+      </if>
+      <if test="deptid != null" >
+        deptid = #{deptid},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark},
+      </if>
+      <if test="adduserid != null" >
+        adduserid = #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        addusername = #{addusername},
+      </if>
+      <if test="addtime != null" >
+        addtime = #{addtime},
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid = #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername = #{modifyusername},
+      </if>
+      <if test="modifytime != null" >
+        modifytime = #{modifytime},
+      </if>
+      <if test="sourcefrome != null" >
+        sourcefrome = #{sourcefrome},
+      </if>
+      <if test="salesamount != null" >
+        salesamount = #{salesamount},
+      </if>
+      <if test="jcfhamount != null" >
+        jcfhamount = #{jcfhamount},
+      </if>
+      <if test="hsmlamount != null" >
+        hsmlamount = #{hsmlamount},
+      </if>
+      <if test="xjamount != null" >
+        xjamount = #{xjamount},
+      </if>
+      <if test="xjrate != null" >
+        xjrate = #{xjrate},
+      </if>
+      <if test="fyamount != null" >
+        fyamount = #{fyamount},
+      </if>
+      <if test="fyrate != null" >
+        fyrate = #{fyrate},
+      </if>
+      <if test="jlamount != null" >
+        jlamount = #{jlamount},
+      </if>
+      <if test="jlrate != null" >
+        jlrate = #{jlrate},
+      </if>
+      <if test="pjqmkcamount != null" >
+        pjqmkcamount = #{pjqmkcamount},
+      </if>
+      <if test="pjkczzday != null" >
+        pjkczzday = #{pjkczzday},
+      </if>
+      <if test="pjzjzyamount != null" >
+        pjzjzyamount = #{pjzjzyamount},
+      </if>
+      <if test="zjlrrate != null" >
+        zjlrrate = #{zjlrrate},
+      </if>
+      <if test="qmddfyyeamount != null" >
+        qmddfyyeamount = #{qmddfyyeamount},
+      </if>
+      <if test="ddfyzyrate != null" >
+        ddfyzyrate = #{ddfyzyrate},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  <update id="updatePerformanceKPISummaryByMap" parameterType="Map" >
+    update t_report_performance_kpisummary
+    <set >
+      <if test="performanceKPISummary.status != null" >
+        status = #{performanceKPISummary.status},
+      </if>
+      <if test="performanceKPISummary.remark != null" >
+        remark = #{performanceKPISummary.remark},
+      </if>
+      <if test="performanceKPISummary.modifyuserid != null" >
+        modifyuserid = #{performanceKPISummary.modifyuserid},
+      </if>
+      <if test="performanceKPISummary.modifyusername != null" >
+        modifyusername = #{performanceKPISummary.modifyusername},
+      </if>
+      <if test="performanceKPISummary.modifytime != null" >
+        modifytime = #{performanceKPISummary.modifytime},
+      </if>
+      <if test="performanceKPISummary.audituserid != null" >
+        audituserid = #{performanceKPISummary.audituserid},
+      </if>
+      <if test="performanceKPISummary.auditusername != null" >
+        auditusername = #{performanceKPISummary.auditusername},
+      </if>
+      <if test="performanceKPISummary.audittime != null" >
+        audittime = #{performanceKPISummary.audittime},
+      </if>
+    </set>
+    where 
+	<trim prefixOverrides="and|or" >
+		<if test="id != null" >
+	    	and id = #{id}
+      	</if>
+  		<if test="notAudit!=null">
+  			and (status!='3' or status is null)
+  		</if>
+  		<if test="isAudit!=null">
+  			and status='3'
+  		</if>
+  		<if test="dataAuthSql != null">
+  			and ${dataAuthSql}
+  		</if>    
+	</trim>
+  </update>
+  <delete id="deletePerformanceKPISummary" parameterType="java.lang.String">
+  	delete from t_report_performance_kpisummary where id = #{id} 
+  </delete> 
+  <delete id="deletePerformanceKPISummaryBy" parameterType="Map">
+  	delete from t_report_performance_kpisummary 
+  	where
+  	<trim prefixOverrides="and|or" >
+  		<if test="id != null" >
+	    	and id = #{id}
+  		</if>
+  		<if test="notAudit != null" >
+	    	and ( status !='3' or status!='4' or status is null)
+  		</if>
+  	</trim> 
+  </delete> 
+   
+  <select id="getPerformanceKPISummary" parameterType="java.lang.String" resultType="com.hd.agent.report.model.PerformanceKPISummary">
+  	select 
+  	<include refid="PerformanceKPISummary_Base_Column_List"/>
+  	from t_report_performance_kpisummary
+  	where id=#{id}
+  </select>
+  <select id="getPerformanceKPISummaryBy" parameterType="Map" resultType="com.hd.agent.report.model.PerformanceKPISummary">
+  	select 
+  	<include refid="PerformanceKPISummary_Base_Column_List"/>
+  	from t_report_performance_kpisummary
+  	<trim prefix="where" prefixOverrides="and|or" >
+  		<if test="id != null" >
+	    	and id = #{id}
+      	</if>
+      	<if test="year != null" >
+	    	and year = #{year}
+      	</if>
+      	<if test="month != null" >
+	    	and month = #{month}
+      	</if>
+      	<if test="businessdate != null" >
+	    	and businessdate = #{businessdate}
+      	</if>
+      	<if test="deptid != null" >
+	    	and deptid = #{deptid}
+      	</if>
+      	<if test="isaudit != null" >
+	    	and (status='3' or status='4')
+      	</if>
+  	</trim>
+  </select>
+  <!-- 部门考核报表-->  
+  <sql id="PerformanceKPISummaryReport_Sql">
+  	select businessdate,deptid,year,month,  	
+  	SUM(salesamount) as salesamount, SUM(jcfhamount) as jcfhamount, SUM(hsmlamount) as hsmlamount, SUM(xjamount) as xjamount, 
+	SUM(fyamount) as fyamount, SUM(jlamount) as jlamount, SUM(pjqmkcamount) as  pjqmkcamount,
+	SUM(pjzjzyamount) as pjzjzyamount, SUM(qmddfyyeamount) as qmddfyyeamount
+	from t_report_performance_kpisummary
+	<trim prefix="where" prefixOverrides="and|or" >
+      	<if test="condition.year != null">
+	  		and year=#{condition.year}
+	  	</if>
+	  	<if test="condition.deptid !=null">
+	  		and deptid=#{condition.deptid}
+	  	</if>
+	  	<if test="1==1">
+	  		and (status='3' or status='4')
+	  	</if>
+  		<include refid="common.Page_dataSql"/>
+  	</trim>  	
+  	<if test="condition.isSumAll !='true' ">
+  		group by month
+  	</if>
+  </sql>
+  
+  <select id="getPerformanceKPISummaryReportList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.report.model.PerformanceKPISummary">
+  	select 
+  	businessdate,deptid,year,month,  	
+  	salesamount,jcfhamount,hsmlamount,xjamount, 
+	fyamount,jlamount,pjqmkcamount,pjzjzyamount,qmddfyyeamount
+	from (
+  	<include refid="PerformanceKPISummaryReport_Sql"></include> 
+  	) t	
+  </select>
+  <select id="getPerformanceKPISummaryReportCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  	select 
+  	count(*)
+  	from (
+  		<include refid="PerformanceKPISummaryReport_Sql"></include>
+  	) t
+  </select>
+  <select id="getPerformanceKPISummaryReportSum" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.report.model.PerformanceKPISummary">
+  	<include refid="PerformanceKPISummaryReport_Sql"></include>
+  </select> 
+  <!-- 部门 业绩考核 -->
+  <sql id="PerformanceKPIScore_Base_Column_List" >
+    id, year, month, businessdate, deptid,status, remark, adduserid, addusername, addtime, modifyuserid, 
+    modifyusername, modifytime, sourcefrome, salesamountindex, salesamount, salesamountscore, 
+    salesamountindexscore, salesamountindexvalue, mlamountindex, mlamount, mlamountscore, 
+    mlrateindex, mlrate, mlratescore, mlscore, mlindexscore, mlindexvalue, kczlrsindex, 
+    kczlrs, kczlrsscore, kczlindexscore, kczlindexvalue, fyrateindex, fyrate, fyratescore, 
+    fyrateindexscore, fyrateindexvalue, totalscore, bonus,audittime,audituserid,auditusername
+  </sql>
+  <sql id="PerformanceKPIScorePageList_Where_Clause">
+ 	<if test="condition.begintime != null">
+	    and STR_TO_DATE(businessdate,'%Y-%m') >= STR_TO_DATE(#{condition.begintime},'%Y-%m')
+    </if>
+    <if test="condition.endtime != null">
+	   <![CDATA[and STR_TO_DATE(businessdate,'%Y-%m') <= STR_TO_DATE(#{condition.endtime},'%Y-%m')]]>
+    </if>
+    <if test="condition.deptid != null">
+	   and deptid=#{condition.deptid}
+    </if>
+    <if test="condition.status != null">
+	   and status=#{condition.status}
+    </if>
+  </sql>  
+  <select id="getPerformanceKPIScoreCountByMap" parameterType="map" resultType="int">
+  	select count(*)
+  	from t_report_performance_kpiscore
+  	<trim prefix="where" prefixOverrides="and|or" >
+	    <if test="businessdate != null" >
+	    	and businessdate = #{businessdate}
+      	</if>     		
+	    <if test="deptid != null" >
+	    	and deptid = #{deptid}
+      	</if>  
+  	</trim>
+  </select>
+  <select id="getPerformanceKPIScore" parameterType="String" resultType="com.hd.agent.report.model.PerformanceKPIScore">
+  	select 		
+		<include refid="PerformanceKPIScore_Base_Column_List"></include>
+  	from t_report_performance_kpiscore
+  	where id=#{id}
+  </select>
+  <insert id="insertPerformanceKPIScore" parameterType="com.hd.agent.report.model.PerformanceKPIScore" >
+    insert into t_report_performance_kpiscore
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="year != null" >
+        year,
+      </if>
+      <if test="month != null" >
+        month,
+      </if>
+      <if test="businessdate != null" >
+        businessdate,
+      </if>
+      <if test="deptid != null" >
+        deptid,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="adduserid != null" >
+        adduserid,
+      </if>
+      <if test="addusername != null" >
+        addusername,
+      </if>
+      <if test="addtime != null" >
+        addtime,
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid,
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername,
+      </if>
+      <if test="modifytime != null" >
+        modifytime,
+      </if>
+      <if test="sourcefrome != null" >
+        sourcefrome,
+      </if>
+      <if test="salesamountindex != null" >
+        salesamountindex,
+      </if>
+      <if test="salesamount != null" >
+        salesamount,
+      </if>
+      <if test="salesamountscore != null" >
+        salesamountscore,
+      </if>
+      <if test="salesamountindexscore != null" >
+        salesamountindexscore,
+      </if>
+      <if test="salesamountindexvalue != null" >
+        salesamountindexvalue,
+      </if>
+      <if test="mlamountindex != null" >
+        mlamountindex,
+      </if>
+      <if test="mlamount != null" >
+        mlamount,
+      </if>
+      <if test="mlamountscore != null" >
+        mlamountscore,
+      </if>
+      <if test="mlrateindex != null" >
+        mlrateindex,
+      </if>
+      <if test="mlrate != null" >
+        mlrate,
+      </if>
+      <if test="mlratescore != null" >
+        mlratescore,
+      </if>
+      <if test="mlscore != null" >
+        mlscore,
+      </if>
+      <if test="mlindexscore != null" >
+        mlindexscore,
+      </if>
+      <if test="mlindexvalue != null" >
+        mlindexvalue,
+      </if>
+      <if test="kczlrsindex != null" >
+        kczlrsindex,
+      </if>
+      <if test="kczlrs != null" >
+        kczlrs,
+      </if>
+      <if test="kczlrsscore != null" >
+        kczlrsscore,
+      </if>
+      <if test="kczlindexscore != null" >
+        kczlindexscore,
+      </if>
+      <if test="kczlindexvalue != null" >
+        kczlindexvalue,
+      </if>
+      <if test="fyrateindex != null" >
+        fyrateindex,
+      </if>
+      <if test="fyrate != null" >
+        fyrate,
+      </if>
+      <if test="fyratescore != null" >
+        fyratescore,
+      </if>
+      <if test="fyrateindexscore != null" >
+        fyrateindexscore,
+      </if>
+      <if test="fyrateindexvalue != null" >
+        fyrateindexvalue,
+      </if>
+      <if test="totalscore != null" >
+        totalscore,
+      </if>
+      <if test="bonus != null" >
+        bonus,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="year != null" >
+        #{year},
+      </if>
+      <if test="month != null" >
+        #{month},
+      </if>
+      <if test="businessdate != null" >
+        #{businessdate},
+      </if>
+      <if test="deptid != null" >
+        #{deptid},
+      </if>
+      <if test="status != null" >
+        #{status},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+      <if test="adduserid != null" >
+        #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        #{addusername},
+      </if>
+      <if test="addtime != null" >
+        #{addtime},
+      </if>
+      <if test="modifyuserid != null" >
+        #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        #{modifyusername},
+      </if>
+      <if test="modifytime != null" >
+        #{modifytime},
+      </if>
+      <if test="sourcefrome != null" >
+        #{sourcefrome},
+      </if>
+      <if test="salesamountindex != null" >
+        #{salesamountindex},
+      </if>
+      <if test="salesamount != null" >
+        #{salesamount},
+      </if>
+      <if test="salesamountscore != null" >
+        #{salesamountscore},
+      </if>
+      <if test="salesamountindexscore != null" >
+        #{salesamountindexscore},
+      </if>
+      <if test="salesamountindexvalue != null" >
+        #{salesamountindexvalue},
+      </if>
+      <if test="mlamountindex != null" >
+        #{mlamountindex},
+      </if>
+      <if test="mlamount != null" >
+        #{mlamount},
+      </if>
+      <if test="mlamountscore != null" >
+        #{mlamountscore},
+      </if>
+      <if test="mlrateindex != null" >
+        #{mlrateindex},
+      </if>
+      <if test="mlrate != null" >
+        #{mlrate},
+      </if>
+      <if test="mlratescore != null" >
+        #{mlratescore},
+      </if>
+      <if test="mlscore != null" >
+        #{mlscore},
+      </if>
+      <if test="mlindexscore != null" >
+        #{mlindexscore},
+      </if>
+      <if test="mlindexvalue != null" >
+        #{mlindexvalue},
+      </if>
+      <if test="kczlrsindex != null" >
+        #{kczlrsindex},
+      </if>
+      <if test="kczlrs != null" >
+        #{kczlrs},
+      </if>
+      <if test="kczlrsscore != null" >
+        #{kczlrsscore},
+      </if>
+      <if test="kczlindexscore != null" >
+        #{kczlindexscore},
+      </if>
+      <if test="kczlindexvalue != null" >
+        #{kczlindexvalue},
+      </if>
+      <if test="fyrateindex != null" >
+        #{fyrateindex},
+      </if>
+      <if test="fyrate != null" >
+        #{fyrate},
+      </if>
+      <if test="fyratescore != null" >
+        #{fyratescore},
+      </if>
+      <if test="fyrateindexscore != null" >
+        #{fyrateindexscore},
+      </if>
+      <if test="fyrateindexvalue != null" >
+        #{fyrateindexvalue},
+      </if>
+      <if test="totalscore != null" >
+        #{totalscore},
+      </if>
+      <if test="bonus != null" >
+        #{bonus},
+      </if>
+    </trim>
+	<selectKey resultType="int" keyProperty="id"
+		order="AFTER">
+		select LAST_INSERT_ID() as id
+    </selectKey>
+  </insert>
+  <update id="updatePerformanceKPIScore" parameterType="com.hd.agent.report.model.PerformanceKPIScore" >
+    update t_report_performance_kpiscore
+    <set >
+      <if test="year != null" >
+        year = #{year},
+      </if>
+      <if test="month != null" >
+        month = #{month},
+      </if>
+      <if test="businessdate != null" >
+        businessdate = #{businessdate},
+      </if>
+      <if test="deptid != null" >
+        deptid = #{deptid},
+      </if>
+      <if test="status != null" >
+        status = #{status},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark},
+      </if>
+      <if test="adduserid != null" >
+        adduserid = #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        addusername = #{addusername},
+      </if>
+      <if test="addtime != null" >
+        addtime = #{addtime},
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid = #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername = #{modifyusername},
+      </if>
+      <if test="modifytime != null" >
+        modifytime = #{modifytime},
+      </if>
+      <if test="sourcefrome != null" >
+        sourcefrome = #{sourcefrome},
+      </if>
+      <if test="salesamountindex != null" >
+        salesamountindex = #{salesamountindex},
+      </if>
+      <if test="salesamount != null" >
+        salesamount = #{salesamount},
+      </if>
+      <if test="salesamountscore != null" >
+        salesamountscore = #{salesamountscore},
+      </if>
+      <if test="salesamountindexscore != null" >
+        salesamountindexscore = #{salesamountindexscore},
+      </if>
+      <if test="salesamountindexvalue != null" >
+        salesamountindexvalue = #{salesamountindexvalue},
+      </if>
+      <if test="mlamountindex != null" >
+        mlamountindex = #{mlamountindex},
+      </if>
+      <if test="mlamount != null" >
+        mlamount = #{mlamount},
+      </if>
+      <if test="mlamountscore != null" >
+        mlamountscore = #{mlamountscore},
+      </if>
+      <if test="mlrateindex != null" >
+        mlrateindex = #{mlrateindex},
+      </if>
+      <if test="mlrate != null" >
+        mlrate = #{mlrate},
+      </if>
+      <if test="mlratescore != null" >
+        mlratescore = #{mlratescore},
+      </if>
+      <if test="mlscore != null" >
+        mlscore = #{mlscore},
+      </if>
+      <if test="mlindexscore != null" >
+        mlindexscore = #{mlindexscore},
+      </if>
+      <if test="mlindexvalue != null" >
+        mlindexvalue = #{mlindexvalue},
+      </if>
+      <if test="kczlrsindex != null" >
+        kczlrsindex = #{kczlrsindex},
+      </if>
+      <if test="kczlrs != null" >
+        kczlrs = #{kczlrs},
+      </if>
+      <if test="kczlrsscore != null" >
+        kczlrsscore = #{kczlrsscore},
+      </if>
+      <if test="kczlindexscore != null" >
+        kczlindexscore = #{kczlindexscore},
+      </if>
+      <if test="kczlindexvalue != null" >
+        kczlindexvalue = #{kczlindexvalue},
+      </if>
+      <if test="fyrateindex != null" >
+        fyrateindex = #{fyrateindex},
+      </if>
+      <if test="fyrate != null" >
+        fyrate = #{fyrate},
+      </if>
+      <if test="fyratescore != null" >
+        fyratescore = #{fyratescore},
+      </if>
+      <if test="fyrateindexscore != null" >
+        fyrateindexscore = #{fyrateindexscore},
+      </if>
+      <if test="fyrateindexvalue != null" >
+        fyrateindexvalue = #{fyrateindexvalue},
+      </if>
+      <if test="totalscore != null" >
+        totalscore = #{totalscore},
+      </if>
+      <if test="bonus != null" >
+        bonus = #{bonus},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  <update id="updatePerformanceKPIScoreByMap" parameterType="Map" >
+    update t_report_performance_kpiscore
+    <set >
+      <if test="performanceKPIScore.status != null" >
+        status = #{performanceKPIScore.status},
+      </if>
+      <if test="performanceKPIScore.remark != null" >
+        remark = #{performanceKPIScore.remark},
+      </if>
+      <if test="performanceKPIScore.modifyuserid != null" >
+        modifyuserid = #{performanceKPIScore.modifyuserid},
+      </if>
+      <if test="performanceKPIScore.modifyusername != null" >
+        modifyusername = #{performanceKPIScore.modifyusername},
+      </if>
+      <if test="performanceKPIScore.modifytime != null" >
+        modifytime = #{performanceKPIScore.modifytime},
+      </if>
+      <if test="performanceKPIScore.audituserid != null" >
+        audituserid = #{performanceKPIScore.audituserid},
+      </if>
+      <if test="performanceKPIScore.auditusername != null" >
+        auditusername = #{performanceKPIScore.auditusername},
+      </if>
+      <if test="performanceKPIScore.audittime != null" >
+        audittime = #{performanceKPIScore.audittime},
+      </if>
+    </set>
+    where 
+	<trim prefixOverrides="and|or" >
+		<if test="id != null" >
+	    	and id = #{id}
+      	</if>
+  		<if test="notAudit!=null">
+  			and (status!='3' or status is null)
+  		</if>
+  		<if test="isAudit!=null">
+  			and status='3'
+  		</if>
+  		<if test="dataAuthSql != null">
+  			and ${dataAuthSql}
+  		</if>    
+	</trim>
+  </update>
+  <select id="getPerformanceKPIScorePageList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.report.model.PerformanceKPIScore">
+  	select 
+  	<include refid="PerformanceKPIScore_Base_Column_List"/>
+  	from t_report_performance_kpiscore
+  	<trim prefix="where" prefixOverrides="and|or" >
+      	<include refid="PerformanceKPIScorePageList_Where_Clause" />
+  		<include refid="common.Page_dataSql"/>
+  	</trim>
+  	<choose>
+		<when test="condition.isPageflag !='true'">
+			<include refid="common.Page_limit" />
+		</when>
+		<when test="condition.showOrderOnly == 'true' ">
+			<include refid="common.Page_OrderOnly" />
+		</when>
+	</choose>
+  </select>
+  <select id="getPerformanceKPIScorePageCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  	select 
+  	count(*)
+  	from t_report_performance_kpiscore
+  	<trim prefix="where" prefixOverrides="and|or" >
+      	<include refid="PerformanceKPIScorePageList_Where_Clause" />
+  		<include refid="common.Page_dataSql"/>
+  	</trim>
+  </select>
+  <select id="getPerformanceKPIScorePageSum" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.report.model.PerformanceKPIScore">
+  	select   	
+    SUM(salesamountindex) AS salesamountindex, SUM(salesamount) AS salesamount, SUM(mlamountindex) AS mlamountindex, 
+    SUM(mlamount) AS mlamount,SUM(bonus) AS bonus
+  	from t_report_performance_kpiscore
+  	<trim prefix="where" prefixOverrides="and|or" >
+      	<include refid="PerformanceKPIScorePageList_Where_Clause" />
+  		<include refid="common.Page_dataSql"/>
+  	</trim>
+  </select>
+  <delete id="deletePerformanceKPIScore" parameterType="java.lang.String">
+  	delete from t_report_performance_kpiscore where id = #{id} 
+  </delete> 
+  <delete id="deletePerformanceKPIScoreBy" parameterType="Map">
+  	delete from t_report_performance_kpiscore
+	where
+  	<trim prefixOverrides="and|or" >
+  		<if test="id != null" >
+	    	and id = #{id}
+  		</if>
+  		<if test="notAudit != null" >
+	    	and ( status !='3' or status!='4' or status is null)
+  		</if>
+  	</trim>
+  </delete> 
+  
+  <!--部门业绩考核报表-->  
+  <sql id="PerformanceKPIScoreReport_Sql">
+  	select   		
+	    id,year, month, businessdate, deptid,status, adduserid, addusername, addtime, salesamountindex, salesamount, salesamountscore, 
+	    salesamountindexscore, salesamountindexvalue, mlamountindex, mlamount, mlamountscore, 
+	    mlrateindex, mlrate, mlratescore, mlscore, mlindexscore, mlindexvalue, kczlrsindex, 
+	    kczlrs, kczlrsscore, kczlindexscore, kczlindexvalue, fyrateindex, fyrate, fyratescore, 
+	    fyrateindexscore, fyrateindexvalue, totalscore, bonus
+	from t_report_performance_kpiscore
+	<trim prefix="where" prefixOverrides="and|or" >
+      	<if test="condition.year != null">
+	  		and year=#{condition.year}
+	  	</if>
+	  	<if test="condition.deptid !=null">
+	  		and deptid=#{condition.deptid}
+	  	</if>
+	  	<if test="1==1">
+	  		and (status='3' or status='4')
+	  	</if>
+  		<include refid="common.Page_dataSql"/>
+  	</trim>
+  </sql>
+  
+  <select id="getPerformanceKPIScoreReportList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.report.model.PerformanceKPIScore">
+  	
+  	<include refid="PerformanceKPIScoreReport_Sql"></include>  
+  	<choose>
+		<when test="condition.isPageflag !='true'">
+			<include refid="common.Page_limit" />
+		</when>
+		<when test="condition.showOrderOnly == 'true' ">
+			<include refid="common.Page_OrderOnly" />
+		</when>
+	</choose>
+  </select>
+  <select id="getPerformanceKPIScoreReportCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  	select 
+  	count(*)
+  	from (
+  		<include refid="PerformanceKPIScoreReport_Sql"></include>  
+  	) t
+  </select>
+  <select id="getPerformanceKPIScoreReportSum" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.report.model.PerformanceKPIScore">
+  	select   	
+    SUM(salesamountindex) AS salesamountindex, SUM(salesamount) AS salesamount, SUM(mlamountindex) AS mlamountindex, 
+    SUM(mlamount) AS mlamount,SUM(bonus) AS bonus
+  	from t_report_performance_kpiscore
+  	<trim prefix="where" prefixOverrides="and|or" >
+      	<if test="condition.year != null">
+	  		and year=#{condition.year}
+	  	</if>
+	  	<if test="condition.deptid !=null">
+	  		and deptid=#{condition.deptid}
+	  	</if>
+	  	<if test="1==1">
+	  		and (status='3' or status='4')
+	  	</if>
+  		<include refid="common.Page_dataSql"/>
+  	</trim>
+  </select>
+  
+</mapper>

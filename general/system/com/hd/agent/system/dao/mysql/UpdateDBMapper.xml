@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.system.dao.UpdateDBMapper">
+
+	<sql id="UpdateDBBase_Column_List" >
+		id, name, addtime
+	</sql>
+	<insert id="addUpdateDBLog" parameterType="com.hd.agent.system.model.UpdateDB" >
+		insert into t_sys_update_db
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+			<if test="1==1">
+				addtime,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id},
+			</if>
+			<if test="name != null">
+				#{name},
+			</if>
+			<if test="1==1">
+				now(),
+			</if>
+		</trim>
+	</insert>
+	<select id="getUpdateDBByName" parameterType="java.lang.String" resultType="com.hd.agent.system.model.UpdateDB">
+		select id,name,addtime from t_sys_update_db where name=#{name}
+	</select>
+	<select id="isHasUpdateDB" resultType="int">
+		select count(1) from INFORMATION_SCHEMA.TABLES where table_name ='t_sys_update_db' and TABLE_SCHEMA=database()
+	</select>
+	<update id="createUpdateDB">
+		CREATE TABLE t_sys_update_db (
+		  id int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+		  name varchar(200) DEFAULT '' COMMENT '更新sql文件名',
+		  addtime datetime DEFAULT NULL COMMENT '执行时间',
+		  PRIMARY KEY (`id`)
+		) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='数据库结构更新日志'
+	</update>
+
+	<sql id="updatedb_where_clause">
+		<if test="condition.addtimestart != null">
+			<![CDATA[and STR_TO_DATE(#{condition.addtimestart},'%Y-%m-%d') <= date_format(addtime,'%Y-%m-%d')]]>
+		</if>
+		<if test="condition.addtimeend != null">
+			<![CDATA[and STR_TO_DATE(#{condition.addtimeend},'%Y-%m-%d') >= date_format(addtime,'%Y-%m-%d')]]>
+		</if>
+		<if test="condition.name != null">
+			and name like CONCAT('%',#{condition.name},'%')
+		</if>
+	</sql>
+
+	<select id="getUpdateDBPageList" resultType="com.hd.agent.system.model.UpdateDB" parameterType="com.hd.agent.common.util.PageMap">
+		select
+		<include refid="UpdateDBBase_Column_List"/>
+		from t_sys_update_db
+		<trim prefix="where" prefixOverrides="and|or">
+			<include refid="updatedb_where_clause" />
+		</trim>
+		<include refid="common.Page_limit"/>
+	</select>
+	<select id="getUpdateDBCount" resultType="int" parameterType="com.hd.agent.common.util.PageMap">
+		select count(1) from t_sys_update_db
+		<trim prefix="where" prefixOverrides="and|or">
+			<include refid="updatedb_where_clause" />
+		</trim>
+	</select>
+</mapper>

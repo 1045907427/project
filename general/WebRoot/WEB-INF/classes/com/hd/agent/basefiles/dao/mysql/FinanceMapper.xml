@@ -1,0 +1,1190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.basefiles.dao.FinanceMapper" >
+	<cache type="org.mybatis.caches.ehcache.EhcacheCache"></cache>
+  <!-- 税种档案 -->
+  <resultMap id="TaxTypeResultMap" type="com.hd.agent.basefiles.model.TaxType" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="CHAR" />
+    <result column="rate" property="rate" jdbcType="DECIMAL" />
+    <result column="state" property="state" jdbcType="CHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="adduserid" property="adduserid" jdbcType="VARCHAR" />
+    <result column="addusername" property="addusername" jdbcType="VARCHAR" />
+    <result column="adddeptid" property="adddeptid" jdbcType="VARCHAR" />
+    <result column="adddeptname" property="adddeptname" jdbcType="VARCHAR" />
+    <result column="addtime" property="addtime" jdbcType="TIMESTAMP" />
+    <result column="modifyuserid" property="modifyuserid" jdbcType="VARCHAR" />
+    <result column="modifyusername" property="modifyusername" jdbcType="VARCHAR" />
+    <result column="modifytime" property="modifytime" jdbcType="TIMESTAMP" />
+    <result column="openuserid" property="openuserid" jdbcType="VARCHAR" />
+    <result column="openusername" property="openusername" jdbcType="VARCHAR" />
+    <result column="opentime" property="opentime" jdbcType="TIMESTAMP" />
+    <result column="closeuserid" property="closeuserid" jdbcType="VARCHAR" />
+    <result column="closeusername" property="closeusername" jdbcType="VARCHAR" />
+    <result column="closetime" property="closetime" jdbcType="TIMESTAMP" />
+      <result column="jsrateid" property="jsrateid" jdbcType="VARCHAR" />
+      <result column="jsflag" property="jsflag" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="TaxType_Column_List" >
+  	id, name, type, rate, state, remark, adduserid, addusername, adddeptid, adddeptname, 
+    addtime, modifyuserid, modifyusername, modifytime, openuserid, openusername, opentime, 
+    closeuserid, closeusername, closetime,jsrateid,jsflag
+  </sql>
+    <sql id="taxTypeListWhere_Clause">
+        <if test="condition.id != null">
+            and id = #{condition.id}
+        </if>
+        <if test="condition.name != null" >
+            and name like CONCAT('%',#{condition.name},'%')
+        </if>
+        <if test="condition.state != null" >
+            and state = #{condition.state}
+        </if>
+        <if test="condition.jsrateid != null">
+            and jsrateid = #{condition.jsrateid}
+        </if>
+        <if test="condition.jsflag != null">
+            and jsflag = #{condition.jsflag}
+        </if>
+    </sql>
+  <!-- 获取税种档案列表 -->
+  <select id="getTaxTypeList" parameterType="com.hd.agent.common.util.PageMap" resultMap="TaxTypeResultMap">
+  	select
+  	<include refid="TaxType_Column_List"/>
+  	from t_base_finance_taxtype
+  	<trim prefix="where" prefixOverrides="and|or">
+        <include refid="taxTypeListWhere_Clause" />
+      <include refid="common.Page_querySql"/>
+      <include refid="common.Page_dataSql"/>
+  	</trim>
+  	<include refid="common.Page_limit" />
+  </select>
+  <!-- 获取税种档案列表数据数量 -->
+  <select id="getTaxTypeListCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  	select count(1) from t_base_finance_taxtype
+  	<trim prefix="where" prefixOverrides="and|or">
+        <include refid="taxTypeListWhere_Clause" />
+      <include refid="common.Page_querySql"/>
+      <include refid="common.Page_dataSql"/>
+  	</trim>
+  </select>
+  <!-- 获取税种档案所有列表数据 -->
+  <select id="getTaxTypeListData" resultMap="TaxTypeResultMap">
+  	select 
+  	<include refid="TaxType_Column_List"/> 
+  	from t_base_finance_taxtype
+  </select>
+  <!-- 新增税种 -->
+  <insert id="addTaxType" parameterType="com.hd.agent.basefiles.model.TaxType">
+  	insert into t_base_finance_taxtype
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      id,
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="rate != null" >
+        rate,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="adduserid != null" >
+        adduserid,
+      </if>
+      <if test="addusername != null" >
+        addusername,
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid,
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname,
+      </if>
+      <if test="1 == 1" >
+        addtime,
+      </if>
+        <if test="jsrateid != null" >
+            jsrateid,
+        </if>
+        <if test="jsflag != null" >
+            jsflag,
+        </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <choose>
+      	<when test="id != null">
+      		#{id},
+      	</when>
+      	<otherwise>
+      		uuid_short(),
+      	</otherwise>
+      </choose>
+      <if test="name != null" >
+        #{name},
+      </if>
+      <if test="type != null" >
+        #{type},
+      </if>
+      <if test="rate != null" >
+        #{rate},
+      </if>
+      <if test="state != null" >
+        #{state},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+      <if test="adduserid != null" >
+        #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        #{adddeptname},
+      </if>
+      <if test="1 == 1" >
+        now(),
+      </if>
+        <if test="jsrateid != null" >
+            #{jsrateid},
+        </if>
+        <if test="jsflag != null" >
+            #{jsflag},
+        </if>
+    </trim>
+  </insert>
+  <!-- 修改税种 -->
+  <update id="editTaxType" parameterType="com.hd.agent.basefiles.model.TaxType">
+  	update t_base_finance_taxtype
+    <set >
+      <if test="id != null" >
+        id = #{id},
+      </if>
+      <if test="name != null" >
+        name = #{name},
+      </if>
+      <if test="type != null" >
+        type = #{type},
+      </if>
+      <if test="rate != null" >
+        rate = #{rate},
+      </if>
+      <if test="state != null" >
+        state = #{state},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark},
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid = #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername = #{modifyusername},
+      </if>
+      <if test="1 == 1" >
+        modifytime = now(),
+      </if>
+        <if test="jsrateid != null" >
+            jsrateid=#{jsrateid},
+        </if>
+        <if test="jsflag != null" >
+            jsflag=#{jsflag},
+        </if>
+    </set>
+    where id = #{oldId}
+  </update>
+  <!-- 删除税种 -->
+  <delete id="deleteTaxType" parameterType="java.lang.String">
+  	delete from t_base_finance_taxtype
+    where id = #{id}
+  </delete>
+  <!-- 启用税种 -->
+  <update id="enableTaxType" parameterType="com.hd.agent.basefiles.model.TaxType">
+  	update t_base_finance_taxtype 
+  	set state = '1',
+  		openuserid = #{openuserid},
+  		openusername = #{openusername},
+  		opentime = now()
+  	where id = #{id}
+  </update>
+  <!-- 禁用税种 -->
+  <update id="disableTaxType" parameterType="com.hd.agent.basefiles.model.TaxType">
+  	update t_base_finance_taxtype
+  	set state = '0',
+  		closeuserid = #{closeuserid},
+  		closeusername = #{closeusername},
+  		closetime = now()
+  	where id = #{id}
+  </update>
+  <!-- 根据编码获取税种信息 -->
+  <select id="getTaxTypeInfo" parameterType="java.lang.String" resultMap="TaxTypeResultMap">
+  	select 
+  	<include refid="TaxType_Column_List"/>
+  	from t_base_finance_taxtype
+  	where id = #{id}
+  </select>
+  <!-- 名称是否被使用 -->
+  <select id="isUsedName" parameterType="java.lang.String" resultType="int">
+  	select count(1) from t_base_finance_taxtype where name = #{name}
+  </select>
+  <!-- 税率是否被使用 -->
+  <select id="isUsedRate" parameterType="java.lang.String" resultType="int">
+  	select count(1) from t_base_finance_taxtype where rate = #{rate}
+  </select>
+  <select id="returnTaxIdByName" parameterType="java.lang.String" resultType="com.hd.agent.basefiles.model.TaxType">
+  	select * from t_base_finance_taxtype where name = #{name}
+  </select>
+  <!-- 结算方式 -->
+  
+  <resultMap id="SettlementResultMap" type="com.hd.agent.basefiles.model.Settlement" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="CHAR" />
+    <result column="days" property="days" jdbcType="DECIMAL" />
+    <result column="state" property="state" jdbcType="CHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="adduserid" property="adduserid" jdbcType="VARCHAR" />
+    <result column="addusername" property="addusername" jdbcType="VARCHAR" />
+    <result column="adddeptid" property="adddeptid" jdbcType="VARCHAR" />
+    <result column="adddeptname" property="adddeptname" jdbcType="VARCHAR" />
+    <result column="addtime" property="addtime" jdbcType="TIMESTAMP" />
+    <result column="modifyuserid" property="modifyuserid" jdbcType="VARCHAR" />
+    <result column="modifyusername" property="modifyusername" jdbcType="VARCHAR" />
+    <result column="modifytime" property="modifytime" jdbcType="TIMESTAMP" />
+    <result column="openuserid" property="openuserid" jdbcType="VARCHAR" />
+    <result column="openusername" property="openusername" jdbcType="VARCHAR" />
+    <result column="opentime" property="opentime" jdbcType="TIMESTAMP" />
+    <result column="closeuserid" property="closeuserid" jdbcType="VARCHAR" />
+    <result column="closeusername" property="closeusername" jdbcType="VARCHAR" />
+    <result column="closetime" property="closetime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Settlement_Column_List" >
+  	<choose>
+		<when test="cols!=null">
+			<include refid="common.Page_Column"/>
+		</when>
+		<when test="cols==null">
+		    id, name, type, days, state, remark, adduserid, addusername, adddeptid, adddeptname, 
+		    addtime, modifyuserid, modifyusername, modifytime, openuserid, openusername, opentime, 
+		    closeuserid, closeusername, closetime
+	    </when>
+	</choose>
+  </sql>
+  <!-- 获取结算方式列表 -->
+  <select id="getSettlementListPage" parameterType="com.hd.agent.common.util.PageMap" resultMap="SettlementResultMap">
+  	select
+  	<include refid="Settlement_Column_List"/>
+  	from t_base_finance_settlement
+  	<trim prefix="where" prefixOverrides="and|or" >
+  		<include refid="common.Page_dataSql"/>
+  		<include refid="common.Page_querySql"/>
+  	</trim>
+  	<include refid="common.Page_limit" />
+  </select>
+  <!-- 获取结算方式列表数量 -->
+  <select id="getSettlementListCountPage" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  	select count(1) from t_base_finance_settlement
+  	<trim prefix="where" prefixOverrides="and|or" >
+  		<include refid="common.Page_dataSql"/>
+  		<include refid="common.Page_querySql"/>
+  	</trim>
+  </select>
+  <!-- 获取结算方式所有列表数据 -->
+  <select id="getSettlementListData" resultMap="SettlementResultMap">
+  	select * from t_base_finance_settlement
+  </select>
+  <select id="returnSettlementListByName" resultMap="SettlementResultMap" parameterType="java.lang.String">
+  	select * from t_base_finance_settlement where name = #{name}
+  </select>
+  <!-- 获取结算方式详情 -->
+  <select id="getSettlemetDetail" parameterType="map" resultMap="SettlementResultMap">
+  	select  <include refid="Settlement_Column_List"/>
+  	from t_base_finance_settlement
+  	where id = #{id}
+  </select>
+  <select id="getSettlementListByName" parameterType="java.lang.String" resultMap="SettlementResultMap">
+  	select id, name, type, days, state, remark, adduserid, addusername, adddeptid, adddeptname, 
+    addtime, modifyuserid, modifyusername, modifytime, openuserid, openusername, opentime, 
+    closeuserid, closeusername, closetime
+  	from t_base_finance_settlement
+  	where name = #{name}
+  	limit 1
+  </select>
+  <!-- 验证结算方式名称是否被使用 -->
+  <select id="isUsedSettlementName" parameterType="java.lang.String" resultType="int">
+  	select count(1) from t_base_finance_settlement where name = #{name}
+  </select>
+  <!-- 新增结算方式 -->
+  <insert id="addSettlement" parameterType="com.hd.agent.basefiles.model.Settlement">
+  	insert into t_base_finance_settlement
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      id,
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="days != null" >
+        days,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="adduserid != null" >
+        adduserid,
+      </if>
+      <if test="addusername != null" >
+        addusername,
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid,
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname,
+      </if>
+      <if test="1 == 1" >
+        addtime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <choose>
+      	<when test="id != null">
+      		#{id},
+      	</when>
+      	<otherwise>
+      		uuid_short(),
+      	</otherwise>
+      </choose>
+      <if test="name != null" >
+        #{name},
+      </if>
+      <if test="type != null" >
+        #{type},
+      </if>
+      <if test="days != null" >
+        #{days},
+      </if>
+      <if test="state != null" >
+        #{state},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+      <if test="adduserid != null" >
+        #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        #{adddeptname},
+      </if>
+      <if test="1 == 1" >
+        now(),
+      </if>
+    </trim>
+  </insert>
+  <!-- 修改结算方式 -->
+  <update id="editSettlement" parameterType="com.hd.agent.basefiles.model.Settlement">
+  	update t_base_finance_settlement
+    <set >
+      <if test="id != null" >
+        id = #{id},
+      </if>
+      <if test="name != null" >
+        name = #{name},
+      </if>
+      <if test="type != null" >
+        type = #{type},
+      </if>
+      <if test="days != null" >
+        days = #{days},
+      </if>
+      <if test="state != null" >
+        state = #{state},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark},
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid = #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername = #{modifyusername},
+      </if>
+      <if test="1 == 1" >
+        modifytime = now(),
+      </if>
+    </set>
+    where id = #{oldId}
+  </update>
+  <!-- 删除结算方式 -->
+  <delete id="deleteSettlement" parameterType="java.lang.String">
+  	delete from t_base_finance_settlement
+    where id = #{id}
+  </delete>
+  <!-- 启用结算方式 -->
+  <update id="enableSettlement" parameterType="com.hd.agent.basefiles.model.Settlement">
+  	update t_base_finance_settlement
+  	set openuserid = #{openuserid},
+    	openusername = #{openusername},
+      state = '1',
+      opentime = now()
+    where id = #{id}
+  </update>
+  <!-- 禁用结算方式 -->
+  <update id="disableSettlement" parameterType="com.hd.agent.basefiles.model.Settlement">
+  	update t_base_finance_settlement
+  	set closeuserid = #{closeuserid},
+      closeusername = #{closeusername},
+      state = '0',
+      closetime = now()
+    where id = #{id}
+  </update>
+  
+  <!-- 支付方式 -->
+  <resultMap id="PaymentResultMap" type="com.hd.agent.basefiles.model.Payment" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="CHAR" />
+    <result column="relevancebank" property="relevancebank" jdbcType="CHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="adduserid" property="adduserid" jdbcType="VARCHAR" />
+    <result column="addusername" property="addusername" jdbcType="VARCHAR" />
+    <result column="adddeptid" property="adddeptid" jdbcType="VARCHAR" />
+    <result column="adddeptname" property="adddeptname" jdbcType="VARCHAR" />
+    <result column="addtime" property="addtime" jdbcType="TIMESTAMP" />
+    <result column="modifyuserid" property="modifyuserid" jdbcType="VARCHAR" />
+    <result column="modifyusername" property="modifyusername" jdbcType="VARCHAR" />
+    <result column="modifytime" property="modifytime" jdbcType="TIMESTAMP" />
+    <result column="openuserid" property="openuserid" jdbcType="VARCHAR" />
+    <result column="openusername" property="openusername" jdbcType="VARCHAR" />
+    <result column="opentime" property="opentime" jdbcType="TIMESTAMP" />
+    <result column="closeuserid" property="closeuserid" jdbcType="VARCHAR" />
+    <result column="closeusername" property="closeusername" jdbcType="VARCHAR" />
+    <result column="closetime" property="closetime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Payment_Column_List" >
+  	<choose>
+		<when test="cols!=null">
+			<include refid="common.Page_Column"/>
+		</when>
+		<when test="cols==null">
+		    id, name, relevancebank, state, remark, adduserid, addusername, 
+		    adddeptid, adddeptname, addtime, modifyuserid, modifyusername, modifytime, openuserid, 
+		    openusername, opentime, closeuserid, closeusername, closetime
+	    </when>
+	</choose>
+  </sql>
+  <select id="returnPaymentIdByName" parameterType="java.lang.String" resultType="com.hd.agent.basefiles.model.Payment">
+  	select * from t_base_finance_payment where name = #{name}
+  </select>
+  <!-- 获取支付方式列表 -->
+  <select id="getPaymentListPage" parameterType="com.hd.agent.common.util.PageMap" resultMap="PaymentResultMap">
+  	select
+  	<include refid="Payment_Column_List"/>
+  	from t_base_finance_payment
+  	<trim prefix="where" prefixOverrides="and|or" >
+  		<include refid="common.Page_dataSql"/>
+  		<include refid="common.Page_querySql"/>
+  	</trim>
+  	<include refid="common.Page_limit" />
+  </select>
+  <!-- 获取支付方式列表数量 -->
+  <select id="getPaymentListPageCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  	select count(1) from t_base_finance_payment
+  	<trim prefix="where" prefixOverrides="and|or" >
+  		<include refid="common.Page_dataSql"/>
+  		<include refid="common.Page_querySql"/>
+  	</trim>
+  </select>
+  <!-- 获取支付方式所有列表数据 -->
+  <select id="getPaymentListData" resultMap="PaymentResultMap">
+  	select * from t_base_finance_payment
+  </select>
+  <!-- 获取支付方式详情 -->
+  <select id="getPaymentDetail" parameterType="map" resultMap="PaymentResultMap">
+  	select
+  	<include refid="Payment_Column_List"/>
+  	from t_base_finance_payment
+  	where id = #{id}
+  </select>
+  <!-- 验证支付方式名称是否被使用 -->
+  <select id="isUsedPaymentName" parameterType="java.lang.String" resultType="int">
+  	select count(1) from t_base_finance_payment where name = #{name}
+  </select>
+  <!-- 新增支付方式 -->
+  <insert id="addPayment" parameterType="com.hd.agent.basefiles.model.Payment">
+  	insert into t_base_finance_payment
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      id,
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="relevancebank != null" >
+        relevancebank,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="adduserid != null" >
+        adduserid,
+      </if>
+      <if test="addusername != null" >
+        addusername,
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid,
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname,
+      </if>
+      <if test="1 == 1" >
+        addtime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <choose>
+      	<when test="id != null">
+      		#{id},
+      	</when>
+      	<otherwise>
+      		uuid_short(),
+      	</otherwise>
+      </choose>
+      <if test="name != null" >
+        #{name},
+      </if>
+      <if test="relevancebank != null" >
+        #{relevancebank},
+      </if>
+      <if test="state != null" >
+        #{state},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+      <if test="adduserid != null" >
+        #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        #{adddeptname},
+      </if>
+      <if test="1 == 1" >
+        now(),
+      </if>
+    </trim>
+  </insert>
+  <!-- 修改支付方式 -->
+  <update id="editPayment" parameterType="com.hd.agent.basefiles.model.Payment">
+  	update t_base_finance_payment
+    <set >
+      <if test="id != null" >
+        id = #{id},
+      </if>
+      <if test="name != null" >
+        name = #{name},
+      </if>
+      <if test="relevancebank != null" >
+        relevancebank = #{relevancebank},
+      </if>
+      <if test="state != null" >
+        state = #{state},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark},
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid = #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername = #{modifyusername},
+      </if>
+      <if test="modifytime != null" >
+        modifytime = now(),
+      </if>
+    </set>
+    where id = #{oldId}
+  </update>
+  <!-- 删除支付方式 -->
+  <delete id="deletePayment" parameterType="java.lang.String">
+  	delete from t_base_finance_payment
+    where id = #{id}
+  </delete>
+  <!-- 启用支付方式 -->
+  <update id="enablePayment" parameterType="com.hd.agent.basefiles.model.Payment">
+  	update t_base_finance_payment
+  	set openuserid = #{openuserid},
+    	openusername = #{openusername},
+      state = '1',
+      opentime = now()
+    where id = #{id}
+  </update>
+  <!-- 禁用支付方式 -->
+  <update id="disablePayment" parameterType="com.hd.agent.basefiles.model.Payment">
+  	update t_base_finance_payment
+  	set closeuserid = #{closeuserid},
+      closeusername = #{closeusername},
+      state = '0',
+      closetime = now()
+    where id = #{id}
+  </update>
+  
+  <!-- 费用分类 -->
+  
+  <resultMap id="ExpensesSortResultMap" type="com.hd.agent.basefiles.model.ExpensesSort" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="thisid" property="thisid" jdbcType="VARCHAR" />
+    <result column="thisname" property="thisname" jdbcType="VARCHAR" />
+    <result column="pid" property="pid" jdbcType="VARCHAR" />
+    <result column="accountingsubject" property="accountingsubject" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="CHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="adduserid" property="adduserid" jdbcType="VARCHAR" />
+    <result column="addusername" property="addusername" jdbcType="VARCHAR" />
+    <result column="adddeptid" property="adddeptid" jdbcType="VARCHAR" />
+    <result column="adddeptname" property="adddeptname" jdbcType="VARCHAR" />
+    <result column="addtime" property="addtime" jdbcType="TIMESTAMP" />
+    <result column="modifyuserid" property="modifyuserid" jdbcType="VARCHAR" />
+    <result column="modifyusername" property="modifyusername" jdbcType="VARCHAR" />
+    <result column="modifytime" property="modifytime" jdbcType="TIMESTAMP" />
+    <result column="openuserid" property="openuserid" jdbcType="VARCHAR" />
+    <result column="openusername" property="openusername" jdbcType="VARCHAR" />
+    <result column="opentime" property="opentime" jdbcType="TIMESTAMP" />
+    <result column="closeuserid" property="closeuserid" jdbcType="VARCHAR" />
+    <result column="closeusername" property="closeusername" jdbcType="VARCHAR" />
+    <result column="closetime" property="closetime" jdbcType="TIMESTAMP" />
+    <result column="leaf" jdbcType="CHAR" property="leaf" />
+  </resultMap>
+  <sql id="ExpensesSort_Column_List" >
+  	<choose>
+		<when test="cols!=null">
+			<include refid="common.Page_Column"/>
+		</when>
+		<when test="cols==null">
+		    id, name, thisid, thisname, pid, accountingsubject, state, remark, adduserid, addusername, 
+		    adddeptid, adddeptname, addtime, modifyuserid, modifyusername, modifytime, openuserid, 
+		    openusername, opentime, closeuserid, closeusername, closetime, leaf
+	    </when>
+	</choose>
+  </sql>
+  <!-- 获取费用分类列表 -->
+  <select id="getExpensesSortList" resultMap="ExpensesSortResultMap" parameterType="com.hd.agent.common.util.PageMap">
+  	select
+  	<include refid="ExpensesSort_Column_List"/>
+  	from t_base_finance_expenses_sort
+  	<trim prefix="where" prefixOverrides="and|or" >
+		<include refid="common.Page_dataSql"/>
+	</trim>
+  </select>
+  <!-- 获取支付方式所有列表数据 -->
+  <select id="getExpensesSortListData" resultMap="ExpensesSortResultMap">
+  	select * from t_base_finance_expenses_sort
+  </select>
+  <!-- 获取费用分类详情 -->
+  <select id="getExpensesSortDetail" resultMap="ExpensesSortResultMap" parameterType="map">
+  	select
+  	<include refid="ExpensesSort_Column_List"/>
+  	from t_base_finance_expenses_sort
+  	where id = #{id}
+  </select>
+  <!-- 获取父节点及其所有子节点 -->
+  <select id="getExpensesSortParentAllChildren" resultMap="ExpensesSortResultMap" parameterType="com.hd.agent.common.util.PageMap">
+  	select
+  	<include refid="ExpensesSort_Column_List"/>
+  	from t_base_finance_expenses_sort
+  	<trim prefix="where" prefixOverrides="and|or" >
+  		<if test="condition.id != null">
+        	id like CONCAT(#{condition.id}, '%')
+        </if>
+		<include refid="common.Page_dataSql"/>
+	</trim>
+  </select>
+  <!-- 删除费用分类 -->
+  <delete id="deleteExpensesSort" parameterType="java.lang.String">
+  	delete from t_base_finance_expenses_sort
+  	where id = #{id}
+  </delete>
+  <!-- 新增费用分类 -->
+  <insert id="addExpensesSort" parameterType="com.hd.agent.basefiles.model.ExpensesSort">
+  	insert into t_base_finance_expenses_sort
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="thisid != null" >
+        thisid,
+      </if>
+      <if test="thisname != null" >
+        thisname,
+      </if>
+      <if test="pid != null" >
+        pid,
+      </if>
+      <if test="accountingsubject != null" >
+        accountingsubject,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="adduserid != null" >
+        adduserid,
+      </if>
+      <if test="addusername != null" >
+        addusername,
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid,
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname,
+      </if>
+      <if test="1 == 1" >
+        addtime,
+      </if>
+      <if test="leaf != null" >
+        leaf,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="name != null" >
+        #{name},
+      </if>
+      <if test="thisid != null" >
+        #{thisid},
+      </if>
+      <if test="thisname != null" >
+        #{thisname},
+      </if>
+      <if test="pid != null" >
+        #{pid},
+      </if>
+      <if test="accountingsubject != null" >
+        #{accountingsubject},
+      </if>
+      <if test="state != null" >
+        #{state},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+      <if test="adduserid != null" >
+        #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        #{adddeptname},
+      </if>
+      <if test="1 == 1" >
+        now(),
+      </if>
+      <if test="leaf != null" >
+        #{leaf},
+      </if>
+    </trim>
+  </insert>
+  <!-- 修改费用分类 -->
+  <update id="editExpensesSort" parameterType="com.hd.agent.basefiles.model.ExpensesSort">
+  	update t_base_finance_expenses_sort
+    <set >
+      <if test="id != null" >
+        id = #{id},
+      </if>
+      <if test="name != null" >
+        name = #{name},
+      </if>
+      <if test="thisid != null" >
+        thisid = #{thisid},
+      </if>
+      <if test="thisname != null" >
+        thisname = #{thisname},
+      </if>
+      <if test="pid != null" >
+        pid = #{pid},
+      </if>
+      <if test="accountingsubject != null" >
+        accountingsubject = #{accountingsubject},
+      </if>
+      <if test="state != null" >
+        state = #{state},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark},
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid = #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername = #{modifyusername},
+      </if>
+      <if test="1 == 1" >
+        modifytime = now(),
+      </if>
+      <if test="leaf != null" >
+        leaf = #{leaf},
+      </if>
+    </set>
+    where id = #{oldId}
+  </update>
+  <!-- 启用费用分类 -->
+  <update id="enableExpensesSort" parameterType="com.hd.agent.basefiles.model.ExpensesSort">
+  	update t_base_finance_expenses_sort
+  	set openuserid = #{openuserid},
+    	openusername = #{openusername},
+      state = '1',
+      opentime = now()
+    where id = #{id}
+  </update>
+  <!-- 禁用费用分类 -->
+  <update id="disableExpensesSort" parameterType="com.hd.agent.basefiles.model.ExpensesSort">
+  	update t_base_finance_expenses_sort
+  	set closeuserid = #{closeuserid},
+      closeusername = #{closeusername},
+      state = '0',
+      closetime = now()
+    where id = #{id}
+  </update>
+  <!-- 检验费用分类名称是否被使用 -->
+  <select id="isUsedExpensesSortName" parameterType="java.lang.String" resultType="int">
+  	select count(1) from t_base_finance_expenses_sort where name = #{name}
+  </select>
+  <!-- 费用分类是否为末及标志 -->
+  <select id="isLeafExpensesSort" parameterType="java.lang.String" resultType="java.lang.String">
+  	select distinct pid from t_base_finance_expenses_sort where pid = #{id}
+  </select>
+  <!-- 获取状态不为暂存的费用分类列表 -->
+  <select id="getExpensesSortByStateList" resultMap="ExpensesSortResultMap">
+  	select 
+  	<include refid="ExpensesSort_Column_List"/>
+	from t_base_finance_expenses_sort
+	where state != '3'
+  </select>
+  <select id="getExpensesSortChildList" parameterType="java.lang.String" resultType="com.hd.agent.basefiles.model.ExpensesSort">
+  	select * from t_base_finance_expenses_sort
+  	where pid like concat(#{pid},'%')
+  </select>
+  <update id="editExpensesSortBatch" parameterType="java.util.List">
+  	<foreach collection="list" index="index" item="item">
+  		update t_base_finance_expenses_sort
+	  	<set >
+	      <if test="item.id != null" >
+	        id = #{item.id},
+	      </if>
+	      <if test="item.name != null" >
+	        name = #{item.name},
+	      </if>
+	      <if test="item.thisid != null" >
+	        thisid = #{item.thisid},
+	      </if>
+	      <if test="item.thisname != null" >
+	        thisname = #{item.thisname},
+	      </if>
+	      <if test="item.pid != null" >
+	        pid = #{item.pid},
+	      </if>
+	    </set>
+	    where id = #{item.oldId};
+  	</foreach>
+  </update>
+    <select id="getExpensesSortWithoutName" resultType="com.hd.agent.basefiles.model.ExpensesSort">
+        select * from t_base_finance_expenses_sort WHERE name = '' order by id
+    </select>
+  
+  <!-- 银行档案 -->
+  <resultMap id="BankResultMap" type="com.hd.agent.basefiles.model.Bank" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="account" property="account" jdbcType="VARCHAR" />
+    <result column="opendate" property="opendate" jdbcType="VARCHAR" />
+    <result column="bankdeptid" property="bankdeptid" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="CHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="adduserid" property="adduserid" jdbcType="VARCHAR" />
+    <result column="addusername" property="addusername" jdbcType="VARCHAR" />
+    <result column="adddeptid" property="adddeptid" jdbcType="VARCHAR" />
+    <result column="adddeptname" property="adddeptname" jdbcType="VARCHAR" />
+    <result column="addtime" property="addtime" jdbcType="TIMESTAMP" />
+    <result column="modifyuserid" property="modifyuserid" jdbcType="VARCHAR" />
+    <result column="modifyusername" property="modifyusername" jdbcType="VARCHAR" />
+    <result column="modifytime" property="modifytime" jdbcType="TIMESTAMP" />
+    <result column="openuserid" property="openuserid" jdbcType="VARCHAR" />
+    <result column="openusername" property="openusername" jdbcType="VARCHAR" />
+    <result column="opentime" property="opentime" jdbcType="TIMESTAMP" />
+    <result column="closeuserid" property="closeuserid" jdbcType="VARCHAR" />
+    <result column="closeusername" property="closeusername" jdbcType="VARCHAR" />
+    <result column="closetime" property="closetime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Bank_Column_List" >
+  	<choose>
+		<when test="cols!=null">
+			<include refid="common.Page_Column"/>
+		</when>
+		<when test="cols==null">
+		    id, name, account, opendate, bankdeptid, state, remark, adduserid, addusername, adddeptid, adddeptname, 
+		    addtime, modifyuserid, modifyusername, modifytime, openuserid, openusername, opentime, 
+		    closeuserid, closeusername, closetime
+	    </when>
+	</choose>
+  </sql>
+  <!-- 获取银行档案列表数据分页 -->
+  <select id="getBankListPage" parameterType="com.hd.agent.common.util.PageMap" resultMap="BankResultMap">
+  	select
+  	<include refid="Bank_Column_List"/>
+  	from t_base_finance_bank
+  	<trim prefix="where" prefixOverrides="and|or" >
+  		<include refid="common.Page_dataSql"/>
+  		<include refid="common.Page_querySql"/>
+  		<if test="condition.id != null" >
+         and id like CONCAT('%',#{condition.id}, '%')
+      	</if>
+      	<if test="condition.name != null" >
+         and name like CONCAT('%', CONCAT(#{condition.name}, '%'))
+      	</if>
+      	<if test="condition.account != null" >
+         and account like CONCAT('%', CONCAT(#{condition.account}, '%'))
+      	</if>
+      	<if test="condition.bankdeptid != null" >
+         and bankdeptid = #{condition.bankdeptid}
+      	</if>
+  	</trim>
+  	<include refid="common.Page_limit" />
+  </select>
+  <!-- 获取银行档案列表数据数量 -->
+  <select id="getBankCountPage" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  	select count(1) from t_base_finance_bank
+  	<trim prefix="where" prefixOverrides="and|or" >
+  		<include refid="common.Page_dataSql"/>
+  		<include refid="common.Page_querySql"/>
+  		<if test="condition.id != null" >
+         and id like CONCAT('%',#{condition.id}, '%')
+      	</if>
+      	<if test="condition.name != null" >
+         and name like CONCAT('%', CONCAT(#{condition.name}, '%'))
+      	</if>
+      	<if test="condition.account != null" >
+         and account like CONCAT('%', CONCAT(#{condition.account}, '%'))
+      	</if>
+      	<if test="condition.bankdeptid != null" >
+         and bankdeptid = #{condition.bankdeptid}
+      	</if>
+  	</trim>
+  </select>
+    <!-- 根据银行名称获取银行信息 -->
+    <select id="getBankByName" parameterType="java.lang.String" resultMap="BankResultMap">
+        select * from t_base_finance_bank where name = #{name}
+    </select>
+  <!-- 获取银行档案详情 -->
+  <select id="getBankDetail" parameterType="java.lang.String" resultMap="BankResultMap">
+  	select * from t_base_finance_bank where id = #{id}
+  </select>
+  <!-- 新增银行档案 -->
+  <insert id="addBank" parameterType="com.hd.agent.basefiles.model.Bank">
+  	insert into t_base_finance_bank
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      id,
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="account != null" >
+        account,
+      </if>
+      <if test="opendate != null" >
+        opendate,
+      </if>
+      <if test="bankdeptid != null" >
+        bankdeptid,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="adduserid != null" >
+        adduserid,
+      </if>
+      <if test="addusername != null" >
+        addusername,
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid,
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname,
+      </if>
+      <if test="1 == 1" >
+        addtime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <choose>
+      	<when test="id != null">
+      		#{id},
+      	</when>
+      	<otherwise>
+      		uuid_short(),
+      	</otherwise>
+      </choose>
+      <if test="name != null" >
+        #{name},
+      </if>
+      <if test="account != null" >
+        #{account},
+      </if>
+      <if test="opendate != null" >
+        #{opendate},
+      </if>
+      <if test="bankdeptid != null" >
+        #{bankdeptid},
+      </if>
+      <if test="state != null" >
+        #{state},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+      <if test="adduserid != null" >
+        #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        #{adddeptname},
+      </if>
+      <if test="1 == 1" >
+        now(),
+      </if>
+    </trim>
+  </insert>
+  <!-- 修改银行档案 -->
+  <update id="editBank" parameterType="com.hd.agent.basefiles.model.Bank">
+  	update t_base_finance_bank
+    <set >
+      <if test="id != null" >
+        id = #{id},
+      </if>
+      <if test="name != null" >
+        name = #{name},
+      </if>
+      <if test="account != null" >
+        account = #{account},
+      </if>
+      <if test="opendate != null" >
+        opendate = #{opendate},
+      </if>
+      <if test="bankdeptid != null" >
+        bankdeptid = #{bankdeptid},
+      </if>
+      <if test="state != null" >
+        state = #{state},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark},
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid = #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername = #{modifyusername},
+      </if>
+      <if test="1 == 1" >
+        modifytime = now(),
+      </if>
+    </set>
+    where id = #{oldid}
+  </update>
+  <!-- 删除银行档案 -->
+  <delete id="deleteBank" parameterType="java.lang.String">
+  	delete from t_base_finance_bank
+    where id = #{id}
+  </delete>
+  <!-- 启用银行档案 -->
+  <update id="openBank" parameterType="java.util.Map">
+  	update t_base_finance_bank
+    set state = '1',
+      openuserid = #{openuserid},
+      openusername = #{openusername},
+      opentime = now()
+     where id = #{id}
+  </update>
+  <!-- 禁用银行档案 -->
+  <update id="closeBank" parameterType="java.util.Map">
+  	update t_base_finance_bank
+    set state = '0',
+      closeuserid = #{closeuserid},
+      closeusername = #{closeusername},
+      closetime = now()
+     where id = #{id}
+  </update>
+  <!-- 验证银行编码是否重复 -->
+  <select id="checkBankidUserd" parameterType="java.lang.String" resultType="int">
+  	select count(1) from t_base_finance_bank where id = #{id}
+  </select>
+  <!-- 验证银行名称是否重复 -->
+  <select id="checkBandAccountUserd" parameterType="java.lang.String" resultType="int">
+  	select count(1) from t_base_finance_bank where account = #{account}
+  </select>
+  <!-- 以下方法供手机端使用 -->
+  <select id="getSameFinanceList" resultType="map">
+  	select id, name, '1' type from t_base_finance_settlement where state = '1'
+  	union all
+  	select id, name, '2' type from t_base_finance_payment where state = '1'
+  </select>
+  <select id="getBankList" resultType="com.hd.agent.basefiles.model.Bank">
+  	select
+  	<include refid="Bank_Column_List"/>
+  	from t_base_finance_bank where state='1'
+  </select>
+  <select id="getAllBankList" resultType="com.hd.agent.basefiles.model.Bank">
+  	select
+  	<include refid="Bank_Column_List"/>
+  	from t_base_finance_bank
+  </select>
+</mapper>

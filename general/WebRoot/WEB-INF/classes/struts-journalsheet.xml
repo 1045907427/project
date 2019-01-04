@@ -1,0 +1,1449 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<package name="capitalinput" extends="parent" namespace="/journalsheet/capitalinput">
+	    <!-- 资金录入 -->
+	    <action name="capitalInputPage" class="journalSheetAction" method="capitalInputPage">
+			<result name="success">/journalsheet/capitalinput/capitalInputPage.jsp</result>
+		</action>
+		<action name="capitalInputAddPage" class="journalSheetAction" method="capitalInputAddPage">
+			<result name="success">/journalsheet/capitalinput/capitalInputAddPage.jsp</result>
+		</action>
+		<action name="capitalInputEditPage" class="journalSheetAction" method="capitalInputEditPage">
+			<result name="success">/journalsheet/capitalinput/capitalInputEditPage.jsp</result>
+		</action>
+		<action name="capitalInputViewPage" class="journalSheetAction" method="capitalInputViewPage">
+			<result name="success">/journalsheet/capitalinput/capitalInputViewPage.jsp</result>
+		</action>
+		<action name="getCapitalInputListPage" class="journalSheetAction" method="getCapitalInputListPage">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addCapitalInput" class="journalSheetAction" method="addCapitalInput">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editCapitalInput" class="journalSheetAction" method="editCapitalInput">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteCapitalInput" class="journalSheetAction" method="deleteCapitalInput">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+	</package>
+	
+	<package name="fundinput" extends="parent" namespace="/journalsheet/fundinput">
+		<!-- 资金录入（t_js_fundinput） -->
+	    <action name="fundInputPage" class="journalSheetAction" method="fundInputPage">
+			<result name="success">/journalsheet/fundinput/fundInputPage.jsp</result>
+		</action>
+		<action name="fundInputAddPage" class="journalSheetAction" method="fundInputAddPage">
+			<result name="success">/journalsheet/fundinput/fundInputAddPage.jsp</result>
+		</action>
+		<action name="fundInputEditPage" class="journalSheetAction" method="fundInputEditPage">
+			<result name="success">/journalsheet/fundinput/fundInputEditPage.jsp</result>
+		</action>
+		<action name="fundInputViewPage" class="journalSheetAction" method="fundInputViewPage">
+			<result name="success">/journalsheet/fundinput/fundInputViewPage.jsp</result>
+		</action>
+		<action name="getMaxDateFundInput" class="journalSheetAction" method="getMaxDateFundInput">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="checkFundInputByMap" class="journalSheetAction" method="checkFundInputByMap">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getFundInputListPage" class="journalSheetAction" method="getFundInputListPage">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addFundInput" class="journalSheetAction" method="addFundInput">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editFundInput" class="journalSheetAction" method="editFundInput">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteFundInput" class="journalSheetAction" method="deleteFundInput">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+        <action name="addDRFundInput" class="journalSheetAction" method="addDRFundInput">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="exportFundInputList" class="journalSheetAction" method="exportFundInputList"></action>
+	</package>
+	
+	<!-- 费用录入 -->
+	<package name="expensesentering" extends="parent" namespace="/journalsheet/expensesEntering">
+		<action name="expensesEnteringPage" class="journalSheetAction" method="expensesEnteringPage">
+			<result name="success">/journalsheet/expensesentering/expensesEnteringPage.jsp</result>
+		</action>
+		<action name="expensesEnteringAddPage" class="journalSheetAction" method="expensesEnteringAddPage">
+			<result name="success">/journalsheet/expensesentering/expensesEnteringAddPage.jsp</result>
+		</action>
+		<action name="expensesEnteringEditPage" class="journalSheetAction" method="expensesEnteringEditPage">
+			<result name="success">/journalsheet/expensesentering/expensesEnteringEditPage.jsp</result>
+		</action>
+		<action name="expensesEnteringViewPage" class="journalSheetAction" method="expensesEnteringViewPage">
+			<result name="success">/journalsheet/expensesentering/expensesEnteringViewPage.jsp</result>
+		</action>
+		<action name="getExpensesEnteringListPage" class="journalSheetAction" method="getExpensesEnteringListPage">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addExpensesEntering" class="journalSheetAction" method="addExpensesEntering">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editExpensesEntering" class="journalSheetAction" method="editExpensesEntering">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteExpensesEntering" class="journalSheetAction" method="deleteExpensesEntering">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+	<package name="dayaccount" extends="parent" namespace="/journalsheet/dayaccount">
+		<!-- 分科目开单流水账 -->
+		<action name="subjectdayaccountPage" class="journalSheetAction" method="subjectdayaccountPage">
+			<result name="success">/journalsheet/dayaccount/subjectdayaccountPage.jsp</result>
+		</action>
+		<action name="getSubjectDayAccountListPage" class="journalSheetAction" method="getSubjectDayAccountListPage">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getClienteleDayAccountList" class="journalSheetAction" method="getClienteleDayAccountList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+			<result name="treeSuccess" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		<!-- 分客户开单流水账 -->
+		<action name="clienteledayaccountPage" class="journalSheetAction" method="clienteledayaccountPage">
+			<result name="success">/journalsheet/dayaccount/clienteledayaccountPage.jsp</result>
+		</action>
+	</package>
+	
+	<!-- 核准金额 -->
+	
+	<package name="approvalprice" extends="parent" namespace="/journalsheet/approvalPrice">
+		<action name="approvalPricePage" class="journalSheetAction" method="approvalPricePage">
+			<result name="success">/journalsheet/approvalprice/approvalPricePage.jsp</result>
+		</action>
+		<action name="supplierListAddPage" class="journalSheetAction" method="supplierListAddPage">
+			<result name="success">/journalsheet/approvalprice/supplierListAddPage.jsp</result>
+		</action>
+		<action name="apPriceEditPage" class="journalSheetAction" method="apPriceEditPage">
+			<result name="success">/journalsheet/approvalprice/apPriceEditPage.jsp</result>
+		</action>
+		<action name="getApprovalPriceList" class="journalSheetAction" method="getApprovalPriceList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getSupplierListForApproval" class="journalSheetAction" method="getSupplierListForApproval">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addApprovalPrice" class="journalSheetAction" method="addApprovalPrice">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editApprovalPrice" class="journalSheetAction" method="editApprovalPrice">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteapprovalPrice" class="journalSheetAction" method="deleteapprovalPrice">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+	
+	<!-- 报表 -->
+	<package name="statisticals" extends="parent" namespace="/journalsheet/statisticals">
+		<!-- 费用统计报表 -->
+		<action name="statisticalstatementPage" class="journalSheetAction" method="statisticalstatementPage">
+			<result name="success">/journalsheet/statisticalstatementPage.jsp</result>
+		</action>
+		<action name="exportStatisticsData" class="journalSheetAction" method="exportStatisticsData">
+		</action>
+		<action name="exportFundStatisticsData" class="journalSheetAction" method="exportFundStatisticsData">
+		</action>
+		<action name="exportReimburseStatisticsData" class="journalSheetAction" method="exportReimburseStatisticsData">
+		</action>
+		<action name="exportFundAverageStatisticsData" class="journalSheetAction" method="exportFundAverageStatisticsData">
+		</action>
+		<action name="exportFundAverageStatisticsDetailData" class="journalSheetAction" method="exportFundAverageStatisticsDetailData">
+		</action>
+		<action name="getStatisticslist" class="journalSheetAction" method="getStatisticslist">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+			<result name="treeSuccess" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showStatisticsDetaillistPage" class="journalSheetAction" method="showStatisticsDetaillistPage">
+			<result name="success">/journalsheet/statisticsDetaillistPage.jsp</result>
+		</action>
+		<action name="getStatisticsDetaillist" class="journalSheetAction" method="getStatisticsDetaillist">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<!-- 资金统计报表 -->
+		<action name="capitalStatisticsSheetPage" class="journalSheetAction" method="capitalStatisticsSheetPage">
+			<result name="success">/journalsheet/capitalStatisticsSheetPage.jsp</result>
+		</action>
+		<action name="getCapitalStatisticsSheetList" class="journalSheetAction" method="getCapitalStatisticsSheetList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+			<result name="treeSuccess" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="fundStatisticsSheetPage" class="journalSheetAction" method="fundStatisticsSheetPage">
+			<result name="success">/journalsheet/fundStatisticsSheetPage.jsp</result>
+		</action>
+		<action name="getFundStatisticsSheetList" class="journalSheetAction" method="getFundStatisticsSheetList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		<!-- 资金平均金额统计报表 -->
+		<action name="fundAverageStatisticsSheetPage" class="journalSheetAction" method="fundAverageStatisticsSheetPage">
+			<result name="success">/journalsheet/fundAverageStatisticsSheetPage.jsp</result>
+		</action>
+		<action name="fundAverageStatisticsSheetDetailPage" class="journalSheetAction" method="fundAverageStatisticsSheetDetailPage">
+			<result name="success">/journalsheet/fundAverageStatisticsSheetDetailPage.jsp</result>
+		</action>
+		<action name="getFundAverageStatisticsSheetList" class="journalSheetAction" method="getFundAverageStatisticsSheetList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+			<result name="treeSuccess" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getFundAverageStatisticsSheetDetailList" class="journalSheetAction" method="getFundAverageStatisticsSheetDetailList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		<!-- 代垫统计报表 -->
+		<action name="reimburseStatisticsSheetPage" class="journalSheetAction" method="reimburseStatisticsSheetPage">
+			<result name="success">/journalsheet/reimburseStatisticsSheetPage.jsp</result>
+		</action>
+		<action name="getreimburseStatisticsSheetList" class="journalSheetAction" method="getreimburseStatisticsSheetList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+			<result name="treeSuccess" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+	
+	<!-- 代垫录入 -->
+	
+	<package name="reimburseInput" extends="parent" namespace="/journalsheet/reimburseInput">
+		<action name="reimburseInputPage" class="journalSheetAction" method="reimburseInputPage">
+			<result name="success">/journalsheet/reimburseinput/reimburseInputPage.jsp</result>
+		</action>
+		<action name="showReimburseInputAddPage" class="journalSheetAction" method="showReimburseInputAddPage">
+			<result name="success">/journalsheet/reimburseinput/reimburseInputAddPage.jsp</result>
+		</action>
+		<action name="showReimburseInputEditPage" class="journalSheetAction" method="showReimburseInputEditPage">
+			<result name="success">/journalsheet/reimburseinput/reimburseInputEditPage.jsp</result>
+			<result name="ViewSuccess">/journalsheet/reimburseinput/reimburseInputViewPage.jsp</result>
+			<result name="AddSuccess">/journalsheet/reimburseinput/reimburseInputAddPage.jsp</result>
+		</action>
+		<action name="showReimburseInputViewPage" class="journalSheetAction" method="showReimburseInputViewPage">
+			<result name="success">/journalsheet/reimburseinput/reimburseInputViewPage.jsp</result>
+		</action>
+		<action name="getReimburseInputListPage" class="journalSheetAction" method="getReimburseInputListPage">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addReimburseInput" class="journalSheetAction" method="addReimburseInput">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editReimburseInput" class="journalSheetAction" method="editReimburseInput">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteReimburseInput" class="journalSheetAction" method="deleteReimburseInput">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+	<!-- 代垫录入 -->
+	
+	<package name="matcostsInput" extends="parent" namespace="/journalsheet/matcostsInput">
+		<action name="matcostsInputPage" class="journalSheetAction" method="matcostsInputPage">
+			<result name="success">/journalsheet/matcostsinput/matcostsInputPage.jsp</result>
+		</action>
+		<action name="showMatcostsInputAddPage" class="journalSheetAction" method="showMatcostsInputAddPage">
+			<result name="success">/journalsheet/matcostsinput/matcostsInputAddPage.jsp</result>
+		</action>
+		<action name="showMatcostsInputEditPage" class="journalSheetAction" method="showMatcostsInputEditPage">
+			<result name="success">/journalsheet/matcostsinput/matcostsInputEditPage.jsp</result>
+			<result name="AddSuccess">/journalsheet/matcostsinput/matcostsInputAddPage.jsp</result>
+			<result name="HCEditSuccess">/journalsheet/matcostsinput/matcostsInputHCEditPage.jsp</result>
+			<result name="ViewSuccess">/journalsheet/matcostsinput/matcostsInputViewPage.jsp</result>
+		</action>
+		<action name="showMatcostsInputHCAddPage" class="journalSheetAction" method="showMatcostsInputHCAddPage">
+			<result name="success">/journalsheet/matcostsinput/matcostsInputHCAddPage.jsp</result>
+			<result name="ViewSuccess">/journalsheet/matcostsinput/matcostsInputViewPage.jsp</result>
+		</action>
+		<action name="showMatcostsInputViewPage" class="journalSheetAction" method="showMatcostsInputViewPage">
+			<result name="success">/journalsheet/matcostsinput/matcostsInputViewPage.jsp</result>
+		</action>
+		<action name="getMatcostsInputPageList" class="journalSheetAction" method="getMatcostsInputPageList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addMatcostsInput" class="journalSheetAction" method="addMatcostsInput">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editMatcostsInput" class="journalSheetAction" method="editMatcostsInput">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addMatcostsInputHC" class="journalSheetAction" method="addMatcostsInputHC">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="removeMatcostsInputHC" class="journalSheetAction" method="removeMatcostsInputHC">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteMatcostsInput" class="journalSheetAction" method="deleteMatcostsInput">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteMatcostsInputMore" class="journalSheetAction" method="deleteMatcostsInputMore">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="exportMatcostsInputData" class="journalSheetAction" method="exportMatcostsInputData"></action>
+		<action name="showMatcostsReportPage" class="journalSheetAction" method="showMatcostsReportPage">
+			<result name="success">/journalsheet/matcostsinput/matcostsInputReportPage.jsp</result>
+		</action>		
+		<action name="showMatcostsReportData" class="journalSheetAction" method="showMatcostsReportData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showMatcostsReportDetailPage" class="journalSheetAction" method="showMatcostsReportDetailPage">
+			<result name="success">/journalsheet/matcostsinput/matcostsInputReportDetailPage.jsp</result>
+		</action>
+		<action name="exportMatcostsReportData" class="journalSheetAction" method="exportMatcostsReportData"></action>
+		<action name="importMatcostsInputListData" class="journalSheetAction" method="importMatcostsInputListData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>	
+		<action name="exportMatcostsReportDetailData" class="journalSheetAction" method="exportMatcostsReportDetailData"></action>
+		<action name="matcostsInputRewriteoffPage" class="journalSheetAction" method="matcostsInputRewriteoffPage">
+			<result name="success">/journalsheet/matcostsinput/matcostsInputRewriteoffPage.jsp</result>
+		</action>
+		<action name="matcostsInputRewriteoff" class="journalSheetAction" method="matcostsInputRewriteoff">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		<action name="matcostsReimbursePage" class="journalSheetAction" method="matcostsReimbursePage">
+			<result name="success">/journalsheet/matcostsinput/matcostsReimbursePage.jsp</result>
+		</action>
+		<action name="showMatcostsReimburseAddPage" class="journalSheetAction" method="showMatcostsReimburseAddPage">
+			<result name="success">/journalsheet/matcostsinput/matcostsReimburseAddPage.jsp</result>
+		</action>
+		<action name="showMatcostsReimburseEditPage" class="journalSheetAction" method="showMatcostsReimburseEditPage">
+			<result name="success">/journalsheet/matcostsinput/matcostsReimburseEditPage.jsp</result>
+		</action>
+		<action name="showMatcostsReimburseViewPage" class="journalSheetAction" method="showMatcostsReimburseViewPage">
+			<result name="success">/journalsheet/matcostsinput/matcostsReimburseViewPage.jsp</result>
+		</action>
+		<action name="getMatcostsReimbursePageList" class="journalSheetAction" method="getMatcostsReimbursePageList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addMatcostsReimburse" class="journalSheetAction" method="addMatcostsReimburse">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editMatcostsReimburse" class="journalSheetAction" method="editMatcostsReimburse">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteMatcostsReimburse" class="journalSheetAction" method="deleteMatcostsReimburse">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteMatcostsReimburseMore" class="journalSheetAction" method="deleteMatcostsReimburseMore">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="importMatcostsReimburseListData" class="journalSheetAction" method="importMatcostsReimburseListData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>	
+		<action name="exportMatcostsReimburseData" class="journalSheetAction" method="exportMatcostsReimburseData"></action>
+		<action name="matcostsReimburseWriteoffQueryPage" class="journalSheetAction" method="matcostsReimburseWriteoffQueryPage">
+			<result name="success">/journalsheet/matcostsinput/matcostsReimburseWriteoffQueryPage.jsp</result>
+		</action>	
+		<action name="matcostsReimburseWriteoffInputQueryPage" class="journalSheetAction" method="matcostsReimburseWriteoffInputQueryPage">
+			<result name="success">/journalsheet/matcostsinput/matcostsReimburseWriteoffInputQueryPage.jsp</result>
+		</action>	
+		<action name="matcostsReimburseWriteoff" class="journalSheetAction" method="matcostsReimburseWriteoff">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>			
+		<action name="showMatcostsStatementListPage" class="journalSheetAction" method="showMatcostsStatementListPage">
+			<result name="success">/journalsheet/matcostsinput/matcostsStatementListPage.jsp</result>
+		</action>	
+		<action name="getMatcostsStatementPageListData" class="journalSheetAction" method="getMatcostsStatementPageListData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>						
+		<action name="showMatcostsInputWriteoffReportPage" class="journalSheetAction" method="showMatcostsInputWriteoffReportPage">
+			<result name="success">/journalsheet/matcostsinput/matcostsInputWriteoffReportPage.jsp</result>
+		</action>	
+		<action name="getMatcostsInputWriteoffReportData" class="journalSheetAction" method="getMatcostsInputWriteoffReportData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="exportMatcostsInputWriteoffReportData" class="journalSheetAction" method="exportMatcostsInputWriteoffReportData"></action>
+		<action name="showMatcostsReimburseWriteoffReportPage" class="journalSheetAction" method="showMatcostsReimburseWriteoffReportPage">
+			<result name="success">/journalsheet/matcostsinput/matcostsReimburseWriteoffReportPage.jsp</result>
+		</action>	
+		<action name="getMatcostsReimburseWriteoffReportData" class="journalSheetAction" method="getMatcostsReimburseWriteoffReportData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="exportMatcostsReimburseWriteoffReportData" class="journalSheetAction" method="exportMatcostsReimburseWriteoffReportData"></action>
+		<action name="matcostsReimburseTypeChangePage" class="journalSheetAction" method="matcostsReimburseTypeChangePage">
+			<result name="success">/journalsheet/matcostsinput/matcostsReimburseTypeChangePage.jsp</result>
+		</action>	
+		<action name="matcostsReimburseTypeChange" class="journalSheetAction" method="matcostsReimburseTypeChange">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+	<package name="costsFee" extends="parent" namespace="/journalsheet/costsFee">
+		<action name="showDeptCostsSubjectListPage" class="costsFeeAction" method="showDeptCostsSubjectListPage">
+			<result name="success">/journalsheet/deptcostssubject/deptCostsSubjectListPage.jsp</result>
+		</action>
+		<action name="showDeptCostsSubjectPageList" class="costsFeeAction" method="showDeptCostsSubjectPageList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showDeptCostsSubjectPage" class="costsFeeAction" method="showDeptCostsSubjectPage">
+			<result name="success">/journalsheet/deptcostssubject/deptCostsSubjectPage.jsp</result>
+		</action>
+		<action name="showDeptCostsSubjectCopyPage" class="costsFeeAction" method="showDeptCostsSubjectCopyPage">
+			<result name="success">/journalsheet/deptcostssubject/deptCostsSubjectCopyPage.jsp</result>
+		</action>
+		<action name="showDeptCostsSubjectAddPage" class="costsFeeAction" method="showDeptCostsSubjectAddPage">
+			<result name="success">/journalsheet/deptcostssubject/deptCostsSubjectAddPage.jsp</result>
+		</action>
+		<action name="addDeptCostsSubject" class="costsFeeAction" method="addDeptCostsSubject">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showDeptCostsSubjectEditPage" class="costsFeeAction" method="showDeptCostsSubjectEditPage">
+			<result name="success">/journalsheet/deptcostssubject/deptCostsSubjectEditPage.jsp</result>			
+			<result name="viewSuccess">/journalsheet/deptcostssubject/deptCostsSubjectViewPage.jsp</result>
+		</action>
+		<action name="editDeptCostsSubject" class="costsFeeAction" method="editDeptCostsSubject">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showDeptCostsSubjectCopyPage" class="costsFeeAction" method="showDeptCostsSubjectCopyPage">
+			<result name="success">/journalsheet/deptcostssubject/deptCostsSubjectCopyPage.jsp</result>		
+		</action>
+		<action name="showDeptCostsSubjectViewPage" class="costsFeeAction" method="showDeptCostsSubjectViewPage">
+			<result name="success">/journalsheet/deptcostssubject/deptCostsSubjectViewPage.jsp</result>
+		</action>
+		<action name="disableDeptCostsSubject" class="costsFeeAction" method="disableDeptCostsSubject">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="enableDeptCostsSubject" class="costsFeeAction" method="enableDeptCostsSubject">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteDeptCostsSubject" class="costsFeeAction" method="deleteDeptCostsSubject">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteDeptCostsSubjectMore" class="costsFeeAction" method="deleteDeptCostsSubjectMore">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="isUsedDeptCostsSubjectID" class="costsFeeAction" method="isUsedDeptCostsSubjectID">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="isUsedDeptCostsSubjectName" class="costsFeeAction" method="isUsedDeptCostsSubjectName">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>		
+		<action name="getDeptCostsSubjectTree" class="costsFeeAction" method="getDeptCostsSubjectTree">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+        <!-- 投入产出比报表情况 -->
+        <action name="showCustomerInputOutputSheetPage" class="costsFeeAction" method="showCustomerInputOutputSheetPage">
+            <result name="success">/journalsheet/inputoutput/customerInputOutputSheetPage.jsp</result>
+        </action>
+        <action name="getCustomerInputOutputData" class="costsFeeAction" method="getCustomerInputOutputData">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="exportCustomerInputOutputData" class="costsFeeAction" method="exportCustomerInputOutputData"></action>
+        <action name="showCustomerCostPayableDetailPage" class="costsFeeAction" method="showCustomerCostPayableDetailPage">
+            <result name="success">/journalsheet/inputoutput/customerCostPayableDetailPage.jsp</result>
+        </action>
+        <action name="getCustomerCostPayableDetailData" class="costsFeeAction" method="getCustomerCostPayableDetailData">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+		<action name="showDailyCostDetailPage" class="costsFeeAction" method="showDailyCostDetailPage">
+			<result name="success">/journalsheet/inputoutput/dailyCostDetailPage.jsp</result>
+		</action>
+		<action name="getDailyCostDetailPageData" class="costsFeeAction" method="getDailyCostDetailPageData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="exportDailyCostDetailPageData" class="costsFeeAction" method="exportDailyCostDetailPageData"></action>
+
+        <action name="showSalesuserInputOutputSheetPage" class="costsFeeAction" method="showSalesuserInputOutputSheetPage">
+            <result name="success">/journalsheet/inputoutput/salesuserInputOutputSheetPage.jsp</result>
+        </action>
+        <action name="getSalesuserInputOutputData" class="costsFeeAction" method="getSalesuserInputOutputData">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="exportSalesuserInputOutputData" class="costsFeeAction" method="exportSalesuserInputOutputData"></action>
+        <action name="exportCustomerCostPayableDetail" class="costsFeeAction" method="exportCustomerCostPayableDetail"></action>
+		<!-- 部门费用 -->
+		<action name="showDepartmentCostsListPage" class="costsFeeAction" method="showDepartmentCostsListPage">
+			<result name="success">/journalsheet/departmentcosts/departmentCostsListPage.jsp</result>
+		</action>
+		<action name="getDepartmentCostsPageList" class="costsFeeAction" method="getDepartmentCostsPageList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>		
+		<action name="showDepartmentCostsPage" class="costsFeeAction" method="showDepartmentCostsPage">
+			<result name="success">/journalsheet/departmentcosts/departmentCostsPage.jsp</result>
+		</action>
+		<action name="showDepartmentCostsAddPage" class="costsFeeAction" method="showDepartmentCostsAddPage">
+			<result name="success">/journalsheet/departmentcosts/departmentCostsAddPage.jsp</result>
+		</action>
+		<action name="addDepartmentCosts" class="costsFeeAction" method="addDepartmentCosts">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showDepartmentCostsEditPage" class="costsFeeAction" method="showDepartmentCostsEditPage">			
+			<result name="viewSuccess">/journalsheet/departmentcosts/departmentCostsViewPage.jsp</result>
+			<result name="success">/journalsheet/departmentcosts/departmentCostsEditPage.jsp</result>
+		</action>
+		<action name="editDepartmentCosts" class="costsFeeAction" method="editDepartmentCosts">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showDepartmentCostsViewPage" class="costsFeeAction" method="showDepartmentCostsViewPage">
+			<result name="success">/journalsheet/departmentcosts/departmentCostsViewPage.jsp</result>
+		</action>
+		<action name="deleteDepartmentCosts" class="costsFeeAction" method="deleteDepartmentCosts">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteDepartmentCostsMore" class="costsFeeAction" method="deleteDepartmentCostsMore">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditDepartmentCostsMore" class="costsFeeAction" method="auditDepartmentCostsMore">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="oppauditDepartmentCostsMore" class="costsFeeAction" method="oppauditDepartmentCostsMore">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="exportDepartmentCostsData" class="costsFeeAction" method="exportDepartmentCostsData"></action>
+		<!-- 分供应商费用摊派 -->
+		<action name="showDeptSupplierCostsListPage" class="costsFeeAction" method="showDeptSupplierCostsListPage">
+			<result name="success">/journalsheet/departmentcosts/deptSupplierCostsListPage.jsp</result>
+		</action>
+		<action name="showDeptSupplierCostsPopViewPage" class="costsFeeAction" method="showDeptSupplierCostsPopViewPage">
+			<result name="success">/journalsheet/departmentcosts/deptSupplierCostsPopViewPage.jsp</result>
+		</action>
+		<action name="getDeptSupplierCostsPageData" class="costsFeeAction" method="getDeptSupplierCostsPageData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>	
+		<!-- 费用报表 -->
+		<action name="departmentCostsMonthReportListPage" class="costsFeeAction" method="departmentCostsMonthReportListPage">
+			<result name="success">/journalsheet/departmentcosts/departmentCostsMonthReportListPage.jsp</result>
+		</action>
+		<action name="showDepartmentCostsMonthReportData" class="costsFeeAction" method="showDepartmentCostsMonthReportData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>		
+		<action name="exportDepartmentCostsMonthReportData" class="costsFeeAction" method="exportDepartmentCostsMonthReportData"></action>
+		
+		<action name="deptSupplierCostsMonthReportListPage" class="costsFeeAction" method="deptSupplierCostsMonthReportListPage">
+			<result name="success">/journalsheet/departmentcosts/deptSupplierCostsMonthReportListPage.jsp</result>
+		</action>
+		<action name="showDeptSupplierCostsMonthReportData" class="costsFeeAction" method="showDeptSupplierCostsMonthReportData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>		
+		<action name="exportDeptSupplierCostsMonthReportData" class="costsFeeAction" method="exportDeptSupplierCostsMonthReportData"></action>
+	</package>
+	<!-- 费用应付 -->
+	<package name="customerCostPayable" extends="parent" namespace="/journalsheet/customercost">
+		<action name="showCustomerCostPayableListPage" class="customerCostPayableAction" method="showCustomerCostPayableListPage">
+			<result name="success">/journalsheet/customercost/customerCostPayableListPage.jsp</result>
+		</action>
+		<action name="showCustomerCostPayableListNormalPage" class="customerCostPayableAction" method="showCustomerCostPayableListNormalPage">
+			<result name="success">/journalsheet/customercost/customerCostPayableListNormalPage.jsp</result>
+		</action>
+		<action name="showCustomerCostPayableListData" class="customerCostPayableAction" method="showCustomerCostPayableListData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="exportCustomerCostPayableListData" class="customerCostPayableAction" method="exportCustomerCostPayableListData">
+		</action>
+		<action name="importCustomerCostPayableData" class="customerCostPayableAction" method="importCustomerCostPayableData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showCustomerCostPayableDetailListPage" class="customerCostPayableAction" method="showCustomerCostPayableDetailListPage">
+			<result name="success">/journalsheet/customercost/customerCostPayableDetailListPage.jsp</result>
+		</action>
+		<action name="showCustomerCostPayableDetailList" class="customerCostPayableAction" method="showCustomerCostPayableDetailList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showCustomerCostPayableInitListPage" class="customerCostPayableAction" method="showCustomerCostPayableInitListPage">
+			<result name="success">/journalsheet/customercost/customerCostPayableInitListPage.jsp</result>
+		</action>
+		<action name="showCustomerCostPayableInitAddPage" class="customerCostPayableAction" method="showCustomerCostPayableInitAddPage">
+			<result name="success">/journalsheet/customercost/customerCostPayableInitAddPage.jsp</result>
+		</action>
+		<action name="addCustomerCostPayableInit" class="customerCostPayableAction" method="addCustomerCostPayableInit">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showCustomerCostPayableInitList" class="customerCostPayableAction" method="showCustomerCostPayableInitList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showCustomerCostPayableInitEditPage" class="customerCostPayableAction" method="showCustomerCostPayableInitEditPage">
+			<result name="success">/journalsheet/customercost/customerCostPayableInitEditPage.jsp</result>
+			<result name="addSuccess">/journalsheet/customercost/customerCostPayableInitAddPage.jsp</result>
+		</action>
+		<action name="editCustomerCostPayableInit" class="customerCostPayableAction" method="editCustomerCostPayableInit">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteCustomerCostPayableInit" class="customerCostPayableAction" method="deleteCustomerCostPayableInit">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showCustomerCostPayableInitViewPage" class="customerCostPayableAction" method="showCustomerCostPayableInitViewPage">
+			<result name="success">/journalsheet/customercost/customerCostPayableInitViewPage.jsp</result>
+			<result name="addSuccess">/journalsheet/customercost/customerCostPayableInitAddPage.jsp</result>
+		</action>
+		<action name="exportCustomerCostPayableInitList" class="customerCostPayableAction" method="exportCustomerCostPayableInitList"></action>
+		<action name="importCustomerCostPayableInitList" class="customerCostPayableAction" method="importCustomerCostPayableInitList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showCustomerCostPayableAddPage" class="customerCostPayableAction" method="showCustomerCostPayableAddPage">
+			<result name="success">/journalsheet/customercost/customerCostPayableAddPage.jsp</result>
+		</action>
+		<action name="showCustomerCostPayableEditPage" class="customerCostPayableAction" method="showCustomerCostPayableEditPage">
+			<result name="success">/journalsheet/customercost/customerCostPayableEditPage.jsp</result>
+			<result name="AddSuccess">/journalsheet/customercost/customerCostPayableAddPage.jsp</result>
+			<result name="HCEditSuccess">/journalsheet/customercost/customerCostPayableHCEditPage.jsp</result>
+			<result name="ViewSuccess">/journalsheet/customercost/customerCostPayableViewPage.jsp</result>
+		</action>
+		<action name="showCustomerCostPayableHCAddPage" class="customerCostPayableAction" method="showCustomerCostPayableHCAddPage">
+			<result name="success">/journalsheet/customercost/customerCostPayableHCAddPage.jsp</result>
+			<result name="ViewSuccess">/journalsheet/customercost/customerCostPayableViewPage.jsp</result>
+		</action>
+		<action name="showCustomerCostPayableViewPage" class="customerCostPayableAction" method="showCustomerCostPayableViewPage">
+			<result name="success">/journalsheet/customercost/customerCostPayableViewPage.jsp</result>
+		</action>
+		<action name="addCustomerCostPayable" class="customerCostPayableAction" method="addCustomerCostPayable">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editCustomerCostPayable" class="customerCostPayableAction" method="editCustomerCostPayable">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addCustomerCostPayableHC" class="customerCostPayableAction" method="addCustomerCostPayableHC">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="removeCustomerCostPayableHC" class="customerCostPayableAction" method="removeCustomerCostPayableHC">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteCustomerCostPayable" class="customerCostPayableAction" method="deleteCustomerCostPayable">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteCustomerCostPayableMore" class="customerCostPayableAction" method="deleteCustomerCostPayableMore">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="exportCustomerCostPayableData" class="customerCostPayableAction" method="exportCustomerCostPayableData"></action>
+	</package>
+	<!-- 部门日常费用 -->
+	<package name="deptdailycost" extends="parent" namespace="/journalsheet/deptdailycost">
+	    <action name="showDeptDailyCostDetailListPage" class="deptDailyCostAction" method="showDeptDailyCostDetailListPage">
+			<result name="success">/journalsheet/deptdailycost/deptDailyCostDetailListPage.jsp</result>
+		</action>
+		<action name="showDeptDailyCostAddPage" class="deptDailyCostAction" method="showDeptDailyCostAddPage">
+			<result name="success">/journalsheet/deptdailycost/deptDailyCostAddPage.jsp</result>
+		</action>
+		<action name="addDeptDailyCost" class="deptDailyCostAction" method="addDeptDailyCost">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showDeptDailyCostList" class="deptDailyCostAction" method="showDeptDailyCostList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showDeptDailyCostInfoPage" class="deptDailyCostAction" method="showDeptDailyCostInfoPage">
+			<result name="addSuccess">/journalsheet/deptdailycost/deptDailyCostAddPage.jsp</result>
+			<result name="editSuccess">/journalsheet/deptdailycost/deptDailyCostEditPage.jsp</result>
+			<result name="viewSuccess">/journalsheet/deptdailycost/deptDailyCostViewPage.jsp</result>
+		</action>
+		<action name="showDeptDailyCostViewPage" class="deptDailyCostAction" method="showDeptDailyCostViewPage">
+			<result name="success">/journalsheet/deptdailycost/deptDailyCostViewPage.jsp</result>
+		</action>
+		<action name="editDeptDailyCost" class="deptDailyCostAction" method="editDeptDailyCost">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteDeptDailyCost" class="deptDailyCostAction" method="deleteDeptDailyCost">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditDeptDailyCost" class="deptDailyCostAction" method="auditDeptDailyCost">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="oppauditDeptDailyCost" class="deptDailyCostAction" method="oppauditDeptDailyCost">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+        <action name="deptDailyCostExport" class="deptDailyCostAction" method="deptDailyCostExport"></action>
+		<action name="showDeptDailyCostSettlePage" class="deptDailyCostAction" method="showDeptDailyCostSettlePage">
+			<result name="success">/journalsheet/deptdailycost/deptDailyCostSettlePage.jsp</result>
+		</action>
+		<action name="updateDeptDailyCostSettle" class="deptDailyCostAction" method="updateDeptDailyCostSettle">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deptDailyCostReportDetailListPage" class="deptDailyCostAction" method="deptDailyCostReportDetailListPage">
+			<result name="success">/journalsheet/deptdailycost/deptDailyCostReportDetailListPage.jsp</result>
+		</action>
+		<action name="deptDailyCostReportPage" class="deptDailyCostAction" method="deptDailyCostReportPage">
+			<result name="success">/journalsheet/deptdailycost/deptDailyCostReportPage.jsp</result>
+		</action>
+		<action name="personnelDailyCostReportPage" class="deptDailyCostAction" method="personnelDailyCostReportPage">
+			<result name="success">/journalsheet/deptdailycost/personnelDailyCostReportPage.jsp</result>
+		</action>
+		<action name="showPersonnelDailyCostReportData" class="deptDailyCostAction" method="showPersonnelDailyCostReportData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="exportPersonnelDailyCostReportData" class="deptDailyCostAction" method="exportPersonnelDailyCostReportData">
+		</action>
+		<action name="showDeptDailyCostReportData" class="deptDailyCostAction" method="showDeptDailyCostReportData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="exportDeptDailyCostReportData" class="deptDailyCostAction" method="exportDeptDailyCostReportData"></action>
+		
+		<action name="deptDailyCostYearReportPage" class="deptDailyCostAction" method="deptDailyCostYearReportPage">
+			<result name="success">/journalsheet/deptdailycost/deptDailyCostYearReportPage.jsp</result>
+		</action>		
+		<action name="showDeptDailyCostYearReportData" class="deptDailyCostAction" method="showDeptDailyCostYearReportData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>		
+		<action name="exportDeptDailyCostCostYearReportData" class="deptDailyCostAction" method="exportDeptDailyCostCostYearReportData"></action>
+		
+		<action name="deptDailySupplierCostReportPage" class="deptDailyCostAction" method="deptDailySupplierCostReportPage">
+			<result name="success">/journalsheet/deptdailycost/deptDailySupplierCostReportPage.jsp</result>
+		</action>		
+		<action name="showDeptDailySupplierCostReportData" class="deptDailyCostAction" method="showDeptDailySupplierCostReportData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSupplierSubjectReportData" class="deptDailyCostAction" method="showSupplierSubjectReportData">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>		
+		<action name="exportDeptDailySupplierCostReportData" class="deptDailyCostAction" method="exportDeptDailySupplierCostReportData"></action>
+		<action name="exportSupplierSubjectDetailData" class="deptDailyCostAction" method="exportSupplierSubjectDetailData"></action>		
+		<action name="deptDailyCostAmountNumChange" class="deptDailyCostAction" method="deptDailyCostAmountNumChange">		
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+
+	<!-- 代垫收支情况 -->
+	<package name="matcostsbalance" extends="parent" namespace="/journalsheet/matcostsbalance">
+		<action name="matcostsBalancePage" class="journalSheetAction" method="matcostsBalancePage">
+			<result name="success">/journalsheet/matcostsbalance/matcostsBalancePage.jsp</result>
+		</action>
+		<action name="matcostsBalanceListPage" class="journalSheetAction" method="matcostsBalanceListPage">
+			<result name="success">/journalsheet/matcostsbalance/matcostsBalanceListPage.jsp</result>
+		</action>
+		<action name="matcostsBalanceViewPage" class="journalSheetAction" method="matcostsBalanceViewPage">
+			<result name="success">/journalsheet/matcostsbalance/matcostsBalanceViewPage.jsp</result>
+		</action>
+		<action name="matcostsBalanceViewListPage" class="journalSheetAction" method="matcostsBalanceViewListPage">
+			<result name="success">/journalsheet/matcostsbalance/matcostsBalanceViewListPage.jsp</result>
+		</action>
+		<action name="selectMatcostsBalanceList" class="journalSheetAction" method="selectMatcostsBalanceList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+        <action name="exportMatcostsBalanceListData" class="journalSheetAction" method="exportMatcostsBalanceListData">
+        </action>
+        <action name="selectMatcostsBalanceDetailList" class="journalSheetAction" method="selectMatcostsBalanceDetailList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="exportMatcostsBalanceDetailListData" class="journalSheetAction" method="exportMatcostsBalanceDetailListData">
+		</action>
+	</package>
+	
+	<!-- 预算分析 -->
+	<package name="bugetAnalyzer" extends="parent" namespace="/journalsheet/bugetAnalyzer">
+		<action name="showPage" class="bugetAnalyzerAction" method="showPage">
+			<result name="success">/journalsheet/bugetAnalyzer/budgetListPage.jsp</result>
+		</action>
+		
+		<action name="firstpageData" class="bugetAnalyzerAction" method="firstpageData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>	
+		
+		<action name="showaddOrEditPage" class="bugetAnalyzerAction" method="showaddOrEditPage">
+			<result name="success">/journalsheet/bugetAnalyzer/budgetAddOrEdit.jsp</result>
+		</action>
+		
+		<action name="addBuget" class="bugetAnalyzerAction" method="addBuget">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		<action name="deleteBugetAnalyzer" class="bugetAnalyzerAction" method="deleteBugetAnalyzer" >
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		<action name="enableBugetAnalyzer" class="bugetAnalyzerAction" method="enableBugetAnalyzer" >
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		<action name="diableBugetAnalyzer" class="bugetAnalyzerAction" method="diableBugetAnalyzer" >
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		<action name="editBugetSave" class="bugetAnalyzerAction" method="editBugetSave" >
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+	<!-- 预算分析报表 -->
+	<package name="bugetAnalyzerGroup" extends="parent" namespace="/journalsheet/bugetAnalyzerGroup">
+		<action name="showPage" class="bugetAnalyzerGroupAction" method="showPage" >
+			<result name="success">/journalsheet/bugetAnalyzer/budgetGroupPage.jsp</result>
+		</action>
+	
+		<action name="bugetAnalyzerGroupData" class="bugetAnalyzerGroupAction" method="bugetAnalyzerGroupData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>	
+	</package>
+	<!-- 部门收入开始 -->
+	<package name="deptincome" extends="parent" namespace="/journalsheet/deptincome">
+		<!-- 收入录入开始 -->
+	    <action name="showDeptIncomeDetailListPage" class="deptIncomeAction" method="showDeptIncomeDetailListPage">
+			<result name="success">/journalsheet/deptincome/deptIncomeDetailListPage.jsp</result>
+		</action>
+		<action name="showDeptIncomeAddPage" class="deptIncomeAction" method="showDeptIncomeAddPage">
+			<result name="success">/journalsheet/deptincome/deptIncomeAddPage.jsp</result>
+		</action>
+		<action name="addDeptIncome" class="deptIncomeAction" method="addDeptIncome">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showDeptIncomeList" class="deptIncomeAction" method="showDeptIncomeList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showDeptIncomeInfoPage" class="deptIncomeAction" method="showDeptIncomeInfoPage">
+			<result name="addSuccess">/journalsheet/deptincome/deptIncomeAddPage.jsp</result>
+			<result name="editSuccess">/journalsheet/deptincome/deptIncomeEditPage.jsp</result>
+			<result name="viewSuccess">/journalsheet/deptincome/deptIncomeViewPage.jsp</result>
+		</action>
+		<action name="showDeptIncomeViewPage" class="deptIncomeAction" method="showDeptIncomeViewPage">
+			<result name="success">/journalsheet/deptincome/deptIncomeViewPage.jsp</result>
+		</action>
+		<action name="editDeptIncome" class="deptIncomeAction" method="editDeptIncome">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteDeptIncome" class="deptIncomeAction" method="deleteDeptIncome">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditDeptIncome" class="deptIncomeAction" method="auditDeptIncome">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="oppauditDeptIncome" class="deptIncomeAction" method="oppauditDeptIncome">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showDeptIncomeSettlePage" class="deptIncomeAction" method="showDeptIncomeSettlePage">
+			<result name="success">/journalsheet/deptincome/deptIncomeSettlePage.jsp</result>
+		</action>
+		<action name="updateDeptIncomeSettle" class="deptIncomeAction" method="updateDeptIncomeSettle">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>		
+		<!-- 收入录入结束 -->
+		
+		<!-- 收入报表开始 -->
+		<action name="deptIncomeReportDetailListPage" class="deptIncomeAction" method="deptIncomeReportDetailListPage">
+			<result name="success">/journalsheet/deptincome/deptIncomeReportDetailListPage.jsp</result>
+		</action>
+		<action name="deptIncomeReportPage" class="deptIncomeAction" method="deptIncomeReportPage">
+			<result name="success">/journalsheet/deptincome/deptIncomeReportPage.jsp</result>
+		</action>		
+		<action name="showDeptIncomeReportData" class="deptIncomeAction" method="showDeptIncomeReportData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="exportDeptIncomeReportData" class="deptIncomeAction" method="exportDeptIncomeReportData"></action>
+		
+		
+		<action name="deptIncomeYearReportPage" class="deptIncomeAction" method="deptIncomeYearReportPage">
+			<result name="success">/journalsheet/deptincome/deptIncomeYearReportPage.jsp</result>
+		</action>		
+		<action name="showDeptIncomeYearReportData" class="deptIncomeAction" method="showDeptIncomeYearReportData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>		
+		<action name="exportDeptIncomeYearReportData" class="deptIncomeAction" method="exportDeptIncomeYearReportData"></action>
+		
+		<action name="deptSupplierIncomeReportPage" class="deptIncomeAction" method="deptSupplierIncomeReportPage">
+			<result name="success">/journalsheet/deptincome/deptSupplierIncomeReportPage.jsp</result>
+		</action>		
+		<action name="showDeptSupplierIncomeReportData" class="deptIncomeAction" method="showDeptSupplierIncomeReportData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSupplierSubjectReportData" class="deptIncomeAction" method="showSupplierSubjectReportData">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>		
+		<action name="exportDeptSupplierIncomeReportData" class="deptIncomeAction" method="exportDeptSupplierIncomeReportData"></action>
+		<action name="exportSupplierSubjectDetailData" class="deptIncomeAction" method="exportSupplierSubjectDetailData"></action>		
+		<action name="deptIncomeAmountNumChange" class="deptIncomeAction" method="deptIncomeAmountNumChange">		
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<!-- 收入报表结束 -->
+	</package>
+	<!-- 部门收入 结束-->
+	<!-- 销售区域报表  -->
+	<package name="salesarea" extends="parent" namespace="/journalsheet/salesarea">
+		<action name="salesAreaReportPage" class="salesAreaAction" method="salesAreaReportPage">
+			<result name="success">/journalsheet/salesarea/salesAreaReportPage.jsp</result>
+		</action>
+		<action name="showDSalesAreaReportData" class="salesAreaAction" method="showDSalesAreaReportData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>	
+		<action name="exportSalesAreaReportData" class="salesAreaAction" method="exportSalesAreaReportData"></action>
+	</package>
+
+	<!-- 客户费用合同条款  -->
+	<package name="contractcaluse" extends="parent" namespace="/journalsheet/contractcaluse">
+		<action name="showContractCaluseListPage" class="contractAction" method="showContractCaluseListPage">
+			<result name="success">/journalsheet/contractcaluse/contractCaluseListPage.jsp</result>
+		</action>
+		<action name="showContractCaluseListData" class="contractAction" method="showContractCaluseListData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showContractCaluseAddPage" class="contractAction" method="showContractCaluseAddPage">
+			<result name="success">/journalsheet/contractcaluse/contractCaluseAddPage.jsp</result>
+		</action>
+		<action name="showContractCaluseEditPage" class="contractAction" method="showContractCaluseEditPage">
+			<result name="success">/journalsheet/contractcaluse/contractCaluseEditPage.jsp</result>
+			<result name="successView">/journalsheet/contractcaluse/contractCaluseViewPage.jsp</result>
+		</action>
+		<action name="addContractCaluse" class="contractAction" method="addContractCaluse">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editContractCaluse" class="contractAction" method="editContractCaluse">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteContractCaluse" class="contractAction" method="deleteContractCaluse">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="openContractCaluse" class="contractAction" method="openContractCaluse">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="closeContractCaluse" class="contractAction" method="closeContractCaluse">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+
+	<!-- 客户费用合同  -->
+	<package name="contract" extends="parent" namespace="/journalsheet/contract">
+		<action name="showContractListPage" class="contractAction" method="showContractListPage">
+			<result name="success">/journalsheet/contract/contractListPage.jsp</result>
+		</action>
+		<action name="showContractListData" class="contractAction" method="showContractListData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showContractPage" class="contractAction" method="showContractPage">
+			<result name="success">/journalsheet/contract/contractPage.jsp</result>
+		</action>
+		<action name="showContractAddPage" class="contractAction" method="showContractAddPage">
+			<result name="success">/journalsheet/contract/contractAddPage.jsp</result>
+		</action>
+		<action name="showContractEditPage" class="contractAction" method="showContractEditPage">
+			<result name="success">/journalsheet/contract/contractEditPage.jsp</result>
+		</action>
+		<action name="showContractViewPage" class="contractAction" method="showContractViewPage">
+			<result name="success">/journalsheet/contract/contractViewPage.jsp</result>
+		</action>
+		<action name="showContractDetailAddPage" class="contractAction" method="showContractDetailAddPage">
+			<result name="success">/journalsheet/contract/contractDetailAddPage.jsp</result>
+		</action>
+		<action name="showContractDetailEditPage" class="contractAction" method="showContractDetailEditPage">
+			<result name="success">/journalsheet/contract/contractDetailEditPage.jsp</result>
+		</action>
+
+		<action name="addContractSave" class="contractAction" method="addContractSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editContractSave" class="contractAction" method="editContractSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteContract" class="contractAction" method="deleteContract">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditContract" class="contractAction" method="auditContract">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="oppauditContract" class="contractAction" method="oppauditContract">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="checkCorrelationCustomer" class="contractAction" method="checkCorrelationCustomer">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+	<!-- 客户费用合同  -->
+	<package name="contractreport" extends="parent" namespace="/journalsheet/contractreport">
+
+		<action name="showContractReportListPage" class="contractAction" method="showContractReportListPage">
+			<result name="success">/journalsheet/contractreport/contractReportPage.jsp</result>
+		</action>
+
+		<action name="showContractReportAddPage" class="contractAction" method="showContractReportAddPage">
+			<result name="success">/journalsheet/contractreport/contractReportAddPage.jsp</result>
+		</action>
+		<action name="addContractReport" class="contractAction" method="addContractReport">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editContractReportDataList" class="contractAction" method="editContractReportDataList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showAddContractReportData" class="contractAction" method="showAddContractReportData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showContractReportData" class="contractAction" method="showContractReportData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editContractReport" class="contractAction" method="editContractReport">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditContractReport" class="contractAction" method="auditContractReport">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="oppauditContractReport" class="contractAction" method="oppauditContractReport">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="CreatPayableAndMatcost" class="contractAction" method="CreatPayableAndMatcost">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+
+		<action name="showContractLiabilityPage" class="contractAction" method="showContractLiabilityPage">
+			<result name="success">/journalsheet/contractliability/contractLiabilityPage.jsp</result>
+		</action>
+		<action name="showContractLiabilityData" class="contractAction" method="showContractLiabilityData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+
+		<action name="showContractReportDetailPage" class="contractAction" method="showContractReportDetailPage">
+			<result name="success">/journalsheet/contractreport/contractReportDetailPage.jsp</result>
+		</action>
+		<action name="getContractReportDetailDataByMonthAndCustomerid" class="contractAction" method="getContractReportDetailDataByMonthAndCustomerid">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+</struts>

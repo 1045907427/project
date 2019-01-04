@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.account.dao.BeginDueMapper" >
+    <sql id="Base_Column_List" >
+        id, businessdate, status, adduserid, addusername, adddeptid, adddeptname, addtime,
+        modifyuserid, modifyusername, modifytime, audituserid, auditusername, audittime,
+        stopuserid, stopusername, stoptime, closetime, printtimes, supplierid,
+        suppliersort, buyarea, buydeptid, buyuserid, amount, invoicerefer, isinvoice, iswriteoff,
+        invoicedate, writeoffdate, writeoffuserid, writeoffusername, invoiceamount, invoicenotaxamount,
+        writeoffamount, writeoffnotaxamount,remark
+    </sql>
+    <insert id="addBeginDue" parameterType="com.hd.agent.account.model.BeginDue" >
+        insert into t_account_begin_due
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="businessdate != null">
+                businessdate,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="adduserid != null">
+                adduserid,
+            </if>
+            <if test="addusername != null">
+                addusername,
+            </if>
+            <if test="adddeptid != null">
+                adddeptid,
+            </if>
+            <if test="adddeptname != null">
+                adddeptname,
+            </if>
+            <if test="1==1">
+                addtime,
+            </if>
+            <if test="supplierid != null">
+                supplierid,
+            </if>
+            <if test="suppliersort != null">
+                suppliersort,
+            </if>
+            <if test="buyarea != null">
+                buyarea,
+            </if>
+            <if test="buydeptid != null">
+                buydeptid,
+            </if>
+            <if test="buyuserid != null">
+                buyuserid,
+            </if>
+            <if test="amount != null">
+                amount,
+            </if>
+            <if test="invoicerefer != null">
+                invoicerefer,
+            </if>
+            <if test="isinvoice != null">
+                isinvoice,
+            </if>
+            <if test="iswriteoff != null">
+                iswriteoff,
+            </if>
+            <if test="invoicedate != null">
+                invoicedate,
+            </if>
+            <if test="writeoffdate != null">
+                writeoffdate,
+            </if>
+            <if test="writeoffuserid != null">
+                writeoffuserid,
+            </if>
+            <if test="writeoffusername != null">
+                writeoffusername,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="businessdate != null">
+                #{businessdate},
+            </if>
+            <if test="status != null">
+                #{status},
+            </if>
+            <if test="adduserid != null">
+                #{adduserid},
+            </if>
+            <if test="addusername != null">
+                #{addusername},
+            </if>
+            <if test="adddeptid != null">
+                #{adddeptid},
+            </if>
+            <if test="adddeptname != null">
+                #{adddeptname},
+            </if>
+            <if test="1==1">
+                now(),
+            </if>
+            <if test="supplierid != null">
+                #{supplierid},
+            </if>
+            <if test="suppliersort != null">
+                #{suppliersort},
+            </if>
+            <if test="buyarea != null">
+                #{buyarea},
+            </if>
+            <if test="buydeptid != null">
+                #{buydeptid},
+            </if>
+            <if test="buyuserid != null">
+                #{buyuserid},
+            </if>
+            <if test="amount != null">
+                #{amount},
+            </if>
+            <if test="invoicerefer != null">
+                #{invoicerefer},
+            </if>
+            <if test="isinvoice != null">
+                #{isinvoice},
+            </if>
+            <if test="iswriteoff != null">
+                #{iswriteoff},
+            </if>
+            <if test="invoicedate != null">
+                #{invoicedate},
+            </if>
+            <if test="writeoffdate != null">
+                #{writeoffdate},
+            </if>
+            <if test="writeoffuserid != null">
+                #{writeoffuserid},
+            </if>
+            <if test="writeoffusername != null">
+                #{writeoffusername},
+            </if>
+            <if test="remark != null">
+                #{remark},
+            </if>
+        </trim>
+    </insert>
+    <select id="getBeginDueList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.account.model.BeginDue">
+        select <include refid="Base_Column_List"/>
+        from t_account_begin_due
+        <trim prefix="where" prefixOverrides="and|or" >
+            <include refid="common.Page_querySql"/>
+            <include refid="common.Page_dataSql"/>
+            <if test="condition.auditdate1 != null">
+                and audittime >= STR_TO_DATE(#{condition.auditdate1},'%Y-%m-%d')
+            </if>
+            <if test="condition.auditdate2 != null">
+                <![CDATA[and audittime <= DATE_ADD(STR_TO_DATE(#{condition.auditdate2},'%Y-%m-%d'),INTERVAL '1' day)]]>
+            </if>
+            <if test="condition.businessdate1 != null">
+                and businessdate >= #{condition.businessdate1}
+            </if>
+            <if test="condition.businessdate2 != null">
+                <![CDATA[and businessdate <= #{condition.businessdate2}]]>
+            </if>
+            <if test="condition.id != null" >
+                and id like CONCAT('%',#{condition.id},'%')
+            </if>
+            <if test="condition.supplierid != null" >
+                and FIND_IN_SET(supplierid,#{condition.supplierid})
+            </if>
+            <if test="condition.status != null" >
+                and status = #{condition.status}
+            </if>
+            <if test="condition.isinvoice != null" >
+                and isinvoice = #{condition.isinvoice}
+            </if>
+        </trim>
+        <choose>
+            <when test="condition.isflag == null">
+                <include refid="common.Page_limit" />
+            </when>
+            <otherwise>
+                ORDER BY businessdate DESC,id ASC
+            </otherwise>
+        </choose>
+    </select>
+    <select id="getBeginDueCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+        select count(1) from t_account_begin_due
+        <trim prefix="where" prefixOverrides="and|or" >
+            <include refid="common.Page_querySql"/>
+            <include refid="common.Page_dataSql"/>
+            <if test="condition.auditdate1 != null">
+                and audittime >= STR_TO_DATE(#{condition.auditdate1},'%Y-%m-%d')
+            </if>
+            <if test="condition.auditdate2 != null">
+                <![CDATA[and audittime <= DATE_ADD(STR_TO_DATE(#{condition.auditdate2},'%Y-%m-%d'),INTERVAL '1' day)]]>
+            </if>
+            <if test="condition.businessdate1 != null">
+                and businessdate >= #{condition.businessdate1}
+            </if>
+            <if test="condition.businessdate2 != null">
+                <![CDATA[and businessdate <= #{condition.businessdate2}]]>
+            </if>
+            <if test="condition.id != null" >
+                and id like CONCAT('%',#{condition.id},'%')
+            </if>
+            <if test="condition.supplierid != null" >
+                and FIND_IN_SET(supplierid,#{condition.supplierid})
+            </if>
+            <if test="condition.status != null" >
+                and status = #{condition.status}
+            </if>
+            <if test="condition.isinvoice != null" >
+                and isinvoice = #{condition.isinvoice}
+            </if>
+        </trim>
+    </select>
+    <select id="getBeginDueSum" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.account.model.BeginDue">
+        select sum(amount) as amount, sum(writeoffamount) writeoffamount,sum(writeoffnotaxamount) writeoffnotaxamount, sum(invoiceamount) invoiceamount, sum(invoicenotaxamount) invoicenotaxamount
+        from t_account_begin_due
+        <trim prefix="where" prefixOverrides="and|or" >
+            <include refid="common.Page_querySql"/>
+            <include refid="common.Page_dataSql"/>
+            <if test="condition.auditdate1 != null">
+                and audittime >= STR_TO_DATE(#{condition.auditdate1},'%Y-%m-%d')
+            </if>
+            <if test="condition.auditdate2 != null">
+                <![CDATA[and audittime <= DATE_ADD(STR_TO_DATE(#{condition.auditdate2},'%Y-%m-%d'),INTERVAL '1' day)]]>
+            </if>
+            <if test="condition.businessdate1 != null">
+                and businessdate >= #{condition.businessdate1}
+            </if>
+            <if test="condition.businessdate2 != null">
+                <![CDATA[and businessdate <= #{condition.businessdate2}]]>
+            </if>
+            <if test="condition.id != null" >
+                and id like CONCAT('%',#{condition.id},'%')
+            </if>
+            <if test="condition.supplierid != null" >
+                and FIND_IN_SET(supplierid,#{condition.supplierid})
+            </if>
+            <if test="condition.status != null" >
+                and status = #{condition.status}
+            </if>
+            <if test="condition.isinvoice != null" >
+                and isinvoice = #{condition.isinvoice}
+            </if>
+        </trim>
+    </select>
+    <select id="getBeginDueByID" parameterType="java.lang.String" resultType="com.hd.agent.account.model.BeginDue">
+        select <include refid="Base_Column_List"/>
+        from t_account_begin_due where id=#{id}
+    </select>
+    <update id="editBeginDue" parameterType="com.hd.agent.account.model.BeginDue" >
+        update t_account_begin_due
+        <set>
+            <if test="businessdate != null">
+                businessdate = #{businessdate},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="modifyuserid != null">
+                modifyuserid = #{modifyuserid},
+            </if>
+            <if test="modifyusername != null">
+                modifyusername = #{modifyusername},
+            </if>
+            <if test="1==1">
+                modifytime = now(),
+            </if>
+            <if test="audituserid != null">
+                audituserid = #{audituserid},
+            </if>
+            <if test="auditusername != null">
+                auditusername = #{auditusername},
+            </if>
+            <if test="audittime != null">
+                audittime = #{audittime},
+            </if>
+            <if test="stopuserid != null">
+                stopuserid = #{stopuserid},
+            </if>
+            <if test="stopusername != null">
+                stopusername = #{stopusername},
+            </if>
+            <if test="stoptime != null">
+                stoptime = #{stoptime},
+            </if>
+            <if test="closetime != null">
+                closetime = #{closetime},
+            </if>
+            <if test="printtimes != null">
+                printtimes = #{printtimes},
+            </if>
+            <if test="supplierid != null">
+                supplierid = #{supplierid},
+            </if>
+            <if test="suppliersort != null">
+                suppliersort = #{suppliersort},
+            </if>
+            <if test="buyarea != null">
+                buyarea = #{buyarea},
+            </if>
+            <if test="buydeptid != null">
+                buydeptid = #{buydeptid},
+            </if>
+            <if test="buyuserid != null">
+                buyuserid = #{buyuserid},
+            </if>
+            <if test="amount != null">
+                amount = #{amount},
+            </if>
+            <if test="invoicerefer != null">
+                invoicerefer = #{invoicerefer},
+            </if>
+            <if test="isinvoice != null">
+                isinvoice = #{isinvoice},
+            </if>
+            <if test="iswriteoff != null">
+                iswriteoff = #{iswriteoff},
+            </if>
+            <if test="invoicedate != null">
+                invoicedate = #{invoicedate},
+            </if>
+            <if test="writeoffdate != null">
+                writeoffdate = #{writeoffdate},
+            </if>
+            <if test="writeoffuserid != null">
+                writeoffuserid = #{writeoffuserid},
+            </if>
+            <if test="writeoffusername != null">
+                writeoffusername = #{writeoffusername},
+            </if>
+            <if test="invoiceamount != null">
+                invoiceamount = #{invoiceamount},
+            </if>
+            <if test="invoicenotaxamount != null">
+                invoicenotaxamount = #{invoicenotaxamount},
+            </if>
+            <if test="writeoffamount != null">
+                writeoffamount = #{writeoffamount},
+            </if>
+            <if test="writeoffnotaxamount != null">
+                writeoffnotaxamount = #{writeoffnotaxamount},
+            </if>
+            <if test="remark != null">
+                remark = #{remark},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <delete id="deleteBeginDue" parameterType="java.lang.String">
+        delete from t_account_begin_due where id=#{id}
+    </delete>
+    <update id="auditBeginDue" parameterType="java.lang.String">
+        update t_account_begin_due t set t.status='3',t.audituserid=#{userid},t.auditusername=#{username},t.audittime=now()
+        where t.id=#{id}
+    </update>
+    <update id="oppauditBeginDue" parameterType="java.lang.String">
+        update t_account_begin_due t set t.status='2',t.audituserid='',t.auditusername='',t.audittime=NULL
+        where t.id=#{id}
+    </update>
+    <update id="updateBeginDueInvoice" parameterType="java.lang.String">
+        update t_account_begin_due t set t.isinvoice=#{isinvoice},t.invoicedate=#{invoicedate},
+        <if test="isinvoice ==1">
+            t.invoiceamount=t.amount,t.invoicenotaxamount=t.amount/1.17
+        </if>
+        <if test="isinvoice ==0">
+            t.invoiceamount=0,t.invoicenotaxamount=0
+        </if>
+        where t.id=#{id}
+    </update>
+    <update id="updateBeginDueWriteoff" parameterType="java.lang.String">
+        update t_account_begin_due t set t.iswriteoff=#{iswriteoff},t.writeoffdate=#{writeoffdate},
+        t.writeoffuserid=#{userid},t.writeoffusername=#{username},
+        <if test="iswriteoff ==1">
+            t.status='4',t.writeoffamount=t.amount,t.writeoffnotaxamount=t.amount/1.17
+        </if>
+        <if test="iswriteoff ==0">
+            t.status='3',t.writeoffamount=0,t.writeoffnotaxamount=0
+        </if>
+        where t.id=#{id}
+    </update>
+    <update id="updateBeginDueInvoicerefer" parameterType="com.hd.agent.account.model.BeginDue">
+        UPDATE t_account_begin_due t set t.invoicerefer = #{invoicerefer}
+        where t.id=#{id}
+    </update>
+    <update id="updateBeginDueInvoiceAuditWriteBack" parameterType="com.hd.agent.account.model.BeginDue">
+        UPDATE t_account_begin_due t
+          set t.isinvoice = #{isinvoice},
+            t.invoicedate = #{invoicedate},
+            t.invoiceamount = #{invoiceamount},
+            t.invoicenotaxamount = #{invoicenotaxamount}
+        where t.id=#{id}
+    </update>
+    <update id="updateBeginDueWriteBack" parameterType="com.hd.agent.account.model.BeginDue">
+        UPDATE t_account_begin_due t
+          set t.status = #{status},
+            t.iswriteoff = #{iswriteoff},
+            t.writeoffdate = #{writeoffdate},
+            t.writeoffuserid = #{writeoffuserid},
+            t.writeoffusername = #{writeoffusername},
+            t.writeoffamount = #{writeoffamount},
+            t.writeoffnotaxamount = #{writeoffnotaxamount}
+        where t.id=#{id}
+    </update>
+</mapper>

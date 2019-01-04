@@ -1,0 +1,1082 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.sales.dao.PromotionPackageMapper" >
+  <resultMap id="BaseResultMap" type="com.hd.agent.sales.model.PromotionPackage" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="businessdate" property="businessdate" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="adduserid" property="adduserid" jdbcType="VARCHAR" />
+    <result column="addusername" property="addusername" jdbcType="VARCHAR" />
+    <result column="adddeptid" property="adddeptid" jdbcType="VARCHAR" />
+    <result column="adddeptname" property="adddeptname" jdbcType="VARCHAR" />
+    <result column="addtime" property="addtime" jdbcType="TIMESTAMP" />
+    <result column="modifyuserid" property="modifyuserid" jdbcType="VARCHAR" />
+    <result column="modifyusername" property="modifyusername" jdbcType="VARCHAR" />
+    <result column="modifytime" property="modifytime" jdbcType="TIMESTAMP" />
+    <result column="audituserid" property="audituserid" jdbcType="VARCHAR" />
+    <result column="auditusername" property="auditusername" jdbcType="VARCHAR" />
+    <result column="audittime" property="audittime" jdbcType="TIMESTAMP" />
+    <result column="stopuserid" property="stopuserid" jdbcType="VARCHAR" />
+    <result column="stopusername" property="stopusername" jdbcType="VARCHAR" />
+    <result column="stoptime" property="stoptime" jdbcType="TIMESTAMP" />
+    <result column="closetime" property="closetime" jdbcType="TIMESTAMP" />
+    <result column="printtimes" property="printtimes" jdbcType="INTEGER" />
+    <result column="customertype" property="customertype" jdbcType="VARCHAR" />
+    <result column="customerid" property="customerid" jdbcType="VARCHAR" />
+    <result column="applydeptid" property="applydeptid" jdbcType="VARCHAR" />
+    <result column="applyuserid" property="applyuserid" jdbcType="VARCHAR" />
+    <result column="begindate" property="begindate" jdbcType="VARCHAR" />
+    <result column="enddate" property="enddate" jdbcType="VARCHAR" />
+    <result column="oaid" property="oaid" jdbcType="VARCHAR" />
+    <result column="ptype" property="ptype" jdbcType="CHAR" />
+    <result column="isjoinfull" property="isjoinfull" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="PromotionPackage_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.businessdate != null" >
+         and businessdate = #{condition.businessdate}
+      </if>
+      <if test="condition.status != null" >
+         and status = #{condition.status}
+      </if>
+      <if test="condition.remark != null" >
+         and remark = #{condition.remark}
+      </if>
+      <if test="condition.adduserid != null" >
+         and adduserid = #{condition.adduserid}
+      </if>
+      <if test="condition.addusername != null" >
+         and addusername = #{condition.addusername}
+      </if>
+      <if test="condition.adddeptid != null" >
+         and adddeptid = #{condition.adddeptid}
+      </if>
+      <if test="condition.adddeptname != null" >
+         and adddeptname = #{condition.adddeptname}
+      </if>
+      <if test="condition.addtime != null" >
+         and addtime = #{condition.addtime}
+      </if>
+      <if test="condition.modifyuserid != null" >
+         and modifyuserid = #{condition.modifyuserid}
+      </if>
+      <if test="condition.modifyusername != null" >
+         and modifyusername = #{condition.modifyusername}
+      </if>
+      <if test="condition.modifytime != null" >
+         and modifytime = #{condition.modifytime}
+      </if>
+      <if test="condition.audituserid != null" >
+         and audituserid = #{condition.audituserid}
+      </if>
+      <if test="condition.auditusername != null" >
+         and auditusername = #{condition.auditusername}
+      </if>
+      <if test="condition.audittime != null" >
+         and audittime = #{condition.audittime}
+      </if>
+      <if test="condition.stopuserid != null" >
+         and stopuserid = #{condition.stopuserid}
+      </if>
+      <if test="condition.stopusername != null" >
+         and stopusername = #{condition.stopusername}
+      </if>
+      <if test="condition.stoptime != null" >
+         and stoptime = #{condition.stoptime}
+      </if>
+      <if test="condition.closetime != null" >
+         and closetime = #{condition.closetime}
+      </if>
+      <if test="condition.printtimes != null" >
+         and printtimes = #{condition.printtimes}
+      </if>
+      <if test="condition.customertype != null" >
+         and customertype = #{condition.customertype}
+      </if>
+      <if test="condition.customerid != null" >
+         and customerid = #{condition.customerid}
+      </if>
+      <if test="condition.applydeptid != null" >
+         and applydeptid = #{condition.applydeptid}
+      </if>
+      <if test="condition.applyuserid != null" >
+         and applyuserid = #{condition.applyuserid}
+      </if>
+      <if test="condition.begindate != null" >
+         and begindate = #{condition.begindate}
+      </if>
+      <if test="condition.enddate != null" >
+         and enddate = #{condition.enddate}
+      </if>
+      <if test="condition.oaid != null" >
+         and oaid = #{condition.oaid}
+      </if>
+      <if test="condition.ptype != null" >
+         and ptype = #{condition.ptype}
+      </if>
+      <if test="condition.isjoinfull != null" >
+         and isjoinfull = #{condition.isjoinfull}
+      </if>
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, businessdate, status, remark, adduserid, addusername, adddeptid, adddeptname, 
+    addtime, modifyuserid, modifyusername, modifytime, audituserid, auditusername, audittime, 
+    stopuserid, stopusername, stoptime, closetime, printtimes, customertype, customerid, 
+    applydeptid, applyuserid, begindate, enddate, oaid, ptype, isjoinfull
+  </sql>
+  <select id="getPromotion" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_sales_promotion_package
+    where id = #{id}
+  </select>
+    <select id="getPromo" resultMap="BaseResultMap">
+        select * from t_sales_promotion_package
+    </select>
+    <select id="getPromotionByCustomer" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_sales_promotion_package
+    where customerid = #{customerid} and status = '3' 
+    <![CDATA[ and #{today} >= begindate ]]>
+    <![CDATA[ and #{today} <= enddate ]]>
+    limit 0, 1
+  </select>
+  <select id="getPromotionListByDate" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from t_sales_promotion_package where status = '3'
+    <![CDATA[ and #{today} > enddate ]]>
+  </select>
+    <select id="getPromotionList" resultMap="BaseResultMap" parameterType="com.hd.agent.common.util.PageMap">
+  	select a.id, a.businessdate, a.status, a.remark, a.adduserid, a.addusername, 
+      a.adddeptid, a.adddeptname, a.addtime, a.modifyuserid, a.modifyusername, a.modifytime, 
+      a.audituserid, a.auditusername, a.audittime, a.stopuserid, a.stopusername, 
+      a.stoptime, a.closetime, a.printtimes, a.customertype, a.customerid, a.applydeptid, 
+      a.applyuserid, a.begindate, a.enddate, a.oaid, a.ptype, a.isjoinfull
+  	  from t_sales_promotion_package a
+	<if test="condition.goodsid != null" >
+  		inner join (select billid from t_sales_promotion_package_group_detail where goodsid = #{condition.goodsid}) b on a.id = b.billid
+    </if>
+	<trim prefix="where" prefixOverrides="and|or">
+		<if test="condition.customertype != null" >
+            and a.customertype = #{condition.customertype}
+      	</if>
+		<if test="condition.customerid != null" >
+            and FIND_IN_SET(#{condition.customerid} ,a.customerid)
+      	</if>
+        <if test="condition.status != null" >
+            and a.status = #{condition.status}
+        </if>
+        <if test="condition.ptype != null" >
+            and a.ptype = #{condition.ptype}
+        </if>
+		<if test="condition.businessdate != null" >
+         <![CDATA[ and a.businessdate >= #{condition.businessdate} ]]>
+      	</if>
+		<if test="condition.businessdate1 != null" >
+         <![CDATA[ and a.businessdate <= #{condition.businessdate1}]]>
+      	</if>
+	    <include refid="common.Page_querySql"/>
+	  	<include refid="common.Page_dataSql"/>
+	</trim>
+	order by a.id desc 
+	<include refid="common.Page_limit"/>
+  </select>
+
+<select id="getPromotionCount" resultType="java.lang.Integer" parameterType="com.hd.agent.common.util.PageMap">
+        select count(1) from t_sales_promotion_package  a
+        <if test="condition.goodsid != null" >
+            inner join (select billid from t_sales_promotion_package_group_detail where goodsid = #{condition.goodsid}) b on a.id = b.billid
+        </if>
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="condition.customertype != null" >
+                and a.customertype = #{condition.customertype}
+            </if>
+            <if test="condition.customerid != null" >
+                and a.customerid = #{condition.customerid}
+            </if>
+            <if test="condition.status != null" >
+                and a.status = #{condition.status}
+            </if>
+            <if test="condition.ptype != null" >
+                and a.ptype = #{condition.ptype}
+            </if>
+            <if test="condition.businessdate != null" >
+                <![CDATA[ and a.businessdate >= #{condition.businessdate} ]]>
+            </if>
+            <if test="condition.businessdate1 != null" >
+                <![CDATA[ and a.businessdate<= #{condition.businessdate1} ]]>
+            </if>
+            <include refid="common.Page_querySql"/>
+            <include refid="common.Page_dataSql"/>
+        </trim>
+    </select>
+
+  <update id="updatePackageStatus" parameterType="com.hd.agent.sales.model.PromotionPackage" >
+  		update t_sales_promotion_package 
+  		 <set>
+      <if test="status != null" >
+        status = #{status},
+      </if>
+      <if test="audituserid != null" >
+        audituserid = #{audituserid},
+      </if>
+      <if test="auditusername != null" >
+        auditusername = #{auditusername},
+      </if>
+      <if test="audittime != null" >
+        audittime = now(),
+      </if>
+      <if test="stopuserid != null" >
+        stopuserid = #{stopuserid},
+      </if>
+      <if test="stopusername != null" >
+        stopusername = #{stopusername},
+      </if>
+      <if test="stoptime != null" >
+        stoptime = now(),
+      </if>
+      <if test="closetime != null" >
+        closetime = now(),
+      </if>
+     <if test="businessdate != null" >
+         businessdate = #{businessdate},
+     </if>
+    </set>
+    where id = #{id}   
+  </update>
+  
+  <delete id="deleteByPackageId" parameterType="java.lang.String" >
+    delete from t_sales_promotion_package
+    where id = #{id}
+  </delete>
+  <insert id="insertPackage" parameterType="com.hd.agent.sales.model.PromotionPackage" >
+    insert into t_sales_promotion_package (id, businessdate, status, remark, adduserid, addusername, 
+      adddeptid, adddeptname, addtime, modifyuserid, modifyusername, modifytime, 
+      audituserid, auditusername, audittime, stopuserid, stopusername, 
+      stoptime, closetime, printtimes, customertype, customerid, applydeptid, 
+      applyuserid, begindate, enddate, oaid, ptype, isjoinfull)
+    values (#{id}, #{businessdate}, #{status}, #{remark}, #{adduserid}, #{addusername}, 
+      #{adddeptid}, #{adddeptname}, #{addtime}, #{modifyuserid}, #{modifyusername}, #{modifytime}, 
+      #{audituserid}, #{auditusername}, #{audittime}, #{stopuserid}, #{stopusername}, 
+      #{stoptime}, #{closetime}, #{printtimes}, #{customertype}, #{customerid}, #{applydeptid}, 
+      #{applyuserid}, #{begindate}, #{enddate}, #{oaid}, #{ptype}, #{isjoinfull})
+  </insert>
+  <insert id="addPackage" parameterType="com.hd.agent.sales.model.PromotionPackage" >
+    insert into t_sales_promotion_package
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="businessdate != null" >
+        businessdate,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="adduserid != null" >
+        adduserid,
+      </if>
+      <if test="addusername != null" >
+        addusername,
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid,
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname,
+      </if>
+      <if test="addtime != null" >
+        addtime,
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid,
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername,
+      </if>
+      <if test="modifytime != null" >
+        modifytime,
+      </if>
+      <if test="audituserid != null" >
+        audituserid,
+      </if>
+      <if test="auditusername != null" >
+        auditusername,
+      </if>
+      <if test="audittime != null" >
+        audittime,
+      </if>
+      <if test="stopuserid != null" >
+        stopuserid,
+      </if>
+      <if test="stopusername != null" >
+        stopusername,
+      </if>
+      <if test="stoptime != null" >
+        stoptime,
+      </if>
+      <if test="closetime != null" >
+        closetime,
+      </if>
+      <if test="printtimes != null" >
+        printtimes,
+      </if>
+      <if test="customertype != null" >
+        customertype,
+      </if>
+      <if test="customerid != null" >
+        customerid,
+      </if>
+      <if test="applydeptid != null" >
+        applydeptid,
+      </if>
+      <if test="applyuserid != null" >
+        applyuserid,
+      </if>
+      <if test="begindate != null" >
+        begindate,
+      </if>
+      <if test="enddate != null" >
+        enddate,
+      </if>
+      <if test="oaid != null" >
+        oaid,
+      </if>
+      <if test="ptype != null" >
+        ptype,
+      </if>
+      <if test="isjoinfull != null" >
+        isjoinfull,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="businessdate != null" >
+        #{businessdate},
+      </if>
+      <if test="status != null" >
+        #{status},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+      <if test="adduserid != null" >
+        #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        #{adddeptname},
+      </if>
+      <if test="addtime != null" >
+        #{addtime},
+      </if>
+      <if test="modifyuserid != null" >
+        #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        #{modifyusername},
+      </if>
+      <if test="modifytime != null" >
+        #{modifytime},
+      </if>
+      <if test="audituserid != null" >
+        #{audituserid},
+      </if>
+      <if test="auditusername != null" >
+        #{auditusername},
+      </if>
+      <if test="audittime != null" >
+        #{audittime},
+      </if>
+      <if test="stopuserid != null" >
+        #{stopuserid},
+      </if>
+      <if test="stopusername != null" >
+        #{stopusername},
+      </if>
+      <if test="stoptime != null" >
+        #{stoptime},
+      </if>
+      <if test="closetime != null" >
+        #{closetime},
+      </if>
+      <if test="printtimes != null" >
+        #{printtimes},
+      </if>
+      <if test="customertype != null" >
+        #{customertype},
+      </if>
+      <if test="customerid != null" >
+        #{customerid},
+      </if>
+      <if test="applydeptid != null" >
+        #{applydeptid},
+      </if>
+      <if test="applyuserid != null" >
+        #{applyuserid},
+      </if>
+      <if test="begindate != null" >
+        #{begindate},
+      </if>
+      <if test="enddate != null" >
+        #{enddate},
+      </if>
+      <if test="oaid != null" >
+        #{oaid},
+      </if>
+      <if test="ptype != null" >
+        #{ptype},
+      </if>
+      <if test="isjoinfull != null" >
+        #{isjoinfull},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPromotionPackage" parameterType="map" >
+    update t_sales_promotion_package
+    set id = #{record.id},
+      businessdate = #{record.businessdate},
+      status = #{record.status},
+      remark = #{record.remark},
+      adduserid = #{record.adduserid},
+      addusername = #{record.addusername},
+      adddeptid = #{record.adddeptid},
+      adddeptname = #{record.adddeptname},
+      addtime = #{record.addtime},
+      modifyuserid = #{record.modifyuserid},
+      modifyusername = #{record.modifyusername},
+      modifytime = #{record.modifytime},
+      audituserid = #{record.audituserid},
+      auditusername = #{record.auditusername},
+      audittime = #{record.audittime},
+      stopuserid = #{record.stopuserid},
+      stopusername = #{record.stopusername},
+      stoptime = #{record.stoptime},
+      closetime = #{record.closetime},
+      printtimes = #{record.printtimes},
+      customertype = #{record.customertype},
+      customerid = #{record.customerid},
+      applydeptid = #{record.applydeptid},
+      applyuserid = #{record.applyuserid},
+      begindate = #{record.begindate},
+      enddate = #{record.enddate},
+      oaid = #{record.oaid},
+      ptype = #{record.ptype},
+      isjoinfull = #{record.isjoinfull}
+    <if test="_parameter != null" >
+      <include refid="PromotionPackage_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPromotion" parameterType="com.hd.agent.sales.model.PromotionPackage" >
+    update t_sales_promotion_package
+    <set>
+     <if test="businessdate != null" >
+        businessdate = #{businessdate},
+      </if>
+      <if test="status != null" >
+        status =  #{status},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark},
+      </if>
+      <if test="adduserid != null" >
+        adduserid =  #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        addusername = #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid = #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname = #{adddeptname},
+      </if>
+      <if test="addtime != null" >
+        addtime = #{addtime},
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid = #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername = #{modifyusername},
+      </if>
+      <if test="modifytime != null" >
+        modifytime = #{modifytime},
+      </if>
+      <if test="audituserid != null" >
+        audituserid = #{audituserid},
+      </if>
+      <if test="auditusername != null" >
+        auditusername = #{auditusername},
+      </if>
+      <if test="audittime != null" >
+        audittime = #{audittime},
+      </if>
+      <if test="stopuserid != null" >
+        stopuserid = #{stopuserid},
+      </if>
+      <if test="stopusername != null" >
+        stopusername = #{stopusername},
+      </if>
+      <if test="stoptime != null" >
+        stoptime = #{stoptime},
+      </if>
+      <if test="closetime != null" >
+        closetime = #{closetime},
+      </if>
+      <if test="printtimes != null" >
+        printtimes = #{printtimes},
+      </if>
+      <if test="customertype != null" >
+        customertype = #{customertype},
+      </if>
+      <if test="customerid != null" >
+       customerid = #{customerid},
+      </if>
+      <if test="applydeptid != null" >
+        applydeptid = #{applydeptid},
+      </if>
+      <if test="applyuserid != null" >
+        applyuserid = #{applyuserid},
+      </if>
+      <if test="begindate != null" >
+        begindate = #{begindate},
+      </if>
+      <if test="enddate != null" >
+        enddate = #{enddate},
+      </if>
+      <if test="oaid != null" >
+        oaid = #{oaid},
+      </if>
+      <if test="ptype != null" >
+        ptype = #{ptype},
+      </if>
+      <if test="isjoinfull != null" >
+       isjoinfull =  #{isjoinfull},
+      </if>
+    </set>
+        where id = #{id}
+  </update>
+  
+  <!-- groupMapper -->
+   <resultMap id="BaseResultGroupMap" type="com.hd.agent.sales.model.PromotionPackageGroup" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="billid" property="billid" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="CHAR" />
+    <result column="ptype" property="ptype" jdbcType="CHAR" />
+    <result column="begindate" property="begindate" jdbcType="VARCHAR" />
+    <result column="enddate" property="enddate" jdbcType="VARCHAR" />
+    <result column="groupid" property="groupid" jdbcType="VARCHAR" />
+    <result column="groupname" property="groupname" jdbcType="VARCHAR" />
+    <result column="pinyin" property="pinyin" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="oldprice" property="oldprice" jdbcType="DECIMAL" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="limitnum" property="limitnum" jdbcType="DECIMAL" />
+    <result column="remainnum" property="remainnum" jdbcType="DECIMAL" />
+    <result column="buygoodsid" property="buygoodsid" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List_group" >
+    id, billid, status, ptype, begindate, enddate, groupid, groupname, pinyin, remark, 
+    oldprice, price, limitnum, remainnum, buygoodsid
+  </sql>
+  <sql id="Base_Column_List_group2" >
+    g1.id, g1.billid, g1.status,g1.ptype, g1.begindate, g1.enddate, g1.groupid, g1.groupname, g1.pinyin, g1.remark, 
+    g1.oldprice, g1.price, g1.limitnum, g1.remainnum, g1.buygoodsid
+  </sql>
+	<select id="getGroupListByPromotion" resultMap="BaseResultGroupMap" parameterType="java.lang.String" >
+  	select 
+    <include refid="Base_Column_List_group2" />,d1.unitnum unitnum ,d1.auxremainder auxremainder,d1.auxnum auxnum ,d1.goodsid goodsid,
+        d1.auxunitname  auxunitname,d1.unitname unitname,d1.gtype gtype,d1.price unitprice
+    from t_sales_promotion_package_group g1
+    right join t_sales_promotion_package_group_detail d1 on g1.groupid = d1.groupid 
+    where g1.billid = #{id}
+        <!--and d1.gtype = '1'-->
+  </select>
+    <select id="getBundleGroup" resultMap="BaseResultGroupMap" parameterType="java.lang.String" >
+        select
+        <include refid="Base_Column_List_group" />
+        from t_sales_promotion_package_group
+        where groupid = #{groupid}
+    </select>
+  <select id="getBundleGroupInfo" resultMap="BaseResultGroupMap" parameterType="java.lang.String">
+  	select 
+  		<include refid="Base_Column_List_group" />
+  		from t_sales_promotion_package_group
+  		where groupid= #{groupid} 
+  </select>
+    <select id="getBundleInfo" resultMap="BaseResultGroupMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List_group2" />,d1.goodsid goodsid,d1.price goodsprice,d1.oldprice goodsoldprice,
+        d1.unitnum unitnum
+        from t_sales_promotion_package_group g1
+        right join t_sales_promotion_package_group_detail d1 on g1.groupid = d1.groupid
+        where g1.billid= #{billid}
+    </select>
+  <select id="getGroupIdByPid" resultMap="BaseResultGroupMap" parameterType="java.lang.Integer" >
+    select groupid
+    from t_sales_promotion_package_group
+    where billid = #{billid} 
+  </select>
+  <insert id="insert" parameterType="com.hd.agent.sales.model.PromotionPackageGroup" >
+    insert into t_sales_promotion_package_group (id, billid, status, ptype, begindate, enddate, groupid, 
+      groupname, pinyin, remark, oldprice, price, limitnum, remainnum, 
+      buygoodsid)
+    values (#{id}, #{billid}, #{status}, #{ptype}, #{begindate}, #{enddate}, #{groupid}, 
+      #{groupname}, #{pinyin}, #{remark}, #{oldprice}, #{price}, #{limitnum}, #{remainnum}, 
+      #{buygoodsid})
+  </insert>
+    <insert id="addPackageGroup" parameterType="com.hd.agent.sales.model.PromotionPackageGroup" >
+        insert into t_sales_promotion_package_group
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="billid != null" >
+                billid,
+            </if>
+            <if test="status != null" >
+                status,
+            </if>
+            <if test="ptype != null" >
+                ptype,
+            </if>
+            <if test="begindate != null" >
+                begindate,
+            </if>
+            <if test="enddate != null" >
+                enddate,
+            </if>
+            <if test="groupid != null" >
+                groupid,
+            </if>
+            <if test="groupname != null" >
+                groupname,
+            </if>
+            <if test="pinyin != null" >
+                pinyin,
+            </if>
+            <if test="remark != null" >
+                remark,
+            </if>
+            <if test="oldprice != null" >
+                oldprice,
+            </if>
+            <if test="price != null" >
+                price,
+            </if>
+            <if test="limitnum != null" >
+                limitnum,
+            </if>
+            <if test="remainnum != null" >
+                remainnum,
+            </if>
+            <if test="buygoodsid != null" >
+                buygoodsid,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id},
+            </if>
+            <if test="billid != null" >
+                #{billid},
+            </if>
+            <if test="status != null" >
+                #{status},
+            </if>
+            <if test="ptype != null" >
+                #{ptype},
+            </if>
+            <if test="begindate != null" >
+                #{begindate},
+            </if>
+            <if test="enddate != null" >
+                #{enddate},
+            </if>
+            <if test="groupid != null" >
+                #{groupid},
+            </if>
+            <if test="groupname != null" >
+                #{groupname},
+            </if>
+            <if test="pinyin != null" >
+                #{pinyin},
+            </if>
+            <if test="remark != null" >
+                #{remark},
+            </if>
+            <if test="oldprice != null" >
+                #{oldprice},
+            </if>
+            <if test="price != null" >
+                #{price},
+            </if>
+            <if test="limitnum != null" >
+                #{limitnum},
+            </if>
+            <if test="remainnum != null" >
+                #{remainnum},
+            </if>
+            <if test="buygoodsid != null" >
+                #{buygoodsid},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByGroup" parameterType="com.hd.agent.sales.model.PromotionPackageGroup" >
+    update t_sales_promotion_package_group
+    <set >
+      <if test="billid != null" >
+        billid = #{billid},
+      </if>
+      <if test="status != null" >
+        status = #{status},
+      </if>
+        <if test="groupid != null" >
+        groupid = #{groupid},
+      </if>
+      <if test="ptype != null" >
+        ptype = #{ptype},
+      </if>
+      <if test="begindate != null" >
+        begindate = #{begindate},
+      </if>
+      <if test="enddate != null" >
+        enddate = #{enddate},
+      </if>
+      <if test="groupname != null" >
+        groupname = #{groupname},
+      </if>
+      <if test="pinyin != null" >
+        pinyin = #{pinyin},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark},
+      </if>
+      <if test="oldprice != null" >
+        oldprice = #{oldprice},
+      </if>
+      <if test="price != null" >
+        price = #{price},
+      </if>
+      <if test="limitnum != null" >
+        limitnum = #{limitnum},
+      </if>
+      <if test="remainnum != null" >
+        remainnum = #{remainnum},
+      </if>
+      <if test="buygoodsid != null" >
+        buygoodsid = #{buygoodsid},
+      </if>
+    </set>
+     where id = #{id}
+  </update>
+   <delete id="deleteByPromotionId" parameterType="java.lang.Integer" >
+    delete from t_sales_promotion_package_group
+    where billid = #{id}
+  </delete>
+   
+  
+  <!-- groupDetail -->
+   <resultMap id="groupDetail" type="com.hd.agent.sales.model.PromotionPackageGroupDetail" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="billid" property="billid" jdbcType="VARCHAR" />
+    <result column="groupid" property="groupid" jdbcType="VARCHAR" />
+    <result column="gtype" property="gtype" jdbcType="CHAR" />
+    <result column="goodsid" property="goodsid" jdbcType="VARCHAR" />
+    <result column="unitid" property="unitid" jdbcType="VARCHAR" />
+    <result column="unitname" property="unitname" jdbcType="VARCHAR" />
+    <result column="unitnum" property="unitnum" jdbcType="DECIMAL" />
+    <result column="auxunitid" property="auxunitid" jdbcType="VARCHAR" />
+    <result column="auxunitname" property="auxunitname" jdbcType="VARCHAR" />
+    <result column="auxnum" property="auxnum" jdbcType="DECIMAL" />
+    <result column="auxremainder" property="auxremainder" jdbcType="DECIMAL" />
+    <result column="auxnumdetail" property="auxnumdetail" jdbcType="VARCHAR" />
+    <result column="addtime" property="addtime" jdbcType="TIMESTAMP" />
+    <result column="oldprice" property="oldprice" jdbcType="DECIMAL" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="remar" property="remar" jdbcType="VARCHAR" />
+  </resultMap>
+  	 <sql id="Group_Detail_List" >
+    id, billid, groupid, gtype, goodsid, unitid, unitname, unitnum, auxunitid, auxunitname, 
+    auxnum, auxremainder, auxnumdetail, addtime, oldprice, price, remar
+  </sql>
+  	 <sql id="Group_Detail_List2" >
+    t1.id, t1.billid, t1.groupid, t1.gtype, t1.goodsid, t1.unitid, t1.unitname, t1.unitnum, t1.auxunitid, t1.auxunitname, 
+    t1.auxnum, t1.auxremainder, t1.auxnumdetail, t1.addtime, t1.oldprice, t1.price, t1.remar
+  </sql>
+   <select id="getGroupDetailBybuygoodid" resultMap="groupDetail" parameterType="java.lang.String" >
+    select 
+    <include refid="Group_Detail_List" />
+    from t_sales_promotion_package_group_detail
+    where goodsid = #{goodsid} and gtype = '1'
+  </select>
+  	<select id="getGiveGood" resultMap="groupDetail" parameterType="java.lang.String">
+  	select
+  	 <include refid="Group_Detail_List" />
+  	 from t_sales_promotion_package_group_detail where gtype="2" and billid=#{billid}
+  	</select>
+  <insert id="insertDetail" parameterType="com.hd.agent.sales.model.PromotionPackageGroupDetail" >
+    insert into t_sales_promotion_package_group_detail (billid, groupid, gtype, goodsid, unitid, unitname, 
+      unitnum, auxunitid, auxunitname, auxnum, auxremainder, auxnumdetail, 
+      addtime, oldprice, price, remar)
+    values ( #{billid}, #{groupid}, #{gtype}, #{goodsid}, #{unitid}, #{unitname}, 
+      #{unitnum}, #{auxunitid}, #{auxunitname}, #{auxnum}, #{auxremainder}, #{auxnumdetail}, 
+      #{addtime}, #{oldprice}, #{price}, #{remar})
+  </insert>
+    <insert id="addPackageGroupDetail" parameterType="com.hd.agent.sales.model.PromotionPackageGroupDetail" >
+        insert into t_sales_promotion_package_group_detail
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="billid != null" >
+                billid,
+            </if>
+            <if test="groupid != null" >
+                groupid,
+            </if>
+            <if test="gtype != null" >
+                gtype,
+            </if>
+            <if test="goodsid != null" >
+                goodsid,
+            </if>
+            <if test="unitid != null" >
+                unitid,
+            </if>
+            <if test="unitname != null" >
+                unitname,
+            </if>
+            <if test="unitnum != null" >
+                unitnum,
+            </if>
+            <if test="auxunitid != null" >
+                auxunitid,
+            </if>
+            <if test="auxunitname != null" >
+                auxunitname,
+            </if>
+            <if test="auxnum != null" >
+                auxnum,
+            </if>
+            <if test="auxremainder != null" >
+                auxremainder,
+            </if>
+            <if test="auxnumdetail != null" >
+                auxnumdetail,
+            </if>
+            <if test="addtime != null" >
+                addtime,
+            </if>
+            <if test="oldprice != null" >
+                oldprice,
+            </if>
+            <if test="price != null" >
+                price,
+            </if>
+            <if test="remar != null" >
+                remar,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id},
+            </if>
+            <if test="billid != null" >
+                #{billid},
+            </if>
+            <if test="groupid != null" >
+                #{groupid},
+            </if>
+            <if test="gtype != null" >
+                #{gtype},
+            </if>
+            <if test="goodsid != null" >
+                #{goodsid},
+            </if>
+            <if test="unitid != null" >
+                #{unitid},
+            </if>
+            <if test="unitname != null" >
+                #{unitname},
+            </if>
+            <if test="unitnum != null" >
+                #{unitnum},
+            </if>
+            <if test="auxunitid != null" >
+                #{auxunitid},
+            </if>
+            <if test="auxunitname != null" >
+                #{auxunitname},
+            </if>
+            <if test="auxnum != null" >
+                #{auxnum},
+            </if>
+            <if test="auxremainder != null" >
+                #{auxremainder},
+            </if>
+            <if test="auxnumdetail != null" >
+                #{auxnumdetail},
+            </if>
+            <if test="addtime != null" >
+                #{addtime},
+            </if>
+            <if test="oldprice != null" >
+                #{oldprice},
+            </if>
+            <if test="price != null" >
+                #{price},
+            </if>
+            <if test="remar != null" >
+                #{remar},
+            </if>
+        </trim>
+    </insert>
+    <select id="selectPromotionPackageDetailList" parameterType="java.lang.String" resultType="com.hd.agent.sales.model.PromotionPackageGroupDetail">
+  	select <include refid="Group_Detail_List2"/>,
+  	t2.name goodsname ,t3.name brand,t1.unitname,t1.unitnum
+  	from t_sales_promotion_package_group_detail t1
+  	left join t_base_goods_info t2 on t1.goodsid = t2.id
+  	left join t_base_goods_brand t3 on t3.id = t2.brand
+  	where billid = #{billid }
+  	  and gtype = '2'
+  </select>
+  <select id="getGroupDetailByid" parameterType="java.lang.String" resultType="com.hd.agent.sales.model.PromotionPackageGroupDetail">
+  	select <include refid="Group_Detail_List"/>
+  	from t_sales_promotion_package_group_detail
+  	where groupid = #{groupid} and gtype = '1'
+  </select>
+   <update id="updateByDetail" parameterType="com.hd.agent.sales.model.PromotionPackageGroupDetail" >
+    update t_sales_promotion_package_group_detail
+    <set >
+      <if test="billid != null" >
+        billid = #{billid},
+      </if>
+      <if test="groupid != null" >
+        groupid = #{groupid},
+      </if>
+      <if test="gtype != null" >
+        gtype = #{gtype},
+      </if>
+      <if test="goodsid != null" >
+        goodsid = #{goodsid},
+      </if>
+      <if test="unitid != null" >
+        unitid = #{unitid},
+      </if>
+      <if test="unitname != null" >
+        unitname = #{unitname},
+      </if>
+      <if test="unitnum != null" >
+        unitnum = #{unitnum},
+      </if>
+      <if test="auxunitid != null" >
+        auxunitid = #{auxunitid},
+      </if>
+      <if test="auxunitname != null" >
+        auxunitname = #{auxunitname},
+      </if>
+      <if test="auxnum != null" >
+        auxnum = #{auxnum},
+      </if>
+      <if test="auxremainder != null" >
+        auxremainder = #{auxremainder},
+      </if>
+      <if test="auxnumdetail != null" >
+        auxnumdetail = #{auxnumdetail},
+      </if>
+      <if test="addtime != null" >
+        addtime = #{addtime},
+      </if>
+      <if test="oldprice != null" >
+        oldprice = #{oldprice},
+      </if>
+      <if test="price != null" >
+        price = #{price},
+      </if>
+      <if test="remar != null" >
+        remar = #{remar},
+      </if>
+    </set>
+     where id = #{id}
+  </update>
+    <delete id="deleteByGroupId" parameterType="java.lang.Integer" >
+    delete from t_sales_promotion_package_group_detail
+    where billid = #{id}
+  </delete>
+  
+  <!-- 捆绑 -->
+  	<select id="getDetailByGroupid" parameterType="java.lang.String" resultType="com.hd.agent.sales.model.PromotionPackageGroupDetail">
+  	select <include refid="Group_Detail_List2"/>,t2.remainnum as usablenum
+  	from t_sales_promotion_package_group_detail t1
+    RIGHT JOIN t_sales_promotion_package_group t2 on t1.groupid = t2.groupid
+  	where  t1.groupid = #{groupid}
+  </select>
+  <select id="getPromotionPackageGroupByCustomerAndGoods" parameterType="java.util.Map" resultType="com.hd.agent.sales.model.PromotionPackageGroup">
+  	select p.id, p.billid, p.status, p.ptype, p.begindate, p.enddate, p.groupid, p.groupname, p.pinyin, p.remark, 
+    p.oldprice, p.price, p.limitnum, p.remainnum, p.buygoodsid,t1.unitnum,t1.auxnumdetail
+	from t_sales_promotion_package t2
+	INNER JOIN t_sales_promotion_package_group p on t2.id=p.billid
+	INNER JOIN t_sales_promotion_package_group_detail t1 on p.groupid=t1.groupid and p.billid=t1.billid
+	<trim prefix="where" prefixOverrides="and|or">
+		<if test="promotionMap != null " >
+            and (
+            <if test="1==1">
+                (t2.customertype = '0' )
+            </if>
+            <if test="promotionMap.customerid !=null">
+                or (t2.customertype = '1' and t2.customerid like CONCAT("%",#{promotionMap.customerid},"%"))
+            </if>
+            <if test="promotionMap.promotionsort !=null">
+                or (t2.customertype = '2' and t2.customerid like CONCAT("%",#{promotionMap.promotionsort},"%"))
+            </if>
+            <if test="promotionMap.customersort !=null">
+                or (t2.customertype = '3' and t2.customerid like CONCAT("%",#{promotionMap.customersort},"%"))
+            </if>
+            <if test="promotionMap.pricesort !=null">
+                or (t2.customertype = '4' and t2.customerid like CONCAT("%",#{promotionMap.pricesort},"%"))
+            </if>
+            <if test="promotionMap.salesarea !=null">
+                or (t2.customertype = '5' and t2.customerid like CONCAT("%",#{promotionMap.salesarea},"%"))
+            </if>
+            <if test="promotionMap.pcustomerid !=null">
+                or (t2.customertype = '6' and t2.customerid like CONCAT("%",#{promotionMap.pcustomerid},"%"))
+            </if>
+            <if test="promotionMap.credit !=null">
+                or (t2.customertype = '7' and t2.customerid like CONCAT("%",#{promotionMap.credit},"%"))
+            </if>
+            <if test="promotionMap.canceltype !=null">
+                or (t2.customertype = '8' and t2.customerid like CONCAT("%",#{promotionMap.canceltype},"%"))
+            </if>
+            )
+            <![CDATA[and t2.status='3' and t2.begindate<=DATE_FORMAT(now(),'%Y-%m-%d') and t2.enddate>=DATE_FORMAT(now(),'%Y-%m-%d') ]]>
+      	</if>
+      	<if test="1==1">
+      		and t1.gtype='1' and t1.goodsid=#{goodsid} and p.ptype='3' and ((p.limitnum>0 and p.remainnum>0 ) or(p.limitnum=0))
+      	</if>
+     </trim>
+  </select>
+  <update id="updatePromotionPackageGroupSendnum">
+      update t_sales_promotion_package_group t
+      set t.remainnum=t.remainnum-#{sendnum}
+      where t.billid=#{billid} and t.groupid=#{groupid} and t.limitnum>0
+  </update>
+</mapper>

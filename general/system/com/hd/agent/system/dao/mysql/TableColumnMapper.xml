@@ -1,0 +1,576 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.system.dao.TableColumnMapper">
+	<!-- 缓存 -->
+	<cache type="org.mybatis.caches.ehcache.EhcacheCache" />
+
+	<sql id="Base_Column_List">		
+	    id, tablename, columnname, colchnname, coldatatype, colwidth, coldecimal, coldescription, 
+	    usefixed, usecoded,codedcoltype, colorder,usepk, usenull, coldefault, colapplytype, usedataprivilege, 
+	    usecolprivilege, usecolquery, usedataexport, usecolrefer,referwflag,referwid,wname,isopenedit,isshow,isrequired, adddate, adduserid, 
+	    modifydate, modifyuserid
+  	</sql>
+  	<sql id="PageList_Where_Clause" >
+	    <trim prefix="where" prefixOverrides="and|or" >
+		  <if test="condition.fixtablename != null">
+			 and tablename =#{condition.fixtablename}
+		  </if>
+	      <if test="condition.tablename != null" >
+	         and tablename like CONCAT('%',#{condition.tablename},'%')
+	      </if>
+	      <if test="condition.columnname != null" >
+	         and columnname like CONCAT('%',#{condition.columnname},'%')
+	      </if>
+	      <if test="condition.colchnname != null" >
+	         and colchnname like CONCAT('%',#{condition.colchnname},'%')
+	      </if>
+	      <if test="condition.coldatatype != null" >
+	         and coldatatype = #{condition.coldatatype}
+	      </if>
+	      <if test="condition.colwidth != null" >
+	         and colwidth = #{condition.colwidth}
+	      </if>
+	      <if test="condition.coldecimal != null" >
+	         and coldecimal = #{condition.coldecimal}
+	      </if>
+	      <if test="condition.coldescription != null" >
+	         and coldescription like CONCAT('%',#{condition.coldescription},'%')
+	      </if>
+	      <if test="condition.usefixed != null" >
+	         and usefixed = #{condition.usefixed}
+	      </if>
+	      <if test="condition.usecoded != null" >
+	         and usecoded = #{condition.usecoded}
+	      </if>
+	      <if test="condition.codedcoltype != null" >
+	         and codedcoltype = #{condition.codedcoltype}
+	      </if>
+	      <if test="condition.colorder != null" >
+	         and colorder = #{condition.colorder}
+	      </if>
+	      <if test="condition.usepk != null" >
+	         and usepk = #{condition.usepk}
+	      </if>
+	      <if test="condition.usenull != null" >
+	         and usenull = #{condition.usenull}
+	      </if>
+	      <if test="condition.coldefault != null" >
+	         and coldefault = #{condition.coldefault}
+	      </if>
+	      <if test="condition.colapplytype != null" >
+	         and colapplytype = #{condition.colapplytype}
+	      </if>
+	      <if test="condition.usedataprivilege != null" >
+	         and usedataprivilege = #{condition.usedataprivilege}
+	      </if>
+	      <if test="condition.usecolprivilege != null" >
+	         and usecolprivilege = #{condition.usecolprivilege}
+	      </if>
+	      <if test="condition.usecolquery != null" >
+	         and usecolquery = #{condition.usecolquery}
+	      </if>
+	      <if test="condition.usedataexport != null" >
+	         and usedataexport = #{condition.usedataexport}
+	      </if>
+	      <if test="condition.usecolrefer != null" >
+	         and usecolrefer = #{condition.usecolrefer}
+	      </if>
+	      <if test="condition.referwflag != null" >
+	         and referwflag = #{condition.referwflag}
+	      </if>
+	      <if test="condition.isopenedit != null" >
+	         and isopenedit = #{condition.isopenedit}
+	      </if>
+	      <if test="condition.isshow != null" >
+	         and isshow = #{condition.isshow}
+	      </if>
+	      <if test="condition.adddate != null" >
+	         and adddate = #{condition.adddate}
+	      </if>
+	      <if test="condition.adduserid != null" >
+	         and adduserid = #{condition.adduserid}
+	      </if>
+	      <if test="condition.modifydate != null" >
+	         and modifydate = #{condition.modifydate}
+	      </if>
+	      <if test="condition.modifyuserid != null" >
+	         and modifyuserid = #{condition.modifyuserid}
+	      </if>
+	    </trim>
+	  </sql>
+	<select id="getTableColumnList" resultType="com.hd.agent.system.model.TableColumn">
+		select
+		<include refid="Base_Column_List" />
+		from t_sys_tablecolumn
+	</select>
+	<select id="getTableColumnInfo" parameterType="java.lang.String" resultType="com.hd.agent.system.model.TableColumn">
+		select
+		<include refid="Base_Column_List" />
+		from t_sys_tablecolumn
+		where tablename =#{tablename} and columnname = #{column}
+	</select>
+	<select id="getTableColumnListBy" resultType="com.hd.agent.system.model.TableColumn"  parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from t_sys_tablecolumn
+		<trim prefix="where" prefixOverrides="and|or" >
+	      <if test="tablename != null">
+			 and tablename =#{tablename}
+		  </if>
+	      <if test="usefixed != null" >
+	         and usefixed = #{usefixed}
+	      </if>
+	      <if test="usecoded != null" >
+	         and usecoded = #{usecoded}
+	      </if>
+	      <if test="usepk != null" >
+	         and usepk = #{usepk}
+	      </if>
+	      <if test="usenull != null" >
+	         and usenull = #{usenull}
+	      </if>
+	      <if test="colapplytype != null" >
+	         and colapplytype = #{colapplytype}
+	      </if>
+	      <if test="usedataprivilege != null" >
+	         and usedataprivilege = #{usedataprivilege}
+	      </if>
+	      <if test="usecolprivilege != null" >
+	         and usecolprivilege = #{usecolprivilege}
+	      </if>
+	      <if test="usecolquery != null" >
+	         and usecolquery = #{usecolquery}
+	      </if>
+	      <if test="usedataexport != null" >
+	         and usedataexport = #{usedataexport}
+	      </if>
+	      <if test="usecolrefer != null" >
+	         and usecolrefer = #{usecolrefer}
+	      </if>
+	      <if test="usecolrefer != null" >
+	         and referwflag = #{referwflag}
+	      </if>
+	      <if test="isopenedit != null" >
+	         and isopenedit = #{isopenedit}
+	      </if>
+	      <if test="isshow != null" >
+	         and isshow = #{isshow}
+	      </if>
+	    </trim>
+	    order by usepk desc,colorder asc
+	</select>
+	<select id="getTableColumnPageAllList"  parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.system.model.TableColumn" useCache="false">
+		select
+		<include refid="Base_Column_List" />
+		from t_sys_tablecolumn
+		<include refid="PageList_Where_Clause"/>
+		<include refid="common.Page_OrderOnly" />
+	</select>
+	<select id="getTableColumnPageList"  parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.system.model.TableColumn" useCache="false">
+		select
+		<include refid="Base_Column_List" />
+		from t_sys_tablecolumn
+		<include refid="PageList_Where_Clause"/>
+		<include refid="common.Page_limit" />
+	</select>
+	<select id="getTableColumnCount" parameterType="com.hd.agent.common.util.PageMap"
+		resultType="int" useCache="false">
+		select count(1) from t_sys_tablecolumn		
+		<include refid="PageList_Where_Clause"/>
+	</select>
+	<select id="showTableColumn" parameterType="java.lang.String" resultType="com.hd.agent.system.model.TableColumn" useCache="false">
+		select
+		<include refid="Base_Column_List" />
+		from t_sys_tablecolumn
+		where id=#{id}
+	</select>
+	<insert id="addTableColumn" parameterType="com.hd.agent.system.model.TableColumn">
+		insert into t_sys_tablecolumn
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="tablename != null" >
+	        tablename,
+	      </if>
+	      <if test="columnname != null" >
+	        columnname,
+	      </if>
+	      <if test="colchnname != null" >
+	        colchnname,
+	      </if>
+	      <if test="coldatatype != null" >
+	        coldatatype,
+	      </if>
+	      <if test="colwidth != null" >
+	        colwidth,
+	      </if>
+	      <if test="coldecimal != null" >
+	        coldecimal,
+	      </if>
+	      <if test="coldescription != null" >
+	        coldescription,
+	      </if>
+	      <if test="usefixed != null" >
+	        usefixed,
+	      </if>
+	      <if test="usecoded != null" >
+	        usecoded,
+	      </if>
+	      <if test="codedcoltype != null" >
+	        codedcoltype,
+	      </if>
+	      <if test="colorder != null" >
+	        colorder,
+	      </if>
+	      <if test="usepk != null" >
+	        usepk,
+	      </if>
+	      <if test="usenull != null" >
+	        usenull,
+	      </if>
+	      <if test="coldefault != null" >
+	        coldefault,
+	      </if>
+	      <if test="colapplytype != null" >
+	        colapplytype,
+	      </if>
+	      <if test="usedataprivilege != null" >
+	        usedataprivilege,
+	      </if>
+	      <if test="usecolprivilege != null" >
+	        usecolprivilege,
+	      </if>
+	      <if test="usecolquery != null" >
+	        usecolquery,
+	      </if>
+	      <if test="usedataexport != null" >
+	        usedataexport,
+	      </if>
+	      <if test="usecolrefer != null" >
+	        usecolrefer,
+	      </if>
+	      <if test="referwflag != null" >
+	        referwflag,
+	      </if>
+	      <if test="referwid != null" >
+	        referwid,
+	      </if>
+	      <if test="wname != null" >
+	        wname,
+	      </if>
+	      <if test="isopenedit != null" >
+	        isopenedit,
+	      </if>
+	      <if test="isshow != null" >
+	        isshow,
+	      </if>
+	      <if test="isrequired != null">
+	      	isrequired,
+	      </if>
+	      <if test="1==1" >
+	        adddate,
+	      </if>
+	      <if test="adduserid != null" >
+	        adduserid,
+	      </if>
+	      <if test="1==1" >
+	        modifydate,
+	      </if>
+	      <if test="modifyuserid != null" >
+	        modifyuserid,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="tablename != null" >
+	        #{tablename},
+	      </if>
+	      <if test="columnname != null" >
+	        #{columnname},
+	      </if>
+	      <if test="colchnname != null" >
+	        #{colchnname},
+	      </if>
+	      <if test="coldatatype != null" >
+	        #{coldatatype},
+	      </if>
+	      <if test="colwidth != null" >
+	        #{colwidth},
+	      </if>
+	      <if test="coldecimal != null" >
+	        #{coldecimal},
+	      </if>
+	      <if test="coldescription != null" >
+	        #{coldescription},
+	      </if>
+	      <if test="usefixed != null" >
+	        #{usefixed},
+	      </if>
+	      <if test="usecoded != null" >
+	        #{usecoded},
+	      </if>
+	      <if test="codedcoltype != null" >
+	        #{codedcoltype},
+	      </if>
+	      <if test="colorder != null" >
+	        #{colorder},
+	      </if>
+	      <if test="usepk != null" >
+	        #{usepk},
+	      </if>
+	      <if test="usenull != null" >
+	        #{usenull},
+	      </if>
+	      <if test="coldefault != null" >
+	        #{coldefault},
+	      </if>
+	      <if test="colapplytype != null" >
+	        #{colapplytype},
+	      </if>
+	      <if test="usedataprivilege != null" >
+	        #{usedataprivilege},
+	      </if>
+	      <if test="usecolprivilege != null" >
+	        #{usecolprivilege},
+	      </if>
+	      <if test="usecolquery != null" >
+	        #{usecolquery},
+	      </if>
+	      <if test="usedataexport != null" >
+	        #{usedataexport},
+	      </if>
+	      <if test="usecolrefer != null" >
+	        #{usecolrefer},
+	      </if>
+	      <if test="referwflag != null" >
+	        #{referwflag},
+	      </if>
+	      <if test="referwid != null" >
+	        #{referwid},
+	      </if>
+	      <if test="wname != null" >
+	        #{wname},
+	      </if>
+	      <if test="isopenedit != null" >
+	        #{isopenedit},
+	      </if>
+	      <if test="isshow != null" >
+	        #{isshow},
+	      </if>
+	      <if test="isrequired != null">
+	      	#{isrequired},
+	      </if>
+	      <if test="1==1" >
+	        now(),
+	      </if>
+	      <if test="adduserid != null" >
+	        #{adduserid},
+	      </if>
+	      <if test="1==1" >
+	        now(),
+	      </if>
+	      <if test="modifyuserid != null" >
+	        #{modifyuserid},
+	      </if>
+	    </trim>
+		<selectKey resultType="int" keyProperty="id"
+			order="AFTER">
+			select LAST_INSERT_ID() as id
+	    </selectKey>
+	</insert>
+	<update id="updateTableColumn" parameterType="com.hd.agent.system.model.TableColumn">
+		update t_sys_tablecolumn
+		<set >
+	      <if test="tablename != null" >
+	        tablename = #{tablename},
+	      </if>
+	      <if test="columnname != null" >
+	        columnname = #{columnname},
+	      </if>
+	      <if test="colchnname != null" >
+	        colchnname = #{colchnname},
+	      </if>
+	      <if test="coldatatype != null" >
+	        coldatatype = #{coldatatype},
+	      </if>
+	      <if test="colwidth != null" >
+	        colwidth = #{colwidth},
+	      </if>
+	      <if test="coldecimal != null" >
+	        coldecimal = #{coldecimal},
+	      </if>
+	      <if test="coldescription != null" >
+	        coldescription = #{coldescription},
+	      </if>
+	      <if test="usefixed != null" >
+	        usefixed = #{usefixed},
+	      </if>
+	      <if test="usecoded != null" >
+	        usecoded = #{usecoded},
+	      </if>
+	      <if test="codedcoltype != null" >
+	        codedcoltype = #{codedcoltype},
+	      </if>
+	      <if test="colorder != null" >
+	        colorder = #{colorder},
+	      </if>
+	      <if test="usepk != null" >
+	        usepk = #{usepk},
+	      </if>
+	      <if test="usenull != null" >
+	        usenull = #{usenull},
+	      </if>
+	      <if test="coldefault != null" >
+	        coldefault = #{coldefault},
+	      </if>
+	      <if test="colapplytype != null" >
+	        colapplytype = #{colapplytype},
+	      </if>
+	      <if test="usedataprivilege != null" >
+	        usedataprivilege = #{usedataprivilege},
+	      </if>
+	      <if test="usecolprivilege != null" >
+	        usecolprivilege = #{usecolprivilege},
+	      </if>
+	      <if test="usecolquery != null" >
+	        usecolquery = #{usecolquery},
+	      </if>
+	      <if test="usedataexport != null" >
+	        usedataexport = #{usedataexport},
+	      </if>
+	      <if test="usecolrefer != null" >
+	        usecolrefer = #{usecolrefer},
+	      </if>
+	      <if test="referwflag != null" >
+	        referwflag = #{referwflag},
+	      </if>
+	      <if test="referwid != null" >
+	        referwid = #{referwid},
+	      </if>
+	      <if test="wname != null" >
+	        wname = #{wname},
+	      </if>
+	      <if test="isopenedit != null" >
+	        isopenedit = #{isopenedit},
+	      </if>
+	      <if test="isshow != null" >
+	        isshow = #{isshow},
+	      </if>
+	      <if test="isrequired != null">
+	      	isrequired = #{isrequired},
+	      </if>
+	      <if test="1 != 1" >
+	        adddate = #{adddate},
+	      </if>
+	      <if test="1 != 1" >
+	        adduserid = #{adduserid},
+	      </if>
+	      <if test="1==1" >
+	        modifydate = now(),
+	      </if>
+	      <if test="modifyuserid != null" >
+	        modifyuserid = #{modifyuserid},
+	      </if>
+	    </set>
+		where id = #{id}
+	</update>
+	<delete id="deleteTableColumn" parameterType="java.lang.String">
+		delete from
+		t_sys_tablecolumn
+		where id = #{id}
+  	</delete>
+  	<update id="updateTableColumnByTablename" parameterType="java.lang.String">
+		update t_sys_tablecolumn 
+		set tablename=#{newtablename} 
+		where tablename=#{oldtablename}
+  	</update>
+  	<delete id="deleteTableColumnByTablename" parameterType="java.lang.String">
+		delete from
+		t_sys_tablecolumn
+		where tablename = #{tablename}
+  	</delete>
+  	<select id="getTableColumnCountBy" parameterType="java.lang.String" resultType="int" useCache="false">
+		select count(1) from
+		t_sys_tablecolumn
+		<trim prefix="where" prefixOverrides="and|or" >
+	      <if test="tablename != null">
+			 and tablename =#{tablename}
+		  </if>
+	      <if test="columnname != null">
+			 and columnname =#{columnname}
+		  </if>
+	      <if test="usefixed != null" >
+	         and usefixed = #{usefixed}
+	      </if>
+	      <if test="usecoded != null" >
+	         and usecoded = #{usecoded}
+	      </if>
+	      <if test="usepk != null" >
+	         and usepk = #{usepk}
+	      </if>
+	      <if test="usenull != null" >
+	         and usenull = #{usenull}
+	      </if>
+	      <if test="colapplytype != null" >
+	         and colapplytype = #{colapplytype}
+	      </if>
+	      <if test="usedataprivilege != null" >
+	         and usedataprivilege = #{usedataprivilege}
+	      </if>
+	      <if test="usecolprivilege != null" >
+	         and usecolprivilege = #{usecolprivilege}
+	      </if>
+	      <if test="usecolquery != null" >
+	         and usecolquery = #{usecolquery}
+	      </if>
+	      <if test="usedataexport != null" >
+	         and usedataexport = #{usedataexport}
+	      </if>
+	      <if test="usecolrefer != null" >
+	         and usecolrefer = #{usecolrefer}
+	      </if>
+	      <if test="referwflag != null" >
+	         and referwflag = #{referwflag}
+	      </if>
+	    </trim>
+  	</select>  	
+  	<select id="getDBUnimportColumnList" parameterType="java.util.Map" resultType="com.hd.agent.system.model.TableColumn" useCache="false">  		
+		SELECT dbcol.table_name tablename, dbcol.column_name columnname,dbcol.column_comment colchnname,dbcol.data_type coldatatype,
+			   dbcol.character_maximum_length colwidth,dbcol.numeric_scale coldecimal,dbcol.column_comment coldescription,
+			   IF(dbcol.column_key='PRI',1,0) usepk,
+			   IF(dbcol.is_nullable='YES',1,0) usenull,dbcol.column_default coldefault
+			FROM information_schema.columns dbcol  
+			WHERE 1=1
+			AND (NOT EXISTS (SELECT tablename FROM t_sys_tablecolumn tcol WHERE tcol.tablename = dbcol.table_name and tcol.columnname=dbcol.column_name))	
+			<if test="selectcolumnlist!=null"> 
+				and dbcol.column_name in 
+			       <foreach collection="selectcolumnlist" item="item" open="("  separator="," close=")">  
+			       	#{item}  
+			      </foreach>
+			</if> 
+			and dbcol.table_schema=database()  AND dbcol.table_name=#{tablename}
+  	</select>
+  	<select id="getDBTableColumnList" parameterType="java.util.Map" resultType="com.hd.agent.system.model.TableColumn" useCache="false">
+  		SELECT dbcol.table_name tablename, dbcol.column_name columnname,dbcol.column_comment colchnname,dbcol.data_type coldatatype,
+			   dbcol.character_maximum_length colwidth,dbcol.numeric_scale coldecimal,dbcol.column_comment coldescription,
+			   IF(dbcol.column_key='PRI',1,0) usepk,
+			   IF(dbcol.is_nullable='YES',1,0) usenull,dbcol.column_default coldefault
+			FROM information_schema.columns dbcol  
+			WHERE 1=1
+			and dbcol.table_schema=database()  AND dbcol.table_name=#{tablename}
+  	</select>
+  	<select id="getColumnByTableColumn" parameterType="java.lang.String" resultType="com.hd.agent.system.model.TableColumn">
+  		select id, tablename, columnname, colchnname, coldatatype, colwidth, coldecimal, coldescription, 
+	    usefixed, usecoded,codedcoltype, colorder,usepk, usenull, coldefault, colapplytype, usedataprivilege, 
+	    usecolprivilege, usecolquery, usedataexport, usecolrefer,referwflag,referwid,wname,isopenedit,isshow, adddate, adduserid, 
+	    modifydate, modifyuserid
+	    from t_sys_tablecolumn where columnname=#{column} and tablename=#{tablename}
+  	</select>
+  	<select id="getRequiredColumnByTable" parameterType="java.lang.String" resultType="com.hd.agent.system.model.TableColumn">
+  		select columnname from t_sys_tablecolumn where tablename=#{tablename} and isrequired = '1'
+  	</select>
+  	<select id="getTableColumnListByTable" resultType="com.hd.agent.system.model.TableColumn"  parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from t_sys_tablecolumn
+		where tablename =#{tablename}
+	    order by usepk desc,colorder asc
+	</select>
+</mapper>

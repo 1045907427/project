@@ -1,0 +1,518 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.agprint.dao.PrintTempletMapper" >
+	<!-- 缓存 -->
+	<cache type="org.mybatis.caches.ehcache.EhcacheCache"></cache>
+   <sql id="PrintTemplet_Where_Clause" >
+      <if test="condition.code != null" >
+         and code like CONCAT('%', #{condition.code} ,'%')
+      </if>
+      <if test="condition.thecode != null" >
+         and code= #{condition.thecode}
+      </if>
+      <if test="condition.linktype!=null">
+         and linktype= #{condition.linktype}
+      </if>
+      <if test="condition.linkdatalist!=null">
+     	and not linkdata is null and       			
+        <foreach collection="condition.linkdatalist" item="item" open="("  separator="or" close=")">
+       			<![CDATA[ find_in_set(#{item}, linkdata )  ]]>
+      	</foreach>
+      </if>
+      <if test="condition.state != null" >
+         and state= #{condition.state}
+      </if>
+      <if test="condition.issystem != null" >
+         and issystem= #{condition.issystem}
+      </if>
+      <if test="condition.name != null" >
+         and name like CONCAT('%', #{condition.name} ,'%')
+      </if>
+  </sql>
+  <sql id="PrintTemplet_Column_List" >
+    id, code, name, state, remark, adduserid, addusername, addtime, modifyuserid, modifyusername, 
+    modifytime, openuserid, openusername, opentime, closeuserid, closeusername, 
+    closetime , sourcefileid, sourcefile, sourcepath, templetfileid, templetfile, templetpath, 
+    deptid, deptname, isdefault, issystem, seq, linktype,linkdata,linkdataname,mark,tplresourceid,tplorderseqid,
+    countperpage,papersizeid,companytitle,isfillblank,customerid,customername,salesarea,salesareaname,lodophtmlmodel
+  </sql>
+   <insert id="addPrintTemplet" parameterType="com.hd.agent.agprint.model.PrintTemplet" >
+    insert into t_print_templet
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="adduserid != null" >
+        adduserid,
+      </if>
+      <if test="addusername != null" >
+        addusername,
+      </if>
+      <if test="addtime != null" >
+        addtime,
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid,
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername,
+      </if>
+      <if test="modifytime != null" >
+        modifytime,
+      </if>
+      <if test="sourcefileid != null" >
+        sourcefileid,
+      </if>
+      <if test="sourcefile != null" >
+        sourcefile,
+      </if>
+      <if test="sourcepath != null" >
+        sourcepath,
+      </if>
+      <if test="templetfileid != null" >
+        templetfileid,
+      </if>
+      <if test="templetfile != null" >
+        templetfile,
+      </if>
+      <if test="templetpath != null" >
+        templetpath,
+      </if>
+      <if test="deptid != null" >
+        deptid,
+      </if>
+      <if test="deptname != null" >
+        deptname,
+      </if>
+      <if test="isdefault != null" >
+        isdefault,
+      </if>
+      <if test="issystem != null" >
+        issystem,
+      </if>
+      <if test="seq != null" >
+        seq,
+      </if>
+      <if test="linktype != null" >
+        linktype,
+      </if>
+      <if test="linkdata != null" >
+        linkdata,
+      </if>
+      <if test="linkdataname != null" >
+        linkdataname,
+      </if>
+      <if test="mark != null" >
+        mark,
+      </if>
+      <if test="tplresourceid != null" >
+        tplresourceid,
+      </if>
+      <if test="tplorderseqid != null" >
+        tplorderseqid,
+      </if>
+      <if test="countperpage != null" >
+        countperpage,
+      </if>
+      <if test="papersizeid != null" >
+        papersizeid,
+      </if>
+      <if test="companytitle != null" >
+        companytitle,
+      </if>
+      <if test="isfillblank != null" >
+        isfillblank,
+      </if>
+      <if test="customerid != null" >
+        customerid,
+      </if>
+      <if test="customername != null" >
+        customername,
+      </if>
+      <if test="salesarea != null" >
+        salesarea,
+      </if>
+      <if test="salesareaname != null" >
+        salesareaname,
+      </if>
+      <if test="lodophtmlmodel != null" >
+        lodophtmlmodel,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="code != null" >
+        #{code},
+      </if>
+      <if test="name != null" >
+        #{name},
+      </if>
+      <if test="state != null" >
+        #{state},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+      <if test="adduserid != null" >
+        #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        #{addusername},
+      </if>
+      <if test="addtime != null" >
+        #{addtime},
+      </if>
+      <if test="modifyuserid != null" >
+        #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        #{modifyusername},
+      </if>
+      <if test="modifytime != null" >
+        #{modifytime},
+      </if>
+      <if test="sourcefileid != null" >
+        #{sourcefileid},
+      </if>
+      <if test="sourcefile != null" >
+        #{sourcefile},
+      </if>
+      <if test="sourcepath != null" >
+        #{sourcepath},
+      </if>
+      <if test="templetfileid != null" >
+        #{templetfileid},
+      </if>
+      <if test="templetfile != null" >
+        #{templetfile},
+      </if>
+      <if test="templetpath != null" >
+        #{templetpath},
+      </if>
+      <if test="deptid != null" >
+        #{deptid},
+      </if>
+      <if test="deptname != null" >
+        #{deptname},
+      </if>
+      <if test="isdefault != null" >
+        #{isdefault},
+      </if>
+      <if test="issystem != null" >
+        #{issystem},
+      </if>
+      <if test="seq != null" >
+        #{seq},
+      </if>
+      <if test="linktype != null" >
+        #{linktype},
+      </if>
+      <if test="linkdata != null" >
+        #{linkdata},
+      </if>
+      <if test="linkdataname != null" >
+        #{linkdataname},
+      </if>
+      <if test="mark != null" >
+        #{mark},
+      </if>
+      <if test="tplresourceid != null" >
+        #{tplresourceid},
+      </if>
+      <if test="tplorderseqid != null" >
+        #{tplorderseqid},
+      </if>
+      <if test="countperpage != null" >
+        #{countperpage},
+      </if>
+      <if test="papersizeid != null" >
+        #{papersizeid},
+      </if>
+      <if test="companytitle != null" >
+        #{companytitle},
+      </if>
+      <if test="isfillblank != null" >
+        #{isfillblank},
+      </if>
+      <if test="customerid != null" >
+        #{customerid},
+      </if>
+      <if test="customername != null" >
+        #{customername},
+      </if>
+      <if test="salesarea != null" >
+        #{salesarea},
+      </if>
+      <if test="salesareaname != null" >
+        #{salesareaname},
+      </if>
+      <if test="lodophtmlmodel != null" >
+        #{lodophtmlmodel},
+      </if>
+    </trim>
+	<selectKey resultType="int" keyProperty="id"
+		order="AFTER">
+		select LAST_INSERT_ID() as id
+    </selectKey>
+  </insert>
+  <update id="updatePrintTemplet" parameterType="com.hd.agent.agprint.model.PrintTemplet" >
+    update t_print_templet
+    <set >
+      <if test="code != null" >
+        code = #{code},
+      </if>
+      <if test="name != null" >
+        name = #{name},
+      </if>
+      <if test="state != null" >
+        state = #{state},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark},
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid = #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername = #{modifyusername},
+      </if>
+      <if test="modifytime != null" >
+        modifytime = #{modifytime},
+      </if>      
+      <if test="sourcefileid != null" >
+        sourcefileid = #{sourcefileid},
+      </if>
+      <if test="sourcefile != null" >
+        sourcefile = #{sourcefile},
+      </if>
+      <if test="sourcepath != null" >
+        sourcepath = #{sourcepath},
+      </if>
+      <if test="templetfileid != null" >
+        templetfileid = #{templetfileid},
+      </if>
+      <if test="templetfile != null" >
+        templetfile = #{templetfile},
+      </if>
+      <if test="templetpath != null" >
+        templetpath = #{templetpath},
+      </if>
+      <if test="deptid != null" >
+        deptid = #{deptid},
+      </if>
+      <if test="deptname != null" >
+        deptname = #{deptname},
+      </if>
+      <if test="isdefault != null" >
+        isdefault = #{isdefault},
+      </if>
+      <if test="issystem != null" >
+        issystem = #{issystem},
+      </if>
+      <if test="seq != null" >
+        seq = #{seq},
+      </if>
+      <if test="linktype != null" >
+        linktype = #{linktype},
+      </if>
+      <if test="linkdata != null" >
+        linkdata = #{linkdata},
+      </if>
+      <if test="linkdataname != null" >
+        linkdataname = #{linkdataname},
+      </if>
+      <if test="mark != null" >
+        mark=#{mark},
+      </if>
+      <if test="tplresourceid != null" >
+        tplresourceid=#{tplresourceid},
+      </if>
+      <if test="tplorderseqid != null" >
+        tplorderseqid=#{tplorderseqid},
+      </if>
+      <choose>
+        <when test="countperpage != null" >
+          countperpage=#{countperpage},
+        </when>
+        <otherwise>
+          countperpage=null,
+        </otherwise>
+      </choose>
+      <if test="papersizeid != null" >
+        papersizeid = #{papersizeid},
+      </if>
+      <if test="companytitle != null" >
+        companytitle=#{companytitle},
+      </if>
+      <if test="isfillblank != null" >
+        isfillblank=#{isfillblank},
+      </if>
+      <if test="customerid != null" >
+        customerid=#{customerid},
+      </if>
+      <if test="customername != null" >
+        customername=#{customername},
+      </if>
+      <if test="salesarea != null" >
+        salesarea=#{salesarea},
+      </if>
+      <if test="salesareaname != null" >
+        salesareaname=#{salesareaname},
+      </if>
+      <if test="lodophtmlmodel != null" >
+        lodophtmlmodel=#{lodophtmlmodel},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  <update id="updatePrintTempletDefault" parameterType="com.hd.agent.agprint.model.PrintTemplet" >
+    update t_print_templet
+    <set >
+      <if test="modifyuserid != null" >
+        modifyuserid = #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername = #{modifyusername},
+      </if>
+      <if test="modifytime != null" >
+        modifytime = #{modifytime},
+      </if>
+      <if test="isdefault != null" >
+        isdefault = #{isdefault},
+      </if>
+    </set>
+     <trim prefix="where" prefixOverrides="and|or">		
+      <if test="id != null" >
+         and id =#{id}
+      </if>
+      <if test="code != null" >
+         and code =#{code}
+      </if>
+	 </trim>
+  </update>
+  <update id="enablePrintTemplet" parameterType="com.hd.agent.agprint.model.PrintTemplet" >
+    update t_print_templet
+    <set >
+      <if test="openuserid != null" >
+        openuserid = #{openuserid},
+      </if>
+      <if test="openusername != null" >
+        openusername = #{openusername},
+      </if>
+      <if test="opentime != null" >
+        opentime = #{opentime},
+      </if>
+      <if test="1==1" >
+        state='1',
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  <update id="disablePrintTemplet" parameterType="com.hd.agent.agprint.model.PrintTemplet" >
+    update t_print_templet
+    <set >
+      <if test="closeuserid != null" >
+        closeuserid = #{closeuserid},
+      </if>
+      <if test="closeusername != null" >
+        closeusername = #{closeusername},
+      </if>
+      <if test="closetime != null" >
+        closetime = #{closetime},
+      </if>
+      <if test="1==1" >
+        state='0',
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  <select id="showPrintTemplet" parameterType="java.lang.String" resultType="com.hd.agent.agprint.model.PrintTemplet">
+		select 
+		<include refid="PrintTemplet_Column_List"/>
+		from t_print_templet
+		where id = #{id}
+  </select>
+  <select id="getPrintTempletPageList" resultType="com.hd.agent.agprint.model.PrintTemplet" parameterType="com.hd.agent.common.util.PageMap" useCache="false">
+		select
+		<include refid="PrintTemplet_Column_List"/>
+		from t_print_templet
+		<trim prefix="where" prefixOverrides="and|or">
+			<include refid="PrintTemplet_Where_Clause" />
+		</trim>
+		<include refid="common.Page_limit"/>
+	</select>
+	<select id="getPrintTempletPageCount" resultType="int" parameterType="com.hd.agent.common.util.PageMap" useCache="false">
+		select count(1) from t_print_templet
+		<trim prefix="where" prefixOverrides="and|or">
+			<include refid="PrintTemplet_Where_Clause" />
+		</trim>
+	</select>
+    <delete id="deletePrintTemplet" parameterType="java.lang.String" >
+  	    delete from t_print_templet
+    	where id = #{id}
+  	</delete>
+  	<select id="showThePrintTempletBy" resultType="com.hd.agent.agprint.model.PrintTemplet" parameterType="map">
+  		select 
+	    id, code, name, state,remark,sourcefileid, sourcefile, sourcepath, templetfileid, templetfile, templetpath,
+	    deptid, deptname, isdefault, issystem, seq, linktype,linkdata,linkdataname,mark,tplresourceid,tplorderseqid,
+        countperpage,papersizeid,companytitle,isfillblank,customerid,customername,salesarea,salesareaname,lodophtmlmodel
+	    from t_print_templet
+	    <trim prefix="where" prefixOverrides="and|or">
+	    	<if test="1==1">
+	    		and state='1' and code=#{code}
+	    	</if>
+	    	<if test="linkdata != null">
+	    		and FIND_IN_SET(#{linkdata},linkdata)
+	    	</if>
+	    	<if test="mark != null">
+	    		and mark=#{mark}
+	    	</if>
+	    	<if test="templetid != null">
+	    		and id=#{templetid}
+	    	</if>
+	    	<if test="notuselinktype == 1">
+	    		and length(linktype)=0
+	    	</if>		    	
+	    </trim>
+	    order by seq asc,id desc
+	    limit 0,1
+  	</select>
+  	
+  	<select id="getPrintTempletListBy" resultType="com.hd.agent.agprint.model.PrintTemplet" parameterType="Map" useCache="false">
+		select 
+	    <include refid="PrintTemplet_Column_List"></include>
+	    from t_print_templet
+		<trim prefix="where" prefixOverrides="and|or">
+            <if test="dataSql != null">
+              and ${dataSql}
+            </if>
+			<if test="code!=null">
+			 	and code=#{code}
+			</if>
+            <if test="codearrs!=null">
+              and find_in_set(code,#{codearrs})
+            </if>
+			<if test="state!=null">
+			 	and state=#{state}
+			</if>
+			<if test="mark != null">
+			 	and mark=#{mark}
+			</if>
+            <if test="markempty != null">
+              and (mark = null or length(mark) = 0)
+            </if>
+            <if test="marknotin != null">
+              and find_in_set(mark,#{marknotin})=0
+            </if>
+		</trim>
+	    order by code asc,seq asc,id desc
+	</select>
+</mapper>

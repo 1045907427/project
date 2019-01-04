@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.storage.dao.StorageSendUserDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.hd.agent.storage.model.StorageSendUserDetail" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="senduserid" property="senduserid" jdbcType="VARCHAR" />
+    <result column="sendusername" property="sendusername" jdbcType="VARCHAR" />
+    <result column="sendtime" property="sendtime" jdbcType="TIMESTAMP" />
+    <result column="businessdate" property="businessdate" jdbcType="VARCHAR" />
+    <result column="sourceid" property="sourceid" jdbcType="VARCHAR" />
+    <result column="billtype" property="billtype" jdbcType="VARCHAR" />
+    <result column="storageid" property="storageid" jdbcType="VARCHAR" />
+    <result column="checknum" property="checknum" jdbcType="DECIMAL" />
+    <result column="checkamount" property="checkamount" jdbcType="DECIMAL" />
+    <result column="checkvolume" property="checkvolume" jdbcType="DECIMAL" />
+    <result column="checkweight" property="checkweight" jdbcType="DECIMAL" />
+    <result column="checkbox" property="checkbox" jdbcType="DECIMAL" />
+    <result column="loadednum" property="loadednum" jdbcType="DECIMAL" />
+    <result column="loadedamount" property="loadedamount" jdbcType="DECIMAL" />
+    <result column="loadedvolume" property="loadedvolume" jdbcType="DECIMAL" />
+    <result column="loadedweight" property="loadedweight" jdbcType="DECIMAL" />
+    <result column="loadedbox" property="loadedbox" jdbcType="DECIMAL" />
+    <result column="unloadednum" property="unloadednum" jdbcType="DECIMAL" />
+    <result column="unloadedamount" property="unloadedamount" jdbcType="DECIMAL" />
+    <result column="unloadedvolume" property="unloadedvolume" jdbcType="DECIMAL" />
+    <result column="unloadedweight" property="unloadedweight" jdbcType="DECIMAL" />
+    <result column="unloadedbox" property="unloadedbox" jdbcType="DECIMAL" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, senduserid, sendusername, sendtime,businessdate, sourceid, billtype,storageid, checknum, checkamount,
+    checkvolume, checkweight, checkbox, loadednum, loadedamount, loadedvolume, loadedweight, 
+    loadedbox, unloadednum, unloadedamount, unloadedvolume, unloadedweight, unloadedbox, 
+    remark
+  </sql>
+  <select id="getSendUserDetailList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.storage.model.StorageSendUserDetail">
+    select    id, senduserid, sendusername, sendtime,businessdate, sourceid, billtype,storageid, sum(checknum) as checknum, sum(checkamount) as checkamount,
+    sum(checkvolume) as checkvolume, sum(checkweight) as checkweight, sum(checkbox) as checkbox, sum(loadednum) as loadednum, sum(loadedamount) as loadedamount, sum(loadedvolume) as loadedvolume, sum(loadedweight) as loadedweight,
+    sum(loadedbox) as loadedbox, sum(unloadednum) as unloadednum, sum(unloadedamount) as unloadedamount, sum(unloadedvolume) as unloadedvolume, sum(unloadedweight) as unloadedweight, sum(unloadedbox) as unloadedbox,remark
+    from t_storage_senduser_detail t
+    <trim prefix="where" prefixOverrides="and|or">
+      <include refid="common.Page_querySql"/>
+      <include refid="common.Page_dataSql"/>
+      <if test="condition.businessdate1 != null">
+        and businessdate >= #{condition.businessdate1}
+      </if>
+      <if test="condition.businessdate2 != null">
+        <![CDATA[and businessdate <= #{condition.businessdate2}]]>
+      </if>
+      <if test="condition.senduserid != null">
+        and senduserid = #{condition.senduserid}
+      </if>
+    </trim>
+     GROUP BY  senduserid
+    <include refid="common.Page_limit" />
+  </select>
+
+  <select id="getSendUserDetailListCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+    select count(1) FROM(
+    select  <include refid="Base_Column_List"/>
+    from t_storage_senduser_detail
+    <trim prefix="where" prefixOverrides="and|or">
+      <include refid="common.Page_querySql"/>
+      <include refid="common.Page_dataSql"/>
+      <if test="condition.businessdate1 != null">
+        and businessdate >= #{condition.businessdate1}
+      </if>
+      <if test="condition.businessdate2 != null">
+        <![CDATA[and businessdate <= #{condition.businessdate2}]]>
+      </if>
+      <if test="condition.senduserid != null">
+        and senduserid = #{condition.senduserid}
+      </if>
+    </trim>
+      GROUP BY  senduserid
+    )z
+  </select>
+
+  <select id="getSendUserDetailListSum" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.storage.model.StorageSendUserDetail">
+    select     sum(checknum) as checknum, sum(checkamount) as checkamount,
+    sum(checkvolume) as checkvolume, sum(checkweight) as checkweight, sum(checkbox) as checkbox, sum(loadednum) as loadednum, sum(loadedamount) as loadedamount, sum(loadedvolume) as loadedvolume, sum(loadedweight) as loadedweight,
+    sum(loadedbox) as loadedbox, sum(unloadednum) as unloadednum, sum(unloadedamount) as unloadedamount, sum(unloadedvolume) as unloadedvolume, sum(unloadedweight) as unloadedweight, sum(unloadedbox) as unloadedbox
+    from t_storage_senduser_detail t
+    <trim prefix="where" prefixOverrides="and|or">
+      <include refid="common.Page_querySql"/>
+      <include refid="common.Page_dataSql"/>
+      <if test="condition.businessdate1 != null">
+        and businessdate >= #{condition.businessdate1}
+      </if>
+      <if test="condition.businessdate2 != null">
+        <![CDATA[and businessdate <= #{condition.businessdate2}]]>
+      </if>
+      <if test="condition.senduserid != null">
+        and senduserid = #{condition.senduserid}
+      </if>
+    </trim>
+  </select>
+
+
+
+  <insert id="addSendUserDetail" parameterType="com.hd.agent.storage.model.StorageSendUserDetail" >
+    insert into t_storage_senduser_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="senduserid != null" >
+        senduserid,
+      </if>
+      <if test="sendusername != null" >
+        sendusername,
+      </if>
+      <if test="1==1" >
+        sendtime,
+      </if>
+      <if test="businessdate != null" >
+        businessdate,
+      </if>
+      <if test="sourceid != null" >
+        sourceid,
+      </if>
+      <if test="billtype != null" >
+        billtype,
+      </if>
+      <if test="storageid != null" >
+        storageid,
+      </if>
+      <if test="checknum != null" >
+        checknum,
+      </if>
+      <if test="checkamount != null" >
+        checkamount,
+      </if>
+      <if test="checkvolume != null" >
+        checkvolume,
+      </if>
+      <if test="checkweight != null" >
+        checkweight,
+      </if>
+      <if test="checkbox != null" >
+        checkbox,
+      </if>
+      <if test="loadednum != null" >
+        loadednum,
+      </if>
+      <if test="loadedamount != null" >
+        loadedamount,
+      </if>
+      <if test="loadedvolume != null" >
+        loadedvolume,
+      </if>
+      <if test="loadedweight != null" >
+        loadedweight,
+      </if>
+      <if test="loadedbox != null" >
+        loadedbox,
+      </if>
+      <if test="unloadednum != null" >
+        unloadednum,
+      </if>
+      <if test="unloadedamount != null" >
+        unloadedamount,
+      </if>
+      <if test="unloadedvolume != null" >
+        unloadedvolume,
+      </if>
+      <if test="unloadedweight != null" >
+        unloadedweight,
+      </if>
+      <if test="unloadedbox != null" >
+        unloadedbox,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="senduserid != null" >
+        #{senduserid,jdbcType=VARCHAR},
+      </if>
+      <if test="sendusername != null" >
+        #{sendusername,jdbcType=VARCHAR},
+      </if>
+      <if test="1==1" >
+        now(),
+      </if>
+      <if test="businessdate != null" >
+        #{businessdate,jdbcType=VARCHAR},
+      </if>
+      <if test="sourceid != null" >
+        #{sourceid,jdbcType=VARCHAR},
+      </if>
+      <if test="billtype != null" >
+        #{billtype,jdbcType=VARCHAR},
+      </if>
+      <if test="storageid != null" >
+        #{storageid,jdbcType=VARCHAR},
+      </if>
+      <if test="checknum != null" >
+        #{checknum,jdbcType=DECIMAL},
+      </if>
+      <if test="checkamount != null" >
+        #{checkamount,jdbcType=DECIMAL},
+      </if>
+      <if test="checkvolume != null" >
+        #{checkvolume,jdbcType=DECIMAL},
+      </if>
+      <if test="checkweight != null" >
+        #{checkweight,jdbcType=DECIMAL},
+      </if>
+      <if test="checkbox != null" >
+        #{checkbox,jdbcType=DECIMAL},
+      </if>
+      <if test="loadednum != null" >
+        #{loadednum,jdbcType=DECIMAL},
+      </if>
+      <if test="loadedamount != null" >
+        #{loadedamount,jdbcType=DECIMAL},
+      </if>
+      <if test="loadedvolume != null" >
+        #{loadedvolume,jdbcType=DECIMAL},
+      </if>
+      <if test="loadedweight != null" >
+        #{loadedweight,jdbcType=DECIMAL},
+      </if>
+      <if test="loadedbox != null" >
+        #{loadedbox,jdbcType=DECIMAL},
+      </if>
+      <if test="unloadednum != null" >
+        #{unloadednum,jdbcType=DECIMAL},
+      </if>
+      <if test="unloadedamount != null" >
+        #{unloadedamount,jdbcType=DECIMAL},
+      </if>
+      <if test="unloadedvolume != null" >
+        #{unloadedvolume,jdbcType=DECIMAL},
+      </if>
+      <if test="unloadedweight != null" >
+        #{unloadedweight,jdbcType=DECIMAL},
+      </if>
+      <if test="unloadedbox != null" >
+        #{unloadedbox,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateStorageSendUserDetail" parameterType="com.hd.agent.storage.model.StorageSendUserDetail" >
+    update t_storage_senduser_detail
+    <set >
+      <if test="senduserid != null" >
+        senduserid = #{senduserid,jdbcType=VARCHAR},
+      </if>
+      <if test="sendusername != null" >
+        sendusername = #{sendusername,jdbcType=VARCHAR},
+      </if>
+      <if test="sendtime != null" >
+        sendtime = #{sendtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="businessdate != null" >
+        businessdate = #{businessdate,jdbcType=VARCHAR},
+      </if>
+      <if test="sourceid != null" >
+        sourceid = #{sourceid,jdbcType=VARCHAR},
+      </if>
+      <if test="billtype != null" >
+        billtype = #{billtype,jdbcType=VARCHAR},
+      </if>
+      <if test="storageid != null" >
+        storageid = #{storageid,jdbcType=VARCHAR},
+      </if>
+      <if test="checknum != null" >
+        checknum = #{checknum,jdbcType=DECIMAL},
+      </if>
+      <if test="checkamount != null" >
+        checkamount = #{checkamount,jdbcType=DECIMAL},
+      </if>
+      <if test="checkvolume != null" >
+        checkvolume = #{checkvolume,jdbcType=DECIMAL},
+      </if>
+      <if test="checkweight != null" >
+        checkweight = #{checkweight,jdbcType=DECIMAL},
+      </if>
+      <if test="checkbox != null" >
+        checkbox = #{checkbox,jdbcType=DECIMAL},
+      </if>
+      <if test="loadednum != null" >
+        loadednum = #{loadednum,jdbcType=DECIMAL},
+      </if>
+      <if test="loadedamount != null" >
+        loadedamount = #{loadedamount,jdbcType=DECIMAL},
+      </if>
+      <if test="loadedvolume != null" >
+        loadedvolume = #{loadedvolume,jdbcType=DECIMAL},
+      </if>
+      <if test="loadedweight != null" >
+        loadedweight = #{loadedweight,jdbcType=DECIMAL},
+      </if>
+      <if test="loadedbox != null" >
+        loadedbox = #{loadedbox,jdbcType=DECIMAL},
+      </if>
+      <if test="unloadednum != null" >
+        unloadednum = #{unloadednum,jdbcType=DECIMAL},
+      </if>
+      <if test="unloadedamount != null" >
+        unloadedamount = #{unloadedamount,jdbcType=DECIMAL},
+      </if>
+      <if test="unloadedvolume != null" >
+        unloadedvolume = #{unloadedvolume,jdbcType=DECIMAL},
+      </if>
+      <if test="unloadedweight != null" >
+        unloadedweight = #{unloadedweight,jdbcType=DECIMAL},
+      </if>
+      <if test="unloadedbox != null" >
+        unloadedbox = #{unloadedbox,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+
+  <select id="getSendUserDetailListBySenduser" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.storage.model.StorageSendUserDetail">
+    select    <include refid="Base_Column_List"/>
+    from t_storage_senduser_detail t
+    <trim prefix="where" prefixOverrides="and|or">
+      <include refid="common.Page_querySql"/>
+      <include refid="common.Page_dataSql"/>
+      <if test="condition.businessdate1 != null">
+        and businessdate >= #{condition.businessdate1}
+      </if>
+      <if test="condition.businessdate2 != null">
+        <![CDATA[and businessdate <= #{condition.businessdate2}]]>
+      </if>
+      <if test="condition.senduserid != null">
+        and senduserid = #{condition.senduserid}
+      </if>
+    </trim>
+    <include refid="common.Page_limit" />
+  </select>
+
+  <select id="getSendUserDetailListCountBySenduser" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+    select count(1) FROM(
+    select  <include refid="Base_Column_List"/>
+    from t_storage_senduser_detail
+    <trim prefix="where" prefixOverrides="and|or">
+      <include refid="common.Page_querySql"/>
+      <include refid="common.Page_dataSql"/>
+      <if test="condition.businessdate1 != null">
+        and businessdate >= #{condition.businessdate1}
+      </if>
+      <if test="condition.businessdate2 != null">
+        <![CDATA[and businessdate <= #{condition.businessdate2}]]>
+      </if>
+      <if test="condition.senduserid != null">
+        and senduserid = #{condition.senduserid}
+      </if>
+    </trim>
+    )z
+  </select>
+
+  <delete id="deleteSendUserDetail">
+    delete from t_storage_senduser_detail
+    where sourceid=#{sourceid} and billtype=#{billtype}
+  </delete>
+</mapper>

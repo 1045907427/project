@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.activiti.dao.SourceMapper" >
+    <resultMap id="BaseResultMap" type="com.hd.agent.activiti.model.Source" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="definitionid" property="definitionid" jdbcType="VARCHAR" />
+        <result column="type" property="type" jdbcType="VARCHAR" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+        id, definitionid, type
+    </sql>
+    <sql id="Blob_Column_List" >
+        bytes
+    </sql>
+    <insert id="insertSource" parameterType="com.hd.agent.activiti.model.Source" >
+        insert into t_act_source (definitionid, type, bytes)
+        values (#{definitionid}, #{type}, #{bytes})
+    </insert>
+    <select id="selectSource" parameterType="java.lang.String" resultType="com.hd.agent.activiti.model.Source">
+        select
+        <include refid="Base_Column_List"/>,
+        <include refid="Blob_Column_List"/>
+        from t_act_source
+        where definitionid = #{definitionid } and type = #{type }
+    </select>
+</mapper>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       <bean id="salesTargetInputMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+              <property name="mapperInterface" value="com.hd.agent.salestarget.dao.SalesTargetInputMapper" />
+              <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+       </bean>
+       <!-- 销售目标录入 -->
+       <bean id="salesTargetInputService" parent="baseTransactionProxy">
+              <property name="target" ref="salesTargetInputServiceImpl"></property>
+       </bean>
+       <bean id="salesTargetInputServiceImpl" class="com.hd.agent.salestarget.service.impl.SalesTargetInputServiceImpl" parent="baseFilesServiceImpl">
+              <property name="salesTargetInputMapper" ref="salesTargetInputMapper"></property>
+       </bean>
+       <!-- 销售目标报表 -->
+       <bean id="salesTargetReportService" parent="baseTransactionProxy">
+              <property name="target" ref="salesTargetReportServiceImpl"></property>
+       </bean>
+       <bean id="salesTargetReportServiceImpl" class="com.hd.agent.salestarget.service.impl.SalesTargetReportServiceImpl" parent="baseFilesServiceImpl">
+              <property name="salesTargetInputMapper" ref="salesTargetInputMapper"></property>
+              <property name="salesBillCheckMapper" ref="salesBillCheckMapper"></property>
+       </bean>
+       <!--销售目标录入-->
+       <bean id="salesTargetInputAction" class="com.hd.agent.salestarget.action.SalesTargetInputAction" scope="prototype" parent="baseFilesAction">
+              <property name="salesTargetInputService" ref="salesTargetInputService"></property>
+       </bean>
+       <bean id="salesTargetReportAction" class="com.hd.agent.salestarget.action.SalesTargetReportAction" scope="prototype" parent="baseFilesAction">
+              <property name="salesTargetReportService" ref="salesTargetReportService"></property>
+       </bean>
+</beans>

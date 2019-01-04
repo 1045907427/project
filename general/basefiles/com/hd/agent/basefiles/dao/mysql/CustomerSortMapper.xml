@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.basefiles.dao.CustomerSortMapper" >
+  <cache type="org.mybatis.caches.ehcache.EhcacheCache"></cache>
+  <resultMap id="BaseResultMap" type="com.hd.agent.basefiles.model.CustomerSort" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="thisid" property="thisid" jdbcType="VARCHAR" />
+    <result column="thisname" property="thisname" jdbcType="VARCHAR" />
+    <result column="pid" property="pid" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="adduserid" property="adduserid" jdbcType="VARCHAR" />
+    <result column="addusername" property="addusername" jdbcType="VARCHAR" />
+    <result column="adddeptid" property="adddeptid" jdbcType="VARCHAR" />
+    <result column="adddeptname" property="adddeptname" jdbcType="VARCHAR" />
+    <result column="addtime" property="addtime" jdbcType="TIMESTAMP" />
+    <result column="modifyuserid" property="modifyuserid" jdbcType="VARCHAR" />
+    <result column="modifyusername" property="modifyusername" jdbcType="VARCHAR" />
+    <result column="modifytime" property="modifytime" jdbcType="TIMESTAMP" />
+    <result column="openuserid" property="openuserid" jdbcType="VARCHAR" />
+    <result column="openusername" property="openusername" jdbcType="VARCHAR" />
+    <result column="opentime" property="opentime" jdbcType="TIMESTAMP" />
+    <result column="closeuserid" property="closeuserid" jdbcType="VARCHAR" />
+    <result column="closeusername" property="closeusername" jdbcType="VARCHAR" />
+    <result column="closetime" property="closetime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+  	<choose>
+			<when test="cols!=null">
+				<include refid="common.Page_Column"/>
+			</when>
+			<when test="cols==null">
+			    id, name, thisid, thisname, pid, state, remark, adduserid, addusername, adddeptid, adddeptname, addtime, modifyuserid, modifyusername, 
+			    modifytime, openuserid, openusername, opentime, closeuserid, closeusername, closetime
+		    </when>
+		</choose>
+  </sql>
+  <sql id="PureBase_Column_List">
+    id, name, thisid, thisname, pid, state, remark, adduserid, addusername, adddeptid, adddeptname, addtime, modifyuserid, modifyusername,
+    modifytime, openuserid, openusername, opentime, closeuserid, closeusername, closetime
+  </sql>
+  <select id="returnCustomerSortIdByName" parameterType="java.lang.String" resultType="com.hd.agent.basefiles.model.CustomerSort">
+  	select * from t_base_sales_customersort where thisname = #{thisname}
+  </select>
+  <select id="getCustomerSortList" resultMap="BaseResultMap" parameterType="com.hd.agent.common.util.PageMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from t_base_sales_customersort
+  	<trim prefix="where" prefixOverrides="and|or" >
+		<include refid="common.Page_dataSql"/>
+	</trim>
+  </select>
+  <select id="getCustomerSortDetail" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_base_sales_customersort
+    where id = #{id}
+  </select>
+  <select id="getCustomerSortParentAllChildren" resultMap="BaseResultMap" parameterType="com.hd.agent.common.util.PageMap">
+  	 select 
+    <include refid="Base_Column_List" />
+    from t_base_sales_customersort
+  	<trim prefix="where" prefixOverrides="and|or" >
+  		<if test="condition.id != null">
+        	id like CONCAT(#{condition.id}, '%')
+        </if>
+		<include refid="common.Page_dataSql"/>
+	</trim>
+  </select>	
+  <delete id="deleteCustomerSort" parameterType="java.lang.String" >
+    delete from t_base_sales_customersort
+    where id = #{id}
+  </delete>
+  <insert id="addCustomerSort" parameterType="com.hd.agent.basefiles.model.CustomerSort" >
+    insert into t_base_sales_customersort
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="thisid != null" >
+        thisid,
+      </if>
+      <if test="thisname != null" >
+        thisname,
+      </if>
+      <if test="pid != null" >
+        pid,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="adduserid != null" >
+        adduserid,
+      </if>
+      <if test="addusername != null" >
+        addusername,
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid,
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname,
+      </if>
+        addtime,
+      <if test="openuserid != null" >
+        openuserid,
+      </if>
+      <if test="openusername != null" >
+        openusername,
+      </if>
+      <if test="opentime != null" >
+        opentime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="name != null" >
+        #{name},
+      </if>
+      <if test="thisid != null" >
+        #{thisid},
+      </if>
+      <if test="thisname != null" >
+        #{thisname},
+      </if>
+      <if test="pid != null" >
+        #{pid},
+      </if>
+      <if test="state != null" >
+        #{state},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+      <if test="adduserid != null" >
+        #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        #{adddeptname},
+      </if>
+        now(),
+      <if test="openuserid != null" >
+        #{openuserid},
+      </if>
+      <if test="openusername != null" >
+        #{openusername},
+      </if>
+      <if test="opentime != null" >
+        #{opentime},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateCustomerSort" parameterType="com.hd.agent.basefiles.model.CustomerSort" >
+    update t_base_sales_customersort
+    <set >
+      <if test="id != null" >
+        id = #{id},
+      </if>
+      <if test="name != null" >
+        name = #{name},
+      </if>
+      <if test="thisid != null" >
+        thisid = #{thisid},
+      </if>
+      <if test="thisname != null" >
+        thisname = #{thisname},
+      </if>
+      <if test="pid != null" >
+        pid = #{pid},
+      </if>
+      <if test="state != null" >
+        state = #{state},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark},
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid = #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername = #{modifyusername},
+      </if>
+        modifytime = now(),
+      <if test="openuserid != null" >
+        openuserid = #{openuserid},
+      </if>
+      <if test="openusername != null" >
+        openusername = #{openusername},
+      </if>
+      <if test="opentime != null" >
+        opentime = #{opentime},
+      </if>
+      <if test="closeuserid != null" >
+        closeuserid = #{closeuserid},
+      </if>
+      <if test="closeusername != null" >
+        closeusername = #{closeusername},
+      </if>
+      <if test="closetime != null" >
+        closetime = #{closetime},
+      </if>
+    </set>
+    where id = #{oldid}
+  </update>
+  <update id="updateCustomerSortOpen" parameterType="com.hd.agent.basefiles.model.CustomerSort" >
+    update t_base_sales_customersort
+    set openuserid = #{openuserid},
+    	openusername = #{openusername},
+      state = '1',
+      opentime = now()
+    where id = #{id}
+  </update>
+  <update id="updateCustomerSortClose" parameterType="com.hd.agent.basefiles.model.CustomerSort" >
+    update t_base_sales_customersort
+    set closeuserid = #{closeuserid},
+      closeusername = #{closeusername},
+      state = '0',
+      closetime = now()
+    where id = #{id}
+  </update>
+  <select id="getCustomerSortChildList" parameterType="java.lang.String" resultType="com.hd.agent.basefiles.model.CustomerSort">
+  	select * from t_base_sales_customersort
+  	where pid like concat(#{pid},'%')
+  </select>
+  <update id="editCustomerSortBatch" parameterType="java.util.List">
+  	<foreach collection="list" index="index" item="item">
+  		update t_base_sales_customersort
+	  	<set >
+	      <if test="item.id != null" >
+	        id = #{item.id},
+	      </if>
+	      <if test="item.name != null" >
+	        name = #{item.name},
+	      </if>
+	      <if test="item.thisid != null" >
+	        thisid = #{item.thisid},
+	      </if>
+	      <if test="item.thisname != null" >
+	        thisname = #{item.thisname},
+	      </if>
+	      <if test="item.pid != null" >
+	        pid = #{item.pid},
+	      </if>
+	    </set>
+	    where id = #{item.oldid};
+  	</foreach>
+  </update>
+  <select id="isRepeatThisName" parameterType="java.lang.String" resultType="int">
+  	select count(1) from t_base_sales_customersort where thisname = #{thisname}
+  </select>
+    <select id="getCustomerSortWithoutName" resultType="com.hd.agent.basefiles.model.CustomerSort">
+        select * from t_base_sales_customersort WHERE name = '' order by id
+    </select>
+    <select id="getFirstCustomerSort" resultType="com.hd.agent.basefiles.model.CustomerSort">
+        select * from t_base_sales_customersort WHERE pid='' or pid is null
+    </select>
+  <select id="getCustomerSortListByMap" parameterType="map"  resultType="com.hd.agent.basefiles.model.CustomerSort">
+    select
+    <include refid="PureBase_Column_List"/>
+    from t_base_sales_customersort
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="idarrs != null" >
+        and FIND_IN_SET(id,#{idarrs})
+      </if>
+      <if test="state != null" >
+        and state = #{state}
+      </if>
+    </trim>
+  </select>
+  <select id="getCustomersortListForMecshop" parameterType="java.util.Date" resultType="java.util.Map">
+    select
+    id, name, thisid, thisname, pid, state, remark, adduserid, addusername, adddeptid, adddeptname, addtime, modifyuserid, modifyusername,
+    modifytime, openuserid, openusername, opentime, closeuserid, closeusername, closetime
+    from t_base_sales_customersort
+    <trim prefix="where" prefixOverrides="and|or">
+      <if test="time != null">
+        and(addtime > #{time } or modifytime > #{time })
+      </if>
+    </trim>
+  </select>
+</mapper>

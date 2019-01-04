@@ -1,0 +1,1710 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.storage.dao.SaleRejectEnterMapper" >
+	<sql id="saleRejectEnter_Column_List">
+	    id, businessdate, status, remark, adduserid, addusername, adddeptid, adddeptname, 
+	    addtime, modifyuserid, modifyusername, modifytime, audituserid, auditusername, audittime, 
+	    stopuserid, stopusername, stoptime, closetime, printtimes, customerid,pcustomerid,customersort, handlerid, 
+	    salesarea,salesdept, salesuser, settletype, paytype, sourcetype, sourceid, storageid, field01, 
+	    field02, field03, field04, field05, field06, field07, field08, billno, isrefer,iswrite,ischeck,
+	    checkuserid,checkusername,checkdate,invoicedate,writeoffdate,invoiceid,initsendamount,initsendcostamount,
+	    sendamount,sendnotaxamount,sendcostamount,checkamount,checknotaxamount,invoiceamount,invoicenotaxamount,writeoffamount,writeoffnotaxamount,
+	    indooruserid,orderid,receiptid,duefromdate,driverid,storager,salestype,vouchertimes
+	</sql>
+	<sql id="saleRejectEnter_detail_Column_List">
+	    id, salerejectid, billid, billdetailid,rejectid,rejectdetailid,goodsid,goodssort,brandid,branduser,branddept,supplierid,supplieruser, unitid, unitname, unitnum, auxunitid, 
+	    auxunitname, auxnum,auxremainder, auxnumdetail,totalbox, taxprice, taxamount, notaxprice, notaxamount, 
+	    costprice,realcostprice,taxtype, tax, remark, rejecttype, storageid, summarybatchid,storagelocationid, batchno, produceddate, 
+	    deadline, field01, field02, field03, field04, field05, field06, field07, field08, 
+	    seq,iswriteoff,isinvoice,invoicedate,writeoffdate,duefromdate,rejectcategory
+	</sql>
+	<insert id="addSaleRejectEnter" parameterType="com.hd.agent.storage.model.SaleRejectEnter">
+    insert into t_storage_salereject_enter
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="businessdate != null">
+        businessdate,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="adduserid != null">
+        adduserid,
+      </if>
+      <if test="addusername != null">
+        addusername,
+      </if>
+      <if test="adddeptid != null">
+        adddeptid,
+      </if>
+      <if test="adddeptname != null">
+        adddeptname,
+      </if>
+      <if test="1==1">
+        addtime,
+      </if>
+      <if test="customerid != null">
+        customerid,
+      </if>
+      <if test="pcustomerid != null">
+        pcustomerid,
+      </if>
+      <if test="customersort != null">
+        customersort,
+      </if>
+      <if test="handlerid != null">
+        handlerid,
+      </if>
+      <if test="salesarea != null">
+        salesarea,
+      </if>
+      <if test="salesdept != null">
+        salesdept,
+      </if>
+      <if test="salesuser != null">
+        salesuser,
+      </if>
+      <if test="settletype != null">
+        settletype,
+      </if>
+      <if test="paytype != null">
+        paytype,
+      </if>
+      <if test="sourcetype != null">
+        sourcetype,
+      </if>
+      <if test="sourceid != null">
+        sourceid,
+      </if>
+      <if test="storageid != null">
+        storageid,
+      </if>
+      <if test="field01 != null">
+        field01,
+      </if>
+      <if test="field02 != null">
+        field02,
+      </if>
+      <if test="field03 != null">
+        field03,
+      </if>
+      <if test="field04 != null">
+        field04,
+      </if>
+      <if test="field05 != null">
+        field05,
+      </if>
+      <if test="field06 != null">
+        field06,
+      </if>
+      <if test="field07 != null">
+        field07,
+      </if>
+      <if test="field08 != null">
+        field08,
+      </if>
+      <if test="billno != null">
+        billno,
+      </if>
+      <if test="isrefer != null">
+        isrefer,
+      </if>
+      <if test="ischeck != null">
+        ischeck,
+      </if>
+      <if test="checkuserid != null">
+        checkuserid,
+      </if>
+      <if test="checkusername != null">
+        checkusername,
+      </if>
+      <if test="checkdate != null">
+        checkdate,
+      </if>
+      <if test="invoicedate != null">
+        invoicedate,
+      </if>
+      <if test="writeoffdate != null">
+        writeoffdate,
+      </if>
+      <if test="invoiceid != null">
+        invoiceid,
+      </if>
+      <if test="initsendamount != null">
+        initsendamount,
+      </if>
+      <if test="initsendcostamount != null">
+        initsendcostamount,
+      </if>
+      <if test="sendamount != null">
+        sendamount,
+      </if>
+      <if test="sendnotaxamount != null">
+        sendnotaxamount,
+      </if>
+      <if test="sendcostamount != null">
+        sendcostamount,
+      </if>
+      <if test="checkamount != null">
+        checkamount,
+      </if>
+      <if test="checknotaxamount != null">
+        checknotaxamount,
+      </if>
+      <if test="invoiceamount != null">
+        invoiceamount,
+      </if>
+      <if test="invoicenotaxamount != null">
+        invoicenotaxamount,
+      </if>
+      <if test="writeoffamount != null">
+        writeoffamount,
+      </if>
+      <if test="writeoffnotaxamount != null">
+        writeoffnotaxamount,
+      </if>
+      <if test="indooruserid != null">
+        indooruserid,
+      </if>
+      <if test="orderid != null">
+        orderid,
+      </if>
+      <if test="receiptid != null">
+        receiptid,
+      </if>
+      <if test="duefromdate != null">
+        duefromdate,
+      </if>
+      <if test="driverid != null">
+        driverid,
+      </if>
+      <if test="storager != null">
+        storager,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id},
+      </if>
+      <if test="businessdate != null">
+        #{businessdate},
+      </if>
+      <if test="status != null">
+        #{status},
+      </if>
+      <if test="remark != null">
+        #{remark},
+      </if>
+      <if test="adduserid != null">
+        #{adduserid},
+      </if>
+      <if test="addusername != null">
+        #{addusername},
+      </if>
+      <if test="adddeptid != null">
+        #{adddeptid},
+      </if>
+      <if test="adddeptname != null">
+        #{adddeptname},
+      </if>
+      <if test="1==1">
+        now(),
+      </if>
+      <if test="customerid != null">
+        #{customerid},
+      </if>
+      <if test="pcustomerid != null">
+        #{pcustomerid},
+      </if>
+      <if test="customersort != null">
+        #{customersort},
+      </if>
+      <if test="handlerid != null">
+        #{handlerid},
+      </if>
+      <if test="salesarea != null">
+        #{salesarea},
+      </if>
+      <if test="salesdept != null">
+        #{salesdept},
+      </if>
+      <if test="salesuser != null">
+        #{salesuser},
+      </if>
+      <if test="settletype != null">
+        #{settletype},
+      </if>
+      <if test="paytype != null">
+        #{paytype},
+      </if>
+      <if test="sourcetype != null">
+        #{sourcetype},
+      </if>
+      <if test="sourceid != null">
+        #{sourceid},
+      </if>
+      <if test="storageid != null">
+        #{storageid},
+      </if>
+      <if test="field01 != null">
+        #{field01},
+      </if>
+      <if test="field02 != null">
+        #{field02},
+      </if>
+      <if test="field03 != null">
+        #{field03},
+      </if>
+      <if test="field04 != null">
+        #{field04},
+      </if>
+      <if test="field05 != null">
+        #{field05},
+      </if>
+      <if test="field06 != null">
+        #{field06},
+      </if>
+      <if test="field07 != null">
+        #{field07},
+      </if>
+      <if test="field08 != null">
+        #{field08},
+      </if>
+      <if test="billno != null">
+        #{billno},
+      </if>
+      <if test="isrefer != null">
+        #{isrefer},
+      </if>
+      <if test="ischeck != null">
+        #{ischeck},
+      </if>
+      <if test="checkuserid != null">
+        #{checkuserid},
+      </if>
+      <if test="checkusername != null">
+        #{checkusername},
+      </if>
+      <if test="checkdate != null">
+        #{checkdate},
+      </if>
+      <if test="invoicedate != null">
+        #{invoicedate},
+      </if>
+      <if test="writeoffdate != null">
+        #{writeoffdate},
+      </if>
+      <if test="invoiceid != null">
+        #{invoiceid},
+      </if>
+      <if test="initsendamount != null">
+        #{initsendamount},
+      </if>
+      <if test="initsendcostamount != null">
+        #{initsendcostamount},
+      </if>
+      <if test="sendamount != null">
+        #{sendamount},
+      </if>
+      <if test="sendnotaxamount != null">
+        #{sendnotaxamount},
+      </if>
+      <if test="sendcostamount != null">
+        #{sendcostamount},
+      </if>
+      <if test="checkamount != null">
+        #{checkamount},
+      </if>
+      <if test="checknotaxamount != null">
+        #{checknotaxamount},
+      </if>
+      <if test="invoiceamount != null">
+        #{invoiceamount},
+      </if>
+      <if test="invoicenotaxamount != null">
+        #{invoicenotaxamount},
+      </if>
+      <if test="writeoffamount != null">
+        #{writeoffamount},
+      </if>
+      <if test="writeoffnotaxamount != null">
+        #{writeoffnotaxamount},
+      </if>
+      <if test="indooruserid != null">
+        #{indooruserid},
+      </if>
+      <if test="orderid != null">
+        #{orderid},
+      </if>
+      <if test="receiptid != null">
+        #{receiptid},
+      </if>
+      <if test="duefromdate != null">
+        #{duefromdate},
+      </if>
+      <if test="driverid != null">
+        #{driverid},
+      </if>
+      <if test="storager != null">
+        #{storager},
+      </if>
+    </trim>
+  </insert>
+  <insert id="addSaleRejectEnterDetail" parameterType="com.hd.agent.storage.model.SaleRejectEnterDetail">
+    insert into t_storage_salereject_enter_detail
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="salerejectid != null">
+        salerejectid,
+      </if>
+      <if test="billid != null">
+        billid,
+      </if>
+      <if test="billdetailid != null">
+        billdetailid,
+      </if>
+      <if test="rejectid != null">
+        rejectid,
+      </if>
+      <if test="rejectdetailid != null">
+        rejectdetailid,
+      </if>
+      <if test="goodsid != null">
+        goodsid,
+      </if>
+      <if test="goodssort != null">
+        goodssort,
+      </if>
+      <if test="brandid != null">
+        brandid,
+      </if>
+      <if test="branduser != null">
+        branduser,
+      </if>
+      <if test="branddept != null">
+        branddept,
+      </if>
+      <if test="supplierid != null">
+        supplierid,
+      </if>
+      <if test="supplieruser != null">
+        supplieruser,
+      </if>
+      <if test="unitid != null">
+        unitid,
+      </if>
+      <if test="unitname != null">
+        unitname,
+      </if>
+      <if test="unitnum != null">
+        unitnum,
+      </if>
+      <if test="auxunitid != null">
+        auxunitid,
+      </if>
+      <if test="auxunitname != null">
+        auxunitname,
+      </if>
+      <if test="auxnum != null">
+        auxnum,
+      </if>
+      <if test="auxremainder != null">
+        auxremainder,
+      </if>
+      <if test="auxnumdetail != null">
+        auxnumdetail,
+      </if>
+      <if test="totalbox != null">
+        totalbox,
+      </if>
+      <if test="taxprice != null">
+        taxprice,
+      </if>
+      <if test="taxamount != null">
+        taxamount,
+      </if>
+      <if test="notaxprice != null">
+        notaxprice,
+      </if>
+      <if test="notaxamount != null">
+        notaxamount,
+      </if>
+      <if test="costprice != null">
+        costprice,
+      </if>
+      <if test="realcostprice != null">
+        realcostprice,
+      </if>
+      <if test="defaultprice != null">
+        defaultprice,
+      </if>
+      <if test="lastprice != null">
+        lastprice,
+      </if>
+      <if test="lowestprice != null">
+        lowestprice,
+      </if>
+      <if test="taxtype != null">
+        taxtype,
+      </if>
+      <if test="tax != null">
+        tax,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="rejecttype != null">
+        rejecttype,
+      </if>
+      <if test="storageid != null">
+        storageid,
+      </if>
+      <if test="summarybatchid != null">
+        summarybatchid,
+      </if>
+      <if test="storagelocationid != null">
+        storagelocationid,
+      </if>
+      <if test="batchno != null">
+        batchno,
+      </if>
+      <if test="produceddate != null">
+        produceddate,
+      </if>
+      <if test="deadline != null">
+        deadline,
+      </if>
+      <if test="field01 != null">
+        field01,
+      </if>
+      <if test="field02 != null">
+        field02,
+      </if>
+      <if test="field03 != null">
+        field03,
+      </if>
+      <if test="field04 != null">
+        field04,
+      </if>
+      <if test="field05 != null">
+        field05,
+      </if>
+      <if test="field06 != null">
+        field06,
+      </if>
+      <if test="field07 != null">
+        field07,
+      </if>
+      <if test="field08 != null">
+        field08,
+      </if>
+      <if test="seq != null">
+        seq,
+      </if>
+      <if test="isinvoice != null">
+        isinvoice,
+      </if>
+      <if test="iswriteoff != null">
+        iswriteoff,
+      </if>
+      <if test="duefromdate != null">
+        duefromdate,
+      </if>
+      <if test="rejectcategory != null">
+        rejectcategory,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id},
+      </if>
+      <if test="salerejectid != null">
+        #{salerejectid},
+      </if>
+      <if test="billid != null">
+        #{billid},
+      </if>
+      <if test="billdetailid != null">
+        #{billdetailid},
+      </if>
+      <if test="rejectid != null">
+        #{rejectid},
+      </if>
+      <if test="rejectdetailid != null">
+        #{rejectdetailid},
+      </if>
+      <if test="goodsid != null">
+        #{goodsid},
+      </if>
+      <if test="goodssort != null">
+        #{goodssort},
+      </if>
+      <if test="brandid != null">
+        #{brandid},
+      </if>
+      <if test="branduser != null">
+        #{branduser},
+      </if>
+      <if test="branddept != null">
+        #{branddept},
+      </if>
+      <if test="supplierid != null">
+        #{supplierid},
+      </if>
+      <if test="supplieruser != null">
+        #{supplieruser},
+      </if>
+      <if test="unitid != null">
+        #{unitid},
+      </if>
+      <if test="unitname != null">
+        #{unitname},
+      </if>
+      <if test="unitnum != null">
+        #{unitnum},
+      </if>
+      <if test="auxunitid != null">
+        #{auxunitid},
+      </if>
+      <if test="auxunitname != null">
+        #{auxunitname},
+      </if>
+      <if test="auxnum != null">
+        #{auxnum},
+      </if>
+      <if test="auxremainder != null">
+        #{auxremainder},
+      </if>
+      <if test="auxnumdetail != null">
+        #{auxnumdetail},
+      </if>
+      <if test="totalbox != null">
+        #{totalbox},
+      </if>
+      <if test="taxprice != null">
+        #{taxprice},
+      </if>
+      <if test="taxamount != null">
+        #{taxamount},
+      </if>
+      <if test="notaxprice != null">
+        #{notaxprice},
+      </if>
+      <if test="notaxamount != null">
+        #{notaxamount},
+      </if>
+      <if test="costprice != null">
+        #{costprice},
+      </if>
+      <if test="realcostprice != null">
+        #{realcostprice},
+      </if>
+      <if test="defaultprice != null">
+        #{defaultprice},
+      </if>
+      <if test="lastprice != null">
+        #{lastprice},
+      </if>
+      <if test="lowestprice != null">
+        #{lowestprice},
+      </if>
+      <if test="taxtype != null">
+        #{taxtype},
+      </if>
+      <if test="tax != null">
+        #{tax},
+      </if>
+      <if test="remark != null">
+        #{remark},
+      </if>
+      <if test="rejecttype != null">
+        #{rejecttype},
+      </if>
+      <if test="storageid != null">
+        #{storageid},
+      </if>
+      <if test="summarybatchid != null">
+        #{summarybatchid},
+      </if>
+      <if test="storagelocationid != null">
+        #{storagelocationid},
+      </if>
+      <if test="batchno != null">
+        #{batchno},
+      </if>
+      <if test="produceddate != null">
+        #{produceddate},
+      </if>
+      <if test="deadline != null">
+        #{deadline},
+      </if>
+      <if test="field01 != null">
+        #{field01},
+      </if>
+      <if test="field02 != null">
+        #{field02},
+      </if>
+      <if test="field03 != null">
+        #{field03},
+      </if>
+      <if test="field04 != null">
+        #{field04},
+      </if>
+      <if test="field05 != null">
+        #{field05},
+      </if>
+      <if test="field06 != null">
+        #{field06},
+      </if>
+      <if test="field07 != null">
+        #{field07},
+      </if>
+      <if test="field08 != null">
+        #{field08},
+      </if>
+      <if test="seq != null">
+        #{seq},
+      </if>
+      <if test="isinvoice != null">
+        #{isinvoice},
+      </if>
+      <if test="iswriteoff != null">
+        #{iswriteoff},
+      </if>
+      <if test="duefromdate != null">
+        #{duefromdate},
+      </if>
+      <if test="rejectcategory != null">
+        #{rejectcategory},
+      </if>
+    </trim>
+  </insert>
+  <select id="getSaleRejectEnterBySourceid" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.SaleRejectEnter">
+  		select <include refid="saleRejectEnter_Column_List"/>
+  		from t_storage_salereject_enter where sourceid=#{sourceid}
+  </select>
+  <select id="getErectSaleRejectEnterByReceiptid" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.SaleRejectEnter">
+    select <include refid="saleRejectEnter_Column_List"/>
+    from t_storage_salereject_enter where receiptid=#{receiptid} and sourcetype = '2'
+  </select>
+  <select id="getSaleRejectEnterByID" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.SaleRejectEnter">
+  		select <include refid="saleRejectEnter_Column_List"/>
+  		from t_storage_salereject_enter where id=#{id}
+  </select>
+  <delete id="deleteSaleRejectEnterByID" parameterType="java.lang.String">
+  		delete from t_storage_salereject_enter where (status='1' or status='2' or status='3') and id=#{id}
+  </delete>
+  <delete id="deleteSaleRejectEnterDetailByBillid" parameterType="java.lang.String">
+  		delete from t_storage_salereject_enter_detail where salerejectid=#{billid}
+  </delete>
+  <select id="getSaleRejectEnterDetailList" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.SaleRejectEnterDetail">
+  		select <include refid="saleRejectEnter_detail_Column_List"/>
+  		from t_storage_salereject_enter_detail where salerejectid=#{billid}
+  </select>
+  <select id="showSaleRejectEnterList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.storage.model.SaleRejectEnter">
+  		select <include refid="saleRejectEnter_Column_List"/>
+  		from t_storage_salereject_enter t
+  		<trim prefix="where" prefixOverrides="and|or">
+  		  <include refid="common.Page_querySql"/>
+	      <include refid="common.Page_dataSql"/>
+	      <if test="condition.businessdate1 != null">
+			 and t.businessdate >= #{condition.businessdate1}
+		  </if>
+		  <if test="condition.businessdate2 != null">
+			 <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+		  </if>
+		  <if test="condition.id != null" >
+	         and t.id like CONCAT('%',#{condition.id},'%')
+	      </if>
+	      <if test="condition.status != null">
+	         and t.status = #{condition.status}
+	      </if>
+	      <if test="condition.customerid != null">
+	         and t.customerid like CONCAT(#{condition.customerid},'%')
+	      </if>
+	      <if test="condition.handlerid != null">
+	         and t.handlerid = #{condition.handlerid}
+	      </if>
+	      <if test="condition.driverid != null">
+	         and t.driverid = #{condition.driverid}
+	      </if>
+	      <if test="condition.salesdept != null">
+	         and t.salesdept = #{condition.salesdept}
+	      </if>
+	      <if test="condition.salesuser != null">
+	         and t.salesuser = #{condition.salesuser}
+	      </if>
+	      <if test="condition.settletype != null">
+	         and t.settletype = #{condition.settletype}
+	      </if>
+	      <if test="condition.paytype != null">
+	         and t.paytype = #{condition.paytype}
+	      </if>
+	      <if test="condition.sourcetype != null">
+	         and t.sourcetype = #{condition.sourcetype}
+	      </if>
+	      <if test="condition.sourceid != null">
+	         and t.sourceid = #{condition.sourceid}
+	      </if>
+	      <if test="condition.storageid != null">
+	         and t.storageid = #{condition.storageid}
+	      </if>
+	      <if test="condition.billno != null">
+	         and t.billno = #{condition.billno}
+	      </if>
+	      <if test="condition.isrefer != null">
+	         and t.isrefer = #{condition.isrefer}
+	      </if>
+	      <if test="condition.ischeck != null">
+	         and t.ischeck = #{condition.ischeck}
+	      </if>
+	      <choose>
+	      	<when test="condition.isClose ==0 ">
+	      		and t.status in("1","2")
+	      	</when>
+	      	<when test="condition.isClose ==1 ">
+	      		and t.status in("3","4")
+	      	</when>
+	      </choose>	      
+	      	<if test="condition.printsign != null and condition.queryprinttimes != null">
+	      		<choose>
+	      			<when test="condition.printsign == 1">
+	      				<![CDATA[and t.printtimes = #{condition.queryprinttimes} ]]>
+	      			</when>
+	      			<when test="condition.printsign == 2">
+	      				<![CDATA[and t.printtimes < #{condition.queryprinttimes} ]]>
+	      			</when>
+	      			<when test="condition.printsign == 3">
+	      				<![CDATA[and t.printtimes <= #{condition.queryprinttimes} ]]>
+	      			</when>
+	      			<when test="condition.printsign == 4">
+	      				<![CDATA[and t.printtimes > #{condition.queryprinttimes} ]]>
+	      			</when>
+	      			<when test="condition.printsign == 5">
+	      				<![CDATA[and t.printtimes >= #{condition.queryprinttimes} ]]>
+	      			</when>
+	      		</choose>
+	      	</if>
+	    </trim>
+	    <include refid="common.Page_limit" />
+  </select>
+  <select id="showSaleRejectEnterCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  		select count(1)
+  		from t_storage_salereject_enter t
+  		<trim prefix="where" prefixOverrides="and|or">
+  		  <include refid="common.Page_querySql"/>
+	      <include refid="common.Page_dataSql"/>
+	      <if test="condition.businessdate1 != null">
+			 and t.businessdate >= #{condition.businessdate1}
+		  </if>
+		  <if test="condition.businessdate2 != null">
+			 <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+		  </if>
+		  <if test="condition.id != null" >
+	         and t.id like CONCAT('%',#{condition.id},'%')
+	      </if>
+	      <if test="condition.status != null">
+	         and t.status = #{condition.status}
+	      </if>
+	      <if test="condition.customerid != null">
+	         and t.customerid like CONCAT(#{condition.customerid},'%')
+	      </if>
+	      <if test="condition.handlerid != null">
+	         and t.handlerid = #{condition.handlerid}
+	      </if>
+	      <if test="condition.driverid != null">
+	         and t.driverid = #{condition.driverid}
+	      </if>
+	      <if test="condition.salesdept != null">
+	         and t.salesdept = #{condition.salesdept}
+	      </if>
+	      <if test="condition.salesuser != null">
+	         and t.salesuser = #{condition.salesuser}
+	      </if>
+	      <if test="condition.settletype != null">
+	         and t.settletype = #{condition.settletype}
+	      </if>
+	      <if test="condition.paytype != null">
+	         and t.paytype = #{condition.paytype}
+	      </if>
+	      <if test="condition.sourcetype != null">
+	         and t.sourcetype = #{condition.sourcetype}
+	      </if>
+	      <if test="condition.sourceid != null">
+	         and t.sourceid = #{condition.sourceid}
+	      </if>
+	      <if test="condition.storageid != null">
+	         and t.storageid = #{condition.storageid}
+	      </if>
+	      <if test="condition.billno != null">
+	         and t.billno = #{condition.billno}
+	      </if>
+	      <if test="condition.isrefer != null">
+	         and t.isrefer = #{condition.isrefer}
+	      </if>
+	      <if test="condition.ischeck != null">
+	         and t.ischeck = #{condition.ischeck}
+	      </if>
+	      <choose>
+	      	<when test="condition.isClose ==0 ">
+	      		and t.status in("1","2")
+	      	</when>
+	      	<when test="condition.isClose ==1 ">
+	      		and t.status in("3","4")
+	      	</when>
+	      </choose>	      
+      	<if test="condition.printsign != null and condition.queryprinttimes != null">
+      		<choose>
+      			<when test="condition.printsign == 1">
+      				<![CDATA[and t.printtimes = #{condition.queryprinttimes} ]]>
+      			</when>
+      			<when test="condition.printsign == 2">
+      				<![CDATA[and t.printtimes < #{condition.queryprinttimes} ]]>
+      			</when>
+      			<when test="condition.printsign == 3">
+      				<![CDATA[and t.printtimes <= #{condition.queryprinttimes} ]]>
+      			</when>
+      			<when test="condition.printsign == 4">
+      				<![CDATA[and t.printtimes > #{condition.queryprinttimes} ]]>
+      			</when>
+      			<when test="condition.printsign == 5">
+      				<![CDATA[and t.printtimes >= #{condition.queryprinttimes} ]]>
+      			</when>
+      		</choose>
+      	</if>
+	    </trim>
+  </select>
+  <select id="showSaleRejectEnterSum" parameterType="java.lang.String" resultType="java.math.BigDecimal">
+  	select sum(t.taxamount) as taxamount from t_storage_salereject_enter_detail t
+	where t.salerejectid=#{id}
+  </select>
+  <select id="showSaleRejectEnterSumByQuery" parameterType="com.hd.agent.common.util.PageMap" resultType="java.math.BigDecimal">
+  		select sum(t1.taxamount) as taxamount
+  		from t_storage_salereject_enter t
+  		right join t_storage_salereject_enter_detail t1 on t.id=t1.salerejectid
+  		<trim prefix="where" prefixOverrides="and|or">
+  		  <include refid="common.Page_querySql"/>
+	      <include refid="common.Page_dataSql"/>
+	      <if test="condition.businessdate1 != null">
+			 and t.businessdate >= #{condition.businessdate1}
+		  </if>
+		  <if test="condition.businessdate2 != null">
+			 <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+		  </if>
+		  <if test="condition.id != null" >
+	         and t.id like CONCAT('%',#{condition.id},'%')
+	      </if>
+	      <if test="condition.status != null">
+	         and t.status = #{condition.status}
+	      </if>
+	      <if test="condition.customerid != null">
+	         and t.customerid like CONCAT(#{condition.customerid},'%')
+	      </if>
+	      <if test="condition.handlerid != null">
+	         and t.handlerid = #{condition.handlerid}
+	      </if>
+	      <if test="condition.salesdept != null">
+	         and t.salesdept = #{condition.salesdept}
+	      </if>
+	      <if test="condition.salesuser != null">
+	         and t.salesuser = #{condition.salesuser}
+	      </if>
+	      <if test="condition.settletype != null">
+	         and t.settletype = #{condition.settletype}
+	      </if>
+	      <if test="condition.paytype != null">
+	         and t.paytype = #{condition.paytype}
+	      </if>
+	      <if test="condition.sourcetype != null">
+	         and t.sourcetype = #{condition.sourcetype}
+	      </if>
+	      <if test="condition.sourceid != null">
+	         and t.sourceid = #{condition.sourceid}
+	      </if>
+	      <if test="condition.storageid != null">
+	         and t.storageid = #{condition.storageid}
+	      </if>
+	      <if test="condition.billno != null">
+	         and t.billno = #{condition.billno}
+	      </if>
+	      <if test="condition.isrefer != null">
+	         and t.isrefer = #{condition.isrefer}
+	      </if>
+	      <if test="condition.ischeck != null">
+	         and t.ischeck = #{condition.ischeck}
+	      </if>
+	      <choose>
+	      	<when test="condition.isClose ==0 ">
+	      		and t.status in("1","2")
+	      	</when>
+	      	<when test="condition.isClose ==1 ">
+	      		and t.status in("3","4")
+	      	</when>
+	      </choose>
+	    </trim>
+  </select>
+  <update id="auditSaleRejectEnter" parameterType="java.lang.String">
+  		update t_storage_salereject_enter set businessdate = #{auditBusinessdate},status =#{status},audituserid=#{userid},ischeck=#{ischeck},auditusername=#{username},audittime=now(),closetime=now()
+  		where id=#{id} 
+  </update>
+    <update id="updateSaleRejectEnterDetailCostprice">
+        <choose>
+            <when test="isStorageAccount==1">
+                update t_storage_salereject_enter_detail t,t_storage_summary t1
+                set t.costprice=t1.costprice,t.realcostprice=t1.costprice
+                where t.salerejectid=#{id} and t.goodsid=t1.goodsid and t.storageid=t1.storageid;
+            </when>
+            <otherwise>
+                update t_storage_salereject_enter_detail t,t_base_goods_info g
+                set t.costprice=g.newstorageprice,t.realcostprice=g.newstorageprice
+                where t.salerejectid=#{id} and t.goodsid=g.id;
+            </otherwise>
+        </choose>
+        update t_storage_salereject_enter_detail t,t_base_goods_info g
+        set t.realcostprice=g.costaccountprice
+        where t.salerejectid=#{id} and t.goodsid=g.id and g.costaccountprice!=0
+    </update>
+  <update id="editSaleRejectEnter" parameterType="com.hd.agent.storage.model.SaleRejectEnter">
+    update t_storage_salereject_enter
+    <set>
+      <if test="businessdate != null">
+        businessdate = #{businessdate},
+      </if>
+      <if test="status != null">
+        status = #{status},
+      </if>
+      <if test="remark != null">
+        remark = #{remark},
+      </if>
+      <if test="modifyuserid != null">
+        modifyuserid = #{modifyuserid},
+      </if>
+      <if test="modifyusername != null">
+        modifyusername = #{modifyusername},
+      </if>
+      <if test="1==1">
+        modifytime = now(),
+      </if>
+      <if test="customerid != null">
+        customerid = #{customerid},
+      </if>
+      <if test="pcustomerid != null">
+        pcustomerid = #{pcustomerid},
+      </if>
+      <if test="customersort != null">
+        customersort = #{customersort},
+      </if>
+      <if test="handlerid != null">
+        handlerid = #{handlerid},
+      </if>
+      <if test="salesarea != null">
+        salesarea = #{salesarea},
+      </if>
+      <if test="salesdept != null">
+        salesdept = #{salesdept},
+      </if>
+      <if test="salesuser != null">
+        salesuser = #{salesuser},
+      </if>
+      <if test="settletype != null">
+        settletype = #{settletype},
+      </if>
+      <if test="paytype != null">
+        paytype = #{paytype},
+      </if>
+      <if test="sourcetype != null">
+        sourcetype = #{sourcetype},
+      </if>
+      <if test="sourceid != null">
+        sourceid = #{sourceid},
+      </if>
+      <if test="storageid != null">
+        storageid = #{storageid},
+      </if>
+      <if test="field01 != null">
+        field01 = #{field01},
+      </if>
+      <if test="field02 != null">
+        field02 = #{field02},
+      </if>
+      <if test="field03 != null">
+        field03 = #{field03},
+      </if>
+      <if test="field04 != null">
+        field04 = #{field04},
+      </if>
+      <if test="field05 != null">
+        field05 = #{field05},
+      </if>
+      <if test="field06 != null">
+        field06 = #{field06},
+      </if>
+      <if test="field07 != null">
+        field07 = #{field07},
+      </if>
+      <if test="field08 != null">
+        field08 = #{field08},
+      </if>
+      <if test="billno != null">
+        billno = #{billno},
+      </if>
+      <if test="isrefer != null">
+        isrefer = #{isrefer},
+      </if>
+      <if test="iswrite != null">
+        iswrite = #{iswrite},
+      </if>
+      <if test="ischeck != null">
+        ischeck = #{ischeck},
+      </if>
+      <if test="checkuserid != null">
+        checkuserid = #{checkuserid},
+      </if>
+      <if test="checkusername != null">
+        checkusername = #{checkusername},
+      </if>
+      <if test="checkdate != null">
+        checkdate = #{checkdate},
+      </if>
+      <if test="invoicedate != null">
+        invoicedate = #{invoicedate},
+      </if>
+      <if test="writeoffdate != null">
+        writeoffdate = #{writeoffdate},
+      </if>
+      <if test="invoicebilldate != null">
+        invoicebilldate = #{invoicebilldate},
+      </if>
+      <if test="invoiceid != null">
+        invoiceid = #{invoiceid},
+      </if>
+      <if test="initsendamount != null">
+        initsendamount = #{initsendamount},
+      </if>
+      <if test="initsendcostamount != null">
+        initsendcostamount = #{initsendcostamount},
+      </if>
+      <if test="sendamount != null">
+        sendamount = #{sendamount},
+      </if>
+      <if test="sendnotaxamount != null">
+        sendnotaxamount = #{sendnotaxamount},
+      </if>
+      <if test="sendcostamount != null">
+        sendcostamount = #{sendcostamount},
+      </if>
+      <if test="checkamount != null">
+        checkamount = #{checkamount},
+      </if>
+      <if test="checknotaxamount != null">
+        checknotaxamount = #{checknotaxamount},
+      </if>
+      <if test="invoiceamount != null">
+        invoiceamount = #{invoiceamount},
+      </if>
+      <if test="invoicenotaxamount != null">
+        invoicenotaxamount = #{invoicenotaxamount},
+      </if>
+      <if test="invoicebillamount != null">
+        invoicebillamount = #{invoicebillamount},
+      </if>
+      <if test="invoicebillnotaxamount != null">
+        invoicebillnotaxamount = #{invoicebillnotaxamount},
+      </if>
+      <if test="writeoffamount != null">
+        writeoffamount = #{writeoffamount},
+      </if>
+      <if test="writeoffnotaxamount != null">
+        writeoffnotaxamount = #{writeoffnotaxamount},
+      </if>
+      <if test="indooruserid != null">
+        indooruserid = #{indooruserid},
+      </if>
+      <if test="orderid != null">
+        orderid = #{orderid},
+      </if>
+      <if test="receiptid != null">
+        receiptid = #{receiptid},
+      </if>
+      <if test="duefromdate != null">
+        duefromdate = #{duefromdate},
+      </if>
+      <if test="driverid != null">
+        driverid = #{driverid},
+      </if>
+      <if test="storager != null">
+        storager = #{storager},
+      </if>
+      <if test="salestype != null">
+        salestype = #{salestype},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  <update id="updateSaleRejectEnterByRejectbill" parameterType="java.lang.String">
+  	update t_storage_salereject_enter t set t.iswrite ='1'
+  	where t.sourceid=#{id}
+  </update>
+  <update id="updateSaleRejectEnterDetailIsWriteoffByReceipt" parameterType="java.lang.String">
+  	update t_storage_salereject_enter_detail s1,t_account_sales_invoice_detail t1
+	set s1.iswriteoff='1',s1.writeoffdate =#{writeoffdate}
+	where t1.sourcetype = '1' and s1.billid=t1.sourceid and s1.billdetailid=t1.sourcedetailid and t1.billid=#{id}
+  </update>
+  <update id="updateSaleRejectEnterDetailIsWriteoffByReceiptInvoiceBill" parameterType="java.lang.String">
+  	update t_storage_salereject_enter_detail s1,t_account_sales_invoicebill_detail t1
+	set s1.iswriteoff='1',s1.writeoffdate = date_format(now(), '%Y-%m-%d') 
+	where t1.sourcetype = '1' and s1.billid=t1.sourceid and s1.billdetailid=t1.sourcedetailid and t1.billid=#{id}
+  </update>
+  <!-- 反核销销售回单明细回写 -->
+  <update id="updateSaleRejectEnterDetailBackWriteoffByReceipt" parameterType="java.lang.String">
+  	update t_storage_salereject_enter_detail s1,t_account_sales_invoice_detail t1
+	set s1.iswriteoff='0',s1.writeoffdate = ''
+	where t1.sourcetype = '1' and s1.billid=t1.sourceid and s1.billdetailid=t1.sourcedetailid and t1.billid=#{id}
+  </update>
+  <update id="updateSaleRejectEnterDetailBackWriteoffByReceiptInvoiceBill" parameterType="java.lang.String">
+  	update t_storage_salereject_enter_detail s1,t_account_sales_invoicebill_detail t1
+	set s1.iswriteoff='0',s1.writeoffdate = ''
+	where t1.sourcetype = '1' and s1.billid=t1.sourceid and s1.billdetailid=t1.sourcedetailid and t1.billid=#{id}
+  </update>
+  <update id="updateSaleRejectEnterDetailIsWriteoffBySalesInvoiceid">
+	update t_storage_salereject_enter_detail s1,t_account_sales_invoice_detail t1
+	set s1.iswriteoff='1',s1.writeoffdate = #{writeoffdate}
+	where t1.sourcetype = '2' and s1.rejectdetailid=t1.sourcedetailid and s1.rejectid=t1.sourceid and t1.billid=#{id}
+  </update>
+  <update id="updateSaleRejectEnterDetailIsWriteoffBySalesInvoicebillid" parameterType="java.lang.String">
+  	update t_storage_salereject_enter_detail s1,t_account_sales_invoicebill_detail t1
+	set s1.iswriteoff='1',s1.writeoffdate = date_format(now(), '%Y-%m-%d') 
+	where t1.sourcetype = '2' and s1.rejectdetailid=t1.sourcedetailid and s1.rejectid=t1.sourceid and t1.billid=#{id}
+  </update>
+  <!-- 反核销销售退货通知单明细回写 -->
+  <update id="updateSaleRejectEnterDetailBackWriteoffBySalesInvoiceid" parameterType="java.lang.String">
+	update t_storage_salereject_enter_detail s1,t_account_sales_invoice_detail t1
+	set s1.iswriteoff='0',s1.writeoffdate = ''
+	where t1.sourcetype = '2' and s1.rejectdetailid=t1.sourcedetailid and s1.rejectid=t1.sourceid and t1.billid=#{id}
+  </update>
+  <update id="updateSaleRejectEnterDetailIsinvoiceByReject" parameterType="java.lang.String">
+  	update t_storage_salereject_enter_detail s1,t_account_sales_invoice_detail t1
+	set s1.isinvoice=#{isinvoice}
+	<if test="isinvoice == 1">
+       ,s1.invoicedate = #{invoicedate}
+    </if>
+    <if test="isinvoice == 0">
+       ,s1.invoicedate = ''
+    </if>
+	where t1.sourcetype = '2' and s1.rejectdetailid=t1.sourcedetailid and s1.rejectid=t1.sourceid and t1.billid=#{billid}
+  </update>
+  <update id="updateSaleRejectEnterDetailIsinvoicebillByReject" parameterType="java.lang.String">
+  	update t_storage_salereject_enter_detail s1,t_account_sales_invoicebill_detail t1
+	set s1.isinvoicebill=#{isinvoicebill}
+	<if test="isinvoicebill == 1">
+       ,s1.invoicebilldate = #{invoicebilldate}
+    </if>
+    <if test="isinvoicebill == 0">
+       ,s1.invoicebilldate = ''
+    </if>
+	where t1.sourcetype = '2' and s1.rejectdetailid=t1.sourcedetailid and s1.rejectid=t1.sourceid and t1.billid=#{billid}
+  </update>
+  <update id="updateSaleRejectEnterDetailIsinvoiceByInvoiceid" parameterType="java.lang.String">
+  	update t_storage_salereject_enter_detail s1,t_account_sales_invoice_detail t1
+	set s1.isinvoice=#{isinvoice} 
+  	<if test="isinvoice == 1">
+       ,s1.invoicedate = #{invoicedate}
+    </if>
+    <if test="isinvoice == 0">
+       ,s1.invoicedate = ''
+    </if>
+	where t1.sourcetype = '1' and s1.billid=t1.sourceid and s1.billdetailid=t1.sourcedetailid and t1.billid=#{id}
+  </update>
+  <update id="updateSaleRejectEnterDetailIsinvoicebillByInvoicebillid" parameterType="java.lang.String">
+  	update t_storage_salereject_enter_detail s1,t_account_sales_invoicebill_detail t1
+	set s1.isinvoicebill=#{isinvoicebill} 
+  	<if test="isinvoicebill == 1">
+       ,s1.invoicebilldate = #{invoicebilldate}
+    </if>
+    <if test="isinvoicebill == 0">
+       ,s1.invoicebilldate = ''
+    </if>
+	where t1.sourcetype = '1' and s1.billid=t1.sourceid and s1.billdetailid=t1.sourcedetailid and t1.billid=#{id}
+  </update>
+  <select id="getSaleRejectEnterNoAuditCount" parameterType="java.lang.String" resultType="int">
+  	select count(1) from t_storage_salereject_enter
+  	where sourceid=#{sourceid} and status='2'
+  </select>
+  <select id="getSaleRejectEnterListBySalerejectid" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.SaleRejectEnter">
+  	select t.* from t_storage_salereject_enter t
+	where t.sourceid=#{sourceid}
+  </select>
+  <select id="getSaleRejectEnterSumInvoiceAmount" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.SaleRejectEnterDetail">
+  	select t.salerejectid,sum(t.taxamount) as taxamount,sum(t.notaxamount) as notaxamount
+	from t_storage_salereject_enter_detail t
+	where t.salerejectid=#{salerejectid} and t.isinvoice='1'
+  </select>
+  <select id="getSaleRejectEnterSumInvoicebillAmount" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.SaleRejectEnterDetail">
+  	select t.salerejectid,sum(t.taxamount) as taxamount,sum(t.notaxamount) as notaxamount
+	from t_storage_salereject_enter_detail t
+	where t.salerejectid=#{salerejectid} and t.isinvoicebill='1'
+  </select>
+  <select id="getSaleRejectEnterSumWriteoffAmount" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.SaleRejectEnterDetail">
+  	select t.salerejectid,sum(t.taxamount) as taxamount,sum(t.notaxamount) as notaxamount
+	from t_storage_salereject_enter_detail t
+	where t.salerejectid=#{salerejectid} and t.iswriteoff='1'
+  </select>
+  <select id="getSaleRejectEnterSumUNWriteoffAmount" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.SaleRejectEnterDetail">
+  	select t.salerejectid,sum(t.taxamount) as taxamount,sum(t.notaxamount) as notaxamount
+	from t_storage_salereject_enter_detail t
+	where t.salerejectid=#{salerejectid} and t.iswriteoff='0'
+  </select>
+  <select id="getSaleRejectEnterListBy" parameterType="java.util.Map" resultType="com.hd.agent.storage.model.SaleRejectEnter">
+  		select <include refid="saleRejectEnter_Column_List"/>
+  		from t_storage_salereject_enter
+  		<trim prefix="where" prefixOverrides="and|or">
+	  	<if test="dataSql!=null">	  		
+  			and ${dataSql} 
+	  	</if>
+		<if test="idarrs != null" >
+         	and find_in_set(id,#{idarrs})
+      	</if>
+      	<if test="status!=null">
+      		and status=#{status}
+      	</if>
+      	<if test="statusarr!=null">
+         	and find_in_set(status,#{statusarr})
+      	</if>
+      	<if test="ischeck != null">
+      		and ischeck = #{ischeck}
+      	</if>
+          <if test="sourceid != null">
+            and sourceid = #{sourceid}
+          </if>
+          <if test="sourcetype != null">
+            and sourcetype = #{sourcetype}
+          </if>
+    </trim>
+   </select> 
+   
+  <update id="updateOrderPrinttimes" parameterType="com.hd.agent.storage.model.SaleRejectEnter">
+		update t_storage_salereject_enter
+	    <set>
+	      <if test="printtimes != null">
+	        printtimes = IFNULL(printtimes,0)+1,
+	      </if>
+	    </set>
+	    where id = #{id}
+  </update>
+  <update id="updateSaleRejectEnterCheckByRejectbillid" parameterType="java.lang.String">
+  	update t_storage_salereject_enter t set  t.businessdate = date_format(now(), '%Y-%m-%d'),t.ischeck='1',t.checkdate=date_format(now(), '%Y-%m-%d'),t.status='4',t.duefromdate=#{duefromdate}
+  	where t.ischeck='0' and t.sourcetype='2' and t.sourceid=#{rejectbillid}  
+  </update>
+  <update id="updateSaleRejectEnterCheckCancelByRejectbillid" parameterType="java.lang.String">
+  	update t_storage_salereject_enter t set  t.businessdate = date_format(now(), '%Y-%m-%d'),t.ischeck='0',t.checkdate='',t.status='3'
+  	where t.sourcetype='2' and t.sourceid=#{rejectbillid}  
+  </update>
+  <select id="getSaleRejectEnterDetailByRejectDetailid" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.SaleRejectEnterDetail">
+  	select <include refid="saleRejectEnter_detail_Column_List"/>
+  	from t_storage_salereject_enter_detail where billdetailid=#{rejectdetialid}
+  	limit 1
+  </select>
+  <update id="updateSaleRejectEnterDetail" parameterType="com.hd.agent.storage.model.SaleRejectEnterDetail">
+  	update t_storage_salereject_enter_detail
+    <set>
+      <if test="unitnum != null">
+        unitnum = #{unitnum},
+      </if>
+      <if test="auxnum != null">
+        auxnum = #{auxnum},
+      </if>
+      <if test="auxremainder != null">
+        auxremainder = #{auxremainder},
+      </if>
+      <if test="auxnumdetail != null">
+        auxnumdetail = #{auxnumdetail},
+      </if>
+      <if test="totalbox != null">
+        totalbox = #{totalbox},
+      </if>
+      <if test="taxamount != null">
+        taxamount = #{taxamount},
+      </if>
+      <if test="notaxamount != null">
+        notaxamount = #{notaxamount},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  <update id="updateSaleRejectEnterDetailIDs" parameterType="java.lang.String">
+  	update t_storage_salereject_enter_detail t
+	set t.billid=#{newbillid},t.billdetailid=#{newbilldetailid}
+	where t.rejectdetailid=#{oldbilldetailid} and t.rejectid=#{oldbillid}
+  </update>
+  <update id="updateSaleRejectEnterCustomeridBySourceid" parameterType="com.hd.agent.storage.model.SaleRejectEnter">
+  	update t_storage_salereject_enter
+    <set>
+      <if test="customerid != null">
+        customerid = #{customerid},
+      </if>
+      <if test="pcustomerid != null">
+        pcustomerid = #{pcustomerid},
+      </if>
+      <if test="customersort != null">
+        customersort = #{customersort},
+      </if>
+      <if test="handlerid != null">
+        handlerid = #{handlerid},
+      </if>
+      <if test="salesdept != null">
+        salesdept = #{salesdept},
+      </if>
+      <if test="salesarea != null">
+        salesarea = #{salesarea},
+      </if>
+      <if test="salesuser != null">
+        salesuser = #{salesuser},
+      </if>
+      <if test="settletype != null">
+        settletype = #{settletype},
+      </if>
+      <if test="remark != null">
+        remark = #{remark},
+      </if>
+    </set>
+    where sourceid = #{sourceid}
+  </update>
+  <update id="updateRejectBillCustomeridBySourceid" parameterType="com.hd.agent.storage.model.SaleRejectEnter">
+  	update t_sales_rejectbill
+    <set>
+      <if test="customerid != null">
+        customerid = #{customerid},
+      </if>
+      <if test="pcustomerid != null">
+        pcustomerid = #{pcustomerid},
+      </if>
+      <if test="handlerid != null">
+        handlerid = #{handlerid},
+      </if>
+      <if test="salesdept != null">
+        salesdept = #{salesdept},
+      </if>
+      <if test="salesuser != null">
+        salesuser = #{salesuser},
+      </if>
+      <if test="settletype != null">
+        settletype = #{settletype},
+      </if>
+    </set>
+    where id = #{sourceid}
+  </update>
+  <update id="clearSaleRejectEnterInvoiceidByReceiptid" parameterType="java.lang.String">
+  	update t_storage_salereject_enter set
+  		invoiceid = ""
+  	where sourceid = #{receiptid}
+  </update>
+  <update id="clearSaleRejectEnterInvoiceidByRejectbillid" parameterType="java.lang.String">
+  	update t_storage_salereject_enter set
+  		invoiceid = ""
+  	where sourceid = #{rejectbillid}
+  </update>
+  <update id="updateSaleRejectEnterDetailSummarybatchid">
+  	update t_storage_salereject_enter_detail 
+      <set>
+          <if test="summarybatchid != null">
+              summarybatchid = #{summarybatchid},
+          </if>
+          <if test="batchno != null">
+              batchno = #{batchno},
+          </if>
+          <if test="produceddate != null">
+              produceddate = #{produceddate},
+          </if>
+          <if test="deadline != null">
+              deadline = #{deadline},
+          </if>
+          <if test="storagelocationid != null">
+              storagelocationid = #{storagelocationid},
+          </if>
+      </set>
+  	where id = #{id}
+  </update>
+  <update id="updateSaleRejectEnterDetailByRejectDetail" parameterType="com.hd.agent.sales.model.RejectBillDetail">
+  	update t_storage_salereject_enter_detail
+    <set>
+    	  <if test="receiptid != null">
+	        billid = #{receiptid},
+	      </if>
+	      <if test="receiptdetailid != null">
+	        billdetailid = #{receiptdetailid},
+	      </if>
+	      <if test="branduser != null">
+	        branduser = #{branduser},
+	      </if>
+    	  <if test="unitnum != null">
+	        unitnum = #{unitnum},
+	      </if>
+	      <if test="auxnum != null">
+	        auxnum = #{auxnum},
+	      </if>
+	      <if test="auxremainder != null">
+	        auxremainder = #{auxremainder},
+	      </if>
+	      <if test="auxnumdetail != null">
+	        auxnumdetail = #{auxnumdetail},
+	      </if>
+	      <if test="totalbox != null">
+	        totalbox = #{totalbox},
+	      </if>
+	      <if test="taxprice != null">
+	        taxprice = #{taxprice},
+	      </if>
+	      <if test="taxamount != null">
+	        taxamount = #{taxamount},
+	      </if>
+	      <if test="notaxprice != null">
+	        notaxprice = #{notaxprice},
+	      </if>
+	      <if test="notaxamount != null">
+	        notaxamount = #{notaxamount},
+	      </if>
+	      <if test="tax != null">
+	        tax = #{tax},
+	      </if>
+          <if test="costprice != null">
+              costprice = #{costprice},
+          </if>
+          <if test="duefromdate != null">
+              duefromdate = #{duefromdate},
+          </if>
+          <if test="rejectcategory != null">
+            rejectcategory = #{rejectcategory},
+          </if>
+    </set>
+    where rejectdetailid = #{id} and rejectid = #{billid}
+    </update>
+    <update id="updateSaleRejectEnterReceiptid" parameterType="com.hd.agent.sales.model.RejectBillDetail">
+    	update t_storage_salereject_enter t,t_sales_rejectbill t1
+		set t.receiptid=t1.receiptid
+		where t.sourceid=t1.id and t1.receiptid=#{receiptid}
+    </update>
+    <delete id="deleteSaleRejectEnterDetailByRejectDetail" parameterType="java.lang.String">
+    	delete from t_storage_salereject_enter_detail
+    	where rejectdetailid = #{rejectdetailid} and rejectid = #{rejectid}
+    </delete>
+    <update id="updateSaleRejectEnterCheckByReject" parameterType="com.hd.agent.sales.model.RejectBill">
+    	update t_storage_salereject_enter
+    	<set>
+    	  <if test="customerid != null">
+	        customerid = #{customerid},
+	      </if>
+          <if test="driverid != null">
+            driverid = #{driverid},
+          </if>
+	      <if test="pcustomerid != null">
+	      	pcustomerid = #{pcustomerid},
+	      </if>
+	      <if test="salesarea != null">
+	        salesarea = #{salesarea},
+	      </if>
+	      <if test="salesdept != null">
+	        salesdept = #{salesdept},
+	      </if>
+	      <if test="salesuser != null">
+	        salesuser = #{salesuser},
+	      </if>
+	      <choose>
+	      	<when test="billtype == 2">sourcetype = '1',businessdate = #{checkdate},ischeck='1',status='4'</when>
+	      	<when test="billtype == 1">sourcetype = '2',</when>
+	      </choose>
+    	</set>
+    	where sourceid=#{id}
+    </update>
+    <update id="updateSaleRejectEnterChecCancelkByRejectid" parameterType="java.lang.String">
+    	update t_storage_salereject_enter
+    	set ischeck='0',status='3'
+    	where sourceid=#{rejectid}
+    </update>
+    <update id="updateRejectEnterWriteoffByReceipt" parameterType="java.lang.String">
+    	update t_storage_salereject_enter
+    	set iswrite='1',writeoffdate = date_format(now(), '%Y-%m-%d')
+    	where receiptid=#{receiptid}
+    </update>
+    <!-- 反核销 -->
+    <update id="updateRejectEnterBackWriteoffByReceipt" parameterType="java.lang.String">
+    	update t_storage_salereject_enter
+    	set iswrite='0',writeoffdate = ''
+    	where receiptid=#{receiptid}
+    </update>
+
+    <sql id="getSaleRejectEnterDetailListByMap_Normal">
+		select 		
+		    id, salerejectid, billid, billdetailid,rejectid,rejectdetailid,goodsid,goodssort,brandid,branduser,branddept,supplierid,supplieruser, unitid, unitname, unitnum, auxunitid, 
+		    auxunitname, auxnum,auxremainder, auxnumdetail,totalbox, taxprice, taxamount, notaxprice, notaxamount, 
+		    costprice,realcostprice,taxtype, tax, remark, rejecttype, storageid, summarybatchid,storagelocationid, batchno, produceddate, 
+		    deadline, field01, field02, field03, field04, field05, field06, field07, field08, 
+		    seq,iswriteoff,isinvoice,invoicedate,writeoffdate,rejectcategory
+  		from t_storage_salereject_enter_detail where salerejectid=#{salerejectid}
+  		<choose>
+	    	<when test="order =='goodsid'">
+	    		order by goodssort ASC,goodsid ASC
+	    	</when>
+	    	<when test="order != null">
+	    		order by ${order} ASC
+	    	</when>
+	    	<otherwise>
+	    		order by goodssort ASC,goodsid ASC
+	    	</otherwise>
+	    </choose>
+	</sql>
+	<sql id="getSaleRejectEnterDetailListByMap_WholeParts">
+		<!-- 打印临时解决方法 -->
+		<!-- 处理整箱时处理  -->
+			select 		
+		    id, salerejectid, billid, billdetailid,rejectid,rejectdetailid,goodsid,goodssort,brandid,branduser,branddept,supplierid,supplieruser, unitid, unitname, unitnum, auxunitid, 
+		    auxunitname, auxnum,auxremainder, auxnumdetail,totalbox, taxprice, taxamount, notaxprice, notaxamount, 
+		    costprice,realcostprice,taxtype, tax, remark, rejecttype, storageid, summarybatchid,storagelocationid, batchno, produceddate, 
+		    deadline, field01, field02, field03, field04, field05, field06, field07, field08, 
+		    seq,iswriteoff,isinvoice,invoicedate,writeoffdate,wholeparttype,rejectcategory
+		    from (
+				select 
+				id, salerejectid, billid, billdetailid,rejectid,rejectdetailid,goodsid,goodssort,brandid,branduser,branddept,supplierid,supplieruser, unitid, unitname,
+			    if(unitnum=auxremainder,unitnum,unitnum-auxremainder) as unitnum, auxunitid,  auxunitname, auxnum,if(unitnum=auxremainder,unitnum,0.000000) as auxremainder, auxnumdetail,totalbox, taxprice, 
+			    if(unitnum=auxremainder,unitnum,unitnum-auxremainder) * taxprice as taxamount, notaxprice,if(unitnum=auxremainder,unitnum,unitnum-auxremainder) * notaxprice as notaxamount,  
+			    costprice,realcostprice,taxtype, tax, remark, rejecttype, storageid, summarybatchid,storagelocationid, batchno, produceddate, 
+			    deadline, field01, field02, field03, field04, field05, field06, field07, field08, 
+			    seq,iswriteoff,isinvoice,invoicedate,writeoffdate,'1' as wholeparttype,rejectcategory
+			    from t_storage_salereject_enter_detail where auxnum>0 and salerejectid = #{salerejectid}
+			    union all
+			    <!-- 处理零数时 处理 -->
+			    select 
+				id, salerejectid, billid, billdetailid,rejectid,rejectdetailid,goodsid,goodssort,brandid,branduser,branddept,supplierid,supplieruser, unitid, unitname,
+			    auxremainder as unitnum, auxunitid,  auxunitname,0.000000 as auxnum,auxremainder, auxnumdetail,totalbox, taxprice, 
+			    auxremainder * taxprice as  taxamount, notaxprice,auxremainder * notaxprice as notaxamount,  
+			    costprice,realcostprice,taxtype, tax, remark, rejecttype, storageid, summarybatchid,storagelocationid, batchno, produceddate, 
+			    deadline, field01, field02, field03, field04, field05, field06, field07, field08, 
+			    seq,iswriteoff,isinvoice,invoicedate,writeoffdate,'2' as wholeparttype,rejectcategory
+			    from t_storage_salereject_enter_detail where auxremainder>0 and salerejectid = #{salerejectid}
+			) z
+		    <choose>
+		    	<when test="order =='goodsid'">
+		    		order by z.wholeparttype asc,z.goodssort ASC,z.goodsid ASC
+		    	</when>
+		    	<when test="order != null">
+		    		order by z.wholeparttype asc,z.${order} ASC
+		    	</when>
+		    	<otherwise>
+		    		order by z.wholeparttype asc,z.goodssort ASC,z.goodsid ASC
+		    	</otherwise>
+		    </choose>
+	</sql>
+	<sql id="getSaleRejectEnterDetailListByMap_OnlyWhole">
+		<!-- 打印临时解决方法 -->
+	    <!-- 处理整箱时处理  -->
+	    select 
+			id, salerejectid, billid, billdetailid,rejectid,rejectdetailid,goodsid,goodssort,brandid,branduser,branddept,supplierid,supplieruser, unitid, unitname,
+		    if(unitnum=auxremainder,unitnum,unitnum-auxremainder) as unitnum, auxunitid,  auxunitname, auxnum,if(unitnum=auxremainder,unitnum,0.000000) as auxremainder, auxnumdetail,totalbox, taxprice, 
+		    if(unitnum=auxremainder,unitnum,unitnum-auxremainder) * taxprice as taxamount, notaxprice,if(unitnum=auxremainder,unitnum,unitnum-auxremainder) * notaxprice as notaxamount,  
+		    costprice,realcostprice,taxtype, tax, remark, rejecttype, storageid, summarybatchid,storagelocationid, batchno, produceddate, 
+		    deadline, field01, field02, field03, field04, field05, field06, field07, field08, 
+		    seq,iswriteoff,isinvoice,invoicedate,writeoffdate,rejectcategory
+		    from t_storage_salereject_enter_detail where auxnum>0 and salerejectid = #{salerejectid}
+	    <choose>
+	    	<when test="order =='goodsid'">
+	    		order by goodssort ASC,goodsid ASC
+	    	</when>
+	    	<when test="order != null">
+	    		order by ${order} ASC
+	    	</when>
+	    	<otherwise>
+	    		order by goodssort ASC,goodsid ASC
+	    	</otherwise>
+	    </choose>
+	</sql>	
+	<sql id="getSaleRejectEnterDetailListByMap_OnlyParts">
+		<!-- 处理零数时 处理 -->
+		    select 
+			id, salerejectid, billid, billdetailid,rejectid,rejectdetailid,goodsid,goodssort,brandid,branduser,branddept,supplierid,supplieruser, unitid, unitname,
+		    auxremainder as unitnum, auxunitid,  auxunitname,0.000000 as auxnum,auxremainder, auxnumdetail,totalbox, taxprice, 
+		    auxremainder * taxprice as  taxamount, notaxprice,auxremainder * notaxprice as notaxamount,  
+		    costprice,realcostprice,taxtype, tax, remark, rejecttype, storageid, summarybatchid,storagelocationid, batchno, produceddate, 
+		    deadline, field01, field02, field03, field04, field05, field06, field07, field08, 
+		    seq,iswriteoff,isinvoice,invoicedate,writeoffdate,rejectcategory
+		    from t_storage_salereject_enter_detail where auxremainder>0 and salerejectid = #{salerejectid}
+		    <choose>
+		    	<when test="order =='goodsid'">
+		    		order by goodssort ASC,goodsid ASC
+		    	</when>
+		    	<when test="order != null">
+		    		order by ${order} ASC
+		    	</when>
+		    	<otherwise>
+		    		order by goodssort ASC,goodsid ASC
+		    	</otherwise>
+		    </choose>
+	</sql>
+	<select id="getSaleRejectEnterDetailListByMap" parameterType="java.util.Map" resultType="com.hd.agent.storage.model.SaleRejectEnterDetail">	
+		<choose>
+			<when test="isShowWhole==1">
+				<include refid="getSaleRejectEnterDetailListByMap_Normal"></include>
+			</when>
+			<when test="isShowWhole==2">
+				<include refid="getSaleRejectEnterDetailListByMap_WholeParts"></include>
+			</when>
+			<when test="isShowWhole==3">
+				<include refid="getSaleRejectEnterDetailListByMap_OnlyWhole"></include>
+			</when>
+			<when test="isShowWhole==4">
+				<include refid="getSaleRejectEnterDetailListByMap_OnlyParts"></include>
+			</when>
+			<otherwise> 					
+				<include refid="getSaleRejectEnterDetailListByMap_Normal"></include>
+			</otherwise>
+		</choose>
+	</select>
+    <update id="updateSaleRejectEnterDetailPrice" parameterType="com.hd.agent.storage.model.SaleRejectEnterDetail">
+        update t_storage_salereject_enter_detail
+        set defaultprice = #{defaultprice},
+          lastprice = #{lastprice},
+          costprice = #{costprice},
+          lowestprice = #{lowestprice}
+        where id = #{id}
+    </update>
+    <select id="getSaleRejectEnterNoWriteoffListByCustomerid" resultType="com.hd.agent.storage.model.SaleRejectEnter">
+        select <include refid="saleRejectEnter_Column_List"/>
+        from t_storage_salereject_enter t where t.iswrite='0' and (t.status='3' or t.status='4') and t.customerid=#{customerid}
+    </select>
+    <select id="getSaleRejectEnterBrandListById" resultType="java.lang.String">
+        select DISTINCT t.brandid from t_storage_salereject_enter_detail t where t.salerejectid=#{id}
+    </select>
+    <update id="updateSaleRejectEnterDuefromdate" parameterType="java.lang.String">
+        update t_storage_salereject_enter t
+        set t.duefromdate=#{duefromdate} where t.id=#{id}
+    </update>
+    <update id="updateSaleRejectEnterDetailDuefromdate" parameterType="java.lang.String">
+        update t_storage_salereject_enter_detail t
+        set t.duefromdate = #{duefromdate}
+        where t.salerejectid=#{id}
+        <if test="brandid != null">
+            and t.brandid=#{brandid}
+        </if>
+    </update>
+    <update id="updateSalesrejectDuefromdateByBillid" parameterType="java.lang.String">
+        update t_sales_rejectbill t
+        set t.duefromdate=#{duefromdate} where t.id=#{billid}
+    </update>
+    <update id="updateSalesRejectDetailDuefromdateByBillid">
+        update t_sales_rejectbill_detail t,t_sales_rejectbill t1
+        set t.duefromdate=#{duefromdate} where t1.id=#{billid} and t1.id=t.billid
+        <if test="brandid != null">
+            and t.brandid=#{brandid}
+        </if>
+    </update>
+
+    <update id="editSalesRejectEnterStorager" parameterType="java.lang.String">
+      update t_storage_salereject_enter set storager =#{storager}
+      where id=#{id}
+    </update>
+</mapper>

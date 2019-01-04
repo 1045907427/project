@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+	
+	<!-- dao -->
+	<bean id="stockInitMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.storage.dao.StockInitMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="storageSummaryMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.storage.dao.StorageSummaryMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="checkListMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.storage.dao.CheckListMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="adjustmentsMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.storage.dao.AdjustmentsMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="saleoutMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.storage.dao.SaleoutMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="purchaseEnterMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.storage.dao.PurchaseEnterMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="saleRejectEnterMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.storage.dao.SaleRejectEnterMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="purchaseRejectOutMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.storage.dao.PurchaseRejectOutMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="allocateEnterMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.storage.dao.AllocateEnterMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="allocateNoticeMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.storage.dao.AllocateNoticeMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="allocateOutMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.storage.dao.AllocateOutMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="storageOtherEnterMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.storage.dao.StorageOtherEnterMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="storageOtherOutMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.storage.dao.StorageOtherOutMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="receiptMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.sales.dao.ReceiptMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="deliveryMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.storage.dao.DeliveryMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="bigSaleOutMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.storage.dao.BigSaleOutMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="logisticsMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.basefiles.dao.LogisticsMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="storageDeliveryEnterMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface"
+			value="com.hd.agent.storage.dao.StorageDeliveryEnterMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+	<bean id="storageDeliveryOutMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.hd.agent.storage.dao.StorageDeliveryOutMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+    <bean id="splitMergeMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.hd.agent.storage.dao.SplitMergeMapper" />
+        <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+    </bean>
+
+    <bean id="storageSendUserOrderMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.hd.agent.storage.dao.StorageSendUserOrderMapper" />
+        <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+    </bean>
+    <bean id="storageSendUserDetailMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.hd.agent.storage.dao.StorageSendUserDetailMapper" />
+        <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+    </bean>
+
+    <bean id="lendMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.hd.agent.storage.dao.LendMapper" />
+        <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+    </bean>
+    <bean id="attachFileMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.hd.agent.common.dao.AttachFileMapper" />
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+
+    <bean id="salesOrderDetailMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.hd.agent.sales.dao.OrderDetailMapper" />
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+
+    <!-- service -->
+    <bean id="baseStorageService" parent="baseTransactionProxy">
+    	<property name="target" ref="baseStorageServiceImpl"></property>  
+    </bean>
+    <bean id="baseStorageServiceImpl" class="com.hd.agent.storage.service.impl.BaseStorageServiceImpl" parent="baseFilesServiceImpl">
+    	<property name="storageSummaryMapper" ref="storageSummaryMapper"></property>
+    </bean>
+    <bean id="stockInitService" parent="baseTransactionProxy">
+    	<property name="target" ref="stockInitServiceImpl"></property>  
+    </bean>
+    <bean id="stockInitServiceImpl" class="com.hd.agent.storage.service.impl.StockInitServiceImpl" parent="baseStorageServiceImpl">
+    	<property name="stockInitMapper" ref="stockInitMapper"></property>
+    </bean>
+    <bean id="storageSummaryService" parent="baseTransactionProxy">
+    	<property name="target" ref="storageSummaryServiceImpl"></property>  
+    </bean>
+    <bean id="storageSummaryServiceImpl" class="com.hd.agent.storage.service.impl.StorageSummaryServiceImpl" parent="baseStorageServiceImpl">
+        <property name="storageReportMapper" ref="storageReportMapper"></property>
+    </bean>
+    <bean id="checkListService" parent="baseTransactionProxy">
+    	<property name="target" ref="checkListServiceImpl"></property>  
+    </bean>
+    <bean id="checkListServiceImpl" class="com.hd.agent.storage.service.impl.CheckListServiceImpl" parent="baseStorageServiceImpl">
+    	<property name="checkListMapper" ref="checkListMapper"></property>
+    	<property name="adjustmentsMapper" ref="adjustmentsMapper"></property>
+    	<property name="storageCheckListReportMapper" ref="storageCheckListReportMapper"></property>
+    </bean>
+    <bean id="adjustmentsService" parent="baseTransactionProxy">
+    	<property name="target" ref="adjustmentsServiceImpl"></property>  
+    </bean>
+    <bean id="adjustmentsServiceImpl" class="com.hd.agent.storage.service.impl.AdjustmentsServiceImpl" parent="baseStorageServiceImpl">
+    	<property name="adjustmentsMapper" ref="adjustmentsMapper"></property>
+    	<property name="checkListMapper" ref="checkListMapper"></property>
+    </bean>
+    <bean id="storageSaleOutService" parent="baseTransactionProxy">
+    	<property name="target" ref="storageSaleOutServiceImpl"></property>  
+    </bean>
+    <bean id="storageSaleOutServiceImpl" class="com.hd.agent.storage.service.impl.StorageSaleOutServiceImpl" parent="baseStorageServiceImpl">
+    	<property name="saleoutMapper" ref="saleoutMapper"></property>
+    	<property name="salesOutService" ref="salesOutService"></property>
+        <property name="receiptMapper" ref="receiptMapper"></property>
+        <property name="saleRejectEnterMapper" ref="saleRejectEnterMapper"></property>
+    </bean>
+    <bean id="storageSaleOutPrintService" parent="baseTransactionProxy">
+    	<property name="target" ref="storageSaleOutPrintServiceImpl"></property> 
+    </bean>
+    <bean id="storageSaleOutPrintServiceImpl" class="com.hd.agent.storage.service.impl.StorageSaleOutPrintServiceImpl" parent="baseStorageServiceImpl">
+    	<property name="saleoutMapper" ref="saleoutMapper"></property>
+    	<property name="bigSaleOutMapper" ref="bigSaleOutMapper"></property>
+        <property name="salesOrderDetailMapper" ref="salesOrderDetailMapper"></property>
+    </bean>
+    <bean id="storageForSalesService" parent="baseTransactionProxy">
+    	<property name="target" ref="storageForSalesServiceImpl"></property>  
+    </bean>
+    <bean id="storageForSalesServiceImpl" class="com.hd.agent.storage.service.impl.StorageForSalesServiceImpl" parent="storageSaleOutServiceImpl">
+    	<property name="saleRejectEnterMapper" ref="saleRejectEnterMapper"></property>
+    	<property name="receiptMapper" ref="receiptMapper"></property>
+    </bean>
+    <bean id="purchaseEnterService" parent="baseTransactionProxy">
+    	<property name="target" ref="purchaseEnterServiceImpl"></property>  
+    </bean>
+    <bean id="purchaseEnterServiceImpl" class="com.hd.agent.storage.service.impl.PurchaseEnterServiceImpl" parent="baseStorageServiceImpl">
+    	<property name="purchaseEnterMapper" ref="purchaseEnterMapper"></property>
+    	<property name="purchaseForStorageService" ref="purchaseForStorageService"></property>
+    </bean>
+    <bean id="storageForPurchaseService" parent="baseTransactionProxy">
+    	<property name="target" ref="storageForPurchaseServiceImpl"></property>  
+    </bean>
+    <bean id="storageForPurchaseServiceImpl" class="com.hd.agent.storage.service.impl.StorageForPurchaseServiceImpl" parent="baseStorageServiceImpl">
+    	<property name="purchaseEnterMapper" ref="purchaseEnterMapper"></property>
+    	<property name="purchaseRejectOutMapper" ref="purchaseRejectOutMapper"></property>
+    	<property name="purchaseEnterService" ref="purchaseEnterService"></property>
+    	<property name="purchaseForStorageService" ref="purchaseForStorageService"></property>
+    </bean>
+    <bean id="saleRejectEnterService" parent="baseTransactionProxy">
+    	<property name="target" ref="saleRejectEnterServiceeImpl"></property>  
+    </bean>
+    <bean id="saleRejectEnterServiceeImpl" class="com.hd.agent.storage.service.impl.SaleRejectEnterServiceImpl" parent="baseStorageServiceImpl">
+    	<property name="saleRejectEnterMapper" ref="saleRejectEnterMapper"></property>
+    	<property name="salesOutService" ref="salesOutService"></property>
+        <property name="saleoutMapper" ref="saleoutMapper"></property>
+        <property name="salesRejectBillMapper" ref="salesRejectBillMapper"></property>
+    </bean>
+    <bean id="purchaseRejectOutService" parent="baseTransactionProxy">
+    	<property name="target" ref="purchaseRejectOutServiceImpl"></property>  
+    </bean>
+    <bean id="purchaseRejectOutServiceImpl" class="com.hd.agent.storage.service.impl.PurchaseRejectOutServiceImpl" parent="baseStorageServiceImpl">
+    	<property name="purchaseRejectOutMapper" ref="purchaseRejectOutMapper"></property>
+    	<property name="purchaseForStorageService" ref="purchaseForStorageService"></property>
+    </bean>
+    <bean id="allocateService" parent="baseTransactionProxy">
+    	<property name="target" ref="allocateServiceImpl"></property>  
+    </bean>
+    <bean id="allocateServiceImpl" class="com.hd.agent.storage.service.impl.AllocateServiceImpl" parent="baseStorageServiceImpl">
+    	<property name="allocateEnterMapper" ref="allocateEnterMapper"></property>
+    	<property name="allocateNoticeMapper" ref="allocateNoticeMapper"></property>
+    	<property name="allocateOutMapper" ref="allocateOutMapper"></property>
+        <property name="storageForSalesService" ref="storageForSalesService"></property>
+    </bean>
+    <bean id="storageOtherEnterService" parent="baseTransactionProxy">
+    	<property name="target" ref="storageOtherEnterServiceImpl"></property>  
+    </bean>
+    <bean id="storageOtherEnterServiceImpl" class="com.hd.agent.storage.service.impl.StorageOtherEnterServiceImpl" parent="baseStorageServiceImpl">
+    	<property name="storageOtherEnterMapper" ref="storageOtherEnterMapper"></property>
+    </bean>
+    <bean id="storageOtherOutService" parent="baseTransactionProxy">
+    	<property name="target" ref="storageOtherOutServiceImpl"></property>  
+    </bean>
+    <bean id="storageOtherOutServiceImpl" class="com.hd.agent.storage.service.impl.StorageOtherOutServiceImpl" parent="baseStorageServiceImpl">
+    	<property name="storageOtherOutMapper" ref="storageOtherOutMapper"></property>
+    </bean>
+    <bean id="storageSaleService" parent="baseTransactionProxy">
+    	<property name="target" ref="storageSaleServiceImpl"></property>  
+    </bean>
+    <bean id="storageSaleServiceImpl" class="com.hd.agent.storage.service.impl.StorageSaleServiceImpl">
+    	<property name="saleoutMapper" ref="saleoutMapper"></property>
+    	<property name="saleRejectEnterMapper" ref="saleRejectEnterMapper"></property>
+        <property name="salesRejectBillMapper" ref="salesRejectBillMapper"></property>
+    </bean>
+    <bean id="deliveryService" parent="baseTransactionProxy">
+    	<property name="target" ref="deliveryServiceImpl"></property>  
+    </bean>
+    <bean id="deliveryServiceImpl" class="com.hd.agent.storage.service.impl.DeliveryServiceImpl" parent="baseFilesServiceImpl">
+    	<property name="deliveryMapper" ref="deliveryMapper"></property>
+    	<property name="personnelMapper" ref="personnelMapper"></property>
+    	<property name="logisticsMapper" ref="logisticsMapper"></property>
+        <property name="receiptMapper" ref="receiptMapper"></property>
+    </bean>
+    <bean id="bigSaleOutService" parent="baseTransactionProxy">
+    	<property name="target" ref="bigSaleOutServiceImpl"></property>  
+    </bean>
+    <bean id="bigSaleOutServiceImpl" class="com.hd.agent.storage.service.impl.BigSaleOutServiceImpl" parent="baseFilesServiceImpl">
+    	<property name="bigSaleOutMapper" ref="bigSaleOutMapper"></property>
+    	<property name="saleoutMapper" ref="saleoutMapper"></property>
+    	<property name="storageSaleOutServiceImpl" ref="storageSaleOutServiceImpl"></property>
+    </bean>
+	<bean id="distributeRejectService"
+		class="com.hd.agent.storage.service.impl.DistributeRejectServiceImpl"
+		parent="baseStorageServiceImpl">
+		<property name="storageDeliveryEnterMapper" ref="storageDeliveryEnterMapper"></property>
+		<property name="deliveryAogorderMapper" ref="deliveryAogorderMapper"></property>
+		<property name="deliveryRejectbillMapper" ref="deliveryRejectbillMapper"></property>
+		<property name="purchaseEnterService" ref="purchaseEnterService"></property>
+	</bean>
+	<bean id="deliveryOutService"
+		class="com.hd.agent.storage.service.impl.DeliveryOutServiceImpl" parent="baseStorageServiceImpl">
+		<property name="storageDeliveryOutMapper" ref="storageDeliveryOutMapper"></property>
+		<property name="distributeService" ref="distributeService"></property>
+		<property name="deliveryOrderMapper" ref="deliveryOrderMapper"></property>
+		<property name="deliveryAogreturnMapper" ref="deliveryAogreturnMapper"></property>
+		<property name="returnOrderService" ref="returnOrderService"></property>
+	</bean>
+    <bean id="splitMergeServiceImpl" class="com.hd.agent.storage.service.impl.SplitMergeServiceImpl" parent="baseStorageServiceImpl">
+        <property name="splitMergeMapper" ref="splitMergeMapper"></property>
+        <property name="storageOtherEnterService" ref="storageOtherEnterService"></property>
+        <property name="storageOtherOutService" ref="storageOtherOutService"></property>
+        <property name="purchaseEnterService" ref="purchaseEnterService"></property>
+    </bean>
+    <bean id="splitMergeService" parent="baseTransactionProxy">
+        <property name="target" ref="splitMergeServiceImpl"/>
+    </bean>
+
+    <bean id="storageSendUserServiceImpl" class="com.hd.agent.storage.service.impl.StorageSendUserServiceImpl" parent="baseStorageServiceImpl">
+        <property name="storageSendUserDetailMapper" ref="storageSendUserDetailMapper"></property>
+        <property name="storageSendUserOrderMapper" ref="storageSendUserOrderMapper"></property>
+        <property name="saleoutMapper" ref="saleoutMapper"></property>
+        <property name="purchaseEnterMapper" ref="purchaseEnterMapper"></property>
+    </bean>
+    <bean id="storageSendUserService" parent="baseTransactionProxy">
+        <property name="target" ref="storageSendUserServiceImpl"/>
+    </bean>
+
+    <bean id="lendService" parent="baseTransactionProxy">
+        <property name="target" ref="lendServiceImpl"></property>
+    </bean>
+    <bean id="lendServiceImpl" class="com.hd.agent.storage.service.impl.LendServiceImpl" parent="baseStorageServiceImpl">
+        <property name="lendMapper" ref="lendMapper"></property>
+        <property name="storageMapper" ref="storageMapper"></property>
+        <property name="storageOtherEnterService" ref="storageOtherEnterService"></property>
+        <property name="storageOtherOutService" ref="storageOtherOutService"></property>
+    </bean>
+
+    <bean id="attachFileService" parent="baseTransactionProxy">
+        <property name="target" ref="attachFileServiceImpl"></property>
+    </bean>
+    <bean id="attachFileServiceImpl" class="com.hd.agent.common.service.impl.AttachFileServiceImpl" parent="baseServiceImpl">
+        <property name="attachFileMapper" ref="attachFileMapper"></property>
+    </bean>
+
+    <!-- action -->
+    <bean id="stockInitAction" class="com.hd.agent.storage.action.StockInitAction" scope="prototype" parent="baseFilesAction">
+    	<property name="stockInitService" ref="stockInitService"></property>
+        <property name="excelService" ref="excelService"></property>
+    </bean>
+    <bean id="storageSummaryAction" class="com.hd.agent.storage.action.StorageSummaryAction" scope="prototype" parent="baseFilesAction">
+    	<property name="storageSummaryService" ref="storageSummaryService"></property>
+    </bean>
+    <bean id="checkListAction" class="com.hd.agent.storage.action.CheckListAction" scope="prototype" parent="baseFilesAction">
+    	<property name="checkListService" ref="checkListService"></property>
+    	<property name="excelService" ref="excelService"></property>
+    </bean>
+    <bean id="adjustmentsAction" class="com.hd.agent.storage.action.AdjustmentsAction" scope="prototype" parent="baseFilesAction">
+    	<property name="adjustmentsService" ref="adjustmentsService"></property>
+    </bean>
+    <bean id="saleOutAction" class="com.hd.agent.storage.action.SaleOutAction" scope="prototype" parent="baseFilesAction">
+    	<property name="storageSaleOutService" ref="storageSaleOutService"></property>
+    	<property name="orderService" ref="salesOrderService"></property>
+    	<property name="bigSaleOutService" ref="bigSaleOutService"></property>
+    </bean>
+    <bean id="purchaseEnterAction" class="com.hd.agent.storage.action.PurchaseEnterAction" scope="prototype" parent="baseFilesAction">
+    	<property name="purchaseEnterService" ref="purchaseEnterService"></property>
+    </bean>
+    <bean id="saleRejectEnterAction" class="com.hd.agent.storage.action.SaleRejectEnterAction" scope="prototype" parent="baseFilesAction">
+    	<property name="saleRejectEnterService" ref="saleRejectEnterService"></property>
+    	<property name="orderService" ref="salesOrderService"></property>
+    	<property name="storageForSalesService" ref="storageForSalesService"></property>
+    </bean>
+    <bean id="purchaseRejectOutAction" class="com.hd.agent.storage.action.PurchaseRejectOutAction" scope="prototype" parent="baseFilesAction">
+    	<property name="purchaseRejectOutService" ref="purchaseRejectOutService"></property>
+    	<property name="storageForPurchaseService" ref="storageForPurchaseService"></property>
+    </bean>
+    <bean id="allocateAction" class="com.hd.agent.storage.action.AllocateAction" scope="prototype" parent="baseFilesAction">
+    	<property name="allocateService" ref="allocateService"></property>
+    </bean>
+    <bean id="storageOtherEnterAction" class="com.hd.agent.storage.action.StorageOtherEnterAction" scope="prototype" parent="baseFilesAction">
+    	<property name="storageOtherEnterService" ref="storageOtherEnterService"></property>
+    </bean>
+    <bean id="storageOtherOutAction" class="com.hd.agent.storage.action.StorageOtherOutAction" scope="prototype" parent="baseFilesAction">
+    	<property name="storageOtherOutService" ref="storageOtherOutService"></property>
+    </bean>
+    <bean id="deliveryAction" class="com.hd.agent.storage.action.DeliveryAction" scope="prototype" parent="baseFilesAction">
+    	<property name="deliveryService" ref="deliveryService"></property>
+        <property name="logisticsService" ref="logisticsService"></property>
+    </bean>    
+    <bean id="bigSaleOutAction" class="com.hd.agent.storage.action.BigSaleOutAction" scope="prototype" parent="baseFilesAction">
+    	<property name="bigSaleOutService" ref="bigSaleOutService"></property>
+    	<property name="storageSaleOutPrintService" ref="storageSaleOutPrintService"></property>
+    </bean>
+    <bean id="distributeRejectAction" class="com.hd.agent.storage.action.DistributeRejectAction"
+		scope="prototype" parent="baseFilesAction">
+		<property name="distributeRejectService" ref="distributeRejectService"></property>
+		<property name="distributeService" ref="distributeService"></property>
+	</bean>
+	<bean id="deliveryoutAction" class="com.hd.agent.storage.action.DeliveryoutAction"
+		scope="prototype" parent="baseFilesAction">
+		<property name="deliveryOutService" ref="deliveryOutService"></property>
+		<property name="salesOrderService" ref="salesOrderService"></property>
+	</bean>
+    <bean id="splitMergeAction" class="com.hd.agent.storage.action.SplitMergeAction" scope="prototype" parent="baseFilesAction">
+        <property name="splitMergeService" ref="splitMergeService"></property>
+        <property name="purchaseEnterService" ref="purchaseEnterService"></property>
+        <property name="storageSummaryService" ref="storageSummaryService"></property>
+    </bean>
+    <bean id="storageSendUserAction" class="com.hd.agent.storage.action.StorageSendUserAction" scope="prototype" parent="baseFilesAction">
+        <property name="storageSendUserService" ref="storageSendUserService"></property>
+    </bean>
+
+    <bean id="lendAction" class="com.hd.agent.storage.action.LendAction" scope="prototype" parent="baseFilesAction">
+        <property name="lendService" ref="lendService"></property>
+        <property name="attachFileService" ref="attachFileService"></property>
+    </bean>
+
+    <bean id="storageStockAction" class="com.hd.agent.storage.action.StorageStockAction" scope="prototype" parent="baseFilesAction">
+        <property name="storageStockService" ref="storageStockService"></property>
+    </bean>
+    <bean id="storageStockService" parent="baseTransactionProxy">
+        <property name="target" ref="storageStockServiceImpl"/>
+    </bean>
+    <bean id="storageStockServiceImpl" class="com.hd.agent.storage.service.impl.StorageStockServiceImpl" parent="baseStorageServiceImpl">
+        <property name="storageStockMapper" ref="storageStockMapper"></property>
+        <property name="goodsMapper" ref="goodsMapper"></property>
+        <property name="storageOtherEnterMapper" ref="storageOtherEnterMapper"></property>
+        <property name="storageOtherEnterService" ref="storageOtherEnterService"></property>
+        <property name="storageOtherOutMapper" ref="storageOtherOutMapper"></property>
+        <property name="storageOtherOutService" ref="storageOtherOutService"></property>
+    </bean>
+    <bean id="storageStockMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.hd.agent.storage.dao.StorageStockMapper" />
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+</beans>

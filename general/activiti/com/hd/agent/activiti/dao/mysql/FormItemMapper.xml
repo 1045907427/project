@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.activiti.dao.FormItemMapper" >
+  <resultMap id="BaseResultMap" type="com.hd.agent.activiti.model.FormItem" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="unkey" property="unkey" jdbcType="VARCHAR" />
+    <result column="itemid" property="itemid" jdbcType="VARCHAR" />
+    <result column="itemname" property="itemname" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="adduserid" property="adduserid" jdbcType="VARCHAR" />
+    <result column="addusername" property="addusername" jdbcType="VARCHAR" />
+    <result column="adddeptid" property="adddeptid" jdbcType="VARCHAR" />
+    <result column="adddeptname" property="adddeptname" jdbcType="VARCHAR" />
+    <result column="adddate" property="adddate" jdbcType="TIMESTAMP" />
+    <result column="modifyuserid" property="modifyuserid" jdbcType="VARCHAR" />
+    <result column="modifyusername" property="modifyusername" jdbcType="VARCHAR" />
+    <result column="modifytime" property="modifytime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, unkey, itemid, itemname, type, remark, adduserid, addusername, adddeptid, adddeptname, 
+    adddate, modifyuserid, modifyusername, modifytime
+  </sql>
+  <select id="selectFromItemByUnkey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_act_form_item
+    where unkey = #{unkey }
+  </select>
+  <delete id="deleteFormItemByUnkey" parameterType="java.lang.String" >
+    delete from t_act_form_item
+    where unkey = #{unkey }
+  </delete>
+  <insert id="insertFormItem" parameterType="com.hd.agent.activiti.model.FormItem" >
+    insert into t_act_form_item
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="unkey != null" >
+        unkey,
+      </if>
+      <if test="itemid != null" >
+        itemid,
+      </if>
+      <if test="itemname != null" >
+        itemname,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="adduserid != null" >
+        adduserid,
+      </if>
+      <if test="addusername != null" >
+        addusername,
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid,
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname,
+      </if>
+      adddate,
+      <if test="modifyuserid != null" >
+        modifyuserid,
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername,
+      </if>
+      <if test="modifytime != null" >
+        modifytime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="unkey != null" >
+        #{unkey},
+      </if>
+      <if test="itemid != null" >
+        #{itemid},
+      </if>
+      <if test="itemname != null" >
+        #{itemname},
+      </if>
+      <if test="type != null" >
+        #{type},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+      <if test="adduserid != null" >
+        #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        #{adddeptname},
+      </if>
+      now(),
+      <if test="modifyuserid != null" >
+        #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        #{modifyusername},
+      </if>
+      <if test="modifytime != null" >
+        #{modifytime},
+      </if>
+    </trim>
+  </insert>
+</mapper>

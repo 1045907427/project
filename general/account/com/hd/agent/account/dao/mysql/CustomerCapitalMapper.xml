@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.account.dao.CustomerCapitalMapper" >
+	<sql id="customerCapital_Column_List" >
+	    id, amount, remark, addtime, modifytime
+	</sql>
+	<sql id="customerCapitalLog_Column_List">
+	    id, customerid, billtype, billid, prtype, incomeamount, payamount, balanceamount, 
+	    remark, adduserid, addusername, adddeptid, adddeptname, addtime
+	</sql>
+  	<insert id="addCustomerCapital" parameterType="com.hd.agent.account.model.CustomerCapital" >
+	    insert into t_account_customer_capital
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="id != null" >
+	        id,
+	      </if>
+	      <if test="amount != null" >
+	        amount,
+	      </if>
+	      <if test="remark != null" >
+	        remark,
+	      </if>
+	      <if test="1==1" >
+	        addtime,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="id != null" >
+	        #{id},
+	      </if>
+	      <if test="amount != null" >
+	        #{amount},
+	      </if>
+	      <if test="remark != null" >
+	        #{remark},
+	      </if>
+	      <if test="1==1" >
+	        now(),
+	      </if>
+	    </trim>
+	  </insert>
+	  <update id="updateCustomerCapital" parameterType="com.hd.agent.account.model.CustomerCapital" >
+	    update t_account_customer_capital
+	    <set >
+	      <if test="amount != null" >
+	        amount = #{amount},
+	      </if>
+	      <if test="remark != null" >
+	        remark = #{remark},
+	      </if>
+	      <if test="1==1" >
+	        modifytime = now(),
+	      </if>
+	    </set>
+	    where id = #{id}
+	  </update>
+	  <select id="getCustomerCapital" parameterType="java.lang.String" resultType="com.hd.agent.account.model.CustomerCapital">
+	  	select <include refid="customerCapital_Column_List"/>
+	  	from t_account_customer_capital where id=#{id}
+	  </select>
+	  <!-- 根据客户编码集获取客户余额合计 -->
+	  <select id="getCustomerCapitalSum" parameterType="java.lang.String" resultType="java.math.BigDecimal">
+	  	select sum(amount) as amount from t_account_customer_capital where FIND_IN_SET(id,#{customerstr})
+	  </select>
+	  <insert id="addCustomerCapitalLog" parameterType="com.hd.agent.account.model.CustomerCapitalLog" >
+	    insert into t_account_customer_capital_log
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="id != null" >
+	        id,
+	      </if>
+	      <if test="customerid != null" >
+	        customerid,
+	      </if>
+	      <if test="billtype != null" >
+	        billtype,
+	      </if>
+	      <if test="billid != null" >
+	        billid,
+	      </if>
+	      <if test="prtype != null" >
+	        prtype,
+	      </if>
+	      <if test="incomeamount != null" >
+	        incomeamount,
+	      </if>
+	      <if test="payamount != null" >
+	        payamount,
+	      </if>
+	      <if test="balanceamount != null" >
+	        balanceamount,
+	      </if>
+	      <if test="remark != null" >
+	        remark,
+	      </if>
+	      <if test="adduserid != null" >
+	        adduserid,
+	      </if>
+	      <if test="addusername != null" >
+	        addusername,
+	      </if>
+	      <if test="adddeptid != null" >
+	        adddeptid,
+	      </if>
+	      <if test="adddeptname != null" >
+	        adddeptname,
+	      </if>
+	      <if test="1==1" >
+	        addtime,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="id != null" >
+	        #{id},
+	      </if>
+	      <if test="customerid != null" >
+	        #{customerid},
+	      </if>
+	      <if test="billtype != null" >
+	        #{billtype},
+	      </if>
+	      <if test="billid != null" >
+	        #{billid},
+	      </if>
+	      <if test="prtype != null" >
+	        #{prtype},
+	      </if>
+	      <if test="incomeamount != null" >
+	        #{incomeamount},
+	      </if>
+	      <if test="payamount != null" >
+	        #{payamount},
+	      </if>
+	      <if test="balanceamount != null" >
+	        #{balanceamount},
+	      </if>
+	      <if test="remark != null" >
+	        #{remark},
+	      </if>
+	      <if test="adduserid != null" >
+	        #{adduserid},
+	      </if>
+	      <if test="addusername != null" >
+	        #{addusername},
+	      </if>
+	      <if test="adddeptid != null" >
+	        #{adddeptid},
+	      </if>
+	      <if test="adddeptname != null" >
+	        #{adddeptname},
+	      </if>
+	      <if test="1==1" >
+	        now(),
+	      </if>
+	    </trim>
+	  </insert>
+	  <delete id="deleteCustomerCapitalLog" parameterType="java.lang.String">
+	  	delete from t_account_customer_capital_log where billid=#{billid} and billtype=#{billtype} and customerid=#{customerid}
+	  </delete>
+	  <select id="showCustomerAccountList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.basefiles.model.Customer">
+	  	select DISTINCT t.id,t.name,t.salesarea,t.salesdeptid,t.salesuserid,if(t1.amount is null,0,t1.amount) as amount
+		from t_base_sales_customer t
+		left join t_account_customer_capital t1 on t.id=t1.id
+		<if test="condition.isBrandUser != null" >
+			left JOIN t_base_personnel_customer pc on t.id=pc.customerid 
+	    </if>
+		<trim prefix="where" prefixOverrides="and|or" >
+			<include refid="common.Page_querySql"/>
+			<choose>
+		    	<when test="condition.isBrandUser != null">
+		    		 <if test="condition.datasql != null" >
+				         and (${condition.datasql} or pc.personid=#{condition.personnelid})
+				     </if>
+				     <if test="condition.datasql == null" >
+				         and  pc.personid=#{condition.personnelid}
+				     </if>
+		    	</when>
+		    	<otherwise>
+		    		<if test="condition.datasql != null" >
+			         and ${condition.datasql}
+			      	</if>
+		    	</otherwise>
+		    </choose>
+	      	<if test="condition.name != null" >
+	         and t.name like CONCAT('%', CONCAT(#{condition.name}, '%'))
+	      	</if>
+	      	<if test="condition.shortcode != null" >
+	         and t.shortcode like CONCAT(#{condition.shortcode}, '%')
+	      	</if>
+	      	<if test="condition.salesarea != null" >
+	      	and t.salesarea like CONCAT(#{condition.salesarea}, '%')
+	      	</if>
+	      	<if test="condition.customersort == 2" >
+	      	and t.customersort = #{condition.customersort}
+	      	</if>
+	      	<if test="condition.salesuserid != null" >
+	         and t.salesuserid = #{condition.salesuserid}
+	      	</if>
+            <choose>
+                <when test="condition.amounttype==1">
+                    and t1.amount = 0
+                </when>
+                <when test="condition.amounttype==0">
+                    <![CDATA[ and t1.amount <> 0]]>
+                </when>
+            </choose>
+			<if test="condition.id != null" >
+	         and t.id like CONCAT(#{condition.id}, '%')
+	      	</if>
+		</trim>
+		<if test="condition.isflag == null">
+			<include refid="common.Page_limit"/>
+		</if>
+	  </select>
+	  <select id="showCustomerAccountCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+	  	select count(1) from(
+	  	select DISTINCT t.id
+		from t_base_sales_customer t
+		left join t_account_customer_capital t1 on t.id=t1.id
+		<if test="condition.isBrandUser != null" >
+			left JOIN t_base_personnel_customer pc on t.id=pc.customerid 
+	    </if>
+		<trim prefix="where" prefixOverrides="and|or" >
+	  		<include refid="common.Page_querySql"/>
+			<choose>
+		    	<when test="condition.isBrandUser != null">
+		    		 <if test="condition.datasql != null" >
+				         and (${condition.datasql} or pc.personid=#{condition.personnelid})
+				     </if>
+				     <if test="condition.datasql == null" >
+				         and  pc.personid=#{condition.personnelid}
+				     </if>
+		    	</when>
+		    	<otherwise>
+		    		<if test="condition.datasql != null" >
+			         and ${condition.datasql}
+			      	</if>
+		    	</otherwise>
+		    </choose>
+	      	<if test="condition.name != null" >
+	         and t.name like CONCAT('%', CONCAT(#{condition.name}, '%'))
+	      	</if>
+	      	<if test="condition.shortcode != null" >
+	         and t.shortcode like CONCAT(#{condition.shortcode}, '%')
+	      	</if>
+	      	<if test="condition.salesarea != null" >
+	      	and t.salesarea like CONCAT(#{condition.salesarea}, '%')
+	      	</if>
+	      	<if test="condition.customersort == 2" >
+	      	and t.customersort = #{condition.customersort}
+	      	</if>
+	      	<if test="condition.salesuserid != null" >
+	         and t.salesuserid = #{condition.salesuserid}
+	      	</if>
+            <choose>
+                <when test="condition.amounttype==1">
+                    and t1.amount = 0
+                </when>
+                <when test="condition.amounttype==0">
+                    <![CDATA[ and t1.amount <> 0]]>
+                </when>
+            </choose>
+			<if test="condition.id != null" >
+	         and t.id like CONCAT(#{condition.id}, '%')
+	      	</if>
+		</trim>
+		) z
+	  </select>
+	  <select id="showCustomerAccountSum" parameterType="com.hd.agent.common.util.PageMap" resultType="java.math.BigDecimal">
+	  	select sum(z.amount) from (
+	  	select DISTINCT t.id,t.name,t.salesarea,t.salesdeptid,t.salesuserid,if(t1.amount is null,0,t1.amount) as amount
+		from t_base_sales_customer t
+		left join t_account_customer_capital t1 on t.id=t1.id
+		<if test="condition.isBrandUser != null" >
+			INNER JOIN t_base_personnel_customer pc on t.id=pc.customerid 
+	    </if>
+		<trim prefix="where" prefixOverrides="and|or" >
+	  		<include refid="common.Page_querySql"/>
+			<choose>
+		    	<when test="condition.isBrandUser != null">
+		    		 <if test="condition.datasql != null" >
+				         and (${condition.datasql} or pc.personid=#{condition.personnelid})
+				     </if>
+				     <if test="condition.datasql == null" >
+				         and  pc.personid=#{condition.personnelid}
+				     </if>
+		    	</when>
+		    	<otherwise>
+		    		<if test="condition.datasql != null" >
+			         and ${condition.datasql}
+			      	</if>
+		    	</otherwise>
+		    </choose>
+	      	<if test="condition.name != null" >
+	         and t.name like CONCAT('%', CONCAT(#{condition.name}, '%'))
+	      	</if>
+	      	<if test="condition.shortcode != null" >
+	         and t.shortcode like CONCAT(#{condition.shortcode}, '%')
+	      	</if>
+	      	<if test="condition.salesarea != null" >
+	      	and t.salesarea like CONCAT(#{condition.salesarea}, '%')
+	      	</if>
+	      	<if test="condition.customersort == 2" >
+	      	and t.customersort = #{condition.customersort}
+	      	</if>
+	      	<if test="condition.salesuserid != null" >
+	         and t.salesuserid = #{condition.salesuserid}
+	      	</if>
+            <choose>
+                <when test="condition.amounttype==1">
+                    and t1.amount = 0
+                </when>
+                <when test="condition.amounttype==0">
+                    <![CDATA[ and t1.amount <> 0]]>
+                </when>
+            </choose>
+			<if test="condition.id != null" >
+	         and t.id like CONCAT(#{condition.id}, '%')
+	      	</if>
+		</trim>
+		)z
+	  </select>
+	  <select id="showCustomerCapitalLogList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.account.model.CustomerCapitalLog">
+	  		select <include refid="customerCapitalLog_Column_List"/>
+	  		from t_account_customer_capital_log
+	  		<trim prefix="where" prefixOverrides="and|or">
+		      <if test="condition.customerid != null">
+		         and customerid = #{condition.customerid}
+		      </if>
+		      <if test="condition.billtype != null">
+		         and billtype = #{condition.billtype}
+		      </if>
+		      <if test="condition.billid != null">
+		         and billid = #{condition.billid}
+		      </if>
+		      <if test="condition.prtype != null">
+		         and prtype = #{condition.prtype}
+		      </if>
+		    </trim>
+		    <include refid="common.Page_limit"/>
+	  </select>
+	  <select id="showCustomerCapitalLogCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+	  		select count(1)
+	  		from t_account_customer_capital_log
+	  		<trim prefix="where" prefixOverrides="and|or">
+		      <if test="condition.customerid != null">
+		         and customerid = #{condition.customerid}
+		      </if>
+		      <if test="condition.billtype != null">
+		         and billtype = #{condition.billtype}
+		      </if>
+		      <if test="condition.billid != null">
+		         and billid = #{condition.billid}
+		      </if>
+		      <if test="condition.prtype != null">
+		         and prtype = #{condition.prtype}
+		      </if>
+		    </trim>
+	  </select>
+	  <update id="updateCustomerCapitalAmount">
+	  	update t_account_customer_capital 
+	  	set amount=#{amount} where id=#{customerid}
+	  </update>
+	  <update id="writeoffCustomerCapitalWithSalesInvoice" parameterType="java.lang.String">
+	  	update t_account_customer_capital t,t_account_sales_invoice t1
+		set t.amount=t.amount-t1.writeoffamount
+		where t.id=t1.customerid and t.id=#{customerid} and t1.id=#{salesinvoiceid}
+	  </update>
+	  <update id="oppWriteoffCustomerCapitalWithSalesInvoice" parameterType="java.lang.String">
+	  	update t_account_customer_capital t
+		set t.amount=t.amount+#{backWriteoffAmount}
+		where t.id=#{customerid} 
+	  </update>
+	  <update id="updateCustomerCapitalAmont" parameterType="java.lang.String">
+	  	update t_account_customer_capital t
+		set t.amount=t.amount+#{addamount}
+		where t.id=#{customerid} 
+	  </update>
+	  <!--普通版特有开始-->
+	  <update id="writeoffCustomerCapitalWithSalesInvoiceBill" parameterType="java.lang.String">
+	  	update t_account_customer_capital t,t_account_sales_invoicebill t1
+		set t.amount=t.amount-t1.taxamount
+		where t.id=t1.customerid and t.id=#{customerid} and t1.id=#{salesinvoicebillid}
+	  </update>
+	  <!--普通版特有结束-->
+	<select id="getCustomerCapitalListForSync" resultType="com.hd.agent.account.model.CustomerCapital">
+		select id, amount
+		from t_account_customer_capital where 1=1
+	</select>
+	<select id="getCustomerCapitalLogListForSync" resultType="com.hd.agent.account.model.CustomerCapitalLog" parameterType="java.lang.String">
+		select * from t_account_customer_capital_log where 1=1 order by id asc
+		limit #{startindex }, #{endindex }
+	</select>
+</mapper>

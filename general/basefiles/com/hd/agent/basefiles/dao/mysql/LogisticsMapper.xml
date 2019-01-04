@@ -1,0 +1,1315 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.basefiles.dao.LogisticsMapper" >
+<cache type="org.mybatis.caches.ehcache.EhcacheCache"></cache>
+<!-- 线路档案 -->
+<resultMap id="BaseResultMap" type="com.hd.agent.basefiles.model.LogisticsLine" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="CHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="field01" property="field01" jdbcType="VARCHAR" />
+    <result column="field02" property="field02" jdbcType="VARCHAR" />
+    <result column="field03" property="field03" jdbcType="VARCHAR" />
+    <result column="field04" property="field04" jdbcType="VARCHAR" />
+    <result column="field05" property="field05" jdbcType="VARCHAR" />
+    <result column="field06" property="field06" jdbcType="VARCHAR" />
+    <result column="field07" property="field07" jdbcType="VARCHAR" />
+    <result column="field08" property="field08" jdbcType="VARCHAR" />
+    <result column="field09" property="field09" jdbcType="VARCHAR" />
+    <result column="adduserid" property="adduserid" jdbcType="VARCHAR" />
+    <result column="addusername" property="addusername" jdbcType="VARCHAR" />
+    <result column="adddeptid" property="adddeptid" jdbcType="VARCHAR" />
+    <result column="adddeptname" property="adddeptname" jdbcType="VARCHAR" />
+    <result column="addtime" property="addtime" jdbcType="TIMESTAMP" />
+    <result column="modifyuserid" property="modifyuserid" jdbcType="VARCHAR" />
+    <result column="modifyusername" property="modifyusername" jdbcType="VARCHAR" />
+    <result column="modifytime" property="modifytime" jdbcType="TIMESTAMP" />
+    <result column="openuserid" property="openuserid" jdbcType="VARCHAR" />
+    <result column="openusername" property="openusername" jdbcType="VARCHAR" />
+    <result column="opentime" property="opentime" jdbcType="TIMESTAMP" />
+    <result column="closeuserid" property="closeuserid" jdbcType="VARCHAR" />
+    <result column="closeusername" property="closeusername" jdbcType="VARCHAR" />
+    <result column="closetime" property="closetime" jdbcType="TIMESTAMP" />
+    <result column="carid" property="carid" jdbcType="VARCHAR" />
+    <result column="salesarea" property="salesarea" jdbcType="VARCHAR" />
+    <result column="totalcustomers" property="totalcustomers" jdbcType="INTEGER" />
+    <result column="distance" property="distance" jdbcType="VARCHAR" />
+    <result column="linetype" property="linetype" jdbcType="VARCHAR" />
+    <result column="basecustomers" property="basecustomers" jdbcType="INTEGER" />
+    <result column="baseallowance" property="baseallowance" jdbcType="DECIMAL" />
+    <result column="singleallowance" property="singleallowance" jdbcType="DECIMAL" />
+    <result column="carsubsidy" property="carsubsidy" jdbcType="DECIMAL" />
+    <result column="carallowance" property="carallowance" jdbcType="DECIMAL" />
+    <result column="totalcars" property="totalcars" jdbcType="INTEGER" />
+    <result column="totalcarcustomers" property="totalcarcustomers" jdbcType="INTEGER" />
+    <result column="totalamount" property="totalamount" jdbcType="DECIMAL" />
+    <result column="newamount" property="newamount" jdbcType="DECIMAL" />
+    <result column="field11" property="field11" jdbcType="VARCHAR" />
+    <result column="field12" property="field12" jdbcType="VARCHAR" />
+    <result column="startpoint" property="startpoint" jdbcType="VARCHAR" />
+    <result column="defaultpoint" property="defaultpoint" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <!-- 所属车辆 -->
+  <resultMap id="LineCarResultMap" type="com.hd.agent.basefiles.model.LogisticsLineCar" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="lineid" property="lineid" jdbcType="VARCHAR" />
+    <result column="carid" property="carid" jdbcType="VARCHAR" />
+  </resultMap>
+  <!-- 线路客户 -->
+  <resultMap id="LineCustomerResultMap" type="com.hd.agent.basefiles.model.LogisticsLineCustomer" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="lineid" property="lineid" jdbcType="VARCHAR" />
+    <result column="customerid" property="customerid" jdbcType="VARCHAR" />
+    <result column="carnum" property="carnum" jdbcType="INTEGER" />
+    <result column="seq" property="seq" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <!-- 线路字段 -->
+  <sql id="Line_Column_List" >
+    id, name, state, remark, field01, field02, field03, field04, field05, field06, field07, 
+    field08, field09, field10, field11, field12, adduserid, addusername, adddeptid, adddeptname, addtime, modifyuserid, 
+    modifyusername, modifytime, openuserid, openusername, opentime, closeuserid, closeusername, 
+    closetime, carid, salesarea, totalcustomers, distance, linetype, basecustomers, baseallowance, 
+    singleallowance, carsubsidy, carallowance, totalcars, totalcarcustomers, totalamount, 
+    newamount, startpoint, defaultpoint
+  </sql>
+  
+  <!-- 线路档案列表分页 -->
+  <select id="getLineInfoListPage" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.basefiles.model.LogisticsLine">
+  	select
+  	<include refid="Line_Column_List"/>
+  	from t_base_logistics_line
+  	<trim prefix="where" prefixOverrides="and|or">
+		<if test="condition.name != null" >
+         	and name like CONCAT('%',#{condition.name},'%')
+      	</if>
+      	<if test="condition.id != null" >
+         	and id like CONCAT('%',#{condition.id},'%')
+      	</if>
+      	<if test="condition.state != null" >
+         	and state = #{condition.state}
+      	</if>
+		<include refid="common.Page_querySql"/>
+      	<include refid="common.Page_dataSql"/>
+	</trim>
+	<if test="condition.isflag == null">
+		<include refid="common.Page_limit"/>
+	</if>
+  </select>
+  <!-- 线路档案数量 -->
+  <select id="getLineInfoListCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  	select count(1) from t_base_logistics_line
+    <trim prefix="where" prefixOverrides="and|or">
+		<if test="condition.name != null" >
+         	and name like CONCAT('%',#{condition.name},'%')
+      	</if>
+      	<if test="condition.id != null" >
+         	and id like CONCAT('%',#{condition.id},'%')
+      	</if>
+      	<if test="condition.state != null" >
+         	and state = #{condition.state}
+      	</if>
+		<include refid="common.Page_querySql"/>
+      	<include refid="common.Page_dataSql"/>
+	</trim>
+  </select>
+  
+  <!-- 线路档案详情 -->
+  <select id="getLineInfo" parameterType="java.lang.String" resultType="com.hd.agent.basefiles.model.LogisticsLine" >
+  	SELECT 
+	<include refid="Line_Column_List" />
+ 	FROM t_base_logistics_line WHERE id = #{id}
+  </select>
+  
+  <!-- 根据线路carID获取默认车辆信息 -->
+  <select id="getDefaultCarByLineId" parameterType="java.lang.String" resultType="com.hd.agent.basefiles.model.LogisticsCar" >
+  	SELECT c.id,c.name,c.state,c.remark,c.volume,c.boxnum,c.weight,c.cartype,c.driverid,c.followid,c.truck1,c.truck2,c.truck3,c.truck4,c.truck5
+ 	FROM t_base_logistics_car c
+ 	 WHERE c.id = #{id}
+  </select>
+  
+  <!-- 根据线路ID获取默认车辆，可选列表 -->
+  <select id="getCarInfoListByLineid" parameterType="java.lang.String" resultType="com.hd.agent.basefiles.model.LogisticsCar" >
+  	SELECT c.id,c.name,c.state,c.remark 
+  	FROM t_base_logistics_car c,t_base_logistics_line_car lc
+ 	 WHERE lc.lineid = #{id} AND c.id=lc.carid
+  </select>
+  
+  <!-- 根据线路ID获取车辆信息 -->
+  <select id="getCarInfoList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.basefiles.model.LogisticsCar" >
+  	SELECT c.id,c.name,c.state,c.remark 
+ 	FROM t_base_logistics_car c,t_base_logistics_line_car lc
+ 	 <trim prefix="where" prefixOverrides="and|or" >
+ 		AND lc.lineid = #{condition.lineid} AND c.id=lc.carid
+  		<include refid="common.Page_querySql"/>
+		<include refid="common.Page_dataSql"/>
+	</trim>
+ 	 <include refid="common.Page_limit"/>
+  </select>
+  
+  <!-- 根据线路ID获取车辆信息数量 -->
+  <select id="getCarInfoListCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int" >
+  	SELECT count(1) 
+ 	FROM t_base_logistics_car c,t_base_logistics_line_car lc
+ 	 <trim prefix="where" prefixOverrides="and|or" >
+ 		AND lc.lineid = #{condition.lineid} AND c.id=lc.carid
+  		<include refid="common.Page_querySql"/>
+		<include refid="common.Page_dataSql"/>
+	</trim>
+  </select>
+  
+  <!-- 根据线路ID获取客户信息列表 -->
+  <select id="getCustomerInfoList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.basefiles.model.Customer" >
+  	SELECT c.id,c.name,c.remark,lc.seq
+ 	FROM t_base_sales_customer c,t_base_logistics_line_customer lc
+ 	<trim prefix="where" prefixOverrides="and|or" >
+ 		AND lc.lineid = #{condition.lineid} AND c.id=lc.customerid
+  		<include refid="common.Page_querySql"/>
+		<include refid="common.Page_dataSql"/>
+	</trim>
+ 	 ORDER BY seq
+ 	 <include refid="common.Page_limit"/>
+  </select>
+  
+  <!-- 根据线路ID获取客户信息数量 -->
+  <select id="getCustomerInfoListCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int" >
+  	SELECT count(1) 
+ 	FROM t_base_sales_customer c,t_base_logistics_line_customer lc
+ 	<trim prefix="where" prefixOverrides="and|or" >
+ 	 	AND lc.lineid = #{condition.lineid} AND c.id=lc.customerid
+  		<include refid="common.Page_querySql"/>
+		<include refid="common.Page_dataSql"/>
+	</trim>
+  </select>
+  <select id="getLineCustomerList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.basefiles.model.LogisticsLineCustomer" useCache="false">
+  	select lc.customerid, c.name as customername,lc.seq,lc.carnum/*, location.latitude, location.longitude*/
+  	from t_base_logistics_line_customer lc
+  	left join t_base_sales_customer c on lc.customerid = c.id
+    left join t_base_sales_customer_location location on lc.customerid = location.customerid
+  	<trim prefix="where" prefixOverrides="and|or" >
+ 		AND lc.lineid = #{condition.lineid}
+	</trim>
+ 	 ORDER BY seq
+ 	 <include refid="common.Page_limit"/>
+  </select>
+  <select id="getLineCustomerCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int" useCache="false">
+  	SELECT count(1) from (
+      select lc.customerid, c.name as customername,lc.seq,lc.carnum/*, location.latitude, location.longitude*/
+      from t_base_logistics_line_customer lc
+      left join t_base_sales_customer c on lc.customerid = c.id
+      left join t_base_sales_customer_location location on lc.customerid = location.customerid
+      <trim prefix="where" prefixOverrides="and|or" >
+        AND lc.lineid = #{condition.lineid}
+      </trim>
+  	)z
+  </select>
+  
+  <!-- 判断线路ID是否重复或线路是否存在-->
+  <select id="isRepeatLineInfoID" parameterType="java.lang.String" resultType="int">
+  	select count(1) from t_base_logistics_line where id = #{id}
+  </select>
+  
+  <!-- 新增线路档案 -->
+  <insert id="addLineInfo" parameterType="com.hd.agent.basefiles.model.LogisticsLine" >
+    insert into t_base_logistics_line
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="field01 != null" >
+        field01,
+      </if>
+      <if test="field02 != null" >
+        field02,
+      </if>
+      <if test="field03 != null" >
+        field03,
+      </if>
+      <if test="field04 != null" >
+        field04,
+      </if>
+      <if test="field05 != null" >
+        field05,
+      </if>
+      <if test="field06 != null" >
+        field06,
+      </if>
+      <if test="field07 != null" >
+        field07,
+      </if>
+      <if test="field08 != null" >
+        field08,
+      </if>
+      <if test="field09 != null" >
+        field09,
+      </if>
+      <if test="adduserid != null" >
+        adduserid,
+      </if>
+      <if test="addusername != null" >
+        addusername,
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid,
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname,
+      </if>
+      <if test="1 == 1" >
+        addtime,
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid,
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername,
+      </if>
+      <if test="modifytime != null" >
+        modifytime,
+      </if>
+      <if test="openuserid != null" >
+        openuserid,
+      </if>
+      <if test="openusername != null" >
+        openusername,
+      </if>
+      <if test="opentime != null" >
+        opentime,
+      </if>
+      <if test="closeuserid != null" >
+        closeuserid,
+      </if>
+      <if test="closeusername != null" >
+        closeusername,
+      </if>
+      <if test="closetime != null" >
+        closetime,
+      </if>
+      <if test="carid != null" >
+        carid,
+      </if>
+      <if test="salesarea != null" >
+        salesarea,
+      </if>
+      <if test="totalcustomers != null" >
+        totalcustomers,
+      </if>
+      <if test="distance != null" >
+        distance,
+      </if>
+      <if test="linetype != null" >
+        linetype,
+      </if>
+      <if test="basecustomers != null" >
+        basecustomers,
+      </if>
+      <if test="baseallowance != null" >
+        baseallowance,
+      </if>
+      <if test="singleallowance != null" >
+        singleallowance,
+      </if>
+      <if test="carsubsidy != null" >
+        carsubsidy,
+      </if>
+      <if test="carallowance != null" >
+        carallowance,
+      </if>
+      <if test="totalcars != null" >
+        totalcars,
+      </if>
+      <if test="totalcarcustomers != null" >
+        totalcarcustomers,
+      </if>
+      <if test="totalamount != null" >
+        totalamount,
+      </if>
+      <if test="newamount != null" >
+        newamount,
+      </if>
+      <if test="field10 != null" >
+        field10,
+      </if>
+      <if test="field11 != null" >
+        field11,
+      </if>
+      <if test="field12 != null" >
+        field12,
+      </if>
+        <if test="startpoint != null" >
+            startpoint,
+        </if>
+        <if test="defaultpoint != null" >
+            defaultpoint,
+        </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="name != null" >
+        #{name},
+      </if>
+      <if test="state != null" >
+        #{state},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+      <if test="field01 != null" >
+        #{field01},
+      </if>
+      <if test="field02 != null" >
+        #{field02},
+      </if>
+      <if test="field03 != null" >
+        #{field03},
+      </if>
+      <if test="field04 != null" >
+        #{field04},
+      </if>
+      <if test="field05 != null" >
+        #{field05},
+      </if>
+      <if test="field06 != null" >
+        #{field06},
+      </if>
+      <if test="field07 != null" >
+        #{field07},
+      </if>
+      <if test="field08 != null" >
+        #{field08},
+      </if>
+      <if test="field09 != null" >
+        #{field09},
+      </if>
+      <if test="adduserid != null" >
+        #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        #{adddeptname},
+      </if>
+      <if test="1 == 1" >
+        now(),
+      </if>
+      <if test="modifyuserid != null" >
+        #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        #{modifyusername},
+      </if>
+      <if test="modifytime != null" >
+        #{modifytime},
+      </if>
+      <if test="openuserid != null" >
+        #{openuserid},
+      </if>
+      <if test="openusername != null" >
+        #{openusername},
+      </if>
+      <if test="opentime != null" >
+        #{opentime},
+      </if>
+      <if test="closeuserid != null" >
+        #{closeuserid},
+      </if>
+      <if test="closeusername != null" >
+        #{closeusername},
+      </if>
+      <if test="closetime != null" >
+        #{closetime},
+      </if>
+      <if test="carid != null" >
+        #{carid},
+      </if>
+      <if test="salesarea != null" >
+        #{salesarea},
+      </if>
+      <if test="totalcustomers != null" >
+        #{totalcustomers},
+      </if>
+      <if test="distance != null" >
+        #{distance},
+      </if>
+      <if test="linetype != null" >
+        #{linetype},
+      </if>
+      <if test="basecustomers != null" >
+        #{basecustomers},
+      </if>
+      <if test="baseallowance != null" >
+        #{baseallowance},
+      </if>
+      <if test="singleallowance != null" >
+        #{singleallowance},
+      </if>
+      <if test="carsubsidy != null" >
+        #{carsubsidy},
+      </if>
+      <if test="carallowance != null" >
+        #{carallowance},
+      </if>
+      <if test="totalcars != null" >
+        #{totalcars},
+      </if>
+      <if test="totalcarcustomers != null" >
+        #{totalcarcustomers},
+      </if>
+      <if test="totalamount != null" >
+        #{totalamount},
+      </if>
+      <if test="newamount != null" >
+        #{newamount},
+      </if>
+      <if test="field10 != null" >
+        #{field10},
+      </if>
+      <if test="field11 != null" >
+        #{field11},
+      </if>
+      <if test="field12 != null" >
+        #{field12},
+      </if>
+        <if test="startpoint != null" >
+            #{startpoint},
+        </if>
+        <if test="defaultpoint != null" >
+            #{defaultpoint},
+        </if>
+    </trim>
+  </insert>
+  
+  <!-- 添加线路档案，添加相应的线路车辆 -->
+  <insert id="addLineCar" parameterType="com.hd.agent.basefiles.model.LogisticsLineCar" >
+    insert into t_base_logistics_line_car (lineid, carid,isdefault)
+    values (#{lineid}, #{id},#{isdefault})
+  </insert>
+  <select id="isExistLineCar" parameterType="java.lang.String" resultType="int">
+  	select count(1) from t_base_logistics_line_car
+  	where lineid = #{lineid} and carid = #{carid}
+  </select>
+  <select id="getLogisticsLineCar" parameterType="java.lang.String" resultType="com.hd.agent.basefiles.model.LogisticsLineCar">
+  	select * from t_base_logistics_line_car
+  	where lineid = #{lineid} and carid = #{carid}
+  </select>
+  <!-- 添加线路档案，添加相应的线路客户 -->
+  <insert id="addLineCustomer" parameterType="com.hd.agent.basefiles.model.LogisticsLineCustomer" >
+    insert into t_base_logistics_line_customer (lineid, customerid, seq)
+    values (#{lineid}, #{customerid}, #{seq})
+  </insert>
+  <update id="updateDRLineCustomer" parameterType="com.hd.agent.basefiles.model.LogisticsLineCustomer">
+  	update t_base_logistics_line_customer
+  	<set >
+  		<choose>
+  			<when test="seq != null and seq != ''">
+  				seq = #{seq}
+  			</when>
+  			<otherwise>
+  				seq = 99999
+  			</otherwise>
+  		</choose>
+    </set>
+  	where lineid = #{lineid} and customerid = #{customerid}
+  </update>
+  <select id="isExistLineCustomer" parameterType="java.lang.String" resultType="int">
+  	select count(1) from t_base_logistics_line_customer
+  	where lineid = #{lineid} and customerid = #{customerid}
+  </select>
+  <select id="getLogisticsLineCustomerList" parameterType="java.lang.String" resultType="com.hd.agent.basefiles.model.LogisticsLineCustomer">
+  	select * from t_base_logistics_line_customer
+  	where customerid = #{customerid}
+  </select>
+  <select id="getLogisticsLineCustomer" parameterType="java.lang.String" resultType="com.hd.agent.basefiles.model.LogisticsLineCustomer">
+  	select * from t_base_logistics_line_customer
+  	where lineid = #{lineid} and customerid = #{customerid}
+  	limit 1
+  </select>
+  <select id="getCustomerListByLineid" parameterType="java.lang.String" resultType="com.hd.agent.basefiles.model.LogisticsLineCustomer" useCache="false">
+  	select * from t_base_logistics_line_customer
+  	where lineid = #{lineid}
+  </select>
+  
+  <!-- 删除线路档案，删除相应的线路车辆 -->
+  <delete id="deleteLineCar" parameterType="java.lang.String" >
+    delete from t_base_logistics_line_car
+    where lineid = #{id}
+  </delete>
+  
+  <!-- 删除线路档案，删除相应的线路客户 -->
+  <delete id="deleteLineCustomer" parameterType="java.lang.String" >
+    delete from t_base_logistics_line_customer
+    where lineid = #{id}
+  </delete>
+  <delete id="deleteLineCustomerByCustomerid" parameterType="java.lang.String">
+  	delete from t_base_logistics_line_customer
+    where customerid = #{customerid}
+  </delete>
+  
+  <!-- 修改线路档案 -->
+  <update id="updateLineInfo" parameterType="com.hd.agent.basefiles.model.LogisticsLine" >
+    update t_base_logistics_line
+    <set >
+      <if test="id != null" >
+        id = #{id},
+      </if>
+      <if test="name != null" >
+        name = #{name},
+      </if>
+      <if test="state != null" >
+        state = #{state},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark},
+      </if>
+      <if test="field01 != null" >
+        field01 = #{field01},
+      </if>
+      <if test="field02 != null" >
+        field02 = #{field02},
+      </if>
+      <if test="field03 != null" >
+        field03 = #{field03},
+      </if>
+      <if test="field04 != null" >
+        field04 = #{field04},
+      </if>
+      <if test="field05 != null" >
+        field05 = #{field05},
+      </if>
+      <if test="field06 != null" >
+        field06 = #{field06},
+      </if>
+      <if test="field07 != null" >
+        field07 = #{field07},
+      </if>
+      <if test="field08 != null" >
+        field08 = #{field08},
+      </if>
+      <if test="field09 != null" >
+        field09 = #{field09},
+      </if>
+      <if test="adduserid != null" >
+        adduserid = #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        addusername = #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid = #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname = #{adddeptname},
+      </if>
+      <if test="addtime != null" >
+        addtime = #{addtime},
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid = #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername = #{modifyusername},
+      </if>
+      <if test="1 == 1" >
+        modifytime = now(),
+      </if>
+      <if test="openuserid != null" >
+        openuserid = #{openuserid},
+      </if>
+      <if test="openusername != null" >
+        openusername = #{openusername},
+      </if>
+      <if test="opentime != null" >
+        opentime = #{opentime},
+      </if>
+      <if test="closeuserid != null" >
+        closeuserid = #{closeuserid},
+      </if>
+      <if test="closeusername != null" >
+        closeusername = #{closeusername},
+      </if>
+      <if test="closetime != null" >
+        closetime = #{closetime},
+      </if>
+      <if test="carid != null" >
+        carid = #{carid},
+      </if>
+      <if test="salesarea != null" >
+        salesarea = #{salesarea},
+      </if>
+      <if test="totalcustomers != null" >
+        totalcustomers = #{totalcustomers},
+      </if>
+      <if test="distance != null" >
+        distance = #{distance},
+      </if>
+      <if test="linetype != null" >
+        linetype = #{linetype},
+      </if>
+      <if test="basecustomers != null" >
+        basecustomers = #{basecustomers},
+      </if>
+      <if test="baseallowance != null" >
+        baseallowance = #{baseallowance},
+      </if>
+      <if test="singleallowance != null" >
+        singleallowance = #{singleallowance},
+      </if>
+      <if test="carsubsidy != null" >
+        carsubsidy = #{carsubsidy},
+      </if>
+      <if test="carallowance != null" >
+        carallowance = #{carallowance},
+      </if>
+      <if test="totalcars != null" >
+        totalcars = #{totalcars},
+      </if>
+      <if test="totalcarcustomers != null" >
+        totalcarcustomers = #{totalcarcustomers},
+      </if>
+      <if test="totalamount != null" >
+        totalamount = #{totalamount},
+      </if>
+      <if test="newamount != null" >
+        newamount = #{newamount},
+      </if>
+      <if test="field10 != null" >
+        field10 = #{field10},
+      </if>
+      <if test="field11 != null" >
+        field11 = #{field11},
+      </if>
+      <if test="field12 != null" >
+        field12 = #{field12},
+      </if>
+        <if test="startpoint != null" >
+            startpoint = #{startpoint},
+        </if>
+        <if test="defaultpoint != null" >
+            defaultpoint = #{defaultpoint},
+        </if>
+      </set>
+    where id = #{oldid}
+  </update>
+  
+  <!-- 修改线路ID后，修改线路车辆的线路ID -->
+  <update id="updateLineCar" parameterType="com.hd.agent.basefiles.model.LogisticsLine" >
+    update t_base_logistics_line_car
+   		set 
+    	lineid = #{id}
+    	where lineid = #{oldid}
+  </update>
+  
+  <!-- 修改线路ID后，修改线路客户的线路ID -->
+  <update id="updateLineCustomer" parameterType="com.hd.agent.basefiles.model.LogisticsLine" >
+    update t_base_logistics_line_customer
+   		set 
+    	lineid = #{id}
+    	where lineid = #{oldid}
+  </update>
+  
+    <!-- 批量删除线路档案 -->
+  <delete id="deleteLineInfos">
+  	delete from t_base_logistics_line
+  	where id in
+  	<foreach collection="idsArr" item="item" open="(" separator="," close=")">
+  		#{item}
+  	</foreach>
+  </delete>
+  
+    <!-- 批量启用线路档案 -->
+  <update id="enableLineInfos">
+  	update t_base_logistics_line
+  	set state = '1', openuserid = #{openuserid}, openusername =#{openusername}, opentime = now()
+  	where id in
+  	<foreach collection="idsArr" item="item" open="(" separator="," close=")">
+  		#{item}
+  	</foreach>
+  </update>
+  <!-- 批量禁用线路档案 -->
+  <update id="disableLineInfos">
+  	update t_base_logistics_line
+  	set state = '0', closeuserid = #{closeuserid}, closeusername = #{closeusername}, closetime = now()
+  	where id in
+  	<foreach collection="idsArr" item="item" open="(" separator="," close=")">
+  		#{item}
+  	</foreach>
+  </update>
+  
+  <!-- 车辆档案 -->
+  <!-- 车辆字段 -->
+  <sql id="Car_Column_List" >
+    id, name, state, remark, field01, field02, field03, field04, field05, field06, field07, 
+    field08, field09, adduserid, addusername, adddeptid, adddeptname, addtime, modifyuserid, 
+    modifyusername, modifytime, openuserid, openusername, opentime, closeuserid, closeusername, 
+    closetime, volume,boxnum, weight, driverid, followid, truck1, truck2, truck3, truck4, truck5,  
+    field10, field11, field12, cartype
+  </sql>
+  
+  <!-- 车辆档案列表分页 -->
+  <select id="getCarListPage" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.basefiles.model.LogisticsCar">
+  	select
+  	<include refid="Car_Column_List"/>
+  	from t_base_logistics_car
+  	<trim prefix="where" prefixOverrides="and|or">
+		<include refid="common.Page_querySql"/>
+      	<include refid="common.Page_dataSql"/>
+		<if test="condition.name != null" >
+         	and name like CONCAT('%',#{condition.name},'%')
+      	</if>
+      	<if test="condition.id != null" >
+         	and id like CONCAT('%',#{condition.id},'%')
+      	</if>
+      	<if test="condition.state != null" >
+         	and state = #{condition.state}
+      	</if>
+	</trim>
+	<if test="condition.isflag == null">
+		<include refid="common.Page_limit"/>
+	</if>
+  </select>
+  <!-- 车辆档案数量 -->
+  <select id="getCarListCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  	select count(1) from t_base_logistics_car
+    <trim prefix="where" prefixOverrides="and|or">
+		<include refid="common.Page_querySql"/>
+      	<include refid="common.Page_dataSql"/>
+		<if test="condition.name != null" >
+         	and name like CONCAT('%',#{condition.name},'%')
+      	</if>
+      	<if test="condition.id != null" >
+         	and id like CONCAT('%',#{condition.id},'%')
+      	</if>
+      	<if test="condition.state != null" >
+         	and state = #{condition.state}
+      	</if>
+	</trim>
+  </select>
+  
+  <!-- 车辆单条档案 -->
+  <select id="getCar" parameterType="java.lang.String" resultType="com.hd.agent.basefiles.model.LogisticsCar" >
+  	SELECT 
+	<include refid="Car_Column_List" />
+ 	FROM t_base_logistics_car WHERE id = #{id}
+  </select>
+  
+  <!-- 判断车辆ID是否重复或车辆是否存在-->
+  <select id="isRepeatCarID" parameterType="java.lang.String" resultType="int">
+  	select count(1) from t_base_logistics_car where id = #{id}
+  </select>
+  
+  <!-- 判断车辆名字是否重复或车辆是否存在-->
+  <select id="isRepeatCarName" parameterType="java.lang.String" resultType="int">
+  	select count(1) from t_base_logistics_car where name = #{name}
+  </select>
+  
+  <!-- 新增车辆 -->
+  <insert id="addCar" parameterType="com.hd.agent.basefiles.model.LogisticsCar" >
+    insert into t_base_logistics_car
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="field01 != null" >
+        field01,
+      </if>
+      <if test="field02 != null" >
+        field02,
+      </if>
+      <if test="field03 != null" >
+        field03,
+      </if>
+      <if test="field04 != null" >
+        field04,
+      </if>
+      <if test="field05 != null" >
+        field05,
+      </if>
+      <if test="field06 != null" >
+        field06,
+      </if>
+      <if test="field07 != null" >
+        field07,
+      </if>
+      <if test="field08 != null" >
+        field08,
+      </if>
+      <if test="field09 != null" >
+        field09,
+      </if>
+      <if test="adduserid != null" >
+        adduserid,
+      </if>
+      <if test="addusername != null" >
+        addusername,
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid,
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname,
+      </if>
+      <if test="1 == 1" >
+        addtime,
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid,
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername,
+      </if>
+      <if test="modifytime != null" >
+        modifytime,
+      </if>
+      <if test="openuserid != null" >
+        openuserid,
+      </if>
+      <if test="openusername != null" >
+        openusername,
+      </if>
+      <if test="opentime != null" >
+        opentime,
+      </if>
+      <if test="closeuserid != null" >
+        closeuserid,
+      </if>
+      <if test="closeusername != null" >
+        closeusername,
+      </if>
+      <if test="closetime != null" >
+        closetime,
+      </if>
+     <if test="volume != null" >
+        volume,
+      </if>
+      <if test="boxnum != null" >
+        boxnum,
+      </if>
+      <if test="weight != null" >
+        weight,
+      </if>
+      <if test="driverid != null" >
+        driverid,
+      </if>
+      <if test="followid != null" >
+        followid,
+      </if>
+      <if test="truck1 != null" >
+        truck1,
+      </if>
+      <if test="truck2 != null" >
+        truck2,
+      </if>
+      <if test="truck3 != null" >
+        truck3,
+      </if>
+      <if test="truck4 != null" >
+        truck4,
+      </if>
+      <if test="truck5 != null" >
+        truck5,
+      </if>
+      <if test="field10 != null" >
+        field10,
+      </if>
+      <if test="field11 != null" >
+        field11,
+      </if>
+      <if test="field12 != null" >
+        field12,
+      </if>
+      <if test="cartype != null" >
+        cartype,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="name != null" >
+        #{name},
+      </if>
+      <if test="state != null" >
+        #{state},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+      <if test="field01 != null" >
+        #{field01},
+      </if>
+      <if test="field02 != null" >
+        #{field02},
+      </if>
+      <if test="field03 != null" >
+        #{field03},
+      </if>
+      <if test="field04 != null" >
+        #{field04},
+      </if>
+      <if test="field05 != null" >
+        #{field05},
+      </if>
+      <if test="field06 != null" >
+        #{field06},
+      </if>
+      <if test="field07 != null" >
+        #{field07},
+      </if>
+      <if test="field08 != null" >
+        #{field08},
+      </if>
+      <if test="field09 != null" >
+        #{field09},
+      </if>
+      <if test="adduserid != null" >
+        #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        #{adddeptname},
+      </if>
+      <if test="1 == 1" >
+        now(),
+      </if>
+      <if test="modifyuserid != null" >
+        #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        #{modifyusername},
+      </if>
+      <if test="modifytime != null" >
+        #{modifytime},
+      </if>
+      <if test="openuserid != null" >
+        #{openuserid},
+      </if>
+      <if test="openusername != null" >
+        #{openusername},
+      </if>
+      <if test="opentime != null" >
+        #{opentime},
+      </if>
+      <if test="closeuserid != null" >
+        #{closeuserid},
+      </if>
+      <if test="closeusername != null" >
+        #{closeusername},
+      </if>
+      <if test="closetime != null" >
+        #{closetime},
+      </if>
+     <if test="volume != null" >
+        #{volume},
+      </if>
+      <if test="boxnum != null" >
+        #{boxnum},
+      </if>
+      <if test="weight != null" >
+        #{weight},
+      </if>
+      <if test="driverid != null" >
+        #{driverid},
+      </if>
+      <if test="followid != null" >
+        #{followid},
+      </if>
+      <if test="truck1 != null" >
+        #{truck1},
+      </if>
+      <if test="truck2 != null" >
+        #{truck2},
+      </if>
+      <if test="truck3 != null" >
+        #{truck3},
+      </if>
+      <if test="truck4 != null" >
+        #{truck4},
+      </if>
+      <if test="truck5 != null" >
+        #{truck5},
+      </if>
+      <if test="field10 != null" >
+        #{field10},
+      </if>
+      <if test="field11 != null" >
+        #{field11},
+      </if>
+      <if test="field12 != null" >
+        #{field12},
+      </if>
+      <if test="cartype != null" >
+        #{cartype},
+      </if>
+    </trim>
+  </insert>
+  
+  <!-- 修改车辆档案 -->
+  <update id="updateCar" parameterType="com.hd.agent.basefiles.model.LogisticsCar" >
+    update t_base_logistics_car
+    <set >
+    	<if test="id != null" >
+        name = #{id},
+      </if>
+      <if test="name != null" >
+        name = #{name},
+      </if>
+      <if test="state != null" >
+        state = #{state},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark},
+      </if>
+      <if test="field01 != null" >
+        field01 = #{field01},
+      </if>
+      <if test="field02 != null" >
+        field02 = #{field02},
+      </if>
+      <if test="field03 != null" >
+        field03 = #{field03},
+      </if>
+      <if test="field04 != null" >
+        field04 = #{field04},
+      </if>
+      <if test="field05 != null" >
+        field05 = #{field05},
+      </if>
+      <if test="field06 != null" >
+        field06 = #{field06},
+      </if>
+      <if test="field07 != null" >
+        field07 = #{field07},
+      </if>
+      <if test="field08 != null" >
+        field08 = #{field08},
+      </if>
+      <if test="field09 != null" >
+        field09 = #{field09},
+      </if>
+      <if test="adduserid != null" >
+        adduserid = #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        addusername = #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid = #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname = #{adddeptname},
+      </if>
+      <if test="addtime != null" >
+        addtime = #{addtime},
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid = #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername = #{modifyusername},
+      </if>
+      <if test="1 == 1" >
+        modifytime = now(),
+      </if>
+      <if test="openuserid != null" >
+        openuserid = #{openuserid},
+      </if>
+      <if test="openusername != null" >
+        openusername = #{openusername},
+      </if>
+      <if test="opentime != null" >
+        opentime = #{opentime},
+      </if>
+      <if test="closeuserid != null" >
+        closeuserid = #{closeuserid},
+      </if>
+      <if test="closeusername != null" >
+        closeusername = #{closeusername},
+      </if>
+      <if test="closetime != null" >
+        closetime = #{closetime},
+      </if>
+      <if test="volume != null" >
+        volume = #{volume},
+      </if>
+      <if test="boxnum != null" >
+        boxnum = #{boxnum},
+      </if>
+      <if test="weight != null" >
+        weight = #{weight},
+      </if>
+      <if test="driverid != null" >
+        driverid = #{driverid},
+      </if>
+      <if test="followid != null" >
+        followid = #{followid},
+      </if>
+      <if test="truck1 != null" >
+        truck1 = #{truck1},
+      </if>
+      <if test="truck2 != null" >
+        truck2 = #{truck2},
+      </if>
+      <if test="truck3 != null" >
+        truck3 = #{truck3},
+      </if>
+      <if test="truck4 != null" >
+        truck4 = #{truck4},
+      </if>
+      <if test="truck5 != null" >
+        truck5 = #{truck5},
+      </if>
+      <if test="field10 != null" >
+        field10 = #{field10},
+      </if>
+      <if test="field11 != null" >
+        field11 = #{field11},
+      </if>
+      <if test="field12 != null" >
+        field12 = #{field12},
+      </if>
+      <if test="cartype != null" >
+        cartype = #{cartype},
+      </if>
+    </set>
+    where id = #{oldid}
+  </update>
+  
+    <!-- 批量删除车辆档案 -->
+  <delete id="deleteCar">
+  	delete from t_base_logistics_car
+  	where id in
+  	<foreach collection="idsArr" item="item" open="(" separator="," close=")">
+  		#{item}
+  	</foreach>
+  </delete>
+  
+    <!-- 批量启用车辆档案 -->
+  <update id="enableCar">
+  	update t_base_logistics_car
+  	set state = '1', openuserid = #{openuserid}, openusername =#{openusername}, opentime = now()
+  	where id in
+  	<foreach collection="idsArr" item="item" open="(" separator="," close=")">
+  		#{item}
+  	</foreach>
+  </update>
+  <!-- 批量禁用车辆档案 -->
+  <update id="disableCar">
+  	update t_base_logistics_car
+  	set state = '0', closeuserid = #{closeuserid}, closeusername = #{closeusername}, closetime = now()
+  	where id in
+  	<foreach collection="idsArr" item="item" open="(" separator="," close=")">
+  		#{item}
+  	</foreach>
+  </update>
+  
+  <!-- 获取ID不在condition.list中的车辆档案列表 -->
+  <select id="getCarListForCombobox" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.basefiles.model.LogisticsCar">
+  	SELECT * FROM 
+	t_base_logistics_car a
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="1 == 1">
+				and a.state = '1'
+			</if>
+			<if test="condition.lineid != null">
+	  			and a.id NOT in (SELECT carid FROM t_base_logistics_line_car where lineid=#{condition.lineid})
+	  		</if>
+	  		<if test="condition.name != null">
+				and a.name like CONCAT('%',#{condition.name}, '%')
+			</if>
+			<if test="condition.id != null">
+				<!-- and a.id = #{condition.id} -->
+				and id like CONCAT('%',#{condition.id},'%')
+			</if>
+		</trim>
+		ORDER BY id ASC
+	<include refid="common.Page_limit"/>
+  </select>
+  
+  <!-- 获取ID不在condition.list中的车辆档案列表的数量 -->
+  <select id="getCarListForComboboxCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  	SELECT count(1) FROM 
+	t_base_logistics_car a
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="1 == 1">
+				and a.state = '1'
+			</if>
+          <if test="condition.lineid != null">
+            and a.id NOT in (SELECT carid FROM t_base_logistics_line_car where lineid=#{condition.lineid})
+          </if>
+	  		<if test="condition.name != null">
+				and a.name like CONCAT('%',#{condition.name}, '%')
+			</if>
+			<if test="condition.id != null">
+				<!-- and a.id = #{condition.id} -->
+				and id like CONCAT('%',#{condition.id},'%')
+			</if>
+		</trim>
+		ORDER BY id ASC
+  </select>
+
+  <!-- 根据车辆ID获取车辆档案列表 -->
+  <select id="getCarListForLine" parameterType="java.lang.String" resultType="com.hd.agent.basefiles.model.LogisticsCar">
+  	select * from t_base_logistics_car where FIND_IN_SET(id,#{carids}) ORDER BY id
+  </select>
+    <select id="getLineCustomerMapList" resultType="com.hd.agent.basefiles.model.LogisticsLineCustomer">
+        select lc.*, l.name linename, l.defaultpoint
+        from t_base_logistics_line_customer lc
+        left join t_base_logistics_line l on lc.lineid = l.id
+        where l.state = '1'
+        <if test="linelocation">
+            and l.defaultpoint is not null and l.defaultpoint != ''
+            and not exists(select 1 from t_base_sales_customer_location lo where lo.customerid = lc.customerid)
+        </if>
+        <if test="customerids != null">
+            <foreach collection="customerids" item="customerid" open=" and lc.customerid in ( '', " close=")" separator=",">
+                #{customerid }
+            </foreach>
+        </if>
+    </select>
+    <select id="getLogisticsLines" resultType="com.hd.agent.basefiles.model.LogisticsLine">
+        select <include refid="Line_Column_List"/>
+        from t_base_logistics_line
+        where state = '1'
+    </select>
+  <delete id="deleteCustomerForLine" parameterType="java.lang.String">
+    DELETE FROM t_base_logistics_line_customer WHERE lineid=#{lineid} AND find_in_set(customerid,#{customerids})
+  </delete>
+  <update id="updatLineCustomerNum" parameterType="java.lang.String">
+    UPDATE t_base_logistics_line SET totalcustomers=(select count(1) from t_base_logistics_line_customer where lineid=#{lineid})
+    WHERE id=#{lineid}
+  </update>
+  <delete id="deleteCarForLine" parameterType="java.lang.String">
+    DELETE FROM t_base_logistics_line_car where lineid=#{lineid} and find_in_set(carid,#{carids})
+  </delete>
+</mapper>

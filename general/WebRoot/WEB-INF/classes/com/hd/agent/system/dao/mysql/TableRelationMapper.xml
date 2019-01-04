@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.system.dao.TableRelationMapper" >
+	<!-- 缓存-->
+	<cache type="org.mybatis.caches.ehcache.EhcacheCache" /> 
+	<sql id="Base_Column_List" >
+	    id, maintablename, maincolumnname, maintitlecolname,tablename, columnname, tabledescription, createmethod, 
+	    deleteverify, cascadechange, adddate, adduserid, modifydate, modifyuserid
+	</sql>
+	<sql id="PageList_Where_Clause" >
+	    <trim prefix="where" prefixOverrides="and|or" >
+	      <if test="condition.maintablename != null" >
+	         and maintablename  like CONCAT('%',#{condition.maintablename},'%')
+	      </if>
+	      <if test="condition.maincolumnname != null" >
+	         and maincolumnname like CONCAT('%',#{condition.maincolumnname},'%')
+	      </if>
+	      <if test="condition.maintitlecolname != null" >
+	         and maintitlecolname like CONCAT('%',#{condition.maintitlecolname},'%')
+	      </if>
+	      <if test="condition.tablename != null" >
+	         and tablename like CONCAT('%',#{condition.tablename},'%')
+	      </if>
+	      <if test="condition.columnname != null" >
+	         and columnname like CONCAT('%',#{condition.columnname},'%')
+	      </if>
+	      <if test="condition.tabledescription != null" >
+	         and tabledescription = #{condition.tabledescription}
+	      </if>
+	      <if test="condition.createmethod != null" >
+	         and createmethod = #{condition.createmethod}
+	      </if>
+	      <if test="condition.deleteverify != null" >
+	         and deleteverify = #{condition.deleteverify}
+	      </if>
+	      <if test="condition.cascadechange != null" >
+	         and cascadechange = #{condition.cascadechange}
+	      </if>
+	      <if test="condition.adddate != null" >
+	         and adddate = #{condition.adddate}
+	      </if>
+	      <if test="condition.adduserid != null" >
+	         and adduserid = #{condition.adduserid}
+	      </if>
+	      <if test="condition.modifydate != null" >
+	         and modifydate = #{condition.modifydate}
+	      </if>
+	      <if test="condition.modifyuserid != null" >
+	         and modifyuserid = #{condition.modifyuserid}
+	      </if>
+	    </trim>
+  	</sql>  
+	<select id="getTableRelationList" resultType="com.hd.agent.system.model.TableRelation">
+		select 
+	    <include refid="Base_Column_List" />
+	    from t_sys_tablerelation
+	    where id = #{id}
+	</select>
+	<select id="getTableRelationListBy" resultType="com.hd.agent.system.model.TableRelation">
+		select 
+	    <include refid="Base_Column_List" />
+	    from t_sys_tablerelation
+	     <trim prefix="where" prefixOverrides="and|or" >
+	      <if test="maintablename != null" >
+	         and maintablename  = #{maintablename}
+	      </if>
+	      <if test="maincolumnname != null" >
+	         and maincolumnname = #{maincolumnname}
+	      </if>
+	      <if test="maintitlecolname != null" >
+	         and maintitlecolname = #{maintitlecolname}
+	      </if>
+	      <if test="tablename != null" >
+	         and tablename = #{tablename}
+	      </if>
+	      <if test="columnname != null" >
+	         and columnname = #{columnname}
+	      </if>
+	      <if test="createmethod != null" >
+	         and createmethod = #{createmethod}
+	      </if>
+	      <if test="deleteverify != null" >
+	         and deleteverify = #{deleteverify}
+	      </if>
+	      <if test="cascadechange != null" >
+	         and cascadechange = #{cascadechange}
+	      </if>
+	      </trim>
+	</select>
+	<select id="getTableRelationPageList"  parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.system.model.TableRelation" useCache="false">
+		select
+		<include refid="Base_Column_List" />
+		from t_sys_tablerelation
+		<include refid="PageList_Where_Clause" />
+		<include refid="common.Page_limit" />
+	</select>	
+	<select id="getTableRelationCount" parameterType="com.hd.agent.common.util.PageMap" 
+		resultType="int" useCache="false">
+		select count(1) from t_sys_tablerelation
+		<include refid="PageList_Where_Clause" />
+	</select>	
+	<select id="showTableRelation" parameterType="java.lang.String"
+		resultType="com.hd.agent.system.model.TableRelation">
+		select 
+	    <include refid="Base_Column_List" />
+	    from t_sys_tablerelation
+	    where id = #{id}
+	</select>	
+	<insert id="addTableRelation" parameterType="com.hd.agent.system.model.TableRelation">
+	insert into t_sys_tablerelation
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="maintablename != null" >
+	        maintablename,
+	      </if>
+	      <if test="maincolumnname != null" >
+	        maincolumnname,
+	      </if>
+	      <if test="maintitlecolname != null" >
+	        maintitlecolname,
+	      </if>
+	      <if test="tablename != null" >
+	        tablename,
+	      </if>
+	      <if test="columnname != null" >
+	        columnname,
+	      </if>
+	      <if test="tabledescription != null" >
+	        tabledescription,
+	      </if>
+	      <if test="createmethod != null" >
+	        createmethod,
+	      </if>
+	      <if test="deleteverify != null" >
+	        deleteverify,
+	      </if>
+	      <if test="cascadechange != null" >
+	        cascadechange,
+	      </if>
+	      <if test="1==1" >
+	        adddate,
+	      </if>
+	      <if test="adduserid != null" >
+	        adduserid,
+	      </if>
+	      <if test="1==1" >
+	        modifydate,
+	      </if>
+	      <if test="modifyuserid != null" >
+	        modifyuserid,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="maintablename != null" >
+	        #{maintablename},
+	      </if>
+	      <if test="maincolumnname != null" >
+	        #{maincolumnname},
+	      </if>
+	      <if test="maintitlecolname != null" >
+	        #{maintitlecolname},
+	      </if>
+	      <if test="tablename != null" >
+	        #{tablename},
+	      </if>
+	      <if test="columnname != null" >
+	        #{columnname},
+	      </if>
+	      <if test="tabledescription != null" >
+	        #{tabledescription},
+	      </if>
+	      <if test="createmethod != null" >
+	        #{createmethod},
+	      </if>
+	      <if test="deleteverify != null" >
+	        #{deleteverify},
+	      </if>
+	      <if test="cascadechange != null" >
+	        #{cascadechange},
+	      </if>
+	      <if test="1==1" >
+	        now(),
+	      </if>
+	      <if test="adduserid != null" >
+	        #{adduserid},
+	      </if>
+	      <if test="1==1" >
+	        now(),
+	      </if>
+	      <if test="modifyuserid != null" >
+	        #{modifyuserid},
+	      </if>
+	    </trim>
+	</insert>	
+	<update id="updateTableRelation" parameterType="com.hd.agent.system.model.TableRelation">
+		update t_sys_tablerelation
+		<set >
+	      <if test="maintablename != null" >
+	        maintablename = #{maintablename},
+	      </if>
+	      <if test="maincolumnname != null" >
+	        maincolumnname = #{maincolumnname},
+	      </if>
+	      <if test="maintitlecolname != null" >
+	        maintitlecolname = #{maintitlecolname},
+	      </if>
+	      <if test="tablename != null" >
+	        tablename = #{tablename},
+	      </if>
+	      <if test="columnname != null" >
+	        columnname = #{columnname},
+	      </if>
+	      <if test="tabledescription != null" >
+	        tabledescription = #{tabledescription},
+	      </if>
+	      <if test="createmethod != null" >
+	        createmethod = #{createmethod},
+	      </if>
+	      <if test="deleteverify != null" >
+	        deleteverify = #{deleteverify},
+	      </if>
+	      <if test="cascadechange != null" >
+	        cascadechange = #{cascadechange},
+	      </if>
+	      <if test="adddate != null" >
+	        adddate = #{adddate},
+	      </if>
+	      <if test="adduserid != null" >
+	        adduserid = #{adduserid},
+	      </if>
+	      <if test="1 ==1" >
+	        modifydate = now(),
+	      </if>
+	      <if test="modifyuserid != null" >
+	        modifyuserid = #{modifyuserid},
+	      </if>
+	    </set>
+	    where id = #{id}
+	</update>	
+	<delete id="deleteTableRelation" parameterType="java.lang.String">
+		delete from t_sys_tablerelation
+    	where id = #{id}
+	</delete>
+  	<select id="getTableRelationCountBySubNames" parameterType="java.lang.String" resultType="int" useCache="false">
+		select count(1) from
+		t_sys_tablerelation 
+		where tablename = lower(#{tablename}) 
+			and columnname= lower(#{columnname})
+			<if test="oldtablename != null" >
+				<![CDATA[and tablename <> lower(#{oldtablename})]]>
+			</if>
+			<if test="oldcolumnname != null" >
+				<![CDATA[and columnname <> lower(#{oldcolumnname})]]>
+			</if>
+  	</select>
+  	<select id="getTableRelationBySubNames" parameterType="java.lang.String"
+		resultType="com.hd.agent.system.model.TableRelation">
+		select 
+	    <include refid="Base_Column_List" />
+	    from t_sys_tablerelation
+	    where tablename = #{tablename} and columnname=#{columnname}
+	</select>
+	<select id="getTableDataDictList" parameterType="com.hd.agent.common.util.PageMap"
+		resultType="com.hd.agent.system.model.TableDataDict">
+		select ${condition.columnname} id ,${condition.coltitlename} text
+		<if test="condition.refertreecol !=null">
+			,${condition.refertreecol} parentid
+		</if>
+		from ${condition.tablename}
+		<if test="condition.usepagelist!=null">
+			<include refid="common.Page_limit" />
+		</if>
+	</select>	
+	<select id="getTableDataDictCount" parameterType="java.util.Map"
+		resultType="int" useCache="false">
+		select count(1) from ${tablename}		
+	     <trim prefix="where" prefixOverrides="and|or" >
+	     	<if test=" columnname !=null and  coldata !=null ">
+	     		${columnname}=#{coldata}
+	     	</if>
+	     </trim>
+	</select>
+	<select id="getTableNumber" parameterType="java.lang.String" resultType="java.math.BigDecimal">
+		select ${column} from ${tablename} where ${rcolumn}=#{value}
+	</select>
+	<select id="getTableDataCount" parameterType="java.lang.String" resultType="int">
+		select count(1) from ${tablename} where ${sql}
+	</select>
+	<select id="getTableDataList" parameterType="java.lang.String" resultType="java.util.Map">
+		select ${column} from ${tablename} where ${sql}
+	</select>
+	<select id="getTableDataTreeList" parameterType="java.lang.String" resultType="com.hd.agent.system.model.TableDataDict">
+		select ${column} from ${tablename} where ${sql}
+	</select>
+	<select id="getWidgetTreeDataList" parameterType="com.hd.agent.common.util.PageMap" resultType="java.util.Map">
+		select ${condition.columnSql} from ${condition.tablenameSql} where ${condition.sqlStr}
+		<include refid="common.Page_limit" />
+	</select>
+	<select id="getWidgetTreeDataCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+		select count(1) from ${condition.tablenameSql} where ${condition.sqlStr}
+	</select>
+	<select id="getDataState" parameterType="java.lang.String" resultType="java.lang.String" useCache="false">
+		select ${state} from ${tablename} where id=#{id}
+	</select>
+	<update id="updateRelatedTable" parameterType="java.lang.String">
+		update ${tablename} set ${column}=#{updateValue} where ${column}=#{beforeValue}
+	</update>
+</mapper>

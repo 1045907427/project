@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.oa.dao.OaGoodsDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.hd.agent.oa.model.OaGoodsDetail" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="billid" property="billid" jdbcType="VARCHAR" />
+    <result column="goodsid" property="goodsid" jdbcType="VARCHAR" />
+    <result column="goodsname" property="goodsname" jdbcType="VARCHAR" />
+    <result column="brandid" property="brandid" jdbcType="VARCHAR" />
+    <result column="barcode" property="barcode" jdbcType="VARCHAR" />
+    <result column="boxbarcode" property="boxbarcode" jdbcType="VARCHAR" />
+    <result column="goodssort" property="goodssort" jdbcType="VARCHAR" />
+    <result column="unitid" property="unitid" jdbcType="VARCHAR" />
+    <result column="unitname" property="unitname" jdbcType="VARCHAR" />
+    <result column="auxunitid" property="auxunitid" jdbcType="VARCHAR" />
+    <result column="auxunitname" property="auxunitname" jdbcType="VARCHAR" />
+    <result column="boxnum" property="boxnum" jdbcType="INTEGER" />
+    <result column="grossweight" property="grossweight" jdbcType="DECIMAL" />
+    <result column="singlevolume" property="singlevolume" jdbcType="DECIMAL" />
+    <result column="storageid" property="storageid" jdbcType="VARCHAR" />
+    <result column="buytaxprice" property="buytaxprice" jdbcType="DECIMAL" />
+    <result column="buynotaxprice" property="buynotaxprice" jdbcType="DECIMAL" />
+    <result column="taxtype" property="taxtype" jdbcType="VARCHAR" />
+    <result column="taxrate" property="taxrate" jdbcType="DECIMAL" />
+    <result column="price1" property="price1" jdbcType="DECIMAL" />
+    <result column="price2" property="price2" jdbcType="DECIMAL" />
+    <result column="price3" property="price3" jdbcType="DECIMAL" />
+    <result column="price4" property="price4" jdbcType="DECIMAL" />
+    <result column="price5" property="price5" jdbcType="DECIMAL" />
+    <result column="price6" property="price6" jdbcType="DECIMAL" />
+    <result column="price7" property="price7" jdbcType="DECIMAL" />
+    <result column="price8" property="price8" jdbcType="DECIMAL" />
+    <result column="totalvolume" property="totalvolume" jdbcType="DECIMAL" />
+    <result column="totalweight" property="totalweight" jdbcType="DECIMAL" />
+    <result column="glength" property="glength" jdbcType="DECIMAL" />
+    <result column="gwidth" property="gwidth" jdbcType="DECIMAL" />
+    <result column="gheight" property="gheight" jdbcType="DECIMAL" />
+    <result column="costaccountprice" property="costaccountprice" jdbcType="DECIMAL" />
+	  <result column="model" property="model" jdbcType="VARCHAR" />
+	  <result column="productfield" property="productfield" jdbcType="VARCHAR" />
+	  <result column="shelflife" property="shelflife" jdbcType="DECIMAL" />
+	  <result column="shelflifeunit" property="shelflifeunit" jdbcType="CHAR" />
+  </resultMap>
+  
+  <sql id="commonCustomerCols" >
+    id, billid, goodsid, goodsname, brandid, barcode, boxbarcode, goodssort, unitid, 
+    unitname, auxunitid, auxunitname, boxnum, grossweight, singlevolume, storageid, buytaxprice, 
+    buynotaxprice, taxtype, taxrate, price1, price2, price3, price4, price5, price6, 
+    price7, price8, totalvolume, totalweight, glength, gwidth, gheight, basesaleprice,
+    remark, costaccountprice, model, productfield, shelflife, shelflifeunit
+  </sql>
+  <sql id="commonCustomerCols2" >
+    t1.id, t1.billid, t1.goodsid, t1.goodsname, t1.brandid, t1.barcode, t1.boxbarcode, t1.goodssort, t1.unitid, 
+    t1.unitname, t1.auxunitid, t1.auxunitname, t1.boxnum, t1.grossweight, t1.singlevolume, t1.storageid, t1.buytaxprice, 
+    t1.buynotaxprice, t1.taxtype, t1.taxrate, t1.price1, t1.price2, t1.price3, t1.price4, t1.price5, t1.price6, 
+    t1.price7, t1.price8, t1.totalvolume, t1.totalweight, t1.glength, t1.gwidth, t1.gheight, t1.basesaleprice, t1.remark,
+    t1.costaccountprice, t1.model, t1.productfield, t1.shelflife, t1.shelflifeunit
+  </sql>
+  
+  <insert id="insertOaGoodsDetail" parameterType="com.hd.agent.oa.dao.OaGoodsDetailMapper">
+  	insert into t_oa_goods_detail
+  	<trim prefix="(" suffix=")" suffixOverrides="," >
+		<if test="#{billid != null}">
+			billid, 
+		</if> 
+		<if test="#{goodsid != null}">
+			goodsid, 
+		</if> 
+		<if test="#{goodsname != null}">
+			goodsname, 
+		</if> 
+		<if test="#{brandid != null}">
+			brandid, 
+		</if> 
+		<if test="#{barcode != null}">
+			barcode, 
+		</if> 
+		<if test="#{boxbarcode != null}">
+			boxbarcode, 
+		</if> 
+		<if test="#{goodssort != null}">
+			goodssort, 
+		</if> 
+		<if test="#{unitid != null}">
+			unitid, 
+		</if> 
+		<if test="#{unitname != null}">
+			unitname, 
+		</if> 
+		<if test="#{auxunitid != null}">
+			auxunitid, 
+		</if> 
+		<if test="#{auxunitname != null}">
+			auxunitname, 
+		</if> 
+		<if test="#{boxnum != null}">
+			boxnum, 
+		</if> 
+		<if test="#{grossweight != null}">
+			grossweight, 
+		</if> 
+		<if test="#{singlevolume != null}">
+			singlevolume, 
+		</if> 
+		<if test="#{storageid != null}">
+			storageid, 
+		</if> 
+		<if test="#{buytaxprice != null}">
+			buytaxprice, 
+		</if> 
+		<if test="#{buynotaxprice != null}">
+			buynotaxprice, 
+		</if> 
+		<if test="#{taxtype != null}">
+			taxtype, 
+		</if> 
+		<if test="#{taxrate != null}">
+			taxrate, 
+		</if> 
+		<if test="#{price1 != null}">
+			price1, 
+		</if> 
+		<if test="#{price2 != null}">
+			price2, 
+		</if> 
+		<if test="#{price3 != null}">
+			price3, 
+		</if> 
+		<if test="#{price4 != null}">
+			price4, 
+		</if> 
+		<if test="#{price5 != null}">
+			price5, 
+		</if> 
+		<if test="#{price6 != null}">
+			price6, 
+		</if> 
+		<if test="#{price7 != null}">
+			price7, 
+		</if> 
+		<if test="#{price8 != null}">
+			price8, 
+		</if>
+		<if test="#{totalvolume != null}">
+			totalvolume, 
+		</if>
+		<if test="#{totalweight != null}">
+			totalweight, 
+		</if>
+		<if test="#{glength != null}">
+			glength, 
+		</if>
+		<if test="#{gwidth != null}">
+			gwidth, 
+		</if>
+		<if test="#{gheight != null}">
+			gheight, 
+		</if>
+		<if test="#{basesaleprice != null}">
+			basesaleprice, 
+		</if>
+		<if test="#{remark != null}">
+			remark, 
+		</if>
+		<if test="#{costaccountprice != null}">
+			costaccountprice, 
+		</if>
+		<if test="#{model != null}">
+			model,
+		</if>
+        <if test="#{productfield != null}">
+            productfield,
+        </if>
+		<if test="#{shelflife != null}">
+			shelflife,
+		</if>
+		<if test="#{shelflifeunit != null}">
+			shelflifeunit,
+		</if>
+	</trim>
+	<trim prefix=" values (" suffix=")" suffixOverrides="," >
+		<if test="#{billid != null}">
+			#{billid }, 
+		</if> 
+		<if test="#{goodsid != null}">
+			#{goodsid }, 
+		</if> 
+		<if test="#{goodsname != null}">
+			#{goodsname }, 
+		</if> 
+		<if test="#{brandid != null}">
+			#{brandid }, 
+		</if> 
+		<if test="#{barcode != null}">
+			#{barcode }, 
+		</if> 
+		<if test="#{boxbarcode != null}">
+			#{boxbarcode }, 
+		</if> 
+		<if test="#{goodssort != null}">
+			#{goodssort }, 
+		</if> 
+		<if test="#{unitid != null}">
+			#{unitid }, 
+		</if> 
+		<if test="#{unitname != null}">
+			#{unitname }, 
+		</if> 
+		<if test="#{auxunitid != null}">
+			#{auxunitid }, 
+		</if> 
+		<if test="#{auxunitname != null}">
+			#{auxunitname }, 
+		</if> 
+		<if test="#{boxnum != null}">
+			#{boxnum }, 
+		</if> 
+		<if test="#{grossweight != null}">
+			#{grossweight }, 
+		</if> 
+		<if test="#{singlevolume != null}">
+			#{singlevolume }, 
+		</if> 
+		<if test="#{storageid != null}">
+			#{storageid }, 
+		</if> 
+		<if test="#{buytaxprice != null}">
+			#{buytaxprice }, 
+		</if> 
+		<if test="#{buynotaxprice != null}">
+			#{buynotaxprice }, 
+		</if> 
+		<if test="#{taxtype != null}">
+			#{taxtype }, 
+		</if> 
+		<if test="#{taxrate != null}">
+			#{taxrate }, 
+		</if> 
+		<if test="#{price1 != null}">
+			#{price1 }, 
+		</if> 
+		<if test="#{price2 != null}">
+			#{price2 }, 
+		</if> 
+		<if test="#{price3 != null}">
+			#{price3 }, 
+		</if> 
+		<if test="#{price4 != null}">
+			#{price4 }, 
+		</if> 
+		<if test="#{price5 != null}">
+			#{price5 }, 
+		</if> 
+		<if test="#{price6 != null}">
+			#{price6 }, 
+		</if> 
+		<if test="#{price7 != null}">
+			#{price7 }, 
+		</if> 
+		<if test="#{price8 != null}">
+			#{price8 }, 
+		</if>
+		<if test="#{totalvolume != null}">
+			#{totalvolume }, 
+		</if>
+		<if test="#{totalweight != null}">
+			#{totalweight }, 
+		</if>
+		<if test="#{glength != null}">
+			#{glength }, 
+		</if>
+		<if test="#{gwidth != null}">
+			#{gwidth }, 
+		</if>
+		<if test="#{gheight != null}">
+			#{gheight }, 
+		</if>
+		<if test="#{basesaleprice != null}">
+			#{basesaleprice }, 
+		</if>
+		<if test="#{remark != null}">
+			#{remark }, 
+		</if>
+		<if test="#{costaccountprice != null}">
+			#{costaccountprice }, 
+		</if>
+		<if test="#{model != null}">
+			#{model },
+		</if>
+        <if test="#{productfield != null}">
+            #{productfield },
+        </if>
+		<if test="#{shelflife != null}">
+			#{shelflife },
+		</if>
+		<if test="#{shelflifeunit != null}">
+			#{shelflifeunit },
+		</if>
+	</trim>
+  </insert>
+  
+  <select id="selectGoodsDetailListCount" resultType="int" parameterType="com.hd.agent.common.util.PageMap">
+  	select count(1) from t_oa_goods_detail 
+	<trim prefix="where" prefixOverrides="and|or">
+         and billid = #{condition.billid }
+		<include refid="common.Page_querySql"/>
+		<include refid="common.Page_dataSql"/>
+	</trim>
+  </select>
+  
+  <select id="selectGoodsDetailList" resultType="com.hd.agent.oa.model.OaGoodsDetail" parameterType="com.hd.agent.common.util.PageMap">
+	select 
+		<include refid="commonCustomerCols2"/>,
+		t2.name brandname,
+		t3.name goodssortname,
+		t4.name unitname,
+		t5.name auxunitname,
+		t6.name storagename,
+		t7.name taxname
+	from t_oa_goods_detail t1
+	left join t_base_goods_brand t2 on t1.brandid = t2.id
+	left join t_base_goods_waresclass t3 on t1.goodssort = t3.id
+	left join t_base_goods_meteringunit t4 on t1.unitid = t4.id
+	left join t_base_goods_meteringunit t5 on t1.auxunitid = t5.id
+	left join t_base_storage_info t6 on t1.storageid = t6.id
+	left join t_base_finance_taxtype t7 on t1.taxtype = t7.id
+	<trim prefix="where" prefixOverrides="and|or">
+         and t1.billid = #{condition.billid }
+		<include refid="common.Page_querySql"/>
+		<include refid="common.Page_dataSql"/>
+	</trim>
+	order by id 
+	<include refid="common.Page_limit"/>
+  </select>
+  
+  <delete id="deleteOaGoodsDetailByBillid">
+  	delete from t_oa_goods_detail
+  	where billid = #{billid }
+  </delete>
+  
+  <select id="selectGoodsDetailListByBillid" parameterType="String" resultMap="BaseResultMap">
+  	select
+  		<include refid="commonCustomerCols"/>
+  	from t_oa_goods_detail
+  	where billid = #{billid }
+  	order by id
+  </select>
+  
+  <select id="selectExistedGoodsid" parameterType="String" resultType="int">
+  	select count(1) from 
+  	(
+  	  select id goodsid
+  	  from t_base_goods_info
+  	  union all
+  	  select goodsid goodsid
+  	  from t_oa_goods_detail
+  	  <where>
+          1 = 1
+          <if test="billid != null">
+              and billid != #{billid }
+          </if>
+      </where>
+    ) t
+  	where goodsid = #{goodsid }
+  </select>
+  
+  <select id="selectExistedGoodsname" parameterType="String" resultType="int">
+  	select count(1) from 
+  	(select name goodsname from t_base_goods_info union all select goodsname goodsname from t_oa_goods_detail) t
+  	where goodsname = #{goodsname }
+  </select>
+  
+  <select id="selectExistedBarcode" parameterType="String" resultType="int">
+  	select count(1) from 
+  	(select barcode barcode from t_base_goods_info union all select barcode barcode from t_oa_goods_detail) t
+  	where barcode = #{barcode }
+  </select>
+  
+  <select id="selectExistedBoxbarcode" parameterType="String" resultType="int">
+  	select count(1) from 
+  	(select boxbarcode boxbarcode from t_base_goods_info union all select boxbarcode boxbarcode from t_oa_goods_detail) t
+  	where boxbarcode = #{boxbarcode }
+  </select>
+</mapper>

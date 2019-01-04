@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.purchase.dao.PurchaseQueryMapper" >
+	<sql id="purchase_ArrivalReturnDetail">
+		(select '0' as billtype,t.buydeptid,t.buyuserid,g.brand as brandid, t.id,t.businessdate,t.supplierid,t1.iswriteoff,t1.goodsid,t1.unitid,t1.unitname,t1.unitnum,
+		t1.auxnum,t1.auxremainder,t1.auxnumdetail,t1.auxunitname,t1.taxprice,t1.taxamount,t1.notaxprice,t1.notaxamount,t1.remark,t.canceldate,t1.id as detailid
+		from t_purchase_arrivalorder t
+		RIGHT JOIN t_purchase_arrivalorder_detail t1 on t.id=t1.orderid
+		INNER JOIN t_base_goods_info g on t1.goodsid=g.id
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="condition.id != null">
+		  		and t.id= #{condition.id}
+		  	</if>
+			<if test="condition.brandid != null">
+		  		and g.brand = #{condition.brandid}
+		  	</if>
+			<if test="condition.goodsid != null">
+		  		and FIND_IN_SET(t1.goodsid , #{condition.goodsid})
+		  	</if>
+		  	<if test="condition.goodssort != null" >
+				and FIND_IN_SET(g.defaultsort,#{condition.goodssort})
+	      	</if>
+			<if test="condition.businessdatestart != null" >
+				<![CDATA[ and businessdate >= #{condition.businessdatestart}  ]]>
+			</if>
+			<if test="condition.businessdateend != null" >
+				<![CDATA[ and ( businessdate <= #{condition.businessdateend} or length(businessdate)=0 ) ]]>
+			</if>
+	      	<if test="condition.supplierid != null" >
+	         	and t.supplierid=#{condition.supplierid}
+	      	</if>
+	      	<if test="1==1">
+	      		and t.status in('3','4')
+	      	</if>
+	      	<if test="condition.invoice0!=null or condition.invoice1!=null">
+			      and (
+			      <trim prefixOverrides="and|or" >
+				      <if test="condition.invoice0==0">
+				      	or (t1.iswriteoff ='0' or length(t1.iswriteoff)=0)
+				      </if>
+				      <if test="condition.invoice1==1">
+				      	or t1.iswriteoff ='1'
+				      </if>
+			      </trim>
+		      	)
+		      </if>
+	      	<if test="condition.billtype0!=0">
+	      		and 1!=1
+	      	</if>
+		</trim>
+		UNION ALL
+		select '1' as billtype,t.buydeptid,t.buyuserid,g.brand as brandid, t.id,t.checkdate as businessdate,t.supplierid,t1.iswriteoff,t1.goodsid,t1.unitid,t1.unitname,-t1.unitnum,
+		-t1.auxnum,-t1.auxremainder,t1.auxnumdetail,t1.auxunitname,t1.taxprice,-t1.taxamount,t1.notaxprice,-t1.notaxamount,t1.remark,t.canceldate,t1.id as detailid
+		from t_purchase_returnorder t
+		RIGHT JOIN t_purchase_returnorder_detail t1 on t.id=t1.orderid
+		INNER JOIN t_base_goods_info g on t1.goodsid=g.id
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="condition.id != null">
+		  		and t.id= #{condition.id}
+		  	</if>
+			<if test="condition.brandid != null">
+		  		and g.brand = #{condition.brandid}
+		  	</if>
+			<if test="condition.goodsid != null">
+		  		and FIND_IN_SET(t1.goodsid , #{condition.goodsid})
+		  	</if>
+		  	<if test="condition.goodssort != null" >
+				and FIND_IN_SET(g.defaultsort,#{condition.goodssort})
+	      	</if>
+			<if test="condition.businessdatestart != null" >
+				<![CDATA[ and t.checkdate >= #{condition.businessdatestart}  ]]>
+			</if>
+			<if test="condition.businessdateend != null" >
+				<![CDATA[ and t.checkdate <= #{condition.businessdateend} ]]>
+			</if>
+	      	<if test="condition.supplierid != null" >
+	         	and t.supplierid=#{condition.supplierid}
+	      	</if>
+	      	<if test="1==1">
+	      		and t.status in('3','4') and t.ckstatus='1'and t.ischeck='1'
+	      	</if>
+	      	<if test="condition.invoice0!=null or condition.invoice1!=null">
+			      and (
+			      <trim prefixOverrides="and|or" >
+				      <if test="condition.invoice0==0">
+				      	or (t1.iswriteoff ='0' or length(t1.iswriteoff)=0)
+				      </if>
+				      <if test="condition.invoice1==1">
+				      	or t1.iswriteoff ='1'
+				      </if>
+			      </trim>
+		      	)
+		    </if>
+	      	<if test="condition.billtype1!=1">
+	      		and 1!=1
+	      	</if>
+		</trim>
+		<if test="condition.noShowSubtotal==null or condition.noShowSubtotal !='true'">
+			UNION ALL
+			select '3' as billtype,z.buydeptid,z.buyuserid,z.brandid, z.businessdate as id,z.businessdate,z.supplierid,'' as isinvoice,'' as goodsid,'' as unitid,'' as unitname,sum(z.unitnum) as unitnum,
+			sum(z.auxnum) as auxnum,sum(z.auxremainder) as auxremainder,'' as auxnumdetail,'' as auxunitname,0 as taxprice,sum(z.taxamount) as taxamount,0 as notaxprice,sum(z.notaxamount) as notaxamount,'' as remark,'' as canceldate,''  as detailid
+			from (
+			select '0' as billtype,t.buydeptid,t.buyuserid,g.brand as brandid, t.id,t.businessdate,t.supplierid,t1.iswriteoff,t1.goodsid,t1.unitid,t1.unitname,t1.unitnum,
+			t1.auxnum,t1.auxremainder,t1.auxnumdetail,t1.taxprice,t1.taxamount,t1.notaxprice,t1.notaxamount,t1.remark,t.canceldate
+			from t_purchase_arrivalorder t
+			RIGHT JOIN t_purchase_arrivalorder_detail t1 on t.id=t1.orderid
+			INNER JOIN t_base_goods_info g on t1.goodsid=g.id
+			<trim prefix="where" prefixOverrides="and|or">
+				<if test="condition.id != null">
+			  		and t.id= #{condition.id}
+			  	</if>
+				<if test="condition.brandid != null">
+			  		and g.brand = #{condition.brandid}
+			  	</if>
+				<if test="condition.goodsid != null">
+			  		and FIND_IN_SET(t1.goodsid , #{condition.goodsid})
+			  	</if>
+			  	<if test="condition.goodssort != null" >
+					and FIND_IN_SET(g.defaultsort,#{condition.goodssort})
+		      	</if>
+				<if test="condition.businessdatestart != null" >
+					<![CDATA[ and businessdate >= #{condition.businessdatestart} ]]>
+				</if>
+				<if test="condition.businessdateend != null" >
+					<![CDATA[ and businessdate <= #{condition.businessdateend} ]]>
+				</if>
+		      	<if test="condition.supplierid != null" >
+		         	and t.supplierid=#{condition.supplierid}
+		      	</if>
+		      	<if test="1==1">
+		      		and t.status in('3','4')
+		      	</if>
+		      	<if test="condition.invoice0!=null or condition.invoice1!=null">
+				      and (
+				      <trim prefixOverrides="and|or" >
+					      <if test="condition.invoice0==0">
+					      	or (t1.iswriteoff ='0' or length(t1.iswriteoff)=0)
+					      </if>
+					      <if test="condition.invoice1==1">
+					      	or t1.iswriteoff ='1'
+					      </if>
+				      </trim>
+			      	)
+			    </if>
+			    <if test="condition.billtype0!=0">
+		      		and 1!=1
+		      	</if>
+			</trim>
+			UNION ALL
+			select '1' as billtype,t.buydeptid,t.buyuserid,g.brand as brandid, t.id,t.checkdate as businessdate,t.supplierid,t1.iswriteoff,t1.goodsid,t1.unitid,t1.unitname,-t1.unitnum,
+			-t1.auxnum,-t1.auxremainder,t1.auxnumdetail,t1.taxprice,-t1.taxamount,t1.notaxprice,-t1.notaxamount,t1.remark,t.canceldate
+			from t_purchase_returnorder t
+			RIGHT JOIN t_purchase_returnorder_detail t1 on t.id=t1.orderid
+			INNER JOIN t_base_goods_info g on t1.goodsid=g.id
+			<trim prefix="where" prefixOverrides="and|or">
+				<if test="condition.id != null">
+			  		and t.id= #{condition.id}
+			  	</if>
+				<if test="condition.brandid != null">
+			  		and g.brand = #{condition.brandid}
+			  	</if>
+				<if test="condition.goodsid != null">
+			  		and FIND_IN_SET(t1.goodsid , #{condition.goodsid})
+			  	</if>
+			  	<if test="condition.goodssort != null" >
+					and FIND_IN_SET(g.defaultsort,#{condition.goodssort})
+		      	</if>
+				<if test="condition.businessdatestart != null" >
+					<![CDATA[ and t.checkdate >= #{condition.businessdatestart} ]]>
+				</if>
+				<if test="condition.businessdateend != null" >
+					<![CDATA[ and t.checkdate <= #{condition.businessdateend} ]]>
+				</if>
+		      	<if test="condition.supplierid != null" >
+		         	and t.supplierid=#{condition.supplierid}
+		      	</if>
+		      	<if test="1==1">
+		      		and t.status in('3','4') and t.ckstatus='1' and t.ischeck='1'
+		      	</if>
+		      	<if test="condition.invoice0!=null or condition.invoice1!=null">
+				      and (
+				      <trim prefixOverrides="and|or" >
+					      <if test="condition.invoice0==0">
+					      	or (t1.iswriteoff ='0' or length(t1.iswriteoff)=0)
+					      </if>
+					      <if test="condition.invoice1==1">
+					      	or t1.iswriteoff ='1'
+					      </if>
+				      </trim>
+			      	)
+			    </if>
+		      	<if test="condition.billtype1!=1">
+		      		and 1!=1
+		      	</if>
+			</trim>
+			) z
+			GROUP BY z.businessdate			
+		</if>
+	 )
+	</sql>
+	<select id="showArrivalReturnDetailList" parameterType="com.hd.agent.common.util.PageMap" resultType="java.util.Map">
+		select * from <include refid="purchase_ArrivalReturnDetail"/> y
+		<trim prefix="where" prefixOverrides="and|or">
+			<include refid="common.Page_dataSql"/>
+		</trim>
+		order by y.businessdate asc,y.billtype,y.id
+		<if test="condition.isflag == null">
+	 		<include refid="common.Page_limit"/>
+	 	</if>
+	</select>
+	<select id="showArrivalReturnDetailCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+		select count(1) from <include refid="purchase_ArrivalReturnDetail"/> y
+		<trim prefix="where" prefixOverrides="and|or">
+			<include refid="common.Page_dataSql"/>
+		</trim>
+	</select>
+	<select id="showPurchaseJournalAccountList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.purchase.model.PurchaseJournalAccount">
+		select * from <include refid="purchase_ArrivalReturnDetail"/> y
+		order by y.businessdate asc,y.billtype,y.id
+	</select>	
+	<select id="showArrivalReturnDetailTotalSum" parameterType="com.hd.agent.common.util.PageMap" resultType="java.util.Map">
+		select
+		sum(unitnum) as unitnum,sum(auxnum) as auxnum,sum(auxremainder) as auxremainder,
+		sum(taxamount) as taxamount,sum(notaxamount) as notaxamount
+		from <include refid="purchase_ArrivalReturnDetail"/> y
+	</select>
+</mapper>

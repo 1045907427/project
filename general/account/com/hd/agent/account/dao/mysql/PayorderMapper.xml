@@ -1,0 +1,558 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.account.dao.PayorderMapper" >
+  <resultMap id="PayorderResultMap" type="com.hd.agent.account.model.Payorder" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="businessdate" property="businessdate" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="adduserid" property="adduserid" jdbcType="VARCHAR" />
+    <result column="addusername" property="addusername" jdbcType="VARCHAR" />
+    <result column="adddeptid" property="adddeptid" jdbcType="VARCHAR" />
+    <result column="adddeptname" property="adddeptname" jdbcType="VARCHAR" />
+    <result column="addtime" property="addtime" jdbcType="TIMESTAMP" />
+    <result column="modifyuserid" property="modifyuserid" jdbcType="VARCHAR" />
+    <result column="modifyusername" property="modifyusername" jdbcType="VARCHAR" />
+    <result column="modifytime" property="modifytime" jdbcType="TIMESTAMP" />
+    <result column="audituserid" property="audituserid" jdbcType="VARCHAR" />
+    <result column="auditusername" property="auditusername" jdbcType="VARCHAR" />
+    <result column="audittime" property="audittime" jdbcType="TIMESTAMP" />
+    <result column="stopuserid" property="stopuserid" jdbcType="VARCHAR" />
+    <result column="stopusername" property="stopusername" jdbcType="VARCHAR" />
+    <result column="stoptime" property="stoptime" jdbcType="TIMESTAMP" />
+    <result column="closetime" property="closetime" jdbcType="TIMESTAMP" />
+    <result column="printtimes" property="printtimes" jdbcType="INTEGER" />
+    <result column="field01" property="field01" jdbcType="VARCHAR" />
+    <result column="field02" property="field02" jdbcType="VARCHAR" />
+    <result column="field03" property="field03" jdbcType="VARCHAR" />
+    <result column="field04" property="field04" jdbcType="VARCHAR" />
+    <result column="field05" property="field05" jdbcType="VARCHAR" />
+    <result column="field06" property="field06" jdbcType="VARCHAR" />
+    <result column="field07" property="field07" jdbcType="VARCHAR" />
+    <result column="field08" property="field08" jdbcType="VARCHAR" />
+    <result column="prepay" property="prepay" jdbcType="VARCHAR" />
+    <result column="paytype" property="paytype" jdbcType="VARCHAR" />
+    <result column="buydeptid" property="buydeptid" jdbcType="VARCHAR" />
+    <result column="buyuserid" property="buyuserid" jdbcType="VARCHAR" />
+    <result column="supplierid" property="supplierid" jdbcType="VARCHAR" />
+    <result column="handlerid" property="handlerid" jdbcType="VARCHAR" />
+    <result column="payment" property="payment" jdbcType="VARCHAR" />
+    <result column="bank" property="bank" jdbcType="VARCHAR" />
+    <result column="invoiceno" property="invoiceno" jdbcType="VARCHAR" />
+    <result column="amount" property="amount" jdbcType="DECIMAL" />
+    <result column="writeoffamount" property="writeoffamount" jdbcType="DECIMAL" />
+    <result column="remainderamount" property="remainderamount" jdbcType="DECIMAL" />
+    <result column="iswriteoff" property="iswriteoff" jdbcType="CHAR" />
+    <result column="oaid" property="oaid" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Payorder_Column_List" >
+    id, businessdate, status, remark, adduserid, addusername, adddeptid, adddeptname, 
+    addtime, modifyuserid, modifyusername, modifytime, audituserid, auditusername, audittime, 
+    stopuserid, stopusername, stoptime, closetime, printtimes, field01, field02, field03, 
+    field04, field05, field06, field07, field08,prepay, paytype, buydeptid, buyuserid, supplierid, 
+    handlerid,payment,bank, invoiceno, amount, writeoffamount, remainderamount, iswriteoff,oaid ,vouchertimes
+  </sql>
+  <insert id="addPayorder" parameterType="com.hd.agent.account.model.Payorder" >
+    insert into t_account_purchase_payorder
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="businessdate != null" >
+        businessdate,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="adduserid != null" >
+        adduserid,
+      </if>
+      <if test="addusername != null" >
+        addusername,
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid,
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname,
+      </if>
+      <if test="1 == 1" >
+        addtime,
+      </if>
+      <if test="audituserid != null" >
+        audituserid,
+      </if>
+      <if test="auditusername != null" >
+        auditusername,
+      </if>
+      <if test="audittime != null" >
+        audittime,
+      </if>
+      <if test="stopuserid != null" >
+        stopuserid,
+      </if>
+      <if test="stopusername != null" >
+        stopusername,
+      </if>
+      <if test="stoptime != null" >
+        stoptime,
+      </if>
+      <if test="closetime != null" >
+        closetime,
+      </if>
+      <if test="printtimes != null" >
+        printtimes,
+      </if>
+      <if test="field01 != null" >
+        field01,
+      </if>
+      <if test="field02 != null" >
+        field02,
+      </if>
+      <if test="field03 != null" >
+        field03,
+      </if>
+      <if test="field04 != null" >
+        field04,
+      </if>
+      <if test="field05 != null" >
+        field05,
+      </if>
+      <if test="field06 != null" >
+        field06,
+      </if>
+      <if test="field07 != null" >
+        field07,
+      </if>
+      <if test="field08 != null" >
+        field08,
+      </if>
+      <if test="prepay != null" >
+        prepay,
+      </if>
+      <if test="paytype != null" >
+        paytype,
+      </if>
+      <if test="buydeptid != null" >
+        buydeptid,
+      </if>
+      <if test="buyuserid != null" >
+        buyuserid,
+      </if>
+      <if test="supplierid != null" >
+        supplierid,
+      </if>
+      <if test="handlerid != null" >
+        handlerid,
+      </if>
+      <if test="payment != null" >
+        payment,
+      </if>
+      <if test="bank != null" >
+        bank,
+      </if>
+      <if test="invoiceno != null" >
+        invoiceno,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="writeoffamount != null" >
+        writeoffamount,
+      </if>
+      <if test="remainderamount != null" >
+        remainderamount,
+      </if>
+      <if test="iswriteoff != null" >
+        iswriteoff,
+      </if>
+      <if test="oaid != null" >
+        oaid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="businessdate != null" >
+        #{businessdate},
+      </if>
+      <if test="status != null" >
+        #{status},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+      <if test="adduserid != null" >
+        #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        #{adddeptname},
+      </if>
+      <if test="1 == 1" >
+        now(),
+      </if>
+      <if test="audituserid != null" >
+        #{audituserid},
+      </if>
+      <if test="auditusername != null" >
+        #{auditusername},
+      </if>
+      <if test="audittime != null" >
+        #{audittime},
+      </if>
+      <if test="stopuserid != null" >
+        #{stopuserid},
+      </if>
+      <if test="stopusername != null" >
+        #{stopusername},
+      </if>
+      <if test="stoptime != null" >
+        #{stoptime},
+      </if>
+      <if test="closetime != null" >
+        #{closetime},
+      </if>
+      <if test="printtimes != null" >
+        #{printtimes},
+      </if>
+      <if test="field01 != null" >
+        #{field01},
+      </if>
+      <if test="field02 != null" >
+        #{field02},
+      </if>
+      <if test="field03 != null" >
+        #{field03},
+      </if>
+      <if test="field04 != null" >
+        #{field04},
+      </if>
+      <if test="field05 != null" >
+        #{field05},
+      </if>
+      <if test="field06 != null" >
+        #{field06},
+      </if>
+      <if test="field07 != null" >
+        #{field07},
+      </if>
+      <if test="field08 != null" >
+        #{field08},
+      </if>
+      <if test="prepay != null" >
+        #{prepay},
+      </if>
+      <if test="paytype != null" >
+        #{paytype},
+      </if>
+      <if test="buydeptid != null" >
+        #{buydeptid},
+      </if>
+      <if test="buyuserid != null" >
+        #{buyuserid},
+      </if>
+      <if test="supplierid != null" >
+        #{supplierid},
+      </if>
+      <if test="handlerid != null" >
+        #{handlerid},
+      </if>
+      <if test="payment != null" >
+        #{payment},
+      </if>
+      <if test="bank != null" >
+        #{bank},
+      </if>
+      <if test="invoiceno != null" >
+        #{invoiceno},
+      </if>
+      <if test="amount != null" >
+        #{amount},
+      </if>
+      <if test="writeoffamount != null" >
+        #{writeoffamount},
+      </if>
+      <if test="remainderamount != null" >
+        #{remainderamount},
+      </if>
+      <if test="iswriteoff != null" >
+        #{iswriteoff},
+      </if>
+      <if test="oaid != null" >
+        #{oaid},
+      </if>
+    </trim>
+  </insert>
+  <select id="getPayorderInfo" parameterType="java.lang.String" resultMap="PayorderResultMap">
+  	select <include refid="Payorder_Column_List"/>
+  	from t_account_purchase_payorder where id = #{id}
+  </select>
+
+  <sql id="getPayorderList_sql">
+    (
+    select t.id, t.businessdate, t.status, t.remark, t.adduserid,t.addusername,t.adddeptid,t.adddeptname,t.addtime,t.modifyuserid,
+    t.modifyusername,t.modifytime,t.audituserid,t.auditusername,t.audittime,t.stopuserid,t.stopusername,t.stoptime,t.closetime,
+    t.prepay, t.paytype, t.buydeptid, t.buyuserid, t.supplierid,t3.name as buydeptname,
+    t.handlerid,t.payment,t2.name as bank, t.invoiceno, t.amount, t.writeoffamount, t.remainderamount, t.iswriteoff,t1.buyarea,t.oaid,t.vouchertimes
+    from t_account_purchase_payorder t
+    LEFT JOIN t_base_buy_supplier t1 on t.supplierid = t1.id
+    LEFT join t_base_finance_bank t2 on t.bank = t2.id
+    LEFT join t_base_department t3 on t.buydeptid = t3.id
+    <trim prefix="where" prefixOverrides="and|or">
+      <if test="condition.businessdate1 != null">
+        and t.businessdate >= #{condition.businessdate1}
+      </if>
+      <if test="condition.businessdate2 != null">
+        <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+      </if>
+      <if test="condition.oaid != null" >
+        and t.oaid like CONCAT('%',#{condition.oaid},'%')
+      </if>
+      <if test="condition.id != null" >
+        and t.id like CONCAT('%',#{condition.id},'%')
+      </if>
+      <if test="condition.exportids != null" >
+        and FIND_IN_SET(t.id,#{condition.exportids})
+      </if>
+      <if test="condition.supplierid != null" >
+        and t.supplierid = #{condition.supplierid}
+      </if>
+      <if test="condition.buydeptid != null" >
+        and t.buydeptid = #{condition.buydeptid}
+      </if>
+      <if test="condition.payment != null" >
+        and t.payment = #{condition.payment}
+      </if>
+      <if test="condition.bank != null" >
+        and t.bank = #{condition.bank}
+      </if>
+      <if test="condition.status != null" >
+        and t.status = #{condition.status}
+      </if>
+      <if test="condition.statement != null" >
+        and (t.status = '3' or t.status='4')
+      </if>
+      <if test="condition.isClose ==1 " >
+        and (t.status = '3' or t.status='4')
+      </if>
+      <choose>
+        <when test="condition.isClose ==0 ">
+          and t.status !='4'
+        </when>
+        <when test="condition.isClose ==1 ">
+          and t.status ='4'
+        </when>
+      </choose>
+    </trim>
+    )
+  </sql>
+  <select id="getPayorderList" parameterType="com.hd.agent.common.util.PageMap" resultMap="PayorderResultMap">
+  	select z.* from <include refid="getPayorderList_sql"/> z
+  	<trim prefix="where" prefixOverrides="and|or">
+  		<include refid="common.Page_dataSql"/>
+  	</trim>
+    <if test="condition.isflag == null" >
+        <include refid="common.Page_limit" />
+    </if>
+
+  </select>
+  <select id="getPayorderListCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  	select count(1) from (
+    select z.* from <include refid="getPayorderList_sql"/> z
+    <trim prefix="where" prefixOverrides="and|or">
+      <include refid="common.Page_dataSql"/>
+    </trim>
+  	)c
+  </select>
+  <select id="getPayorderSum" parameterType="com.hd.agent.common.util.PageMap" resultMap="PayorderResultMap">
+  	select sum(z.amount) as amount, sum(z.writeoffamount) as writeoffamount, sum(z.remainderamount) as remainderamount
+  	from (
+      select z.* from <include refid="getPayorderList_sql"/> z
+      <trim prefix="where" prefixOverrides="and|or">
+        <include refid="common.Page_dataSql"/>
+      </trim>
+  	)z
+  </select>
+  <delete id="deletePayorder" parameterType="java.lang.String">
+  	delete from t_account_purchase_payorder where (status = '1' or status = '2') and id = #{id}
+  </delete>
+  <update id="editPayorder" parameterType="com.hd.agent.account.model.Payorder">
+  	update t_account_purchase_payorder
+    <set >
+      <if test="businessdate != null" >
+        businessdate = #{businessdate},
+      </if>
+      <if test="status != null" >
+        status = #{status},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark},
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid = #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername = #{modifyusername},
+      </if>
+      <if test="1 == 1" >
+        modifytime = now(),
+      </if>
+      <if test="audituserid != null" >
+        audituserid = #{audituserid},
+      </if>
+      <if test="auditusername != null" >
+        auditusername = #{auditusername},
+      </if>
+      <if test="audittime != null" >
+        audittime = #{audittime},
+      </if>
+      <if test="stopuserid != null" >
+        stopuserid = #{stopuserid},
+      </if>
+      <if test="stopusername != null" >
+        stopusername = #{stopusername},
+      </if>
+      <if test="stoptime != null" >
+        stoptime = #{stoptime},
+      </if>
+      <if test="closetime != null" >
+        closetime = #{closetime},
+      </if>
+      <if test="printtimes != null" >
+        printtimes = #{printtimes},
+      </if>
+      <if test="field01 != null" >
+        field01 = #{field01},
+      </if>
+      <if test="field02 != null" >
+        field02 = #{field02},
+      </if>
+      <if test="field03 != null" >
+        field03 = #{field03},
+      </if>
+      <if test="field04 != null" >
+        field04 = #{field04},
+      </if>
+      <if test="field05 != null" >
+        field05 = #{field05},
+      </if>
+      <if test="field06 != null" >
+        field06 = #{field06},
+      </if>
+      <if test="field07 != null" >
+        field07 = #{field07},
+      </if>
+      <if test="field08 != null" >
+        field08 = #{field08},
+      </if>
+      <if test="prepay != null" >
+        prepay = #{prepay},
+      </if>
+      <if test="paytype != null" >
+        paytype = #{paytype},
+      </if>
+      <if test="buydeptid != null" >
+        buydeptid = #{buydeptid},
+      </if>
+      <if test="buyuserid != null" >
+        buyuserid = #{buyuserid},
+      </if>
+      <if test="supplierid != null" >
+        supplierid = #{supplierid},
+      </if>
+      <if test="handlerid != null" >
+        handlerid = #{handlerid},
+      </if>
+      <if test="payment != null" >
+        payment = #{payment},
+      </if>
+      <if test="bank != null" >
+        bank = #{bank},
+      </if>
+      <if test="invoiceno != null" >
+        invoiceno = #{invoiceno},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount},
+      </if>
+      <if test="writeoffamount != null" >
+        writeoffamount = #{writeoffamount},
+      </if>
+      <if test="remainderamount != null" >
+        remainderamount = #{remainderamount},
+      </if>
+      <if test="iswriteoff != null" >
+        iswriteoff = #{iswriteoff},
+      </if>
+      <if test="oaid != null" >
+        oaid = #{oaid},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  <update id="auditPayorder" parameterType="java.util.Map">
+  	update t_account_purchase_payorder
+  	set status = ${status},
+  		audituserid = #{audituserid},
+  		auditusername = #{auditusername},
+  		audittime = now(),
+  		businessdate=#{businessdate}
+  	where id = #{id} and (status = '2' or status='6')
+  </update>
+  <update id="oppauditPayorder" parameterType="java.util.Map">
+  	update t_account_purchase_payorder
+  	set status = '2',
+  		audituserid = #{audituserid},
+  		auditusername = #{auditusername},
+  		audittime = now()
+  	where id = #{id} and status = '4'
+  </update>
+  <update id="writeOffPayorder" parameterType="java.lang.String">
+  	update t_account_purchase_payorder 
+  	set writeoffamount = #{writeoffamount},
+  		remainderamount = #{remainderamount},
+  		iswriteoff = #{iswriteoff}
+	  	<if test="iswriteoff == 1">
+	  		,status='4',closetime=now()
+	  	</if>
+ 	where id=#{id} and status='3'
+  </update>
+  <select id="selectPayOrderByOaid" parameterType="java.lang.String" resultMap="PayorderResultMap">
+  	select <include refid="Payorder_Column_List"/>
+  	from t_account_purchase_payorder where oaid = #{oaid }
+  </select>
+    <select id="getSupplierPaySumData" resultType="java.util.Map">
+        select businessdate,supplierid,sum(amount) as amount,count(id) as billnums,id,bank
+        from t_account_purchase_payorder
+        where status='4'
+        <if test="list != null">
+            and id in
+            <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="list == null">
+            1>2
+        </if>
+        GROUP BY id
+    </select>
+    <update id="updatePayorderVouchertimes" parameterType="com.hd.agent.account.model.Payorder">
+      update t_account_purchase_payorder
+      <set>
+        <if test="vouchertimes != null">
+          vouchertimes = IFNULL(vouchertimes,0)+1,
+        </if>
+      </set>
+      where id = #{id}
+    </update>
+</mapper>

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+	<bean id="cacheBeanPostProcessor" class="com.hd.agent.common.cache.CacheBeanPostProcessor"/> 
+	<!-- dao -->
+	<bean id="sysLogMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.common.dao.SysLogMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    
+    <bean id="pageSettingMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.common.dao.PageSettingMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    
+    <bean id="queryMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.common.dao.QueryMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="shortcutMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.common.dao.ShortcutMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="attachFileMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.common.dao.AttachFileMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="excelMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.common.dao.ExcelMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <!-- service配置 -->
+    
+    <bean id="baseServiceImpl" class="com.hd.agent.common.service.impl.BaseServiceImpl">
+    	<property name="baseDataruleMapper" ref="dataruleMapper"></property>
+    	<property name="baseAccessControlMapper" ref="accessControlMapper"></property>
+    	<property name="baseTableColumnMapper" ref="tableColumnMapper"></property>
+    	<property name="baseTableRelationMapper" ref="tableRelationMapper"></property>
+    	<property name="baseSysUserMapper" ref="sysUserMapper"></property>
+    	<property name="baseSysCodeMapper" ref="sysCodeMapper"></property>
+    	<property name="baseNetLockMapper" ref="netLockMapper"></property>
+    	<property name="baseSysParamMapper" ref="sysParamMapper"></property>
+    	<property name="baseDepartMentMapper" ref="departMentMapper"></property>
+    	<property name="baseGoodsMapper" ref="goodsMapper"></property>
+    	<property name="baseCustomerMapper" ref="customerMapper"></property>
+    	<property name="baseSalesAreaMapper" ref="salesAreaMapper"></property>
+    	<property name="baseFinanceMapper" ref="financeMapper"></property>
+    	<property name="baseStorageMapper" ref="storageMapper"></property>
+    	<property name="baseBuySupplierMapper" ref="buySupplierMapper"></property>
+    	<property name="basePersonnelMapper" ref="personnelMapper"></property>
+    	<property name="baseContacterMapper" ref="contacterMapper"></property>
+    	<property name="baseBuyAreaMapper" ref="buyAreaMapper"></property>
+    	<property name="baseBuySupplierSortMapper" ref="buySupplierSortMapper"></property>
+    	<property name="baseCustomerSortMapper" ref="customerSortMapper"></property>
+    	<property name="baseSysNumberMapper" ref="sysNumberMapper"></property>
+    	<property name="baseSaleoutMapper" ref="saleoutMapper"></property>
+    	<property name="baseSaleRejectEnterMapper" ref="saleRejectEnterMapper"></property>
+    	<property name="baseCustomerAndSortMapper" ref="customerAndSortMapper"></property>
+    	<property name="baseLogisticsMapper" ref="logisticsMapper"></property>
+    	<property name="baseWorkJobMapper" ref="workJobMapper"></property>
+    	<property name="basePurchaseEnterMapper" ref="purchaseEnterMapper"></property>
+		<property name="storageItemMapper" ref="storageItemMapper"></property>
+    	
+    </bean>
+    
+    <bean id="pageSettingService" parent="baseTransactionProxy">
+    	<property name="target" ref="pageSettingServiceImpl"></property>   
+    </bean>
+    <bean id="pageSettingServiceImpl" class="com.hd.agent.common.service.impl.PageSettingServiceImpl" parent="baseServiceImpl">
+    	<property name="pageSettingMapper" ref="pageSettingMapper"></property>
+    	<property name="queryMapper" ref="queryMapper"></property>
+    	<property name="shortcutMapper" ref="shortcutMapper"></property>
+    </bean>
+    
+	<bean id="sysLogService" parent="baseTransactionProxy">
+    	<property name="target" ref="sysLogServiceImpl"></property>   
+    </bean>
+    <bean id="sysLogServiceImpl" class="com.hd.agent.common.service.impl.SysLogServiceImpl">
+    	<property name="sysLogMapper" ref="sysLogMapper"></property>
+    </bean>
+    
+    <bean id="attachFileService" parent="baseTransactionProxy">
+    	<property name="target" ref="attachFileServiceImpl"></property>   
+    </bean>
+    <bean id="attachFileServiceImpl" class="com.hd.agent.common.service.impl.AttachFileServiceImpl" parent="baseServiceImpl">
+    	<property name="attachFileMapper" ref="attachFileMapper"></property>
+    </bean>
+    
+    <bean id="excelService" parent="baseTransactionProxy">
+    	<property name="target" ref="excelServiceImpl"></property>  
+    </bean>
+    <bean id="excelServiceImpl" class="com.hd.agent.common.service.impl.ExcelServiceImpl" parent="baseServiceImpl">
+        <property name="excelMapper" ref="excelMapper"></property>
+    </bean>
+	<!-- action基础类 -->
+    <bean id="baseAction" class="com.hd.agent.common.action.BaseAction" scope="prototype">
+    	<property name="baseSysUserService" ref="sysUserService"></property>
+    	<property name="baseSecurityService" ref="securityService"></property>
+    	<property name="baseDataAccessService" ref="dataAccessService"></property>
+    	<property name="baseSysNumberService" ref="sysNumberService"></property>
+    	<property name="baseSysNumberRuleService" ref="sysNumberRuleService"></property>
+    	<property name="baseDataExceptionService" ref="dataExceptionService"></property>
+    	<property name="baseDataDictionaryService" ref="dataDictionaryService"></property>
+    	<property name="baseInnerMessageService" ref="innerMessageService"></property>
+    	<property name="baseEmailService" ref="emailService"></property>
+    	<property name="baseMobileSmsService" ref="mobileSmsService"></property>    	
+    	<property name="baseSysCodeService" ref="sysCodeService"></property>
+    	<property name="baseNetLockService" ref="netLockService"></property>
+    	<property name="baseDepartMentService" ref="departMentService"></property>
+    	<property name="basePersonnelService" ref="personnelService"></property>
+    	<property name="baseWorkCanlendarService" ref="workCanlendarService"></property>
+    	<property name="baseFilesLevelService" ref="filesLevelService"></property>
+    	<property name="baseSysParamService" ref="sysParamService"></property>
+    	<property name="baseReferWindowService" ref="referWindowService"></property>
+    	<property name="baseBuyService" ref="buyService"></property>
+    	<property name="baseGoodsService" ref="goodsService"></property>
+    	<property name="baseSalesService" ref="salesService"></property>
+    	<property name="baseFinanceService" ref="financeService"></property>
+    	<property name="baseStorageService" ref="storageService"></property>
+        <property name="baseAccountingService" ref="accountingService"></property>
+    </bean>
+    <bean id="commonAjaxAction" class="com.hd.agent.common.action.CommonAjaxAction" scope="prototype" parent="baseAction">
+    	<property name="sysCodeService" ref="sysCodeService"></property>
+    	<property name="dataDictionaryService" ref="dataDictionaryService"></property>
+    	<property name="referWindowService" ref="referWindowService"></property>
+    	<property name="departMentService" ref="departMentService"></property>
+    	<property name="personnelService" ref="personnelService"></property>
+    	<property name="goodsService" ref="goodsService"></property>
+    </bean>
+    <bean id="pageSettingAction" class="com.hd.agent.common.action.PageSettingAction" scope="prototype" parent="baseAction">
+    	<property name="pageSettingService" ref="pageSettingService"></property>
+    </bean>
+    <bean id="sysLogAction" class="com.hd.agent.common.action.SysLogAction" scope="prototype" parent="baseAction">
+    	<!-- sysUserService来源accesscontrol模块下 -->
+    	<property name="sysLogService" ref="sysLogService"></property>
+    </bean>
+    <bean id="commonUploadAction" class="com.hd.agent.common.action.UploadAction" parent="baseAction" scope="prototype">
+    	<property name="attachFileService" ref="attachFileService"></property>
+    	<property name="taskScheduleService" ref="taskScheduleService"></property>
+		<property name="sysParamService" ref="sysParamService"></property>
+    </bean>
+    <bean id="excelAction" class="com.hd.agent.common.action.ExcelAction" parent="baseAction" scope="prototype">
+    	<property name="excelService" ref="excelService"></property>
+    </bean>
+
+	<bean id="autoImportAction" class="com.hd.agent.common.action.AutoImportAction" parent="baseFilesAction" scope="prototype">
+		<property name="salesOrderService" ref="salesOrderService"></property>
+		<property name="attachFileService" ref="attachFileService"></property>
+	</bean>
+
+    <bean id="springUtils" class="com.hd.agent.common.util.SpringContextUtils"/>
+    <bean id="agReportprintAction" class="com.hd.agent.common.action.AgReportprintAction" parent="baseAction" scope="prototype"/>
+</beans>

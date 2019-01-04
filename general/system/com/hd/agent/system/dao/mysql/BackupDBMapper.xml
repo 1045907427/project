@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.system.dao.BackupDBMapper" >
+  <resultMap id="BaseResultMap" type="com.hd.agent.system.model.BackupDB" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="connectname" property="connectname" jdbcType="VARCHAR" />
+    <result column="dburl" property="dburl" jdbcType="VARCHAR" />
+    <result column="dbname" property="dbname" jdbcType="VARCHAR" />
+    <result column="dbusername" property="dbusername" jdbcType="VARCHAR" />
+    <result column="dbpassword" property="dbpassword" jdbcType="VARCHAR" />
+    <result column="dumpurl" property="dumpurl" jdbcType="VARCHAR" />
+    <result column="fileurl" property="fileurl" jdbcType="VARCHAR" />
+    <result column="savedaynum" property="savedaynum" jdbcType="INTEGER" />
+    <result column="updatepath" property="updatepath" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.connectname != null" >
+         and connectname = #{condition.connectname}
+      </if>
+      <if test="condition.dburl != null" >
+         and dburl = #{condition.dburl}
+      </if>
+      <if test="condition.dbname != null" >
+         and dbname = #{condition.dbname}
+      </if>
+      <if test="condition.dbusername != null" >
+         and dbusername = #{condition.dbusername}
+      </if>
+      <if test="condition.dbpassword != null" >
+         and dbpassword = #{condition.dbpassword}
+      </if>
+      <if test="condition.dumpurl != null" >
+         and dumpurl = #{condition.dumpurl}
+      </if>
+      <if test="condition.fileurl != null" >
+         and fileurl = #{condition.fileurl}
+      </if>
+      <if test="condition.savedaynum != null" >
+        and savedaynum = #{condition.savedaynum}
+      </if>
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, connectname, dburl, dbname, dbusername, dbpassword, dumpurl, fileurl,savedaynum,updatepath
+  </sql>
+  <insert id="addBackupDB" parameterType="com.hd.agent.system.model.BackupDB" >
+    insert into t_db_backup
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="connectname != null" >
+        connectname,
+      </if>
+      <if test="dburl != null" >
+        dburl,
+      </if>
+      <if test="dbname != null" >
+        dbname,
+      </if>
+      <if test="dbusername != null" >
+        dbusername,
+      </if>
+      <if test="dbpassword != null" >
+        dbpassword,
+      </if>
+      <if test="dumpurl != null" >
+        dumpurl,
+      </if>
+      <if test="fileurl != null" >
+        fileurl,
+      </if>
+      <if test="savedaynum != null" >
+        savedaynum,
+      </if>
+      <if test="updatepath != null" >
+        updatepath,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="connectname != null" >
+        #{connectname},
+      </if>
+      <if test="dburl != null" >
+        #{dburl},
+      </if>
+      <if test="dbname != null" >
+        #{dbname},
+      </if>
+      <if test="dbusername != null" >
+        #{dbusername},
+      </if>
+      <if test="dbpassword != null" >
+        #{dbpassword},
+      </if>
+      <if test="dumpurl != null" >
+        #{dumpurl},
+      </if>
+      <if test="fileurl != null" >
+        #{fileurl},
+      </if>
+      <if test="savedaynum != null" >
+        #{savedaynum},
+      </if>
+      <if test="updatepath != null" >
+        #{updatepath},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="getBackupDBByConnectname" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from t_db_backup
+    where connectname = #{connectname}
+  </select>
+  <delete id="deleteBackupDBByConnectname" parameterType="java.lang.String" >
+    delete from t_db_backup
+    where connectname = #{connectname}
+  </delete>
+
+
+
+
+
+
+
+
+  <!--<select id="selectByExample" resultMap="BaseResultMap" parameterType="com.hd.agent.system.model.BackupDB" >-->
+    <!--select-->
+    <!--<if test="distinct" >-->
+      <!--distinct-->
+    <!--</if>-->
+    <!--<include refid="Base_Column_List" />-->
+    <!--from t_db_backup-->
+    <!--<if test="_parameter != null" >-->
+      <!--<include refid="Example_Where_Clause" />-->
+    <!--</if>-->
+    <!--<if test="orderByClause != null" >-->
+      <!--order by ${orderByClause}-->
+    <!--</if>-->
+    <!--<include refid="common.Mysql_Pagination_Limit" />-->
+  <!--</select>-->
+
+
+  <!--<delete id="deleteByExample" parameterType="com.hd.agent.system.model.BackupDB" >-->
+    <!--delete from t_db_backup-->
+    <!--<if test="_parameter != null" >-->
+      <!--<include refid="Example_Where_Clause" />-->
+    <!--</if>-->
+  <!--</delete>-->
+  <!--<insert id="insert" parameterType="com.hd.agent.system.model.BackupDB" >-->
+    <!--insert into t_db_backup (id, connectname, dburl, dbname, dbusername, dbpassword, dumpurl, -->
+      <!--fileurl)-->
+    <!--values (#{id}, #{connectname}, #{dburl}, #{dbname}, #{dbusername}, #{dbpassword}, #{dumpurl}, -->
+      <!--#{fileurl})-->
+  <!--</insert>-->
+
+  <!--<select id="countByExample" parameterType="com.hd.agent.system.model.BackupDB" resultType="java.lang.Integer" >-->
+    <!--select count(*) from t_db_backup-->
+    <!--<if test="_parameter != null" >-->
+      <!--<include refid="Example_Where_Clause" />-->
+    <!--</if>-->
+  <!--</select>-->
+  <!--<update id="updateByExampleSelective" parameterType="map" >-->
+    <!--update t_db_backup-->
+    <!--<set >-->
+      <!--<if test="record.id != null" >-->
+        <!--id = #{record.id},-->
+      <!--</if>-->
+      <!--<if test="record.connectname != null" >-->
+        <!--connectname = #{record.connectname},-->
+      <!--</if>-->
+      <!--<if test="record.dburl != null" >-->
+        <!--dburl = #{record.dburl},-->
+      <!--</if>-->
+      <!--<if test="record.dbname != null" >-->
+        <!--dbname = #{record.dbname},-->
+      <!--</if>-->
+      <!--<if test="record.dbusername != null" >-->
+        <!--dbusername = #{record.dbusername},-->
+      <!--</if>-->
+      <!--<if test="record.dbpassword != null" >-->
+        <!--dbpassword = #{record.dbpassword},-->
+      <!--</if>-->
+      <!--<if test="record.dumpurl != null" >-->
+        <!--dumpurl = #{record.dumpurl},-->
+      <!--</if>-->
+      <!--<if test="record.fileurl != null" >-->
+        <!--fileurl = #{record.fileurl},-->
+      <!--</if>-->
+    <!--</set>-->
+    <!--<if test="_parameter != null" >-->
+      <!--<include refid="Example_Where_Clause" />-->
+    <!--</if>-->
+  <!--</update>-->
+  <!--<update id="updateByExample" parameterType="map" >-->
+    <!--update t_db_backup-->
+    <!--set id = #{record.id},-->
+      <!--connectname = #{record.connectname},-->
+      <!--dburl = #{record.dburl},-->
+      <!--dbname = #{record.dbname},-->
+      <!--dbusername = #{record.dbusername},-->
+      <!--dbpassword = #{record.dbpassword},-->
+      <!--dumpurl = #{record.dumpurl},-->
+      <!--fileurl = #{record.fileurl}-->
+    <!--<if test="_parameter != null" >-->
+      <!--<include refid="Example_Where_Clause" />-->
+    <!--</if>-->
+  <!--</update>-->
+  <!--<update id="updateByPrimaryKeySelective" parameterType="com.hd.agent.system.model.BackupDB" >-->
+    <!--update t_db_backup-->
+    <!--<set >-->
+      <!--<if test="connectname != null" >-->
+        <!--connectname = #{connectname},-->
+      <!--</if>-->
+      <!--<if test="dburl != null" >-->
+        <!--dburl = #{dburl},-->
+      <!--</if>-->
+      <!--<if test="dbname != null" >-->
+        <!--dbname = #{dbname},-->
+      <!--</if>-->
+      <!--<if test="dbusername != null" >-->
+        <!--dbusername = #{dbusername},-->
+      <!--</if>-->
+      <!--<if test="dbpassword != null" >-->
+        <!--dbpassword = #{dbpassword},-->
+      <!--</if>-->
+      <!--<if test="dumpurl != null" >-->
+        <!--dumpurl = #{dumpurl},-->
+      <!--</if>-->
+      <!--<if test="fileurl != null" >-->
+        <!--fileurl = #{fileurl},-->
+      <!--</if>-->
+    <!--</set>-->
+    <!--where id = #{id}-->
+  <!--</update>-->
+  <!--<update id="updateByPrimaryKey" parameterType="com.hd.agent.system.model.BackupDB" >-->
+    <!--update t_db_backup-->
+    <!--set connectname = #{connectname},-->
+      <!--dburl = #{dburl},-->
+      <!--dbname = #{dbname},-->
+      <!--dbusername = #{dbusername},-->
+      <!--dbpassword = #{dbpassword},-->
+      <!--dumpurl = #{dumpurl},-->
+      <!--fileurl = #{fileurl}-->
+    <!--where id = #{id}-->
+  <!--</update>-->
+</mapper>

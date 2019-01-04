@@ -1,0 +1,789 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.activiti.dao.ProcessMapper" >
+  <sql id="Base_Column_List" >
+    id, title, instanceid, applyuserid, applyusername, taskid, taskkey, taskname, assignee, 
+    condidate, signuser, definitionname, definitionkey, businessid, adddate, updatedate, applydate, 
+    isend, status, keyword1, keyword2, keyword3, keyword4, keyword5, definitionid
+  </sql>
+  <sql id="Base_Column_List2" >
+    id, title, instanceid, applyuserid, applyusername, taskid, taskkey, taskname, assignee, 
+    condidate, signuser, definitionname, definitionkey, businessid, adddate, applydate, 
+    isend, status, keyword1, keyword2, keyword3, keyword4, keyword5, definitionid
+  </sql>
+  <sql id="Blob_Column_List" >
+    html, json, phonehtml
+  </sql>
+  <select id="getProcess" resultType="com.hd.agent.activiti.model.Process" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_act_process
+    where id = #{id ,jdbcType=VARCHAR}
+  </select>
+  <select id="getProcessByInstance" resultType="com.hd.agent.activiti.model.Process" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_act_process
+    where instanceid = #{id}
+  </select>
+  <select id="getProcessByBusinessId" resultType="com.hd.agent.activiti.model.Process" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_act_process
+    where businessid = #{id}
+  </select>
+  <select id="getCommonProcessList" resultType="com.hd.agent.activiti.model.Process" parameterType="java.util.Map">
+	SELECT
+		a.*
+	FROM
+		(
+			SELECT
+				id,
+				instanceid,
+				title,
+				applydate,
+				definitionkey,
+				definitionname
+			FROM
+				t_act_process
+			WHERE
+				applyuserid = #{userid }
+                and id in (
+                  select max(id) from t_act_process p GROUP BY p.definitionkey
+                )
+			ORDER BY
+				applydate DESC
+		) a,
+		t_act_definition b
+	WHERE
+		a.definitionkey = b.unkey /*AND b.formtype = 'formkey'*/
+		and exists(
+			select 1 
+			from t_act_auth_rule c
+			<trim prefix="where" prefixOverrides="and">
+                and c.definitionid = b.definitionid
+                <if test="type != null">
+                    and c.type = #{type }
+                </if>
+                <if test="definitionMaps != null">
+                    <foreach collection="definitionMaps" item="temp" open="and (" close=")" separator="or">
+                        (c.definitionkey = #{temp.definitionkey} and c.taskkey = #{temp.taskkey}
+                        and (c.userid is null or c.userid = '' or c.userid = #{userid })
+                        and (
+                        c.roleid is null or c.roleid = '' or FIND_IN_SET(c.roleid, #{roleid }))
+                        and (c.deptid is null or c.deptid = '' or c.deptid = #{deptid })
+                        and (c.postid is null or c.postid = '' or c.postid = #{postid })
+                        )
+                    </foreach>
+                </if>
+			</trim>
+		)
+	GROUP BY
+		a.definitionkey
+    order by a.definitionname
+  </select>
+  <select id="getCommonProcessList_BAK_20141202" resultType="com.hd.agent.activiti.model.Process" parameterType="java.lang.String">
+  	SELECT a.* FROM (SELECT id, instanceid, title, applydate, definitionkey, definitionname FROM t_act_process WHERE applyuserid = #{userid} ORDER BY applydate DESC )a, t_act_definition b WHERE a.definitionkey = b.unkey /*AND b.formtype = 'formkey'*/ GROUP BY a.definitionkey 
+  </select>
+    <sql id="getProcessList_sql">
+        select
+        <choose>
+            <when test="condition.type == 8">
+                <include refid="Base_Column_List2" />,
+                (select t3.endtime from t_act_comment t3 where t1.id = t3.processid /*or t1.instanceid = t3.instanceid */order by t3.endtime desc limit 0, 1) updatedate,
+                case
+                when (t1.isend = 1 or t1.status = 2 or t1.status = 3 or t1.status = 9) then 0
+                when t1.taskid  = (select t4.taskid from t_act_comment t4 where t1.id = t4.processid /*or t1.instanceid = t4.instanceid */order by t4.taskid desc limit 0, 1) then 0
+                when t1.taskid != (select t4.taskid from t_act_comment t4 where t1.id = t4.processid /*or t1.instanceid = t4.instanceid */order by t4.taskid desc limit 0, 1) and '1' = (select case when t4.agree = '1' and t4.assignee = #{condition.userid } then '1' else '0' end from t_act_comment t4 where t4.taskid is not null and t4.taskid != '' and (t1.id = t4.processid/* or t1.instanceid = t4.instanceid*/) order by t4.id desc limit 0, 1)/*concat([condition.userid ], ' 1') = (select concat(assignee, ' ', agree) from t_act_comment t4 where t4.taskid is not null and t4.taskid != '' and (t1.id = t4.processid or t1.instanceid = t4.instanceid) order by t4.id desc limit 0, 1)*/ then 1
+                else 0
+                end cantakeback
+            </when>
+            <when test="condition.type == 6 or condition.type == 10">
+                <include refid="Base_Column_List" />
+                , (select ifnull(max(endtime), '0000000000000000000') from t_act_comment t5 where (/*t1.id = t5.processid or*/ t1.instanceid = t5.instanceid) and t5.endtime is not null) handtime
+            </when>
+            <when test="condition.type == 7">
+                <include refid="Base_Column_List" />
+                , (select ifnull(max(begintime), '0000000000000000000') from t_act_comment t5 where (/*t1.id = t5.processid or*/ t1.instanceid = t5.instanceid) and t5.taskid is not null) receivetime
+            </when>
+            <otherwise>
+                <include refid="Base_Column_List" />
+            </otherwise>
+        </choose>
+        from t_act_process t1
+        <trim prefix="where" prefixOverrides="and|or" >
+            1=1
+            <choose>
+                <when test="condition.type == 1"> <!-- 我的请求 -->
+                    <if test="condition.userid != null">
+                        and applyuserid = #{condition.userid }
+                    </if>
+                    and isend = '0' and applydate is not null
+                </when>
+                <when test="condition.type == 2"> <!-- 我的办结 -->
+                    <if test="condition.userid != null">
+                        and applyuserid = #{condition.userid }
+                    </if>
+                    and isend = '1'
+                </when>
+                <when test="condition.type == 3"> <!-- 待办事宜 -->
+                    <if test="condition.userid != null">
+                        and (assignee = #{condition.userid } or FIND_IN_SET(#{condition.userid }, condidate) or FIND_IN_SET(#{condition.userid }, signuser))
+                    </if>
+                    and applydate is not null and isend = '0'
+                </when>
+                <when test="condition.type == 4"> <!-- 已办事宜 -->
+                    <if test="condition.userid != null">
+                        <![CDATA[ and instanceid in (select distinct instanceid from t_act_comment where endtime is not null and assignee = #{condition.userid} and taskkey <> 'process_begin' and taskkey <> 'process_end')]]>
+                    </if>
+                    and applydate is not null
+                </when>
+                <when test="condition.type == 5"> <!-- 我的草稿 -->
+                    <if test="condition.userid != null">
+                        and applyuserid = #{condition.userid }
+                    </if>
+                    and applydate is null and isend = '0'
+                </when>
+                <when test="condition.type == 6"> <!-- 未接受 -->
+                    <if test="condition.userid != null">
+                        and
+                        (
+                        ((assignee = #{condition.userid } or FIND_IN_SET(#{condition.userid }, condidate) or FIND_IN_SET(#{condition.userid }, signuser)) and not exists(select 1 from t_act_comment t2 where t1.taskid = t2.taskid and t1.taskid <![CDATA[<>]]> '' ))
+                        or (exists(select 1 from t_act_process_task pt where pt.instanceid = t1.instanceid and pt.taskkey = t1.taskkey and pt.userid = #{condition.userid } and pt.begintime is null and pt.endtime is null) )
+                        )
+                    </if>
+                    and applydate is not null /*and isend = '0'*/ and status = '1'
+                </when>
+                <when test="condition.type == 7"> <!-- 办理中 -->
+                    <if test="condition.userid != null">
+                        and
+                        (
+                        ((assignee = #{condition.userid } or FIND_IN_SET(#{condition.userid }, condidate) or FIND_IN_SET(#{condition.userid }, signuser)) and exists(select 1 from t_act_comment t2 where t1.taskid = t2.taskid and t1.taskid <![CDATA[<>]]> '' ))
+                        or (exists(select 1 from t_act_process_task pt where pt.instanceid = t1.instanceid and pt.taskkey = t1.taskkey and pt.userid = #{condition.userid } and pt.begintime is not null and pt.endtime is null) )
+                        )
+                    </if>
+                    and applydate is not null /*and isend = '0'*/ and status = '1'
+                </when>
+                <when test="condition.type == 8"> <!-- 已办结 -->
+                    <if test="condition.userid != null">
+                        and exists(select 1 from t_act_comment t2 where t2.endtime is not null and t2.assignee = #{condition.userid } and (t1.id = t2.processid /*or t1.instanceid = t2.instanceid*/))
+                    </if>
+                    and applydate is not null /*and status = '1'*/ and (status = '1' or status = 9)
+                </when>
+                <when test="condition.type == 9"> <!-- 已删除 -->
+                    <if test="condition.userid != null">
+                        and (assignee = #{condition.userid } or FIND_IN_SET(#{condition.userid }, condidate) or FIND_IN_SET(#{condition.userid }, signuser))
+                    </if>
+                    and applydate is not null /*and isend = '0'*/ and status = '3'
+                </when>
+                <when test="condition.type == 10"> <!-- 首页待办事项 -->
+                    <if test="condition.userid != null">
+                        and
+                        (
+                        (assignee = #{condition.userid } or FIND_IN_SET(#{condition.userid }, condidate) or FIND_IN_SET(#{condition.userid }, signuser)) or
+                        exists(select 1 from t_act_process_task ps where ps.instanceid = t1.instanceid and t1.taskkey = ps.taskkey)
+                        )
+                    </if>
+                    and (
+                    exists(select 1 from t_act_comment t2 where t1.taskid = t2.taskid and t2.taskid <![CDATA[ <> ]]> '') or
+                    not exists(select 1 from t_act_process_task t2 left join t_act_comment t3 on t2.taskid = t3.taskid where t2.instanceid = t1.instanceid and t3.id is not null and t3.assignee = #{condition.userid } and t3.endtime is not null)
+                    )
+                    and applydate is not null /*and isend = '0'*/ and status = '1'
+                </when>
+                <when test="condition.type == 0"> <!-- 工作管理 对于已经结束的工作，添加清除表单功能-->
+                    /*and isend != '1' and status != '9'*/
+                    <if test="condition.status != null">
+                        and FIND_IN_SET(status, #{condition.status })
+                    </if>
+                </when>
+                <when test="condition.type == 12"> <!-- 已挂起 -->
+                    <if test="condition.userid != null">
+                        and applyuserid = #{condition.userid }
+                    </if>
+                    and status = '2'
+                </when>
+                <when test="condition.type == 13"> <!-- 手机（办理中） -->
+                    <if test="condition.userid != null">
+                        and (assignee = #{condition.userid } or FIND_IN_SET(#{condition.userid }, condidate) or FIND_IN_SET(#{condition.userid }, signuser))
+                    </if>
+                    and applydate is not null /*and isend = '0'*/ and status = '1'
+                </when>
+                <otherwise>
+                    1 = 2
+                </otherwise>
+            </choose>
+            <if test="condition.id != null">
+                and id = #{condition.id}
+            </if>
+            <if test="condition.title != null">
+                and title like CONCAT('%', CONCAT(#{condition.title }, '%'))
+            </if>
+            <if test="condition.definitionkey != null">
+                and definitionkey = #{condition.definitionkey}
+            </if>
+            <if test="condition.include != null">
+                and find_in_set(definitionkey, #{condition.include})
+            </if>
+        </trim>
+        <choose>
+            <when test="condition.type == 6 or condition.type == 10">
+                <choose>
+                    <when test="condition.sort != null">
+                        order by handtime ${condition.sort }, id ${condition.sort }
+                    </when>
+                    <otherwise>
+                        order by handtime asc, id asc
+                    </otherwise>
+                </choose>
+            </when>
+            <when test="condition.type == 7">
+                order by receivetime asc
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+    </sql>
+  <select id="getProcessList" resultType="com.hd.agent.activiti.model.Process" parameterType="com.hd.agent.common.util.PageMap">
+  	  select *
+      from ( <include refid="getProcessList_sql" /> ) t
+	<include refid="common.Page_LimitOnly" />
+  </select>
+  <select id="getProcessCount" resultType="java.lang.Integer" parameterType="com.hd.agent.common.util.PageMap">
+  	  select count(1)
+      from ( <include refid="getProcessList_sql" /> ) t
+  </select>
+  <delete id="deleteProcess" parameterType="java.lang.String" >
+    delete from t_act_process
+    where id = #{id}
+  </delete>
+  <delete id="deleteProcessByInstance" parameterType="java.lang.String" >
+    delete from t_act_process
+    where instanceid = #{id}
+  </delete>
+  <insert id="addProcess" parameterType="com.hd.agent.activiti.model.Process" >
+    <selectKey resultType="java.lang.String" order="AFTER" keyProperty="id">
+	  SELECT LAST_INSERT_ID() AS id
+	</selectKey>
+    insert into t_act_process
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null and id != '' " >
+        id,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="instanceid != null" >
+        instanceid,
+      </if>
+      <if test="applyuserid != null" >
+        applyuserid,
+      </if>
+      <if test="applyusername != null" >
+        applyusername,
+      </if>
+      <if test="taskid != null" >
+        taskid,
+      </if>
+      <if test="taskkey != null" >
+        taskkey,
+      </if>
+      <if test="taskname != null" >
+        taskname,
+      </if>
+      <if test="assignee != null" >
+        assignee,
+      </if>
+      <if test="condidate != null" >
+        condidate,
+      </if>
+      <if test="definitionname != null" >
+        definitionname,
+      </if>
+      <if test="definitionkey != null" >
+        definitionkey,
+      </if>
+      <if test="definitionid != null" >
+        definitionid,
+      </if>
+      <if test="businessid != null" >
+        businessid,
+      </if>
+        adddate,
+      <if test="updatedate != null" >
+        updatedate,
+      </if>
+      <if test="applydate != null" >
+        applydate,
+      </if>
+      <if test="isend != null" >
+        isend,
+      </if>
+      <if test="html != null" >
+        html,
+      </if>
+      <if test="json != null" >
+        json,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="phonehtml != null" >
+        phonehtml,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null and id != '' " >
+        #{id},
+      </if>
+      <if test="title != null" >
+        #{title},
+      </if>
+      <if test="instanceid != null" >
+        #{instanceid},
+      </if>
+      <if test="applyuserid != null" >
+        #{applyuserid},
+      </if>
+      <if test="applyusername != null" >
+        #{applyusername},
+      </if>
+      <if test="taskid != null" >
+        #{taskid},
+      </if>
+      <if test="taskkey != null" >
+        #{taskkey},
+      </if>
+      <if test="taskname != null" >
+        #{taskname},
+      </if>
+      <if test="assignee != null" >
+        #{assignee},
+      </if>
+      <if test="condidate != null" >
+        #{condidate},
+      </if>
+      <if test="definitionname != null" >
+        #{definitionname},
+      </if>
+      <if test="definitionkey != null" >
+        #{definitionkey},
+      </if>
+      <if test="definitionid != null" >
+        #{definitionid},
+      </if>
+      <if test="businessid != null" >
+        #{businessid},
+      </if>
+        now(),
+      <if test="updatedate != null" >
+        #{updatedate},
+      </if>
+      <if test="applydate != null" >
+        #{applydate},
+      </if>
+      <if test="isend != null" >
+        #{isend},
+      </if>
+      <if test="html != null" >
+        #{html},
+      </if>
+      <if test="json != null" >
+        #{json},
+      </if>
+      <if test="status != null" >
+        #{status},
+      </if>
+      <if test="phonehtml != null" >
+        #{phonehtml},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateProcessByInstance" parameterType="com.hd.agent.activiti.model.Process" >
+    update t_act_process
+    <set >
+      <if test="taskid != null" >
+        taskid = #{taskid},
+      </if>
+      <if test="taskkey != null" >
+        taskkey = #{taskkey},
+      </if>
+      <if test="taskname != null" >
+        taskname = #{taskname},
+      </if>
+      <if test="assignee != null" >
+        assignee = #{assignee},
+      </if>
+      <if test="condidate != null" >
+        condidate = #{condidate},
+      </if>
+      <if test="signuser != null" >
+        signuser = #{signuser},
+      </if>
+      <if test="definitionname != null" >
+        definitionname = #{definitionname},
+      </if>
+      <if test="definitionkey != null" >
+        definitionkey = #{definitionkey},
+      </if>
+      <if test="businessid != null" >
+        businessid = #{businessid},
+      </if>
+        updatedate = now(),
+      <if test="applydate != null" >
+        applydate = now(),
+      </if>
+      <if test="isend != null" >
+        isend = #{isend},
+      </if>
+      <if test="html != null" >
+        html = #{html},
+      </if>
+      <if test="json != null" >
+        json = #{json},
+      </if>
+      <if test="status != null" >
+        status = #{status},
+      </if>
+      <if test="phonehtml != null" >
+        phonehtml = #{phonehtml},
+      </if>
+    </set>
+    where instanceid = #{instanceid}
+  </update>
+  <update id="updateProcess" parameterType="com.hd.agent.activiti.model.Process" >
+    update t_act_process
+    <set >
+      <if test="title != null" >
+        title = #{title},
+      </if>
+      <if test="instanceid != null" >
+        instanceid = #{instanceid},
+      </if>
+      <if test="taskid != null" >
+        taskid = #{taskid},
+      </if>
+      <if test="taskkey != null" >
+        taskkey = #{taskkey},
+      </if>
+      <if test="taskname != null" >
+        taskname = #{taskname},
+      </if>
+      <if test="assignee != null" >
+        assignee = #{assignee},
+      </if>
+      <if test="condidate != null" >
+        condidate = #{condidate},
+      </if>
+      <if test="signuser != null" >
+        signuser = #{signuser},
+      </if>
+      <if test="definitionname != null" >
+        definitionname = #{definitionname},
+      </if>
+      <if test="definitionkey != null" >
+        definitionkey = #{definitionkey},
+      </if>
+      <if test="businessid != null" >
+        businessid = #{businessid},
+      </if>
+        updatedate = now(),
+      <if test="applydate != null" >
+        applydate = #{applydate},
+      </if>
+      <if test="isend != null" >
+        isend = #{isend},
+      </if>
+      <if test="html != null" >
+        html = #{html},
+      </if>
+      <if test="json != null" >
+        json = #{json},
+      </if>
+      <if test="status != null" >
+        status = #{status},
+      </if>
+      <if test="phonehtml != null" >
+        phonehtml = #{phonehtml},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  <update id="updateProcessTitle" parameterType="com.hd.agent.activiti.model.Process" >
+  	update t_act_process set title = concat(id, '-', title) where id = #{id}
+  </update>
+    <sql id="getWorkList_sql">
+        select a.id, a.title, a.applyusername, a.definitionname, a.applydate, a.updatedate, a.isend, a.instanceid, a.definitionkey, a.status, a.taskname,
+        a.keyword1,a.keyword2,a.keyword3,a.keyword4,a.keyword5, a.assignee
+        from t_act_process a
+        <if test="condition.range eq 2">
+            inner join t_act_comment b on a.instanceid = b.instanceid
+        </if>
+        <trim prefix="where" prefixOverrides="and|or" >
+            a.instanceid is not null
+            <if test="condition.id != null and condition.id != ''" >
+                and a.id = #{condition.id }
+            </if>
+            <if test="condition.isend != null and condition.isend != ''" >
+                and a.isend = #{condition.isend }
+            </if>
+            <if test="condition.definition != null and condition.definition != ''">
+                and a.definitionkey = #{condition.definition }
+            </if>
+            <if test="condition.starttime != null">
+                <![CDATA[ and a.applydate > str_to_date(#{condition.starttime}, '%Y-%m-%d')  ]]>
+            </if>
+            <if test="condition.endtime != null">
+                <![CDATA[ and a.applydate < date_add(str_to_date(#{condition.endtime}, '%Y-%m-%d'), interval '1' day)  ]]>
+            </if>
+            <if test="condition.title != null">
+                and a.title like CONCAT('%', #{condition.title},'%')
+            </if>
+            <if test="condition.range eq '2'.toString()">
+                and b.assignee = #{condition.userid}
+            </if>
+            <if test="condition.range eq '1'.toString()">
+                and a.applyuserid = #{condition.userid}
+            </if>
+            <if test="condition.range eq '3'.toString()">
+                and a.applyuserid = #{condition.applyuser}
+            </if>
+            <choose>
+                <when test="condition.keywords == null">
+                    and 1=1
+                </when>
+                <otherwise>
+                    <foreach collection="condition.keywords" item="item" open="and ( " close=")" separator=" or ">
+                        (
+                        a.keyword1 like concat('%', #{item } ,'%') or
+                        a.keyword2 like concat('%', #{item } ,'%') or
+                        a.keyword3 like concat('%', #{item } ,'%') or
+                        a.keyword4 like concat('%', #{item } ,'%') or
+                        a.keyword5 like concat('%', #{item } ,'%')
+                        )
+                    </foreach>
+                </otherwise>
+            </choose>
+            and a.status <![CDATA[<>]]> '3'
+            <include refid="common.Page_dataSql"/>
+        </trim>
+        order by a.id desc
+    </sql>
+  <select id="getWorkList" resultType="com.hd.agent.activiti.model.Process" parameterType="com.hd.agent.common.util.PageMap">
+      select *
+      from (<include refid="getWorkList_sql" /> ) t
+	<include refid="common.Page_LimitOnly" />
+  </select>
+  <select id="getWorkCount" resultType="java.lang.Integer" parameterType="com.hd.agent.common.util.PageMap">
+  	select count(1)
+  	from (<include refid="getWorkList_sql" /> ) t
+  </select>
+  <delete id="UndoProcessFromActiviti" parameterType="java.lang.String">
+  	delete from act_ru_identitylink where TASK_ID_ = #{taskid};
+  	delete from act_ru_variable where PROC_INST_ID_ = #{instanceid};
+  	delete from act_ru_task where PROC_INST_ID_ = #{instanceid};
+  	delete from act_ru_execution where PROC_INST_ID_ = #{instanceid};
+  	delete from act_hi_procinst where PROC_INST_ID_ = #{instanceid};
+  	delete from act_hi_taskinst where PROC_INST_ID_ = #{instanceid}
+  </delete>
+  <update id="UndoProcess" parameterType="java.lang.String">
+  	delete from t_act_comment where instanceid = #{instanceid};
+  	delete from t_act_viewer where instanceid = #{instanceid};
+  	update t_act_process
+    set instanceid = null,
+      taskid = null,
+      taskkey = null,
+      taskname = null,
+      assignee = null,
+      condidate = null,
+      updatedate = now(),
+      applydate = null
+    where id = #{id}
+  </update>
+  <update id="UndoProcess2" parameterType="java.lang.String">
+  	delete from t_act_comment where instanceid = #{instanceid} and 1 = 2;
+  	delete from t_act_viewer where instanceid = #{instanceid}
+  </update>
+  <update id="cancelProcess" parameterType="java.lang.String">
+  	update t_act_process set
+  		instanceid = null,
+  		taskid = null,
+  		taskkey = null,
+  		taskname = null,
+  		assignee = null,
+  		condidate = null,
+  		signuser = null,
+  		updatedate = null,
+  		applydate = null,
+  		isend = 0
+  	where id = #{id}
+  </update>
+  <select id="getPrevTaskKey" resultType="java.lang.String" parameterType="java.lang.String">
+  	<![CDATA[
+		select TASK_DEF_KEY_ from 
+		(
+		select id_, TASK_DEF_KEY_ from act_hi_taskinst where id_ <
+		(
+		select min(id_) from act_hi_taskinst where TASK_DEF_KEY_ =
+		(select TASK_DEF_KEY_ from act_hi_taskinst where id_ = #{taskid })
+		and PROC_INST_ID_ =
+		(select PROC_INST_ID_ from act_hi_taskinst where id_ = #{taskid })
+		)
+		and PROC_INST_ID_ = 
+		(select PROC_INST_ID_ from act_hi_taskinst where id_ = #{taskid })
+		order by id_ desc
+		)t limit 0, 1
+  	]]>
+  </select>
+  <update id="clearProcessInstanceInfo" parameterType="com.hd.agent.activiti.model.Process">
+  	update t_act_process
+  	 set 
+		title = #{title },
+		instanceid = #{instanceid },
+		applyuserid = #{applyuserid },
+		applyusername = #{applyusername },
+		taskid = #{taskid },
+		taskkey = #{taskkey },
+		taskname = #{taskname },
+		assignee = #{assignee },
+		condidate = #{condidate },
+		signuser = #{signuser },
+		definitionname = #{definitionname },
+		definitionkey = #{definitionkey },
+		html = #{html },
+		json = #{json },
+		businessid = #{businessid },
+		updatedate = now(),
+		applydate = null,
+		isend = #{isend }
+  	where id = #{id }
+  </update>
+  <select id="selectAllDefinitionKey" resultType="java.lang.String">
+  	select distinct(definitionkey) from t_act_process
+  </select>
+  <delete id="quitUnsavedWork" parameterType="java.util.Map">
+  	delete from t_act_process 
+  	where length(businessid) = 0 and json is null and id = #{id } and applyuserid = #{userid }
+  </delete>
+    <update id="updateKeywords" parameterType="com.hd.agent.activiti.model.Process">
+        update t_act_process
+        <set>
+            keyword1 = #{keyword1 },
+            keyword2 = #{keyword2 },
+            keyword3 = #{keyword3 },
+            keyword4 = #{keyword4 },
+            keyword5 = #{keyword5 }
+        </set>
+        where id = #{id }
+    </update>
+
+    <select id="selectProcessByDefinitionkey" parameterType="java.lang.String" resultType="com.hd.agent.activiti.model.Process">
+        select
+          <include refid="Base_Column_List"/>,
+          <include refid="Blob_Column_List"/>
+        from t_act_process
+        where definitionkey = #{definitionkey }
+    </select>
+
+    <resultMap id="ProcessTaskResultMap" type="com.hd.agent.activiti.model.ProcessTask" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="processid" property="processid" jdbcType="INTEGER" />
+        <result column="instanceid" property="instanceid" jdbcType="VARCHAR" />
+        <result column="taskid" property="taskid" jdbcType="VARCHAR" />
+        <result column="taskkey" property="taskkey" jdbcType="VARCHAR" />
+        <result column="userid" property="userid" jdbcType="VARCHAR" />
+        <result column="addtime" property="addtime" jdbcType="TIMESTAMP" />
+    </resultMap>
+    <select id="selectIsSignUser" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(*)
+        from t_act_process_task ps
+        where instanceid = #{instanceid } and taskid = #{taskid } and userid = #{userid }
+    </select>
+    <insert id="insertProcessTask" parameterType="com.hd.agent.activiti.model.ProcessTask" >
+        insert into t_act_process_task
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="processid != null" >
+                processid,
+            </if>
+            <if test="instanceid != null" >
+                instanceid,
+            </if>
+            <if test="taskid != null" >
+                taskid,
+            </if>
+            <if test="taskkey != null" >
+                taskkey,
+            </if>
+            <if test="userid != null" >
+                userid,
+            </if>
+            addtime,
+            <if test="begintime != null" >
+                begintime,
+            </if>
+            <if test="endtime != null" >
+                endtime,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="processid != null" >
+                #{processid},
+            </if>
+            <if test="instanceid != null" >
+                #{instanceid},
+            </if>
+            <if test="taskid != null" >
+                #{taskid},
+            </if>
+            <if test="taskkey != null" >
+                #{taskkey},
+            </if>
+            <if test="userid != null" >
+                #{userid},
+            </if>
+            now(),
+            <if test="begintime != null" >
+                #{begintime},
+            </if>
+            <if test="endtime != null" >
+                #{endtime},
+            </if>
+        </trim>
+    </insert>
+    <delete id="deleteProcessTaskByTaskkey" parameterType="java.lang.String">
+        delete from t_act_process_task
+        where instanceid = #{instanceid } and taskkey = #{taskkey }
+    </delete>
+    <delete id="deleteProcessTaskByInstanceid" parameterType="java.lang.String">
+        delete from t_act_process_task
+        where instanceid = #{instanceid }
+    </delete>
+    <select id="selectProcessTaskListByTaskkey" parameterType="java.lang.String" resultType="com.hd.agent.activiti.model.ProcessTask">
+        select id, processid, instanceid, taskid, taskkey, userid, addtime, begintime, endtime
+        from t_act_process_task
+        where instanceid = #{instanceid } and taskkey = #{taskkey }
+    </select>
+    <select id="selectProcessListByMap" parameterType="java.util.Map" resultType="com.hd.agent.activiti.model.Process">
+        select *
+        from t_act_process
+        where status = #{status }
+        limit ${start }, ${offset }
+    </select>
+    <update id="updateProcessTaskBegintime" parameterType="java.lang.String">
+        update t_act_process_task
+        set begintime = now()
+        where instanceid = #{instanceid } and taskid = #{taskid }
+    </update>
+    <update id="updateProcessTaskEndtime" parameterType="java.lang.String">
+        update t_act_process_task
+        set endtime = now()
+        where instanceid = #{instanceid } and taskid = #{taskid }
+    </update>
+
+</mapper>

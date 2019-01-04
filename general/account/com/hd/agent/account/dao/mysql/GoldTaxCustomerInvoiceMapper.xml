@@ -1,0 +1,825 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hd.agent.account.dao.GoldTaxCustomerInvoiceMapper">
+    <sql id="GoldTaxCustomerInvoiceBase_Column_List" >
+    id, businessdate, status, remark, customerid,customername, invoicecustomername, invoicetype,
+    invoiceno, invoicecode, customertaxno, customeraddr, customerphone, adduserid, addusername,
+    adddeptid, adddeptname, addtime, modifyuserid, modifyusername, modifytime, audituserid,
+    auditusername, audittime, field01, field02, field03, field04, field05, field06, field07,
+    field08, taxamount, notaxamount,tax, jxexporttimes, jxexportuserid, jxexportusername,
+    jxexportdatetime,customercardno
+    </sql>
+    <sql id="GoldTaxCustomerInvoicePageListBase_Column_List">
+        <if test="condition.businessdate1 != null">
+            and businessdate >= #{condition.businessdate1}
+        </if>
+        <if test="condition.businessdate2 != null">
+            <![CDATA[and businessdate <= #{condition.businessdate2}]]>
+        </if>
+        <if test="condition.status != null" >
+            and status = #{condition.status}
+        </if>
+        <if test="condition.remark != null" >
+            and remark = #{condition.remark}
+        </if>
+        <if test="condition.customerid != null" >
+            and customerid = #{condition.customerid}
+        </if>
+        <if test="condition.customername != null" >
+            and customername = #{condition.customername}
+        </if>
+        <if test="condition.invoicecustomername != null" >
+            and invoicecustomername = #{condition.invoicecustomername}
+        </if>
+        <if test="condition.invoicetype != null" >
+            and invoicetype = #{condition.invoicetype}
+        </if>
+        <if test="condition.invoiceno != null" >
+            and invoiceno = #{condition.invoiceno}
+        </if>
+        <if test="condition.invoicecode != null" >
+            and invoicecode = #{condition.invoicecode}
+        </if>
+        <if test="condition.customertaxno != null" >
+            and customertaxno = #{condition.customertaxno}
+        </if>
+        <if test="condition.customeraddr != null" >
+            and customeraddr = #{condition.customeraddr}
+        </if>
+        <if test="condition.customerphone != null" >
+            and customerphone = #{condition.customerphone}
+        </if>
+        <if test="condition.customercardno != null" >
+            and customercardno = #{condition.customercardno}
+        </if>
+        <if test="condition.adduserid != null" >
+            and adduserid = #{condition.adduserid}
+        </if>
+        <if test="condition.addusername != null" >
+            and addusername = #{condition.addusername}
+        </if>
+        <if test="condition.adddeptid != null" >
+            and adddeptid = #{condition.adddeptid}
+        </if>
+        <if test="condition.adddeptname != null" >
+            and adddeptname = #{condition.adddeptname}
+        </if>
+        <if test="condition.addtime != null" >
+            and addtime = #{condition.addtime}
+        </if>
+        <if test="condition.modifyuserid != null" >
+            and modifyuserid = #{condition.modifyuserid}
+        </if>
+        <if test="condition.modifyusername != null" >
+            and modifyusername = #{condition.modifyusername}
+        </if>
+        <if test="condition.modifytime != null" >
+            and modifytime = #{condition.modifytime}
+        </if>
+        <if test="condition.audituserid != null" >
+            and audituserid = #{condition.audituserid}
+        </if>
+        <if test="condition.auditusername != null" >
+            and auditusername = #{condition.auditusername}
+        </if>
+        <if test="condition.audittime != null" >
+            and audittime = #{condition.audittime}
+        </if>
+        <if test="condition.field01 != null" >
+            and field01 = #{condition.field01}
+        </if>
+        <if test="condition.field02 != null" >
+            and field02 = #{condition.field02}
+        </if>
+        <if test="condition.field03 != null" >
+            and field03 = #{condition.field03}
+        </if>
+        <if test="condition.field04 != null" >
+            and field04 = #{condition.field04}
+        </if>
+        <if test="condition.field05 != null" >
+            and field05 = #{condition.field05}
+        </if>
+        <if test="condition.field06 != null" >
+            and field06 = #{condition.field06}
+        </if>
+        <if test="condition.field07 != null" >
+            and field07 = #{condition.field07}
+        </if>
+        <if test="condition.field08 != null" >
+            and field08 = #{condition.field08}
+        </if>
+        <if test="condition.jsexportsign != null and condition.queryjxexporttimes != null">
+            <choose>
+                <when test="condition.jsexportsign == 1">
+                    <![CDATA[and jxexporttimes = #{condition.queryjxexporttimes} ]]>
+                </when>
+                <when test="condition.jsexportsign == 2">
+                    <![CDATA[and jxexporttimes < #{condition.queryjxexporttimes} ]]>
+                </when>
+                <when test="condition.jsexportsign == 3">
+                    <![CDATA[and jxexporttimes <= #{condition.queryjxexporttimes} ]]>
+                </when>
+                <when test="condition.jsexportsign == 4">
+                    <![CDATA[and jxexporttimes > #{condition.queryjxexporttimes} ]]>
+                </when>
+                <when test="condition.jsexportsign == 5">
+                    <![CDATA[and jxexporttimes >= #{condition.queryjxexporttimes} ]]>
+                </when>
+            </choose>
+        </if>
+        <if test="condition.jxexportuserid != null" >
+            and jxexportuserid = #{condition.jxexportuserid}
+        </if>
+        <if test="condition.jxexportusername != null" >
+            and jxexportusername = #{condition.jxexportusername}
+        </if>
+        <if test="condition.jxexportdatetime != null" >
+            and jxexportdatetime = #{condition.jxexportdatetime}
+        </if>
+    </sql>
+    <select id="getGoldTaxCustomerInvoicePageList" resultType="com.hd.agent.account.model.GoldTaxCustomerInvoice" parameterType="com.hd.agent.common.util.PageMap" useCache="false">
+        SELECT * FROM t_goldtax_customer_invoice
+        <trim prefix="where"  prefixOverrides="and|or">
+          <include refid="GoldTaxCustomerInvoicePageListBase_Column_List" />
+        </trim>
+        <if test="condition.isNoPageflag!='true'">
+            <include refid="common.Page_limit"/>
+        </if>
+    </select>
+    <select id="getGoldTaxCustomerInvoicePageCount" resultType="int" parameterType="com.hd.agent.common.util.PageMap" useCache="false">
+        SELECT count(1) FROM t_goldtax_customer_invoice
+        <trim prefix="where"  prefixOverrides="and|or">
+            <include refid="GoldTaxCustomerInvoicePageListBase_Column_List" />
+        </trim>
+    </select>
+    <insert id="insertGoldTaxCustomerInvoice" parameterType="com.hd.agent.account.model.GoldTaxCustomerInvoice" >
+        insert into t_goldtax_customer_invoice
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="businessdate != null" >
+                businessdate,
+            </if>
+            <if test="status != null" >
+                status,
+            </if>
+            <if test="remark != null" >
+                remark,
+            </if>
+            <if test="customerid != null" >
+                customerid,
+            </if>
+            <if test="customername != null" >
+                customername,
+            </if>
+            <if test="invoicecustomername != null" >
+                invoicecustomername,
+            </if>
+            <if test="invoicetype != null" >
+                invoicetype,
+            </if>
+            <if test="invoiceno != null" >
+                invoiceno,
+            </if>
+            <if test="invoicecode != null" >
+                invoicecode,
+            </if>
+            <if test="customertaxno != null" >
+                customertaxno,
+            </if>
+            <if test="customeraddr != null" >
+                customeraddr,
+            </if>
+            <if test="customerphone != null" >
+                customerphone,
+            </if>
+            <if test="customercardno != null" >
+                customercardno,
+            </if>
+            <if test="adduserid != null" >
+                adduserid,
+            </if>
+            <if test="addusername != null" >
+                addusername,
+            </if>
+            <if test="adddeptid != null" >
+                adddeptid,
+            </if>
+            <if test="adddeptname != null" >
+                adddeptname,
+            </if>
+            <if test="addtime != null" >
+                addtime,
+            </if>
+            <if test="modifyuserid != null" >
+                modifyuserid,
+            </if>
+            <if test="modifyusername != null" >
+                modifyusername,
+            </if>
+            <if test="modifytime != null" >
+                modifytime,
+            </if>
+            <if test="audituserid != null" >
+                audituserid,
+            </if>
+            <if test="auditusername != null" >
+                auditusername,
+            </if>
+            <if test="audittime != null" >
+                audittime,
+            </if>
+            <if test="field01 != null" >
+                field01,
+            </if>
+            <if test="field02 != null" >
+                field02,
+            </if>
+            <if test="field03 != null" >
+                field03,
+            </if>
+            <if test="field04 != null" >
+                field04,
+            </if>
+            <if test="field05 != null" >
+                field05,
+            </if>
+            <if test="field06 != null" >
+                field06,
+            </if>
+            <if test="field07 != null" >
+                field07,
+            </if>
+            <if test="field08 != null" >
+                field08,
+            </if>
+            <if test="taxamount != null" >
+                taxamount,
+            </if>
+            <if test="notaxamount != null" >
+                notaxamount,
+            </if>
+            <if test="tax != null" >
+                tax,
+            </if>
+            <if test="jxexporttimes != null" >
+                jxexporttimes,
+            </if>
+            <if test="jxexportuserid != null" >
+                jxexportuserid,
+            </if>
+            <if test="jxexportusername != null" >
+                jxexportusername,
+            </if>
+            <if test="jxexportdatetime != null" >
+                jxexportdatetime,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id},
+            </if>
+            <if test="businessdate != null" >
+                #{businessdate},
+            </if>
+            <if test="status != null" >
+                #{status},
+            </if>
+            <if test="remark != null" >
+                #{remark},
+            </if>
+            <if test="customerid != null" >
+                #{customerid},
+            </if>
+            <if test="customername != null" >
+                #{customername},
+            </if>
+            <if test="invoicecustomername != null" >
+                #{invoicecustomername},
+            </if>
+            <if test="invoicetype != null" >
+                #{invoicetype},
+            </if>
+            <if test="invoiceno != null" >
+                #{invoiceno},
+            </if>
+            <if test="invoicecode != null" >
+                #{invoicecode},
+            </if>
+            <if test="customertaxno != null" >
+                #{customertaxno},
+            </if>
+            <if test="customeraddr != null" >
+                #{customeraddr},
+            </if>
+            <if test="customerphone != null" >
+                #{customerphone},
+            </if>
+            <if test="customercardno != null" >
+                customercardno,
+            </if>
+            <if test="adduserid != null" >
+                #{adduserid},
+            </if>
+            <if test="addusername != null" >
+                #{addusername},
+            </if>
+            <if test="adddeptid != null" >
+                #{adddeptid},
+            </if>
+            <if test="adddeptname != null" >
+                #{adddeptname},
+            </if>
+            <if test="addtime != null" >
+                #{addtime},
+            </if>
+            <if test="modifyuserid != null" >
+                #{modifyuserid},
+            </if>
+            <if test="modifyusername != null" >
+                #{modifyusername},
+            </if>
+            <if test="modifytime != null" >
+                #{modifytime},
+            </if>
+            <if test="audituserid != null" >
+                #{audituserid},
+            </if>
+            <if test="auditusername != null" >
+                #{auditusername},
+            </if>
+            <if test="audittime != null" >
+                #{audittime},
+            </if>
+            <if test="field01 != null" >
+                #{field01},
+            </if>
+            <if test="field02 != null" >
+                #{field02},
+            </if>
+            <if test="field03 != null" >
+                #{field03},
+            </if>
+            <if test="field04 != null" >
+                #{field04},
+            </if>
+            <if test="field05 != null" >
+                #{field05},
+            </if>
+            <if test="field06 != null" >
+                #{field06},
+            </if>
+            <if test="field07 != null" >
+                #{field07},
+            </if>
+            <if test="field08 != null" >
+                #{field08},
+            </if>
+            <if test="taxamount != null" >
+                #{taxamount},
+            </if>
+            <if test="notaxamount != null" >
+                #{notaxamount},
+            </if>
+            <if test="tax != null" >
+                #{tax},
+            </if>
+            <if test="jxexporttimes != null" >
+                #{jxexporttimes},
+            </if>
+            <if test="jxexportuserid != null" >
+                #{jxexportuserid},
+            </if>
+            <if test="jxexportusername != null" >
+                #{jxexportusername},
+            </if>
+            <if test="jxexportdatetime != null" >
+                #{jxexportdatetime},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateGoldTaxCustomerInvoce" parameterType="com.hd.agent.account.model.GoldTaxCustomerInvoice" >
+        update t_goldtax_customer_invoice
+        <set >
+            <if test="businessdate != null" >
+                businessdate = #{businessdate},
+            </if>
+            <if test="status != null" >
+                status = #{status},
+            </if>
+            <if test="remark != null" >
+                remark = #{remark},
+            </if>
+            <if test="customerid != null" >
+                customerid = #{customerid},
+            </if>
+            <if test="customername != null" >
+                customername = #{customername},
+            </if>
+            <if test="invoicecustomername != null" >
+                invoicecustomername = #{invoicecustomername},
+            </if>
+            <if test="invoicetype != null" >
+                invoicetype = #{invoicetype},
+            </if>
+            <if test="invoiceno != null" >
+                invoiceno = #{invoiceno},
+            </if>
+            <if test="invoicecode != null" >
+                invoicecode = #{invoicecode},
+            </if>
+            <if test="customertaxno != null" >
+                customertaxno = #{customertaxno},
+            </if>
+            <if test="customeraddr != null" >
+                customeraddr = #{customeraddr},
+            </if>
+            <if test="customerphone != null" >
+                customerphone = #{customerphone},
+            </if>
+            <if test="customercardno != null" >
+                customercardno = #{customercardno},
+            </if>
+            <if test="adduserid != null" >
+                adduserid = #{adduserid},
+            </if>
+            <if test="addusername != null" >
+                addusername = #{addusername},
+            </if>
+            <if test="adddeptid != null" >
+                adddeptid = #{adddeptid},
+            </if>
+            <if test="adddeptname != null" >
+                adddeptname = #{adddeptname},
+            </if>
+            <if test="addtime != null" >
+                addtime = #{addtime},
+            </if>
+            <if test="modifyuserid != null" >
+                modifyuserid = #{modifyuserid},
+            </if>
+            <if test="modifyusername != null" >
+                modifyusername = #{modifyusername},
+            </if>
+            <if test="modifytime != null" >
+                modifytime = #{modifytime},
+            </if>
+            <if test="audituserid != null" >
+                audituserid = #{audituserid},
+            </if>
+            <if test="auditusername != null" >
+                auditusername = #{auditusername},
+            </if>
+            <if test="audittime != null" >
+                audittime = #{audittime},
+            </if>
+            <if test="field01 != null" >
+                field01 = #{field01},
+            </if>
+            <if test="field02 != null" >
+                field02 = #{field02},
+            </if>
+            <if test="field03 != null" >
+                field03 = #{field03},
+            </if>
+            <if test="field04 != null" >
+                field04 = #{field04},
+            </if>
+            <if test="field05 != null" >
+                field05 = #{field05},
+            </if>
+            <if test="field06 != null" >
+                field06 = #{field06},
+            </if>
+            <if test="field07 != null" >
+                field07 = #{field07},
+            </if>
+            <if test="field08 != null" >
+                field08 = #{field08},
+            </if>
+            <if test="taxamount != null" >
+                taxamount = #{taxamount},
+            </if>
+            <if test="notaxamount != null" >
+                notaxamount = #{notaxamount},
+            </if>
+            <if test="tax != null" >
+                tax = #{tax},
+            </if>
+            <if test="jxexporttimes != null" >
+                jxexporttimes = #{jxexporttimes},
+            </if>
+            <if test="jxexportuserid != null" >
+                jxexportuserid = #{jxexportuserid},
+            </if>
+            <if test="jxexportusername != null" >
+                jxexportusername = #{jxexportusername},
+            </if>
+            <if test="jxexportdatetime != null" >
+                jxexportdatetime = #{jxexportdatetime},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <update id="updateGoldTaxCustomerInvoceAmount" parameterType="com.hd.agent.account.model.GoldTaxCustomerInvoice" >
+        update t_goldtax_customer_invoice
+        <set >
+            <if test="taxamount != null" >
+                taxamount = #{taxamount},
+            </if>
+            <if test="notaxamount != null" >
+                notaxamount = #{notaxamount},
+            </if>
+            <if test="tax != null" >
+                tax = #{tax},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <select id="getGoldTaxCustomerInvoice" parameterType="String" resultType="com.hd.agent.account.model.GoldTaxCustomerInvoice">
+        SELECT <include refid="GoldTaxCustomerInvoiceBase_Column_List" />
+        FROM 
+        t_goldtax_customer_invoice
+        WHERE id=#{id}
+    </select>
+    <delete id="deleteGoldTaxCustomerInvoice" parameterType="String">
+        DELETE FROM t_goldtax_customer_invoice
+        WHERE id=#{id}
+    </delete>
+    <update id="auditGoldTaxCustomerInvoice" parameterType="com.hd.agent.account.model.GoldTaxCustomerInvoice">
+        update t_goldtax_customer_invoice set status='3',businessdate = #{businessdate},audituserid=#{audituserid},auditusername=#{auditusername},audittime=now()
+        where id=#{id} and status='2'
+    </update>
+    <update id="oppauditGoldTaxCustomerInvoice" parameterType="com.hd.agent.account.model.GoldTaxCustomerInvoice">
+        update t_goldtax_customer_invoice set status='2',audituserid=#{audituserid},auditusername=#{auditusername},audittime=now()
+        where id=#{id} and status='3'
+    </update>
+    <select id="getGoldTaxCustomerInvoiceDetailSum" parameterType="java.lang.String" resultType="com.hd.agent.account.model.GoldTaxCustomerInvoiceDetail">
+        SELECT
+        sum(notaxamount) as notaxamount,sum(taxamount) as taxamount,sum(tax) as tax
+        FROM t_goldtax_customer_invoice_detail
+        WHERE billid=#{billid}
+    </select>
+    <update id="updateOrderJSExportTimes" parameterType="com.hd.agent.account.model.GoldTaxCustomerInvoice">
+        update t_goldtax_customer_invoice
+        <set>
+            <if test="jxexporttimes != null">
+                jxexporttimes = IFNULL(jxexporttimes,0)+1,
+            </if>
+            <if test="jxexportuserid != null">
+                jxexportuserid = #{jxexportuserid},
+            </if>
+            <if test="jxexportusername != null">
+                jxexportusername = #{jxexportusername},
+            </if>
+            <if test="jxexportdatetime != null">
+                jxexportdatetime = #{jxexportdatetime},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+
+    <sql id="GTTInvoiceDetailBase_Column_List" >
+    id, billid, goodsid, goodsname, sourcegoodsid, sourcegoodsname, jstypeid, model,
+    unitname, unitnum, taxprice, taxamount, notaxprice, notaxamount, taxfreeflag, taxrate,
+    tax, remark, seq,sourcetype
+    </sql>
+    <sql id="GTTInvoice_PageList_Where_Clause" >
+        <if test="condition.billid != null" >
+            and billid = #{condition.billid}
+        </if>
+        <if test="condition.goodsid != null" >
+            and goodsid = #{condition.goodsid}
+        </if>
+        <if test="condition.goodsname != null" >
+            and goodsname like concat('%', #{condition.goodsname},'%')
+        </if>
+        <if test="condition.sourcegoodsid != null" >
+            and sourcegoodsid = #{condition.sourcegoodsid}
+        </if>
+        <if test="condition.sourcegoodsname != null" >
+            and sourcegoodsname like concat('%', #{condition.sourcegoodsname},'%')
+        </if>
+        <if test="condition.jstypeid != null" >
+            and jstypeid = #{condition.jstypeid}
+        </if>
+        <if test="condition.model != null" >
+            and model = #{condition.model}
+        </if>
+        <if test="condition.unitname != null" >
+            and unitname = #{condition.unitname}
+        </if>
+        <if test="condition.taxfreeflag != null" >
+            and taxfreeflag = #{condition.taxfreeflag}
+        </if>
+        <if test="condition.remark != null" >
+            and remark = #{condition.remark}
+        </if>
+        <if test="condition.seq != null" >
+            and seq = #{condition.seq}
+        </if>
+    </sql>
+
+    <select id="getGoldTaxCustomerInvoiceDetailPageList" resultType="com.hd.agent.account.model.GoldTaxCustomerInvoiceDetail" parameterType="com.hd.agent.common.util.PageMap" useCache="false">
+        SELECT
+        <include refid="GTTInvoiceDetailBase_Column_List" />,id as upid
+        FROM t_goldtax_customer_invoice_detail
+        <trim prefix="where"  prefixOverrides="and|or">
+            <include refid="GoldTaxCustomerInvoicePageListBase_Column_List" />
+        </trim>
+        <if test="condition.isNoPageflag!='true'">
+          <include refid="common.Page_limit"/>
+        </if>
+    </select>
+    <select id="getGoldTaxCustomerInvoiceDetailPageCount" resultType="int" parameterType="com.hd.agent.common.util.PageMap" useCache="false">
+        SELECT count(1) FROM t_goldtax_customer_invoice_detail
+        <trim prefix="where"  prefixOverrides="and|or">
+            <include refid="GoldTaxCustomerInvoicePageListBase_Column_List" />
+        </trim>
+    </select>
+    <select id="getGoldTaxCustomerInvoiceDetailListBy" resultType="com.hd.agent.account.model.GoldTaxCustomerInvoiceDetail" parameterType="Map">
+        SELECT
+        <include refid="GTTInvoiceDetailBase_Column_List" />,id as upid
+        FROM t_goldtax_customer_invoice_detail
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="billid != null">
+                and billid=#{billid}
+            </if>
+            <if test="amountthenzero != null">
+                <![CDATA[ and taxamount>0 ]]>
+            </if>
+        </trim>
+        order by seq asc
+    </select>
+    <select id="getGoldTaxCustomerInvoiceDetailListByBillid" resultType="com.hd.agent.account.model.GoldTaxCustomerInvoiceDetail" parameterType="String">
+        SELECT
+        <include refid="GTTInvoiceDetailBase_Column_List" />,id as upid
+        FROM t_goldtax_customer_invoice_detail
+        WHERE billid=#{billid}
+        order by seq asc
+    </select>
+    <delete id="deleteGoldTaxCustomerInvoiceDetailByBillid" parameterType="String">
+        DELETE FROM t_goldtax_customer_invoice_detail WHERE billid=#{billid}
+    </delete>
+    <insert id="insertGoldTaxCustomerInvoiceDetail" parameterType="com.hd.agent.account.model.GoldTaxCustomerInvoiceDetail" >
+        insert into t_goldtax_customer_invoice_detail
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="billid != null" >
+                billid,
+            </if>
+            <if test="goodsid != null" >
+                goodsid,
+            </if>
+            <if test="goodsname != null" >
+                goodsname,
+            </if>
+            <if test="sourcegoodsid != null" >
+                sourcegoodsid,
+            </if>
+            <if test="sourcegoodsname != null" >
+                sourcegoodsname,
+            </if>
+            <if test="jstypeid != null" >
+                jstypeid,
+            </if>
+            <if test="model != null" >
+                model,
+            </if>
+            <if test="unitname != null" >
+                unitname,
+            </if>
+            <if test="unitnum != null" >
+                unitnum,
+            </if>
+            <if test="taxprice != null" >
+                taxprice,
+            </if>
+            <if test="taxamount != null" >
+                taxamount,
+            </if>
+            <if test="notaxprice != null" >
+                notaxprice,
+            </if>
+            <if test="notaxamount != null" >
+                notaxamount,
+            </if>
+            <if test="taxfreeflag != null" >
+                taxfreeflag,
+            </if>
+            <if test="taxrate != null" >
+                taxrate,
+            </if>
+            <if test="tax != null" >
+                tax,
+            </if>
+            <if test="remark != null" >
+                remark,
+            </if>
+            <if test="seq != null" >
+                seq,
+            </if>
+            <if test="sourcetype != null" >
+                sourcetype,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id},
+            </if>
+            <if test="billid != null" >
+                #{billid},
+            </if>
+            <if test="goodsid != null" >
+                #{goodsid},
+            </if>
+            <if test="goodsname != null" >
+                #{goodsname},
+            </if>
+            <if test="sourcegoodsid != null" >
+                #{sourcegoodsid},
+            </if>
+            <if test="sourcegoodsname != null" >
+                #{sourcegoodsname},
+            </if>
+            <if test="jstypeid != null" >
+                #{jstypeid},
+            </if>
+            <if test="model != null" >
+                #{model},
+            </if>
+            <if test="unitname != null" >
+                #{unitname},
+            </if>
+            <if test="unitnum != null" >
+                #{unitnum},
+            </if>
+            <if test="taxprice != null" >
+                #{taxprice},
+            </if>
+            <if test="taxamount != null" >
+                #{taxamount},
+            </if>
+            <if test="notaxprice != null" >
+                #{notaxprice},
+            </if>
+            <if test="notaxamount != null" >
+                #{notaxamount},
+            </if>
+            <if test="taxfreeflag != null" >
+                #{taxfreeflag},
+            </if>
+            <if test="taxrate != null" >
+                #{taxrate},
+            </if>
+            <if test="tax != null" >
+                #{tax},
+            </if>
+            <if test="remark != null" >
+                #{remark},
+            </if>
+            <if test="seq != null" >
+                #{seq},
+            </if>
+            <if test="sourcetype != null" >
+                #{sourcetype},
+            </if>
+        </trim>
+    </insert>
+
+    <insert id="insertGoldTaxCustomerInvoiceDetailBatch" parameterType="java.util.List" >
+        insert into t_goldtax_customer_invoice_detail ( billid, goodsid, goodsname, sourcegoodsid, sourcegoodsname,
+        jstypeid, unitname, unitnum, taxprice, taxamount, notaxprice,
+        notaxamount, taxfreeflag, taxrate, tax, remark, seq,sourcetype,model)
+        values
+        <foreach collection="list" index="index" item="item" separator="," >
+        ( #{item.billid}, #{item.goodsid}, #{item.goodsname}, #{item.sourcegoodsid}, #{item.sourcegoodsname},
+            #{item.jstypeid}, #{item.unitname}, #{item.unitnum}, #{item.taxprice}, #{item.taxamount}, #{item.notaxprice},
+            #{item.notaxamount}, #{item.taxfreeflag}, #{item.taxrate}, #{item.tax}, #{item.remark}, #{item.seq},#{item.sourcetype},
+            #{item.model})
+        </foreach>
+    </insert>
+
+    <select id="getGoldTaxCustomerInvoiceDetailSumByMap" parameterType="java.lang.String" resultType="com.hd.agent.account.model.GoldTaxCustomerInvoiceDetail">
+        SELECT
+        sum(notaxamount) as notaxamount,sum(taxamount) as taxamount,sum(tax) as tax
+        FROM t_goldtax_customer_invoice_detail
+        WHERE
+        <trim prefixOverrides="and|or">
+            <if test="billid!=null">
+                and billid=#{billid}
+            </if>
+            <if test="amountbigzero != null">
+                <![CDATA[ and taxamount>0 ]]>
+            </if>
+            <if test="amountlesszero != null">
+                <![CDATA[ and taxamount<0 ]]>
+            </if>
+        </trim>
+    </select>
+</mapper>

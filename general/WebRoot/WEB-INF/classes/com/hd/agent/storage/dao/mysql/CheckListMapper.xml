@@ -1,0 +1,984 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hd.agent.storage.dao.CheckListMapper">
+	<sql id="checkList-column">
+	    id, businessdate, storageid, createtype,checkno,checkuserid,sourceid,checknum,truenum,isfinish,istrue, status, remark, adduserid, addusername, 
+	    adddeptid, adddeptname, addtime, modifyuserid, modifyusername, modifytime, audituserid, 
+	    auditusername, audittime, stopuserid, stopusername, stoptime, closetime, printtimes, 
+	    field01, field02, field03, field04, field05, field06, field07, field08,isrefer
+	</sql>
+	<sql id="checkListDetail-column">
+	    id, checklistid,checkuserid,istrue,summarybatchid, goodsid,brandid, storageid, storagelocationid, unitid, unitname, 
+	    booknum, realnum, profitlossnum, auxunitid, auxunitname, auxbooknum, auxbooknumdetail, 
+	    auxrealnum,auxrealremainder, auxrealnumdetail, auxprofitlossnum, auxprofitlossnumdetail, price, amount, 
+	    batchno, produceddate, deadline, remark, seq,field01, field02, field03, field04, field05, field06, field07, field08
+    </sql>
+	<insert id="addCheckList" parameterType="com.hd.agent.storage.model.CheckList">
+		insert into t_storage_checklist
+	    <trim prefix="(" suffix=")" suffixOverrides=",">
+	      <if test="id != null">
+	        id,
+	      </if>
+	      <if test="businessdate != null">
+	        businessdate,
+	      </if>
+	      <if test="storageid != null">
+	        storageid,
+	      </if>
+	      <if test="createtype != null">
+	        createtype,
+	      </if>
+	      <if test="checkno != null">
+	        checkno,
+	      </if>
+	      <if test="checkuserid != null">
+	        checkuserid,
+	      </if>
+	      <if test="sourceid != null">
+	        sourceid,
+	      </if>
+	      <if test="checknum != null">
+	        checknum,
+	      </if>
+	      <if test="truenum != null">
+	        truenum,
+	      </if>
+	      <if test="isfinish != null">
+	        isfinish,
+	      </if>
+	      <if test="istrue != null">
+	        istrue,
+	      </if>
+	      <if test="status != null">
+	        status,
+	      </if>
+	      <if test="remark != null">
+	        remark,
+	      </if>
+	      <if test="adduserid != null">
+	        adduserid,
+	      </if>
+	      <if test="addusername != null">
+	        addusername,
+	      </if>
+	      <if test="adddeptid != null">
+	        adddeptid,
+	      </if>
+	      <if test="adddeptname != null">
+	        adddeptname,
+	      </if>
+	      <if test="1==1">
+	        addtime,
+	      </if>
+	      <if test="field01 != null">
+	        field01,
+	      </if>
+	      <if test="field02 != null">
+	        field02,
+	      </if>
+	      <if test="field03 != null">
+	        field03,
+	      </if>
+	      <if test="field04 != null">
+	        field04,
+	      </if>
+	      <if test="field05 != null">
+	        field05,
+	      </if>
+	      <if test="field06 != null">
+	        field06,
+	      </if>
+	      <if test="field07 != null">
+	        field07,
+	      </if>
+	      <if test="field08 != null">
+	        field08,
+	      </if>
+	      <if test="isrefer != null">
+	        isrefer,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides=",">
+	      <if test="id != null">
+	        #{id},
+	      </if>
+	      <if test="businessdate != null">
+	        #{businessdate},
+	      </if>
+	      <if test="storageid != null">
+	        #{storageid},
+	      </if>
+	      <if test="createtype != null">
+	        #{createtype},
+	      </if>
+	      <if test="checkno != null">
+	        #{checkno},
+	      </if>
+	      <if test="checkuserid != null">
+	        #{checkuserid},
+	      </if>
+	      <if test="sourceid != null">
+	        #{sourceid},
+	      </if>
+	      <if test="checknum != null">
+	        #{checknum},
+	      </if>
+	      <if test="truenum != null">
+	        #{truenum},
+	      </if>
+	      <if test="isfinish != null">
+	        #{isfinish},
+	      </if>
+	      <if test="istrue != null">
+	        #{istrue},
+	      </if>
+	      <if test="status != null">
+	        #{status},
+	      </if>
+	      <if test="remark != null">
+	        #{remark},
+	      </if>
+	      <if test="adduserid != null">
+	        #{adduserid},
+	      </if>
+	      <if test="addusername != null">
+	        #{addusername},
+	      </if>
+	      <if test="adddeptid != null">
+	        #{adddeptid},
+	      </if>
+	      <if test="adddeptname != null">
+	        #{adddeptname},
+	      </if>
+	      <if test="1==1">
+	        now(),
+	      </if>
+	      <if test="field01 != null">
+	        #{field01},
+	      </if>
+	      <if test="field02 != null">
+	        #{field02},
+	      </if>
+	      <if test="field03 != null">
+	        #{field03},
+	      </if>
+	      <if test="field04 != null">
+	        #{field04},
+	      </if>
+	      <if test="field05 != null">
+	        #{field05},
+	      </if>
+	      <if test="field06 != null">
+	        #{field06},
+	      </if>
+	      <if test="field07 != null">
+	        #{field07},
+	      </if>
+	      <if test="field08 != null">
+	        #{field08},
+	      </if>
+	      <if test="isrefer != null">
+	        #{isrefer},
+	      </if>
+	    </trim>
+	</insert>
+	<insert id="addCheckListDetail" parameterType="com.hd.agent.storage.model.CheckListDetail">
+		insert into t_storage_checklist_detail
+	    <trim prefix="(" suffix=")" suffixOverrides=",">
+	      <if test="id != null">
+	        id,
+	      </if>
+	      <if test="checklistid != null">
+	        checklistid,
+	      </if>
+	      <if test="checkuserid != null">
+	        checkuserid,
+	      </if>
+	      <if test="istrue != null">
+	        istrue,
+	      </if>
+	      <if test="summarybatchid != null">
+	        summarybatchid,
+	      </if>
+	      <if test="goodsid != null">
+	        goodsid,
+	      </if>
+	      <if test="brandid != null">
+	        brandid,
+	      </if>
+	      <if test="storageid != null">
+	        storageid,
+	      </if>
+	      <if test="storagelocationid != null">
+	        storagelocationid,
+	      </if>
+	      <if test="unitid != null">
+	        unitid,
+	      </if>
+	      <if test="unitname != null">
+	        unitname,
+	      </if>
+	      <if test="booknum != null">
+	        booknum,
+	      </if>
+	      <if test="realnum != null">
+	        realnum,
+	      </if>
+	      <if test="profitlossnum != null">
+	        profitlossnum,
+	      </if>
+	      <if test="auxunitid != null">
+	        auxunitid,
+	      </if>
+	      <if test="auxunitname != null">
+	        auxunitname,
+	      </if>
+	      <if test="auxbooknum != null">
+	        auxbooknum,
+	      </if>
+	      <if test="auxbooknumdetail != null">
+	        auxbooknumdetail,
+	      </if>
+	      <if test="auxrealnum != null">
+	        auxrealnum,
+	      </if>
+	      <if test="auxrealremainder != null">
+	        auxrealremainder,
+	      </if>
+	      <if test="auxrealnumdetail != null">
+	        auxrealnumdetail,
+	      </if>
+	      <if test="auxprofitlossnum != null">
+	        auxprofitlossnum,
+	      </if>
+	      <if test="auxprofitlossnumdetail != null">
+	        auxprofitlossnumdetail,
+	      </if>
+	      <if test="price != null">
+	        price,
+	      </if>
+	      <if test="amount != null">
+	        amount,
+	      </if>
+	      <if test="batchno != null">
+	        batchno,
+	      </if>
+	      <if test="produceddate != null">
+	        produceddate,
+	      </if>
+	      <if test="deadline != null">
+	        deadline,
+	      </if>
+	      <if test="remark != null">
+	        remark,
+	      </if>
+	      <if test="seq != null">
+	        seq,
+	      </if>
+	      <if test="field01 != null" >
+	        field01,
+	      </if>
+	      <if test="field02 != null" >
+	        field02,
+	      </if>
+	      <if test="field03 != null" >
+	        field03,
+	      </if>
+	      <if test="field04 != null" >
+	        field04,
+	      </if>
+	      <if test="field05 != null" >
+	        field05,
+	      </if>
+	      <if test="field06 != null" >
+	        field06,
+	      </if>
+	      <if test="field07 != null" >
+	        field07,
+	      </if>
+	      <if test="field08 != null" >
+	        field08,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides=",">
+	      <if test="id != null">
+	        #{id},
+	      </if>
+	      <if test="checklistid != null">
+	        #{checklistid},
+	      </if>
+	      <if test="checkuserid != null">
+	        #{checkuserid},
+	      </if>
+	      <if test="istrue != null">
+	        #{istrue},
+	      </if>
+	      <if test="summarybatchid != null">
+	        #{summarybatchid},
+	      </if>
+	      <if test="goodsid != null">
+	        #{goodsid},
+	      </if>
+	      <if test="brandid != null">
+	        #{brandid},
+	      </if>
+	      <if test="storageid != null">
+	        #{storageid},
+	      </if>
+	      <if test="storagelocationid != null">
+	        #{storagelocationid},
+	      </if>
+	      <if test="unitid != null">
+	        #{unitid},
+	      </if>
+	      <if test="unitname != null">
+	        #{unitname},
+	      </if>
+	      <if test="booknum != null">
+	        #{booknum},
+	      </if>
+	      <if test="realnum != null">
+	        #{realnum},
+	      </if>
+	      <if test="profitlossnum != null">
+	        #{profitlossnum},
+	      </if>
+	      <if test="auxunitid != null">
+	        #{auxunitid},
+	      </if>
+	      <if test="auxunitname != null">
+	        #{auxunitname},
+	      </if>
+	      <if test="auxbooknum != null">
+	        #{auxbooknum},
+	      </if>
+	      <if test="auxbooknumdetail != null">
+	        #{auxbooknumdetail},
+	      </if>
+	      <if test="auxrealnum != null">
+	        #{auxrealnum},
+	      </if>
+	      <if test="auxrealremainder != null">
+	        #{auxrealremainder},
+	      </if>
+	      <if test="auxrealnumdetail != null">
+	        #{auxrealnumdetail},
+	      </if>
+	      <if test="auxprofitlossnum != null">
+	        #{auxprofitlossnum},
+	      </if>
+	      <if test="auxprofitlossnumdetail != null">
+	        #{auxprofitlossnumdetail},
+	      </if>
+	      <if test="price != null">
+	        #{price},
+	      </if>
+	      <if test="amount != null">
+	        #{amount},
+	      </if>
+	      <if test="batchno != null">
+	        #{batchno},
+	      </if>
+	      <if test="produceddate != null">
+	        #{produceddate},
+	      </if>
+	      <if test="deadline != null">
+	        #{deadline},
+	      </if>
+	      <if test="remark != null">
+	        #{remark},
+	      </if>
+	      <if test="seq != null">
+	        #{seq},
+	      </if>
+	      <if test="field01 != null" >
+	        #{field01},
+	      </if>
+	      <if test="field02 != null" >
+	        #{field02},
+	      </if>
+	      <if test="field03 != null" >
+	        #{field03},
+	      </if>
+	      <if test="field04 != null" >
+	        #{field04},
+	      </if>
+	      <if test="field05 != null" >
+	        #{field05},
+	      </if>
+	      <if test="field06 != null" >
+	        #{field06},
+	      </if>
+	      <if test="field07 != null" >
+	        #{field07},
+	      </if>
+	      <if test="field08 != null" >
+	        #{field08},
+	      </if>
+	    </trim>
+	</insert>
+	<insert id="addCheckListDetailBatch">
+		insert into t_storage_checklist_detail (checklistid,checkuserid,istrue, summarybatchid, goodsid,brandid, storageid, storagelocationid, 
+		      unitid, unitname, booknum, realnum, profitlossnum, auxunitid, 
+		      auxunitname, auxbooknum, auxbooknumdetail, auxrealnum,auxrealremainder, auxrealnumdetail, 
+		      auxprofitlossnum, auxprofitlossnumdetail, price, amount, batchno, 
+		      produceddate, deadline, remark, seq, field01, field02, field03, 
+		      field04, field05, field06, field07, field08)
+		 values
+	    <foreach collection="list" item="item" separator="," >
+	    	<if test="item.goodsid != null">
+		      (#{item.checklistid},#{item.checkuserid},#{item.istrue}, #{item.summarybatchid}, #{item.goodsid},#{item.brandid}, #{item.storageid}, #{item.storagelocationid}, 
+		      #{item.unitid}, #{item.unitname}, #{item.booknum}, #{item.realnum}, #{item.profitlossnum}, #{item.auxunitid}, 
+		      #{item.auxunitname}, #{item.auxbooknum}, #{item.auxbooknumdetail}, #{item.auxrealnum},#{item.auxrealremainder}, #{item.auxrealnumdetail}, 
+		      #{item.auxprofitlossnum}, #{item.auxprofitlossnumdetail}, #{item.price}, #{item.amount}, #{item.batchno}, 
+		      #{item.produceddate}, #{item.deadline}, #{item.remark}, #{item.seq}, #{item.field01}, #{item.field02}, #{item.field03}, 
+		      #{item.field04}, #{item.field05}, #{item.field06}, #{item.field07}, #{item.field08})
+		    </if>
+		</foreach>
+	</insert>
+	<select id="getCheckListInfo" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.CheckList">
+		select <include refid="checkList-column"/>
+		from t_storage_checklist where id=#{id}
+	</select>
+	<select id="getCheckListInfoByChecklistidAndNo" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.CheckList">
+		select <include refid="checkList-column"/>
+		from t_storage_checklist where checkno=#{checkno} and sourceid=#{id}
+	</select>
+
+	<select id="getCheckListDetailListByPageMap" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.storage.model.CheckListDetail">
+		select t.id, t.checklistid,t.checkuserid,t.istrue,t.summarybatchid, t.goodsid,g.barcode,g.spell,t.brandid, t.storageid, t.storagelocationid, t.unitid, t.unitname,
+		t.booknum, t.realnum, t.profitlossnum, t.auxunitid, t.auxunitname, t.auxbooknum, t.auxbooknumdetail,t.price*t.profitlossnum as profitlossamount,
+		t.auxrealnum,t.auxrealremainder, t.auxrealnumdetail, t.auxprofitlossnum, t.auxprofitlossnumdetail, t.price, t.amount,
+		t.batchno, t.produceddate, t.deadline, t.remark, t.seq,t.field01, t.field02, t.field03, t.field04, t.field05, t.field06, t.field07, t.field08
+		from t_storage_checklist_detail t,t_base_goods_info g
+		where t.checklistid=#{condition.checklistid} and t.goodsid=g.id
+		<include refid="common.Page_limit"/>
+	</select>
+	<select id="getCheckListDetailCountByPageMap" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+		select count(1) from t_storage_checklist_detail where checklistid=#{condition.checklistid}
+	</select>
+	<select id="getCheckListDetailSumByPageMap" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.storage.model.CheckListDetail">
+		select sum(t.booknum) as booknum, sum(t.realnum) as realnum, sum(t.profitlossnum) as profitlossnum, sum(t.auxbooknum) as auxbooknum,sum(t.price*t.profitlossnum) as profitlossamount,
+	    sum(t.auxrealnum) as auxrealnum,sum(t.auxrealremainder) as auxrealremainder,sum(t.auxprofitlossnum) as auxprofitlossnum,sum(t.amount) as amount
+		from t_storage_checklist_detail t where t.checklistid=#{condition.checklistid}
+	</select>
+
+	<select id="getCheckListDetailListByCheckListid" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.CheckListDetail">
+		select t.id, t.checklistid,t.checkuserid,t.istrue,t.summarybatchid, t.goodsid,t.brandid, t.storageid, t.storagelocationid, t.unitid, t.unitname,
+			t.booknum, t.realnum, t.profitlossnum, t.auxunitid, t.auxunitname, t.auxbooknum, t.auxbooknumdetail,t.price*t.profitlossnum as profitlossamount,
+			t.auxrealnum,t.auxrealremainder, t.auxrealnumdetail, t.auxprofitlossnum, t.auxprofitlossnumdetail, t.price, t.amount,
+			t.batchno, t.produceddate, t.deadline, t.remark, t.seq,t.field01, t.field02, t.field03, t.field04, t.field05, t.field06, t.field07, t.field08
+		from t_storage_checklist_detail t where t.checklistid=#{checklistid} order by goodsid
+	</select>
+	<select id="showCheckListData" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.storage.model.CheckList">
+		select t.id, t.businessdate, t.storageid, t.createtype,t.checkno,t.checkuserid,t.sourceid,t.checknum,t.truenum,t.isfinish,t.istrue, t.status, t.remark, t.adduserid, t.addusername, 
+	    t.adddeptid, t.adddeptname, t.addtime, t.modifyuserid, t.modifyusername, t.modifytime, t.audituserid, 
+	    t.auditusername, t.audittime, t.stopuserid, t.stopusername, t.stoptime, t.closetime, t.printtimes, 
+	    t.field01, t.field02, t.field03, t.field04, t.field05, t.field06, t.field07, t.field08,t.isrefer
+		from t_storage_checklist t
+		<if test="condition.goodsid != null">
+		inner join t_storage_checklist_detail t1 on t.id=t1.checklistid
+		</if>
+		<trim prefix="where" prefixOverrides="and|or" >
+		  <include refid="common.Page_querySql"/>
+	      <include refid="common.Page_dataSql"/>
+	      <if test="condition.goodsid != null">
+			and t1.goodsid = #{condition.goodsid}
+		  </if>
+		  <if test="condition.businessdate1 != null">
+			 and t.businessdate >= #{condition.businessdate1}
+		  </if>
+		  <if test="condition.businessdate2 != null">
+			 <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+		  </if>
+		  <if test="condition.id != null" >
+	         and t.id like CONCAT('%',#{condition.id},'%')
+	      </if>
+	      <if test="condition.sourceid != null" >
+	         and t.sourceid like CONCAT('%',#{condition.sourceid},'%')
+	      </if>
+	      <if test="condition.checkno != null" >
+	         and t.checkno = #{condition.checkno}
+	      </if>
+	      <if test="condition.checkuserid != null" >
+	         and t.checkuserid = #{condition.checkuserid}
+	      </if>
+	      <if test="condition.storageid != null" >
+	         and t.storageid = #{condition.storageid}
+	      </if>
+	      <if test="condition.createtype != null" >
+	         and t.createtype = #{condition.createtype}
+	      </if>
+	      <if test="condition.status != null" >
+	         and t.status = #{condition.status}
+	      </if>
+	      <if test="condition.isrefer != null" >
+	         and t.isrefer = #{condition.isrefer}
+	      </if>
+	      <choose>
+	      	<when test="condition.isClose ==0 ">
+	      		and t.status in("1","2")
+	      	</when>
+	      	<when test="condition.isClose ==1 ">
+	      		and t.status in("3","4")
+	      	</when>
+	      </choose>
+	    </trim>
+	    <include refid="common.Page_limit" />
+	</select>
+	<select id="showCheckListCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+		select count(1) from t_storage_checklist t
+		<if test="condition.goodsid != null">
+		inner join t_storage_checklist_detail t1 on t.id=t1.checklistid
+		</if>
+		<trim prefix="where" prefixOverrides="and|or" >
+		  <include refid="common.Page_querySql"/>
+	      <include refid="common.Page_dataSql"/>
+	      <if test="condition.goodsid != null">
+			and t1.goodsid = #{condition.goodsid}
+		  </if>
+		  <if test="condition.businessdate1 != null">
+			 and t.businessdate >= #{condition.businessdate1}
+		  </if>
+		  <if test="condition.businessdate2 != null">
+			 <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+		  </if>
+		  <if test="condition.id != null" >
+	         and t.id like CONCAT('%',#{condition.id},'%')
+	      </if>
+	      <if test="condition.sourceid != null" >
+	         and t.sourceid like CONCAT('%',#{condition.sourceid},'%')
+	      </if>
+	      <if test="condition.checkno != null" >
+	         and t.checkno = #{condition.checkno}
+	      </if>
+	      <if test="condition.checkuserid != null" >
+	         and t.checkuserid = #{condition.checkuserid}
+	      </if>
+	      <if test="condition.storageid != null" >
+	         and t.storageid = #{condition.storageid}
+	      </if>
+	      <if test="condition.createtype != null" >
+	         and t.createtype = #{condition.createtype}
+	      </if>
+	      <if test="condition.status != null" >
+	         and t.status = #{condition.status}
+	      </if>
+	      <if test="condition.isrefer != null" >
+	         and t.isrefer = #{condition.isrefer}
+	      </if>
+	      <choose>
+	      	<when test="condition.isClose ==0 ">
+	      		and t.status in("1","2")
+	      	</when>
+	      	<when test="condition.isClose ==1 ">
+	      		and t.status in("3","4")
+	      	</when>
+	      </choose>
+	    </trim>
+	</select>
+	<select id="getCheckListInfoBrandList" parameterType="java.lang.String" resultType="java.lang.String">
+		select GROUP_CONCAT(DISTINCT g.name)
+		from t_storage_checklist_detail t
+		LEFT JOIN t_base_goods_brand g on t.brandid=g.id
+		where t.checklistid=#{id}
+	</select>
+	<update id="editCheckList" parameterType="com.hd.agent.storage.model.CheckList">
+		update t_storage_checklist
+	    <set >
+	      <if test="businessdate != null" >
+	        businessdate = #{businessdate},
+	      </if>
+	      <if test="storageid != null" >
+	        storageid = #{storageid},
+	      </if>
+	      <if test="createtype != null" >
+	        createtype = #{createtype},
+	      </if>
+	      <if test="checkno != null" >
+	        checkno = #{checkno},
+	      </if>
+	      <if test="checkuserid != null" >
+	        checkuserid = #{checkuserid},
+	      </if>
+	      <if test="sourceid != null" >
+	        sourceid = #{sourceid},
+	      </if>
+	      <if test="checknum != null" >
+	        checknum = #{checknum},
+	      </if>
+	      <if test="truenum != null" >
+	        truenum = #{truenum},
+	      </if>
+	      <if test="istrue != null" >
+	        istrue = #{istrue},
+	      </if>
+	      <if test="isfinish != null" >
+	        isfinish = #{isfinish},
+	      </if>
+	      <if test="status != null" >
+	        status = #{status},
+	      </if>
+	      <if test="remark != null" >
+	        remark = #{remark},
+	      </if>
+	      <if test="modifyuserid != null" >
+	        modifyuserid = #{modifyuserid},
+	      </if>
+	      <if test="modifyusername != null" >
+	        modifyusername = #{modifyusername},
+	      </if>
+	      <if test="1==1" >
+	        modifytime = now(),
+	      </if>
+	      <if test="printtimes != null" >
+	        printtimes = #{printtimes},
+	      </if>
+	      <if test="field01 != null" >
+	        field01 = #{field01},
+	      </if>
+	      <if test="field02 != null" >
+	        field02 = #{field02},
+	      </if>
+	      <if test="field03 != null" >
+	        field03 = #{field03},
+	      </if>
+	      <if test="field04 != null" >
+	        field04 = #{field04},
+	      </if>
+	      <if test="field05 != null" >
+	        field05 = #{field05},
+	      </if>
+	      <if test="field06 != null" >
+	        field06 = #{field06},
+	      </if>
+	      <if test="field07 != null" >
+	        field07 = #{field07},
+	      </if>
+	      <if test="field08 != null" >
+	        field08 = #{field08},
+	      </if>
+	    </set>
+	    where id = #{id}
+	</update>
+	<delete id="deleteCheckListDetailByCheckListid" parameterType="java.lang.String">
+		delete from t_storage_checklist_detail where checklistid=#{checklistid}
+	</delete>
+	<delete id="deleteCheckList" parameterType="java.lang.String">
+		delete from t_storage_checklist where id=#{id} and (status='1' or status='2')
+	</delete>
+	<select id="getCheckListCountByStorageid" parameterType="java.lang.String" resultType="int">
+		select count(1) from t_storage_checklist where storageid=#{storageid} and (status='1' or status='2' or status='3')
+	</select>
+	<select id="getCheckListIdByStorageid" parameterType="java.lang.String" resultType="java.lang.String">
+		select id from t_storage_checklist where storageid=#{storageid} and (status='1' or status='2' or status='3')
+	</select>
+	<update id="auditCheckList" parameterType="java.lang.String">
+		update t_storage_checklist
+		set status='3',isrefer='1',isfinish='1',
+		audituserid=#{userid},auditusername=#{username},audittime=now()
+		where id=#{id} and (status='2' or status='6')
+	</update>
+	<update id="auditAndCloseCheckList" parameterType="java.lang.String">
+		update t_storage_checklist set status='4',audituserid=#{userid},auditusername=#{username},audittime=now(),closetime=now()
+		where id=#{id} and (status='2' or status='6')
+	</update>
+	<update id="oppauditCheckList" parameterType="java.lang.String">
+		update t_storage_checklist set status='2',isrefer='0',audituserid=#{userid},auditusername=#{username},audittime=now()
+		where id=#{id} and (status='3' or status='6')
+	</update>
+	<update id="stopCheckList" parameterType="java.lang.String">
+		update t_storage_checklist set status='5',stopuserid=#{userid},stopusername=#{username},stoptime=now()
+		where id=#{id} and status='3'
+	</update>
+	<update id="closeCheckList" parameterType="java.lang.String">
+		update t_storage_checklist set status='4',closetime=now()
+		where id=#{id} and (status='3' or status='6')
+	</update>
+	<update id="closeCheckListBySourceid" parameterType="java.lang.String">
+		update t_storage_checklist set status='4',closetime=now()
+		where sourceid=#{sourceid}
+	</update>
+	<update id="updateCheckListRefer" parameterType="java.lang.String">
+		update t_storage_checklist set isrefer=#{isrefer}
+		where id=#{id}
+	</update>
+	<select id="getCheckListNumNotTureCount" parameterType="java.lang.String" resultType="int">
+		select count(1) from t_storage_checklist_detail
+		where istrue='0' and checklistid=#{id}
+	</select>
+	<select id="getCheckListNoUserList" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.CheckListDetail">
+		select <include refid="checkListDetail-column"/>
+		from t_storage_checklist_detail
+		where (checkuserid is null or checkuserid='') and checklistid=#{id}
+	</select>
+	<update id="updateCheckListFinish" parameterType="java.lang.String">
+		update t_storage_checklist set isfinish='1'
+		where id=#{id}
+	</update>
+    <update id="updateCheckListDetailTrue" parameterType="java.lang.String">
+        update t_storage_checklist_detail t set t.istrue='1'
+        where t.checklistid=#{id} and t.booknum=t.realnum
+    </update>
+    <update id="updateCheckListDetailFalse" parameterType="java.lang.String">
+        update t_storage_checklist_detail t set t.istrue='0'
+        <![CDATA[where t.checklistid=#{id} and t.booknum<>t.realnum]]>
+    </update>
+	<select id="getCheckListNumNotTureList" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.CheckListDetail">
+		select <include refid="checkListDetail-column"/>
+		from t_storage_checklist_detail
+		where istrue='0' and checklistid=#{id}
+	</select>
+	<select id="getUseridByCheckList" parameterType="java.lang.String" resultType="java.lang.String">
+		SELECT DISTINCT checkuserid from t_storage_checklist_detail
+		where checklistid=#{id}
+	</select>
+	<select id="getCheckListNumByUserid" parameterType="java.lang.String" resultType="int">
+		select count(1) from t_storage_checklist_detail
+		where checkuserid=#{checkuserid} and  istrue=#{istrue} and checklistid=#{checklistid}
+	</select>
+	<select id="getCheckListDetailInfo" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.CheckListDetail">
+		select <include refid="checkListDetail-column"/>
+		from t_storage_checklist_detail  where id=#{id}
+	</select>
+	<select id="getCheckListDetailInfoByGoodsid" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.CheckListDetail">
+		select <include refid="checkListDetail-column"/>
+		from t_storage_checklist_detail  where goodsid=#{goodsid} and checklistid=#{checklistid}
+		limit 1
+	</select>
+	<select id="exportCheckListData" parameterType="com.hd.agent.common.util.PageMap" resultType="java.util.Map">
+		select t.id,t.businessdate,t.status,t.storageid,t.checkno,t1.price,
+		t1.id as detailid,t1.goodsid,t1.unitid,t1.unitname,t1.auxunitid,t1.auxunitname,
+		t1.booknum,t1.realnum,t1.profitlossnum,t.checkuserid,t1.batchno,t1.produceddate
+		from t_storage_checklist t
+		RIGHT JOIN t_storage_checklist_detail t1 on t.id=t1.checklistid
+		<trim prefix="where" prefixOverrides="and|or" >
+		  <include refid="common.Page_querySql"/>
+	      <include refid="common.Page_dataSql"/>
+		  <if test="condition.businessdate1 != null">
+			 and t.businessdate >= #{condition.businessdate1}
+		  </if>
+		  <if test="condition.businessdate2 != null">
+			 <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+		  </if>
+		  <if test="condition.id != null" >
+	         and t.id like CONCAT('%',#{condition.id},'%')
+	      </if>
+	      <if test="condition.sourceid != null" >
+	         and t.sourceid like CONCAT('%',#{condition.sourceid},'%')
+	      </if>
+	      <if test="condition.checkno != null" >
+	         and t.checkno = #{condition.checkno}
+	      </if>
+	      <if test="condition.checkuserid != null" >
+	         and t.checkuserid = #{condition.checkuserid}
+	      </if>
+	      <if test="condition.storageid != null" >
+	         and t.storageid = #{condition.storageid}
+	      </if>
+	      <if test="condition.createtype != null" >
+	         and t.createtype = #{condition.createtype}
+	      </if>
+	      <if test="condition.status != null" >
+	         and t.status = #{condition.status}
+	      </if>
+	      <if test="condition.isrefer != null" >
+	         and t.isrefer = #{condition.isrefer}
+	      </if>
+	      <choose>
+	      	<when test="condition.isClose ==0 ">
+	      		and t.status in("1","2")
+	      	</when>
+	      	<when test="condition.isClose ==1 ">
+	      		and t.status in("3","4")
+	      	</when>
+	      </choose>
+	    </trim>
+	</select>
+	<update id="updateCheckListDetail" parameterType="com.hd.agent.storage.model.CheckListDetail">
+		update t_storage_checklist_detail
+	    <set>
+	      <if test="realnum != null">
+	        realnum = #{realnum},
+	      </if>
+	      <if test="profitlossnum != null">
+	        profitlossnum = #{profitlossnum},
+	      </if>
+	      <if test="auxrealnum != null">
+	        auxrealnum = #{auxrealnum},
+	      </if>
+	      <if test="auxrealremainder != null">
+	        auxrealremainder = #{auxrealremainder},
+	      </if>
+	      <if test="auxrealnumdetail != null">
+	        auxrealnumdetail = #{auxrealnumdetail},
+	      </if>
+	      <if test="auxprofitlossnumdetail != null">
+	        auxprofitlossnumdetail = #{auxprofitlossnumdetail},
+	      </if>
+	      <if test="checkuserid != null">
+	        checkuserid = #{checkuserid},
+	      </if>
+	      <if test="istrue != null">
+	        istrue = #{istrue},
+	      </if>
+	    </set>
+	    where id = #{id}
+	</update>
+	<update id="updateCheckListDetailByGoodsid" parameterType="com.hd.agent.storage.model.CheckListDetail">
+		update t_storage_checklist_detail
+	    <set>
+	      <if test="realnum != null">
+	        realnum = #{realnum},
+	      </if>
+	      <if test="profitlossnum != null">
+	        profitlossnum = #{profitlossnum},
+	      </if>
+	      <if test="auxrealnum != null">
+	        auxrealnum = #{auxrealnum},
+	      </if>
+	      <if test="auxrealremainder != null">
+	        auxrealremainder = #{auxrealremainder},
+	      </if>
+	      <if test="auxrealnumdetail != null">
+	        auxrealnumdetail = #{auxrealnumdetail},
+	      </if>
+	      <if test="auxprofitlossnumdetail != null">
+	        auxprofitlossnumdetail = #{auxprofitlossnumdetail},
+	      </if>
+	      <if test="checkuserid != null">
+	        checkuserid = #{checkuserid},
+	      </if>
+	      <if test="istrue != null">
+	        istrue = #{istrue},
+	      </if>
+		<if test="batchno != null">
+			batchno = #{batchno},
+		</if>
+		<if test="remark != null">
+			remark = #{remark},
+		</if>
+	    </set>
+		<trim prefix="where" prefixOverrides="and|or" >
+			<if test="1==1" >
+				and id = #{id}
+			</if>
+		</trim>
+	</update>
+
+	<delete id="deleteCheckListDetailByGoodsid" parameterType="com.hd.agent.storage.model.CheckListDetail">
+		delete
+		from t_storage_checklist_detail
+		<trim prefix="where" prefixOverrides="and|or" >
+			<if test="1==1" >
+				and id = #{id}
+			</if>
+		</trim>
+	</delete>
+	<select id="getCheckListUnfinishForPhone" resultType="com.hd.agent.storage.model.CheckList" parameterType="java.lang.String">
+        select t.id, t.businessdate, t.storageid, t.createtype,t.checkno,t.checkuserid,t.sourceid,t.checknum,t.truenum,t.isfinish,t.istrue, t.status, t.remark, t.adduserid, t.addusername,
+        t.adddeptid, t.adddeptname, t.addtime, t.modifyuserid, t.modifyusername, t.modifytime, t.audituserid,
+        t.auditusername, t.audittime, t.stopuserid, t.stopusername, t.stoptime, t.closetime, t.printtimes,
+        t.field01, t.field02, t.field03, t.field04, t.field05, t.field06, t.field07, t.field08,t.isrefer
+        from t_storage_checklist t
+        where t.status = '2' and t.isfinish = '0'
+        <if test="storageid != null">
+            and t.storageid = #{storageid}
+        </if>
+        <if test="dataSql != null">
+            and ${dataSql}
+        </if>
+        <if test="con != null">
+            and (
+            EXISTS(
+            select t1.checklistid from t_storage_checklist_detail t1,t_base_goods_brand b where t1.brandid = b.id and t.id=t1.checklistid
+              and  (b.name like CONCAT('%',#{con},'%') or t1.brandid like  CONCAT('%',#{con},'%'))
+            )
+            or t.id like concat('%',#{con},'%')
+            )
+        </if>
+	</select>
+	<select id="getCheckListBySourceid" resultType="com.hd.agent.storage.model.CheckList">
+		select <include refid="checkList-column"/>
+		from t_storage_checklist where sourceid=#{sourceid}
+	</select>
+	<select id="doCheckListDetailIsHadGoods" parameterType="java.lang.String" resultType="int">
+		SELECT count(1) from t_storage_checklist_detail t
+		where t.checklistid = #{checklistid} and t.goodsid = #{goodsid}
+	</select>
+	<select id="getCheckListDetailListRemoveDelDetailList" parameterType="java.util.Map" resultType="com.hd.agent.storage.model.CheckListDetail">
+		SELECT t.* from t_storage_checklist_detail t
+		WHERE t.checklistid = #{checklistid}
+		<if test="delDetailList != null">
+			and t.goodsid NOT in
+			<foreach collection="delDetailList" index="index" item="item" open="(" separator="," close=")">
+				#{item.goodsid}
+			</foreach>
+		</if>
+	</select>
+    <select id="getCheckListDetailChangeListInDays" resultType="com.hd.agent.storage.model.CheckListDetail">
+
+    </select>
+	<select id="getCheckListDetailCountByChecklistid"  resultType="int">
+		select count(1) from t_storage_checklist_detail where checklistid=#{checklistid}
+	</select>
+
+	<select id="getCheckListDetailByGoodsidAndChecklistid" parameterType="java.lang.String"  resultType="com.hd.agent.storage.model.CheckListDetail">
+		SELECT t.id, t.checklistid,t.checkuserid,t.istrue,t.summarybatchid, t.goodsid,t.brandid, t.storageid, t.storagelocationid, t.unitid, t.unitname,
+		t.booknum, t.realnum, t.profitlossnum, t.auxunitid, t.auxunitname, t.auxbooknum, t.auxbooknumdetail,t.price*t.profitlossnum as profitlossamount,
+		t.auxrealnum,t.auxrealremainder, t.auxrealnumdetail, t.auxprofitlossnum, t.auxprofitlossnumdetail, t.price, t.amount,
+		t.batchno, t.produceddate, t.deadline, t.remark, t.seq,t.field01, t.field02, t.field03, t.field04, t.field05, t.field06, t.field07, t.field08
+		from t_storage_checklist_detail t
+		<trim prefix="where" prefixOverrides="and|or" >
+			<if test="1==1" >
+				and t.id = #{id}
+			</if>
+		</trim>
+	</select>
+	<update id="updatePrintTimes" parameterType="java.lang.String">
+		UPDATE t_storage_checklist
+		set printtimes=printtimes+1
+	  	where id = #{id}
+	</update>
+    <sql id="getStorageGoodsCheckLogData_sql">
+        select s.storageid,si.name as storagename,s.goodsid,g.name as goodsname,g.brand as brandid,g.defaultsort as goodssort,s.existingnum,s.usablenum
+        from t_storage_summary s
+        LEFT JOIN t_base_storage_info si on s.storageid=si.id
+        LEFT JOIN t_base_goods_info g on s.goodsid =g.id
+        <trim prefix="where" prefixOverrides="and|or">
+            <include refid="common.Page_querySql"/>
+            <include refid="common.Page_dataSql"/>
+            <if test="condition.brandid != null ">
+                and FIND_IN_SET(g.brand,#{condition.brandid })
+            </if>
+            <if test="condition.goodsid != null ">
+                and FIND_IN_SET(s.goodsid,#{condition.goodsid })
+            </if>
+            <if test="condition.goodssort != null ">
+                and FIND_IN_SET(g.defaultsort,#{condition.goodssort })
+            </if>
+            <if test="condition.storageid != null ">
+                and FIND_IN_SET(s.storageid,#{condition.storageid })
+            </if>
+        </trim>
+    </sql>
+    <select id="getStorageGoodsCheckLogData" parameterType="com.hd.agent.common.util.PageMap" resultType="map">
+        <include refid="getStorageGoodsCheckLogData_sql" />
+        <if test="condition.isflag == null">
+            <include refid="common.Page_limit" />
+        </if>
+    </select>
+    <select id="getStorageGoodsCheckLogCount" resultType="int">
+        select count(*)
+        from ( <include refid="getStorageGoodsCheckLogData_sql" />) z
+    </select>
+    <select id="getStroageGoodsCheckList" resultType="com.hd.agent.storage.model.CheckListDetail">
+       SELECT t1.checklistid,t.storageid,t1.goodsid,t1.booknum,t1.realnum,t1.profitlossnum,t1.auxbooknumdetail,t1.auxrealnumdetail,t1.auxprofitlossnumdetail,t1.istrue,t.audittime,t.checkuserid,u.name AS checkusername
+		FROM t_storage_checklist t
+		RIGHT JOIN t_storage_checklist_detail t1 ON t.id = t1.checklistid
+		LEFT JOIN t_base_personnel u ON t.checkuserid = u.id
+		where t.storageid=#{storageid} and t1.goodsid=#{goodsid} and (t. STATUS = '3' OR t. STATUS = '4')
+		order by t.audittime desc
+		limit ${num}
+    </select>
+</mapper>

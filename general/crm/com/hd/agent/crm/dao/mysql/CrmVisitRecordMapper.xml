@@ -1,0 +1,780 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.crm.dao.CrmVisitRecordMapper" >
+	<!-- 客户拜访记录主表字段 -->
+	<sql id="CVRBase_Column_List" >
+	    id, businessdate, weekday, status, personid, leadid, customerid, pcustomerid, imgsrc, 
+	    remark, adduserid, addusername, adddeptid, adddeptname, addtime, modifyuserid, modifyusername, 
+	    modifytime, customersort, salesarea, salesdept,gps, isplan,phototime
+	</sql>
+	<!-- 客户拜访记录页面查询条件 -->
+    <sql id="CVRPageList_Where_Clause">
+        <if test="condition.id != null" >
+            and id like concat('%',#{condition.id},'%')
+        </if>
+        <if test="condition.exportids != null" >
+            and FIND_IN_SET(id,#{condition.exportids})
+        </if>
+        <if test="condition.businessdate != null" >
+            and businessdate = #{condition.businessdate}
+        </if>
+        <if test="condition.weekday != null" >
+            and weekday = #{condition.weekday}
+        </if>
+        <if test="condition.status != null" >
+            and status = #{condition.status}
+        </if>
+        <if test="condition.personid != null" >
+            and personid = #{condition.personid}
+        </if>
+        <if test="condition.leadid != null" >
+            and leadid = #{condition.leadid}
+        </if>
+        <if test="condition.customerid != null" >
+            and customerid = #{condition.customerid}
+        </if>
+        <if test="condition.pcustomerid != null" >
+            and pcustomerid = #{condition.pcustomerid}
+        </if>
+        <if test="condition.remark != null" >
+            and remark like concat('%',#{condition.remark},'%')
+        </if>
+        <if test="condition.customersort != null" >
+            and customersort = #{condition.customersort}
+        </if>
+        <if test="condition.salesarea != null" >
+            and salesarea = #{condition.salesarea}
+        </if>
+        <if test="condition.salesdept != null" >
+            and salesdept = #{condition.salesdept}
+        </if>
+        <if test="condition.businessdatestart != null" >
+            <![CDATA[ and businessdate >= #{condition.businessdatestart} ]]>
+        </if>
+        <if test="condition.businessdateend != null" >
+            <![CDATA[ and businessdate <= #{condition.businessdateend} ]]>
+        </if>
+        <choose>
+            <when test="condition.isClose == 1 ">
+                and ( status='1' or status='2' )
+            </when>
+            <when test="condition.isClose == 2">
+                and ( status!='4' or status is null )
+            </when>
+            <when test="condition.isClose == 3">
+                and status='3'
+            </when>
+            <when test="condition.isClose == 4">
+                and status='4'
+            </when>
+        </choose>
+        <if test="condition.isplan != null" >
+            and isplan = #{condition.isplan}
+        </if>
+        <if test="condition.deptid != null" >
+            and exists(select 1 from t_base_personnel p where p.id = t.personid and p.belongdeptid = #{condition.deptid })
+        </if>
+    </sql>
+	<!-- 添加客户拜访记录 -->
+	<insert id="insertCrmVisitRecord" parameterType="com.hd.agent.crm.model.CrmVisitRecord" >
+    insert into t_crm_visit_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="businessdate != null" >
+        businessdate,
+      </if>
+      <if test="keyid != null" >
+        keyid,
+      </if>
+      <if test="weekday != null" >
+        weekday,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="personid != null" >
+        personid,
+      </if>
+      <if test="leadid != null" >
+        leadid,
+      </if>
+      <if test="customerid != null" >
+        customerid,
+      </if>
+      <if test="pcustomerid != null" >
+        pcustomerid,
+      </if>
+      <if test="imgsrc != null" >
+        imgsrc,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="gps != null" >
+        gps,
+      </if>
+      <if test="adduserid != null" >
+        adduserid,
+      </if>
+      <if test="addusername != null" >
+        addusername,
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid,
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname,
+      </if>
+      <if test="1==1" >
+        addtime,
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid,
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername,
+      </if>
+      <if test="modifytime != null" >
+        modifytime,
+      </if>
+      <if test="customersort != null" >
+        customersort,
+      </if>
+      <if test="salesarea != null" >
+        salesarea,
+      </if>
+      <if test="salesdept != null" >
+        salesdept,
+      </if>
+      <if test="isplan != null" >
+         isplan,
+      </if>
+        <if test="phototime != null" >
+            phototime,
+        </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="businessdate != null" >
+        #{businessdate},
+      </if>
+      <if test="keyid != null" >
+        #{keyid},
+      </if>
+      <if test="weekday != null" >
+        #{weekday},
+      </if>
+      <if test="status != null" >
+        #{status},
+      </if>
+      <if test="personid != null" >
+        #{personid},
+      </if>
+      <if test="leadid != null" >
+        #{leadid},
+      </if>
+      <if test="customerid != null" >
+        #{customerid},
+      </if>
+      <if test="pcustomerid != null" >
+        #{pcustomerid},
+      </if>
+      <if test="imgsrc != null" >
+        #{imgsrc},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+      <if test="gps != null" >
+        #{gps},
+      </if>
+      <if test="adduserid != null" >
+        #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        #{adddeptname},
+      </if>
+      <if test="1==1" >
+        now(),
+      </if>
+      <if test="modifyuserid != null" >
+        #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        #{modifyusername},
+      </if>
+      <if test="modifytime != null" >
+        #{modifytime},
+      </if>
+      <if test="customersort != null" >
+        #{customersort},
+      </if>
+      <if test="salesarea != null" >
+        #{salesarea},
+      </if>
+      <if test="salesdept != null" >
+        #{salesdept},
+      </if>
+      <if test="isplan != null" >
+        #{isplan},
+      </if>
+        <if test="phototime != null" >
+            #{phototime},
+        </if>
+    </trim>
+  </insert>
+  <update id="updateCrmVisitRecord" parameterType="com.hd.agent.crm.model.CrmVisitRecord" >
+    update t_crm_visit_record
+    <set >
+      <if test="businessdate != null" >
+        businessdate = #{businessdate},
+      </if>
+      <if test="weekday != null" >
+        weekday = #{weekday},
+      </if>
+      <if test="status != null" >
+        status = #{status},
+      </if>
+      <if test="personid != null" >
+        personid = #{personid},
+      </if>
+      <if test="leadid != null" >
+        leadid = #{leadid},
+      </if>
+      <if test="customerid != null" >
+        customerid = #{customerid},
+      </if>
+      <if test="pcustomerid != null" >
+        pcustomerid = #{pcustomerid},
+      </if>
+      <if test="imgsrc != null" >
+        imgsrc = #{imgsrc},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark},
+      </if>
+      <if test="gps != null" >
+        gps = #{gps},
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid = #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername = #{modifyusername},
+      </if>
+      <if test="modifytime != null" >
+        modifytime = #{modifytime},
+      </if>
+      <if test="customersort != null" >
+        customersort = #{customersort},
+      </if>
+      <if test="salesarea != null" >
+        salesarea = #{salesarea},
+      </if>
+      <if test="salesdept != null" >
+        salesdept = #{salesdept},
+      </if>
+      <if test="isplan != null" >
+         isplan = #{isplan},
+      </if>
+        <if test="phototime != null" >
+            phototime = #{phototime},
+        </if>
+    </set>
+    where id = #{id}
+  </update>
+  <select id="getCrmVisitRecordBy" parameterType="java.util.Map" resultType="com.hd.agent.crm.model.CrmVisitRecord">
+    select
+    <choose>
+		<when test="cols!=null">
+			<include refid="common.Page_Column"/>
+		</when>
+		<when test="cols==null">
+ 			<include refid="CVRBase_Column_List" />
+		</when>
+	</choose>
+	from t_crm_visit_record
+	where
+	<trim prefixOverrides="and|or" >
+		<if test="id != null" >
+		   and id = #{id}
+		</if>
+		<if test="status != null" >
+		   and status = #{status}
+		</if>
+	    <if test="authDataSql != null">
+	    	and ${authDataSql}
+	    </if>
+    </trim>
+  </select>
+  <select id="getCrmVisitRecord" parameterType="java.lang.String" resultType="com.hd.agent.crm.model.CrmVisitRecord">
+  	select
+  	<include refid="CVRBase_Column_List"></include>
+  	from t_crm_visit_record
+  	where id=#{id}
+  </select>
+  <delete id="deleteCrmVisitRecord" parameterType="java.lang.String">
+    delete from t_crm_visit_record
+    where id = #{id}
+  </delete>
+  <delete id="deleteCrmVisitRecordBy" parameterType="java.util.Map">
+    delete from t_crm_visit_record
+    where id = #{id}
+	<trim >
+		<if test="1==1" >
+		   	and 1=1
+		</if>
+		<if test="status != null" >
+		   	and status = #{status}
+		</if>
+		<if test="notAudit != null" >
+		   	and (status!='4' and status!='3')
+		</if>
+	    <if test="authDataSql != null">
+	    	and ${authDataSql}
+	    </if>
+    </trim>
+  </delete>
+  <select id="getCrmVisitRecordPageList"  parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.crm.model.CrmVisitRecord">
+  		select
+	  	<choose>
+			<when test="cols!=null">
+				<include refid="common.Page_Column"/>
+			</when>
+			<when test="cols==null">
+				<include refid="CVRBase_Column_List"/>
+			</when>
+		</choose>
+		from t_crm_visit_record t
+		<trim prefix="where" prefixOverrides="and|or">
+			<include refid="CVRPageList_Where_Clause" />
+			<include refid="common.Page_querySql"/>
+			<include refid="common.Page_dataSql"/>
+		</trim>
+		<choose>
+			<when test="condition.isNoPageflag !='true'">
+				<include refid="common.Page_limit" />
+			</when>
+			<otherwise>
+				ORDER BY businessdate desc , id desc
+			</otherwise>
+		</choose>
+ </select>
+ <select id="getCrmVisitRecordPageCount"  parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+	select
+  	count(*)
+	from t_crm_visit_record t
+	<trim prefix="where" prefixOverrides="and|or">
+		<include refid="CVRPageList_Where_Clause" />
+		<include refid="common.Page_querySql"/>
+		<include refid="common.Page_dataSql"/>
+	</trim>
+ </select>
+ <update id="updateCrmVisitRecordStatus" parameterType="com.hd.agent.crm.model.CrmVisitRecord" >
+    update t_crm_visit_record
+    <set >
+      <if test="businessdate != null" >
+        businessdate = #{businessdate},
+      </if>
+      <if test="status != null" >
+        status = #{status},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+
+  <sql id="CVRDetailPageList_Where_Clause" >
+      <if test="condition.billid != null" >
+         and billid = #{condition.billid}
+      </if>
+      <if test="condition.brandid != null" >
+         and brandid = #{condition.brandid}
+      </if>
+      <if test="condition.isqa != null" >
+         and isqa = #{condition.isqa}
+      </if>
+      <if test="condition.standard != null" >
+         and standard = #{condition.standard}
+      </if>
+  </sql>
+
+  <sql id="CVRDetailBase_Column_List" >
+    id, billid, brandid, imgsrc, isqa, standard, remark, gps, ptime
+  </sql>
+  <insert id="insertCrmVisitRecordDetail" parameterType="com.hd.agent.crm.model.CrmVisitRecordDetail" >
+    insert into t_crm_visit_record_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="billid != null" >
+        billid,
+      </if>
+      <if test="brandid != null" >
+        brandid,
+      </if>
+      <if test="imgsrc != null" >
+        imgsrc,
+      </if>
+      <if test="isqa != null" >
+        isqa,
+      </if>
+      <if test="standard != null" >
+        standard,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="gps != null" >
+        gps,
+      </if>
+      <if test="ptime != null" >
+        ptime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="billid != null" >
+        #{billid},
+      </if>
+      <if test="brandid != null" >
+        #{brandid},
+      </if>
+      <if test="imgsrc != null" >
+        #{imgsrc},
+      </if>
+      <if test="isqa != null" >
+        #{isqa},
+      </if>
+      <if test="standard != null" >
+        #{standard},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+      <if test="gps != null" >
+        #{gps},
+      </if>
+      <if test="ptime != null" >
+        #{ptime},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateCrmVisitRecordDetail" parameterType="com.hd.agent.crm.model.CrmVisitRecordDetail" >
+    update t_crm_visit_record_detail
+    <set >
+      <if test="billid != null" >
+        billid = #{billid},
+      </if>
+      <if test="brandid != null" >
+        brandid = #{brandid},
+      </if>
+      <if test="imgsrc != null" >
+        imgsrc = #{imgsrc},
+      </if>
+      <if test="isqa != null" >
+        isqa = #{isqa},
+      </if>
+      <if test="standard != null" >
+        standard = #{standard},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark},
+      </if>
+      <if test="gps != null" >
+        gps = #{gps},
+      </if>
+      <if test="ptime != null" >
+        ptime = #{ptime},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  <select id="getCrmVisitRecordDetailList" parameterType="java.lang.String" resultType="com.hd.agent.crm.model.CrmVisitRecordDetail">
+    select
+    <include refid="CVRDetailBase_Column_List" />
+    from t_crm_visit_record_detail
+    where billid = #{billid}
+  </select>
+  <delete id="deleteCrmVisitRecordDetail" parameterType="java.lang.String">
+    delete from t_crm_visit_record_detail
+    where id = #{id}
+  </delete>
+  <delete id="deleteCrmVisitRecordDetailByOrderid" parameterType="java.lang.String">
+    delete from t_crm_visit_record_detail
+    where billid = #{billid}
+  </delete>
+  <select id="getCrmVisitRecordDetailCountBy" parameterType="java.util.Map" resultType="int">
+  		select count(*) from t_crm_visit_record_detail
+		<trim prefix="where" prefixOverrides="and|or" >
+
+	      <if test="billid != null" >
+	         and billid = #{billid}
+	      </if>
+	      <if test="brandid != null" >
+	         and brandid = #{brandid}
+	      </if>
+	      <if test="isqa != null" >
+	         and isqa = #{isqa}
+	      </if>
+	      <if test="standard != null" >
+	         and standard = #{standard}
+	      </if>
+			<choose>
+				<when test="isqaFlag==0">
+					and (isqa='0' or length(isqa)=0)
+				</when>
+				<when test="isqaFlag==1">
+					and isqa='1'
+				</when>
+				<when test="isqaFlag==2">
+					and isqa!='1'
+				</when>
+			</choose>
+		    <if test="authDataSql != null">
+		    	and ${authDataSql}
+		    </if>
+	    </trim>
+  </select>
+  <select id="getCrmVisitRecordDetailPageList"  parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.crm.model.CrmVisitRecordDetail">
+  		select
+	  	<include refid="CVRDetailBase_Column_List"/>
+		from t_crm_visit_record_detail t
+		<trim prefix="where" prefixOverrides="and|or">
+			<include refid="CVRDetailPageList_Where_Clause" />
+		</trim>
+		<choose>
+			<when test="condition.isNoPageflag !='true'">
+				<include refid="common.Page_limit" />
+			</when>
+			<otherwise>
+				ORDER BY id desc
+			</otherwise>
+		</choose>
+ </select>
+ <select id="getCrmVisitRecordDetailPageCount"  parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+	select
+  	count(*)
+	from t_crm_visit_record_detail t
+	<trim prefix="where" prefixOverrides="and|or">
+		<include refid="CVRDetailPageList_Where_Clause" />
+	</trim>
+ </select>
+ <update id="updateOKVisitRecordDetail" parameterType="com.hd.agent.crm.model.CrmVisitRecord" >
+    update t_crm_visit_record_detail
+    set isqa=#{isqa}
+    where
+    <trim prefixOverrides="and|or">
+		<if test="id != null">
+			and id = #{id}
+		</if>
+		<if test="idarrs != null">
+			and find_in_set(id,#{idarrs})
+		</if>
+		<if test="billid!=null">
+			and billid=#{billid}
+		</if>
+		<choose>
+			<when test="isqacheck == 1">
+				and (isqa !='1' or length(isqa)=0)
+			</when>
+			<when test="isqacheck == 2">
+				and (isqa !='2' or length(isqa)=0)
+			</when>
+		</choose>
+	</trim>
+  </update>
+  <sql id="CVOrderDetailBase_Column_List">
+	    t.id, t.businessdate, t.weekday, t.status, t.personid, t.leadid, t.customerid, t.pcustomerid, t.imgsrc,
+	    t.remark, t.adduserid, t.addusername, t.adddeptid, t.adddeptname, t.addtime, t.modifyuserid, t.modifyusername,
+	    t.modifytime, t.customersort, t.salesarea, t.salesdept,t.gps,
+    	d.id as detailid,d.billid, d.brandid, d.imgsrc as detailimg, d.isqa, d.standard, d.remark as detailremark, d.gps as detailgps, d.ptime
+
+  </sql>
+  <sql id="CVOrderDetailPageList_Where_Clause">
+      <if test="condition.businessdate != null" >
+         and t.businessdate = #{condition.businessdate}
+      </if>
+      <if test="condition.weekday != null" >
+         and t.weekday = #{condition.weekday}
+      </if>
+      <if test="condition.status != null" >
+         and t.status = #{condition.status}
+      </if>
+      <if test="condition.personid != null" >
+         and t.personid = #{condition.personid}
+      </if>
+      <if test="condition.leadid != null" >
+         and t.leadid = #{condition.leadid}
+      </if>
+      <if test="condition.customerid != null" >
+         and t.customerid = #{condition.customerid}
+      </if>
+      <if test="condition.pcustomerid != null" >
+         and t.pcustomerid = #{condition.pcustomerid}
+      </if>
+      <if test="condition.customersort != null" >
+         and t.customersort = #{condition.customersort}
+      </if>
+      <if test="condition.salesarea != null" >
+         and t.salesarea = #{condition.salesarea}
+      </if>
+      <if test="condition.salesdept != null" >
+         and t.salesdept = #{condition.salesdept}
+      </if>
+	  <if test="condition.businessdatestart != null" >
+         <![CDATA[ and t.businessdate >= #{condition.businessdatestart} ]]>
+      </if>
+	  <if test="condition.businessdateend != null" >
+         <![CDATA[ and t.businessdate <= #{condition.businessdateend} ]]>
+      </if>
+      <if test="condition.remark != null" >
+         and t.remark like concat('%',#{condition.remark},'%')
+      </if>
+      <if test="condition.brandid != null" >
+         and d.brandid = #{condition.brandid}
+      </if>
+      <if test="condition.isqa != null" >
+         and d.isqa = #{condition.isqa}
+      </if>
+      <if test="condition.standard != null" >
+         and d.standard = #{condition.standard}
+      </if>
+      <if test="condition.detailremark != null" >
+         and d.remark like concat('%',#{condition.detailremark},'%')
+      </if>
+      <if test="condition.id != null" >
+         and t.id like concat('%',#{condition.id},'%')
+      </if>
+      <if test="condition.detailid != null" >
+         and d.id = #{condition.detailid}
+      </if>
+	</sql>
+  <select id="getCrmVisitRecordOrderDetailPageList"  parameterType="com.hd.agent.common.util.PageMap" resultType="java.util.Map">
+  		select * from (
+	  		select
+		  	<include refid="CVOrderDetailBase_Column_List"/>
+			from t_crm_visit_record t
+			inner join t_crm_visit_record_detail d
+			on t.id = d.billid
+			<trim prefix="where" prefixOverrides="and|or">
+				<include refid="CVOrderDetailPageList_Where_Clause" />				
+				<include refid="common.Page_querySql"/>
+				<include refid="common.Page_dataSql"/>
+			</trim>
+		)t
+		<choose>
+			<when test="condition.isNoPageflag !='true'">
+				<include refid="common.Page_limit" />
+			</when>
+			<otherwise>
+				ORDER BY t.addtime desc
+			</otherwise>
+		</choose>
+ </select>
+ <select id="getCrmVisitRecordOrderDetailPageCount"  parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+	select
+  	count(*)
+	from t_crm_visit_record t
+	inner join t_crm_visit_record_detail d
+	on t.id = d.billid
+	<trim prefix="where" prefixOverrides="and|or">
+			<include refid="CVOrderDetailPageList_Where_Clause" />				
+			<include refid="common.Page_querySql"/>
+			<include refid="common.Page_dataSql"/>
+	</trim>
+ </select>
+ <sql id="CVOrderDetail_Map_Where_Clause">
+      <if test="businessdate != null" >
+         and t.businessdate = #{businessdate}
+      </if>
+      <if test="weekday != null" >
+         and t.weekday = #{weekday}
+      </if>
+      <if test="status != null" >
+         and t.status = #{status}
+      </if>
+      <if test="personid != null" >
+         and t.personid = #{personid}
+      </if>
+      <if test="leadid != null" >
+         and t.leadid = #{leadid}
+      </if>
+      <if test="customerid != null" >
+         and t.customerid = #{customerid}
+      </if>
+      <if test="pcustomerid != null" >
+         and t.pcustomerid = #{pcustomerid}
+      </if>
+      <if test="customersort != null" >
+         and t.customersort = #{customersort}
+      </if>
+      <if test="salesarea != null" >
+         and t.salesarea = #{salesarea}
+      </if>
+      <if test="salesdept != null" >
+         and t.salesdept = #{salesdept}
+      </if>      
+	  <if test="businessdatestart != null" >
+         <![CDATA[ and t.businessdate >= #{businessdatestart} ]]>
+      </if>
+	  <if test="businessdateend != null" >
+         <![CDATA[ and t.businessdate<= #{businessdateend} ]]>
+      </if>
+      <if test="remark != null" >
+         and t.remark like concat('%',#{remark},'%')
+      </if>
+      <if test="brandid != null" >
+         and d.brandid = #{brandid}
+      </if>
+      <if test="isqa != null" >
+         and d.isqa = #{isqa}
+      </if>
+      <if test="standard != null" >
+         and d.standard = #{standard}
+      </if>
+      <if test="detailremark != null" >
+         and d.remark like concat('%',#{detailremark},'%')
+      </if>
+      <if test="id != null" >
+         and t.id like concat('%',#{condition.id},'%')
+      </if>
+      <if test="detailid != null" >
+         and d.id = #{detailid}
+      </if>
+	</sql>
+ <select id="getCrmVisitRecordAndDetail"  parameterType="java.util.Map" resultType="java.util.Map">
+ 	select
+  	<include refid="CVOrderDetailBase_Column_List"/>
+	from t_crm_visit_record t
+	inner join t_crm_visit_record_detail d
+	on t.id = d.billid
+	<trim prefix="where" prefixOverrides="and|or">
+		<include refid="CVOrderDetail_Map_Where_Clause"></include>
+	</trim>
+	limit 1
+ </select>
+  <select id="getCrmVisitRecordDetail"  parameterType="java.lang.String" resultType="com.hd.agent.crm.model.CrmVisitRecordDetail">
+ 	select
+  	<include refid="CVRDetailBase_Column_List"/>
+	from t_crm_visit_record_detail t
+	where id=#{id}
+ </select>
+    <select id="getCrmVisitRecordByKeyid" resultType="com.hd.agent.crm.model.CrmVisitRecord">
+        select <include refid="CVRBase_Column_List" />
+        from t_crm_visit_record
+        where keyid=#{keyid}
+    </select>
+</mapper>

@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<package name="common" extends="parent" namespace="/sysLog">
+		<action name="showSysLogPage" class="sysLogAction" method="showSysLogPage">
+			<result name="success">/common/sysLog/searchLog.jsp</result>
+		</action>
+		<action name="showSearchSysLogList" class="sysLogAction" method="showSearchSysLogList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSysPrintLogPage" class="sysLogAction" method="showSysPrintLogPage">
+			<result name="success">/common/sysLog/searchPrintLog.jsp</result>
+		</action>
+		<action name="showSearchSysPrintLogList" class="sysLogAction" method="showSearchSysPrintLogList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showLogInfo" class="sysLogAction" method="showLogInfo">
+			<result name="success">/common/sysLog/sysLogInfo.jsp</result>
+		</action>
+        <action name="showLogInfoData" class="sysLogAction" method="showLogInfoData">
+            <result name="success">/common/sysLog/sysLogInfoData.jsp</result>
+        </action>
+		<action name="deleteSysLog" class="sysLogAction" method="deleteSysLog">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+	<package name="commonAjax" extends="parent" namespace="/common">
+		<action name="sysCodeList" class="commonAjaxAction" method="sysCodeList">
+            <result name="success" type="json">
+                <param name="root">jsonArray</param>
+                <param name="contentType">text/html</param>
+            </result>
+		</action>
+		<action name="getAllSysCode" class="commonAjaxAction" method="getAllSysCode">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="sysCodeType" class="commonAjaxAction" method="sysCodeType">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getTableList" class="commonAjaxAction" method="getTableList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getTableColList" class="commonAjaxAction" method="getTableColList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getTableDataDict" class="commonAjaxAction" method="getTableDataDict">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getSysUserList" class="commonAjaxAction" method="getSysUserList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getWidget" class="commonAjaxAction" method="getWidget">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showTableDataWidget" class="commonAjaxAction" method="showTableDataWidget">
+			<result name="success">/common/tableDataWindow.jsp</result>
+		</action>
+		<action name="getWidgetTableDataList" class="commonAjaxAction" method="getWidgetTableDataList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="canCreateAuto" class="commonAjaxAction" method="canCreateAuto">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getDeptListByIdsStr" class="commonAjaxAction" method="getDeptListByIdsStr">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getOperateByURL" class="commonAjaxAction" method="getOperateByURL">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="baseFilesCanDel" class="commonAjaxAction" method="baseFilesCanDel">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getDataState" class="commonAjaxAction" method="getDataState">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getBaseFilesLevelLength" class="commonAjaxAction" method="getBaseFilesLevelLength">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getGoodsInfoMUList" class="commonAjaxAction" method="getGoodsInfoMUList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getDictTableColumnList" class="commonAjaxAction" method="getDictTableColumnList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getDecimalBillGoodsNumDecimalLen" class="commonAjaxAction" method="getDecimalBillGoodsNumDecimalLen">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="basePrintDialog" class="commonAjaxAction" method="basePrintDialog">
+			<result name="success">/common/basePrintDialog.jsp</result>
+		</action>
+	</package>
+	
+	<package name="pageSetting" extends="parent" namespace="/common">
+		<action name="savePageCulumn" class="pageSettingAction" method="savePageCulumn">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deletePageCulumn" class="pageSettingAction" method="deletePageCulumn">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getPageCulumn" class="pageSettingAction" method="getPageCulumn">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showAdvancedQueryPage" class="pageSettingAction" method="showAdvancedQueryPage">
+			<result name="success">/common/query.jsp</result>
+		</action>
+		<action name="addQuery" class="pageSettingAction" method="addQuery">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showUserQuery" class="pageSettingAction" method="showUserQuery">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteQuery" class="pageSettingAction" method="deleteQuery">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showShortcutPage" class="pageSettingAction" method="showShortcutPage">
+			<result name="success">/common/shortcut/shortcutPage.jsp</result>
+		</action>
+		<action name="showShortcutAddPage" class="pageSettingAction" method="showShortcutAddPage">
+			<result name="success">/common/shortcut/shortcutAddPage.jsp</result>
+		</action>
+		<action name="addShortcut" class="pageSettingAction" method="addShortcut">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteShortcut" class="pageSettingAction" method="deleteShortcut">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+	<package name="z-upload-excel" extends="parent" namespace="/common" >
+		<action name="uploadPage" class="commonUploadAction" method="uploadPage">
+			<result name="success">/common/upload/uploadPage.jsp</result>
+		</action>
+		<action name="showWebuploaderPage" class="commonUploadAction" method="showWebuploaderPage">
+			<result name="success">/common/upload/webuploader.jsp</result>
+		</action>
+		<action name="showCommonWebuploaderPage" class="commonUploadAction" method="showCommonWebuploaderPage">
+			<result name="success">/common/upload/comWebuploaderPage.jsp</result>
+		</action>
+		<action name="upload" class="commonUploadAction" method="upload"></action>
+		<action name="uploadMenuProperties" class="commonUploadAction" method="uploadMenuProperties"></action>
+		<action name="uploadGoodsImage" class="commonUploadAction" method="uploadGoodsImage"></action>
+		<action name="uploadPrintTemplet" class="commonUploadAction" method="uploadPrintTemplet"></action>
+		<action name="kindEditorUpload" class="commonUploadAction" method="kindEditorUpload"></action>
+        <action name="kindEditorUploadHelp" class="commonUploadAction" method="kindEditorUploadHelp"></action>
+		<action name="download" class="commonUploadAction" method="download"></action>
+		<action name="viewFile" class="commonUploadAction" method="viewFile">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="viewFileFlash" class="commonUploadAction" method="viewFileFlash">
+			<result name="success">/common/upload/fileFlashView.jsp</result>
+		</action>
+		<action name="getAttachFile" class="commonUploadAction" method="getAttachFile">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteAttachFile" class="commonUploadAction" method="deleteAttachFile">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteGoodsAttachFile" class="commonUploadAction" method="deleteGoodsAttachFile">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getAttachFileList" class="commonUploadAction" method="getAttachFileList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>        
+		<action name="importPage" class="excelAction" method="importPage">
+			<result name="success">/common/excel/importPage.jsp</result>
+		</action>
+		<action name="importExcel" class="excelAction" method="importExcel">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="importMoreExcel" class="excelAction" method="importMoreExcel">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="exportPage" class="excelAction" method="exportPage">
+			<result name="success">/common/excel/exportPage.jsp</result>
+		</action>
+		<action name="returnExcelMsgPage" class="excelAction" method="returnExcelMsgPage">
+			<result name="success">/common/excel/returnExcelMsgPage.jsp</result>
+		</action>
+		<action name="exportExcel" class="excelAction" method="exportExcel">
+		</action>
+		<action name="exportMoreExcel" class="excelAction" method="exportMoreExcel">
+		</action>
+        <action name="exportAnalysPage" class="excelAction" method="exportAnalysPage">
+            <result name="success">/common/excel/exportAnalysPage.jsp</result>
+        </action>
+        <action name="exportAnalysExcel" class="excelAction" method="exportAnalysExcel">
+            <result name="success">/sales/order/orderListPage.jsp</result>
+        </action>
+	</package>
+	<package name="agreportprint" extends="parent" namespace="/common" >		
+		<action name="agReportprintViewPage" class="agReportprintAction" method="agReportprintViewPage">
+			<result name="success">/common/agreportprint/agReportprintView.jsp</result>
+		</action>
+		<action name="agReportprintPopViewPage" class="agReportprintAction" method="agReportprintPopViewPage">
+			<result name="success">/common/agreportprint/agReportprintPopView.jsp</result>
+		</action>		
+	</package>
+	<package name="autoImport" extends="parent" namespace="/common" >
+		<action name="showAutoImportPage" class="autoImportAction" method="showAutoImportPage">
+			<result name="success">/common/excel/autoImportPage.jsp</result>
+		</action>
+		<action name="readImportFile" class="autoImportAction" method="readImportFile">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="ImportMapToObject" class="autoImportAction" method="ImportMapToObject">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+
+</struts>    

@@ -1,0 +1,2472 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.purchase.dao.ReturnOrderMapper" >
+	<sql id="RO_Base_Column_List">
+    id, businessdate, status, remark, adduserid, addusername, adddeptid, adddeptname, 
+    addtime, modifyuserid, modifyusername, modifytime, audituserid, auditusername, audittime, 
+    stopuserid, stopusername, stoptime, closetime, printtimes, supplierid, handlerid, 
+    source, buydeptid, buyuserid, settletype, paytype, storageid, field01, field02, field03, 
+    field04, field05, field06, field07, field08, billno,isrefer,isinvoice,canceldate,'2' as ordertype,
+    ckstatus, ischeck, checkuserid, checkusername, checkdate
+	</sql>
+	<sql id="ROPageList_Where_Clause" >
+      <if test="condition.id != null" >
+         and id like CONCAT('%',#{condition.id},'%')
+      </if>
+      <if test="condition.businessdate != null" >
+         and businessdate = #{condition.businessdate}
+      </if>
+      <if test="condition.status != null" >
+         and status = #{condition.status}
+      </if>
+      <if test="condition.remark != null" >
+         and remark = #{condition.remark}
+      </if>
+      <if test="condition.adduserid != null" >
+         and adduserid = #{condition.adduserid}
+      </if>
+      <if test="condition.addusername != null" >
+         and addusername = #{condition.addusername}
+      </if>
+      <if test="condition.adddeptid != null" >
+         and adddeptid = #{condition.adddeptid}
+      </if>
+      <if test="condition.adddeptname != null" >
+         and adddeptname = #{condition.adddeptname}
+      </if>
+      <if test="condition.addtime != null" >
+         and addtime = #{condition.addtime}
+      </if>
+      <if test="condition.modifyuserid != null" >
+         and modifyuserid = #{condition.modifyuserid}
+      </if>
+      <if test="condition.modifyusername != null" >
+         and modifyusername = #{condition.modifyusername}
+      </if>
+      <if test="condition.modifytime != null" >
+         and modifytime = #{condition.modifytime}
+      </if>
+      <if test="condition.audituserid != null" >
+         and audituserid = #{condition.audituserid}
+      </if>
+      <if test="condition.auditusername != null" >
+         and auditusername = #{condition.auditusername}
+      </if>
+      <if test="condition.audittime != null" >
+         and audittime = #{condition.audittime}
+      </if>
+      <if test="condition.stopuserid != null" >
+         and stopuserid = #{condition.stopuserid}
+      </if>
+      <if test="condition.stopusername != null" >
+         and stopusername = #{condition.stopusername}
+      </if>
+      <if test="condition.stoptime != null" >
+         and stoptime = #{condition.stoptime}
+      </if>
+      <if test="condition.closetime != null" >
+         and closetime = #{condition.closetime}
+      </if>
+      <if test="condition.printtimes != null" >
+         and printtimes = #{condition.printtimes}
+      </if>
+      <if test="condition.supplierid != null" >
+         and supplierid = #{condition.supplierid}
+      </if>
+      <if test="condition.suppliername != null" >
+         and suppliername = #{condition.suppliername}
+      </if>
+      <if test="condition.handlerid != null" >
+         and handlerid = #{condition.handlerid}
+      </if>
+      <if test="condition.source != null" >
+         and source = #{condition.source}
+      </if>
+      <if test="condition.buydeptid != null" >
+         and buydeptid like CONCAT(#{condition.buydeptid},'%')
+      </if>
+      <if test="condition.buyuserid != null" >
+         and buyuserid = #{condition.buyuserid}
+      </if>
+      <if test="condition.settletype != null" >
+         and settletype = #{condition.settletype}
+      </if>
+      <if test="condition.paytype != null" >
+         and paytype = #{condition.paytype}
+      </if>
+      <if test="condition.storageid != null" >
+         and storageid = #{condition.storageid}
+      </if>
+      <if test="condition.field01 != null" >
+         and field01 = #{condition.field01}
+      </if>
+      <if test="condition.field02 != null" >
+         and field02 = #{condition.field02}
+      </if>
+      <if test="condition.field03 != null" >
+         and field03 = #{condition.field03}
+      </if>
+      <if test="condition.field04 != null" >
+         and field04 = #{condition.field04}
+      </if>
+      <if test="condition.field05 != null" >
+         and field05 = #{condition.field05}
+      </if>
+      <if test="condition.field06 != null" >
+         and field06 = #{condition.field06}
+      </if>
+      <if test="condition.field07 != null" >
+         and field07 = #{condition.field07}
+      </if>
+      <if test="condition.field08 != null" >
+         and field08 = #{condition.field08}
+      </if>
+      <if test="condition.billno != null" >
+        and billno = #{condition.billno},
+      </if>    
+      <if test="condition.isrefer != null">
+         and isrefer = #{condition.isrefer}
+      </if>
+      <if test="condition.choiceforrefer != null">
+         and (isrefer !='1' and status='3')
+      </if>
+      <if test="condition.isinvoice != null">
+         and isinvoice=#{condition.isinvoice}
+      </if> 
+      <if test="condition.canceldate != null">
+         and canceldate=#{condition.canceldate}
+      </if>      
+      <if test="condition.shownotisinvoice != null">
+         and (isinvoice='3' or isinvoice='4' ) and status='3' and (SELECT COUNT(1) FROM t_purchase_returnorder_detail d WHERE d.orderid = t.id AND d.invoicerefer=0)>0
+      </if>       
+      <if test="condition.ckstatus != null">
+        and ckstatus = #{condition.ckstatus}
+      </if>      
+      <if test="condition.showcheckorder != null">
+         and ckstatus='1' and (status='3' or status='4')
+      </if>     
+      <choose>
+      	<when test="condition.ischeck == 0">
+      		and ckstatus='1' and ischeck='0' and (isinvoice='0' or isinvoice='4')
+      	</when>
+      	<when test="condition.ischeck == 1">
+      		and ischeck='1'
+      	</when>
+      </choose>
+  </sql>
+  <select id="getReturnOrder" parameterType="java.lang.String" resultType="com.hd.agent.purchase.model.ReturnOrder">
+    select 
+    <include refid="RO_Base_Column_List" />
+    from t_purchase_returnorder
+    where id = #{id}
+  </select>
+  <select id="getReturnOrderBy" parameterType="java.util.Map" resultType="com.hd.agent.purchase.model.ReturnOrder">
+    select 
+    <choose>
+		<when test="cols!=null">
+			<include refid="common.Page_Column"/>
+		</when>
+		<when test="cols==null">
+ 				<include refid="RO_Base_Column_List" />
+		</when>
+	</choose>
+	from t_purchase_returnorder
+	where
+	<trim prefixOverrides="and|or" >	  		
+		<if test="id != null" >
+		   and id = #{id}
+		</if>
+		<if test="billno != null" >
+		   and billno = #{billno}
+		</if>
+		<if test="status != null" >
+		   and status = #{status}
+		</if>
+	    <if test="authDataSql != null">
+	    	and ${authDataSql}
+	    </if>
+    </trim>
+  </select>
+  <insert id="insertReturnOrder" parameterType="com.hd.agent.purchase.model.ReturnOrder" >
+    insert into t_purchase_returnorder
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="businessdate != null" >
+        businessdate,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="adduserid != null" >
+        adduserid,
+      </if>
+      <if test="addusername != null" >
+        addusername,
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid,
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname,
+      </if>
+      <if test="addtime != null" >
+        addtime,
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid,
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername,
+      </if>
+      <if test="modifytime != null" >
+        modifytime,
+      </if>
+      <if test="audituserid != null" >
+        audituserid,
+      </if>
+      <if test="auditusername != null" >
+        auditusername,
+      </if>
+      <if test="audittime != null" >
+        audittime,
+      </if>
+      <if test="stopuserid != null" >
+        stopuserid,
+      </if>
+      <if test="stopusername != null" >
+        stopusername,
+      </if>
+      <if test="stoptime != null" >
+        stoptime,
+      </if>
+      <if test="closetime != null" >
+        closetime,
+      </if>
+      <if test="printtimes != null" >
+        printtimes,
+      </if>
+      <if test="supplierid != null" >
+        supplierid,
+      </if>
+      <if test="suppliername != null" >
+        suppliername,
+      </if>
+      <if test="handlerid != null" >
+        handlerid,
+      </if>
+      <if test="source != null" >
+        source,
+      </if>
+      <if test="buydeptid != null" >
+        buydeptid,
+      </if>
+      <if test="buyuserid != null" >
+        buyuserid,
+      </if>
+      <if test="settletype != null" >
+        settletype,
+      </if>
+      <if test="paytype != null" >
+        paytype,
+      </if>
+      <if test="storageid != null" >
+        storageid,
+      </if>
+      <if test="field01 != null" >
+        field01,
+      </if>
+      <if test="field02 != null" >
+        field02,
+      </if>
+      <if test="field03 != null" >
+        field03,
+      </if>
+      <if test="field04 != null" >
+        field04,
+      </if>
+      <if test="field05 != null" >
+        field05,
+      </if>
+      <if test="field06 != null" >
+        field06,
+      </if>
+      <if test="field07 != null" >
+        field07,
+      </if>
+      <if test="field08 != null" >
+        field08,
+      </if>
+      <if test="isrefer != null" >
+        isrefer,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="businessdate != null" >
+        #{businessdate},
+      </if>
+      <if test="status != null" >
+        #{status},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+      <if test="adduserid != null" >
+        #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        #{adddeptname},
+      </if>
+      <if test="addtime != null" >
+        #{addtime},
+      </if>
+      <if test="modifyuserid != null" >
+        #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        #{modifyusername},
+      </if>
+      <if test="modifytime != null" >
+        #{modifytime},
+      </if>
+      <if test="audituserid != null" >
+        #{audituserid},
+      </if>
+      <if test="auditusername != null" >
+        #{auditusername},
+      </if>
+      <if test="audittime != null" >
+        #{audittime},
+      </if>
+      <if test="stopuserid != null" >
+        #{stopuserid},
+      </if>
+      <if test="stopusername != null" >
+        #{stopusername},
+      </if>
+      <if test="stoptime != null" >
+        #{stoptime},
+      </if>
+      <if test="closetime != null" >
+        #{closetime},
+      </if>
+      <if test="printtimes != null" >
+        #{printtimes},
+      </if>
+      <if test="supplierid != null" >
+        #{supplierid},
+      </if>
+      <if test="suppliername != null" >
+        #{suppliername},
+      </if>
+      <if test="handlerid != null" >
+        #{handlerid},
+      </if>
+      <if test="source != null" >
+        #{source},
+      </if>
+      <if test="buydeptid != null" >
+        #{buydeptid},
+      </if>
+      <if test="buyuserid != null" >
+        #{buyuserid},
+      </if>
+      <if test="settletype != null" >
+        #{settletype},
+      </if>
+      <if test="paytype != null" >
+        #{paytype},
+      </if>
+      <if test="storageid != null" >
+        #{storageid},
+      </if>
+      <if test="field01 != null" >
+        #{field01},
+      </if>
+      <if test="field02 != null" >
+        #{field02},
+      </if>
+      <if test="field03 != null" >
+        #{field03},
+      </if>
+      <if test="field04 != null" >
+        #{field04},
+      </if>
+      <if test="field05 != null" >
+        #{field05},
+      </if>
+      <if test="field06 != null" >
+        #{field06},
+      </if>
+      <if test="field07 != null" >
+        #{field07},
+      </if>
+      <if test="field08 != null" >
+        #{field08},
+      </if>
+      <if test="billno != null" >
+        #{billno},
+      </if>
+      <if test="isrefer != null" >
+        #{isrefer},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateReturnOrder" parameterType="com.hd.agent.purchase.model.ReturnOrder" >
+    update t_purchase_returnorder
+    <set >
+      <if test="businessdate != null" >
+        businessdate = #{businessdate},
+      </if>
+      <if test="status != null" >
+        status = #{status},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark},
+      </if>
+      <if test="adduserid != null" >
+        adduserid = #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        addusername = #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid = #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname = #{adddeptname},
+      </if>
+      <if test="addtime != null" >
+        addtime = #{addtime},
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid = #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername = #{modifyusername},
+      </if>
+      <if test="modifytime != null" >
+        modifytime = #{modifytime},
+      </if>
+      <if test="audituserid != null" >
+        audituserid = #{audituserid},
+      </if>
+      <if test="auditusername != null" >
+        auditusername = #{auditusername},
+      </if>
+      <if test="audittime != null" >
+        audittime = #{audittime},
+      </if>
+      <if test="stopuserid != null" >
+        stopuserid = #{stopuserid},
+      </if>
+      <if test="stopusername != null" >
+        stopusername = #{stopusername},
+      </if>
+      <if test="stoptime != null" >
+        stoptime = #{stoptime},
+      </if>
+      <if test="closetime != null" >
+        closetime = #{closetime},
+      </if>
+      <if test="printtimes != null" >
+        printtimes = #{printtimes},
+      </if>
+      <if test="supplierid != null" >
+        supplierid = #{supplierid},
+      </if>
+      <if test="suppliername != null" >
+        suppliername = #{suppliername},
+      </if>
+      <if test="handlerid != null" >
+        handlerid = #{handlerid},
+      </if>
+      <if test="source != null" >
+        source = #{source},
+      </if>
+      <if test="buydeptid != null" >
+        buydeptid = #{buydeptid},
+      </if>
+      <if test="buyuserid != null" >
+        buyuserid = #{buyuserid},
+      </if>
+      <if test="settletype != null" >
+        settletype = #{settletype},
+      </if>
+      <if test="paytype != null" >
+        paytype = #{paytype},
+      </if>
+      <if test="storageid != null" >
+        storageid = #{storageid},
+      </if>
+      <if test="field01 != null" >
+        field01 = #{field01},
+      </if>
+      <if test="field02 != null" >
+        field02 = #{field02},
+      </if>
+      <if test="field03 != null" >
+        field03 = #{field03},
+      </if>
+      <if test="field04 != null" >
+        field04 = #{field04},
+      </if>
+      <if test="field05 != null" >
+        field05 = #{field05},
+      </if>
+      <if test="field06 != null" >
+        field06 = #{field06},
+      </if>
+      <if test="field07 != null" >
+        field07 = #{field07},
+      </if>
+      <if test="field08 != null" >
+        field08 = #{field08},
+      </if>
+      <if test="billno != null" >
+        billno = #{billno},
+      </if>
+      <if test="isrefer != null" >
+        isrefer = #{isrefer},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  <update id="updateReturnOrderBy" parameterType="map" >
+    update t_purchase_returnorder
+    <set >
+      <if test="returnOrder.businessdate != null" >
+        businessdate = #{returnOrder.businessdate},
+      </if>
+      <if test="returnOrder.status != null" >
+        status = #{returnOrder.status},
+      </if>
+      <if test="returnOrder.remark != null" >
+        remark = #{returnOrder.remark},
+      </if>
+      <if test="returnOrder.adduserid != null" >
+        adduserid = #{returnOrder.adduserid},
+      </if>
+      <if test="returnOrder.addusername != null" >
+        addusername = #{returnOrder.addusername},
+      </if>
+      <if test="returnOrder.adddeptid != null" >
+        adddeptid = #{returnOrder.adddeptid},
+      </if>
+      <if test="returnOrder.adddeptname != null" >
+        adddeptname = #{returnOrder.adddeptname},
+      </if>
+      <if test="returnOrder.addtime != null" >
+        addtime = #{returnOrder.addtime},
+      </if>
+      <if test="returnOrder.modifyuserid != null" >
+        modifyuserid = #{returnOrder.modifyuserid},
+      </if>
+      <if test="returnOrder.modifyusername != null" >
+        modifyusername = #{returnOrder.modifyusername},
+      </if>
+      <if test="returnOrder.modifytime != null" >
+        modifytime = #{returnOrder.modifytime},
+      </if>
+      <if test="returnOrder.audituserid != null" >
+        audituserid = #{returnOrder.audituserid},
+      </if>
+      <if test="returnOrder.auditusername != null" >
+        auditusername = #{returnOrder.auditusername},
+      </if>
+      <if test="returnOrder.audittime != null" >
+        audittime = #{returnOrder.audittime},
+      </if>
+      <if test="returnOrder.stopuserid != null" >
+        stopuserid = #{returnOrder.stopuserid},
+      </if>
+      <if test="returnOrder.stopusername != null" >
+        stopusername = #{returnOrder.stopusername},
+      </if>
+      <if test="returnOrder.stoptime != null" >
+        stoptime = #{returnOrder.stoptime},
+      </if>
+      <if test="returnOrder.closetime != null" >
+        closetime = #{returnOrder.closetime},
+      </if>
+      <if test="returnOrder.printtimes != null" >
+        printtimes = #{returnOrder.printtimes},
+      </if>
+      <if test="returnOrder.supplierid != null" >
+        supplierid = #{returnOrder.supplierid},
+      </if>
+      <if test="returnOrder.suppliername != null" >
+        suppliername = #{returnOrder.suppliername},
+      </if>
+      <if test="returnOrder.handlerid != null" >
+        handlerid = #{returnOrder.handlerid},
+      </if>
+      <if test="returnOrder.source != null" >
+        source = #{returnOrder.source},
+      </if>
+      <if test="returnOrder.buydeptid != null" >
+        buydeptid = #{returnOrder.buydeptid},
+      </if>
+      <if test="returnOrder.buyuserid != null" >
+        buyuserid = #{returnOrder.buyuserid},
+      </if>
+      <if test="returnOrder.settletype != null" >
+        settletype = #{returnOrder.settletype},
+      </if>
+      <if test="returnOrder.paytype != null" >
+        paytype = #{returnOrder.paytype},
+      </if>
+      <if test="returnOrder.storageid != null" >
+        storageid = #{returnOrder.storageid},
+      </if>
+      <if test="returnOrder.field01 != null" >
+        field01 = #{returnOrder.field01},
+      </if>
+      <if test="returnOrder.field02 != null" >
+        field02 = #{returnOrder.field02},
+      </if>
+      <if test="returnOrder.field03 != null" >
+        field03 = #{returnOrder.field03},
+      </if>
+      <if test="returnOrder.field04 != null" >
+        field04 = #{returnOrder.field04},
+      </if>
+      <if test="returnOrder.field05 != null" >
+        field05 = #{returnOrder.field05},
+      </if>
+      <if test="returnOrder.field06 != null" >
+        field06 = #{returnOrder.field06},
+      </if>
+      <if test="returnOrder.field07 != null" >
+        field07 = #{returnOrder.field07},
+      </if>
+      <if test="returnOrder.field08 != null" >
+        field08 = #{returnOrder.field08},
+      </if>
+      <if test="returnOrder.billno != null" >
+        billno = #{returnOrder.billno},
+      </if>
+      <if test="returnOrder.isrefer != null" >
+        isrefer = #{returnOrder.isrefer},
+      </if>
+      <if test="returnOrder.isinvoice != null">
+        isinvoice = #{returnOrder.isinvoice},
+      </if>
+      <if test="returnOrder.canceldate != null">
+        canceldate = #{returnOrder.canceldate},
+      </if>
+      <if test="returnOrder.ckstatus != null">
+        ckstatus = #{returnOrder.ckstatus},
+      </if>
+      <if test="returnOrder.ischeck != null">
+        ischeck = #{returnOrder.ischeck},
+      </if>
+      <if test="returnOrder.checkuserid != null">
+        checkuserid = #{returnOrder.checkuserid},
+      </if>
+      <if test="returnOrder.checkusername != null">
+        checkusername = #{returnOrder.checkusername},
+      </if>
+      <if test="returnOrder.checkdate != null">
+        checkdate = #{returnOrder.checkdate},
+      </if>
+    </set>
+    where
+   	<trim prefixOverrides="and|or">
+   		<if test="id != null ">
+   			and id=#{id}
+   		</if>  	
+	    <if test="isnotcheck !=null ">
+	    	and ischeck='0' and ckstatus='1' and (isinvoice='0' or isinvoice='4')
+	    </if>	
+	    <if test="ischeckcancel !=null ">
+	    	and ischeck='1' and ckstatus='1' and (isinvoice='0' or isinvoice='4')
+	    </if>		  	
+	    <if test="authDataSql != null">
+	    	and ${authDataSql}
+	    </if>	
+    </trim>
+  </update>
+  <update id="updateReturnOrderStatus" parameterType="com.hd.agent.purchase.model.ReturnOrder">
+	   update t_purchase_returnorder
+	   <set >	   
+	     <if test="businessdate != null" >
+	        businessdate = #{businessdate},
+	      </if>       
+		 <if test="isrefer != null">
+		   isrefer=#{isrefer},
+		 </if>          
+		 <if test="isinvoice != null">
+		   isinvoice=#{isinvoice},
+		 </if>         
+		 <if test="canceldate != null">
+		   isrefer=#{canceldate},
+		 </if>
+	     <if test="status != null" >
+	       status = #{status},
+	     </if>
+		<if test="audituserid != null">
+	        audituserid = #{audituserid},
+	     </if>
+	     <if test="auditusername != null">
+	        auditusername = #{auditusername},
+	     </if>
+	     <if test="audittime != null">
+	        audittime = #{audittime},
+	     </if>
+	     <if test="stopuserid != null">
+	        stopuserid = #{stopuserid},
+	     </if>
+	     <if test="stopusername != null">
+	        stopusername = #{stopusername},
+	     </if>
+	     <if test="stoptime != null">
+	        stoptime = #{stoptime},
+	     </if>
+	     <if test="closetime != null">
+	        closetime = #{closetime},
+	     </if>
+	     <if test="ckstatus != null">
+	        ckstatus = #{ckstatus},
+	     </if>
+	     <if test="ischeck != null" >
+	        ischeck = #{ischeck},
+	     </if>
+	     <if test="checkuserid != null" >
+	        checkuserid = #{checkuserid},
+	     </if>
+	     <if test="checkusername != null" >
+	        checkusername = #{checkusername},
+	     </if>
+	     <if test="checkdate != null" >
+	        checkdate = #{checkdate},
+	     </if>
+	   </set>
+	   where id = #{id}
+  </update>
+   <update id="updateReturnOrderALL" parameterType="com.hd.agent.purchase.model.ReturnOrder">
+    update t_purchase_returnorder
+    <set >
+      <if test="businessdate != null" >
+        businessdate = #{businessdate},
+      </if>
+      <if test="status != null" >
+        status = #{status},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark},
+      </if>
+      <if test="adduserid != null" >
+        adduserid = #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        addusername = #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid = #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname = #{adddeptname},
+      </if>
+      <if test="addtime != null" >
+        addtime = #{addtime},
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid = #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername = #{modifyusername},
+      </if>
+      <if test="modifytime != null" >
+        modifytime = #{modifytime},
+      </if>
+      <if test="audituserid != null" >
+        audituserid = #{audituserid},
+      </if>
+      <if test="auditusername != null" >
+        auditusername = #{auditusername},
+      </if>
+      <if test="audittime != null" >
+        audittime = #{audittime},
+      </if>
+      <if test="stopuserid != null" >
+        stopuserid = #{stopuserid},
+      </if>
+      <if test="stopusername != null" >
+        stopusername = #{stopusername},
+      </if>
+      <if test="stoptime != null" >
+        stoptime = #{stoptime},
+      </if>
+      <if test="closetime != null" >
+        closetime = #{closetime},
+      </if>
+      <if test="printtimes != null" >
+        printtimes = #{printtimes},
+      </if>
+      <if test="supplierid != null" >
+        supplierid = #{supplierid},
+      </if>
+      <if test="handlerid != null" >
+        handlerid = #{handlerid},
+      </if>
+      <if test="source != null" >
+        source = #{source},
+      </if>
+      <if test="buydeptid != null" >
+        buydeptid = #{buydeptid},
+      </if>
+      <if test="buyuserid != null" >
+        buyuserid = #{buyuserid},
+      </if>
+      <if test="settletype != null" >
+        settletype = #{settletype},
+      </if>
+      <if test="paytype != null" >
+        paytype = #{paytype},
+      </if>
+      <if test="storageid != null" >
+        storageid = #{storageid},
+      </if>
+      <if test="field01 != null" >
+        field01 = #{field01},
+      </if>
+      <if test="field02 != null" >
+        field02 = #{field02},
+      </if>
+      <if test="field03 != null" >
+        field03 = #{field03},
+      </if>
+      <if test="field04 != null" >
+        field04 = #{field04},
+      </if>
+      <if test="field05 != null" >
+        field05 = #{field05},
+      </if>
+      <if test="field06 != null" >
+        field06 = #{field06},
+      </if>
+      <if test="field07 != null" >
+        field07 = #{field07},
+      </if>
+      <if test="field08 != null" >
+        field08 = #{field08},
+      </if>
+      <if test="billno != null" >
+        billno = #{billno},
+      </if>
+      <if test="isrefer != null" >
+        isrefer = #{isrefer},
+      </if>
+      <if test="isinvoice != null" >
+        isinvoice = #{isinvoice},
+      </if>
+      <if test="canceldate != null" >
+        canceldate = #{canceldate},
+      </if>
+      <if test="ckstatus != null" >
+        ckstatus = #{ckstatus},
+      </if>
+      <if test="ischeck != null" >
+        ischeck = #{ischeck},
+      </if>
+      <if test="checkuserid != null" >
+        checkuserid = #{checkuserid},
+      </if>
+      <if test="checkusername != null" >
+        checkusername = #{checkusername},
+      </if>
+      <if test="checkdate != null" >
+        checkdate = #{checkdate},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  <delete id="deleteReturnOrder" parameterType="java.lang.String">
+    delete from t_purchase_returnorder
+    where id = #{id}
+  </delete>
+  <select id="getReturnOrderPageList"  parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.purchase.model.ReturnOrder">
+  		select
+	  	<choose>
+			<when test="cols!=null">
+				<include refid="common.Page_Column"/>
+			</when>
+			<when test="cols==null">
+				*
+			</when>
+		</choose>
+		from t_purchase_returnorder t
+    	<trim prefix="where" prefixOverrides="and|or">
+			<include refid="ROPageList_Where_Clause" />
+			<include refid="common.Page_querySql"/>
+			<include refid="common.Page_dataSql"/>
+            <if test="condition.exportids != null" >
+                and FIND_IN_SET(id,#{condition.exportids})
+            </if>
+            <if test="condition.businessdatestart != null" >
+              <![CDATA[ and businessdate >= #{condition.businessdatestart} ]]>
+            </if>
+            <if test="condition.businessdateend != null" >
+              <![CDATA[ and businessdate <= #{condition.businessdateend} ]]>
+            </if>
+	      	<choose>
+		      	<when test="condition.isClose ==0 ">
+		      		and status='2'
+		      	</when>
+		      	<when test="condition.isClose ==1 ">
+		      		and status='3'
+		      	</when>
+		      	<when test="condition.isClose ==2 ">
+		      		and status='4'
+		      	</when>
+		    </choose>	
+	      	<choose>
+		      	<when test="condition.isAudit ==1 ">
+		      		and status = '2'
+		      	</when>
+		      	<when test="condition.isAudit ==2 ">
+		      		and (status='3' or status='4' )
+		      	</when>
+		    </choose>		    
+	      	<if test="condition.printsign != null and condition.queryprinttimes != null">
+	      		<choose>
+	      			<when test="condition.printsign == 1">
+	      				<![CDATA[and printtimes = #{condition.queryprinttimes} ]]>
+	      			</when>
+	      			<when test="condition.printsign == 2">
+	      				<![CDATA[and printtimes < #{condition.queryprinttimes} ]]>
+	      			</when>
+	      			<when test="condition.printsign == 3">
+	      				<![CDATA[and printtimes <= #{condition.queryprinttimes} ]]>
+	      			</when>
+	      			<when test="condition.printsign == 4">
+	      				<![CDATA[and printtimes > #{condition.queryprinttimes} ]]>
+	      			</when>
+	      			<when test="condition.printsign == 5">
+	      				<![CDATA[and printtimes >= #{condition.queryprinttimes} ]]>
+	      			</when>
+	      		</choose>
+	      	</if>
+		</trim>
+		<if test="orderSql ==null and ( condition.sort ==null or condition.order==null )">
+			order by businessdate DESC,id DESC
+		</if>
+		<if test="condition.isflag == null" >
+			<include refid="common.Page_limit" />
+		</if>
+  	</select>
+  	<select id="getReturnOrderPageCount"  parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  		select count(*) from t_purchase_returnorder t 		
+    	<trim prefix="where" prefixOverrides="and|or">
+			<include refid="ROPageList_Where_Clause" />
+			<include refid="common.Page_querySql"/>
+			<include refid="common.Page_dataSql"/>
+            <if test="condition.businessdatestart != null" >
+              <![CDATA[ and businessdate >= #{condition.businessdatestart} ]]>
+            </if>
+            <if test="condition.businessdateend != null" >
+              <![CDATA[ and businessdate <= #{condition.businessdateend} ]]>
+            </if>
+	      	<choose>
+		      	<when test="condition.isClose ==0 ">
+		      		and status='2'
+		      	</when>
+		      	<when test="condition.isClose ==1 ">
+		      		and status='3'
+		      	</when>
+		      	<when test="condition.isClose ==2 ">
+		      		and status='4'
+		      	</when>
+		    </choose>	
+	      	<choose>
+		      	<when test="condition.isAudit ==1 ">
+		      		and status = '2'
+		      	</when>
+		      	<when test="condition.isAudit ==2 ">
+		      		and (status='3' or status='4' )
+		      	</when>
+		    </choose>		    
+	      	<if test="condition.printsign != null and condition.queryprinttimes != null">
+	      		<choose>
+	      			<when test="condition.printsign == 1">
+	      				<![CDATA[and printtimes = #{condition.queryprinttimes} ]]>
+	      			</when>
+	      			<when test="condition.printsign == 2">
+	      				<![CDATA[and printtimes < #{condition.queryprinttimes} ]]>
+	      			</when>
+	      			<when test="condition.printsign == 3">
+	      				<![CDATA[and printtimes <= #{condition.queryprinttimes} ]]>
+	      			</when>
+	      			<when test="condition.printsign == 4">
+	      				<![CDATA[and printtimes > #{condition.queryprinttimes} ]]>
+	      			</when>
+	      			<when test="condition.printsign == 5">
+	      				<![CDATA[and printtimes >= #{condition.queryprinttimes} ]]>
+	      			</when>
+	      		</choose>
+	      	</if>
+		</trim>
+  	</select>
+  	<select id="getReturnOrderDetailTotalSum"  parameterType="com.hd.agent.common.util.PageMap" resultType="java.util.Map">
+  		SELECT SUM(rod.taxamount) AS taxamount,SUM(rod.notaxamount) notaxamount,SUM(rod.tax) AS tax 
+  		FROM t_purchase_returnorder_detail rod 
+		INNER JOIN 
+		(SELECT id from t_purchase_returnorder t  		
+	    	<trim prefix="where" prefixOverrides="and|or">
+				<include refid="ROPageList_Where_Clause" />
+				<include refid="common.Page_querySql"/>
+				<include refid="common.Page_dataSql"/>
+                <if test="condition.businessdatestart != null" >
+                  <![CDATA[ and businessdate >= #{condition.businessdatestart}  ]]>
+                </if>
+                <if test="condition.businessdateend != null" >
+                  <![CDATA[ and businessdate <= #{condition.businessdateend} ]]>
+                </if>
+		      	<choose>
+			      	<when test="condition.isClose ==0 ">
+			      		and status='2'
+			      	</when>
+			      	<when test="condition.isClose ==1 ">
+			      		and status='3'
+			      	</when>
+			      	<when test="condition.isClose ==2 ">
+			      		and status='4'
+			      	</when>
+			    </choose>	
+		      	<choose>
+			      	<when test="condition.isAudit ==1 ">
+			      		and status = '2'
+			      	</when>
+			      	<when test="condition.isAudit ==2 ">
+			      		and (status='3' or status='4' )
+			      	</when>
+			    </choose>
+			</trim>
+			) ro
+		ON rod.orderid=ro.id 
+  	</select>	  	
+  	<update id="updateReturnOrderInvoice" parameterType="java.lang.String">
+  		update t_purchase_returnorder 
+  		<set>
+  			<if test="isinvoice != null">
+  		 		isinvoice = #{isinvoice},
+  		 	</if>  		 	
+  			<if test="canceldate != null">  		 		
+  		 	 	canceldate = #{canceldate},
+  		 	</if>
+  		 </set> 
+  	    where id = #{id}
+  	</update>
+  	<update id="updateReturnOrderIsrefer" parameterType="java.lang.String">
+  		update t_purchase_returnorder 
+  		<set>
+  			<if test="isrefer != null">
+  		 		isrefer = #{isrefer},
+  		 	</if>
+  		 </set> 
+  	    where id = #{id}
+  	</update>
+  	<update id="updateReturnOrderStatusAndisinvoice" parameterType="java.lang.String">
+  		update t_purchase_returnorder 
+  		<set>
+  			<if test="status != null">
+  		 		status = #{status},
+  		 	</if>
+  		 	<if test="isinvoice != null">
+  		 		isinvoice = #{isinvoice},
+  		 	</if>
+  		 </set> 
+  	    where id = #{id}
+  	</update>  	
+  	<select id="showReturnOrderListBy" parameterType="java.util.Map" resultType="com.hd.agent.purchase.model.ReturnOrder">
+  		select 
+	    <include refid="RO_Base_Column_List" />
+	    from t_purchase_returnorder
+  		<trim prefix="where" prefixOverrides="and|or">
+		  	<if test="dataSql != null">
+		  		and ${dataSql}
+		  	</if>
+  			<if test="idarrs!=null">
+  				and find_in_set(id,#{idarrs})
+  			</if>
+  			<if test="status!=null">
+  				and status=#{status}
+  			</if>
+  			<if test="statusarr!=null">
+			   and FIND_IN_SET(status,#{statusarr})
+  			</if>
+			<if test="notprint != null and notprint == 1">
+	  			 and (printtimes is null or printtimes=0)
+			</if>
+  		</trim>
+  	</select>
+  	
+  	<update id="updateOrderPrinttimes" parameterType="com.hd.agent.purchase.model.ReturnOrder">
+		update t_purchase_returnorder
+	    <set>
+	      <if test="printtimes != null">
+	        printtimes = IFNULL(printtimes,0)+1,
+	      </if>
+	    </set>
+	    where id = #{id}
+	</update>
+  	<!-- 采购订单明细 -->
+  	<sql id="ROD_Base_Column_List" >
+    id, orderid, goodsid,summarybatchid, storageid, storagelocationid, unitid, unitname, unitnum, auxunitid, auxunitname, auxnum, 
+    auxnumdetail,totalbox, taxprice, taxamount, taxtype, notaxprice, notaxamount, tax,addcostprice, remark, batchno, produceddate, deadline,
+    field01, field02, field03, field04, field05, field06, field07, field08, seq, billno, billdetailno, returnleftunitnum, 
+    returnleftauxnum, unreturnunitnum, unreturnauxnum, returnlefnotaxamount, returnleftaxamount, 
+    invoicetaxamount,invoicenotaxamount,uninvoicetaxamount,uninvoicenotaxamount,
+    unreturnnotaxamount, unreturntaxamount,writeoffamount,invoicerefer,auxremainder,invoicenum,uninvoicenum,auditnum,iswriteoff,
+    writeoffnum
+  	</sql>
+  	<insert id="insertReturnOrderDetail" parameterType="com.hd.agent.purchase.model.ReturnOrderDetail">
+    insert into t_purchase_returnorder_detail
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="orderid != null">
+        orderid,
+      </if>
+      <if test="goodsid != null">
+        goodsid,
+      </if>
+      <if test="summarybatchid != null" >
+        summarybatchid,
+      </if>
+      <if test="storageid != null" >
+        storageid,
+      </if>
+      <if test="storagelocationid != null" >
+        storagelocationid,
+      </if>
+      <if test="unitid != null">
+        unitid,
+      </if>
+      <if test="unitname != null">
+        unitname,
+      </if>
+      <if test="unitnum != null">
+        unitnum,
+      </if>
+      <if test="auxunitid != null">
+        auxunitid,
+      </if>
+      <if test="auxunitname != null">
+        auxunitname,
+      </if>
+      <if test="auxnum != null">
+        auxnum,
+      </if>
+      <if test="auxnumdetail != null">
+        auxnumdetail,
+      </if>
+      <if test="auxremainder != null">
+        auxremainder,
+      </if>
+      <if test="totalbox != null">
+        totalbox,
+      </if>
+      <if test="taxprice != null">
+        taxprice,
+      </if>
+      <if test="taxamount != null">
+        taxamount,
+      </if>
+      <if test="taxtype != null">
+        taxtype,
+      </if>
+      <if test="notaxprice != null">
+        notaxprice,
+      </if>
+      <if test="notaxamount != null">
+        notaxamount,
+      </if>
+      <if test="tax != null">
+        tax,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="batchno != null">
+        batchno,
+      </if>
+      <if test="produceddate != null">
+        produceddate,
+      </if>
+      <if test="deadline != null">
+        deadline,
+      </if>
+      <if test="field01 != null">
+        field01,
+      </if>
+      <if test="field02 != null">
+        field02,
+      </if>
+      <if test="field03 != null">
+        field03,
+      </if>
+      <if test="field04 != null">
+        field04,
+      </if>
+      <if test="field05 != null">
+        field05,
+      </if>
+      <if test="field06 != null">
+        field06,
+      </if>
+      <if test="field07 != null">
+        field07,
+      </if>
+      <if test="field08 != null">
+        field08,
+      </if>
+      <if test="seq != null">
+        seq,
+      </if>
+      <if test="billno != null">
+        billno,
+      </if>
+      <if test="billdetailno != null">
+        billdetailno,
+      </if>
+      <if test="invoicetaxamount != null">
+        invoicetaxamount,
+      </if>
+      <if test="invoicenotaxamount != null">
+        invoicenotaxamount,
+      </if>
+      <if test="uninvoicetaxamount != null">
+        uninvoicetaxamount,
+      </if>
+      <if test="uninvoicenotaxamount != null">
+        uninvoicenotaxamount,
+      </if>
+      <if test="writeoffamount != null">
+        writeoffamount,
+      </if>
+      <if test="invoicerefer != null">
+        invoicerefer,
+      </if>
+      <if test="invoicenum != null">
+        invoicenum,
+      </if>
+      <if test="uninvoicenum != null">
+        uninvoicenum,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id},
+      </if>
+      <if test="orderid != null">
+        #{orderid},
+      </if>
+      <if test="goodsid != null">
+        #{goodsid},
+      </if>
+      <if test="summarybatchid != null" >
+        #{summarybatchid},
+      </if>
+      <if test="storageid != null" >
+        #{storageid},
+      </if>
+      <if test="storagelocationid != null" >
+        #{storagelocationid},
+      </if>
+      <if test="unitid != null">
+        #{unitid},
+      </if>
+      <if test="unitname != null">
+        #{unitname},
+      </if>
+      <if test="unitnum != null">
+        #{unitnum},
+      </if>
+      <if test="auxunitid != null">
+        #{auxunitid},
+      </if>
+      <if test="auxunitname != null">
+        #{auxunitname},
+      </if>
+      <if test="auxnum != null">
+        #{auxnum},
+      </if>
+      <if test="auxnumdetail != null">
+        #{auxnumdetail},
+      </if>
+      <if test="auxremainder != null">
+        #{auxremainder},
+      </if>
+      <if test="totalbox != null">
+        #{totalbox},
+      </if>
+      <if test="taxprice != null">
+        #{taxprice},
+      </if>
+      <if test="taxamount != null">
+        #{taxamount},
+      </if>
+      <if test="taxtype != null">
+        #{taxtype},
+      </if>
+      <if test="notaxprice != null">
+        #{notaxprice},
+      </if>
+      <if test="notaxamount != null">
+        #{notaxamount},
+      </if>
+      <if test="tax != null">
+        #{tax},
+      </if>
+      <if test="remark != null">
+        #{remark},
+      </if>
+      <if test="batchno != null">
+        #{batchno},
+      </if>
+      <if test="produceddate != null">
+        #{produceddate},
+      </if>
+      <if test="deadline != null">
+        #{deadline},
+      </if>
+      <if test="field01 != null">
+        #{field01},
+      </if>
+      <if test="field02 != null">
+        #{field02},
+      </if>
+      <if test="field03 != null">
+        #{field03},
+      </if>
+      <if test="field04 != null">
+        #{field04},
+      </if>
+      <if test="field05 != null">
+        #{field05},
+      </if>
+      <if test="field06 != null">
+        #{field06},
+      </if>
+      <if test="field07 != null">
+        #{field07},
+      </if>
+      <if test="field08 != null">
+        #{field08},
+      </if>
+      <if test="seq != null">
+        #{seq},
+      </if>
+      <if test="billno != null">
+        #{billno},
+      </if>
+      <if test="billdetailno != null">
+        #{billdetailno},
+      </if>
+      <if test="invoicetaxamount != null">
+        #{invoicetaxamount},
+      </if>
+      <if test="invoicenotaxamount != null">
+        #{invoicenotaxamount},
+      </if>
+      <if test="uninvoicetaxamount != null">
+        #{uninvoicetaxamount},
+      </if>
+      <if test="uninvoicenotaxamount != null">
+        #{uninvoicenotaxamount},
+      </if>
+      <if test="writeoffamount != null">
+        #{writeoffamount},
+      </if>
+      <if test="invoicerefer != null">
+        #{invoicerefer},
+      </if>
+      <if test="invoicenum != null">
+        #{invoicenum},
+      </if>
+      <if test="uninvoicenum != null">
+        #{uninvoicenum},
+      </if>
+    </trim>
+  </insert>
+  <delete id="deleteReturnOrderDetailByOrderid" parameterType="java.lang.String">
+	    delete from t_purchase_returnorder_detail
+	    where orderid = #{orderid}
+  </delete>
+  <select id="getReturnOrderTotalTaxAmountByOderid" parameterType="java.lang.String" resultType="java.math.BigDecimal">
+	SELECT SUM(taxamount) AS total FROM t_purchase_returnorder_detail WHERE orderid = #{orderid}
+  </select>
+  <update id="updateReturnOrderDetail" parameterType="com.hd.agent.purchase.model.ReturnOrderDetail">
+    update t_purchase_returnorder_detail
+    <set>
+      <if test="id != null">
+        id = #{id},
+      </if>
+      <if test="orderid != null">
+        orderid = #{orderid},
+      </if>
+      <if test="goodsid != null">
+        goodsid = #{goodsid},
+      </if>      
+      <if test="summarybatchid != null" >
+        summarybatchid=#{summarybatchid},
+      </if>
+      <if test="storageid != null" >
+        storageid=#{storageid},
+      </if>
+      <if test="storagelocationid != null" >
+        storagelocationid=#{storagelocationid},
+      </if>
+      <if test="unitid != null">
+        unitid = #{unitid},
+      </if>
+      <if test="unitname != null">
+        unitname = #{unitname},
+      </if>
+      <if test="unitnum != null">
+        unitnum = #{unitnum},
+      </if>
+      <if test="auxunitid != null">
+        auxunitid = #{auxunitid},
+      </if>
+      <if test="auxunitname != null">
+        auxunitname = #{auxunitname},
+      </if>
+      <if test="auxnum != null">
+        auxnum = #{auxnum},
+      </if>
+      <if test="auxnumdetail != null">
+        auxnumdetail = #{auxnumdetail},
+      </if>
+      <if test="auxremainder != null">
+        auxremainder = #{auxremainder},
+      </if>
+      <if test="totalbox != null">
+        totalbox = #{totalbox},
+      </if>
+      <if test="taxprice != null">
+        taxprice = #{taxprice},
+      </if>
+      <if test="taxamount != null">
+        taxamount = #{taxamount},
+      </if>
+      <if test="taxtype != null">
+        taxtype = #{taxtype},
+      </if>
+      <if test="notaxprice != null">
+        notaxprice = #{notaxprice},
+      </if>
+      <if test="notaxamount != null">
+        notaxamount = #{notaxamount},
+      </if>
+      <if test="tax != null">
+        tax = #{tax},
+      </if>
+      <if test="remark != null">
+        remark = #{remark},
+      </if>
+      <if test="batchno != null">
+        batchno = #{batchno},
+      </if>
+      <if test="produceddate != null">
+        produceddate = #{produceddate},
+      </if>
+      <if test="deadline != null">
+        deadline = #{deadline},
+      </if>
+      <if test="field01 != null">
+        field01 = #{field01},
+      </if>
+      <if test="field02 != null">
+        field02 = #{field02},
+      </if>
+      <if test="field03 != null">
+        field03 = #{field03},
+      </if>
+      <if test="field04 != null">
+        field04 = #{field04},
+      </if>
+      <if test="field05 != null">
+        field05 = #{field05},
+      </if>
+      <if test="field06 != null">
+        field06 = #{field06},
+      </if>
+      <if test="field07 != null">
+        field07 = #{field07},
+      </if>
+      <if test="field08 != null">
+        field08 = #{field08},
+      </if>
+      <if test="seq != null">
+        seq = #{seq},
+      </if>
+      <if test="billno != null">
+        billno = #{billno},
+      </if>
+      <if test="billdetailno != null">
+        billdetailno = #{billdetailno},
+      </if>
+      <if test="invoicerefer != null">
+        invoicerefer = #{invoicerefer},
+      </if>
+      <if test="invoicetaxamount != null">
+        invoicetaxamount = #{invoicetaxamount},
+      </if>
+      <if test="invoicenotaxamount != null">
+        invoicenotaxamount = #{invoicenotaxamount},
+      </if>
+      <if test="uninvoicetaxamount != null">
+        uninvoicetaxamount = #{uninvoicetaxamount},
+      </if>
+      <if test="uninvoicenotaxamount != null">
+        uninvoicenotaxamount = #{uninvoicenotaxamount},
+      </if>
+      <if test="writeoffamount != null">
+        writeoffamount = #{writeoffamount},
+      </if>
+      <if test="invoicenum != null">
+        invoicenum = #{invoicenum},
+      </if>
+      <if test="uninvoicenum != null">
+        uninvoicenum = #{uninvoicenum},
+      </if>
+      <if test="auditnum != null">
+        auditnum = #{auditnum},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  <update id="updateReturnOrderDetailByCheck" parameterType="com.hd.agent.purchase.model.ReturnOrderDetail">
+  	update t_purchase_returnorder_detail
+    <set >
+      <if test="unitnum != null" >
+        unitnum = #{unitnum},
+      </if>
+      <if test="auxnum != null" >
+        auxnum = #{auxnum},
+      </if>
+      <if test="auxnumdetail != null" >
+        auxnumdetail = #{auxnumdetail},
+      </if>
+      <if test="auxremainder != null" >
+        auxremainder = #{auxremainder},
+      </if>
+      <if test="totalbox != null" >
+        totalbox = #{totalbox},
+      </if>
+      <if test="taxprice != null" >
+        taxprice = #{taxprice},
+      </if>
+      <if test="taxamount != null" >
+        taxamount = #{taxamount},
+      </if>
+      <if test="taxtype != null" >
+        taxtype = #{taxtype},
+      </if>
+      <if test="notaxprice != null" >
+        notaxprice = #{notaxprice},
+      </if>
+      <if test="notaxamount != null" >
+        notaxamount = #{notaxamount},
+      </if>
+      <if test="tax != null" >
+        tax = #{tax},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark},
+      </if>
+      <if test="returnleftunitnum != null" >
+        returnleftunitnum = #{returnleftunitnum},
+      </if>
+      <if test="returnleftauxnum != null" >
+        returnleftauxnum = #{returnleftauxnum},
+      </if>
+      <if test="unreturnunitnum != null" >
+        unreturnunitnum = #{unreturnunitnum},
+      </if>
+      <if test="unreturnauxnum != null" >
+        unreturnauxnum = #{unreturnauxnum},
+      </if>
+      <if test="returnlefnotaxamount != null" >
+        returnlefnotaxamount = #{returnlefnotaxamount},
+      </if>
+      <if test="returnleftaxamount != null" >
+        returnleftaxamount = #{returnleftaxamount},
+      </if>
+      <if test="unreturnnotaxamount != null" >
+        unreturnnotaxamount = #{unreturnnotaxamount},
+      </if>
+      <if test="unreturntaxamount != null" >
+        unreturntaxamount = #{unreturntaxamount},
+      </if>
+      <if test="invoicetaxamount != null" >
+        invoicetaxamount = #{invoicetaxamount},
+      </if>
+      <if test="invoicenotaxamount != null" >
+        invoicenotaxamount = #{invoicenotaxamount},
+      </if>
+      <if test="uninvoicetaxamount != null" >
+        uninvoicetaxamount = #{uninvoicetaxamount},
+      </if>
+      <if test="uninvoicenotaxamount != null" >
+        uninvoicenotaxamount = #{uninvoicenotaxamount},
+      </if>
+    </set>
+    where id = #{id} and orderid = #{orderid}
+  </update>
+  <update id="updateReturnOrderDetailWriteBack" parameterType="com.hd.agent.purchase.model.ReturnOrderDetail">
+  	update t_purchase_returnorder_detail
+  	<set>  	
+       <if test="unitnum != null">
+        unitnum = #{unitnum},
+      </if>
+      <if test="auxnum != null">
+        auxnum = #{auxnum},
+      </if>
+      <if test="auxnumdetail != null">
+        auxnumdetail = #{auxnumdetail},
+      </if>
+      <if test="auxremainder != null">
+        auxremainder = #{auxremainder},
+      </if>
+      <if test="totalbox != null">
+        totalbox = #{totalbox},
+      </if>
+      <if test="taxamount != null">
+        taxamount = #{taxamount},
+      </if>
+      <if test="notaxamount != null">
+        notaxamount = #{notaxamount},
+      </if>
+      <if test="tax != null">
+        tax = #{tax},
+      </if>
+      <if test="addcostprice != null">
+        addcostprice = #{addcostprice},
+      </if>
+      <if test="invoicetaxamount != null">
+        invoicetaxamount = #{invoicetaxamount},
+      </if>
+      <if test="invoicenotaxamount != null">
+        invoicenotaxamount = #{invoicenotaxamount},
+      </if>
+      <if test="uninvoicetaxamount != null">
+        uninvoicetaxamount = #{uninvoicetaxamount},
+      </if>
+      <if test="uninvoicenotaxamount != null">
+        uninvoicenotaxamount = #{uninvoicenotaxamount},
+      </if>
+      <if test="returnleftunitnum != null">
+        returnleftunitnum = #{returnleftunitnum},
+      </if>
+      <if test="returnleftauxnum != null">
+        returnleftauxnum = #{returnleftauxnum},
+      </if>
+      <if test="unreturnunitnum != null">
+        unreturnunitnum = #{unreturnunitnum},
+      </if>
+      <if test="unreturnauxnum != null">
+        unreturnauxnum = #{unreturnauxnum},
+      </if>
+      <if test="returnlefnotaxamount != null">
+        returnlefnotaxamount = #{returnlefnotaxamount},
+      </if>
+      <if test="returnleftaxamount != null">
+        returnleftaxamount = #{returnleftaxamount},
+      </if>
+      <if test="unreturnnotaxamount != null">
+        unreturnnotaxamount = #{unreturnnotaxamount},
+      </if>
+      <if test="unreturntaxamount != null">
+        unreturntaxamount = #{unreturntaxamount},
+      </if> 
+      <if test="writeoffamount != null">
+        writeoffamount = #{writeoffamount},
+      </if> 
+      <if test="invoicenum != null">
+        invoicenum = #{invoicenum},
+      </if>
+      <if test="uninvoicenum != null">
+        uninvoicenum = #{uninvoicenum},
+      </if>  
+      <if test="invoicerefer != null">
+        invoicerefer = #{invoicerefer},
+      </if>
+      <if test="auditnum != null">
+        auditnum = #{auditnum},
+      </if>
+      <if test="iswriteoff != null">
+        iswriteoff = #{iswriteoff},
+      </if>
+      <if test="writeoffnum != null">
+        writeoffnum = #{writeoffnum},
+      </if> 
+  	</set>
+  	where id=#{id}
+  </update>
+  <update id="updateReturnOrderDetailInvoiceWriteBack" parameterType="com.hd.agent.purchase.model.ReturnOrderDetail">
+    update t_purchase_returnorder_detail
+    <set>
+      <if test="invoicetaxamount != null">
+        invoicetaxamount = #{invoicetaxamount},
+      </if>
+      <if test="invoicenotaxamount != null">
+        invoicenotaxamount = #{invoicenotaxamount},
+      </if>
+      <if test="uninvoicetaxamount != null">
+        uninvoicetaxamount = #{uninvoicetaxamount},
+      </if>
+      <if test="uninvoicenotaxamount != null">
+        uninvoicenotaxamount = #{uninvoicenotaxamount},
+      </if> 
+      <if test="writeoffamount != null">
+        writeoffamount = #{writeoffamount},
+      </if>         
+      <if test="invoicerefer != null">
+        invoicerefer = #{invoicerefer},
+      </if>
+      <if test="invoicenum != null">
+        invoicenum = #{invoicenum},
+      </if>
+      <if test="uninvoicenum != null">
+        uninvoicenum = #{uninvoicenum},
+      </if>
+      <if test="auditnum != null">
+        auditnum = #{auditnum},
+      </if>
+      <if test="iswriteoff != null">
+        iswriteoff = #{iswriteoff},
+      </if>
+      <if test="writeoffnum != null">
+        writeoffnum = #{writeoffnum},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  <update id="updateReturnOrderDetailAuditnum" parameterType="com.hd.agent.purchase.model.ReturnOrderDetail">
+  	 update t_purchase_returnorder_detail
+    <set>
+      <if test="auditnum != null">
+        auditnum = #{auditnum},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  <select id="getReturnOrderDetailListBy" parameterType="java.util.Map" resultType="com.hd.agent.purchase.model.ReturnOrderDetail">
+  		select <include refid="ROD_Base_Column_List" />
+		from t_purchase_returnorder_detail
+		<trim prefix="where" prefixOverrides="and|or" >	  		
+			<if test="orderid != null" >
+			   and orderid = #{orderid}
+			</if>
+			<if test="invoicerefer !=null">
+				and invoicerefer=#{invoicerefer}
+			</if>
+			<if test="notinvoicerefer !=null">
+				and invoicerefer != #{notinvoicerefer}
+			</if>
+			<if test="shownotinvoicerefer != null">
+				and ( invoicerefer = '0' or invoicerefer = '3' )
+			</if>
+			<if test="orderidarrs != null" >
+			   and FIND_IN_SET(orderid,#{orderidarrs})
+			</if>		  	
+		    <if test="authDataSql != null">
+		    	and ${authDataSql}
+		    </if>
+	    </trim>	
+  </select>	
+  <select id="getReturnOrderDetail" parameterType="java.lang.String" resultType="com.hd.agent.purchase.model.ReturnOrderDetail">
+		select 
+		<include refid="ROD_Base_Column_List" />
+		from t_purchase_returnorder_detail
+		where id = #{id}
+  </select>
+  <select id="getReturnOrderDetailListByOrderid" parameterType="java.lang.String" resultType="com.hd.agent.purchase.model.ReturnOrderDetail">
+		select 
+		<include refid="ROD_Base_Column_List" />
+		from t_purchase_returnorder_detail
+		where orderid = #{orderid}
+  </select>
+  <select id="getReturnOrderDetailCountBy" parameterType="java.util.Map" resultType="int">
+  		select count(*) from t_purchase_returnorder_detail
+		<trim prefix="where" prefixOverrides="and|or" >	  		
+			<if test="orderid != null" >
+			   and orderid = #{orderid}
+			</if>
+			<if test="invoicerefer !=null">
+				and invoicerefer=#{invoicerefer}
+			</if>
+			<if test="notinvoicerefer !=null">
+				and invoicerefer != #{notinvoicerefer}
+			</if>		  
+			<if test="orderidarrs != null" >
+			   and FIND_IN_SET(orderid,#{orderidarrs})
+			</if>	
+		    <if test="authDataSql != null">
+		    	and ${authDataSql}
+		    </if>
+	    </trim>	
+  </select>	
+  <update id="updateReturnOrderDetailInvoiceRefer" parameterType="java.lang.String">
+  	update t_purchase_returnorder_detail
+    set invoicerefer = #{invoicerefer}
+    where id = #{id}
+  </update>
+  <select id="getReturnOrderDetailTotal" parameterType="java.lang.String" resultType="map">
+  	select sum(taxamount) taxamount, sum(notaxamount) notaxamount, sum(tax) tax from t_purchase_returnorder_detail where orderid = #{id}
+  </select>
+  <select id="getReturnOrderDetailByOrderidAndGoodsId" parameterType="java.lang.String" resultType="com.hd.agent.purchase.model.ReturnOrderDetail">
+  	SELECT * FROM t_purchase_returnorder_detail WHERE orderid = #{orderid} AND goodsid = #{goodsid}
+  </select>
+  <select id="getReturnOrderCountById" parameterType="java.lang.String" resultType="int">
+ 	select count(1) from t_purchase_returnorder where id= #{id}
+  </select>
+  <update id="updateReturnOrderDetailUncancel" parameterType="java.lang.String">
+    update t_purchase_returnorder_detail r1,t_account_purchase_invoice_detail t1
+    set r1.iswriteoff='0',r1.writeoffnum = r1.writeoffnum + t1.unitnum,r1.writeoffamount = r1.writeoffamount + t1.taxamount
+    where r1.id=t1.sourcedetailid and r1.orderid=t1.sourceid and t1.sourcetype='2' and t1.billid=#{invoiceid}
+  </update>
+  
+  
+   <insert id="addreturnOrderForDeliveryJob" parameterType="com.hd.agent.purchase.model.ReturnOrder" >
+    insert into t_purchase_returnorder
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="businessdate != null" >
+        businessdate,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="adduserid != null" >
+        adduserid,
+      </if>
+      <if test="addusername != null" >
+        addusername,
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid,
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname,
+      </if>
+      <if test="addtime != null" >
+        addtime,
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid,
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername,
+      </if>
+      <if test="modifytime != null" >
+        modifytime,
+      </if>
+      <if test="audituserid != null" >
+        audituserid,
+      </if>
+      <if test="auditusername != null" >
+        auditusername,
+      </if>
+      <if test="audittime != null" >
+        audittime,
+      </if>
+      <if test="stopuserid != null" >
+        stopuserid,
+      </if>
+      <if test="stopusername != null" >
+        stopusername,
+      </if>
+      <if test="stoptime != null" >
+        stoptime,
+      </if>
+      <if test="closetime != null" >
+        closetime,
+      </if>
+      <if test="printtimes != null" >
+        printtimes,
+      </if>
+      <if test="supplierid != null" >
+        supplierid,
+      </if>
+      <if test="handlerid != null" >
+        handlerid,
+      </if>
+      <if test="source != null" >
+        source,
+      </if>
+      <if test="buydeptid != null" >
+        buydeptid,
+      </if>
+      <if test="buyuserid != null" >
+        buyuserid,
+      </if>
+      <if test="settletype != null" >
+        settletype,
+      </if>
+      <if test="paytype != null" >
+        paytype,
+      </if>
+      <if test="storageid != null" >
+        storageid,
+      </if>
+      <if test="field01 != null" >
+        field01,
+      </if>
+      <if test="field02 != null" >
+        field02,
+      </if>
+      <if test="field03 != null" >
+        field03,
+      </if>
+      <if test="field04 != null" >
+        field04,
+      </if>
+      <if test="field05 != null" >
+        field05,
+      </if>
+      <if test="field06 != null" >
+        field06,
+      </if>
+      <if test="field07 != null" >
+        field07,
+      </if>
+      <if test="field08 != null" >
+        field08,
+      </if>
+      <if test="billno != null" >
+        billno,
+      </if>
+      <if test="isrefer != null" >
+        isrefer,
+      </if>
+      <if test="isinvoice != null" >
+        isinvoice,
+      </if>
+      <if test="canceldate != null" >
+        canceldate,
+      </if>
+      <if test="ckstatus != null" >
+        ckstatus,
+      </if>
+      <if test="ischeck != null" >
+        ischeck,
+      </if>
+      <if test="checkuserid != null" >
+        checkuserid,
+      </if>
+      <if test="checkusername != null" >
+        checkusername,
+      </if>
+      <if test="checkdate != null" >
+        checkdate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="businessdate != null" >
+        #{businessdate},
+      </if>
+      <if test="status != null" >
+        #{status},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+      <if test="adduserid != null" >
+        #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        #{adddeptname},
+      </if>
+      <if test="addtime != null" >
+        #{addtime},
+      </if>
+      <if test="modifyuserid != null" >
+        #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        #{modifyusername},
+      </if>
+      <if test="modifytime != null" >
+        #{modifytime},
+      </if>
+      <if test="audituserid != null" >
+        #{audituserid},
+      </if>
+      <if test="auditusername != null" >
+        #{auditusername},
+      </if>
+      <if test="audittime != null" >
+        #{audittime},
+      </if>
+      <if test="stopuserid != null" >
+        #{stopuserid},
+      </if>
+      <if test="stopusername != null" >
+        #{stopusername},
+      </if>
+      <if test="stoptime != null" >
+        #{stoptime},
+      </if>
+      <if test="closetime != null" >
+        #{closetime},
+      </if>
+      <if test="printtimes != null" >
+        #{printtimes},
+      </if>
+      <if test="supplierid != null" >
+        #{supplierid},
+      </if>
+      <if test="handlerid != null" >
+        #{handlerid},
+      </if>
+      <if test="source != null" >
+        #{source},
+      </if>
+      <if test="buydeptid != null" >
+        #{buydeptid},
+      </if>
+      <if test="buyuserid != null" >
+        #{buyuserid},
+      </if>
+      <if test="settletype != null" >
+        #{settletype},
+      </if>
+      <if test="paytype != null" >
+        #{paytype},
+      </if>
+      <if test="storageid != null" >
+        #{storageid},
+      </if>
+      <if test="field01 != null" >
+        #{field01},
+      </if>
+      <if test="field02 != null" >
+        #{field02},
+      </if>
+      <if test="field03 != null" >
+        #{field03},
+      </if>
+      <if test="field04 != null" >
+        #{field04},
+      </if>
+      <if test="field05 != null" >
+        #{field05},
+      </if>
+      <if test="field06 != null" >
+        #{field06},
+      </if>
+      <if test="field07 != null" >
+        #{field07},
+      </if>
+      <if test="field08 != null" >
+        #{field08},
+      </if>
+      <if test="billno != null" >
+        #{billno},
+      </if>
+      <if test="isrefer != null" >
+        #{isrefer},
+      </if>
+      <if test="isinvoice != null" >
+        #{isinvoice},
+      </if>
+      <if test="canceldate != null" >
+        #{canceldate},
+      </if>
+      <if test="ckstatus != null" >
+        #{ckstatus},
+      </if>
+      <if test="ischeck != null" >
+        #{ischeck},
+      </if>
+      <if test="checkuserid != null" >
+        #{checkuserid},
+      </if>
+      <if test="checkusername != null" >
+        #{checkusername},
+      </if>
+      <if test="checkdate != null" >
+        #{checkdate},
+      </if>
+    </trim>
+  </insert>
+  
+  																		
+   <insert id="addReturnOrderDetailByDeliveryOrderJob" parameterType="com.hd.agent.purchase.model.ReturnOrderDetail" >
+    insert into t_purchase_returnorder_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="orderid != null" >
+        orderid,
+      </if>
+      <if test="goodsid != null" >
+        goodsid,
+      </if>
+      <if test="summarybatchid != null" >
+        summarybatchid,
+      </if>
+      <if test="storageid != null" >
+        storageid,
+      </if>
+      <if test="storagelocationid != null" >
+        storagelocationid,
+      </if>
+      <if test="unitid != null" >
+        unitid,
+      </if>
+      <if test="unitname != null" >
+        unitname,
+      </if>
+      <if test="unitnum != null" >
+        unitnum,
+      </if>
+      <if test="auxunitid != null" >
+        auxunitid,
+      </if>
+      <if test="auxunitname != null" >
+        auxunitname,
+      </if>
+      <if test="auxnum != null" >
+        auxnum,
+      </if>
+      <if test="auxnumdetail != null" >
+        auxnumdetail,
+      </if>
+      <if test="auxremainder != null" >
+        auxremainder,
+      </if>
+      <if test="totalbox != null" >
+        totalbox,
+      </if>
+      <if test="taxprice != null" >
+        taxprice,
+      </if>
+      <if test="taxamount != null" >
+        taxamount,
+      </if>
+      <if test="taxtype != null" >
+        taxtype,
+      </if>
+      <if test="notaxprice != null" >
+        notaxprice,
+      </if>
+      <if test="notaxamount != null" >
+        notaxamount,
+      </if>
+      <if test="tax != null" >
+        tax,
+      </if>
+        <if test="addcostprice != null" >
+            addcostprice,
+        </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="batchno != null" >
+        batchno,
+      </if>
+      <if test="produceddate != null" >
+        produceddate,
+      </if>
+      <if test="deadline != null" >
+        deadline,
+      </if>
+      <if test="field01 != null" >
+        field01,
+      </if>
+      <if test="field02 != null" >
+        field02,
+      </if>
+      <if test="field03 != null" >
+        field03,
+      </if>
+      <if test="field04 != null" >
+        field04,
+      </if>
+      <if test="field05 != null" >
+        field05,
+      </if>
+      <if test="field06 != null" >
+        field06,
+      </if>
+      <if test="field07 != null" >
+        field07,
+      </if>
+      <if test="field08 != null" >
+        field08,
+      </if>
+      <if test="seq != null" >
+        seq,
+      </if>
+      <if test="billno != null" >
+        billno,
+      </if>
+      <if test="billdetailno != null" >
+        billdetailno,
+      </if>
+      <if test="returnleftunitnum != null" >
+        returnleftunitnum,
+      </if>
+      <if test="returnleftauxnum != null" >
+        returnleftauxnum,
+      </if>
+      <if test="unreturnunitnum != null" >
+        unreturnunitnum,
+      </if>
+      <if test="unreturnauxnum != null" >
+        unreturnauxnum,
+      </if>
+      <if test="returnlefnotaxamount != null" >
+        returnlefnotaxamount,
+      </if>
+      <if test="returnleftaxamount != null" >
+        returnleftaxamount,
+      </if>
+      <if test="unreturnnotaxamount != null" >
+        unreturnnotaxamount,
+      </if>
+      <if test="unreturntaxamount != null" >
+        unreturntaxamount,
+      </if>
+      <if test="invoicerefer != null" >
+        invoicerefer,
+      </if>
+      <if test="invoicetaxamount != null" >
+        invoicetaxamount,
+      </if>
+      <if test="invoicenotaxamount != null" >
+        invoicenotaxamount,
+      </if>
+      <if test="uninvoicetaxamount != null" >
+        uninvoicetaxamount,
+      </if>
+      <if test="uninvoicenotaxamount != null" >
+        uninvoicenotaxamount,
+      </if>
+      <if test="writeoffamount != null" >
+        writeoffamount,
+      </if>
+      <if test="invoicenum != null" >
+        invoicenum,
+      </if>
+      <if test="uninvoicenum != null" >
+        uninvoicenum,
+      </if>
+      <if test="auditnum != null" >
+        auditnum,
+      </if>
+      <if test="iswriteoff != null" >
+        iswriteoff,
+      </if>
+      <if test="writeoffnum != null" >
+        writeoffnum,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="orderid != null" >
+        #{orderid},
+      </if>
+      <if test="goodsid != null" >
+        #{goodsid},
+      </if>
+      <if test="summarybatchid != null" >
+        #{summarybatchid},
+      </if>
+      <if test="storageid != null" >
+        #{storageid},
+      </if>
+      <if test="storagelocationid != null" >
+        #{storagelocationid},
+      </if>
+      <if test="unitid != null" >
+        #{unitid},
+      </if>
+      <if test="unitname != null" >
+        #{unitname},
+      </if>
+      <if test="unitnum != null" >
+        #{unitnum},
+      </if>
+      <if test="auxunitid != null" >
+        #{auxunitid},
+      </if>
+      <if test="auxunitname != null" >
+        #{auxunitname},
+      </if>
+      <if test="auxnum != null" >
+        #{auxnum},
+      </if>
+      <if test="auxnumdetail != null" >
+        #{auxnumdetail},
+      </if>
+      <if test="auxremainder != null" >
+        #{auxremainder},
+      </if>
+      <if test="totalbox != null" >
+        #{totalbox},
+      </if>
+      <if test="taxprice != null" >
+        #{taxprice},
+      </if>
+      <if test="taxamount != null" >
+        #{taxamount},
+      </if>
+      <if test="taxtype != null" >
+        #{taxtype},
+      </if>
+      <if test="notaxprice != null" >
+        #{notaxprice},
+      </if>
+      <if test="notaxamount != null" >
+        #{notaxamount},
+      </if>
+      <if test="tax != null" >
+        #{tax},
+      </if>
+        <if test="addcostprice != null" >
+            #{addcostprice},
+        </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+      <if test="batchno != null" >
+        #{batchno},
+      </if>
+      <if test="produceddate != null" >
+        #{produceddate},
+      </if>
+      <if test="deadline != null" >
+        #{deadline},
+      </if>
+      <if test="field01 != null" >
+        #{field01},
+      </if>
+      <if test="field02 != null" >
+        #{field02},
+      </if>
+      <if test="field03 != null" >
+        #{field03},
+      </if>
+      <if test="field04 != null" >
+        #{field04},
+      </if>
+      <if test="field05 != null" >
+        #{field05},
+      </if>
+      <if test="field06 != null" >
+        #{field06},
+      </if>
+      <if test="field07 != null" >
+        #{field07},
+      </if>
+      <if test="field08 != null" >
+        #{field08},
+      </if>
+      <if test="seq != null" >
+        #{seq},
+      </if>
+      <if test="billno != null" >
+        #{billno},
+      </if>
+      <if test="billdetailno != null" >
+        #{billdetailno},
+      </if>
+      <if test="returnleftunitnum != null" >
+        #{returnleftunitnum},
+      </if>
+      <if test="returnleftauxnum != null" >
+        #{returnleftauxnum},
+      </if>
+      <if test="unreturnunitnum != null" >
+        #{unreturnunitnum},
+      </if>
+      <if test="unreturnauxnum != null" >
+        #{unreturnauxnum},
+      </if>
+      <if test="returnlefnotaxamount != null" >
+        #{returnlefnotaxamount},
+      </if>
+      <if test="returnleftaxamount != null" >
+        #{returnleftaxamount},
+      </if>
+      <if test="unreturnnotaxamount != null" >
+        #{unreturnnotaxamount},
+      </if>
+      <if test="unreturntaxamount != null" >
+        #{unreturntaxamount},
+      </if>
+      <if test="invoicerefer != null" >
+        #{invoicerefer},
+      </if>
+      <if test="invoicetaxamount != null" >
+        #{invoicetaxamount},
+      </if>
+      <if test="invoicenotaxamount != null" >
+        #{invoicenotaxamount},
+      </if>
+      <if test="uninvoicetaxamount != null" >
+        #{uninvoicetaxamount},
+      </if>
+      <if test="uninvoicenotaxamount != null" >
+        #{uninvoicenotaxamount},
+      </if>
+      <if test="writeoffamount != null" >
+        #{writeoffamount},
+      </if>
+      <if test="invoicenum != null" >
+        #{invoicenum},
+      </if>
+      <if test="uninvoicenum != null" >
+        #{uninvoicenum},
+      </if>
+      <if test="auditnum != null" >
+        #{auditnum},
+      </if>
+      <if test="iswriteoff != null" >
+        #{iswriteoff},
+      </if>
+      <if test="writeoffnum != null" >
+        #{writeoffnum},
+      </if>
+    </trim>
+  </insert>
+  
+</mapper>

@@ -1,0 +1,1346 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.sales.dao.OrderGoodsMapper" >
+    <sql id="Base_Column_List">
+      id, businessdate, status, remark, adduserid, addusername, adddeptid, adddeptname, addtime, modifyuserid, modifyusername, modifytime,
+      audituserid, auditusername, audittime, stopuserid, stopusername, stoptime, closetime, printtimes, printdatetime, customerid, pcustomerid,
+      customersort, handlerid, salesarea, salesdept, salesuser, settletype, paytype, storageid, isrefer, seq, indooruserid, demandtime,
+      phprinttimes, phprintdatetime,orderstatus,ladingbill
+    </sql>
+    <sql id="Base_Column_Detail_List">
+        id, orderid, goodsid, groupid, goodssort, brandid, branduser, branddept, supplierid, supplieruser, isdiscount, isbranddiscount,
+         unitid, unitname, fixnum, unitnum, auxunitid, auxunitname, auxnum, overnum, auxnumdetail, totalbox, fixprice, offprice, taxprice,
+          taxamount, notaxprice, notaxamount, costprice, taxtype, tax, remark, deliverytype, deliverydate, expirationdate, seq, oldprice,
+          storageid, demandprice, demandamount, issupply, summarybatchid, storagelocationid, batchno, produceddate, deadline, repartitiontype,
+          orderunitnum,notorderunitnum,ordertaxamount,ordernotaxamount,notordertaxamount,notordernotaxamount,oldtaxprice
+    </sql>
+    <sql id="selectOrderQuery_sql">
+        <trim prefix="where" prefixOverrides="and|or">
+            <include refid="common.Page_querySql"/>
+            <include refid="common.Page_dataSql"/>
+            <if test="condition.id != null" >
+                and t.id like concat('%',#{condition.id},'%')
+            </if>
+            <if test="condition.businessdate != null" >
+                <![CDATA[ and t.businessdate >=#{condition.businessdate} ]]>
+            </if>
+            <if test="condition.businessdate1 != null" >
+                <![CDATA[ and t.businessdate <= #{condition.businessdate1}]]>
+            </if>
+            <if test="condition.goodsid != null">
+                and EXISTS (select t1.goodsid from t_sales_goodsorder_detail t1 where t.id=t1.orderid and t1.goodsid = #{condition.goodsid})
+            </if>
+            <if test="condition.customerid != null" >
+                and t.customerid = #{condition.customerid}
+            </if>
+            <if test="condition.salesdept != null" >
+                and t.salesdept = #{condition.salesdept}
+            </if>
+            <if test="condition.salesuser != null" >
+                and t.salesuser = #{condition.salesuser}
+            </if>
+
+            <if test="condition.status != null" >
+                and t.status = #{condition.status}
+            </if>
+            <if test="condition.ladingbill != null" >
+                and t.ladingbill = #{condition.ladingbill}
+            </if>
+            <if test="condition.phprintsign != null and condition.queryphprinttimes != null">
+                <choose>
+                    <when test="condition.phprintsign == 1">
+                        <![CDATA[and t.phprinttimes = #{condition.queryphprinttimes} ]]>
+                    </when>
+                    <when test="condition.phprintsign == 2">
+                        <![CDATA[and t.phprinttimes < #{condition.queryphprinttimes} ]]>
+                    </when>
+                    <when test="condition.phprintsign == 3">
+                        <![CDATA[and t.phprinttimes <= #{condition.queryphprinttimes} ]]>
+                    </when>
+                    <when test="condition.phprintsign == 4">
+                        <![CDATA[and t.phprinttimes > #{condition.queryphprinttimes} ]]>
+                    </when>
+                    <when test="condition.phprintsign == 5">
+                        <![CDATA[and t.phprinttimes >= #{condition.queryphprinttimes} ]]>
+                    </when>
+                </choose>
+            </if>
+            <if test="condition.printsign != null and condition.queryprinttimes != null">
+                <choose>
+                    <when test="condition.printsign == 1">
+                        <![CDATA[and t.printtimes = #{condition.queryprinttimes} ]]>
+                    </when>
+                    <when test="condition.printsign == 2">
+                        <![CDATA[and t.printtimes < #{condition.queryprinttimes} ]]>
+                    </when>
+                    <when test="condition.printsign == 3">
+                        <![CDATA[and t.printtimes <= #{condition.queryprinttimes} ]]>
+                    </when>
+                    <when test="condition.printsign == 4">
+                        <![CDATA[and t.printtimes > #{condition.queryprinttimes} ]]>
+                    </when>
+                    <when test="condition.printsign == 5">
+                        <![CDATA[and t.printtimes >= #{condition.queryprinttimes} ]]>
+                    </when>
+                </choose>
+            </if>
+            <if test="condition.printtimes != null" >
+                <choose>
+                    <when test="condition.printtimes==0">
+                        and (t.printtimes is null or t.printtimes=0)
+                    </when>
+                    <otherwise>
+                        and t.printtimes=#{condition.printtimes}
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="condition.phprinttimes != null" >
+                <choose>
+                    <when test="condition.phprinttimes==0">
+                        and (t.phprinttimes is null or t.phprinttimes=0)
+                    </when>
+                    <otherwise>
+                        and t.phprinttimes=#{condition.phprinttimes}
+                    </otherwise>
+                </choose>
+            </if>
+            <choose>
+                <when test="condition.isClose ==0 ">
+                    and t.status in("1","2")
+                </when>
+                <when test="condition.isClose ==1 ">
+                    and t.status in("3","4")
+                </when>
+            </choose>
+        </trim>
+    </sql>
+    <select id="getOrderGoodsList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.sales.model.OrderGoods">
+        SELECT z.* from (
+        SELECT
+        t.id, t.businessdate, t.status, t.remark, t.adduserid, t.addusername, t.adddeptid, t.adddeptname, t.addtime, t.modifyuserid,t.modifyusername, t.modifytime,
+        t.audituserid, t.auditusername, t.audittime, t.stopuserid, t.stopusername, t.stoptime, t.closetime, t.printtimes, t.printdatetime, t.customerid, t.pcustomerid,
+        t.customersort, t.handlerid, t.salesarea, t.salesdept, t.salesuser, t.settletype, t.paytype, t.storageid, t.isrefer, t.seq, t.indooruserid, t.demandtime,
+        t.phprinttimes, t.phprintdatetime,t.orderstatus,t1.goodsid,t.ladingbill,group_concat(DISTINCT t1.brandid) as brandid,
+        group_concat(DISTINCT t2.name) as brandname,sum(t1.orderunitnum) as orderunitnum,sum(notorderunitnum) as notorderunitnum,
+        sum(t1.notordertaxamount) as notordertaxamount
+        FROM t_sales_goodsorder t
+        LEFT JOIN t_sales_goodsorder_detail t1 ON t.id=t1.orderid
+        LEFT JOIN t_base_goods_brand t2 ON t1.brandid=t2.id
+        <include refid="selectOrderQuery_sql" />
+        GROUP BY t.id
+        )z
+        <if test="condition.isflag == null" >
+            <include refid="common.Page_limit" />
+        </if>
+    </select>
+    <select id="getOrderGoodsCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+        SELECT count(1) from (
+        SELECT
+        t.id, t.businessdate, t.status, t.remark, t.adduserid, t.addusername, t.adddeptid, t.adddeptname, t.addtime, t.modifyuserid,t.modifyusername, t.modifytime,
+        t.audituserid, t.auditusername, t.audittime, t.stopuserid, t.stopusername, t.stoptime, t.closetime, t.printtimes, t.printdatetime, t.customerid, t.pcustomerid,
+        t.customersort, t.handlerid, t.salesarea, t.salesdept, t.salesuser, t.settletype, t.paytype, t.storageid, t.isrefer, t.seq, t.indooruserid, t.demandtime,
+        t.phprinttimes, t.phprintdatetime,t.orderstatus,t1.goodsid
+        FROM t_sales_goodsorder t
+        LEFT JOIN t_sales_goodsorder_detail t1 ON t.id=t1.orderid
+        <include refid="selectOrderQuery_sql" />
+        <choose>
+            <when test="condition.groupcols =='goodsid' ">
+                GROUP BY t.id,t1.goodsid
+            </when>
+            <when test="condition.groupcols !='goodsid'">
+                GROUP BY t.id
+            </when>
+        </choose>
+        )z
+    </select>
+    <select id="getOrderGoodsDetailTotal" parameterType="java.lang.String" resultType="map">
+        select sum(t1.taxamount) as taxamount , sum(t1.notaxamount) as notaxamount, sum(t1.tax) as tax,
+    GROUP_CONCAT(DISTINCT t1.remark) as detailremark,GROUP_CONCAT(DISTINCT t1.branduser) as branduser,
+    sum(t1.unitnum*g.grossweight) as totalboxweight,sum(t1.unitnum*g.singlevolume) as totalboxvolume
+    from t_sales_goodsorder  t
+    right join t_sales_goodsorder_detail t1 on t.id=t1.orderid
+    LEFT JOIN t_base_goods_info g on t1.goodsid=g.id
+    where t.id = #{id}
+    </select>
+    <insert id="addOrderGoodsDetailList">
+
+            insert into t_sales_goodsorder_detail
+            (orderid,goodsid,groupid,goodssort,brandid,branduser,branddept,supplierid,supplieruser,isdiscount,isbranddiscount,unitid,unitname,fixnum,unitnum,overnum,totalbox,auxunitid,auxunitname,auxnum,auxnumdetail,fixprice,
+            offprice,taxprice,taxamount,notaxprice,notaxamount,costprice,taxtype,tax,remark,deliverytype,deliverydate,summarybatchid,storagelocationid,batchno,produceddate,deadline,expirationdate,
+            seq,oldprice,storageid, demandprice,demandamount,orderunitnum,notorderunitnum,ordertaxamount,ordernotaxamount,notordertaxamount,notordernotaxamount,oldtaxprice)
+            values
+            <foreach collection="list" item="item" separator="," >
+                (#{item.orderid},
+                <choose>
+                    <when test="item.goodsid != null">#{item.goodsid},</when>
+                    <otherwise>'',</otherwise>
+                </choose>
+                <choose>
+                    <when test="item.groupid != null">#{item.groupid},</when>
+                    <otherwise>'',</otherwise>
+                </choose>
+                <choose>
+                    <when test="item.goodssort != null">#{item.goodssort},</when>
+                    <otherwise>'',</otherwise>
+                </choose>
+                <choose>
+                    <when test="item.brandid != null"> #{item.brandid},</when>
+                    <otherwise>'',</otherwise>
+                </choose>
+                <choose>
+                    <when test="item.branduser != null"> #{item.branduser},</when>
+                    <otherwise>'',</otherwise>
+                </choose>
+                <choose>
+                    <when test="item.branddept != null"> #{item.branddept},</when>
+                    <otherwise>'',</otherwise>
+                </choose>
+                <choose>
+                    <when test="item.supplierid != null"> #{item.supplierid},</when>
+                    <otherwise>'',</otherwise>
+                </choose>
+                <choose>
+                    <when test="item.supplieruser != null"> #{item.supplieruser},</when>
+                    <otherwise>'',</otherwise>
+                </choose>
+                <choose>
+                    <when test="item.isdiscount != null"> #{item.isdiscount},</when>
+                    <otherwise>'0',</otherwise>
+                </choose>
+                <choose>
+                    <when test="item.isbranddiscount != null"> #{item.isbranddiscount},</when>
+                    <otherwise>'0',</otherwise>
+                </choose>
+                #{item.unitid},#{item.unitname},
+                <choose>
+                    <when test="item.fixnum != null"> #{item.fixnum},</when>
+                    <otherwise>0,</otherwise>
+                </choose>
+                <choose>
+                    <when test="item.unitnum != null"> #{item.unitnum},</when>
+                    <otherwise>0,</otherwise>
+                </choose>
+                <choose>
+                    <when test="item.overnum != null"> #{item.overnum},</when>
+                    <otherwise>0,</otherwise>
+                </choose>
+                <choose>
+                    <when test="item.totalbox != null"> #{item.totalbox},</when>
+                    <otherwise>0,</otherwise>
+                </choose>
+                <choose>
+                    <when test="item.auxunitid != null"> #{item.auxunitid},</when>
+                    <otherwise>'',</otherwise>
+                </choose>
+                <choose>
+                    <when test="item.auxunitname != null"> #{item.auxunitname},</when>
+                    <otherwise>'',</otherwise>
+                </choose>
+                <choose>
+                    <when test="item.auxnum != null"> #{item.auxnum},</when>
+                    <otherwise>0,</otherwise>
+                </choose>
+                <choose>
+                    <when test="item.auxnumdetail != null"> #{item.auxnumdetail},</when>
+                    <otherwise>'',</otherwise>
+                </choose>
+                <choose>
+                    <when test="item.fixprice != null"> #{item.fixprice},</when>
+                    <otherwise>0,</otherwise>
+                </choose>
+                <choose>
+                    <when test="item.offprice != null"> #{item.offprice},</when>
+                    <otherwise>0,</otherwise>
+                </choose>
+                <choose>
+                    <when test="item.taxprice != null"> #{item.taxprice},</when>
+                    <otherwise>0,</otherwise>
+                </choose>
+                <choose>
+                    <when test="item.taxamount != null"> #{item.taxamount},</when>
+                    <otherwise>0,</otherwise>
+                </choose>
+                <choose>
+                    <when test="item.notaxprice != null"> #{item.notaxprice},</when>
+                    <otherwise>0,</otherwise>
+                </choose>
+                <choose>
+                    <when test="item.notaxamount != null"> #{item.notaxamount},</when>
+                    <otherwise>0,</otherwise>
+                </choose>
+                <choose>
+                    <when test="item.costprice != null"> #{item.costprice},</when>
+                    <otherwise>0,</otherwise>
+                </choose>
+                <choose>
+                    <when test="item.taxtype != null"> #{item.taxtype},</when>
+                    <otherwise>'',</otherwise>
+                </choose>
+                <choose>
+                    <when test="item.tax != null"> #{item.tax},</when>
+                    <otherwise>0,</otherwise>
+                </choose>
+                <choose>
+                    <when test="item.remark != null"> #{item.remark},</when>
+                    <otherwise>'',</otherwise>
+                </choose>
+                <choose>
+                    <when test="item.deliverytype != null"> #{item.deliverytype},</when>
+                    <otherwise>'0',</otherwise>
+                </choose>
+                <choose>
+                    <when test="item.deliverydate != null"> #{item.deliverydate},</when>
+                    <otherwise>'',</otherwise>
+                </choose>
+                <choose>
+                    <when test="item.summarybatchid != null"> #{item.summarybatchid},</when>
+                    <otherwise>'',</otherwise>
+                </choose>
+                <choose>
+                    <when test="item.storagelocationid != null"> #{item.storagelocationid},</when>
+                    <otherwise>'',</otherwise>
+                </choose>
+                <choose>
+                    <when test="item.batchno != null"> #{item.batchno},</when>
+                    <otherwise>'',</otherwise>
+                </choose>
+                <choose>
+                    <when test="item.produceddate != null"> #{item.produceddate},</when>
+                    <otherwise>'',</otherwise>
+                </choose>
+                <choose>
+                    <when test="item.deadline != null"> #{item.deadline},</when>
+                    <otherwise>'',</otherwise>
+                </choose>
+                <choose>
+                    <when test="item.expirationdate != null"> #{item.expirationdate},</when>
+                    <otherwise>null,</otherwise>
+                </choose>
+                <choose>
+                    <when test="item.seq != null"> #{item.seq},</when>
+                    <otherwise>0,</otherwise>
+                </choose>
+                <choose>
+                    <when test="item.oldprice != null"> #{item.oldprice},</when>
+                    <otherwise>0,</otherwise>
+                </choose>
+                <choose>
+                    <when test="item.storageid != null"> #{item.storageid},</when>
+                    <otherwise>'',</otherwise>
+                </choose>
+                <choose>
+                    <when test="item.demandprice != null"> #{item.demandprice},</when>
+                    <otherwise>0,</otherwise>
+                </choose>
+                <choose>
+                    <when test="item.demandamount != null"> #{item.demandamount},</when>
+                    <otherwise>0,</otherwise>
+                </choose>
+                <choose>
+                    <when test="item.orderunitnum != null"> #{item.orderunitnum},</when>
+                    <otherwise>0,</otherwise>
+                </choose>
+                <choose>
+                    <when test="item.notorderunitnum != null"> #{item.notorderunitnum},</when>
+                    <otherwise>0,</otherwise>
+                </choose>
+                <choose>
+                    <when test="item.ordertaxamount != null"> #{item.ordertaxamount},</when>
+                    <otherwise>0,</otherwise>
+                </choose>
+                <choose>
+                    <when test="item.ordernotaxamount != null"> #{item.ordernotaxamount},</when>
+                    <otherwise>0,</otherwise>
+                </choose>
+                <choose>
+                    <when test="item.notordertaxamount != null"> #{item.notordertaxamount},</when>
+                    <otherwise>0,</otherwise>
+                </choose>
+                <choose>
+                    <when test="item.notordernotaxamount != null"> #{item.notordernotaxamount},</when>
+                    <otherwise>0,</otherwise>
+                </choose>
+                <choose>
+                    <when test="item.oldtaxprice != null"> #{item.oldtaxprice}</when>
+                    <otherwise>0</otherwise>
+                </choose>
+                )
+            </foreach>
+    </insert>
+    <insert id="addOrderGoodsDetail" parameterType="com.hd.agent.sales.model.OrderGoodsDetail">
+            insert into t_sales_goodsorder_detail
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="orderid != null">
+                    orderid,
+                </if>
+                <if test="goodsid != null">
+                    goodsid,
+                </if>
+                <if test="groupid != null">
+                    groupid,
+                </if>
+                <if test="goodssort != null">
+                    goodssort,
+                </if>
+                <if test="brandid != null">
+                    brandid,
+                </if>
+                <if test="branduser != null">
+                    branduser,
+                </if>
+                <if test="branddept != null">
+                    branddept,
+                </if>
+                <if test="supplierid != null">
+                    supplierid,
+                </if>
+                <if test="supplieruser != null">
+                    supplieruser,
+                </if>
+                <if test="isdiscount != null">
+                    isdiscount,
+                </if>
+                <if test="isbranddiscount != null">
+                    isbranddiscount,
+                </if>
+                <if test="unitid != null">
+                    unitid,
+                </if>
+                <if test="unitname != null">
+                    unitname,
+                </if>
+                <if test="fixnum != null">
+                    fixnum,
+                </if>
+                <if test="unitnum != null">
+                    unitnum,
+                </if>
+                <if test="overnum != null">
+                    overnum,
+                </if>
+                <if test="totalbox != null">
+                    totalbox,
+                </if>
+                <if test="auxunitid != null">
+                    auxunitid,
+                </if>
+                <if test="auxunitname != null">
+                    auxunitname,
+                </if>
+                <if test="auxnum != null">
+                    auxnum,
+                </if>
+                <if test="auxnumdetail != null">
+                    auxnumdetail,
+                </if>
+                <if test="fixprice != null">
+                    fixprice,
+                </if>
+                <if test="offprice != null">
+                    offprice,
+                </if>
+                <if test="taxprice != null">
+                    taxprice,
+                </if>
+                <if test="taxamount != null">
+                    taxamount,
+                </if>
+                <if test="notaxprice != null">
+                    notaxprice,
+                </if>
+                <if test="notaxamount != null">
+                    notaxamount,
+                </if>
+                <if test="costprice != null">
+                    costprice,
+                </if>
+                <if test="taxtype != null">
+                    taxtype,
+                </if>
+                <if test="tax != null">
+                    tax,
+                </if>
+                <if test="remark != null">
+                    remark,
+                </if>
+                <if test="deliverytype != null">
+                    deliverytype,
+                </if>
+                <if test="deliverydate != null">
+                    deliverydate,
+                </if>
+                <if test="expirationdate != null">
+                    expirationdate,
+                </if>
+                <if test="seq != null">
+                    seq,
+                </if>
+                <if test="oldprice != null">
+                    oldprice,
+                </if>
+                <if test="storageid != null">
+                    storageid,
+                </if>
+                <if test="demandprice != null">
+                    demandprice,
+                </if>
+                <if test="demandamount != null">
+                    demandamount,
+                </if>
+                <if test="summarybatchid != null">
+                    summarybatchid,
+                </if>
+                <if test="storagelocationid != null">
+                    storagelocationid,
+                </if>
+                <if test="batchno != null">
+                    batchno,
+                </if>
+                <if test="produceddate != null">
+                    produceddate,
+                </if>
+                <if test="deadline != null">
+                    deadline,
+                </if>
+                <if test="repartitiontype != null">
+                    repartitiontype,
+                </if>
+                <if test="orderunitnum != null">
+                    orderunitnum,
+                </if>
+                <if test="notorderunitnum != null">
+                    notorderunitnum,
+                </if>
+                <if test="ordertaxamount != null">
+                    ordertaxamount,
+                </if>
+                <if test="ordernotaxamount != null">
+                    ordernotaxamount,
+                </if>
+                <if test="notordertaxamount != null">
+                    notordertaxamount,
+                </if>
+                <if test="notordernotaxamount != null">
+                    notordernotaxamount,
+                </if>
+                <if test="oldtaxprice != null">
+                    oldtaxprice,
+                </if>
+            </trim>
+            <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="orderid != null">
+                    #{orderid},
+                </if>
+                <if test="goodsid != null">
+                    #{goodsid},
+                </if>
+                <if test="groupid != null">
+                    #{groupid},
+                </if>
+                <if test="goodssort != null">
+                    #{goodssort},
+                </if>
+                <if test="brandid != null">
+                    #{brandid},
+                </if>
+                <if test="branduser != null">
+                    #{branduser},
+                </if>
+                <if test="branddept != null">
+                    #{branddept},
+                </if>
+                <if test="supplierid != null">
+                    #{supplierid},
+                </if>
+                <if test="supplieruser != null">
+                    #{supplieruser},
+                </if>
+                <if test="isdiscount != null">
+                    #{isdiscount},
+                </if>
+                <if test="isbranddiscount != null">
+                    #{isbranddiscount},
+                </if>
+                <if test="unitid != null">
+                    #{unitid},
+                </if>
+                <if test="unitname != null">
+                    #{unitname},
+                </if>
+                <if test="fixnum != null">
+                    #{fixnum},
+                </if>
+                <if test="unitnum != null">
+                    #{unitnum},
+                </if>
+                <if test="overnum != null">
+                    #{overnum},
+                </if>
+                <if test="totalbox != null">
+                    #{totalbox},
+                </if>
+                <if test="auxunitid != null">
+                    #{auxunitid},
+                </if>
+                <if test="auxunitname != null">
+                    #{auxunitname},
+                </if>
+                <if test="auxnum != null">
+                    #{auxnum},
+                </if>
+                <if test="auxnumdetail != null">
+                    #{auxnumdetail},
+                </if>
+                <if test="fixprice != null">
+                    #{fixprice},
+                </if>
+                <if test="offprice != null">
+                    #{offprice},
+                </if>
+                <if test="taxprice != null">
+                    #{taxprice},
+                </if>
+                <if test="taxamount != null">
+                    #{taxamount},
+                </if>
+                <if test="notaxprice != null">
+                    #{notaxprice},
+                </if>
+                <if test="notaxamount != null">
+                    #{notaxamount},
+                </if>
+                <if test="costprice != null">
+                    #{costprice},
+                </if>
+                <if test="taxtype != null">
+                    #{taxtype},
+                </if>
+                <if test="tax != null">
+                    #{tax},
+                </if>
+                <if test="remark != null">
+                    #{remark},
+                </if>
+                <if test="deliverytype != null">
+                    #{deliverytype},
+                </if>
+                <if test="deliverydate != null">
+                    #{deliverydate},
+                </if>
+                <if test="expirationdate != null">
+                    #{expirationdate},
+                </if>
+                <if test="seq != null">
+                    #{seq},
+                </if>
+                <if test="oldprice != null">
+                    #{oldprice},
+                </if>
+                <if test="storageid != null">
+                    #{storageid},
+                </if>
+                <if test="demandprice != null">
+                    #{demandprice},
+                </if>
+                <if test="demandamount != null">
+                    #{demandamount},
+                </if>
+                <if test="summarybatchid != null">
+                    #{summarybatchid},
+                </if>
+                <if test="storagelocationid != null">
+                    #{storagelocationid},
+                </if>
+                <if test="batchno != null">
+                    #{batchno},
+                </if>
+                <if test="produceddate != null">
+                    #{produceddate},
+                </if>
+                <if test="deadline != null">
+                    #{deadline},
+                </if>
+                <if test="repartitiontype != null">
+                    #{repartitiontype},
+                </if>
+                <if test="orderunitnum != null">
+                    #{orderunitnum},
+                </if>
+                <if test="notorderunitnum != null">
+                    #{notorderunitnum},
+                </if>
+                <if test="ordertaxamount != null">
+                    #{ordertaxamount},
+                </if>
+                <if test="ordernotaxamount != null">
+                    #{ordernotaxamount},
+                </if>
+                <if test="notordertaxamount != null">
+                    #{notordertaxamount},
+                </if>
+                <if test="notordernotaxamount != null">
+                    #{notordernotaxamount},
+                </if>
+                <if test="oldtaxprice != null">
+                    #{oldtaxprice},
+                </if>
+            </trim>
+    </insert>
+    <insert id="addOrderGoods" parameterType="com.hd.agent.sales.model.OrderGoods">
+            insert into t_sales_goodsorder
+            <trim prefix="(" suffix=")" suffixOverrides="," >
+                <if test="id != null" >
+                    id,
+                </if>
+                <if test="businessdate != null" >
+                    businessdate,
+                </if>
+                <if test="status != null" >
+                    status,
+                </if>
+                <if test="remark != null" >
+                    remark,
+                </if>
+                <if test="adduserid != null" >
+                    adduserid,
+                </if>
+                <if test="addusername != null" >
+                    addusername,
+                </if>
+                <if test="adddeptid != null" >
+                    adddeptid,
+                </if>
+                <if test="adddeptname != null" >
+                    adddeptname,
+                </if>
+                addtime,
+                <if test="audituserid != null" >
+                    audituserid,
+                </if>
+                <if test="auditusername != null" >
+                    auditusername,
+                </if>
+                <if test="audittime != null" >
+                    audittime,
+                </if>
+                <if test="customerid != null" >
+                    customerid,
+                </if>
+                <if test="pcustomerid != null" >
+                    pcustomerid,
+                </if>
+                <if test="customersort != null" >
+                    customersort,
+                </if>
+                <if test="handlerid != null" >
+                    handlerid,
+                </if>
+                <if test="salesarea != null" >
+                    salesarea,
+                </if>
+                <if test="salesdept != null" >
+                    salesdept,
+                </if>
+                <if test="salesuser != null" >
+                    salesuser,
+                </if>
+                <if test="settletype != null" >
+                    settletype,
+                </if>
+                <if test="paytype != null" >
+                    paytype,
+                </if>
+                <if test="storageid != null" >
+                    storageid,
+                </if>
+                <if test="field01 != null" >
+                    field01,
+                </if>
+                <if test="field02 != null" >
+                    field02,
+                </if>
+                <if test="field03 != null" >
+                    field03,
+                </if>
+                <if test="field04 != null" >
+                    field04,
+                </if>
+                <if test="indooruserid != null" >
+                    indooruserid,
+                </if>
+                <if test="demandtime != null" >
+                    demandtime,
+                </if>
+                <if test="ladingbill != null" >
+                    ladingbill,
+                </if>
+
+            </trim>
+            <trim prefix="values (" suffix=")" suffixOverrides="," >
+                <if test="id != null" >
+                    #{id},
+                </if>
+                <if test="businessdate != null" >
+                    #{businessdate},
+                </if>
+                <if test="status != null" >
+                    #{status},
+                </if>
+                <if test="remark != null" >
+                    #{remark},
+                </if>
+                <if test="adduserid != null" >
+                    #{adduserid},
+                </if>
+                <if test="addusername != null" >
+                    #{addusername},
+                </if>
+                <if test="adddeptid != null" >
+                    #{adddeptid},
+                </if>
+                <if test="adddeptname != null" >
+                    #{adddeptname},
+                </if>
+                now(),
+                <if test="audituserid != null" >
+                    #{audituserid},
+                </if>
+                <if test="auditusername != null" >
+                    #{auditusername},
+                </if>
+                <if test="audittime != null" >
+                    now(),
+                </if>
+                <if test="customerid != null" >
+                    #{customerid},
+                </if>
+                <if test="pcustomerid != null" >
+                    #{pcustomerid},
+                </if>
+                <if test="customersort != null" >
+                    #{customersort},
+                </if>
+                <if test="handlerid != null" >
+                    #{handlerid},
+                </if>
+                <if test="salesarea != null" >
+                    #{salesarea},
+                </if>
+                <if test="salesdept != null" >
+                    #{salesdept},
+                </if>
+                <if test="salesuser != null" >
+                    #{salesuser},
+                </if>
+                <if test="settletype != null" >
+                    #{settletype},
+                </if>
+                <if test="paytype != null" >
+                    #{paytype},
+                </if>
+                <if test="storageid != null" >
+                    #{storageid},
+                </if>
+                <if test="field01 != null" >
+                    #{field01},
+                </if>
+                <if test="field02 != null" >
+                    #{field02},
+                </if>
+                <if test="field03 != null" >
+                    #{field03},
+                </if>
+                <if test="field04 != null" >
+                    #{field04},
+                </if>
+                <if test="indooruserid != null" >
+                    #{indooruserid},
+                </if>
+                <if test="demandtime != null" >
+                    #{demandtime},
+                </if>
+                <if test="ladingbill != null" >
+                    #{ladingbill},
+                </if>
+            </trim>
+    </insert>
+    <update id="auditOrderGoods" parameterType="com.hd.agent.sales.model.OrderGoods">
+        UPDATE t_sales_goodsorder SET status=#{status},businessdate=#{businessdate},audituserid=#{audituserid},auditusername=#{auditusername},audittime=now() WHERE id=#{id}
+    </update>
+    <select id="getOrderGoods" parameterType="java.lang.String" resultType="com.hd.agent.sales.model.OrderGoods">
+        SELECT  <include refid="Base_Column_List" /> FROM t_sales_goodsorder
+        WHERE id=#{id}
+    </select>
+    <select id="getOrderGoodsDetailList" parameterType="java.lang.String" resultType="com.hd.agent.sales.model.OrderGoodsDetail">
+        SELECT <include refid="Base_Column_Detail_List" /> FROM t_sales_goodsorder_detail WHERE orderid=#{id} ORDER BY ${orderstr}
+    </select>
+    <select id="getOrderGoodsDetailListByOrderidAndBrandid" parameterType="java.lang.String" resultType="com.hd.agent.sales.model.OrderGoodsDetail">
+        select
+        <include refid="Base_Column_Detail_List" />
+        from t_sales_goodsorder_detail
+        where brandid=#{brandid} and orderid = #{orderid}
+    </select>
+    <update id="updateOrderGoods" parameterType="com.hd.agent.sales.model.OrderGoods">
+        update t_sales_goodsorder
+        <set >
+            <!--<if test="id != null" >-->
+                <!--id = #{id},-->
+            <!--</if>-->
+            <if test="businessdate != null" >
+                businessdate = #{businessdate},
+            </if>
+            <if test="status != null" >
+                status = #{status},
+            </if>
+            <if test="remark != null" >
+                remark = #{remark},
+            </if>
+            <if test="modifyuserid != null" >
+                modifyuserid = #{modifyuserid},
+            </if>
+            <if test="modifyusername != null" >
+                modifyusername = #{modifyusername},
+            </if>
+            modifytime = now(),
+            <if test="customerid != null" >
+                customerid = #{customerid},
+            </if>
+            <if test="pcustomerid != null" >
+                pcustomerid = #{pcustomerid},
+            </if>
+            <if test="customersort != null" >
+                customersort = #{customersort},
+            </if>
+            <if test="handlerid != null" >
+                handlerid = #{handlerid},
+            </if>
+            <if test="salesarea != null" >
+                salesarea = #{salesarea},
+            </if>
+            <if test="salesdept != null" >
+                salesdept = #{salesdept},
+            </if>
+            <if test="salesuser != null" >
+                salesuser = #{salesuser},
+            </if>
+            <if test="settletype != null" >
+                settletype = #{settletype},
+            </if>
+            <if test="paytype != null" >
+                paytype = #{paytype},
+            </if>
+            <if test="storageid != null" >
+                storageid = #{storageid},
+            </if>
+            <if test="field01 != null" >
+                field01 = #{field01},
+            </if>
+            <if test="field02 != null" >
+                field02 = #{field02},
+            </if>
+            <if test="field03 != null" >
+                field03 = #{field03},
+            </if>
+            <if test="field04 != null" >
+                field04 = #{field04},
+            </if>
+            <if test="indooruserid != null" >
+                indooruserid = #{indooruserid},
+            </if>
+            <if test="ladingbill != null" >
+                ladingbill = #{ladingbill},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <select id="checkOrderGoodsRepeat" parameterType="java.lang.String" resultType="map">
+        select GROUP_CONCAT(z.id) as id,z.customerid,z.amount,count(1) as count from (
+		select t.id,t.customerid,sum(t1.taxamount) as amount from t_sales_goodsorder t
+		RIGHT JOIN t_sales_goodsorder_detail t1 on t.id=t1.orderid
+		where t.addtime>DATE_ADD(now(),INTERVAL -${days} DAY) and t.customerid=#{customerid}
+		GROUP BY t.id) z
+		GROUP BY z.customerid,z.amount
+		HAVING count(1)>1 and id like concat('%',#{id},'%')
+    </select>
+    <delete id="deleteOrderGoodsDetailByOrderId" parameterType="java.lang.String">
+        delete from t_sales_goodsorder_detail
+  	where orderid = #{id}
+    </delete>
+    <delete id="deleteOrderGoods" parameterType="java.lang.String">
+         delete from t_sales_goodsorder
+  	where id = #{id}
+    </delete>
+    <update id="updateOrderGoodsDetailNum" parameterType="java.lang.String">
+        <if test="type == 1" >
+        UPDATE t_sales_goodsorder_detail t , t_sales_relation_ordergoods o SET t.notorderunitnum=t.notorderunitnum-o.unitnum,
+        t.notordertaxamount=(t.notorderunitnum-o.unitnum)*t.taxprice,t.notordernotaxamount=(t.notorderunitnum-o.unitnum)*t.notaxprice,
+        t.ordertaxamount=(t.orderunitnum+o.unitnum)*t.taxprice,t.ordernotaxamount=(t.orderunitnum+o.unitnum)*t.notaxprice,
+        t.orderunitnum=t.orderunitnum+o.unitnum WHERE t.id=o.ordergoodsdetailid AND t.orderid=o.ordergoodsid AND o.orderid=#{orderid};
+
+            UPDATE t_sales_goodsorder t SET t.status='4' WHERE NOT EXISTS (SELECT id FROM t_sales_goodsorder_detail WHERE orderid=t.id
+            AND notorderunitnum!=0) AND find_in_set(t.id,#{ordergoodsid}) and t.status='3';
+        </if>
+        <if test="type == 2" >
+            UPDATE t_sales_goodsorder_detail t,t_sales_relation_ordergoods o SET t.notorderunitnum=t.notorderunitnum+o.unitnum,
+            t.orderunitnum=t.orderunitnum-o.unitnum,
+            t.notordertaxamount=(t.notorderunitnum+o.unitnum)*t.taxprice,t.notordernotaxamount=(t.notorderunitnum+o.unitnum)*t.notaxprice,
+            t.ordertaxamount=(t.orderunitnum-o.unitnum)*t.taxprice,t.ordernotaxamount=(t.orderunitnum-o.unitnum)*t.notaxprice
+            WHERE t.id=o.ordergoodsdetailid AND t.orderid=o.ordergoodsid AND o.orderid=#{orderid};
+
+            UPDATE t_sales_goodsorder t SET t.status='3' WHERE EXISTS (SELECT id FROM t_sales_goodsorder_detail WHERE orderid=t.id
+            AND notorderunitnum!=0) AND find_in_set(t.id,#{ordergoodsid}) AND t.status='4';
+        </if>
+    </update>
+    <sql id="orderGoodsListForAddOrder_sql">
+        <trim prefix="where" prefixOverrides="and|or">
+            <include refid="common.Page_querySql"/>
+            <include refid="common.Page_dataSql"/>
+            <if test="condition.orderid != null" >
+                and t.id like concat('%',#{condition.orderid},'%')
+            </if>
+            <if test="condition.businessdate != null" >
+                <![CDATA[ and t.businessdate >=#{condition.businessdate} ]]>
+            </if>
+            <if test="condition.businessdate1 != null" >
+                <![CDATA[ and t.businessdate <= #{condition.businessdate1}]]>
+            </if>
+            <if test="condition.customerid != null" >
+                and t.customerid = #{condition.customerid}
+            </if>
+            <if test="condition.salesdept != null" >
+                and FIND_IN_SET(t.salesdept,#{condition.salesdept})
+            </if>
+            <if test="condition.salesuser != null" >
+                and FIND_IN_SET(t.salesuser,#{condition.salesuser})
+            </if>
+             AND t.status ='3'
+        </trim>
+    </sql>
+    <select id="getOrderGoodsListForAddOrderList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.sales.model.OrderGoods">
+        SELECT  <include refid="Base_Column_List" /> FROM t_sales_goodsorder t
+        <include refid="orderGoodsListForAddOrder_sql" />
+        <if test="condition.isflag == null" >
+            <include refid="common.Page_limit" />
+        </if>
+    </select>
+    <select id="getOrderGoodsListForAddOrderCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+        SELECT  count(1) FROM t_sales_goodsorder t
+        <include refid="orderGoodsListForAddOrder_sql" />
+    </select>
+    <select id="getOrderGoodsAmount" parameterType="java.lang.String" resultType="map">
+        SELECT sum(ordertaxamount) as ordertaxamount,sum(ordernotaxamount) as ordernotaxamount,
+        sum(notordertaxamount) as notordertaxamount,sum(notordernotaxamount) as notordernotaxamount
+        FROM t_sales_goodsorder_detail WHERE orderid=#{orderid}
+    </select>
+    <select id="showGoodsToOrderData" parameterType="java.lang.String" resultType="com.hd.agent.sales.model.OrderGoodsDetail">
+        SELECT <include refid="Base_Column_Detail_List" /> FROM t_sales_goodsorder_detail WHERE orderid=#{orderid} AND notorderunitnum!=0
+    </select>
+    <select id="getOrderGoodsInOrder" parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT group_concat(id) FROM t_sales_order WHERE sourcetype='3' AND sourceid=#{orderid}
+    </select>
+    <select id="getDemandAddOrderGoodsList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.sales.model.OrderGoods">
+        SELECT <include refid="Base_Column_List" /> FROM t_sales_goodsorder WHERE status ='3' AND customerid=#{condition.customerid}
+        <include refid="common.Page_limit" />
+    </select>
+    <select id="getDemandAddOrderGoodsCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+        SELECT count(1) FROM t_sales_goodsorder WHERE status in ('3','4') AND customerid=#{condition.customerid}
+    </select>
+    <select id="getSalesOrderGoodsListBy" resultType="com.hd.agent.sales.model.OrderGoods" parameterType="java.util.Map" >
+        select
+        <include refid="Base_Column_List" />
+        from t_sales_goodsorder
+        where
+        <trim prefixOverrides="and|or" >
+            <if test="dataSql != null">
+                and ${dataSql}
+            </if>
+            <if test="idarrs != null" >
+                and FIND_IN_SET(id,#{idarrs})
+            </if>
+            <if test="status!=null">
+                and status=#{status}
+            </if>
+            <if test="statusarr!=null">
+                and FIND_IN_SET(status,#{statusarr})
+            </if>
+            <if test="notprint != null and notprint == 1">
+                and (printtimes is null or printtimes=0)
+            </if>
+            <if test="notphprint != null and notphprint == 1">
+                and (phprinttimes is null or phprinttimes=0)
+            </if>
+        </trim>
+    </select>
+    <update id="updateOrderGoodsPrinttimes" parameterType="com.hd.agent.sales.model.OrderGoods">
+        update t_sales_goodsorder
+        <set>
+            <if test="printtimes != null">
+                printtimes = IFNULL(printtimes,0)+1,
+                printdatetime = now(),
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <select id="getDemandGoodsInOrderGoodsNum" parameterType="java.lang.String" resultType="int">
+        select count(1) from
+       (select orderid,goodsid,deliverytype,sum(unitnum) as unitnum from t_sales_demand_detail where orderid=#{demandid} group by goodsid,deliverytype) d,
+       (select orderid,goodsid,deliverytype,sum(notorderunitnum) as notorderunitnum from t_sales_goodsorder_detail where find_in_set(orderid,#{ordergoodsid}) group by goodsid,deliverytype) t
+       where t.goodsid=d.goodsid and t.notorderunitnum>=d.unitnum
+       and d.deliverytype=t.deliverytype and d.orderid=#{demandid} and find_in_set(t.orderid,#{ordergoodsid})
+    </select>
+    <update id="updateOrderGoodsDetailList">
+        <foreach collection="list" index="index" item="item">
+            update t_sales_goodsorder_detail
+            set orderunitnum = #{item.orderunitnum},
+            notorderunitnum = #{item.notorderunitnum},
+            ordertaxamount = #{item.ordertaxamount},
+            ordernotaxamount = #{item.ordernotaxamount},
+            notordertaxamount = #{item.notordertaxamount},
+            notordernotaxamount = #{item.notordernotaxamount}
+            where id = #{item.id};
+        </foreach>
+        UPDATE t_sales_goodsorder SET status='4' WHERE NOT EXISTS (SELECT id FROM t_sales_goodsorder_detail WHERE orderid=#{ordergoodsid}
+        AND notorderunitnum!=0) AND id=#{ordergoodsid} AND status='3';
+
+        UPDATE t_sales_goodsorder SET status='3' WHERE EXISTS (SELECT id FROM t_sales_goodsorder_detail WHERE orderid=#{ordergoodsid}
+        AND notorderunitnum!=0) AND id=#{ordergoodsid} AND status='4';
+    </update>
+    <select id="getExportOrderGoodsData" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.sales.model.ExportOrderGoods">
+        SELECT t.id,t.businessdate,t.ladingbill,t.status,t.remark,t.indooruserid,t.storageid,t.salesuser,t.salesdept,t.salesarea,
+        t.handlerid,t.customersort,t.pcustomerid,t.customerid,t.adduserid,t.addusername,t1.goodsid,t1.goodssort,t1.unitnum,t1.taxprice,t1.taxamount,
+        t1.auxnumdetail,t1.orderunitnum,t1.notorderunitnum,t1.notordertaxamount
+        FROM t_sales_goodsorder t
+        RIGHT JOIN t_sales_goodsorder_detail t1 on t.id=t1.orderid
+        <include refid="selectOrderQuery_sql" />
+        <if test="condition.exportid != null" >
+            and find_in_set(t.id,#{condition.exportid})
+        </if>
+
+    </select>
+    <sql id="getOrderGoodsReport_sql">
+        SELECT    t1.id,t.businessdate,t.customerid,t.salesdept,t.salesuser, t1.orderid, t1.goodsid, t1.groupid, t1.goodssort, t1.brandid, t1.branduser, t1.branddept, t1.supplierid, t1.supplieruser,
+        t1.isdiscount, t1.isbranddiscount,t1.unitid, t1.unitname, t1.fixnum, t1.unitnum, t1.auxunitid, t1.auxunitname, t1.auxnum, t1.overnum,
+        t1.auxnumdetail, t1.totalbox, t1.fixprice, t1.offprice, t1.taxprice, t1.taxamount, t1.notaxprice, t1.notaxamount, t1.costprice, t1.taxtype,
+        t1.tax, t1.remark, t1.deliverytype, t1.deliverydate, t1.expirationdate, t1.seq, t1.oldprice,t1.storageid, t1.demandprice, t1.demandamount,
+        t1.issupply, t1.summarybatchid, t1.storagelocationid, t1.batchno, t1.produceddate, t1.deadline, t1.repartitiontype,t1.orderunitnum,
+        t1.notorderunitnum,t1.ordertaxamount,t1.ordernotaxamount,t1.notordertaxamount,t1.notordernotaxamount,t1.oldtaxprice
+        FROM t_sales_goodsorder t
+        RIGHT JOIN t_sales_goodsorder_detail t1 on t.id=t1.orderid
+        <if test="condition.orderid != null">
+        LEFT JOIN t_sales_order o ON o.sourceid=t.id and o.sourcetype='3'
+        </if>
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="dataSql != null">
+                and ${dataSql}
+            </if>
+            <if test="condition.businessdate != null" >
+                <![CDATA[ and t.businessdate >=#{condition.businessdate} ]]>
+            </if>
+            <if test="condition.businessdate1 != null" >
+                <![CDATA[ and t.businessdate <= #{condition.businessdate1}]]>
+            </if>
+            <if test="condition.goodsid != null">
+                AND find_in_set(t1.goodsid,#{condition.goodsid})
+            </if>
+            <if test="condition.brandid != null">
+                AND find_in_set(t1.brandid,#{condition.brandid})
+            </if>
+            <if test="condition.goodssort != null">
+                AND find_in_set(t1.goodssort,#{condition.goodssort})
+            </if>
+            <if test="condition.salesdept != null">
+                AND find_in_set(t.salesdept,#{condition.salesdept})
+            </if>
+            <if test="condition.ordergoodsid != null">
+                AND t1.orderid like concat('%',#{condition.ordergoodsid},'%')
+            </if>
+            <if test="condition.orderid != null">
+                AND o.id=#{condition.orderid}
+            </if>
+            <if test="condition.customerid != null">
+                AND find_in_set(t.customerid,#{condition.customerid})
+            </if>
+            <if test="condition.iscomplete == 0">
+                AND t1.notorderunitnum>0
+            </if>
+            <if test="condition.iscomplete == 1">
+                AND t1.notorderunitnum=0
+            </if>
+
+        </trim>
+    </sql>
+    <select id="getOrderGoodsReportList" parameterType="com.hd.agent.common.util.PageMap" resultType="map">
+        <include refid="getOrderGoodsReport_sql" />
+        <if test="condition.isflag == null" >
+            <include refid="common.Page_limit" />
+        </if>
+    </select>
+    <select id="getOrderGoodsReportCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+        SELECT  count(1) FROM (<include refid="getOrderGoodsReport_sql" />)t
+    </select>
+    <select id="getOrderGoodsReportSum" parameterType="com.hd.agent.common.util.PageMap" resultType="map">
+        SELECT '合计' as businessdate,sum(t.unitnum) as unitnum,sum(t.notorderunitnum) as notorderunitnum,sum(t.orderunitnum) as orderunitnum,sum(t.taxamount) as taxamount FROM (
+        <include refid="getOrderGoodsReport_sql" />
+        )t
+    </select>
+
+    <sql id="getPhoneOrderGoodsReport_sql">
+        SELECT  t.id,t.businessdate,t.customerid,t.salesdept,t.salesuser, t1.orderid, t1.goodsid, t1.groupid, t1.goodssort, t1.brandid, t1.branduser, t1.branddept, t1.supplierid, t1.supplieruser,
+        t1.isdiscount, t1.isbranddiscount,t1.unitid, t1.unitname, t1.fixnum, t1.unitnum, t1.auxunitid, t1.auxunitname, t1.auxnum, t1.overnum,
+        t1.auxnumdetail, t1.totalbox, t1.fixprice, t1.offprice, t1.taxprice, t1.taxamount, t1.notaxprice, t1.notaxamount, t1.costprice, t1.taxtype,
+        t1.tax, t1.remark, t1.deliverytype, t1.deliverydate, t1.expirationdate, t1.seq, t1.oldprice,t1.storageid, t1.demandprice, t1.demandamount,
+        t1.issupply, t1.summarybatchid, t1.storagelocationid, t1.batchno, t1.produceddate, t1.deadline, t1.repartitiontype,t1.orderunitnum,
+        sum(t1.notorderunitnum) as notorderunitnum,sum(t1.ordertaxamount) as ordertaxamount,
+        sum(t1.ordernotaxamount) as ordernotaxamount,sum(t1.notordertaxamount) as notordertaxamount,
+        sum(t1.notordernotaxamount) as notordernotaxamount,t1.oldtaxprice
+        FROM t_sales_goodsorder t
+        LEFT JOIN t_sales_goodsorder_detail t1 on t.id=t1.orderid
+        <if test="condition.orderid != null">
+            LEFT JOIN t_sales_order o ON o.sourceid=t.id and o.sourcetype='3'
+        </if>
+        <trim prefix="where" prefixOverrides="and|or">
+            AND t.status='3'
+            <if test="dataSql != null">
+                and ${dataSql}
+            </if>
+            <if test="condition.businessdate != null" >
+                <![CDATA[ and t.businessdate >=#{condition.businessdate} ]]>
+            </if>
+            <if test="condition.businessdate1 != null" >
+                <![CDATA[ and t.businessdate <= #{condition.businessdate1}]]>
+            </if>
+            <if test="condition.goodsid != null">
+                AND find_in_set(t1.goodsid,#{condition.goodsid})
+            </if>
+            <if test="condition.brandid != null">
+                AND find_in_set(t1.brandid,#{condition.brandid})
+            </if>
+            <if test="condition.goodssort != null">
+                AND find_in_set(t1.goodssort,#{condition.goodssort})
+            </if>
+            <if test="condition.salesdept != null">
+                AND find_in_set(t.salesdept,#{condition.salesdept})
+            </if>
+            <if test="condition.ordergoodsid != null">
+                AND t1.orderid like concat('%',#{condition.ordergoodsid},'%')
+            </if>
+            <if test="condition.orderid != null">
+                AND o.id=#{condition.orderid}
+            </if>
+            <if test="condition.customerid != null">
+                AND find_in_set(t.customerid,#{condition.customerid})
+            </if>
+            <if test="condition.iscomplete == 0">
+                AND t1.notorderunitnum>0
+            </if>
+            <if test="condition.iscomplete == 1">
+                AND t1.notorderunitnum=0
+            </if>
+        </trim>
+        GROUP BY t.id
+    </sql>
+
+    <select id="getPhoneOrderGoodsReportList" parameterType="com.hd.agent.common.util.PageMap" resultType="map">
+        <include refid="getPhoneOrderGoodsReport_sql" />
+        <if test="condition.isflag == null" >
+            <include refid="common.Page_limit" />
+        </if>
+    </select>
+    <select id="getPhoneOrderGoodsReportCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+        SELECT  count(1) FROM (<include refid="getPhoneOrderGoodsReport_sql" />)t
+    </select>
+    <select id="getOrderGoodsMapList" parameterType="java.lang.System" resultType="com.hd.agent.sales.model.OrderGoodsDetail">
+        SELECT
+        <include refid="Base_Column_Detail_List" />
+        FROM t_sales_goodsorder_detail
+        WHERE find_in_set(orderid,#{ids})
+    </select>
+    <insert id="insertOrderGoodsRelationList" parameterType="java.util.Map" >
+        insert into t_sales_relation_ordergoods (billtype, orderid, orderdetailid, ordergoodsid,
+        ordergoodsdetailid, unitnum)
+        values
+        <foreach collection="list" item="item" open="" close="" separator=",">
+            (#{item.billtype}, #{item.orderid}, #{item.orderdetailid}, #{item.ordergoodsid},
+            #{item.ordergoodsdetailid}, #{item.unitnum})
+        </foreach>
+    </insert>
+    <delete id="deleteRelationOrderGoods" parameterType="java.lang.String">
+        DELETE FROM t_sales_relation_ordergoods where orderid=#{orderid}
+    </delete>
+    <update id="updateOrderGoodsByOrder" parameterType="java.lang.String">
+        <if test="type == 1">
+        UPDATE t_sales_goodsorder_detail t,t_sales_relation_ordergoods t1
+        SET t.orderunitnum=t.orderunitnum-t1.unitnum,
+            t.ordertaxamount=(t.orderunitnum-t1.unitnum)*t.taxprice,
+            t.ordernotaxamount=(t.orderunitnum-t1.unitnum)*t.notaxprice,
+            t.notorderunitnum=t.notorderunitnum+t1.unitnum,
+            t.notordertaxamount=(t.notorderunitnum+t1.unitnum)*t.taxprice,
+            t.notordernotaxamount=(t.notorderunitnum+t1.unitnum)*t.notaxprice
+        where t.id=t1.ordergoodsdetailid and t.orderid=t1.ordergoodsid
+        and t1.orderid=#{orderid};
+
+            UPDATE t_sales_goodsorder t SET t.status='3' WHERE EXISTS (SELECT id FROM t_sales_goodsorder_detail WHERE orderid=t.id
+            AND notorderunitnum!=0) AND find_in_set(t.id,#{ordergoodsid}) AND t.status IN ('3','4');
+        </if>
+        <if test="type == 2">
+            UPDATE t_sales_goodsorder_detail t,t_sales_relation_ordergoods t1
+            SET t.orderunitnum=t.orderunitnum+t1.unitnum,
+            t.ordertaxamount=(t.orderunitnum+t1.unitnum)*t.taxprice,
+            t.ordernotaxamount=(t.orderunitnum+t1.unitnum)*t.notaxprice,
+            t.notorderunitnum=t.notorderunitnum-t1.unitnum,
+            t.notordertaxamount=(t.notorderunitnum-t1.unitnum)*t.taxprice,
+            t.notordernotaxamount=(t.notorderunitnum-t1.unitnum)*t.notaxprice
+            where t.id=t1.ordergoodsdetailid and t.orderid=t1.ordergoodsid
+            and t1.orderid=#{orderid};
+
+            UPDATE t_sales_goodsorder t SET t.status='3' WHERE EXISTS (SELECT id FROM t_sales_goodsorder_detail WHERE orderid=t.id
+            AND notorderunitnum!=0) AND find_in_set(t.id,#{ordergoodsid}) AND t.status IN ('3','4');
+        </if>
+    </update>
+    <delete id="deleteRalationNotInOrder" parameterType="java.lang.String">
+        DELETE FROM t_sales_relation_ordergoods WHERE id NOT IN (SELECT relationordergoodsid FROM t_sales_order_detail WHERE orderid=#{orderid})
+        AND orderid=#{orderid}
+    </delete>
+    <update id="updateRelationGoodsNum" parameterType="java.lang.String">
+        UPDATE t_sales_relation_ordergoods t,t_sales_order_detail t1
+        SET t.unitnum=t1.unitnum WHERE t.id=t1.relationordergoodsid  AND t.orderid=#{orderid} AND t1.orderid=#{orderid}
+    </update>
+    <update id="updateOrderRelationOrdergoodsid" parameterType="java.lang.String">
+        UPDATE t_sales_order_detail t,t_sales_relation_ordergoods t1
+        SET t.relationordergoodsid=t1.id WHERE t.id=t1.orderdetailid AND t.orderid=t1.orderid
+    </update>
+    <update id="updateDemandRelationId" parameterType="java.lang.String">
+        <if test="type == 1">
+        UPDATE t_sales_demand_detail t,t_sales_relation_ordergoods t1
+        SET t.relationordergoodsid=t1.id WHERE t.id=t1.orderdetailid AND t.orderid=t1.orderid
+        AND t.orderid=#{demandid}
+        </if>
+        <if test="type == 2">
+            UPDATE t_sales_demand_detail t,t_sales_relation_ordergoods t1
+            SET t.relationordergoodsid='' WHERE t.id=t1.orderdetailid AND t.orderid=t1.orderid
+            AND t.orderid=#{demandid}
+        </if>
+    </update>
+    <delete id="deleteRalationNotInDemandOrder" parameterType="java.lang.String">
+        DELETE FROM t_sales_relation_ordergoods WHERE id NOT IN (SELECT relationordergoodsid FROM t_sales_order_detail WHERE orderid=#{orderid})
+        AND orderid=#{demandid}
+    </delete>
+    <select id="getOrderGoodsRelationDetail" parameterType="java.lang.String" resultType="map">
+        SELECT t1.notorderunitnum as notorderunitnum,t1.orderid,t1.id FROM t_sales_relation_ordergoods t LEFT JOIN t_sales_goodsorder_detail t1
+        ON t.ordergoodsid=t1.orderid and t.ordergoodsdetailid=t1.id WHERE t.id=#{id}
+    </select>
+    <update id="updateOrderGoodsRelationNum">
+      UPDATE  t_sales_relation_ordergoods SET unitnum=#{unitnum} where id=#{id}
+    </update>
+    <update id="updateDemadRelationGoodsNum" parameterType="java.lang.String">
+        UPDATE t_sales_relation_ordergoods t,t_sales_order_detail t1
+        SET t.unitnum=t1.unitnum WHERE t.id=t1.relationordergoodsid  AND t.orderid=#{demandid} AND t1.orderid=#{orderid}
+    </update>
+    <select id="getOrderGoodsListByIds" parameterType="java.lang.String" resultType="com.hd.agent.sales.model.OrderGoods">
+        SELECT  <include refid="Base_Column_List" /> FROM t_sales_goodsorder
+        WHERE find_in_set(id,#{ids})
+    </select>
+    <select id="getOrderGoodsDetail" parameterType="int" resultType="com.hd.agent.sales.model.OrderGoodsDetail">
+        SELECT <include refid="Base_Column_Detail_List" /> FROM t_sales_goodsorder_detail WHERE id=#{id};
+    </select>
+</mapper>

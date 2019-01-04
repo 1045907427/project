@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.oa.dao.OaMatcostMapper" >
+  <resultMap id="BaseResultMap" type="com.hd.agent.oa.model.OaMatcost" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="businessdate" property="businessdate" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="adduserid" property="adduserid" jdbcType="VARCHAR" />
+    <result column="addusername" property="addusername" jdbcType="VARCHAR" />
+    <result column="adddeptid" property="adddeptid" jdbcType="VARCHAR" />
+    <result column="adddeptname" property="adddeptname" jdbcType="VARCHAR" />
+    <result column="addtime" property="addtime" jdbcType="TIMESTAMP" />
+    <result column="modifyuserid" property="modifyuserid" jdbcType="VARCHAR" />
+    <result column="modifyusername" property="modifyusername" jdbcType="VARCHAR" />
+    <result column="modifytime" property="modifytime" jdbcType="TIMESTAMP" />
+    <result column="printtimes" property="printtimes" jdbcType="INTEGER" />
+    <result column="oaid" property="oaid" jdbcType="VARCHAR" />
+    <result column="supplierid" property="supplierid" jdbcType="VARCHAR" />
+    <result column="supplierbillid" property="supplierbillid" jdbcType="VARCHAR" />
+    <result column="deptid" property="deptid" jdbcType="VARCHAR" />
+    <result column="paybank" property="paybank" jdbcType="VARCHAR" />
+    <result column="feeamount" property="feeamount" jdbcType="DECIMAL" />
+    <result column="returndate" property="returndate" jdbcType="VARCHAR" />
+    <result column="returnway" property="returnway" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, businessdate, remark, adduserid, addusername, adddeptid, adddeptname, addtime, 
+    modifyuserid, modifyusername, modifytime, printtimes, oaid, supplierid, supplierbillid, 
+    deptid, paybank, feeamount, returndate, returnway
+  </sql>
+  <insert id="insertOaMatcost" parameterType="com.hd.agent.oa.model.OaMatcost" >
+    insert into t_oa_matcost
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="businessdate != null" >
+        businessdate,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="adduserid != null" >
+        adduserid,
+      </if>
+      <if test="addusername != null" >
+        addusername,
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid,
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname,
+      </if>
+      addtime,
+      <if test="modifyuserid != null" >
+        modifyuserid,
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername,
+      </if>
+      <if test="modifytime != null" >
+        modifytime,
+      </if>
+      <if test="printtimes != null" >
+        printtimes,
+      </if>
+      <if test="oaid != null" >
+        oaid,
+      </if>
+      <if test="supplierid != null" >
+        supplierid,
+      </if>
+      <if test="supplierbillid != null" >
+        supplierbillid,
+      </if>
+      <if test="deptid != null" >
+        deptid,
+      </if>
+      <if test="paybank != null" >
+        paybank,
+      </if>
+      <if test="feeamount != null" >
+        feeamount,
+      </if>
+      <if test="returndate != null" >
+        returndate,
+      </if>
+      <if test="returnway != null" >
+        returnway,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="businessdate != null" >
+        #{businessdate},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+      <if test="adduserid != null" >
+        #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        #{adddeptname},
+      </if>
+      now(),
+      <if test="modifyuserid != null" >
+        #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        #{modifyusername},
+      </if>
+      <if test="modifytime != null" >
+        #{modifytime},
+      </if>
+      <if test="printtimes != null" >
+        #{printtimes},
+      </if>
+      <if test="oaid != null" >
+        #{oaid},
+      </if>
+      <if test="supplierid != null" >
+        #{supplierid},
+      </if>
+      <if test="supplierbillid != null" >
+        #{supplierbillid},
+      </if>
+      <if test="deptid != null" >
+        #{deptid},
+      </if>
+      <if test="paybank != null" >
+        #{paybank},
+      </if>
+      <if test="feeamount != null" >
+        #{feeamount},
+      </if>
+      <if test="returndate != null" >
+        #{returndate},
+      </if>
+      <if test="returnway != null" >
+        #{returnway},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateOaMatcost" parameterType="com.hd.agent.oa.model.OaMatcost" >
+    update t_oa_matcost
+    <set >
+      <if test="businessdate != null" >
+        businessdate = #{businessdate},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark},
+      </if>
+      <if test="adduserid != null" >
+        adduserid = #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        addusername = #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid = #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname = #{adddeptname},
+      </if>
+      <if test="addtime != null" >
+        addtime = #{addtime},
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid = #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername = #{modifyusername},
+      </if>
+      modifytime = now(),
+      <if test="printtimes != null" >
+        printtimes = #{printtimes},
+      </if>
+      <if test="oaid != null" >
+        oaid = #{oaid},
+      </if>
+      <if test="supplierid != null" >
+        supplierid = #{supplierid},
+      </if>
+      <if test="supplierbillid != null" >
+        supplierbillid = #{supplierbillid},
+      </if>
+      <if test="deptid != null" >
+        deptid = #{deptid},
+      </if>
+      <if test="paybank != null" >
+        paybank = #{paybank},
+      </if>
+      <if test="feeamount != null" >
+        feeamount = #{feeamount},
+      </if>
+      <if test="returndate != null" >
+        returndate = #{returndate},
+      </if>
+      <if test="returnway != null" >
+        returnway = #{returnway},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  <select id="selectOaMatcost" parameterType="java.lang.String" resultMap="BaseResultMap" >
+    select <include refid="Base_Column_List" />
+    from t_oa_matcost where id = #{id }
+  </select>
+
+
+  <resultMap id="DetailResultMap" type="com.hd.agent.oa.model.OaMatcostDetail" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="billid" property="billid" jdbcType="VARCHAR" />
+    <result column="customerid" property="customerid" jdbcType="VARCHAR" />
+    <result column="reason" property="reason" jdbcType="VARCHAR" />
+    <result column="brandid" property="brandid" jdbcType="VARCHAR" />
+    <result column="expensesort" property="expensesort" jdbcType="VARCHAR" />
+    <result column="factoryamount" property="factoryamount" jdbcType="DECIMAL" />
+    <result column="myamount" property="myamount" jdbcType="DECIMAL" />
+    <result column="feeamount" property="feeamount" jdbcType="DECIMAL" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Detail_Column_List" >
+    id, billid, customerid, reason, brandid, expensesort, factoryamount, myamount, feeamount,
+    remark
+  </sql>
+  <insert id="insertOaMatcostDetail" parameterType="com.hd.agent.oa.model.OaMatcostDetail" >
+    insert into t_oa_matcost_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="billid != null" >
+        billid,
+      </if>
+      <if test="customerid != null" >
+        customerid,
+      </if>
+      <if test="reason != null" >
+        reason,
+      </if>
+      <if test="brandid != null" >
+        brandid,
+      </if>
+      <if test="expensesort != null" >
+        expensesort,
+      </if>
+      <if test="factoryamount != null" >
+        factoryamount,
+      </if>
+      <if test="myamount != null" >
+        myamount,
+      </if>
+      <if test="feeamount != null" >
+        feeamount,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="billid != null" >
+        #{billid},
+      </if>
+      <if test="customerid != null" >
+        #{customerid},
+      </if>
+      <if test="reason != null" >
+        #{reason},
+      </if>
+      <if test="brandid != null" >
+        #{brandid},
+      </if>
+      <if test="expensesort != null" >
+        #{expensesort},
+      </if>
+      <if test="factoryamount != null" >
+        #{factoryamount},
+      </if>
+      <if test="myamount != null" >
+        #{myamount},
+      </if>
+      <if test="feeamount != null" >
+        #{feeamount},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+    </trim>
+  </insert>
+  <select id="selectOaMatcostDetailListByBillid" parameterType="java.lang.String" resultMap="DetailResultMap">
+    select <include refid="Detail_Column_List" />
+    from t_oa_matcost_detail
+    where billid = #{billid }
+  </select>
+  <delete id="deleteOaMatcostDetailByBillid" parameterType="java.lang.String">
+    delete from t_oa_matcost_detail
+    where billid = #{billid }
+  </delete>
+
+</mapper>

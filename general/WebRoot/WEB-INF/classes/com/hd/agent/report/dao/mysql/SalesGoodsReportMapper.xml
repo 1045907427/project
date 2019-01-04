@@ -1,0 +1,943 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hd.agent.report.dao.SalesGoodsReportMapper">
+	<sql id="temp_sales_goods_report">
+		(select * from 
+	  	(
+			SELECT
+			y.customerid,c.pid as pcustomerid,c.salesdeptid as deptid,c.salesarea as salesarea,c.salesuserid as salesuserid,
+			y.goodsid,y.brand,b.deptid as branddept,y.unitid,y.costprice,y.ordernum,y.orderamount,y.ordernotaxamount,
+			y.initsendnum,y.initsendamount,y.initsendnotaxamount,y.sendnum,y.sendamount,y.sendnotaxamount,
+			y.returnnum,y.returnamount,y.returnnotaxamount,y.directreturnnum,y.directreturnamount,y.directreturnnotaxamount,
+			y.checkreturnnum,y.checkreturnamount,y.checkreturnnotaxamount,(y.sendnum - y.returnnum) * y.costprice AS costamount,
+			y.writeoffamount,y.costwriteoffamount
+			FROM
+			(
+			select z.customerid,z.goodsid,z.brand,z.unitid,z.unitname,z.costprice,
+			sum(z.ordernum) as ordernum,sum(z.orderamount) as orderamount,sum(z.ordernotaxamount) as ordernotaxamount,
+			sum(z.initsendnum) as initsendnum,sum(z.initsendamount) as initsendamount,sum(z.initsendnotaxamount) as initsendnotaxamount,
+			sum(z.sendnum) as sendnum,sum(z.sendamount) as sendamount,sum(z.sendnotaxamount) as sendnotaxamount,
+			sum(z.returnnum) as returnnum,sum(z.returnamount) as returnamount,sum(z.returnnotaxamount) as returnnotaxamount,
+			sum(z.directreturnnum) as directreturnnum,sum(z.directreturnamount) as directreturnamount,sum(z.directreturnnotaxamount) as directreturnnotaxamount,
+			sum(z.checkreturnnum) as checkreturnnum,sum(z.checkreturnamount) as checkreturnamount,sum(z.checkreturnnotaxamount) as checkreturnnotaxamount,
+			sum(z.writeoffamount) as writeoffamount,sum(z.costwriteoffamount) as costwriteoffamount
+			from(
+			select t.customerid,t1.goodsid,t1.brandid as brand,t1.unitid,t1.unitname,t1.costprice,
+			t1.unitnum as ordernum,t1.taxamount as orderamount,t1.notaxamount as ordernotaxamount,
+			0 as initsendnum,0 as initsendamount,0 as initsendnotaxamount,
+			0 as sendnum,0 as sendamount,0 as sendnotaxamount,
+			0 as returnnum,0 as returnamount,0 as returnnotaxamount,
+			0 as directreturnnum,0 as directreturnamount,0 as directreturnnotaxamount,
+			0 as checkreturnnum,0 as checkreturnamount,0 as checkreturnnotaxamount,0 as writeoffamount,0 as costwriteoffamount
+			from t_sales_order t
+			RIGHT JOIN t_sales_order_detail t1 on t.id=t1.orderid
+			<trim prefix="where" prefixOverrides="and|or">
+			  <if test="condition.businessdate1 != null">
+				 and t.businessdate >= #{condition.businessdate1}
+			  </if>
+			  <if test="condition.businessdate2 != null">
+				 <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+			  </if>
+			  <if test="condition.goodsid != null" >
+	         	and t1.goodsid = #{condition.goodsid}
+	      	  </if>
+			  <if test="condition.brand != null" >
+		         and t1.brandid = #{condition.brand}
+		      </if>
+		      <if test="condition.customerid != null" >
+		         and t.customerid = #{condition.customerid}
+		      </if>
+			  <if test="1==1" >
+		         and  t.status in('3','4')
+		      </if>
+		    </trim>
+			UNION ALL
+			select t.customerid,t1.goodsid,t1.brandid as brand,t1.unitid,t1.unitname,t1.costprice,
+			t1.unitnum as ordernum,t1.taxamount as orderamount,t1.notaxamount as ordernotaxamount,
+			0 as initsendnum,0 as initsendamount,0 as initsendnotaxamount,
+			0 as sendnum,0 as sendamount,0 as sendnotaxamount,
+			0 as returnnum,0 as returnamount,0 as returnnotaxamount,
+			0 as directreturnnum,0 as directreturnamount,0 as directreturnnotaxamount,
+			0 as checkreturnnum,0 as checkreturnamount,0 as checkreturnnotaxamount,
+			0 as writeoffamount,0 as costwriteoffamount
+			from t_sales_order_car t
+			RIGHT JOIN t_sales_order_car_detail t1 on t.id=t1.orderid
+			<trim prefix="where" prefixOverrides="and|or">
+			  <if test="condition.businessdate1 != null">
+				 and t.businessdate >= #{condition.businessdate1}
+			  </if>
+			  <if test="condition.businessdate2 != null">
+				 <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+			  </if>
+			  <if test="condition.goodsid != null" >
+	         	and t1.goodsid = #{condition.goodsid}
+	      	  </if>
+			  <if test="condition.brand != null" >
+		         and t1.brandid = #{condition.brand}
+		      </if>
+		      <if test="condition.customerid != null" >
+		         and t.customerid = #{condition.customerid}
+		      </if>
+			  <if test="1==1" >
+		         and  t.status in('3','4')
+		      </if>
+		    </trim>
+			UNION ALL
+			SELECT t.customerid,t1.goodsid,t1.brandid as brand,t1.unitid,t1.unitname,t1.costprice,
+			0 as ordernum,0 as orderamount,0 as ordernotaxamount,
+			t1.initnum as initsendnum,t1.inittaxamount as initsendamount,t1.initnotaxamount as initsendnotaxamount,
+			t1.unitnum as sendnum,t1.taxamount as sendamount,t1.notaxamount as sendnotaxamount,
+			0 as returnnum,0 as returnamount,0 as returnnotaxamount,
+		  	0 as directreturnnum,0 as directreturnamount,0 as directreturnnotaxamount,
+			0 as checkreturnnum,0 as checkreturnamount,0 as checkreturnnotaxamount,
+			0 as writeoffamount,0 as costwriteoffamount
+			FROM t_storage_saleout t
+			right join t_storage_saleout_detail t1 on t1.saleoutid=t.id
+			<trim prefix="where" prefixOverrides="and|or">
+			  <if test="condition.businessdate1 != null">
+				 and t.businessdate >= #{condition.businessdate1}
+			  </if>
+			  <if test="condition.businessdate2 != null">
+				 <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+			  </if>
+			  <if test="condition.goodsid != null" >
+	         	and t1.goodsid = #{condition.goodsid}
+	      	  </if>
+			  <if test="condition.brand != null" >
+		         and t1.brandid = #{condition.brand}
+		      </if>
+		      <if test="condition.customerid != null" >
+		         and t.customerid = #{condition.customerid}
+		      </if>
+			  <if test="1==1" >
+		         and  t.status in('3','4')
+		      </if>
+		    </trim>		
+			UNION ALL
+			SELECT t.customerid,t1.goodsid,t1.brandid as brand,t1.unitid,t1.unitname,t1.costprice,
+			0 as ordernum,0 as orderamount,0 as ordernotaxamount,
+			0 as initsendnum,0 as initsendamount,0 as initsendnotaxamount,
+			0 as sendnum,0 as sendamount,0 as sendnotaxamount,
+			t1.unitnum as returnnum,t1.taxamount as returnamount,t1.notaxamount as returnnotaxamount,
+			t1.unitnum as directreturnnum,t1.taxamount as directreturnamount,t1.notaxamount as directreturnnotaxamount,
+			0 as checkreturnnum,0 as checkreturnamount,0 as checkreturnnotaxamount,
+			0 as writeoffamount,0 as costwriteoffamount
+			FROM t_storage_salereject_enter t
+			right join t_storage_salereject_enter_detail t1 on t1.salerejectid=t.id
+			<trim prefix="where" prefixOverrides="and|or">
+			  <if test="condition.businessdate1 != null">
+				 and t.businessdate >= #{condition.businessdate1}
+			  </if>
+			  <if test="condition.businessdate2 != null">
+				 <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+			  </if>
+			  <if test="condition.brand != null" >
+		         and t1.brandid = #{condition.brand}
+		      </if>
+		      <if test="condition.goodsid != null" >
+	         	and t1.goodsid = #{condition.goodsid}
+	      	  </if>
+	      	  <if test="condition.customerid != null" >
+		         and t.customerid = #{condition.customerid}
+		      </if>
+			  <if test="1==1" >
+		         and t.sourcetype='2' and t.status in('3','4')
+		      </if>
+		    </trim>
+			UNION ALL
+			SELECT t.customerid,t1.goodsid,t1.brandid as brand,t1.unitid,t1.unitname,t1.costprice,
+			0 as ordernum,0 as orderamount,0 as ordernotaxamount,
+			0 as initsendnum,0 as initsendamount,0 as initsendnotaxamount,
+			0 as sendnum,0 as sendamount,0 as sendnotaxamount,
+			t1.unitnum as returnnum,t1.taxamount as returnamount,t1.notaxamount as returnnotaxamount,
+			0 as directreturnnum,0 as directreturnamount,0 as directreturnnotaxamount,
+			t1.unitnum as checkreturnnum,t1.taxamount as checkreturnamount,t1.notaxamount as checkreturnnotaxamount,
+			0 as writeoffamount,0 as costwriteoffamount
+			FROM t_storage_salereject_enter t
+			right join t_storage_salereject_enter_detail t1 on t1.salerejectid=t.id
+			<trim prefix="where" prefixOverrides="and|or">
+			  <if test="condition.businessdate1 != null">
+				 and t.businessdate >= #{condition.businessdate1}
+			  </if>
+			  <if test="condition.businessdate2 != null">
+				 <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+			  </if>
+			  <if test="condition.goodsid != null" >
+	         	and t1.goodsid = #{condition.goodsid}
+	      	  </if>
+			  <if test="condition.brand != null" >
+		         and t1.brandid = #{condition.brand}
+		      </if>
+		      <if test="condition.customerid != null" >
+		         and t.customerid = #{condition.customerid}
+		      </if>
+			  <if test="1==1" >
+		         and t.sourcetype='1' and t.status in('3','4')
+		      </if>
+		    </trim>
+		    UNION ALL
+		    SELECT t.customerid, t.brandid AS goodsid, t.brandid as brand, '' AS unitid, '' AS unitname, 0 as costprice,
+			0 AS ordernum, 0 AS orderamount, 0 AS ordernotaxamount, 0 AS initsendnum, 0 AS initsendamount, 0 AS initsendnotaxamount, 
+			0 AS sendnum, t.amount AS sendamount, 0 AS sendnotaxamount, 0 AS returnnum, 0 AS returnamount, 0 AS returnnotaxamount, 
+			0 AS directreturnnum, 0 AS directreturnamount, 0 AS directreturnnotaxamount, 
+			0 AS checkreturnnum, 0 AS checkreturnamount, 0 AS checkreturnnotaxamount,
+			0 as writeoffamount,0 as costwriteoffamount
+			FROM t_account_customer_push_balance t 
+			<trim prefix="where" prefixOverrides="and|or">
+			  <if test="condition.businessdate1 != null">
+				 and t.businessdate >= #{condition.businessdate1}
+			  </if>
+			  <if test="condition.businessdate2 != null">
+				 <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+			  </if>
+			  <if test="condition.goodsid != null" >
+	         	and 1!=1
+	      	  </if>
+			  <if test="condition.brand != null" >
+		         and t.brand = #{condition.brand}
+		      </if>
+		      <if test="condition.customerid != null" >
+		         and t.customerid = #{condition.customerid}
+		      </if>
+			  <if test="1==1" >
+		         and t.status in('3','4')
+		      </if>
+		    </trim>	
+		    UNION ALL
+		    SELECT t.customerid,t1.goodsid,t1.brandid AS brand,t1.unitid,t1.unitname,t1.costprice,
+			0 AS ordernum, 0 AS orderamount, 0 AS ordernotaxamount, 0 AS initsendnum, 0 AS initsendamount, 0 AS initsendnotaxamount, 
+			0 AS sendnum, 0 AS sendamount, 0 AS sendnotaxamount, 0 AS returnnum, 0 AS returnamount, 0 AS returnnotaxamount, 
+			0 AS directreturnnum, 0 AS directreturnamount, 0 AS directreturnnotaxamount, 
+			0 AS checkreturnnum, 0 AS checkreturnamount, 0 AS checkreturnnotaxamount,
+			t1.receipttaxamount as writeoffamount,t1.costprice*t1.receiptnum as costwriteoffamount
+			from t_sales_receipt t
+			RIGHT JOIN t_sales_receipt_detail t1 on t.id=t1.billid
+			<trim prefix="where" prefixOverrides="and|or">
+			  <if test="condition.businessdate1 != null">
+				 and t.businessdate >= #{condition.businessdate1}
+			  </if>
+			  <if test="condition.businessdate2 != null">
+				 <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+			  </if>
+			  <if test="condition.goodsid != null" >
+	         	and t1.goodsid=#{condition.goodsid}
+	      	  </if>
+			  <if test="condition.brand != null" >
+		         and t1.brandid = #{condition.brand}
+		      </if>
+		      <if test="condition.customerid != null" >
+		         and t.customerid = #{condition.customerid}
+		      </if>
+			  <if test="1==1" >
+		        and t1.iswriteoff='1' and t.status in('3','4')
+		      </if>
+		    </trim>
+		    UNION ALL
+		    SELECT t.customerid,t1.goodsid,t1.brandid AS brand,t1.unitid,t1.unitname,t1.costprice,
+			0 AS ordernum, 0 AS orderamount, 0 AS ordernotaxamount, 0 AS initsendnum, 0 AS initsendamount, 0 AS initsendnotaxamount, 
+			0 AS sendnum, 0 AS sendamount, 0 AS sendnotaxamount, 0 AS returnnum, 0 AS returnamount, 0 AS returnnotaxamount, 
+			0 AS directreturnnum, 0 AS directreturnamount, 0 AS directreturnnotaxamount, 
+			0 AS checkreturnnum, 0 AS checkreturnamount, 0 AS checkreturnnotaxamount,
+			-t1.taxamount as writeoffamount,-t1.costprice*t1.unitnum as costwriteoffamount
+			from t_storage_salereject_enter t
+			RIGHT JOIN t_storage_salereject_enter_detail t1 on t.id=t1.salerejectid	
+			<trim prefix="where" prefixOverrides="and|or">
+			  <if test="condition.businessdate1 != null">
+				 and t.businessdate >= #{condition.businessdate1}
+			  </if>
+			  <if test="condition.businessdate2 != null">
+				 <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+			  </if>
+			  <if test="condition.goodsid != null" >
+	         	and t1.goodsid = #{condition.goodsid}
+	      	  </if>
+			  <if test="condition.brand != null" >
+		         and t1.brandid = #{condition.brand}
+		      </if>
+		      <if test="condition.customerid != null" >
+		         and t.customerid = #{condition.customerid}
+		      </if>
+			  <if test="1==1" >
+		        and t1.iswriteoff='1' and t.sourcetype='1' and t.status in('3','4')
+		      </if>
+		    </trim>
+		    UNION ALL
+		    SELECT t.customerid, t.brandid AS goodsid, t.brandid as brand, '' AS unitid, '' AS unitname, 0 as costprice,
+			0 AS ordernum, 0 AS orderamount, 0 AS ordernotaxamount, 0 AS initsendnum, 0 AS initsendamount, 0 AS initsendnotaxamount, 
+			0 AS sendnum, 0 AS sendamount, 0 AS sendnotaxamount, 0 AS returnnum, 0 AS returnamount, 0 AS returnnotaxamount, 
+			0 AS directreturnnum, 0 AS directreturnamount, 0 AS directreturnnotaxamount, 
+			0 AS checkreturnnum, 0 AS checkreturnamount, 0 AS checkreturnnotaxamount,
+			t.amount as writeoffamount,0 as costwriteoffamount
+			FROM t_account_customer_push_balance t 
+			<trim prefix="where" prefixOverrides="and|or">
+			  <if test="condition.businessdate1 != null">
+				 and t.businessdate >= #{condition.businessdate1}
+			  </if>
+			  <if test="condition.businessdate2 != null">
+				 <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+			  </if>
+			  <if test="condition.goodsid != null" >
+	         	and 1!=1
+	      	  </if>
+			  <if test="condition.brand != null" >
+		         and t.brand = #{condition.brand}
+		      </if>
+		      <if test="condition.customerid != null" >
+		         and t.customerid = #{condition.customerid}
+		      </if>
+			  <if test="1==1" >
+		         and t.iswriteoff='1' and t.status in('3','4')
+		      </if>
+		    </trim>	
+			) z GROUP BY z.customerid,z.goodsid
+			)y 
+			LEFT JOIN t_base_goods_brand b on y.brand=b.id
+			inner join t_base_sales_customer c on y.customerid=c.id
+			<trim prefix="where" prefixOverrides="and|or">
+			  <if test="condition.pcustomerid != null" >
+		         and c.pid = #{condition.pcustomerid}
+		      </if>
+		      <if test="condition.deptid != null" >
+		         and c.salesdeptid like CONCAT(#{condition.deptid},'%') 
+		      </if>
+		      <if test="condition.salesarea != null" >
+		         and c.salesarea like CONCAT(#{condition.salesarea},'%') 
+		      </if>
+		      <if test="condition.salesuser != null" >
+		         <choose>
+		         	<when test="condition.salesuser == 0">
+		         		and (c.salesuserid ='' or c.salesuserid is null)
+		         	</when>
+		         	<otherwise>
+		         		 and c.salesuserid =#{condition.salesuser}
+		         	</otherwise>
+		         </choose>
+		      </if>
+		    </trim>
+		) sdata
+		<trim prefix="where" prefixOverrides="and|or">
+			<include refid="common.Page_dataSql"/>
+		</trim>
+		)
+	  </sql>	
+	  <select id="showSalesGoodsReportDataList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.report.model.SalesGoodsReport">
+	  	select t.goodsid,t.brand as brandid,
+	  	sum(t.ordernum) as ordernum, sum(t.orderamount) as orderamount, sum(t.ordernotaxamount) as ordernotaxamount,
+	  	sum(t.initsendnum) as initsendnum, sum(t.initsendamount) as initsendamount, sum(t.initsendnotaxamount) as initsendnotaxamount,
+	  	sum(t.sendnum) as sendnum, sum(t.sendamount) as sendamount, sum(t.sendnotaxamount) as sendnotaxamount, 
+  		sum(t.returnnum) as returnnum, sum(t.returnamount) as returnamount, sum(t.returnnotaxamount) as returnnotaxamount, 
+	    sum(t.directreturnnum) as directreturnnum, sum(t.directreturnamount) as directreturnamount,sum(t.directreturnnotaxamount) as directreturnnotaxamount, 
+	    sum(t.checkreturnnum) as checkreturnnum, sum(t.checkreturnamount) as checkreturnamount,  sum(t.checkreturnnotaxamount) as checkreturnnotaxamount, 
+	    sum(t.costamount) as costamount,sum(t.writeoffamount) as writeoffamount,sum(t.costwriteoffamount) as costwriteoffamount
+	  	from <include refid="temp_sales_goods_report"/> t
+		    <trim prefix="where" prefixOverrides="and|or">
+			  	<if test="condition.goodsid != null" >
+		         	and t.goodsid = #{condition.goodsid}
+		      	</if>
+		    </trim>
+		 group by t.goodsid
+	  	<if test="condition.isflag == null">
+	 		<include refid="common.Page_limit"/>
+	 	</if>
+	  </select>
+	  <select id="showSalesGoodsReportDataCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+	  	select count(1) from
+	  	(
+	  		select t.goodsid,
+		  	sum(t.ordernum) as ordernum, sum(t.orderamount) as orderamount, sum(t.ordernotaxamount) as ordernotaxamount,
+		  	sum(t.initsendnum) as initsendnum, sum(t.initsendamount) as initsendamount, sum(t.initsendnotaxamount) as initsendnotaxamount,
+		  	sum(t.sendnum) as sendnum, sum(t.sendamount) as sendamount, sum(t.sendnotaxamount) as sendnotaxamount, 
+	  		sum(t.returnnum) as returnnum, sum(t.returnamount) as returnamount, sum(t.returnnotaxamount) as returnnotaxamount, 
+		    sum(t.directreturnnum) as directreturnnum, sum(t.directreturnamount) as directreturnamount,sum(t.directreturnnotaxamount) as directreturnnotaxamount, 
+		    sum(t.checkreturnnum) as checkreturnnum, sum(t.checkreturnamount) as checkreturnamount,  sum(t.checkreturnnotaxamount) as checkreturnnotaxamount, 
+		    sum(t.costamount) as costamount,sum(t.writeoffamount) as writeoffamount,sum(t.costwriteoffamount) as costwriteoffamount
+		  	from <include refid="temp_sales_goods_report"/> t
+		    <trim prefix="where" prefixOverrides="and|or">
+			  	<if test="condition.goodsid != null" >
+		         	and t.goodsid = #{condition.goodsid}
+		      	</if>
+		    </trim>
+			 group by t.goodsid
+	  	) x
+	  </select>
+	  <!-- 获取按商品商品销售情况合计数据-->
+	  <select id="getSalesGoodsReportSumData" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.report.model.SalesGoodsReport">
+	  	select 
+	  	sum(t.ordernum) as ordernum, sum(t.orderamount) as orderamount, sum(t.ordernotaxamount) as ordernotaxamount,
+	  	sum(t.initsendnum) as initsendnum, sum(t.initsendamount) as initsendamount, sum(t.initsendnotaxamount) as initsendnotaxamount,
+	  	sum(t.sendnum) as sendnum, sum(t.sendamount) as sendamount, sum(t.sendnotaxamount) as sendnotaxamount, 
+  		sum(t.returnnum) as returnnum, sum(t.returnamount) as returnamount, sum(t.returnnotaxamount) as returnnotaxamount, 
+	    sum(t.directreturnnum) as directreturnnum, sum(t.directreturnamount) as directreturnamount,sum(t.directreturnnotaxamount) as directreturnnotaxamount, 
+	    sum(t.checkreturnnum) as checkreturnnum, sum(t.checkreturnamount) as checkreturnamount,  sum(t.checkreturnnotaxamount) as checkreturnnotaxamount, 
+	    sum(t.costamount) as costamount,sum(t.writeoffamount) as writeoffamount,sum(t.costwriteoffamount) as costwriteoffamount
+    	from <include refid="temp_sales_goods_report"/> t
+    	<trim prefix="where" prefixOverrides="and|or">
+		  <if test="condition.goodsid != null" >
+	         and t.goodsid = #{condition.goodsid}
+	      </if>
+	    </trim>
+	  </select>
+	  <select id="showSalesGoodsCustomerDetailList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.report.model.SalesGoodsReport">
+	  	select *  from <include refid="temp_sales_goods_report"/> t
+	    <if test="condition.isflag == null">
+	 		<include refid="common.Page_limit"/>
+	 	</if>
+	  </select>
+	  <select id="showSalesGoodsCustomerDetailCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  		select count(1)  from <include refid="temp_sales_goods_report"/> t
+	  </select>
+	  <select id="getshowBrandDeptReportDataList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.report.model.SalesBrandDeptReport">
+	  	select * from (
+	  		SELECT t.brand as brandid, t.branddept,
+	  		sum(t.ordernum) as ordernum, sum(t.orderamount) as orderamount, sum(t.ordernotaxamount) as ordernotaxamount,
+	  		sum(t.initsendnum) as initsendnum, sum(t.initsendamount) as initsendamount, sum(t.initsendnotaxamount) as initsendnotaxamount,
+	  		SUM(t.sendnum) AS sendnum, SUM(t.sendamount) AS sendamount, SUM(t.sendnotaxamount) AS sendnotaxamount,
+			SUM(t.returnnum) AS returnnum, SUM(t.returnamount) AS returnamount, SUM(t.returnnotaxamount) AS returnnotaxamount,
+			SUM(t.directreturnnum) AS directreturnnum, SUM(t.directreturnamount) AS directreturnamount, SUM(t.directreturnnotaxamount) AS directreturnnotaxamount,
+			SUM(t.checkreturnnum) AS checkreturnnum, SUM(t.checkreturnamount) AS checkreturnamount, SUM(t.checkreturnnotaxamount) AS checkreturnnotaxamount,
+			SUM(t.costamount) AS costamount,sum(t.writeoffamount) as writeoffamount,sum(t.costwriteoffamount) as costwriteoffamount
+			FROM <include refid="temp_sales_goods_report"/> t
+			GROUP BY t.branddept
+	  	)z
+	  	<if test="condition.isflag == null">
+	 		<include refid="common.Page_limit"/>
+	 	</if>
+	  </select>
+	  <select id="getshowBrandDeptReportDataCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+	  	select COUNT(1) from (
+	  		SELECT t.brand as brandid,t.branddept,
+	  		sum(t.ordernum) as ordernum, sum(t.orderamount) as orderamount, sum(t.ordernotaxamount) as ordernotaxamount,
+	  		sum(t.initsendnum) as initsendnum, sum(t.initsendamount) as initsendamount, sum(t.initsendnotaxamount) as initsendnotaxamount, 
+	  		SUM(t.sendnum) AS sendnum, SUM(t.sendamount) AS sendamount, SUM(t.sendnotaxamount) AS sendnotaxamount,
+			SUM(t.returnnum) AS returnnum, SUM(t.returnamount) AS returnamount, SUM(t.returnnotaxamount) AS returnnotaxamount,
+			SUM(t.directreturnnum) AS directreturnnum, SUM(t.directreturnamount) AS directreturnamount, SUM(t.directreturnnotaxamount) AS directreturnnotaxamount,
+			SUM(t.checkreturnnum) AS checkreturnnum, SUM(t.checkreturnamount) AS checkreturnamount, SUM(t.checkreturnnotaxamount) AS checkreturnnotaxamount,
+			SUM(t.costamount) AS costamount,sum(t.writeoffamount) as writeoffamount,sum(t.costwriteoffamount) as costwriteoffamount
+			FROM <include refid="temp_sales_goods_report"/> t
+			GROUP BY t.branddept
+		)z
+	  </select>
+	 
+	  <select id="getBrandDeptReportByBrandDeptSumData" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.report.model.SalesBrandDeptReport">
+	  	SELECT 
+	  		sum(t.ordernum) as ordernum, sum(t.orderamount) as orderamount, sum(t.ordernotaxamount) as ordernotaxamount,
+	  		sum(t.initsendnum) as initsendnum, sum(t.initsendamount) as initsendamount, sum(t.initsendnotaxamount) as initsendnotaxamount,
+	  		SUM(t.sendnum) AS sendnum, SUM(t.sendamount) AS sendamount, SUM(t.sendnotaxamount) AS sendnotaxamount, 
+		    SUM(t.returnnum) AS returnnum, SUM(t.returnamount) AS returnamount, SUM(t.returnnotaxamount) AS returnnotaxamount, 
+		    SUM(t.directreturnnum) AS directreturnnum, SUM(t.directreturnamount) AS directreturnamount,SUM(t.directreturnnotaxamount) AS directreturnnotaxamount, 
+		    SUM(t.checkreturnnum) AS checkreturnnum, SUM(t.checkreturnamount) AS checkreturnamount,  SUM(t.checkreturnnotaxamount) AS checkreturnnotaxamount, 
+		    SUM(t.costamount) AS costamount,sum(t.writeoffamount) as writeoffamount,sum(t.costwriteoffamount) as costwriteoffamount
+		FROM <include refid="temp_sales_goods_report"/> t
+	  </select>
+	  <select id="showSalesBrandReportDataList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.report.model.SalesBrandReport">
+	 	select t.brand,t.branddept,
+	 		sum(t.ordernum) as ordernum, sum(t.orderamount) as orderamount, sum(t.ordernotaxamount) as ordernotaxamount,
+	  		sum(t.initsendnum) as initsendnum, sum(t.initsendamount) as initsendamount, sum(t.initsendnotaxamount) as initsendnotaxamount,
+	  		SUM(t.sendnum) AS sendnum, SUM(t.sendamount) AS sendamount, SUM(t.sendnotaxamount) AS sendnotaxamount, 
+		    SUM(t.returnnum) AS returnnum, SUM(t.returnamount) AS returnamount, SUM(t.returnnotaxamount) AS returnnotaxamount, 
+		    SUM(t.directreturnnum) AS directreturnnum, SUM(t.directreturnamount) AS directreturnamount,SUM(t.directreturnnotaxamount) AS directreturnnotaxamount, 
+		    SUM(t.checkreturnnum) AS checkreturnnum, SUM(t.checkreturnamount) AS checkreturnamount,  SUM(t.checkreturnnotaxamount) AS checkreturnnotaxamount, 
+		    SUM(t.costamount) AS costamount,sum(t.writeoffamount) as writeoffamount,sum(t.costwriteoffamount) as costwriteoffamount
+		    from <include refid="temp_sales_goods_report"/> t
+		 	<if test="condition.branduserid != null" >
+		    inner join t_base_personnel_brandandcustomer t1 on t.customerid=t1.customerid and t.brand = t1.brandid
+		    </if>
+	    	<trim prefix="where" prefixOverrides="and|or">
+	    	  <if test="condition.branduserid != null" >
+		         and t1.personid = #{condition.branduserid}
+		      </if>
+		      <if test="condition.branddeptid != null" >
+		      	<choose>
+		      		<when test="condition.branddeptid==0">
+		      			and (t.branddept is null or t.branddept='')
+		      		</when>
+		      		<otherwise>
+		      			and t.branddept like CONCAT(#{condition.branddeptid},'%') 
+		      		</otherwise>
+		      	</choose>
+			  </if>
+		    </trim>
+		    group by t.brand
+		<if test="condition.isflag == null">
+	 		<include refid="common.Page_limit"/>
+	 	</if>
+	 </select>
+	 <select id="showSalesBrandReportDataCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+	 	select count(1) from (
+	 		select t.branddept,
+	 		sum(t.ordernum) as ordernum, sum(t.orderamount) as orderamount, sum(t.ordernotaxamount) as ordernotaxamount,
+	  		sum(t.initsendnum) as initsendnum, sum(t.initsendamount) as initsendamount, sum(t.initsendnotaxamount) as initsendnotaxamount,
+	  		SUM(t.sendnum) AS sendnum, SUM(t.sendamount) AS sendamount, SUM(t.sendnotaxamount) AS sendnotaxamount, 
+		    SUM(t.returnnum) AS returnnum, SUM(t.returnamount) AS returnamount, SUM(t.returnnotaxamount) AS returnnotaxamount, 
+		    SUM(t.directreturnnum) AS directreturnnum, SUM(t.directreturnamount) AS directreturnamount,SUM(t.directreturnnotaxamount) AS directreturnnotaxamount, 
+		    SUM(t.checkreturnnum) AS checkreturnnum, SUM(t.checkreturnamount) AS checkreturnamount,  SUM(t.checkreturnnotaxamount) AS checkreturnnotaxamount, 
+		    SUM(t.costamount) AS costamount,sum(t.writeoffamount) as writeoffamount,sum(t.costwriteoffamount) as costwriteoffamount
+		    from <include refid="temp_sales_goods_report"/> t
+		    <if test="condition.branduserid != null" >
+		    inner join t_base_personnel_brandandcustomer t1 on t.customerid=t1.customerid and t.brand = t1.brandid
+		    </if>
+	    	<trim prefix="where" prefixOverrides="and|or">
+	    	  <if test="condition.branduserid != null" >
+		         and t1.personid = #{condition.branduserid}
+		      </if>
+		      <if test="condition.branddeptid != null" >
+		      	<choose>
+		      		<when test="condition.branddeptid==0">
+		      			and (t.branddept is null or t.branddept='')
+		      		</when>
+		      		<otherwise>
+		      			and t.branddept like CONCAT(#{condition.branddeptid},'%') 
+		      		</otherwise>
+		      	</choose>
+			  </if>
+		    </trim>
+		    group by t.brand
+	 	) c
+	 </select>
+	 <!-- 获取按商品品牌销售情况合计数据 -->
+	  <select id="getSalesBrandReportSumData" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.report.model.SalesBrandReport">
+	  	select t.brand as brandid, 
+	  	sum(t.ordernum) as ordernum, sum(t.orderamount) as orderamount, sum(t.ordernotaxamount) as ordernotaxamount,
+	  	sum(t.initsendnum) as initsendnum, sum(t.initsendamount) as initsendamount, sum(t.initsendnotaxamount) as initsendnotaxamount,
+	  	sum(t.sendnum) as sendnum, sum(t.sendamount) as sendamount, sum(t.sendnotaxamount) as sendnotaxamount,
+ 		sum(t.returnnum) as returnnum, sum(t.returnamount) as returnamount, sum(t.returnnotaxamount) as returnnotaxamount,
+ 		sum(t.directreturnnum) as directreturnnum, sum(t.directreturnamount) as directreturnamount, sum(t.directreturnnotaxamount) as directreturnnotaxamount,
+ 		sum(t.checkreturnnum) as checkreturnnum, sum(t.checkreturnamount) as checkreturnamount, sum(t.checkreturnnotaxamount) as checkreturnnotaxamount,
+ 		sum(t.costamount) as costamount,sum(t.writeoffamount) as writeoffamount,sum(t.costwriteoffamount) as costwriteoffamount
+ 		from <include refid="temp_sales_goods_report"/> t
+ 		<if test="condition.branduserid != null" >
+	    inner join t_base_personnel_brandandcustomer t1 on t.customerid=t1.customerid and t.brand = t1.brandid
+	    </if>
+    	<trim prefix="where" prefixOverrides="and|or">
+    	  <if test="condition.branduserid != null" >
+	         and t1.personid = #{condition.branduserid}
+	      </if>
+	      <if test="condition.branddeptid != null" >
+	      	<choose>
+	      		<when test="condition.branddeptid==0">
+	      			and (t.branddept is null or t.branddept='')
+	      		</when>
+	      		<otherwise>
+	      			and t.branddept like CONCAT(#{condition.branddeptid},'%') 
+	      		</otherwise>
+	      	</choose>
+		  </if>
+	    </trim>
+	  </select>
+	  <select id="showSalesBrandGoodsDetailList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.report.model.SalesBrandReport">
+	  	select t.goodsid,
+	  	sum(t.ordernum) as ordernum, sum(t.orderamount) as orderamount, sum(t.ordernotaxamount) as ordernotaxamount,
+	  	sum(t.initsendnum) as initsendnum, sum(t.initsendamount) as initsendamount, sum(t.initsendnotaxamount) as initsendnotaxamount,
+	  	sum(t.sendnum) as sendnum, sum(t.sendamount) as sendamount, sum(t.sendnotaxamount) as sendnotaxamount, 
+  		sum(t.returnnum) as returnnum, sum(t.returnamount) as returnamount, sum(t.returnnotaxamount) as returnnotaxamount, 
+	    sum(t.directreturnnum) as directreturnnum, sum(t.directreturnamount) as directreturnamount,sum(t.directreturnnotaxamount) as directreturnnotaxamount, 
+	    sum(t.checkreturnnum) as checkreturnnum, sum(t.checkreturnamount) as checkreturnamount,  sum(t.checkreturnnotaxamount) as checkreturnnotaxamount, 
+	    sum(t.costamount) as costamount,sum(t.writeoffamount) as writeoffamount,sum(t.costwriteoffamount) as costwriteoffamount
+	  	from <include refid="temp_sales_goods_report"/> t
+		    <trim prefix="where" prefixOverrides="and|or">
+			  	<if test="condition.goodsid != null" >
+		         	and t.goodsid = #{condition.goodsid}
+		      	</if>
+		    </trim>
+		 group by t.goodsid
+	 	<if test="condition.isflag == null">
+	 		<include refid="common.Page_limit"/>
+	 	</if>
+	  </select>
+	  <select id="showSalesBrandGoodsDetailcount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+	  	select count(1) from
+	  	(
+	  		select t.goodsid,
+		  	sum(t.ordernum) as ordernum, sum(t.orderamount) as orderamount, sum(t.ordernotaxamount) as ordernotaxamount,
+		  	sum(t.initsendnum) as initsendnum, sum(t.initsendamount) as initsendamount, sum(t.initsendnotaxamount) as initsendnotaxamount,
+		  	sum(t.sendnum) as sendnum, sum(t.sendamount) as sendamount, sum(t.sendnotaxamount) as sendnotaxamount, 
+	  		sum(t.returnnum) as returnnum, sum(t.returnamount) as returnamount, sum(t.returnnotaxamount) as returnnotaxamount, 
+		    sum(t.directreturnnum) as directreturnnum, sum(t.directreturnamount) as directreturnamount,sum(t.directreturnnotaxamount) as directreturnnotaxamount, 
+		    sum(t.checkreturnnum) as checkreturnnum, sum(t.checkreturnamount) as checkreturnamount,  sum(t.checkreturnnotaxamount) as checkreturnnotaxamount, 
+		    sum(t.costamount) as costamount,sum(t.writeoffamount) as writeoffamount,sum(t.costwriteoffamount) as costwriteoffamount
+		  	from <include refid="temp_sales_goods_report"/> t
+		    <trim prefix="where" prefixOverrides="and|or">
+			  	<if test="condition.goodsid != null" >
+		         	and t.goodsid = #{condition.goodsid}
+		      	</if>
+		    </trim>
+			 group by t.goodsid
+	  	) x
+	  </select>
+	  <select id="getSalesGoodsReportData" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.report.model.SalesGoodsReport">
+	  	call p_sales_customer_report("${condition.query_sql}",#{condition.groupcols},"${dataSql}",#{startNum},#{rows},#{condition.orderstr})
+	  </select>
+	  <select id="getSalesGoodsReportDataCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+	  	call p_sales_customer_report_count("${condition.query_sql}",#{condition.groupcols},"${dataSql}");
+	  </select>
+	  
+	 <select id="getSalesQuantityReport" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.report.model.SalesQuantityReport">
+  		SELECT brandid,auxunitname,SUM(auxunitnum) AS auxunitnum,
+  		SUM(auxremainder) AS auxremainder,SUM(totalweight) AS totalweight,SUM(totalvolume) AS totalvolume,storageid FROM (
+		SELECT ed.brandid,auxunitname AS auxunitname,SUM(unitnum)/m.rate AS auxunitnum, 
+			MOD(SUM(ed.auxremainder),m.rate) AS auxremainder,SUM(unitnum)/m.rate * g.totalweight AS totalweight,
+			SUM(unitnum)/m.rate * g.totalvolume AS totalvolume,ed.storageid
+		FROM t_storage_saleout e 
+		RIGHT JOIN t_storage_saleout_detail ed ON  e.id = ed.saleoutid
+		LEFT JOIN t_base_goods_info g ON ed.goodsid=g.id
+		LEFT JOIN t_base_goods_info_meteringunit m ON ed.goodsid=m.goodsid AND m.isdefault='1'
+		<trim prefix="WHERE" prefixOverrides="and|or" >
+			<if test="1==1">
+				AND e.STATUS IN ('3', '4')
+			</if>
+			<if test="condition.brandid !=null">
+				AND ed.brandid = #{condition.brandid}
+			</if>
+			<if test="condition.businessdate1 != null">
+			 	and e.businessdate >= #{condition.businessdate1}
+		    </if>
+			<if test="condition.businessdate2 != null">
+				 <![CDATA[and e.businessdate <= #{condition.businessdate2}]]>
+			</if>
+			<if test="condition.customerid !=null">
+				AND e.customerid=#{condition.customerid}
+			</if>
+			<if test="condition.customeriddarr !=null">
+				AND FIND_IN_SET(e.customerid,#{condition.customeridarr})
+			</if>
+			<if test="condition.storageid !=null">
+				AND ed.storageid=#{condition.storageid}
+			</if>
+			<if test="condition.queryNoneData=='true'">
+				AND 1=2
+			</if>
+		</trim>
+		GROUP BY ed.storageid,ed.goodsid
+	) t
+	<if test="condition.isShowSumTotal != 'true'">
+		<choose>
+			<when test="condition.groupbystorage == 'true'">				
+				GROUP BY storageid
+			</when>
+			<when test="condition.groupbybrand == 'true'">
+				GROUP BY brandid
+			</when>
+		</choose>
+	</if>
+	<if test="condition.ispageflag !='true'">
+		<include refid="common.Page_limit" /> 
+	</if>
+  </select>  
+  <select id="getSalesQuantityReportCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  	SELECT count(brandid) FROM (
+	  	SELECT brandid,storageid FROM (
+			SELECT ed.brandid,ed.storageid
+			FROM t_storage_saleout e 
+			RIGHT JOIN t_storage_saleout_detail ed ON  e.id = ed.saleoutid
+			LEFT JOIN t_base_goods_info g ON ed.goodsid=g.id
+			LEFT JOIN t_base_goods_info_meteringunit m ON ed.goodsid=m.goodsid AND m.isdefault='1'
+			<trim prefix="WHERE" prefixOverrides="and|or" >
+				<if test="1==1">
+					AND e.STATUS IN ('3', '4')
+				</if>
+				<if test="condition.brandid !=null">
+					AND ed.brandid = #{condition.brandid}
+				</if>
+				<if test="condition.businessdate1 != null">
+				 	and e.businessdate >= #{condition.businessdate1}
+			    </if>
+				<if test="condition.businessdate2 != null">
+					 <![CDATA[and e.businessdate <= #{condition.businessdate2}]]>
+				</if>
+				<if test="condition.customerid !=null">
+					AND e.customerid=#{condition.customerid}
+				</if>
+				<if test="condition.customeriddarr !=null">
+					AND FIND_IN_SET(e.customerid,#{condition.customeridarr})
+				</if>
+				<if test="condition.storageid !=null">
+					AND ed.storageid=#{condition.storageid}
+				</if>
+				<if test="condition.queryNoneData=='true'">
+					AND 1=2
+				</if>
+			</trim>
+			GROUP BY					
+			ed.storageid,ed.goodsid
+		) t	
+		<choose>
+			<when test="condition.groupbystorage == 'true'">				
+				GROUP BY storageid
+			</when>
+			<when test="condition.groupbybrand == 'true'">
+				GROUP BY brandid
+			</when>
+		</choose>
+	) t
+  </select>
+  <sql id="salesBrandBalanceReportSql">
+  	select brandid,SUM(saleamount) as saleamount,
+		SUM(grossamount) as grossamount,SUM(balanceamount) as balanceamount,
+		SUM(writeoffamount) as writeoffamount,
+		SUM(grossamountwriteoff)as grossamountwriteoff,
+		SUM(balanceamountwriteoff) as balanceamountwriteoff
+	from (
+		select brandid,t1.taxamount as saleamount ,0 as grossamount,0 as balanceamount,0 as writeoffamount,0 as grossamountwriteoff,0 as balanceamountwriteoff
+		FROM t_storage_saleout t
+		RIGHT JOIN t_storage_saleout_detail t1 on t.id=t1.saleoutid
+		<trim prefix="WHERE" prefixOverrides="and|or" >
+			<if test="1==1">
+				AND t.status in('3','4')
+			</if>
+			<if test="condition.brandid !=null">
+				AND FIND_IN_SET(t1.brandid, #{condition.brandid})
+			</if>
+			<if test="condition.brandidarr !=null">
+				AND FIND_IN_SET(t1.brandid, #{condition.brandidarr})
+			</if>
+			<if test="condition.businessdate1 != null">
+			 	and t.businessdate >= #{condition.businessdate1}
+		    </if>
+			<if test="condition.businessdate2 != null">
+				 <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+			</if>
+		</trim>
+		union ALL
+		select brandid,-t1.taxamount as saleamount,0 as grossamount,0 as balanceamount,0 as writeoffamount,0 as grossamountwriteoff,0 as balanceamountwriteoff
+		FROM t_storage_salereject_enter t
+		right join t_storage_salereject_enter_detail t1 on t1.salerejectid=t.id
+		<trim prefix="WHERE" prefixOverrides="and|or" >
+			<if test="1==1">
+				AND t.status in('3','4') and t.ischeck='1'
+			</if>
+			<if test="condition.brandid !=null">
+				AND FIND_IN_SET(t1.brandid, #{condition.brandid})
+			</if>
+			<if test="condition.brandidarr !=null">
+				AND FIND_IN_SET(t1.brandid, #{condition.brandidarr})
+			</if>
+			<if test="condition.businessdate1 != null">
+			 	and t.businessdate >= #{condition.businessdate1}
+		    </if>
+			<if test="condition.businessdate2 != null">
+				 <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+			</if>
+		</trim>
+		UNION ALL
+		SELECT brandid,amount as saleamount , 0 as grossamount,0 as balanceamount,0 as writeoffamount,0 as grossamountwriteoff,0 as balanceamountwriteoff
+		FROM t_account_customer_push_balance 
+	    <trim prefix="WHERE" prefixOverrides="and|or" >
+			<if test="1==1">
+				AND status in('3','4')
+			</if>
+			<if test="condition.brandid !=null">
+				AND FIND_IN_SET(brandid, #{condition.brandid})
+			</if>
+			<if test="condition.brandidarr !=null">
+				AND FIND_IN_SET(brandid, #{condition.brandidarr})
+			</if>
+			<if test="condition.businessdate1 != null">
+			 	and businessdate >= #{condition.businessdate1}
+		    </if>
+			<if test="condition.businessdate2 != null">
+				 <![CDATA[and businessdate <= #{condition.businessdate2}]]>
+			</if>
+		</trim>
+		UNION ALL
+		select brandid,0 as saleamount , t1.taxamount as grossamount,0 as balanceamount,0 as writeoffamount,0 as grossamountwriteoff,0 as balanceamountwriteoff
+		FROM t_storage_saleout t
+		RIGHT JOIN t_storage_saleout_detail t1 on t.id=t1.saleoutid
+		<trim prefix="WHERE" prefixOverrides="and|or" >
+			<if test="1==1">
+				AND t.status in('3','4') AND t1.isdiscount=1
+			</if>
+			<if test="condition.brandid !=null">
+				AND FIND_IN_SET(t1.brandid, #{condition.brandid})
+			</if>
+			<if test="condition.brandidarr !=null">
+				AND FIND_IN_SET(t1.brandid, #{condition.brandidarr})
+			</if>
+			<if test="condition.businessdate1 != null">
+			 	and t.businessdate >= #{condition.businessdate1}
+		    </if>
+			<if test="condition.businessdate2 != null">
+				 <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+			</if>
+		</trim>
+		UNION ALL
+		SELECT brandid,0 as saleamount , amount as grossamount,0 as balanceamount,0 as writeoffamount,0 as grossamountwriteoff,0 as balanceamountwriteoff
+		FROM t_account_customer_push_balance 
+	  	<trim prefix="WHERE" prefixOverrides="and|or" >
+			<if test="1==1">
+				AND status in('3','4') and isinvoice = '2'
+			</if>
+			<if test="condition.brandid !=null">
+				AND FIND_IN_SET(brandid, #{condition.brandid})
+			</if>
+			<if test="condition.brandidarr !=null">
+				AND FIND_IN_SET(brandid, #{condition.brandidarr})
+			</if>
+			<if test="condition.businessdate1 != null">
+			 	and businessdate >= #{condition.businessdate1}
+		    </if>
+			<if test="condition.businessdate2 != null">
+				 <![CDATA[and businessdate <= #{condition.businessdate2}]]>
+			</if>
+		</trim>
+		UNION ALL
+		SELECT brandid,0 as saleamount , 0 as grossamount,amount as balanceamount,0 as writeoffamount,0 as grossamountwriteoff,0 as balanceamountwriteoff
+		FROM t_account_customer_push_balance 
+	  	<trim prefix="WHERE" prefixOverrides="and|or" >
+			<if test="1==1">
+				 <![CDATA[AND status in('3','4') and isinvoice <> '2']]>
+			</if>
+			<if test="condition.brandid !=null">
+				AND FIND_IN_SET(brandid, #{condition.brandid})
+			</if>
+			<if test="condition.brandidarr !=null">
+				AND FIND_IN_SET(brandid, #{condition.brandidarr})
+			</if>
+			<if test="condition.businessdate1 != null">
+			 	and businessdate >= #{condition.businessdate1}
+		    </if>
+			<if test="condition.businessdate2 != null">
+				 <![CDATA[and businessdate <= #{condition.businessdate2}]]>
+			</if>
+		</trim>
+		UNION ALL		
+		select brandid,0 as saleamount ,0 as grossamount,0 as balanceamount,t1.taxamount as writeoffamount,0 as grossamountwriteoff,0 as balanceamountwriteoff
+		FROM t_storage_saleout t
+		RIGHT JOIN t_storage_saleout_detail t1 on t.id=t1.saleoutid
+		<trim prefix="WHERE" prefixOverrides="and|or" >
+			<if test="1==1">
+				AND t.status in('3','4') and t1.iswriteoff='1'
+			</if>
+			<if test="condition.brandid !=null">
+				AND FIND_IN_SET(t1.brandid, #{condition.brandid})
+			</if>
+			<if test="condition.brandidarr !=null">
+				AND FIND_IN_SET(t1.brandid, #{condition.brandidarr})
+			</if>
+			<if test="condition.businessdate1 != null">
+			 	and t1.writeoffdate >= #{condition.businessdate1}
+		    </if>
+			<if test="condition.businessdate2 != null">
+				 <![CDATA[and t1.writeoffdate <= #{condition.businessdate2}]]>
+			</if>
+		</trim>
+		union ALL
+		select brandid,0 as saleamount,0 as grossamount,0 as balanceamount,-t1.taxamount as writeoffamount,0 as grossamountwriteoff,0 as balanceamountwriteoff
+		FROM t_storage_salereject_enter t
+		right join t_storage_salereject_enter_detail t1 on t1.salerejectid=t.id
+		<trim prefix="WHERE" prefixOverrides="and|or" >
+			<if test="1==1">
+				AND t.status in('3','4') and t.ischeck='1' and t1.iswriteoff='1'
+			</if>
+			<if test="condition.brandid !=null">
+				AND FIND_IN_SET(t1.brandid, #{condition.brandid})
+			</if>
+			<if test="condition.brandidarr !=null">
+				AND FIND_IN_SET(t1.brandid, #{condition.brandidarr})
+			</if>
+			<if test="condition.businessdate1 != null">
+			 	and t1.writeoffdate >= #{condition.businessdate1}
+		    </if>
+			<if test="condition.businessdate2 != null">
+				 <![CDATA[and t1.writeoffdate <= #{condition.businessdate2}]]>
+			</if>
+		</trim>
+		UNION ALL
+		SELECT brandid,0 as saleamount , 0 as grossamount,0 as balanceamount,amount as writeoffamount,0 as grossamountwriteoff,0 as balanceamountwriteoff
+		FROM t_account_customer_push_balance 
+	  	<trim prefix="WHERE" prefixOverrides="and|or" >
+			<if test="1==1">
+				AND status in('3','4') and iswriteoff='1'
+			</if>
+			<if test="condition.brandid !=null">
+				AND FIND_IN_SET(brandid, #{condition.brandid})
+			</if>
+			<if test="condition.brandidarr !=null">
+				AND FIND_IN_SET(brandid, #{condition.brandidarr})
+			</if>
+			<if test="condition.businessdate1 != null">
+			 	and writeoffdate >= #{condition.businessdate1}
+		    </if>
+			<if test="condition.businessdate2 != null">
+				 <![CDATA[and writeoffdate <= #{condition.businessdate2}]]>
+			</if>
+		</trim>
+				UNION ALL
+		select brandid,0 as saleamount , 0 as grossamount,0 as balanceamount,0 as writeoffamount,t1.taxamount as grossamountwriteoff,0 as balanceamountwriteoff
+		FROM t_storage_saleout t
+		RIGHT JOIN t_storage_saleout_detail t1 on t.id=t1.saleoutid
+		<trim prefix="WHERE" prefixOverrides="and|or" >
+			<if test="1==1">
+				AND t.status in('3','4') AND t1.isdiscount=1 and t1.iswriteoff='1'
+			</if>
+			<if test="condition.brandid !=null">
+				AND FIND_IN_SET(t1.brandid, #{condition.brandid})
+			</if>
+			<if test="condition.brandidarr !=null">
+				AND FIND_IN_SET(t1.brandid, #{condition.brandidarr})
+			</if>
+			<if test="condition.businessdate1 != null">
+			 	and t.businessdate >= #{condition.businessdate1}
+		    </if>
+			<if test="condition.businessdate2 != null">
+				 <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+			</if>
+		</trim>
+		UNION ALL
+		SELECT brandid,0 as saleamount , 0 as grossamount,0 as balanceamount,0 as writeoffamount,amount as grossamountwriteoff,0 as balanceamountwriteoff
+		FROM t_account_customer_push_balance 
+	  	<trim prefix="WHERE" prefixOverrides="and|or" >
+			<if test="1==1">
+				AND status in('3','4') and isinvoice = '2' and iswriteoff='1'
+			</if>
+			<if test="condition.brandid !=null">
+				AND FIND_IN_SET(brandid, #{condition.brandid})
+			</if>
+			<if test="condition.brandidarr !=null">
+				AND FIND_IN_SET(brandid, #{condition.brandidarr})
+			</if>
+			<if test="condition.businessdate1 != null">
+			 	and businessdate >= #{condition.businessdate1}
+		    </if>
+			<if test="condition.businessdate2 != null">
+				 <![CDATA[and businessdate <= #{condition.businessdate2}]]>
+			</if>
+		</trim>
+	UNION ALL
+		SELECT brandid,0 as saleamount , 0 as grossamount,0 as balanceamount,0 as writeoffamount,0 as grossamountwriteoff,amount as balanceamountwriteoff
+		FROM t_account_customer_push_balance 
+	  	<trim prefix="WHERE" prefixOverrides="and|or" >
+			<if test="1==1">
+				 <![CDATA[AND status in('3','4') and isinvoice <> '2' and iswriteoff='1']]>
+			</if>
+			<if test="condition.brandid !=null">
+				AND FIND_IN_SET(brandid, #{condition.brandid})
+			</if>
+			<if test="condition.brandidarr !=null">
+				AND FIND_IN_SET(brandid, #{condition.brandidarr})
+			</if>
+			<if test="condition.businessdate1 != null">
+			 	and businessdate >= #{condition.businessdate1}
+		    </if>
+			<if test="condition.businessdate2 != null">
+				 <![CDATA[and businessdate <= #{condition.businessdate2}]]>
+			</if>
+		</trim>
+	) t
+	<if test="condition.isShowSumTotal!='true'">
+		GROUP BY brandid
+	</if>
+  </sql>
+  <select id="getSalesBrandGrossReportData" parameterType="com.hd.agent.common.util.PageMap" resultType="map">
+  	select brandid,saleamount,grossamount,balanceamount,writeoffamount,grossamountwriteoff,balanceamountwriteoff from (
+    	<include refid="salesBrandBalanceReportSql"/>
+    	) t
+    	<if test="condition.isPageflag !='true'">
+			<include refid="common.Page_limit" /> 
+		</if>
+  </select>  
+  <select id="getSalesBrandGrossReportDataCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  		select count(1) from (
+  			<include refid="salesBrandBalanceReportSql"/>
+  		) t
+  </select>
+</mapper>

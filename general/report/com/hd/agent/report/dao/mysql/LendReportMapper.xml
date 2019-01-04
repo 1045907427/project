@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hd.agent.report.dao.LendReportMapper">
+    <select id="getLendInOutReportSumDataList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.report.model.LendInOutReport">
+        SELECT
+        (z.ietaxamount - z.iotaxamount) as initamount,(z.eetaxamount - z.ietaxamount) as enteramount,(z.eotaxamount - z.iotaxamount) as outamount,(z.eetaxamount - z.eotaxamount) as endamount,
+        (z.ienotaxamount - z.ionotaxamount) as initamount,(z.eenotaxamount - z.ienotaxamount) as enteramount,(z.eonotaxamount - z.ionotaxamount) as outamount,(z.eenotaxamount - z.eonotaxamount) as endamount,
+        (z.ienum - z.ionum) as initnum, (z.eenum -z.ienum) as enternum, (z.eonum - z.ionum) as outnum,(z.eenum-z.eonum) as endnum,z.* from
+        (
+        SELECT
+        MAX(
+        CASE c.billtype
+        WHEN '1' THEN
+        c.inum
+        ELSE
+        0
+        END
+        )ionum,
+        MAX(
+        CASE c.billtype
+        WHEN '2' THEN
+        c.inum
+        ELSE
+        0
+        END
+        )ienum,
+        MAX(
+        CASE c.billtype
+        WHEN '1' THEN
+        c.enum
+        ELSE
+        0
+        END
+        )eonum,
+        MAX(
+        CASE c.billtype
+        WHEN '2' THEN
+        c.enum
+        ELSE
+        0
+        END
+        )eenum,
+        MAX(
+        CASE c.billtype
+        WHEN '1' THEN
+        c.etaxamount
+        ELSE
+        0
+        END
+        )eotaxamount,
+        MAX(
+        CASE c.billtype
+        WHEN '2' THEN
+        c.etaxamount
+        ELSE
+        0
+        END
+        )eetaxamount,
+        MAX(
+        CASE c.billtype
+        WHEN '1' THEN
+        c.itaxamount
+        ELSE
+        0
+        END
+        )iotaxamount,
+        MAX(
+        CASE c.billtype
+        WHEN '2' THEN
+        c.itaxamount
+        ELSE
+        0
+        END
+        )ietaxamount,
+
+        MAX(
+        CASE c.billtype
+        WHEN '1' THEN
+        c.enotaxamount
+        ELSE
+        0
+        END
+        )eonotaxamount,
+        MAX(
+        CASE c.billtype
+        WHEN '2' THEN
+        c.enotaxamount
+        ELSE
+        0
+        END
+        )eenotaxamount,
+        MAX(
+        CASE c.billtype
+        WHEN '1' THEN
+        c.inotaxamount
+        ELSE
+        0
+        END
+        )ionotaxamount,
+        MAX(
+        CASE c.billtype
+        WHEN '2' THEN
+        c.inotaxamount
+        ELSE
+        0
+        END
+        )ienotaxamount,
+        c.*, c.`name` AS storagename,
+        CASE c.lendtype WHEN '1' then (SELECT name from t_base_buy_supplier where id=c.lendid)
+        when '2' then (SELECT name from t_base_sales_customer where id=c.lendid) END as lendname,
+        (SELECT `name` from t_base_department where id = c.deptid) as deptname
+        FROM
+        (
+        SELECT
+        SUM( CASE WHEN <![CDATA[ t.businessdate < #{condition.businessdate1}]]> then t.unitnum ELSE 0 END) inum,
+        SUM( CASE WHEN <![CDATA[ t.businessdate <= #{condition.businessdate2}]]> then t.unitnum ELSE 0 END) enum,
+        SUM( CASE WHEN <![CDATA[ t.businessdate < #{condition.businessdate1}]]> then t.taxamount ELSE 0 END) itaxamount,
+        SUM( CASE WHEN <![CDATA[ t.businessdate <= #{condition.businessdate2}]]> then t.taxamount ELSE 0 END) etaxamount,
+        SUM( CASE WHEN <![CDATA[ t.businessdate < #{condition.businessdate1}]]> then t.notaxamount ELSE 0 END) inotaxamount,
+        SUM( CASE WHEN <![CDATA[ t.businessdate <= #{condition.businessdate2}]]> then t.notaxamount ELSE 0 END) enotaxamount,
+        t.*
+        FROM
+        (
+        SELECT
+        a.*, k.summarybatchid,
+        k.goodsid,
+        k.brandid,
+        k.unitname,
+        k.unitnum,
+        k.goodsname,
+        k.brand,
+        k.barcode,
+        k.brandname,
+        k.goodssortname,
+        k.goodssort,
+        k.boxnum,
+        k.taxamount,
+        k.notaxamount
+        FROM
+        (
+        SELECT
+        tsld.*, tbgi.`name` AS goodsname,
+        tbgi.brand,
+        tbgi.barcode,
+        tbgi.brandname,
+        tbgi.goodssortname,
+        tbgi.goodssort,
+        tbgi.boxnum
+        FROM
+        t_storage_lend_detail tsld
+        LEFT JOIN (
+        SELECT
+        t_base_goods_info.*, t_base_goods_brand.`name` AS brandname
+        FROM
+        (
+        SELECT
+        t_base_goods_info.*, t_base_goods_waresclass.`name` AS goodssortname,
+        t_base_goods_waresclass.id AS goodssort,
+        t_base_goods_info_meteringunit.rate as boxnum
+        FROM
+        t_base_goods_info
+        LEFT JOIN t_base_goods_info_waresclass ON t_base_goods_info.id = t_base_goods_info_waresclass.goodsid
+        LEFT JOIN t_base_goods_waresclass ON t_base_goods_waresclass.id = t_base_goods_info_waresclass.waresclass
+        LEFT JOIN t_base_goods_info_meteringunit on t_base_goods_info_meteringunit.goodsid = t_base_goods_info.id
+        )
+        t_base_goods_info
+        LEFT JOIN t_base_goods_brand ON t_base_goods_info.brand = t_base_goods_brand.id
+        ) tbgi ON tsld.goodsid = tbgi.id
+        ) k
+        LEFT JOIN (
+        SELECT
+        tsl.*, tbsi.`name`
+        FROM
+        t_storage_lend tsl
+        LEFT JOIN t_base_storage_info tbsi ON tsl.storageid = tbsi.id
+        ) a ON k.billid = a.id
+        ) t
+        <trim prefix="where" prefixOverrides="and|or">
+            ${condition.query_sql_push}
+        </trim>
+        GROUP BY
+        billtype
+        <if test="condition.groupcols != null">
+            ,${condition.groupcols}
+        </if>
+        ) c
+        <if test="condition.groupcols != null">
+            group by ${condition.groupcols}
+        </if>) z
+    </select>
+
+    <select id="getLendInOutReportSumData" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.report.model.LendInOutReport">
+        SELECT
+        (z.ietaxamount - z.iotaxamount) as initamount,(z.eetaxamount - z.ietaxamount) as enteramount,(z.eotaxamount - z.iotaxamount) as outamount,(z.eetaxamount - z.eotaxamount) as endamount,
+        (z.ienotaxamount - z.ionotaxamount) as initamount,(z.eenotaxamount - z.ienotaxamount) as enteramount,(z.eonotaxamount - z.ionotaxamount) as outamount,(z.eenotaxamount - z.eonotaxamount) as endamount,
+        (z.ienum - z.ionum) as initnum, (z.eenum -z.ienum) as enternum, (z.eonum - z.ionum) as outnum,(z.eenum-z.eonum) as endnum,z.* from
+        (
+        SELECT
+        MAX(
+        CASE c.billtype
+        WHEN '1' THEN
+        c.inum
+        ELSE
+        0
+        END
+        )ionum,
+        MAX(
+        CASE c.billtype
+        WHEN '2' THEN
+        c.inum
+        ELSE
+        0
+        END
+        )ienum,
+        MAX(
+        CASE c.billtype
+        WHEN '1' THEN
+        c.enum
+        ELSE
+        0
+        END
+        )eonum,
+        MAX(
+        CASE c.billtype
+        WHEN '2' THEN
+        c.enum
+        ELSE
+        0
+        END
+        )eenum,
+        MAX(
+        CASE c.billtype
+        WHEN '1' THEN
+        c.etaxamount
+        ELSE
+        0
+        END
+        )eotaxamount,
+        MAX(
+        CASE c.billtype
+        WHEN '2' THEN
+        c.etaxamount
+        ELSE
+        0
+        END
+        )eetaxamount,
+        MAX(
+        CASE c.billtype
+        WHEN '1' THEN
+        c.itaxamount
+        ELSE
+        0
+        END
+        )iotaxamount,
+        MAX(
+        CASE c.billtype
+        WHEN '2' THEN
+        c.itaxamount
+        ELSE
+        0
+        END
+        )ietaxamount,
+
+        MAX(
+        CASE c.billtype
+        WHEN '1' THEN
+        c.enotaxamount
+        ELSE
+        0
+        END
+        )eonotaxamount,
+        MAX(
+        CASE c.billtype
+        WHEN '2' THEN
+        c.enotaxamount
+        ELSE
+        0
+        END
+        )eenotaxamount,
+        MAX(
+        CASE c.billtype
+        WHEN '1' THEN
+        c.inotaxamount
+        ELSE
+        0
+        END
+        )ionotaxamount,
+        MAX(
+        CASE c.billtype
+        WHEN '2' THEN
+        c.inotaxamount
+        ELSE
+        0
+        END
+        )ienotaxamount,
+        c.*, c.`name` AS storagename,
+        CASE c.lendtype WHEN '1' then (SELECT name from t_base_buy_supplier where id=c.lendid)
+        when '2' then (SELECT name from t_base_sales_customer where id=c.lendid) END as lendname,
+        (SELECT `name` from t_base_department where id = c.deptid) as deptname
+        FROM
+        (
+        SELECT
+        SUM( CASE WHEN <![CDATA[ t.businessdate < #{condition.businessdate1}]]> then t.unitnum ELSE 0 END) inum,
+        SUM( CASE WHEN <![CDATA[ t.businessdate <= #{condition.businessdate2}]]> then t.unitnum ELSE 0 END) enum,
+        SUM( CASE WHEN <![CDATA[ t.businessdate < #{condition.businessdate1}]]> then t.taxamount ELSE 0 END) itaxamount,
+        SUM( CASE WHEN <![CDATA[ t.businessdate <= #{condition.businessdate2}]]> then t.taxamount ELSE 0 END) etaxamount,
+        SUM( CASE WHEN <![CDATA[ t.businessdate < #{condition.businessdate1}]]> then t.notaxamount ELSE 0 END) inotaxamount,
+        SUM( CASE WHEN <![CDATA[ t.businessdate <= #{condition.businessdate2}]]> then t.notaxamount ELSE 0 END) enotaxamount,
+        t.*
+        FROM
+        (
+        SELECT
+        a.*, k.summarybatchid,
+        k.goodsid,
+        k.brandid,
+        k.unitname,
+        k.unitnum,
+        k.goodsname,
+        k.brand,
+        k.barcode,
+        k.brandname,
+        k.goodssortname,
+        k.goodssort,
+        k.boxnum,
+        k.taxamount,
+        k.notaxamount
+        FROM
+        (
+        SELECT
+        tsld.*, tbgi.`name` AS goodsname,
+        tbgi.brand,
+        tbgi.barcode,
+        tbgi.brandname,
+        tbgi.goodssortname,
+        tbgi.goodssort,
+        tbgi.boxnum
+        FROM
+        t_storage_lend_detail tsld
+        LEFT JOIN (
+        SELECT
+        t_base_goods_info.*, t_base_goods_brand.`name` AS brandname
+        FROM
+        (
+        SELECT
+        t_base_goods_info.*, t_base_goods_waresclass.`name` AS goodssortname,
+        t_base_goods_waresclass.id AS goodssort,
+        t_base_goods_info_meteringunit.rate as boxnum
+        FROM
+        t_base_goods_info
+        LEFT JOIN t_base_goods_info_waresclass ON t_base_goods_info.id = t_base_goods_info_waresclass.goodsid
+        LEFT JOIN t_base_goods_waresclass ON t_base_goods_waresclass.id = t_base_goods_info_waresclass.waresclass
+        LEFT JOIN t_base_goods_info_meteringunit on t_base_goods_info_meteringunit.goodsid = t_base_goods_info.id
+        )
+        t_base_goods_info
+        LEFT JOIN t_base_goods_brand ON t_base_goods_info.brand = t_base_goods_brand.id
+        ) tbgi ON tsld.goodsid = tbgi.id
+        ) k
+        LEFT JOIN (
+        SELECT
+        tsl.*, tbsi.`name`
+        FROM
+        t_storage_lend tsl
+        LEFT JOIN t_base_storage_info tbsi ON tsl.storageid = tbsi.id
+        ) a ON k.billid = a.id
+        ) t
+        <trim prefix="where" prefixOverrides="and|or">
+            ${condition.query_sql_push}
+        </trim>
+        GROUP BY
+        billtype
+        ) c
+        ) z
+    </select>
+
+
+
+    <select id="getLendInOutReportSumDataCount" resultType="int" parameterType="com.hd.agent.common.util.PageMap">
+        SELECT count(1) from
+        (
+        SELECT
+        c.*, c.`name` AS storagename
+        FROM
+        (
+        SELECT
+        SUM(t.unitnum) num,
+        t.*
+        FROM
+        (
+        SELECT
+        a.*, k.summarybatchid,
+        k.goodsid,
+        k.brandid,
+        k.unitname,
+        k.unitnum,
+        k.goodname,
+        k.brand,
+        k.barcode,
+        k.brandname,
+        k.goodssortname,
+        k.goodssort
+        FROM
+        (
+        SELECT
+        tsld.*, tbgi.`name` AS goodname,
+        tbgi.brand,
+        tbgi.barcode,
+        tbgi.brandname,
+        tbgi.goodssortname,
+        tbgi.goodssort
+        FROM
+        t_storage_lend_detail tsld
+        LEFT JOIN (
+        SELECT
+        t_base_goods_info.*, t_base_goods_brand.`name` AS brandname
+        FROM
+        (
+        SELECT
+        t_base_goods_info.*, t_base_goods_waresclass.`name` AS goodssortname,
+        t_base_goods_waresclass.id AS goodssort
+        FROM
+        t_base_goods_info
+        LEFT JOIN t_base_goods_info_waresclass ON t_base_goods_info.id = t_base_goods_info_waresclass.goodsid
+        LEFT JOIN t_base_goods_waresclass ON t_base_goods_waresclass.id = t_base_goods_info_waresclass.waresclass
+        )
+        t_base_goods_info
+        LEFT JOIN t_base_goods_brand ON t_base_goods_info.brand = t_base_goods_brand.id
+        ) tbgi ON tsld.goodsid = tbgi.id
+        ) k
+        LEFT JOIN (
+        SELECT
+        tsl.*, tbsi.`name`
+        FROM
+        t_storage_lend tsl
+        LEFT JOIN t_base_storage_info tbsi ON tsl.storageid = tbsi.id
+        ) a ON k.billid = a.id
+        ) t
+        <trim prefix="where" prefixOverrides="and|or">
+            ${condition.query_sql_push}
+        </trim>
+        GROUP BY
+        billtype
+        <if test="condition.groupcols != null">
+            ,${condition.groupcols}
+        </if>
+        ) c
+        <if test="condition.groupcols != null">
+            group by ${condition.groupcols}
+        </if>
+        )
+        z
+    </select>
+</mapper>

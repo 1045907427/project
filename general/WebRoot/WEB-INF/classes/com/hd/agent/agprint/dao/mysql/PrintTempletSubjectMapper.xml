@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.agprint.dao.PrintTempletSubjectMapper">
+	<!-- 缓存 -->
+	<cache type="org.mybatis.caches.ehcache.EhcacheCache"></cache>
+	<sql id="printTempletSubject_Column_List">		
+	     code, name, seq, state, remark, addtime, adduserid, addusername,  
+	    modifyuserid, modifyusername, modifytime, openuserid, openusername, opentime, closeuserid, 
+	    closeusername, closetime,linktypeseq,linktypeseqname,uselinktype
+	</sql>
+	<select id="getPrintTempletSubjectList" resultType="com.hd.agent.agprint.model.PrintTempletSubject" useCache="false">
+		select
+		<include refid="printTempletSubject_Column_List"/>
+		from t_print_templet_subject
+	</select>
+	<sql id="printTempletSubjectPageList_Where_Condition">
+		<if test="condition.code != null">
+			and code like CONCAT('%',#{condition.code},'%')
+		</if>
+		<if test="condition.name != null">
+			and name like CONCAT('%',#{condition.name},'%')
+		</if>
+		<if test="condition.state != null">
+			and state = #{condition.state}
+		</if>
+	</sql>
+	<select id="getPrintTempletSubjectPageList" resultType="com.hd.agent.agprint.model.PrintTempletSubject" parameterType="com.hd.agent.common.util.PageMap" useCache="false">
+		select
+		<include refid="printTempletSubject_Column_List"/>
+		from t_print_templet_subject
+		<trim prefix="where" prefixOverrides="and|or">
+			<include refid="printTempletSubjectPageList_Where_Condition"></include>
+		</trim>
+		<include refid="common.Page_limit"/>
+	</select>
+	<select id="getPrintTempletSubjectCount" resultType="int" parameterType="com.hd.agent.common.util.PageMap" useCache="false">
+		select count(1) from t_print_templet_subject
+		<trim prefix="where" prefixOverrides="and|or">
+			<include refid="printTempletSubjectPageList_Where_Condition"></include>
+		</trim>
+	</select>
+	<select id="getPrintTempletSubject" parameterType="java.lang.String" resultType="com.hd.agent.agprint.model.PrintTempletSubject">
+		select 
+		<include refid="printTempletSubject_Column_List"/>
+		from t_print_templet_subject
+		where code = #{code}
+	</select>
+	<select id="getEnablePrintTempletSubject" parameterType="java.lang.String" resultType="com.hd.agent.agprint.model.PrintTempletSubject">
+		select 
+		<include refid="printTempletSubject_Column_List"/>
+		from t_print_templet_subject
+		where code = #{code} and state='1'
+	</select>
+	<insert id="addPrintTempletSubject" parameterType="com.hd.agent.agprint.model.PrintTempletSubject" >
+		insert into t_print_templet_subject
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+	      <if test="code != null">
+	        code,
+	      </if>
+	      <if test="name != null">
+	        name,
+	      </if>
+	      <if test="seq != null">
+	        seq,
+	      </if>
+	      <if test="state != null">
+	        state,
+	      </if>
+	      <if test="remark != null">
+	        remark,
+	      </if>
+	      <if test="addtime != null">
+	        addtime,
+	      </if>
+	      <if test="adduserid != null">
+	        adduserid,
+	      </if>
+	      <if test="addusername != null">
+	        addusername,
+	      </if>
+	      <if test="uselinktype != null">
+	        uselinktype,
+	      </if>
+	      <if test="linktypeseq != null">
+	        linktypeseq,
+	      </if>
+	      <if test="linktypeseqname != null">
+	        linktypeseqname,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides=",">
+	      <if test="code != null">
+	        #{code},
+	      </if>
+	      <if test="name != null">
+	        #{name},
+	      </if>
+	      <if test="seq != null">
+	        #{seq},
+	      </if>
+	      <if test="state != null">
+	        #{state},
+	      </if>
+	      <if test="remark != null">
+	        #{remark},
+	      </if>
+	      <if test="addtime != null">
+	        #{addtime},
+	      </if>
+	      <if test="adduserid != null">
+	        #{adduserid},
+	      </if>
+	      <if test="addusername != null">
+	        #{addusername},
+	      </if>
+	      <if test="uselinktype != null">
+	        #{uselinktype},
+	      </if>
+	      <if test="linktypeseq != null">
+	        #{linktypeseq},
+	      </if>
+	      <if test="linktypeseqname != null">
+	        #{linktypeseqname},
+	      </if>
+	    </trim>
+	</insert>
+	<update id="editPrintTempletSubject" parameterType="com.hd.agent.agprint.model.PrintTempletSubject">
+		update t_print_templet_subject
+		<set>
+	      <if test="name != null">
+	        name = #{name},
+	      </if>
+	      <if test="seq != null">
+	        seq = #{seq},
+	      </if>
+	      <if test="state != null">
+	        state = #{state},
+	      </if>
+	      <if test="remark != null">
+	        remark = #{remark},
+	      </if>
+	      <if test="addtime != null">
+	        addtime = #{addtime},
+	      </if>
+	      <if test="adduserid != null">
+	        adduserid = #{adduserid},
+	      </if>
+	      <if test="addusername != null">
+	        addusername = #{addusername},
+	      </if>
+	      <if test="modifyuserid != null">
+	        modifyuserid = #{modifyuserid},
+	      </if>
+	      <if test="modifyusername != null">
+	        modifyusername = #{modifyusername},
+	      </if>
+	      <if test="modifytime != null">
+	        modifytime = #{modifytime},
+	      </if>	
+	      <if test="uselinktype != null">
+	        uselinktype = #{uselinktype},
+	      </if>      
+	      <if test="linktypeseq != null">
+	        linktypeseq = #{linktypeseq},
+	      </if>
+	      <if test="linktypeseqname != null">
+	        linktypeseqname = #{linktypeseqname},
+	      </if>
+	    </set>
+		where code=#{code}
+	</update>
+	<update id="disablePrintTempletSubject" parameterType="com.hd.agent.agprint.model.PrintTempletSubject">
+		update t_print_templet_subject
+		<set>
+	      <if test="1==1">
+	        state = '0',
+	      </if>
+	      <if test="closeuserid != null">
+	        closeuserid = #{closeuserid},
+	      </if>
+	      <if test="closeusername != null">
+	        closeusername = #{closeusername},
+	      </if>
+	      <if test="closetime != null">
+	        closetime = #{closetime},
+	      </if>
+	    </set> 
+		where code=#{code}
+	</update>
+	<update id="enablePrintTempletSubject" parameterType="com.hd.agent.agprint.model.PrintTempletSubject">
+		update t_print_templet_subject
+		<set>
+	      <if test="1==1">
+	        state = '1',
+	      </if>
+	      <if test="openuserid != null">
+	        openuserid = #{openuserid},
+	      </if>
+	      <if test="openusername != null">
+	        openusername = #{openusername},
+	      </if>
+	      <if test="opentime != null">
+	        opentime = #{opentime},
+	      </if>
+	    </set> 
+		where code=#{code}
+	</update>	
+	<delete id="deletePrintTempletSubject" parameterType="java.lang.String">
+		delete from t_print_templet_subject where code=#{code}
+	</delete>
+	<delete id="deletePrintTempletSubjectBy" parameterType="java.util.Map">
+		delete from t_print_templet_subject
+		where 
+		<trim prefixOverrides="and|or">
+			<if test="notState != null">
+				and state = #{notState}
+			</if>
+			<if test="code !=null">
+				and code = #{code}
+			</if>
+		</trim>
+	</delete>	
+	<select id="getPrintTempletSubjectCountBy" parameterType="java.util.Map" resultType="int">
+		select 
+		count(*)
+		from t_print_templet_subject
+		where
+		<trim prefixOverrides="and|or">
+			<if test="code !=null">
+				and code = #{code}
+			</if>
+		</trim>
+	</select>
+</mapper>

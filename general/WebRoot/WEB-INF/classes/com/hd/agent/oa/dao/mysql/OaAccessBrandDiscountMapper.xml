@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.oa.dao.OaAccessBrandDiscountMapper" >
+  <resultMap id="BaseResultMap" type="com.hd.agent.oa.model.OaAccessBrandDiscount" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="billid" property="billid" jdbcType="VARCHAR" />
+    <result column="oaid" property="oaid" jdbcType="VARCHAR" />
+    <result column="customerid" property="customerid" jdbcType="VARCHAR" />
+    <result column="brandid" property="brandid" jdbcType="VARCHAR" />
+    <result column="amount" property="amount" jdbcType="DECIMAL" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="relatetype" property="relatetype" jdbcType="CHAR" />
+    <result column="relateid" property="relateid" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, billid, oaid, customerid, brandid, amount, remark, relatetype, relateid
+  </sql>
+  <sql id="Base_Column_List2" >
+    a.id, a.billid, a.oaid, a.customerid, a.brandid, a.amount, a.remark, a.relatetype, a.relateid
+  </sql>
+  <insert id="insertOaAccessBrandDiscount" parameterType="com.hd.agent.oa.model.OaAccessBrandDiscount">
+  	insert into t_oa_access_brand_discount
+  	<trim prefix="(" suffix=")" suffixOverrides=",">
+		<if test="#{billid != null}">
+			billid,
+		</if>
+		<if test="#{oaid != null}">
+			oaid,
+		</if>
+		<if test="#{customerid != null}">
+			customerid,
+		</if>
+		<if test="#{brandid != null}">
+			brandid,
+		</if>
+		<if test="#{amount != null}">
+			amount,
+		</if>
+		<if test="#{remark != null}">
+			remark,
+		</if>
+		<if test="#{relatetype != null}">
+			relatetype,
+		</if>
+		<if test="#{relateid != null}">
+			relateid,
+		</if>
+  	</trim>
+  	<trim prefix=" values (" suffix=")" suffixOverrides=",">
+		<if test="#{billid != null}">
+			#{billid },
+		</if>
+		<if test="#{oaid != null}">
+			#{oaid },
+		</if>
+		<if test="#{customerid != null}">
+			#{customerid },
+		</if>
+		<if test="#{brandid != null}">
+			#{brandid },
+		</if>
+		<if test="#{amount != null}">
+			#{amount },
+		</if>
+		<if test="#{remark != null}">
+			#{remark },
+		</if>
+		<if test="#{relatetype != null}">
+			#{relatetype },
+		</if>
+		<if test="#{relateid != null}">
+			#{relateid },
+		</if>
+  	</trim>
+  </insert>
+  <select id="selectOaAccessBrandDiscountList2" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select
+  		<include refid="Base_Column_List"/>
+  	from t_oa_access_brand_discount 
+  	where billid = #{billid }
+	order by id 
+  </select>
+  <select id="selectOaAccessBrandDiscountList" parameterType="com.hd.agent.common.util.PageMap" resultMap="BaseResultMap">
+  	select
+  		<include refid="Base_Column_List2"/>,
+  		a.brandid brandname,
+  		b.name brandname2
+  	from t_oa_access_brand_discount a
+  	left join t_base_goods_brand b on a.brandid = b.id
+	<trim prefix="where" prefixOverrides="and|or">
+		a.billid = #{condition.billid }
+	    <include refid="common.Page_querySql"/>
+	  	<include refid="common.Page_dataSql"/>
+	</trim>
+	order by a.id 
+	<include refid="common.Page_limit"/>
+  </select>
+  <select id="selectOaAccessBrandDiscountListCnt" parameterType="com.hd.agent.common.util.PageMap" resultType="java.lang.Integer">
+   	select count(1)
+  	from t_oa_access_brand_discount a
+	<trim prefix="where" prefixOverrides="and|or">
+		a.billid = #{condition.billid }
+	    <include refid="common.Page_querySql"/>
+	  	<include refid="common.Page_dataSql"/>
+	</trim>
+  </select>
+  <delete id="deleteOaAccessBrandDiscount" parameterType="java.lang.String">
+  	delete from t_oa_access_brand_discount where billid = #{billid }
+  </delete>
+</mapper>

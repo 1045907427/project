@@ -1,0 +1,2967 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<package name="storageManager-stockInit" extends="parent" namespace="/storage">
+        <action name="exportStockInit" class="stockInitAction" method="exportStockInit">
+        </action>
+        <action name="importStockInit" class="stockInitAction" method="importStockInit">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+		<action name="showStorageStockInitPage" class="stockInitAction"
+			method="showStorageStockInitPage">
+			<result name="success">/storage/stockinit/stockInitPage.jsp</result>
+		</action>
+		<action name="showStockInitAddPage" class="stockInitAction"
+			method="showStockInitAddPage">
+			<result name="success">/storage/stockinit/stockInitAddPage.jsp</result>
+		</action>
+		<action name="addStockInit" class="stockInitAction" method="addStockInit">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showStockInitList" class="stockInitAction"
+			method="showStockInitList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="computeStockInitData" class="stockInitAction"
+			method="computeStockInitData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="computStockInitNumByAux" class="stockInitAction"
+			method="computStockInitNumByAux">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showStockInitListByStorageid" class="stockInitAction"
+			method="showStockInitListByStorageid">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteStockInit" class="stockInitAction" method="deleteStockInit">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showStockInitEditPage" class="stockInitAction"
+			method="showStockInitEditPage">
+			<result name="success">/storage/stockinit/stockInitEditPage.jsp</result>
+		</action>
+		<action name="editStockInit" class="stockInitAction" method="editStockInit">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="checkStockInitBatchno" class="stockInitAction"
+			method="checkStockInitBatchno">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditStockInit" class="stockInitAction" method="auditStockInit">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="oppauditStockInit" class="stockInitAction"
+			method="oppauditStockInit">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+	<package name="storageManager-storageSummary" extends="parent"
+		namespace="/storage">
+		<action name="showStorageSummaryPage" class="storageSummaryAction"
+			method="showStorageSummaryPage">
+			<result name="success">/storage/summary/storageSummaryPage.jsp</result>
+		</action>
+		<action name="showStorageSummaryList" class="storageSummaryAction"
+			method="showStorageSummaryList">
+			<result name="summary" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+			<result name="summarybatch" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showStorageSummaryPageByStorage" class="storageSummaryAction"
+			method="showStorageSummaryPageByStorage">
+			<result name="success">/storage/summary/storageSummaryPageByStorage.jsp
+			</result>
+		</action>
+		<action name="exportSummaryByStorageData" class="storageSummaryAction" method="exportSummaryByStorageData">
+		</action>
+        <action name="exportSummaryStorageData" class="storageSummaryAction" method="exportSummaryStorageData">
+        </action>
+        <action name="exportSummaryByStorageDetailData" class="storageSummaryAction"
+                method="exportSummaryByStorageDetailData">
+        </action>
+		<action name="showStorageSummaryByStorageList" class="storageSummaryAction"
+			method="showStorageSummaryByStorageList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showStorageSummaryBatchList" class="storageSummaryAction"
+			method="showStorageSummaryBatchList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showStorageSummaryLogPage" class="storageSummaryAction"
+			method="showStorageSummaryLogPage">
+			<result name="success">/storage/summary/storageSummaryLogPage.jsp
+			</result>
+		</action>
+		<action name="showStorageSummaryLogPageByStorage" class="storageSummaryAction"
+			method="showStorageSummaryLogPageByStorage">
+			<result name="success">/storage/summary/storageSummaryLogPageByStorage.jsp
+			</result>
+		</action>
+		<action name="showStorageSummaryLogList" class="storageSummaryAction"
+			method="showStorageSummaryLogList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showStorageSummaryLogListByStorage" class="storageSummaryAction"
+			method="showStorageSummaryLogListByStorage">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getStorageBatchListByStorageidAndGoodsid" class="storageSummaryAction"
+			method="getStorageBatchListByStorageidAndGoodsid">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getStorageSummaryBatchInfo" class="storageSummaryAction"
+			method="getStorageSummaryBatchInfo">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getStorageSummarySumByGoodsid" class="storageSummaryAction"
+			method="getStorageSummarySumByGoodsid">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getStorageSummaryByStorageidAndGoodsid" class="storageSummaryAction"
+			method="getStorageSummaryByStorageidAndGoodsid">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showStorageGoodsSelectPage" class="storageSummaryAction"
+			method="showStorageGoodsSelectPage">
+			<result name="success">/storage/summary/storageGoodsSelectPage.jsp
+			</result>
+		</action>
+		<action name="getStorageGoodsSelectListData" class="storageSummaryAction"
+			method="getStorageGoodsSelectListData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+	<package name="storageManager-checkList" extends="parent" namespace="/storage">
+		<action name="showCheckListAddPage" class="checkListAction" method="showCheckListAddPage">
+			<result name="success">/storage/checklist/checkListPage.jsp</result>
+		</action>
+		<action name="checkListAddPage" class="checkListAction" method="checkListAddPage">
+			<result name="success">/storage/checklist/checkListAddPage.jsp</result>
+		</action>
+		<action name="showCheckListDetailAddPage" class="checkListAction"
+			method="showCheckListDetailAddPage">
+			<result name="success">/storage/checklist/checkListDetailAddPage.jsp
+			</result>
+		</action>
+		<action name="computeCheckListNum" class="checkListAction"
+			method="computeCheckListNum">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="computeCheckListNumByAux" class="checkListAction"
+			method="computeCheckListNumByAux">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showCheckListDetailEditPage" class="checkListAction"
+			method="showCheckListDetailEditPage">
+			<result name="success">/storage/checklist/checkListDetailEditPage.jsp
+			</result>
+		</action>
+		<action name="getCheckListDetailList" class="checkListAction"
+			method="getCheckListDetailList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getCheckListDetailByGoodssorts" class="checkListAction"
+			method="getCheckListDetailByGoodssorts">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addCheckListSave" class="checkListAction" method="addCheckListSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addCheckListHold" class="checkListAction" method="addCheckListHold">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showCheckListViewPage" class="checkListAction"
+			method="showCheckListViewPage">
+			<result name="success">/storage/checklist/checkListPage.jsp</result>
+		</action>
+		<action name="checkListViewPage" class="checkListAction"
+			method="checkListViewPage">
+			<result name="success">/storage/checklist/checkListViewPage.jsp</result>
+		</action>
+		<action name="showCheckListPage" class="checkListAction"
+			method="showCheckListPage">
+			<result name="success">/storage/checklist/checkListDataPage.jsp</result>
+		</action>
+		<action name="showCheckListData" class="checkListAction"
+			method="showCheckListData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showCheckListEditPage" class="checkListAction"
+			method="showCheckListEditPage">
+			<result name="success">/storage/checklist/checkListPage.jsp</result>
+		</action>
+		<action name="checkListEditPage" class="checkListAction"
+			method="checkListEditPage">
+			<result name="success">/storage/checklist/checkListEditPage.jsp</result>
+			<result name="viewSuccess">/storage/checklist/checkListViewPage.jsp</result>
+			<result name="addSuccess">/storage/checklist/checkListAddPage.jsp</result>
+		</action>
+		<action name="editCheckListHold" class="checkListAction"
+			method="editCheckListHold">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editCheckListSave" class="checkListAction"
+			method="editCheckListSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteCheckList" class="checkListAction" method="deleteCheckList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="checkListCopyPage" class="checkListAction"
+			method="checkListCopyPage">
+			<result name="success">/storage/checklist/checkListCopyPage.jsp</result>
+		</action>
+		<action name="isHaveCheckListByStorageid" class="checkListAction"
+			method="isHaveCheckListByStorageid">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditCheckList" class="checkListAction" method="auditCheckList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="oppauditCheckList" class="checkListAction"
+			method="oppauditCheckList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showCheckListDetailData" class="checkListAction"
+			method="showCheckListDetailData">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="submitCheckListPageProcess" class="checkListAction"
+			method="submitCheckListPageProcess">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showStorageBrandListPage" class="checkListAction"
+			method="showStorageBrandListPage">
+			<result name="success">/storage/checklist/storageBrandListPage.jsp
+			</result>
+		</action>
+		<action name="showStorageGoodsSortListPage" class="checkListAction"
+			method="showStorageGoodsSortListPage">
+			<result name="success">/storage/checklist/storageGoodsSortListPage.jsp
+			</result>
+		</action>
+		<action name="getCheckListNumIsTure" class="checkListAction"
+			method="getCheckListNumIsTure">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="checkListFinish" class="checkListAction" method="checkListFinish">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="closeCheckListByCheck" class="checkListAction"
+			method="closeCheckListByCheck">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addCheckListByCheck" class="checkListAction"
+			method="addCheckListByCheck">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="exportCheckListData" class="checkListAction"
+			method="exportCheckListData"></action>
+		<action name="importCheckListData" class="checkListAction"
+			method="importCheckListData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="exportCheckListDataOfTheStyle" class="checkListAction"
+			method="exportCheckListDataOfTheStyle"></action>
+		<action name="importCheckListDataOfTheStyle" class="checkListAction"
+			method="importCheckListDataOfTheStyle">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getCheckListDetailData" class="checkListAction" method="getCheckListDetailData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addCheckListDetail" class="checkListAction" method="addCheckListDetail">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="doCheckListDetailIsHadGoods" class="checkListAction" method="doCheckListDetailIsHadGoods">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addSaveCheckListDetail" class="checkListAction" method="addSaveCheckListDetail">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteCheckListDetails" class="checkListAction" method="deleteCheckListDetails">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editSaveCheckListDetail" class="checkListAction" method="editSaveCheckListDetail">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showDynamicCheckListPage" class="checkListAction" method="showDynamicCheckListPage">
+			<result name="success">/storage/checklist/dynamicCheckListPage.jsp</result>
+		</action>
+		<action name="addDynamicCheckList" class="checkListAction" method="addDynamicCheckList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+	<package name="storageManager-adjustments" extends="parent"
+		namespace="/storage">
+		<action name="showAdjustmentsListPage" class="adjustmentsAction"
+			method="showAdjustmentsListPage">
+			<result name="success">/storage/adjustments/adjustmentsListPage.jsp
+			</result>
+		</action>
+		<action name="showAdjustmentsList" class="adjustmentsAction"
+			method="showAdjustmentsList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showAdjustmentsPage" class="adjustmentsAction"
+			method="showAdjustmentsPage">
+			<result name="success">/storage/adjustments/adjustmentsPage.jsp</result>
+		</action>
+		<action name="adjustmentsViewPage" class="adjustmentsAction"
+			method="adjustmentsViewPage">
+			<result name="success">/storage/adjustments/adjustmentsViewPage.jsp
+			</result>
+		</action>
+		<action name="showAdjustmentsAddPage" class="adjustmentsAction"
+			method="showAdjustmentsAddPage">
+			<result name="success">/storage/adjustments/adjustmentsPage.jsp</result>
+		</action>
+		<action name="adjustmentsAddPage" class="adjustmentsAction"
+			method="adjustmentsAddPage">
+			<result name="success">/storage/adjustments/adjustmentsAddPage.jsp
+			</result>
+		</action>
+		<action name="showAdjustmentsDetailAddPage" class="adjustmentsAction"
+			method="showAdjustmentsDetailAddPage">
+			<result name="success">/storage/adjustments/adjustmentsDetailAddPage.jsp
+			</result>
+		</action>
+		<action name="showAdjustmentsDetailEditPage" class="adjustmentsAction"
+			method="showAdjustmentsDetailEditPage">
+			<result name="success">/storage/adjustments/adjustmentsDetailEditPage.jsp
+			</result>
+		</action>
+		<action name="showAdjustmentsDetailOtherAddPage" class="adjustmentsAction"
+			method="showAdjustmentsDetailOtherAddPage">
+			<result name="success">/storage/adjustments/adjustmentsDetailOtherAddPage.jsp
+			</result>
+		</action>
+		<action name="computeAdjustmentsDetailNum" class="adjustmentsAction"
+			method="computeAdjustmentsDetailNum">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addAdjustmentsHold" class="adjustmentsAction"
+			method="addAdjustmentsHold">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addAdjustmentsSave" class="adjustmentsAction"
+			method="addAdjustmentsSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteAdjustments" class="adjustmentsAction"
+			method="deleteAdjustments">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showAdjustmentsEditPage" class="adjustmentsAction"
+			method="showAdjustmentsEditPage">
+			<result name="success">/storage/adjustments/adjustmentsPage.jsp</result>
+			<result name="lossSuccess">/storage/adjustments/lossAdjustmentsPage.jsp
+			</result>
+		</action>
+		<action name="adjustmentsEditPage" class="adjustmentsAction"
+			method="adjustmentsEditPage">
+			<result name="success">/storage/adjustments/adjustmentsEditPage.jsp
+			</result>
+			<result name="viewSuccess">/storage/adjustments/adjustmentsViewPage.jsp
+			</result>
+		</action>
+		<action name="editAdjustmentsHold" class="adjustmentsAction"
+			method="editAdjustmentsHold">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editAdjustmentsSave" class="adjustmentsAction"
+			method="editAdjustmentsSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditAdjustments" class="adjustmentsAction"
+			method="auditAdjustments">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+        <action name="oppauditAdjustments" class="adjustmentsAction" method="oppauditAdjustments">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+		<action name="showAdjustmentsRelationUpperPage" class="adjustmentsAction"
+			method="showAdjustmentsRelationUpperPage">
+			<result name="success">/storage/adjustments/adjustmentsSourceQueryPage.jsp
+			</result>
+		</action>
+		<action name="showAdjustmentsSourceListPage" class="adjustmentsAction"
+			method="showAdjustmentsSourceListPage">
+			<result name="success">/storage/adjustments/adjustmentsSourceListPage.jsp
+			</result>
+		</action>
+		<action name="addAdjustmentsByRefer" class="adjustmentsAction"
+			method="addAdjustmentsByRefer">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="submitAdjustmentsPageProcess" class="adjustmentsAction"
+			method="submitAdjustmentsPageProcess">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getAdjustmentListExport" class="adjustmentsAction"
+			method="getAdjustmentListExport"></action>
+		<action name="showLossAdjustmentsListPage" class="adjustmentsAction"
+			method="showLossAdjustmentsListPage">
+			<result name="success">/storage/adjustments/lossAdjustmentsListPage.jsp
+			</result>
+		</action>
+		<action name="showLossAdjustmentsList" class="adjustmentsAction"
+			method="showLossAdjustmentsList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showLossAdjustmentsAddPage" class="adjustmentsAction"
+			method="showLossAdjustmentsAddPage">
+			<result name="success">/storage/adjustments/lossAdjustmentsPage.jsp
+			</result>
+		</action>
+		<action name="lossAdjustmentsAddPage" class="adjustmentsAction"
+			method="lossAdjustmentsAddPage">
+			<result name="success">/storage/adjustments/lossAdjustmentsAddPage.jsp
+			</result>
+		</action>
+		<action name="showLossAdjustmentsEditPage" class="adjustmentsAction"
+			method="showLossAdjustmentsEditPage">
+			<result name="success">/storage/adjustments/lossAdjustmentsPage.jsp
+			</result>
+		</action>
+	</package>
+	<package name="storageManager-saleout" extends="parent"
+		namespace="/storage">
+		<action name="showSaleOutListPage" class="saleOutAction"
+			method="showSaleOutListPage">
+			<result name="success">/storage/saleout/saleOutListPage.jsp</result>
+		</action>
+		<action name="showSaleOutAddPage" class="saleOutAction" method="showSaleOutAddPage">
+			<result name="success">/storage/saleout/saleOutPage.jsp</result>
+		</action>
+		<action name="saleOutAddPage" class="saleOutAction" method="saleOutAddPage">
+			<result name="success">/storage/saleout/saleOutAddPage.jsp</result>
+		</action>
+		<action name="showSaleOutDetailAddPage" class="saleOutAction"
+			method="showSaleOutDetailAddPage">
+			<result name="success">/storage/saleout/saleOutDetailAddPage.jsp
+			</result>
+			<result name="sourceSuccess">/storage/saleout/saleOutDetailSourceAddPage.jsp
+			</result>
+		</action>
+		<action name="showSaleOutDetailDiscountAddPage" class="saleOutAction"
+			method="showSaleOutDetailDiscountAddPage">
+			<result name="success">/storage/saleout/saleOutDetailDiscountAddPage.jsp
+			</result>
+		</action>
+		<action name="showSaleOutDetailDiscountEditPage" class="saleOutAction"
+			method="showSaleOutDetailDiscountEditPage">
+			<result name="success">/storage/saleout/saleOutDetailDiscountEditPage.jsp
+			</result>
+		</action>
+		<action name="showSaleOutList" class="saleOutAction" method="showSaleOutList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSaleOutViewPage" class="saleOutAction"
+			method="showSaleOutViewPage">
+			<result name="success">/storage/saleout/saleOutPage.jsp</result>
+		</action>
+		<action name="saleOutViewPage" class="saleOutAction" method="saleOutViewPage">
+			<result name="success">/storage/saleout/saleOutViewPage.jsp</result>
+		</action>
+		<action name="saleOutEditPage" class="saleOutAction" method="saleOutEditPage">
+			<result name="success">/storage/saleout/saleOutEditPage.jsp</result>
+			<result name="viewSuccess">/storage/saleout/saleOutViewPage.jsp</result>
+		</action>
+		<action name="getCustomerGoodsPrice" class="saleOutAction"
+			method="getCustomerGoodsPrice">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="computeSaleOutDetailNum" class="saleOutAction"
+			method="computeSaleOutDetailNum">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSaleOutDetailEditPage" class="saleOutAction"
+			method="showSaleOutDetailEditPage">
+			<result name="success">/storage/saleout/saleOutDetailEditPage.jsp
+			</result>
+		</action>
+		<action name="addSaleOutHold" class="saleOutAction" method="addSaleOutHold">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addSaleOutSave" class="saleOutAction" method="addSaleOutSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteSaleOut" class="saleOutAction" method="deleteSaleOut">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSaleOutEditPage" class="saleOutAction"
+			method="showSaleOutEditPage">
+			<result name="success">/storage/saleout/saleOutPage.jsp</result>
+		</action>
+		<action name="editSaleOutHold" class="saleOutAction" method="editSaleOutHold">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editSaleOutSave" class="saleOutAction" method="editSaleOutSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showRelationUpperPage" class="saleOutAction"
+			method="showRelationUpperPage">
+			<result name="success">/storage/saleout/saleOutSourceQueryPage.jsp
+			</result>
+		</action>
+		<action name="showSaleOutSourceListPage" class="saleOutAction"
+			method="showSaleOutSourceListPage">
+			<result name="success">/storage/saleout/saleOutSourceListPage.jsp
+			</result>
+		</action>
+		<action name="showDispatchBillDetailList" class="saleOutAction"
+			method="showDispatchBillDetailList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addSaleOutByRefer" class="saleOutAction" method="addSaleOutByRefer">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditSaleOut" class="saleOutAction" method="auditSaleOut">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="oppauditSaleOut" class="saleOutAction" method="oppauditSaleOut">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+        <action name="clearSaleoutCheckuser" class="saleOutAction" method="clearSaleoutCheckuser">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+		<action name="getSaleOutDetailListByID" class="saleOutAction"
+			method="getSaleOutDetailListByID">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="computeSaleOutDiscountTax" class="saleOutAction"
+			method="computeSaleOutDiscountTax">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="submitSaleOutProcess" class="saleOutAction"
+			method="submitSaleOutProcess">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSaleOutWorkFlowPage" class="saleOutAction"
+			method="showSaleOutWorkFlowPage">
+			<result name="success">/storage/saleout/saleOutPage.jsp</result>
+		</action>
+		<action name="showSaleOutDetailListBySaleorder" class="saleOutAction"
+			method="showSaleOutDetailListBySaleorder">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showGoodsWaitSaleListPage" class="saleOutAction"
+			method="showGoodsWaitSaleListPage">
+			<result name="success">/storage/saleout/goodsWaitSaleListPage.jsp
+			</result>
+		</action>
+		<action name="showGoodsWaitSaleListData" class="saleOutAction"
+			method="showGoodsWaitSaleListData">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+
+		<action name="exportSaleOutList" class="saleOutAction" method="exportSaleOutList"></action>
+		<action name="exportSaleOutDetailList" class="saleOutAction" method="exportSaleOutDetailList"></action>
+		<action name="getSaleoutListForAdvanceBill" class="saleOutAction"
+			method="getSaleoutListForAdvanceBill">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSaleoutDetailListForAdvanceBillPage" class="saleOutAction"
+			method="showSaleoutDetailListForAdvanceBillPage">
+			<result name="success">/account/receivable/salesinvoicebill/salesadvancebill/saleoutDetailListForAdvanceBillPage.jsp
+			</result>
+		</action>
+		<action name="showAdvanceBillDetailBySaleout" class="saleOutAction"
+			method="showAdvanceBillDetailBySaleout">
+			<result name="success">/account/receivable/salesinvoicebill/salesadvancebill/advanceBillDetailBySaleout.jsp
+			</result>
+		</action>
+		<action name="editDispatchUser" class="saleOutAction" method="editDispatchUser">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditMultiSaleout" class="saleOutAction" method="auditMultiSaleout">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+	<package name="storageManager-purchaseEnter" extends="parent"
+		namespace="/storage">
+		<action name="showPurchaseEnterAddPage" class="purchaseEnterAction"
+			method="showPurchaseEnterAddPage">
+			<result name="success">/storage/purchaseenter/purchaseEnterPage.jsp
+			</result>
+		</action>
+		<action name="purchaseEnterAddPage" class="purchaseEnterAction"
+			method="purchaseEnterAddPage">
+			<result name="success">/storage/purchaseenter/purchaseEnterAddPage.jsp
+			</result>
+		</action>
+		<action name="showPurchaseEnterDetailAddPage" class="purchaseEnterAction"
+				method="showPurchaseEnterDetailAddPage">
+			<result name="success">/storage/purchaseenter/purchaseEnterDetailAddPage.jsp
+			</result>
+			<result name="giftsuccess">/storage/purchaseenter/purchaseEnterDetailAddGiftPage.jsp
+			</result>
+		</action>
+		<action name="getGoodsDetail" class="purchaseEnterAction" method="getGoodsDetail">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showPurchaseEnterDetailEditPage" class="purchaseEnterAction"
+				method="showPurchaseEnterDetailEditPage">
+			<result name="success">/storage/purchaseenter/purchaseEnterDetailEditPage.jsp</result>
+			<result name="giftsuccess">/storage/purchaseenter/purchaseEnterDetailEditGiftPage.jsp</result>
+		</action>
+		<action name="showPurchaseEnterDetailBatchEditPage" class="purchaseEnterAction" method="showPurchaseEnterDetailBatchEditPage">
+			<result name="success">/storage/purchaseenter/purchaseEnterDetailBatchEditPage.jsp
+			</result>
+		</action>
+		
+		<action name="showPurchaseEnterDetailEditLocationPage" class="purchaseEnterAction"
+			method="showPurchaseEnterDetailEditLocationPage">
+			<result name="success">/storage/purchaseenter/purchaseEnterDetailEditLocationPage.jsp
+			</result>
+		</action>
+		<action name="computePurchaseEnterDetailNum" class="purchaseEnterAction"
+			method="computePurchaseEnterDetailNum">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getGoodsInfo" class="purchaseEnterAction" method="getGoodsInfo">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addPurchaseEnterHold" class="purchaseEnterAction"
+			method="addPurchaseEnterHold">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addPurchaseEnterSave" class="purchaseEnterAction"
+			method="addPurchaseEnterSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showPurchaseEnterViewPage" class="purchaseEnterAction"
+			method="showPurchaseEnterViewPage">
+			<result name="success">/storage/purchaseenter/purchaseEnterPage.jsp
+			</result>
+		</action>
+		<action name="purchaseEnterViewPage" class="purchaseEnterAction"
+			method="purchaseEnterViewPage">
+			<result name="success">/storage/purchaseenter/purchaseEnterViewPage.jsp
+			</result>
+		</action>
+		<action name="showPurchaseEnterListPage" class="purchaseEnterAction"
+			method="showPurchaseEnterListPage">
+			<result name="success">/storage/purchaseenter/purchaseEnterListPage.jsp
+			</result>
+		</action>
+		<action name="showPurchaseEnterList" class="purchaseEnterAction"
+			method="showPurchaseEnterList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showPurchaseEnterEditPage" class="purchaseEnterAction"
+			method="showPurchaseEnterEditPage">
+			<result name="success">/storage/purchaseenter/purchaseEnterPage.jsp
+			</result>
+		</action>
+		<action name="purchaseEnterEditPage" class="purchaseEnterAction"
+			method="purchaseEnterEditPage">
+			<result name="success">/storage/purchaseenter/purchaseEnterEditPage.jsp
+			</result>
+			<result name="viewSuccess">/storage/purchaseenter/purchaseEnterViewPage.jsp
+			</result>
+		</action>
+		<action name="editPurchaseEnterHold" class="purchaseEnterAction"
+			method="editPurchaseEnterHold">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editPurchaseEnterSave" class="purchaseEnterAction"
+			method="editPurchaseEnterSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+        <action name="auditMultiPurchaseEnter" class="purchaseEnterAction"
+                method="auditMultiPurchaseEnter">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+		<action name="auditPurchaseEnter" class="purchaseEnterAction"
+			method="auditPurchaseEnter">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="oppauditPurchaseEnter" class="purchaseEnterAction"
+			method="oppauditPurchaseEnter">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="exportPurchaseEnterList" class="purchaseEnterAction"
+				method="exportPurchaseEnterList">
+		</action>
+		<action name="exportPurchaseEnterDetail" class="purchaseEnterAction"
+				method="exportPurchaseEnterDetail">
+		</action>
+		<action name="deletePurchaseEnter" class="purchaseEnterAction"
+			method="deletePurchaseEnter">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showPurchaseOrderRelationUpperPage" class="purchaseEnterAction"
+			method="showPurchaseOrderRelationUpperPage">
+			<result name="success">/storage/purchaseenter/purchaseEnterSourceQueryPage.jsp
+			</result>
+		</action>
+		<action name="showPurchaseEnterSourceListPage" class="purchaseEnterAction"
+			method="showPurchaseEnterSourceListPage">
+			<result name="success">/storage/purchaseenter/purchaseEnterSourceListPage.jsp
+			</result>
+		</action>
+		<action name="addPurchaseEnterByRefer" class="purchaseEnterAction"
+			method="addPurchaseEnterByRefer">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="submitPurchaseEnterProcess" class="purchaseEnterAction"
+			method="submitPurchaseEnterProcess">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getBatchno" class="purchaseEnterAction" method="getBatchno">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+        <action name="getBatchnoByDeadline" class="purchaseEnterAction" method="getBatchnoByDeadline">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+	</package>
+	<package name="storageManager-saleRejectEnter" extends="parent"
+		namespace="/storage">
+		<action name="showSaleRejectEnterAddPage" class="saleRejectEnterAction"
+			method="showSaleRejectEnterAddPage">
+			<result name="success">/storage/salereject/saleRejectEnterPage.jsp
+			</result>
+		</action>
+		<action name="saleRejectEnterAddPage" class="saleRejectEnterAction"
+			method="saleRejectEnterAddPage">
+			<result name="success">/storage/salereject/saleRejectEnterAddPage.jsp
+			</result>
+		</action>
+		<action name="showSaleRejectEnterDetailAddPage" class="saleRejectEnterAction"
+			method="showSaleRejectEnterDetailAddPage">
+			<result name="success">/storage/salereject/saleRejectEnterDetailAddPage.jsp
+			</result>
+		</action>
+		<action name="computeSaleRejectEnterDetailNum" class="saleRejectEnterAction"
+			method="computeSaleRejectEnterDetailNum">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSaleRejectEnterDetailEditPage" class="saleRejectEnterAction"
+			method="showSaleRejectEnterDetailEditPage">
+			<result name="success">/storage/salereject/saleRejectEnterDetailEditPage.jsp
+			</result>
+		</action>
+		<action name="addSaleRejectEnterSave" class="saleRejectEnterAction"
+			method="addSaleRejectEnterSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addSaleRejectEnterHold" class="saleRejectEnterAction"
+			method="addSaleRejectEnterHold">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSaleRejectEnterViewPage" class="saleRejectEnterAction"
+			method="showSaleRejectEnterViewPage">
+			<result name="success">/storage/salereject/saleRejectEnterPage.jsp
+			</result>
+		</action>
+		<action name="saleRejectEnterViewPage" class="saleRejectEnterAction"
+			method="saleRejectEnterViewPage">
+			<result name="success">/storage/salereject/saleRejectEnterEditPage.jsp
+			</result>
+			<result name="viewSuccess">/storage/salereject/saleRejectEnterViewPage.jsp
+			</result>
+		</action>
+		<action name="showSaleRejectEnterListPage" class="saleRejectEnterAction"
+			method="showSaleRejectEnterListPage">
+			<result name="success">/storage/salereject/saleRejectEnterListPage.jsp
+			</result>
+		</action>
+		<action name="showSaleRejectEnterList" class="saleRejectEnterAction"
+			method="showSaleRejectEnterList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteSaleRejectEnter" class="saleRejectEnterAction"
+			method="deleteSaleRejectEnter">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSaleRejectEnterEditPage" class="saleRejectEnterAction"
+			method="showSaleRejectEnterEditPage">
+			<result name="success">/storage/salereject/saleRejectEnterPage.jsp
+			</result>
+		</action>
+		<action name="saleRejectEnterEditPage" class="saleRejectEnterAction"
+			method="saleRejectEnterEditPage">
+			<result name="success">/storage/salereject/saleRejectEnterEditPage.jsp
+			</result>
+			<result name="viewSuccess">/storage/salereject/saleRejectEnterViewPage.jsp
+			</result>
+		</action>
+		<action name="auditSaleRejectEnter" class="saleRejectEnterAction"
+			method="auditSaleRejectEnter">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="oppauditSaleRejectEnter" class="saleRejectEnterAction"
+			method="oppauditSaleRejectEnter">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editSaleRejectEnterHold" class="saleRejectEnterAction"
+			method="editSaleRejectEnterHold">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editSaleRejectEnterSave" class="saleRejectEnterAction"
+			method="editSaleRejectEnterSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSaleRejectOrderRelationUpperPage" class="saleRejectEnterAction"
+			method="showSaleRejectOrderRelationUpperPage">
+			<result name="success">/storage/salereject/saleRejectEnterSourceQueryPage.jsp
+			</result>
+		</action>
+		<action name="showSaleRejectEnterSourceListPage" class="saleRejectEnterAction"
+			method="showSaleRejectEnterSourceListPage">
+			<result name="success">/storage/salereject/saleRejectEnterSourceListPage.jsp
+			</result>
+		</action>
+		<action name="showRejectBillDetailList" class="saleRejectEnterAction"
+			method="showRejectBillDetailList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showReceiptDetailList" class="saleRejectEnterAction"
+			method="showReceiptDetailList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addSaleRejectEnterByRefer" class="saleRejectEnterAction"
+			method="addSaleRejectEnterByRefer">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="submitSaleRejectEnterProcess" class="saleRejectEnterAction"
+			method="submitSaleRejectEnterProcess">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="saleRejectEnterSaveCheck" class="saleRejectEnterAction"
+			method="saleRejectEnterSaveCheck">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editSalesRejectEnterStorager" class="saleRejectEnterAction" method="editSalesRejectEnterStorager">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+	<package name="storageManager-purchaseRejectOut" extends="parent"
+		namespace="/storage">
+		<action name="showPurchaseRejectOutAddPage" class="purchaseRejectOutAction"
+			method="showPurchaseRejectOutAddPage">
+			<result name="success">/storage/purchasereject/purchaseRejectOutPage.jsp
+			</result>
+		</action>
+		<action name="purchaseRejectOutAddPage" class="purchaseRejectOutAction"
+			method="purchaseRejectOutAddPage">
+			<result name="success">/storage/purchasereject/purchaseRejectOutAddPage.jsp
+			</result>
+		</action>
+		<action name="showPurchaseRejectOutDetailAddPage" class="purchaseRejectOutAction"
+			method="showPurchaseRejectOutDetailAddPage">
+			<result name="success">/storage/purchasereject/purchaseRejectOutDetailAddPage.jsp
+			</result>
+		</action>
+		<action name="computePurchaseRejectOutDetailNum" class="purchaseRejectOutAction"
+			method="computePurchaseRejectOutDetailNum">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showPurchaseRejectOutDetailEditPage" class="purchaseRejectOutAction"
+			method="showPurchaseRejectOutDetailEditPage">
+			<result name="success">/storage/purchasereject/purchaseRejectOutDetailEditPage.jsp
+			</result>
+		</action>
+		<action name="addPurchaseRejectOutSave" class="purchaseRejectOutAction"
+			method="addPurchaseRejectOutSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addPurchaseRejectOutHold" class="purchaseRejectOutAction"
+			method="addPurchaseRejectOutHold">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showPurchaseRejectOutViewPage" class="purchaseRejectOutAction"
+			method="showPurchaseRejectOutViewPage">
+			<result name="success">/storage/purchasereject/purchaseRejectOutPage.jsp
+			</result>
+		</action>
+		<action name="purchaseRejectOutViewPage" class="purchaseRejectOutAction"
+			method="purchaseRejectOutViewPage">
+			<result name="success">/storage/purchasereject/purchaseRejectOutViewPage.jsp
+			</result>
+		</action>
+		<action name="showPurchaseRejectOutListPage" class="purchaseRejectOutAction"
+			method="showPurchaseRejectOutListPage">
+			<result name="success">/storage/purchasereject/purchaseRejectOutListPage.jsp
+			</result>
+		</action>
+		<action name="showPurchaseRejectOutList" class="purchaseRejectOutAction"
+			method="showPurchaseRejectOutList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="exportPurchaseRejectOutListData" class="purchaseRejectOutAction"
+			method="exportPurchaseRejectOutListData"></action>
+		<action name="showPurchaseRejectOutEditPage" class="purchaseRejectOutAction"
+			method="showPurchaseRejectOutEditPage">
+			<result name="success">/storage/purchasereject/purchaseRejectOutPage.jsp
+			</result>
+		</action>
+		<action name="purchaseRejectOutEditPage" class="purchaseRejectOutAction"
+			method="purchaseRejectOutEditPage">
+			<result name="success">/storage/purchasereject/purchaseRejectOutEditPage.jsp
+			</result>
+			<result name="viewSuccess">/storage/purchasereject/purchaseRejectOutViewPage.jsp
+			</result>
+		</action>
+		<action name="editPurchaseRejectOutHold" class="purchaseRejectOutAction"
+			method="editPurchaseRejectOutHold">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editPurchaseRejectOutSave" class="purchaseRejectOutAction"
+			method="editPurchaseRejectOutSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getPurchaseRejectOutDetailInfo" class="purchaseRejectOutAction"
+			method="getPurchaseRejectOutDetailInfo">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deletePurchaseRejectOut" class="purchaseRejectOutAction"
+			method="deletePurchaseRejectOut">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditPurchaseRejectOut" class="purchaseRejectOutAction"
+			method="auditPurchaseRejectOut">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="oppauditPurchaseRejectOut" class="purchaseRejectOutAction"
+			method="oppauditPurchaseRejectOut">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showPurchaseRejectOutRelationUpperPage" class="purchaseRejectOutAction"
+			method="showPurchaseRejectOutRelationUpperPage">
+			<result name="success">/storage/purchasereject/purchaseRejectOutSourceQueryPage.jsp
+			</result>
+		</action>
+		<action name="showPurchaseRejectOutSourceListPage" class="purchaseRejectOutAction"
+			method="showPurchaseRejectOutSourceListPage">
+			<result name="success">/storage/purchasereject/purchaseRejectOutSourceListPage.jsp
+			</result>
+		</action>
+		<action name="addPurchaseRejectOutByRefer" class="purchaseRejectOutAction"
+			method="addPurchaseRejectOutByRefer">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="submitPurchaseRejectOutProcess" class="purchaseRejectOutAction"
+			method="submitPurchaseRejectOutProcess">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+	<package name="storageManager-allocate" extends="parent"
+		namespace="/storage">
+		<action name="showAllocateNoticeAddPage" class="allocateAction"
+			method="showAllocateNoticeAddPage">
+			<result name="success">/storage/allocate/notice/allocateNoticePage.jsp
+			</result>
+		</action>
+		<action name="allocateNoticeAddPage" class="allocateAction"
+			method="allocateNoticeAddPage">
+			<result name="success">/storage/allocate/notice/allocateNoticeAddPage.jsp
+			</result>
+		</action>
+		<action name="showAllocateNoticeDetailAddPage" class="allocateAction"
+			method="showAllocateNoticeDetailAddPage">
+			<result name="success">/storage/allocate/notice/allocateNoticeDetailAddPage.jsp
+			</result>
+		</action>
+		<action name="showAllocateNoticeDetailAddByBrandAndSortPage" class="allocateAction"
+				method="showAllocateNoticeDetailAddByBrandAndSortPage">
+			<result name="success">/storage/allocate/notice/allocateNoticeDetailAddByBrandAndSort.jsp
+			</result>
+		</action>
+		<action name="getOrderDetailByBrandAndSort" class="allocateAction"
+				method="getOrderDetailByBrandAndSort">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="AddOrderDetailByBrandAndSort" class="allocateAction" method="AddOrderDetailByBrandAndSort">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showAllocateNoticeDetailEditPage" class="allocateAction"
+			method="showAllocateNoticeDetailEditPage">
+			<result name="success">/storage/allocate/notice/allocateNoticeDetailEditPage.jsp
+			</result>
+		</action>
+		<action name="computeAllocateNoticeDetailNum" class="allocateAction"
+			method="computeAllocateNoticeDetailNum">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addAllocateNoticeHold" class="allocateAction"
+			method="addAllocateNoticeHold">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addAllocateNoticeSave" class="allocateAction"
+			method="addAllocateNoticeSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showAllocateNoticeListPage" class="allocateAction"
+			method="showAllocateNoticeListPage">
+			<result name="success">/storage/allocate/notice/allocateNoticeListPage.jsp
+			</result>
+		</action>
+		<action name="showAllocateNoticeList" class="allocateAction"
+			method="showAllocateNoticeList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showAllocateNoticeEditPage" class="allocateAction"
+			method="showAllocateNoticeEditPage">
+			<result name="success">/storage/allocate/notice/allocateNoticePage.jsp
+			</result>
+		</action>
+		<action name="allocateNoticeEditPage" class="allocateAction"
+			method="allocateNoticeEditPage">
+			<result name="success">/storage/allocate/notice/allocateNoticeEditPage.jsp
+			</result>
+			<result name="viewSuccess">/storage/allocate/notice/allocateNoticeViewPage.jsp
+			</result>
+		</action>
+		<action name="editAllocateNoticeSave" class="allocateAction"
+			method="editAllocateNoticeSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editAllocateNoticeHold" class="allocateAction"
+			method="editAllocateNoticeHold">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showAllocateNoticeViewPage" class="allocateAction"
+			method="showAllocateNoticeViewPage">
+			<result name="success">/storage/allocate/notice/allocateNoticePage.jsp
+			</result>
+		</action>
+		<action name="allocateNoticeViewPage" class="allocateAction"
+			method="allocateNoticeViewPage">
+			<result name="success">/storage/allocate/notice/allocateNoticeViewPage.jsp
+			</result>
+		</action>
+		<action name="deleteAllocateNotice" class="allocateAction"
+			method="deleteAllocateNotice">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditAllocateNotice" class="allocateAction"
+			method="auditAllocateNotice">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="oppauditAllocateNotice" class="allocateAction"
+			method="oppauditAllocateNotice">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showAllocateNoticeDetailList" class="allocateAction"
+			method="showAllocateNoticeDetailList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getAllocateNoticeDetailInfo" class="allocateAction"
+			method="getAllocateNoticeDetailInfo">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="allocateNoticeImport" class="allocateAction"
+			method="allocateNoticeImport">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="exportAllocateNoticeList" class="allocateAction" method="exportAllocateNoticeList"></action>
+		<action name="submitAllocateNoticePageProcess" class="allocateAction"
+			method="submitAllocateNoticePageProcess">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<!-- 调拨出库单 -->
+		<action name="showAllocateOutAddPage" class="allocateAction"
+			method="showAllocateOutAddPage">
+			<result name="success">/storage/allocate/out/allocateOutPage.jsp
+			</result>
+		</action>
+		<action name="allocateOutAddPage" class="allocateAction"
+			method="allocateOutAddPage">
+			<result name="success">/storage/allocate/out/allocateOutAddPage.jsp
+			</result>
+		</action>
+		<action name="showAllocateOutListPage" class="allocateAction"
+			method="showAllocateOutListPage">
+			<result name="success">/storage/allocate/out/allocateOutListPage.jsp
+			</result>
+		</action>
+		<action name="showAllocateOutList" class="allocateAction"
+			method="showAllocateOutList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showAllocateOutDetailAddPage" class="allocateAction"
+			method="showAllocateOutDetailAddPage">
+			<result name="success">/storage/allocate/out/allocateOutDetailAddPage.jsp
+			</result>
+		</action>
+		<action name="showAllocateOutDetailEditPage" class="allocateAction"
+			method="showAllocateOutDetailEditPage">
+			<result name="success">/storage/allocate/out/allocateOutDetailEditPage.jsp
+			</result>
+		</action>
+		<action name="addAllocateOutSave" class="allocateAction"
+			method="addAllocateOutSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addAllocateOutHold" class="allocateAction"
+			method="addAllocateOutHold">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showAllocateOutViewPage" class="allocateAction"
+			method="showAllocateOutViewPage">
+			<result name="success">/storage/allocate/out/allocateOutPage.jsp
+			</result>
+		</action>
+		<action name="allocateOutViewPage" class="allocateAction"
+			method="allocateOutViewPage">
+			<result name="success">/storage/allocate/out/allocateOutViewPage.jsp
+			</result>
+		</action>
+		<action name="showAllocateOutEditPage" class="allocateAction"
+			method="showAllocateOutEditPage">
+			<result name="success">/storage/allocate/out/allocateOutPage.jsp
+			</result>
+		</action>
+		<action name="allocateOutEditPage" class="allocateAction"
+			method="allocateOutEditPage">
+			<result name="success">/storage/allocate/out/allocateOutEditPage.jsp
+			</result>
+			<result name="viewSuccess">/storage/allocate/out/allocateOutViewPage.jsp
+			</result>
+		</action>
+		<action name="editAllocateOutSave" class="allocateAction"
+			method="editAllocateOutSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editAllocateOutHold" class="allocateAction"
+			method="editAllocateOutHold">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteAllocateOut" class="allocateAction" method="deleteAllocateOut">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showAllocateOutRelationUpperPage" class="allocateAction"
+			method="showAllocateOutRelationUpperPage">
+			<result name="success">/storage/allocate/out/allocateOutSourceQueryPage.jsp
+			</result>
+		</action>
+		<action name="showAllocateOutSourceListPage" class="allocateAction"
+			method="showAllocateOutSourceListPage">
+			<result name="success">/storage/allocate/out/allocateOutSourceListPage.jsp
+			</result>
+		</action>
+		<action name="addAllocateOutByRefer" class="allocateAction"
+			method="addAllocateOutByRefer">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditAllocateOut" class="allocateAction" method="auditAllocateOut">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="oppauditAllocateOut" class="allocateAction"
+			method="oppauditAllocateOut">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getAllocateOutDetailInfo" class="allocateAction"
+			method="getAllocateOutDetailInfo">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showAllocateOutDetailList" class="allocateAction"
+			method="showAllocateOutDetailList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="submitAllocateOutPageProcess" class="allocateAction"
+			method="submitAllocateOutPageProcess">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showAllocateOutDetailListPage" class="allocateAction"
+			method="showAllocateOutDetailListPage">
+			<result name="success">/storage/allocate/out/allocateOutDetailListPage.jsp
+			</result>
+		</action>
+		<action name="exportAllocateOutData" class="allocateAction"
+			method="exportAllocateOutData">
+		</action>
+		<action name="showAllocateOutDetailListQuery" class="allocateAction"
+			method="showAllocateOutDetailListQuery">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="allocateOutImport" class="allocateAction" method="allocateOutImport">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="exportAllocateOutList" class="allocateAction"
+			method="exportAllocateOutList"></action>
+		<!-- 调拨入库单 -->
+		<action name="showAllocateEnterListPage" class="allocateAction"
+			method="showAllocateEnterListPage">
+			<result name="success">/storage/allocate/enter/allocateEnterListPage.jsp
+			</result>
+		</action>
+		<action name="showAllocateEnterList" class="allocateAction"
+			method="showAllocateEnterList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showAllocateEnterViewPage" class="allocateAction"
+			method="showAllocateEnterViewPage">
+			<result name="success">/storage/allocate/enter/allocateEnterPage.jsp
+			</result>
+		</action>
+		<action name="allocateEnterViewPage" class="allocateAction"
+			method="allocateEnterViewPage">
+			<result name="success">/storage/allocate/enter/allocateEnterViewPage.jsp
+			</result>
+		</action>
+		<action name="showAllocateEnterEditPage" class="allocateAction"
+			method="showAllocateEnterEditPage">
+			<result name="success">/storage/allocate/enter/allocateEnterPage.jsp
+			</result>
+		</action>
+		<action name="allocateEnterEditPage" class="allocateAction"
+			method="allocateEnterEditPage">
+			<result name="success">/storage/allocate/enter/allocateEnterEditPage.jsp
+			</result>
+		</action>
+		<action name="showAllocateEnterDetailEditPage" class="allocateAction"
+			method="showAllocateEnterDetailEditPage">
+			<result name="success">/storage/allocate/enter/allocateEnterDetailEditPage.jsp
+			</result>
+		</action>
+		<action name="editAllocateEnterSave" class="allocateAction"
+			method="editAllocateEnterSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editAllocateEnterHold" class="allocateAction"
+			method="editAllocateEnterHold">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteAllocateEnter" class="allocateAction"
+			method="deleteAllocateEnter">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditAllocateEnter" class="allocateAction"
+			method="auditAllocateEnter">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showAllocateEnterRelationUpperPage" class="allocateAction"
+			method="showAllocateEnterRelationUpperPage">
+			<result name="success">/storage/allocate/enter/allocateEnterSourceQueryPage.jsp
+			</result>
+		</action>
+		<action name="showAllocateEnterSourceListPage" class="allocateAction"
+			method="showAllocateEnterSourceListPage">
+			<result name="success">/storage/allocate/enter/allocateEnterSourceListPage.jsp
+			</result>
+		</action>
+		<action name="addAllocateEnterByRefer" class="allocateAction"
+			method="addAllocateEnterByRefer">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="submitAllocateEnterPageProcess" class="allocateAction"
+			method="submitAllocateEnterPageProcess">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditAllocateStorageOut" class="allocateAction" method="auditAllocateStorageOut">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditAllocateStorageEnter" class="allocateAction" method="auditAllocateStorageEnter">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="oppauditAllocateStorageOut" class="allocateAction" method="oppauditAllocateStorageOut">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getStorageSummaryCostprice" class="allocateAction" method="getStorageSummaryCostprice">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showAllocateDiffAmountPage" class="allocateAction"
+				method="showAllocateDiffAmountPage">
+			<result name="success">/storage/allocate/out/allocateDiffAmountPage.jsp
+			</result>
+		</action>
+		<action name="showAllocateDiffAmountData" class="allocateAction" method="showAllocateDiffAmountData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="exportAllocateDiffAmountData" class="allocateAction" method="exportAllocateDiffAmountData"></action>
+		<action name="showAllocateOutGoodsWaitListData" class="allocateAction" method="showAllocateOutGoodsWaitListData">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showGoodsAllocateOutWaitListPage" class="allocateAction" method="showGoodsAllocateOutWaitListPage">
+			<result name="success">/storage/allocate/out/goodsAllocateOutWaitListPage.jsp
+			</result>
+		</action>
+	</package>
+	<!-- 其他入库单 -->
+	<package name="storageManager-otherEnter" extends="parent"
+		namespace="/storage">
+		<action name="showStorageOtherEnterAddPage" class="storageOtherEnterAction"
+			method="showStorageOtherEnterAddPage">
+			<result name="success">/storage/other/enter/storageOtherEnterPage.jsp
+			</result>
+		</action>
+		<action name="storageOtherEnterAddPage" class="storageOtherEnterAction"
+			method="storageOtherEnterAddPage">
+			<result name="success">/storage/other/enter/storageOtherEnterAddPage.jsp
+			</result>
+		</action>
+		<action name="showStorageOtherEnterDetailAddPage" class="storageOtherEnterAction"
+			method="showStorageOtherEnterDetailAddPage">
+			<result name="success">/storage/other/enter/storageOtherEnterDetailAddPage.jsp
+			</result>
+		</action>
+		<action name="showStorageOtherEnterDetailAddPageForCost" class="storageOtherEnterAction"
+				method="showStorageOtherEnterDetailAddPageForCost">
+			<result name="success">/storage/other/enter/storageOtherEnterDetailAddPageForCost.jsp
+			</result>
+		</action>
+
+		<action name="showStorageOtherEnterDetailEditPage" class="storageOtherEnterAction"
+			method="showStorageOtherEnterDetailEditPage">
+			<result name="success">/storage/other/enter/storageOtherEnterDetailEditPage.jsp
+			</result>
+		</action>
+        <action name="showStorageOtherEnterDetailEditPageForCost" class="storageOtherEnterAction"
+                method="showStorageOtherEnterDetailEditPageForCost">
+            <result name="success">/storage/other/enter/storageOtherEnterDetailEditPageForCost.jsp
+            </result>
+        </action>
+
+		<action name="addStorageOtherEnterHold" class="storageOtherEnterAction"
+			method="addStorageOtherEnterHold">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addStorageOtherEnterSave" class="storageOtherEnterAction"
+			method="addStorageOtherEnterSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+        <action name="storageOtherEnterImport" class="storageOtherEnterAction"
+                method="storageOtherEnterImport">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+		<action name="showStorageOtherEnterViewPage" class="storageOtherEnterAction"
+			method="showStorageOtherEnterViewPage">
+			<result name="success">/storage/other/enter/storageOtherEnterPage.jsp
+			</result>
+		</action>
+        <action name="storageOtherEnterExport" class="storageOtherEnterAction" method="storageOtherEnterExport"></action>
+
+		<action name="storageOtherEnterViewPage" class="storageOtherEnterAction"
+			method="storageOtherEnterViewPage">
+			<result name="success">/storage/other/enter/storageOtherEnterViewPage.jsp
+			</result>
+		</action>
+		<action name="showStorageOtherEnterListPage" class="storageOtherEnterAction"
+			method="showStorageOtherEnterListPage">
+			<result name="success">/storage/other/enter/storageOtherEnterListPage.jsp
+			</result>
+		</action>
+		<action name="showStorageOtherEnterList" class="storageOtherEnterAction"
+			method="showStorageOtherEnterList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showStorageOtherEnterEditPage" class="storageOtherEnterAction"
+			method="showStorageOtherEnterEditPage">
+			<result name="success">/storage/other/enter/storageOtherEnterPage.jsp
+			</result>
+		</action>
+		<action name="storageOtherEnterEditPage" class="storageOtherEnterAction"
+			method="storageOtherEnterEditPage">
+			<result name="addSuccess">/storage/other/enter/storageOtherEnterAddPage.jsp
+			</result>
+			<result name="viewSuccess">/storage/other/enter/storageOtherEnterViewPage.jsp
+			</result>
+			<result name="editSuccess">/storage/other/enter/storageOtherEnterEditPage.jsp
+			</result>
+		</action>
+		<action name="editStorageOtherEnterHold" class="storageOtherEnterAction"
+			method="editStorageOtherEnterHold">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editStorageOtherEnterSave" class="storageOtherEnterAction"
+			method="editStorageOtherEnterSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteStorageOtherEnter" class="storageOtherEnterAction"
+			method="deleteStorageOtherEnter">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditStorageOtherEnter" class="storageOtherEnterAction"
+			method="auditStorageOtherEnter">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="oppauditStorageOtherEnter" class="storageOtherEnterAction"
+			method="oppauditStorageOtherEnter">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="submitStorageOtherEnterProcess" class="storageOtherEnterAction"
+			method="submitStorageOtherEnterProcess">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+	<package name="storageManager-storageOtherOut" extends="parent"
+		namespace="/storage">
+		<action name="showStorageOtherOutAddPage" class="storageOtherOutAction"
+			method="showStorageOtherOutAddPage">
+			<result name="success">/storage/other/out/storageOtherOutPage.jsp
+			</result>
+		</action>
+        <action name="storageOtherOutExport" class="storageOtherOutAction" method="storageOtherOutExport"></action>
+
+		<action name="storageOtherOutAddPage" class="storageOtherOutAction"
+			method="storageOtherOutAddPage">
+			<result name="success">/storage/other/out/storageOtherOutAddPage.jsp
+			</result>
+		</action>
+		<action name="showStorageOtherOutDetailAddPage" class="storageOtherOutAction"
+			method="showStorageOtherOutDetailAddPage">
+			<result name="success">/storage/other/out/storageOtherOutDetailAddPage.jsp
+			</result>
+		</action>
+		<action name="showStorageOtherOutDetailAddPageForCost" class="storageOtherOutAction"
+				method="showStorageOtherOutDetailAddPageForCost">
+			<result name="success">/storage/other/out/storageOtherOutDetailAddPageForCost.jsp
+			</result>
+		</action>
+		<action name="showStorageOtherOutDetailEditPage" class="storageOtherOutAction"
+			method="showStorageOtherOutDetailEditPage">
+			<result name="success">/storage/other/out/storageOtherOutDetailEditPage.jsp
+			</result>
+		</action>
+		<action name="showStorageOtherOutDetailEditPageForCost" class="storageOtherOutAction"
+				method="showStorageOtherOutDetailEditPageForCost">
+			<result name="success">/storage/other/out/storageOtherOutDetailEditPageForCost.jsp
+			</result>
+		</action>
+
+		<action name="addStorageOtherOutHold" class="storageOtherOutAction"
+			method="addStorageOtherOutHold">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addStorageOtherOutSave" class="storageOtherOutAction"
+			method="addStorageOtherOutSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+        <action name="storageOtherOutImport" class="storageOtherOutAction"
+                method="storageOtherOutImport">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+		<action name="showStorageOtherOutViewPage" class="storageOtherOutAction"
+			method="showStorageOtherOutViewPage">
+			<result name="success">/storage/other/out/storageOtherOutPage.jsp
+			</result>
+		</action>
+		<action name="storageOtherOutViewPage" class="storageOtherOutAction"
+			method="storageOtherOutViewPage">
+			<result name="success">/storage/other/out/storageOtherOutViewPage.jsp
+			</result>
+		</action>
+		<action name="showStorageOtherOutListPage" class="storageOtherOutAction"
+			method="showStorageOtherOutListPage">
+			<result name="success">/storage/other/out/storageOtherOutListPage.jsp
+			</result>
+		</action>
+		<action name="showStorageOtherOutList" class="storageOtherOutAction"
+			method="showStorageOtherOutList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showStorageOtherOutEditPage" class="storageOtherOutAction"
+			method="showStorageOtherOutEditPage">
+			<result name="success">/storage/other/out/storageOtherOutPage.jsp
+			</result>
+		</action>
+		<action name="storageOtherOutEditPage" class="storageOtherOutAction"
+			method="storageOtherOutEditPage">
+			<result name="addSuccess">/storage/other/out/storageOtherOutAddPage.jsp
+			</result>
+			<result name="viewSuccess">/storage/other/out/storageOtherOutViewPage.jsp
+			</result>
+			<result name="editSuccess">/storage/other/out/storageOtherOutEditPage.jsp
+			</result>
+		</action>
+		<action name="editStorageOtherOutHold" class="storageOtherOutAction"
+			method="editStorageOtherOutHold">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editStorageOtherOutSave" class="storageOtherOutAction"
+			method="editStorageOtherOutSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteStorageOtherOut" class="storageOtherOutAction"
+			method="deleteStorageOtherOut">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditStorageOtherOut" class="storageOtherOutAction"
+			method="auditStorageOtherOut">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="oppauditStorageOtherOut" class="storageOtherOutAction"
+			method="oppauditStorageOtherOut">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="submitStorageOtherOutProcess" class="storageOtherOutAction"
+			method="submitStorageOtherOutProcess">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getStorageOtherOutDetailInfo" class="storageOtherOutAction"
+			method="getStorageOtherOutDetailInfo">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+
+		<!-- 配送单 -->
+		<action name="showDeliveryAddPage" class="deliveryAction"
+			method="showDeliveryAddPage">
+			<result name="success">/storage/delivery/deliveryAddPage.jsp</result>
+		</action>
+		<action name="getSaleOutListForDelivery" class="deliveryAction"
+			method="getSaleOutListForDelivery">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getSaleOutListForAddDelivery" class="deliveryAction"
+			method="getSaleOutListForAddDelivery">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addDeliveryList" class="deliveryAction" method="addDeliveryList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showDeliveryListPage" class="deliveryAction"
+			method="showDeliveryListPage">
+			<result name="success">/storage/delivery/deliveryListPage.jsp</result>
+		</action>
+		<action name="showDeliveryList" class="deliveryAction" method="showDeliveryList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showDeliveryPage" class="deliveryAction" method="showDeliveryPage">
+			<result name="success">/storage/delivery/deliveryPage.jsp</result>
+		</action>
+		<action name="showDeliveryViewPage" class="deliveryAction"
+			method="showDeliveryViewPage">
+			<result name="success">/storage/delivery/deliveryViewPage.jsp</result>
+		</action>
+		<action name="showDeliveryCustomerList" class="deliveryAction"
+			method="showDeliveryCustomerList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showDeliverySaleoutList" class="deliveryAction"
+			method="showDeliverySaleoutList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showDeliveryGoodsSumData" class="deliveryAction" method="showDeliveryGoodsSumData">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showDeliveryEditPage" class="deliveryAction"
+			method="showDeliveryEditPage">
+			<result name="success">/storage/delivery/deliveryEditPage.jsp</result>
+		</action>
+
+		<action name="showDeliveryAddSaleoutPage" class="deliveryAction"
+			method="showDeliveryAddSaleoutPage">
+			<result name="success">/storage/delivery/deliveryAddSaleoutPage.jsp
+			</result>
+		</action>
+		<action name="getDeliveryCustomerListBySaleoutids" class="deliveryAction"
+			method="getDeliveryCustomerListBySaleoutids">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editDelivery" class="deliveryAction" method="editDelivery">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditDeliverys" class="deliveryAction" method="auditDeliverys">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showDeliveryAuditPage" class="deliveryAction"
+			method="showDeliveryAuditPage">
+			<result name="success">/storage/delivery/deliveryAuditPage.jsp</result>
+		</action>
+		<action name="saveAuditDelivery" class="deliveryAction" method="saveAuditDelivery">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="checkDelivery" class="deliveryAction" method="checkDelivery">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteDeliverys" class="deliveryAction" method="deleteDeliverys">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showDeliveryAddCustomerPage" class="deliveryAction"
+			method="showDeliveryAddCustomerPage">
+			<result name="success">/storage/delivery/deliveryAddCustomerPage.jsp
+			</result>
+		</action>
+		<action name="deliveryCustomerExport" class="deliveryAction"
+			method="deliveryCustomerExport">
+		</action>
+		<action name="oppauditDeliverys" class="deliveryAction" method="oppauditDeliverys">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="unCheckDelivery" class="deliveryAction" method="unCheckDelivery">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getTruckSubsidyByTruck" class="deliveryAction"
+			method="getTruckSubsidyByTruck">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getCustomersubsidyByCustomernums" class="deliveryAction"
+			method="getCustomersubsidyByCustomernums">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getVolumeAndWeightForCar" class="deliveryAction"
+			method="getVolumeAndWeightForCar">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="isExistSameTruck" class="deliveryAction" method="isExistSameTruck">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+        <action name="deliveryAddMapPage" class="deliveryAction" method="deliveryAddMapPage">
+            <result name="success">/storage/delivery/deliveryAddMapPage.jsp</result>
+        </action>
+        <action name="deliveryCustomerMapPage" class="deliveryAction" method="deliveryAddMapPage">
+            <result name="success">/storage/delivery/deliveryCustomerMapPage.jsp</result>
+        </action>
+        <action name="deliveryAddSaleoutMapPage" class="deliveryAction" method="deliveryAddMapPage">
+            <result name="success">/storage/delivery/deliveryAddSaleoutMapPage.jsp</result>
+        </action>
+        <action name="deliveryAddByMapPage" class="deliveryAction" method="deliveryAddByMapPage">
+            <result name="success">/storage/delivery/deliveryAddByMapPage.jsp</result>
+        </action>
+        <action name="deliveryAddByMapPage2" class="deliveryAction" method="deliveryAddByMapPage2">
+            <result name="success">/storage/delivery/deliveryAddByMapPage2.jsp</result>
+        </action>
+		<action name="exportDeliveryListData" class="deliveryAction" method="exportDeliveryListData"></action>
+
+		<!-- 大单发货 -->
+		<action name="showBigSaleOutPage" class="bigSaleOutAction"
+			method="showBigSaleOutPage">
+			<result name="success">/storage/bigsaleout/bigSaleOutPage.jsp</result>
+		</action>
+		<action name="showBigSaleOutAddPage" class="bigSaleOutAction"
+			method="showBigSaleOutAddPage">
+			<result name="success">/storage/bigsaleout/bigSaleOutAddPage.jsp
+			</result>
+		</action>
+		<action name="showBigSaleOutEditPage" class="bigSaleOutAction"
+			method="showBigSaleOutEditPage">
+			<result name="success">/storage/bigsaleout/bigSaleOutEditPage.jsp
+			</result>
+		</action>
+		<action name="showBigSaleOutListPage" class="bigSaleOutAction"
+			method="showBigSaleOutListPage">
+			<result name="success">/storage/bigsaleout/bigSaleOutListPage.jsp
+			</result>
+		</action>
+		<action name="showBigSaleOutViewPage" class="bigSaleOutAction"
+			method="showBigSaleOutViewPage">
+			<result name="success">/storage/bigsaleout/bigSaleOutViewPage.jsp
+			</result>
+		</action>
+		<action name="showBigSaleOutAddSaleoutPage" class="bigSaleOutAction"
+			method="showBigSaleOutAddSaleoutPage">
+			<result name="success">/storage/bigsaleout/bigSaleOutAddSaleoutPage.jsp
+			</result>
+		</action>
+		<action name="showBigSaleOutTotalGoodsPrintViewPage" class="bigSaleOutAction" method="showBigSaleOutTotalGoodsPrintViewPage">
+			<result name="success">/storage/bigsaleout/bigSaleOutTotalGoodsPrintViewPage.jsp </result>
+		</action>
+		<action name="showBigSaleOutGoodsCustomerPrintViewPage" class="bigSaleOutAction" method="showBigSaleOutGoodsCustomerPrintViewPage">
+			<result name="success">/storage/bigsaleout/bigSaleOutGoodsCustomerPrintViewPage.jsp </result>
+			<result name="nomodelsuccess">/storage/bigsaleout/bigSaleOutGoodsCustomerNomodelPrintViewPage.jsp </result>
+		</action>
+		<action name="showBigSaleOutGoodsCustomerDivPrintViewPage" class="bigSaleOutAction" method="showBigSaleOutGoodsCustomerDivPrintViewPage">
+			<result name="success">/storage/bigsaleout/bigSaleOutGoodsCustomerDivPrintViewPage.jsp </result>
+			<result name="nomodelsuccess">/storage/bigsaleout/bigSaleOutGoodsCustomerNomodelDivPrintViewPage.jsp </result>
+		</action>
+		<action name="showBigSaleOutBrandPrintViewPage" class="bigSaleOutAction" method="showBigSaleOutBrandPrintViewPage">
+			<result name="success">/storage/bigsaleout/bigSaleOutBrandPrintViewPage.jsp </result>
+		</action>
+		<action name="showBigSaleOutCustomerGoodsNumPage" class="bigSaleOutAction"
+			method="showBigSaleOutCustomerGoodsNumPage">
+			<result name="success">/storage/bigsaleout/bigSaleOutCustomerGoodsNumPage.jsp
+			</result>
+		</action>
+		<action name="updateBigSaleoutPrintNum" class="bigSaleOutAction"
+			method="updateBigSaleoutPrintNum"></action>
+		<action name="getSaleOutListForBigSaleOut" class="bigSaleOutAction"
+			method="getSaleOutListForBigSaleOut">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getBigSaleOutCustomerGoodsNumList" class="bigSaleOutAction"
+			method="getBigSaleOutCustomerGoodsNumList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getBigSaleOutList" class="bigSaleOutAction"
+			method="getBigSaleOutList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addBigSaleOut" class="bigSaleOutAction" method="addBigSaleOut">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showBigSaleOutGoodsList" class="bigSaleOutAction"
+			method="showBigSaleOutGoodsList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showBigSaleOutSourceBillList" class="bigSaleOutAction"
+			method="showBigSaleOutSourceBillList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditBigSaleOuts" class="bigSaleOutAction"
+			method="auditBigSaleOuts">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="oppauditBigSaleOut" class="bigSaleOutAction" method="oppauditBigSaleOut">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteBigSaleOuts" class="bigSaleOutAction"
+			method="deleteBigSaleOuts">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="saveBigSaleOut" class="bigSaleOutAction" method="saveBigSaleOut">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="doSaleoutBigSaleOuts" class="bigSaleOutAction" method="doSaleoutBigSaleOuts">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="cancelDoSaleoutBigSaleOuts" class="bigSaleOutAction" method="cancelDoSaleoutBigSaleOuts">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+
+	</package>
+
+	<!-- 供应商代配送入库单 -->
+	<package name="storageManager-distribution" extends="parent"
+		namespace="/storage/distrtibution">
+
+		<action name="showDistributeRejectListPage" class="distributeRejectAction"
+			method="showDistributeRejectListPage">
+			<result name="success">/storage/distributereject/distributeRejectListPage.jsp
+			</result>
+		</action>
+		
+		<action name="distributeRejectList" class="distributeRejectAction"
+			method="distributeRejectList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+
+		<action name="showDistributeRejectPage" class="distributeRejectAction"
+			method="showDistributeRejectPage">
+			<result name="success">/storage/distributereject/distributeRejectPage.jsp
+			</result>
+		</action>
+        <action name="getDistributeRejectType" class="distributeRejectAction" method="getDistributeRejectType">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="distributeRejectAddPage" class="distributeRejectAction" method="distributeRejectAddPage">
+			<result name="success">/storage/distributereject/distributeRejectAddPage.jsp
+			</result>
+		</action>
+
+		<action name="distributeRejectInfoAdd" class="distributeRejectAction" method="distributeRejectInfoAdd">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		<action name="distributeRejectDetailAdd" class="distributeRejectAction" method="distributeRejectDetailAdd">
+			<result name="success">/storage/distributereject/distributeRejectDetailAdd.jsp</result>
+		</action>
+		
+		<action name="getGoodsmeteringunit" class="distributeRejectAction" method="getGoodsmeteringunit">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		<action name="getGoodsdetail" class="distributeRejectAction" method="getGoodsdetail">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		<action name="distributeRejectDetailEdit" class="distributeRejectAction" method="distributeRejectDetailEdit">
+			<result name="success">/storage/distributereject/distributeRejectDetailEdit.jsp</result>
+		</action>
+		
+		
+		<action name="distributeRejectEdit" class="distributeRejectAction" method="distributeRejectEdit">
+			<result name="edit">/storage/distributereject/distributeRejectEditPage.jsp</result>
+			<result name="view">/storage/distributereject/distributeRejectViewPage.jsp</result>
+		</action>
+		
+		
+		<action name="distributeRejectInfoEditSave" class="distributeRejectAction" method="distributeRejectInfoEditSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		<action name="deleteEnter" class="distributeRejectAction" method="deleteEnter">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		<action name="batchdeleteEnter" class="distributeRejectAction" method="batchdeleteEnter">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		
+		<action name="audit" class="distributeRejectAction" method="audit">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="audits" class="distributeRejectAction" method="audits">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="opaudit" class="distributeRejectAction" method="opaudit">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		<action name="check" class="distributeRejectAction" method="check">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="batchcheck" class="distributeRejectAction" method="batchcheck">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+	</package>
+	
+	<!-- 供应商代配送出库单 -->
+	<package name="storageManager-deleveryOut" extends="parent"
+		namespace="/storage/deliveryout">
+		<action name="showDeliveryOutListPage" class="deliveryoutAction" method="showDeliveryOutListPage">
+			<result name="success">/storage/deliveryout/DeliveryOutListPage.jsp</result>
+		</action>
+		
+		<action name="showDeliveryOutPage" class="deliveryoutAction" method="showDeliveryOutPage">
+			<result name="success">/storage/deliveryout/DeliveryOutPage.jsp</result>
+		</action>
+		<action name="getDeliveryOutType" class="deliveryoutAction" method="getDeliveryOutType">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deliveryOutAddPage" class="deliveryoutAction" method="deliveryOutAddPage">
+			<result name="success">/storage/deliveryout/DeliveryOutAddPage.jsp</result>
+		</action>
+		
+		<action name="deliveryOutDetailDiaLogAdd" class="deliveryoutAction" method="deliveryOutDetailDiaLogAdd">
+			<result name="success">/storage/deliveryout/DeliveryOutDetailAdd.jsp</result>
+		</action>
+		
+		<action name="deliveryOutSave" class="deliveryoutAction" method="deliveryOutSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		<action name="getStorageSummaryBatchByStorageidAndGoodsidAndBatchNo" class="deliveryoutAction" method="getStorageSummaryBatchByStorageidAndGoodsidAndBatchNo">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		
+		
+		<action name="deliveryOutListPage" class="deliveryoutAction" method="deliveryOutListPage">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		<action name="batchdeleteOut" class="deliveryoutAction" method="batchdeleteOut">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		<action name="deliveryOutEditPage" class="deliveryoutAction" method="deliveryOutEditPage">
+			<result name="edit">/storage/deliveryout/DeliveryOutEditPage.jsp</result>
+			<result name="view">/storage/deliveryout/DeliveryOutViewPage.jsp</result>
+		</action>
+		
+		<action name="deliveryOutEditSave" class="deliveryoutAction" method="deliveryOutEditSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		<action name="deleteOut" class="deliveryoutAction" method="deleteOut">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		<action name="audit" class="deliveryoutAction" method="audit">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="audits" class="deliveryoutAction" method="audits">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="dileveryOutDetailEdit" class="deliveryoutAction" method="dileveryOutDetailEdit">
+			<result name="success">/storage/deliveryout/DeliveryOutDetailEdit.jsp</result>
+		</action>
+		
+		<action name="getStorageSummaryByStorageidAndGoodsid" class="deliveryoutAction" method="getStorageSummaryByStorageidAndGoodsid">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		<action name="getDeliveryOutGoodsInfo" class="deliveryoutAction" method="getDeliveryOutGoodsInfo">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		<action name="getStorageDeliveryOutDetail" class="deliveryoutAction" method="getStorageDeliveryOutDetail">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		<action name="oppauditDeliveryOut" class="deliveryoutAction" method="oppauditDeliveryOut">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+		<action name="check" class="deliveryoutAction" method="check">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="batchcheck" class="deliveryoutAction" method="batchcheck">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		
+	</package>
+    <package name="storageManager-splitmerge" extends="parent" namespace="/storage/splitmerge">
+        <action name="splitListPage" class="splitMergeAction" method="splitListPage">
+            <result name="success">/storage/splitmerge/split/splitListPage.jsp</result>
+        </action>
+        <action name="splitPage" class="splitMergeAction" method="splitPage">
+            <result name="success">/storage/splitmerge/split/splitPage.jsp</result>
+        </action>
+        <action name="splitAddPage" class="splitMergeAction" method="splitAddPage">
+            <result name="success">/storage/splitmerge/split/splitAddPage.jsp</result>
+        </action>
+        <action name="splitEditPage" class="splitMergeAction" method="splitEditPage">
+            <result name="success">/storage/splitmerge/split/splitEditPage.jsp</result>
+        </action>
+        <action name="splitViewPage" class="splitMergeAction" method="splitViewPage">
+            <result name="success">/storage/splitmerge/split/splitViewPage.jsp</result>
+        </action>
+        <action name="selectSplitMergeList" class="splitMergeAction" method="selectSplitMergeList">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="addSplit" class="splitMergeAction" method="addSplitMerge">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="editSplit" class="splitMergeAction" method="editSplitMerge">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="auditSplit" class="splitMergeAction" method="auditSplitMerge">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="deleteSplit" class="splitMergeAction" method="deleteSplitMerge">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="mergeListPage" class="splitMergeAction" method="mergeListPage">
+            <result name="success">/storage/splitmerge/merge/mergeListPage.jsp</result>
+        </action>
+        <action name="mergePage" class="splitMergeAction" method="mergePage">
+            <result name="success">/storage/splitmerge/merge/mergePage.jsp</result>
+        </action>
+        <action name="mergeEditPage" class="splitMergeAction" method="mergeEditPage">
+            <result name="success">/storage/splitmerge/merge/mergeEditPage.jsp</result>
+        </action>
+        <action name="mergeViewPage" class="splitMergeAction" method="mergeViewPage">
+            <result name="success">/storage/splitmerge/merge/mergeViewPage.jsp</result>
+        </action>
+        <action name="addMerge" class="splitMergeAction" method="addSplitMerge">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="editMerge" class="splitMergeAction" method="editSplitMerge">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="auditMerge" class="splitMergeAction" method="auditSplitMerge">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="deleteMerge" class="splitMergeAction" method="deleteSplitMerge">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+    </package>
+	<package name="storageSendUser" extends="parent" namespace="/storage/senduser">
+		<action name="showSendUserOrderListPage" class="storageSendUserAction" method="showSendUserOrderListPage">
+			<result name="success">/storage/senduser/sendUserOrderListPage.jsp</result>
+		</action>
+		<action name="showSendUserOrderList" class="storageSendUserAction" method="showSendUserOrderList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSendUserOrderCheckPage" class="storageSendUserAction" method="showSendUserOrderCheckPage">
+			<result name="success">/storage/senduser/sendUserOrderCheckPage.jsp</result>
+		</action>
+		<action name="showSendUserOrderLoadedPage" class="storageSendUserAction" method="showSendUserOrderLoadedPage">
+			<result name="success">/storage/senduser/sendUserOrderLoadedPage.jsp</result>
+		</action>
+		<action name="showSendUserOrderUnloadedPage" class="storageSendUserAction" method="showSendUserOrderUnloadedPage">
+			<result name="success">/storage/senduser/sendUserOrderUnloadedPage.jsp</result>
+		</action>
+		<action name="showOrderList" class="storageSendUserAction" method="showOrderList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="SendUserOrderAssigned" class="storageSendUserAction" method="SendUserOrderAssigned">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSendUserDetailListPage" class="storageSendUserAction" method="showSendUserDetailListPage">
+			<result name="success">/storage/senduser/sendUserDetailListPage.jsp</result>
+		</action>
+		<action name="showSendUserDetailList" class="storageSendUserAction" method="showSendUserDetailList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showSendUserDetailListLogPage" class="storageSendUserAction" method="showSendUserDetailListLogPage">
+			<result name="success">/storage/senduser/sendUserDetailListLogPage.jsp</result>
+		</action>
+		<action name="getSendUserDetailLogBySendUser" class="storageSendUserAction" method="getSendUserDetailLogBySendUser">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="exportSendUserDetailList" class="storageSendUserAction" method="exportSendUserDetailList"></action>
+		<action name="exportSendUserDetailLogList" class="storageSendUserAction" method="exportSendUserDetailLogList"></action>
+		<action name="deleteSendUserOrder" class="storageSendUserAction" method="deleteSendUserOrder">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+
+
+
+
+	<package name="storageManager-lend" extends="parent"
+			 namespace="/storage">
+		<action name="showLendAddPage" class="lendAction"
+				method="showLendAddPage">
+			<result name="outSuccess">/storage/lend/out/lendOutPage.jsp</result>
+			<result name="enterSuccess">/storage/lend/enter/lendEnterPage.jsp</result>
+		</action>
+		<action name="lendExport" class="lendAction" method="lendExport"></action>
+
+		<action name="lendAddPage" class="lendAction"
+				method="lendAddPage">
+			<result name="outSuccess">/storage/lend/out/lendOutAddPage.jsp</result>
+			<result name="enterSuccess">/storage/lend/enter/lendEnterAddPage.jsp</result>
+		</action>
+		<action name="showLendDetailAddPage" class="lendAction"
+				method="showLendDetailAddPage">
+			<result name="outSuccess">/storage/lend/out/lendOutDetailAddPage.jsp</result>
+			<result name="enterSuccess">/storage/lend/enter/lendEnterDetailAddPage.jsp</result>
+		</action>
+		<action name="showLendDetailEditPage" class="lendAction"
+				method="showLendDetailEditPage">
+			<result name="outSuccess">/storage/lend/out/lendOutDetailEditPage.jsp</result>
+			<result name="enterSuccess">/storage/lend/enter/lendEnterDetailEditPage.jsp</result>
+		</action>
+		<action name="addLendHold" class="lendAction"
+				method="addLendHold">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addLendSave" class="lendAction"
+				method="addLendSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="lendImport" class="lendAction"
+				method="lendImport">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showLendViewPage" class="lendAction"
+				method="showLendViewPage">
+			<result name="success">/storage/lend/out/lendPage.jsp
+			</result>
+		</action>
+		<action name="lendViewPage" class="lendAction"
+				method="lendViewPage">
+			<result name="outSuccess">/storage/lend/out/lendOutViewPage.jsp</result>
+			<result name="enterSuccess">/storage/lend/out/lendEnterViewPage.jsp</result>
+		</action>
+		<action name="showLendListPage" class="lendAction"
+				method="showLendListPage">
+			<result name="outSuccess">/storage/lend/out/lendOutListPage.jsp</result>
+			<result name="enterSuccess">/storage/lend/enter/lendEnterListPage.jsp</result>
+		</action>
+		<action name="showLendList" class="lendAction"
+				method="showLendList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showLendEditPage" class="lendAction"
+				method="showLendEditPage">
+			<result name="outSuccess">/storage/lend/out/lendOutPage.jsp</result>
+			<result name="enterSuccess">/storage/lend/enter/lendEnterPage.jsp</result>
+		</action>
+		<action name="lendEditPage" class="lendAction"
+				method="lendEditPage">
+			<result name="addOutSuccess">/storage/lend/out/lendOutAddPage.jsp
+			</result>
+			<result name="viewOutSuccess">/storage/lend/out/lendOutViewPage.jsp
+			</result>
+			<result name="editOutSuccess">/storage/lend/out/lendOutEditPage.jsp
+			</result>
+			<result name="addEnterSuccess">/storage/lend/enter/lendEnterAddPage.jsp
+			</result>
+			<result name="viewEnterSuccess">/storage/lend/enter/lendEnterViewPage.jsp
+			</result>
+			<result name="editEnterSuccess">/storage/lend/enter/lendEnterEditPage.jsp
+			</result>
+		</action>
+		<action name="editLendHold" class="lendAction"
+				method="editLendHold">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="editLendSave" class="lendAction"
+				method="editLendSave">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="deleteLend" class="lendAction"
+				method="deleteLend">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="auditLend" class="lendAction"
+				method="auditLend">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="oppauditLend" class="lendAction"
+				method="oppauditLend">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="submitLendProcess" class="lendAction"
+				method="submitLendProcess">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getLendDetailInfo" class="lendAction"
+				method="getLendDetailInfo">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+
+	</package>
+	<!-- 存货结算 -->
+	<package name="storageManager-stock" extends="parent" namespace="/storage/cost">
+		<action name="showAbnormalBillReportPage" class="storageStockAction" method="showAbnormalBillReportPage">
+			<result name="success">/storage/costaccount/abnormalBillReportPage.jsp</result>
+		</action>
+		<action name="getAbnormalBillReportData" class="storageStockAction" method="getAbnormalBillReportData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="accountCostReportData" class="storageStockAction" method="accountCostReportData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showCostAccountDetailPage" class="storageStockAction" method="showCostAccountDetailPage">
+			<result name="success">/storage/costaccount/costAccountDetailPage.jsp</result>
+		</action>
+		<action name="exportAccountCostReportData" class="storageStockAction" method="exportAccountCostReportData">
+		</action>
+		<action name="showCostAccountDetailData" class="storageStockAction" method="showCostAccountDetailData">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="showAccountTypePage" class="storageStockAction" method="showAccountTypePage">
+			<result name="success">/storage/costaccount/accountTypePage.jsp</result>
+		</action>
+		<action name="showStorageCostChangePage" class="storageStockAction" method="showStorageCostChangePage">
+			<result name="success">/storage/costaccount/storageCostChangePage.jsp</result>
+		</action>
+		<action name="getStorageAfterChangePrice" class="storageStockAction" method="getStorageAfterChangePrice">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="addChangeBill" class="storageStockAction" method="addChangeBill">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+
+	</package>
+</struts>
+

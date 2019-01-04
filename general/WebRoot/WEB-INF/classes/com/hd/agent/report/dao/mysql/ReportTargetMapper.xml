@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.report.dao.ReportTargetMapper" >
+	<insert id="addReportTarget" parameterType="com.hd.agent.report.model.ReportTarget" >
+	    insert into t_report_target
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="id != null" >
+	        id,
+	      </if>
+	      <if test="billtype != null" >
+	        billtype,
+	      </if>
+	      <if test="busid != null" >
+	        busid,
+	      </if>
+	      <if test="targetamount != null" >
+	        targetamount,
+	      </if>
+	      <if test="year != null" >
+	        year,
+	      </if>
+	      <if test="month != null" >
+	        month,
+	      </if>
+	      <if test="begindate != null" >
+	        begindate,
+	      </if>
+	      <if test="enddate != null" >
+	        enddate,
+	      </if>
+	      <if test="remark != null" >
+	        remark,
+	      </if>
+	      <if test="state != null" >
+	        state,
+	      </if>
+	      <if test="nums != null" >
+	        nums,
+	      </if>
+	      <if test="field01 != null" >
+	        field01,
+	      </if>
+	      <if test="field02 != null" >
+	        field02,
+	      </if>
+	      <if test="field03 != null" >
+	        field03,
+	      </if>
+	      <if test="field04 != null" >
+	        field04,
+	      </if>
+	      <if test="field05 != null" >
+	        field05,
+	      </if>
+	      <if test="field06 != null" >
+	        field06,
+	      </if>
+	      <if test="field07 != null" >
+	        field07,
+	      </if>
+	      <if test="field08 != null" >
+	        field08,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="id != null" >
+	        #{id},
+	      </if>
+	      <if test="billtype != null" >
+	        #{billtype},
+	      </if>
+	      <if test="busid != null" >
+	        #{busid},
+	      </if>
+	      <if test="targetamount != null" >
+	        #{targetamount},
+	      </if>
+	      <if test="year != null" >
+	        #{year},
+	      </if>
+	      <if test="month != null" >
+	        #{month},
+	      </if>
+	      <if test="begindate != null" >
+	        #{begindate},
+	      </if>
+	      <if test="enddate != null" >
+	        #{enddate},
+	      </if>
+	      <if test="remark != null" >
+	        #{remark},
+	      </if>
+	      <if test="state != null" >
+	        #{state},
+	      </if>
+	      <if test="nums != null" >
+	        #{nums},
+	      </if>
+	      <if test="field01 != null" >
+	        #{field01},
+	      </if>
+	      <if test="field02 != null" >
+	        #{field02},
+	      </if>
+	      <if test="field03 != null" >
+	        #{field03},
+	      </if>
+	      <if test="field04 != null" >
+	        #{field04},
+	      </if>
+	      <if test="field05 != null" >
+	        #{field05},
+	      </if>
+	      <if test="field06 != null" >
+	        #{field06},
+	      </if>
+	      <if test="field07 != null" >
+	        #{field07},
+	      </if>
+	      <if test="field08 != null" >
+	        #{field08},
+	      </if>
+	    </trim>
+	  </insert>
+	  <update id="updateReportTargetState" parameterType="com.hd.agent.report.model.ReportTarget">
+	  	update t_report_target
+	  	set state='0'
+	  	<trim prefix="where" prefixOverrides="and|or" >
+	      <if test="billtype != null" >
+	         and billtype = #{billtype}
+	      </if>
+	      <if test="busid != null" >
+	         and busid = #{busid}
+	      </if>
+          <if test="field01 != null" >
+            and field01 = #{field01}
+          </if>
+	      <if test="year != null" >
+	         and year = #{year}
+	      </if>
+	      <if test="month != null" >
+	         and month = #{month}
+	      </if>
+	      <if test="begindate != null" >
+	         and begindate = #{begindate}
+	      </if>
+	      <if test="enddate != null" >
+	         and enddate = #{enddate}
+	      </if>
+	    </trim>
+	  </update>
+	  <select id="getReportTargetByYearAndMonth" resultType="com.hd.agent.report.model.ReportTarget">
+	  	select id, billtype, busid, targetamount, year, month, begindate, enddate, remark, state, 
+   		 nums, field01, field02, field03, field04, field05, field06, field07, field08
+   		 from t_report_target where billtype=#{billtype} and busid=#{busid} and year=#{year} and month=#{month} and state='1'
+	  </select>
+	 <select id="getReportTargetInfo" parameterType="java.util.Map" resultType="com.hd.agent.report.model.ReportTarget">
+	 	select * from t_report_target
+	 	<trim prefix="where" prefixOverrides="and|or" >
+	      <if test="1 == 1" >
+	         and state = '1'
+	      </if>
+	      <if test="billtype != null" >
+	         and billtype = #{billtype}
+	      </if>
+	      <if test="busid != null" >
+			 and busid = #{busid}
+	      </if>
+          <if test="brandid != null" >
+              and find_in_set(field01,#{brandid})
+          </if>
+          <if test="salesuser != null" >
+            and find_in_set(field02,#{salesuser})
+          </if>
+	      <if test="year != null" >
+	         and year = #{year}
+	      </if>
+	      <if test="month != null" >
+	         and month = #{month}
+	      </if>
+	      <if test="begindate != null" >
+	         and begindate = #{begindate}
+	      </if>
+	      <if test="enddate != null" >
+	         and enddate = #{enddate}
+	      </if>
+	    </trim>
+	 </select>
+    <select id="getReportTargetSum" parameterType="java.util.Map" resultType="java.util.Map">
+        select sum(targetamount) as targets,sum(nums) as nums,sum(field05) as nweektargets from t_report_target
+        <trim prefix="where" prefixOverrides="and|or" >
+            <if test="1 == 1" >
+                and state = '1'
+            </if>
+            <if test="billtype != null" >
+                and billtype = #{billtype}
+            </if>
+            <if test="busid != null" >
+				and busid = #{busid}
+            </if>
+            <if test="brandid != null" >
+                and find_in_set(field01,#{brandid})
+            </if>
+            <if test="year != null" >
+                and year = #{year}
+            </if>
+            <if test="month != null" >
+                and month = #{month}
+            </if>
+            <if test="begindate != null" >
+                and begindate = #{begindate}
+            </if>
+            <if test="enddate != null" >
+                and enddate = #{enddate}
+            </if>
+        </trim>
+    </select>
+    <select id="getReportTargetInfoBy" parameterType="java.util.Map" resultType="com.hd.agent.report.model.ReportTarget">
+        select * from t_report_target
+        <trim prefix="where" prefixOverrides="and|or" >
+            <if test="1 == 1" >
+                and state = '1'
+            </if>
+            <if test="billtype != null" >
+                and billtype = #{billtype}
+            </if>
+            <if test="busid != null" >
+                and busid = #{busid}
+            </if>
+            <if test="brandid != null" >
+                and find_in_set(field01,#{brandid})
+            </if>
+            <if test="year != null" >
+                and year = #{year}
+            </if>
+            <if test="month != null" >
+                and month = #{month}
+            </if>
+            <if test="begindate != null" >
+                and begindate = #{begindate}
+            </if>
+            <if test="enddate != null" >
+                and enddate = #{enddate}
+            </if>
+        </trim>
+    </select>
+    <select id="reportTargetInfoSum" parameterType="com.hd.agent.common.util.PageMap" resultType="java.util.Map">
+        select sum(targetamount) as targetamount,sum(field05) as withdrawntargetamount,sum(field04) as marginratetarget,sum(field06) as writeoffratetarget from (select * from t_report_target) z
+        <trim prefix="where" prefixOverrides="and|or" >
+            <if test="1==1">
+                and z.state = '1'
+            </if>
+            <if test="condition.billtype != null" >
+                and z.billtype = #{condition.billtype}
+            </if>
+            <if test="condition.year != null" >
+                and z.year = #{condition.year}
+            </if>
+            <if test="condition.month != null" >
+                and z.month = #{condition.month}
+            </if>
+            <if test="condition.begindate != null" >
+                and z.begindate = #{condition.begindate}
+            </if>
+        </trim>
+    </select>
+	<select id="getReportTargetSumCaseSalesWithdrawnAssess" parameterType="java.util.Map" resultType="com.hd.agent.report.model.ReportTarget">
+		select sum(targetamount) as targetamount,sum(field04) as field04,sum(field05) as field05,sum(field06) as field06,
+			sum(targetamount*(field04/100)) as salemargintargetamount,sum(field05*(field06/100)) as withdrawnmargintargetamount
+		from t_report_target
+		<trim prefix="where" prefixOverrides="and|or" >
+          <if test="1==1">
+              and state = '1'
+			  and busid not in ( select id from t_base_goods_brand where state = '0')
+			  and field01 not in ( select id from t_base_goods_brand where state = '0')
+			  and busid not in ( select id from t_base_personnel where state = '0')
+			  and field01 not in ( select id from t_base_personnel where state = '0')
+          </if>
+	      <if test="billtype != null" >
+	         and billtype = #{billtype}
+	      </if>
+	      <if test="busid != null" >
+			  and find_in_set(busid,#{busid})
+	      </if>
+          <if test="busid1 != null" >
+              and find_in_set(busid,#{busid1})
+          </if>
+          <if test="brandid != null" >
+             and find_in_set(field01,#{brandid})
+          </if>
+            <if test="year != null" >
+	         and year = #{year}
+	      </if>
+	      <if test="month != null" >
+	         and month = #{month}
+	      </if>
+	      <if test="begindate != null" >
+	         and begindate = #{begindate}
+	      </if>
+	      <if test="enddate != null" >
+	         and enddate = #{enddate}
+	      </if>
+	    </trim>
+	</select>
+    <select id="getReportTargetCount" parameterType="com.hd.agent.report.model.ReportTarget" resultType="int">
+        select count(1) from t_report_target
+        <trim prefix="where" prefixOverrides="and|or" >
+            <if test="billtype != null" >
+                and billtype = #{billtype}
+            </if>
+            <if test="busid != null" >
+                and busid = #{busid}
+            </if>
+            <if test="year != null" >
+                and year = #{year}
+            </if>
+            <if test="month != null" >
+                and month = #{month}
+            </if>
+            <if test="begindate != null" >
+                and begindate = #{begindate}
+            </if>
+            <if test="enddate != null" >
+                and enddate = #{enddate}
+            </if>
+        </trim>
+    </select>
+</mapper>

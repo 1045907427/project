@@ -1,0 +1,1725 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.storage.dao.DeliveryMapper" >
+  <resultMap id="BaseResultMap" type="com.hd.agent.storage.model.Delivery" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="businessdate" property="businessdate" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="adduserid" property="adduserid" jdbcType="VARCHAR" />
+    <result column="addusername" property="addusername" jdbcType="VARCHAR" />
+    <result column="adddeptid" property="adddeptid" jdbcType="VARCHAR" />
+    <result column="adddeptname" property="adddeptname" jdbcType="VARCHAR" />
+    <result column="addtime" property="addtime" jdbcType="TIMESTAMP" />
+    <result column="modifyuserid" property="modifyuserid" jdbcType="VARCHAR" />
+    <result column="modifyusername" property="modifyusername" jdbcType="VARCHAR" />
+    <result column="modifytime" property="modifytime" jdbcType="TIMESTAMP" />
+    <result column="audituserid" property="audituserid" jdbcType="VARCHAR" />
+    <result column="auditusername" property="auditusername" jdbcType="VARCHAR" />
+    <result column="audittime" property="audittime" jdbcType="TIMESTAMP" />
+    <result column="stopuserid" property="stopuserid" jdbcType="VARCHAR" />
+    <result column="stopusername" property="stopusername" jdbcType="VARCHAR" />
+    <result column="stoptime" property="stoptime" jdbcType="TIMESTAMP" />
+    <result column="checkdate" property="checkdate" jdbcType="VARCHAR" />
+    <result column="closetime" property="closetime" jdbcType="TIMESTAMP" />
+    <result column="printtimes" property="printtimes" jdbcType="INTEGER" />
+    <result column="lineid" property="lineid" jdbcType="VARCHAR" />
+    <result column="carid" property="carid" jdbcType="VARCHAR" />
+    <result column="cartype" property="cartype" jdbcType="CHAR" />
+    <result column="driverid" property="driverid" jdbcType="VARCHAR" />
+    <result column="followid" property="followid" jdbcType="VARCHAR" />
+    <result column="customernums" property="customernums" jdbcType="INTEGER" />
+    <result column="auxnum" property="auxnum" jdbcType="DECIMAL" />
+    <result column="auxremainder" property="auxremainder" jdbcType="DECIMAL" />
+    <result column="truck" property="truck" jdbcType="INTEGER" />
+    <result column="trucksubsidy" property="trucksubsidy" jdbcType="DECIMAL" />
+    <result column="carallowance" property="carallowance" jdbcType="DECIMAL" />
+    <result column="carsubsidy" property="carsubsidy" jdbcType="DECIMAL" />
+    <result column="customersubsidy" property="customersubsidy" jdbcType="DECIMAL" />
+    <result column="collectionamount" property="collectionamount" jdbcType="DECIMAL" />
+    <result column="collectionsubsidy" property="collectionsubsidy" jdbcType="DECIMAL" />
+    <result column="othersubsidy" property="othersubsidy" jdbcType="DECIMAL" />
+    <result column="safebonus" property="safebonus" jdbcType="DECIMAL" />
+    <result column="receiptbonus" property="receiptbonus" jdbcType="DECIMAL" />
+    <result column="nightbonus" property="nightbonus" jdbcType="DECIMAL" />
+    <result column="subamount" property="subamount" jdbcType="DECIMAL" />
+    <result column="totalamount" property="totalamount" jdbcType="DECIMAL" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, businessdate, status, remark, adduserid, addusername, adddeptid, adddeptname, 
+    addtime, modifyuserid, modifyusername, modifytime, audituserid, auditusername, audittime, 
+    stopuserid, stopusername, stoptime, checkdate, closetime, printtimes, lineid, carid, cartype, 
+    driverid, followid, customernums, auxnum, auxremainder,boxnum, truck, trucksubsidy, carallowance, 
+    carsubsidy, customersubsidy, collectionamount, collectionsubsidy, othersubsidy, safebonus, 
+    receiptbonus, nightbonus, subamount, totalamount
+  </sql>
+
+	<sql id="billsForDelivery_sql">
+		(
+		SELECT '0' as deliverytype,t.id AS saleoutid, t.businessdate, t.customerid, t.salesarea,
+		SUM(t1.unitnum * g.singlevolume) AS volume, SUM(t1.unitnum * g.grossweight) AS weight, sum(t1.taxamount) AS salesamount, t.saleorderid AS orderid,
+		sum(t1.auxnum) AS auxnum, sum(t1.auxremainder) AS auxremainder, round(SUM(t1.unitnum / gm.rate),3) AS boxnum,
+		t.salesuser, t. STATUS, t.remark, '1' billtype, t.storageid
+		FROM t_storage_saleout t
+		RIGHT JOIN t_storage_saleout_detail t1 ON t.id = t1.saleoutid
+		LEFT JOIN t_base_goods_info g ON t1.goodsid = g.id
+		LEFT JOIN t_base_goods_info_meteringunit gm ON t1.goodsid = gm.goodsid and gm.isdefault = '1'
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="1 == 1">
+				and t.isdelivery = '0' and FIND_IN_SET(t.STATUS,#{condition.status})
+			</if>
+			<if test="condition.saleoutdataSql != null" >
+				and ${condition.saleoutdataSql}
+			</if>
+			<if test="condition.billtype != null" >
+				and #{condition.billtype } = '1'
+			</if>
+			<if test="condition.idsArr != null" >
+				AND t.id not in
+				<foreach collection="condition.idsArr" index="index" item="item" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="condition.saleoutid != null">
+				AND t.id like concat('%',#{condition.saleoutid},'%')
+			</if>
+			<if test="condition.remark != null">
+				AND t.remark like concat('%',#{condition.remark},'%')
+			</if>
+			<if test="condition.salesarea != null">
+				AND	t.salesarea=#{condition.salesarea}
+			</if>
+			<if test="condition.customerid != null">
+				AND FIND_IN_SET(t.customerid,#{condition.customerid})
+			</if>
+            <if test="condition.storageid != null">
+				AND FIND_IN_SET(t.storageid, #{condition.storageid })
+            </if>
+		</trim>
+		GROUP BY t.id
+		UNION
+		SELECT '1' as  deliverytype,t.id AS saleoutid, t.businessdate, t.customerid, c.salesarea,
+		t.totalvolume AS volume, t.totalweight as weight, sum(t1.taxamount) as salesamount, t1.sourcebillid as orderid,
+		sum(t1.auxnum) as auxnum, sum(t1.overnum) AS auxremainder, sum(t1.totalbox) as boxnum,
+		c.salesuserid as salesuser, t.status, t.remark, '2' billtype, t.storageid
+		from 	t_storage_delivery_out t
+		LEFT JOIN t_storage_delivery_out_detail t1 ON t.id = t1.billid
+		INNER JOIN t_base_sales_customer c ON t.customerid = c.id
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="1 == 1">
+				and t.billtype = '2' and t.isdelivery = '0' and FIND_IN_SET(t.STATUS,#{condition.status})
+			</if>
+			<if test="condition.deliveryoutdataSql != null" >
+				and ${condition.deliveryoutdataSql}
+			</if>
+			<if test="condition.billtype != null" >
+				and #{condition.billtype } = '2'
+			</if>
+			<if test="condition.idsArr != null" >
+				AND t.id not in
+				<foreach collection="condition.idsArr" index="index" item="item" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="condition.saleoutid != null">
+				AND t.id like concat('%',#{condition.saleoutid},'%')
+			</if>
+			<if test="condition.remark != null">
+				AND t.remark like concat('%',#{condition.remark},'%')
+			</if>
+			<if test="condition.salesarea != null">
+				AND c.salesarea=#{condition.salesarea}
+			</if>
+			<if test="condition.customerid != null">
+				AND FIND_IN_SET(t.customerid,#{condition.customerid})
+			</if>
+			<if test="condition.storageid != null">
+				AND FIND_IN_SET(t.storageid, #{condition.storageid })
+			</if>
+		</trim>
+		GROUP BY t.id
+		<if test="condition.deliveryAddAllocate == 1">
+			UNION
+			SELECT '0' as deliverytype,t.id AS saleoutid, t.businessdate, t.enterstorageid customerid, null salesarea,
+			SUM(t1.unitnum * g.singlevolume) AS volume, SUM(t1.unitnum * g.grossweight) AS weight, sum(t1.taxamount) AS salesamount, null orderid,
+			sum(t1.auxnum) AS auxnum, sum(t1.auxremainder) AS auxremainder, round(SUM(t1.unitnum / gm.rate),3) AS boxnum,
+			null salesuser, t. STATUS, t.remark, '3' billtype, t.outstorageid storageid
+			FROM t_storage_allocate_out t
+			RIGHT JOIN t_storage_allocate_out_detail t1 ON t.id = t1.billno
+			LEFT JOIN t_base_goods_info g ON t1.goodsid = g.id
+			LEFT JOIN t_base_goods_info_meteringunit gm ON t1.goodsid = gm.goodsid and gm.isdefault = '1'
+			<trim prefix="where" prefixOverrides="and|or">
+				<if test="1 == 1">
+					and t.isdelivery = '0' and FIND_IN_SET(t.STATUS,#{condition.status})
+				</if>
+				<if test="condition.allocatedataSql != null" >
+					and ${condition.allocatedataSql}
+				</if>
+				<if test="condition.billtype != null" >
+					and #{condition.billtype } = '3'
+				</if>
+				<if test="condition.idsArr != null" >
+					AND t.id not in
+					<foreach collection="condition.idsArr" index="index" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+				</if>
+				<if test="condition.saleoutid != null">
+					AND t.id like concat('%',#{condition.saleoutid},'%')
+				</if>
+				<if test="condition.remark != null">
+					AND t.remark like concat('%',#{condition.remark},'%')
+				</if>
+				<if test="condition.salesarea != null">
+					AND	t.salesarea=#{condition.salesarea}
+				</if>
+				<if test="condition.storageid != null">
+					AND FIND_IN_SET(t.enterstorageid, #{condition.storageid })
+				</if>
+			</trim>
+			GROUP BY t.id
+		</if>
+		)
+	</sql>
+	<sql id="saleOutListForDelivery_sql">
+		(
+		SELECT z.seq, z.saleoutid, z.businessdate, z.customerid, z.salesarea,
+		sum(z.volume) as volume, sum(z.weight) as weight, sum(z.salesamount) as salesamount,
+		z.orderid, sum(z.auxnum) as auxnum, sum(z.auxremainder) as auxremainder,sum(z.boxnum) as boxnum, z.salesuser,z.STATUS,z.deliverytype, z.remark, z.inline,z.billtype,
+		z.storageid
+		FROM (
+		SELECT
+        <!--
+		<choose>
+			<when test="condition.customerid != null ">
+				IF(FIND_IN_SET(z.customerid,#{condition.customerid}),-1,lc.seq) AS seq,
+			</when>
+			<otherwise>
+				lc.seq,
+			</otherwise>
+		</choose>
+		-->
+        ifnull((select ifnull(max(lc.seq), 99999) from t_base_logistics_line_customer lc where lc.customerid = z.customerid and lc.lineid = #{condition.lineid}), 99999) seq,
+		z.saleoutid,z.businessdate,z.customerid,z.salesarea,
+		z.volume, z.weight, z.salesamount,z.orderid, z.auxnum, z.auxremainder,
+		z.boxnum, z.salesuser, z.STATUS,null lineid,z.deliverytype,z.remark,z.billtype,
+        case
+			when z.billtype = '3' then 0 /*调拨单按线路外处理*/
+			when exists(select 1 from t_base_logistics_line_customer lc where lc.customerid = z.customerid and lc.lineid = #{condition.lineid}) then 1
+        	else 0
+		end inline,
+		z.storageid
+		from <include refid="billsForDelivery_sql"/> z
+        <choose>
+            <when test="condition.inline == 1">
+                where exists (select 1 from t_base_logistics_line_customer lc where z.customerid = lc.customerid and lc.lineid = #{condition.lineid})
+            </when>
+            <when test="condition.inline == 2">
+                where not exists (select 1 from t_base_logistics_line_customer lc where z.customerid = lc.customerid and lc.lineid = #{condition.lineid})
+            </when>
+            <otherwise>
+            </otherwise>
+        </choose>
+        <!--
+		<choose>
+			<when test="condition.lineid != null">
+				LEFT JOIN t_base_logistics_line_customer lc ON z.customerid = lc.customerid where lc.lineid=#{condition.lineid}
+			</when>
+			<otherwise>
+				LEFT JOIN (SELECT MIN(lc.seq) as seq,lc.customerid,lc.lineid from t_base_logistics_line_customer lc GROUP BY lc.customerid) lc ON z.customerid = lc.customerid
+			</otherwise>
+		</choose>
+		-->
+		) z GROUP BY z.saleoutid
+		<if test="condition.alreadyadd == true">
+			UNION ALL
+			SELECT 99999 as seq, z.saleoutid, z.businessdate, z.customerid, t.salesarea, z.volume, z.weight, z.salesamount, z.orderid, z.auxnum,
+			z.auxremainder, z.boxnum, z.salesuser,t.STATUS, z.deliverytype, t.remark, null inline,z.billtype,t.storageid
+			FROM t_storage_logistics_delivery_saleout z
+			LEFT JOIN t_storage_saleout t on z.saleoutid = t.id
+			<trim prefix="where" prefixOverrides="and|or">
+				<include refid="common.Page_dataSql"/>
+				<if test="1 == 1">
+					and z.deliverytype = '0' and z.deliveryid = #{condition.deliveryid}
+				</if>
+				<if test="condition.saleoutids != null" >
+					AND z.saleoutid not in
+					<foreach collection="condition.idsArr" index="index" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+				</if>
+				<if test="condition.remark != null">
+					AND t.remark like concat('%',#{condition.remark},'%')
+				</if>
+				<if test="condition.salesarea != null">
+					and FIND_IN_SET(t.salesarea,#{condition.salesarea})
+				</if>
+				<if test="condition.customerid != null">
+					AND FIND_IN_SET(z.customerid,#{condition.customerid})
+				</if>
+			</trim>
+			UNION ALL
+			SELECT 99999 as seq, z.saleoutid, z.businessdate, z.customerid, c.salesarea, z.volume, z.weight, z.salesamount, z.orderid, z.auxnum,
+			z.auxremainder, z.boxnum, z.salesuser,t.STATUS, z.deliverytype, t.remark, null inline,z.billtype, t.storageid
+			FROM t_storage_logistics_delivery_saleout z
+			LEFT JOIN t_storage_delivery_out t ON z.saleoutid = t.id
+			INNER JOIN t_base_sales_customer c ON z.customerid = c.id
+			<trim prefix="where" prefixOverrides="and|or">
+				<include refid="common.Page_dataSql"/>
+				<if test="1 == 1">
+					and z.deliverytype = '1' and z.deliveryid = #{condition.deliveryid}
+				</if>
+				<if test="condition.saleoutids != null" >
+					AND z.saleoutid not in
+					<foreach collection="condition.idsArr" index="index" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+				</if>
+				<if test="condition.remark != null">
+					AND t.remark like concat('%',#{condition.remark},'%')
+				</if>
+				<if test="condition.salesarea != null">
+					and FIND_IN_SET(c.salesarea,#{condition.salesarea})
+				</if>
+				<if test="condition.customerid != null">
+					AND FIND_IN_SET(z.customerid,#{condition.customerid})
+				</if>
+			</trim>
+		</if>
+		)
+	</sql>
+	<select id="getSaleOutAndDeliveryOutListForDelivery" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.storage.model.DeliverySaleOut">
+		select y.seq, y.saleoutid, y.businessdate, y.customerid,y.salesarea, y.volume, y.weight, y.salesamount, y.orderid, y.auxnum, y.auxremainder,y.boxnum, y.salesuser,y.status,y.deliverytype,y.remark, y.inline,y.billtype,y.storageid
+		from <include refid="saleOutListForDelivery_sql"/> y
+		<include refid="common.Page_limit"/>
+	</select>
+	<select id="getSaleOutAndDeliveryOutCountForDelivery" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+		select count(1) from (
+		select y.seq, y.saleoutid, y.businessdate, y.customerid,y.salesarea, y.volume, y.weight, y.salesamount, y.orderid, y.auxnum, y.auxremainder,y.boxnum, y.salesuser,y.status,y.deliverytype
+		from <include refid="saleOutListForDelivery_sql"/> y
+		) t
+	</select>
+	<select id="getSaleOutListForAddDelivery" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.storage.model.DeliverySaleOut">
+		SELECT z.seq, z.saleoutid, z.businessdate, z.customerid,z.salesarea, sum(z.volume) as volume, sum(z.weight) as weight, sum(z.salesamount) as salesamount, z.orderid, sum(z.auxnum) as auxnum, sum(z.auxremainder) as auxremainder,
+		sum(z.boxnum) as boxnum, z.salesuser,z.status,z.deliverytype,z.remark, z.inline,z.billtype
+		FROM <include refid="saleOutListForDelivery_sql"/> z
+		group by z.saleoutid
+		<include refid="common.Page_limit"/>
+	</select>
+	<select id="getSaleOutListForAddDeliveryCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+		select count(1) from (
+			SELECT z.seq, z.saleoutid, z.businessdate, z.customerid,z.salesarea, sum(z.volume) as volume, sum(z.weight) as weight, sum(z.salesamount) as salesamount, z.orderid, sum(z.auxnum) as auxnum, sum(z.auxremainder) as auxremainder,
+			sum(z.boxnum) as boxnum, z.salesuser,z.status,z.deliverytype,z.remark
+			FROM <include refid="saleOutListForDelivery_sql"/> z
+			group by z.saleoutid
+		) z
+	</select>
+	
+	<select id="getSaleout" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.Saleout" >
+  		SELECT * FROM t_storage_saleout WHERE id=#{saleoutid}
+ 	</select>
+ 	
+ 	<select id="getDeliverySaleOutListByIds" parameterType="map" resultType="com.hd.agent.storage.model.DeliverySaleOut">
+		SELECT z.saleoutid, z.businessdate, z.customerid, z.salesarea,z.billtype,
+		sum(z.volume) as volume, sum(z.weight) as weight, sum(z.salesamount) as salesamount,
+		z.orderid, sum(z.auxnum) as auxnum, sum(z.auxremainder) as auxremainder,sum(z.boxnum) as boxnum, z.salesuser,z.STATUS,z.deliverytype, z.remark
+		FROM (
+			SELECT '0' as deliverytype,t.id AS saleoutid, t.businessdate, t.customerid, t.salesarea,
+			SUM(t1.unitnum * g.singlevolume) AS volume, SUM(t1.unitnum * g.grossweight) AS weight, sum(t1.taxamount) AS salesamount, t.saleorderid AS orderid,
+			sum(t1.auxnum) AS auxnum, sum(t1.auxremainder) AS auxremainder, round(SUM(t1.unitnum / gm.rate),3) AS boxnum,
+			t.salesuser, t. STATUS, t.remark, '1' billtype
+			FROM t_storage_saleout t
+			RIGHT JOIN t_storage_saleout_detail t1 ON t.id = t1.saleoutid
+			LEFT JOIN t_base_goods_info g ON t1.goodsid = g.id
+			LEFT JOIN t_base_goods_info_meteringunit gm ON t1.goodsid = gm.goodsid and gm.isdefault = '1'
+			where t.isdelivery = '0' and FIND_IN_SET(t.STATUS,#{status}) and FIND_IN_SET(t.id,#{ids})
+			GROUP BY t.id
+			UNION
+			SELECT '1' as  deliverytype,t.id AS saleoutid, t.businessdate, t.customerid, c.salesarea,
+			t.totalvolume AS volume, t.totalweight as weight, sum(t1.taxamount) as salesamount, t1.sourcebillid as orderid,
+			sum(t1.auxnum) as auxnum, sum(t1.overnum) AS auxremainder, sum(t1.totalbox) as boxnum,
+			c.salesuserid as salesuser, t.status, t.remark, '2' billtype
+			from 	t_storage_delivery_out t
+			LEFT JOIN t_storage_delivery_out_detail t1 ON t.id = t1.billid
+			INNER JOIN t_base_sales_customer c ON t.customerid = c.id
+			where t.billtype = '2' and t.isdelivery = '0' and FIND_IN_SET(t.STATUS,#{status}) and FIND_IN_SET(t.id,#{ids})
+			GROUP BY t.id
+			UNION
+			SELECT '0' as deliverytype,t.id AS saleoutid, t.businessdate, t.enterstorageid customerid, null salesarea,
+			SUM(t1.unitnum * g.singlevolume) AS volume, SUM(t1.unitnum * g.grossweight) AS weight, sum(t1.taxamount) AS salesamount, null AS orderid,
+			sum(t1.auxnum) AS auxnum, sum(t1.auxremainder) AS auxremainder, round(SUM(t1.unitnum / gm.rate),3) AS boxnum,
+			null salesuser, t. STATUS, t.remark, '3' billtype
+			FROM t_storage_allocate_out t
+			RIGHT JOIN t_storage_allocate_out_detail t1 ON t.id = t1.billno
+			LEFT JOIN t_base_goods_info g ON t1.goodsid = g.id
+			LEFT JOIN t_base_goods_info_meteringunit gm ON t1.goodsid = gm.goodsid and gm.isdefault = '1'
+			where t.isdelivery = '0' and FIND_IN_SET(t.STATUS,#{status}) and FIND_IN_SET(t.id,#{ids})
+			GROUP BY t.id
+		) z
+		GROUP BY z.saleoutid
+	</select>
+
+	<select id="getDeliveryCustomerByIds" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.DeliveryCustomer">
+		SELECT z.customerid,z.customername,z.billnums,z.volume,z.weight,z.salesamount,z.auxnum,z.auxremainder,z.boxnum,z.remark,z.issaleout,z.isedit,z.seq,z.billtype
+		from (
+			SELECT t.customerid,t.name AS customername,SUM(t.billnums) AS billnums,SUM(t.volume) AS volume,SUM(t.weight) AS weight,
+			SUM(t.salesamount) AS salesamount,sum(t.auxnum) AS auxnum, sum(t.auxremainder) AS auxremainder,sum(t.boxnum) AS boxnum,t.remark,'1' as issaleout,'0' as isedit, t.billtype,
+			<choose>
+				<when test="lineid != null and lineid != ''">
+					ifnull((SELECT ifnull(lc.seq, 99999) FROM t_base_logistics_line_customer lc WHERE lc.customerid = t.customerid AND lc.lineid = #{lineid}),99999 ) seq
+				</when>
+				<otherwise>
+					99999 as seq
+				</otherwise>
+			</choose>
+			FROM (
+				SELECT t.id AS saleoutid, sc.id, sc.name, t.businessdate, t.customerid,
+				sum(t1.unitnum * g.singlevolume) AS volume, sum(t1.unitnum * g.grossweight) AS weight, sum(t1.taxamount) AS salesamount, t.saleorderid AS orderid,
+				sum(t1.auxnum) AS auxnum, sum(t1.auxremainder) AS auxremainder, round(SUM(t1.unitnum / gm.rate),3) as boxnum, ceil(count(t1.id)/${printnum}) as billnums,t.remark, '1' billtype
+				FROM t_storage_saleout t
+				RIGHT JOIN t_storage_saleout_detail t1 ON t.id = t1.saleoutid
+				LEFT JOIN t_base_goods_info g ON t1.goodsid = g.id
+				LEFT JOIN t_base_goods_info_meteringunit gm ON t1.goodsid = gm.goodsid and gm.isdefault = '1'
+				INNER JOIN t_base_sales_customer sc ON t.customerid = sc.id
+				WHERE FIND_IN_SET(t.STATUS,#{status}) AND FIND_IN_SET(t.id,#{ids})
+				GROUP BY t.id
+				UNION ALL
+				SELECT t.id AS saleoutid,sc.id,sc.name,t.businessdate,t.customerid,
+				t.totalvolume AS volume,t.totalweight AS weight,sum(t1.taxamount) as salesamount,t1.sourcebillid AS orderid,
+				sum(t1.auxnum) AS auxnum,sum(t1.overnum) as auxremainder,sum(t1.totalbox) as boxnum,ceil(count(t1.id)/${printnum}) as billnums,t.remark, '2' billtype
+				FROM t_storage_delivery_out t
+				left join t_storage_delivery_out_detail t1 on t.id=t1.billid
+				left JOIN t_base_sales_customer sc ON t.customerid = sc.id
+				WHERE FIND_IN_SET(t.STATUS,#{status}) AND FIND_IN_SET(t.id,#{ids})
+				GROUP BY t.id
+				UNION ALL
+				SELECT t.id AS saleoutid, sc.id, sc.name, t.businessdate, t.enterstorageid customerid,
+				sum(t1.unitnum * g.singlevolume) AS volume, sum(t1.unitnum * g.grossweight) AS weight, sum(t1.taxamount) AS salesamount, null orderid,
+				sum(t1.auxnum) AS auxnum, sum(t1.auxremainder) AS auxremainder, round(SUM(t1.unitnum / gm.rate),3) as boxnum, ceil(count(t1.id)/${printnum}) as billnums,t.remark, '3' billtype
+				FROM t_storage_allocate_out t
+				RIGHT JOIN t_storage_allocate_out_detail t1 ON t.id = t1.billno
+				LEFT JOIN t_base_goods_info g ON t1.goodsid = g.id
+				LEFT JOIN t_base_goods_info_meteringunit gm ON t1.goodsid = gm.goodsid and gm.isdefault = '1'
+				INNER JOIN t_base_storage_info sc ON t.enterstorageid = sc.id
+				WHERE FIND_IN_SET(t.STATUS,#{status}) AND FIND_IN_SET(t.id,#{ids})
+				GROUP BY t.id
+			) t
+			GROUP BY t.customerid
+		)z ORDER BY z.seq,z.customerid
+	</select>
+	<select id="getCustomerListByAllDelevery"  parameterType="java.lang.String"  resultType="com.hd.agent.storage.model.DeliveryCustomer">
+		SELECT z.customerid,z.customername,z.billnums,z.volume,z.weight,z.salesamount,z.auxnum,z.auxremainder,z.boxnum,z.remark,z.issaleout,z.isedit,z.seq,z.seqnum,z.billtype
+		from (
+		SELECT t.customerid,t.name AS customername,SUM(t.billnums) AS billnums,SUM(t.volume) AS volume,SUM(t.weight) AS weight,
+		SUM(t.salesamount) AS salesamount,sum(t.auxnum) AS auxnum, sum(t.auxremainder) AS auxremainder,sum(t.boxnum) AS boxnum,
+		t.remark,'1' as issaleout,'0' as isedit,1 as seqnum, t.billtype,
+		<choose>
+			<when test="lineid != null and lineid != ''">
+				ifnull((SELECT case when t.billtype = '3' then null else ifnull(lc.seq, 99999) end FROM t_base_logistics_line_customer lc WHERE lc.customerid = t.customerid AND lc.lineid = #{lineid}),99999 ) seq
+			</when>
+			<otherwise>
+				99999 as seq
+			</otherwise>
+		</choose>
+		FROM (
+		SELECT t.id AS saleoutid, sc.id, sc.name, t.businessdate, t.customerid,
+		sum(t1.unitnum * g.singlevolume) AS volume, sum(t1.unitnum * g.grossweight) AS weight, sum(t1.taxamount) AS salesamount, t.saleorderid AS orderid,
+		sum(t1.auxnum) AS auxnum, sum(t1.auxremainder) AS auxremainder, round(SUM(t1.unitnum / gm.rate),3) as boxnum, ceil(count(t1.id)/${printnum}) as billnums,t.remark, '1' billtype
+		FROM t_storage_saleout t
+		RIGHT JOIN t_storage_saleout_detail t1 ON t.id = t1.saleoutid
+		LEFT JOIN t_base_goods_info g ON t1.goodsid = g.id
+		LEFT JOIN t_base_goods_info_meteringunit gm ON t1.goodsid = gm.goodsid and gm.isdefault = '1'
+		INNER JOIN t_base_sales_customer sc ON t.customerid = sc.id
+		WHERE t.isdelivery = '0' and FIND_IN_SET(t.STATUS,#{status}) AND FIND_IN_SET(t.id,#{ids})
+		GROUP BY t.id
+		UNION ALL
+		SELECT t.id AS saleoutid,sc.id,sc.name,t.businessdate,t.customerid,
+		t.totalvolume AS volume,t.totalweight AS weight,sum(t1.taxamount) as salesamount,t1.sourcebillid AS orderid,
+		sum(t1.auxnum) AS auxnum,sum(t1.overnum) as auxremainder,sum(t1.totalbox) as boxnum,ceil(count(t1.id)/${printnum}) as billnums,t.remark, '2' billtype
+		FROM t_storage_delivery_out t
+		left join t_storage_delivery_out_detail t1 on t.id=t1.billid
+		left JOIN t_base_sales_customer sc ON t.customerid = sc.id
+		WHERE t.isdelivery = '0' and FIND_IN_SET(t.STATUS,#{status}) AND FIND_IN_SET(t.id,#{ids})
+		GROUP BY t.id
+        UNION ALL
+        SELECT t.id AS saleoutid, sc.id, sc.name, t.businessdate, t.enterstorageid customerid,
+        sum(t1.unitnum * g.singlevolume) AS volume, sum(t1.unitnum * g.grossweight) AS weight, sum(t1.taxamount) AS salesamount, null AS orderid,
+        sum(t1.auxnum) AS auxnum, sum(t1.auxremainder) AS auxremainder, round(SUM(t1.unitnum / gm.rate),3) as boxnum, ceil(count(t1.id)/${printnum}) as billnums,t.remark, '3' billtype
+        FROM t_storage_allocate_out t
+        left join t_storage_allocate_out_detail t1 on t.id=t1.billno
+        LEFT JOIN t_base_goods_info g ON t1.goodsid = g.id
+        LEFT JOIN t_base_goods_info_meteringunit gm ON t1.goodsid = gm.goodsid and gm.isdefault = '1'
+        left JOIN t_base_storage_info sc ON t.enterstorageid = sc.id
+        WHERE t.isdelivery = '0' and FIND_IN_SET(t.STATUS,#{status}) AND FIND_IN_SET(t.id,#{ids})
+        GROUP BY t.id
+
+		) t
+		GROUP BY t.customerid
+		UNION
+		SELECT t.customerid, sc.NAME AS customername, t.billnums, t.volume, t.weight, t.salesamount, t.auxnum,
+		t.auxremainder, t.boxnum,t.remark,t.issaleout,t.isedit,0 as seqnum,t.billtype,t.seq
+		FROM t_storage_logistics_delivery_customer t
+		INNER JOIN t_base_sales_customer sc ON t.customerid = sc.id
+		WHERE t.issaleout = '0' and t.deliveryid = #{deliveryid}
+		)z ORDER BY z.seqnum,z.seq,z.customerid
+	</select>
+	<!-- 根据指定客户，按品牌拆分单据 -->
+	<select id="getDeliveryBrandSplitBillCountByCustomer" parameterType="java.util.Map" resultType="int">
+		select sum(t.billnums) as billnums from (
+			SELECT sum(z.billnums) as billnums from (
+				select t1.brandid,ceil(count(t1.id)/${printnum}) as billnums
+				from t_storage_saleout t
+				right join t_storage_saleout_detail t1 on t.id=t1.saleoutid
+				WHERE t.isdelivery = '0' AND t.customerid=#{customerid} AND FIND_IN_SET(t.id,#{saleoutidarr}) AND FIND_IN_SET(t.STATUS,#{statusarr})
+				UNION ALL
+				select t1.brandid,ceil(count(t1.id)/${printnum}) as billnums
+				from t_storage_delivery_out t
+				right join t_storage_delivery_out_detail t1 on t.id = t1.billid
+				WHERE t.isdelivery = '0' AND t.customerid=#{customerid} AND FIND_IN_SET(t.id,#{saleoutidarr}) AND FIND_IN_SET(t.STATUS,#{statusarr})
+				UNION ALL
+				select t1.brandid,ceil(count(t1.id)/${printnum}) as billnums
+				from t_storage_allocate_out t
+				right join t_storage_allocate_out_detail t1 on t.id = t1.billid
+				WHERE t.isdelivery = '0' AND t.customerid=#{customerid} AND FIND_IN_SET(t.id,#{saleoutidarr}) AND FIND_IN_SET(t.STATUS,#{statusarr})
+			) z group by z.brandid
+		) t
+	</select>
+	
+	<select id="getDeliveryCustomerNoRelateSaleout" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.DeliveryCustomer">
+		select deliveryid,customerid,billnums,salesamount,auxnum, auxremainder,volume,weight,boxnum,collectionamount,isreceipt,remark,issaleout,seq,isedit
+		from t_storage_logistics_delivery_customer
+		<trim prefix="where" prefixOverrides="and|or">
+	      	<if test="deliveryid != null" >
+	         	and deliveryid = #{deliveryid}
+	      	</if>
+	      	<if test="1 == 1">
+				and issaleout = '0'
+			</if>
+	      	<if test="delcustomerArr != null">
+	      		and id not in
+	      		<foreach collection="delcustomerArr" index="index" item="item" open="(" close=")" separator=",">
+	      			#{item}
+	      		</foreach>
+			</if>
+		</trim>
+	</select>
+	<select id="getDeliveryCustomerNoRelateSaleoutSum" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.DeliveryCustomer">
+		select sum(billnums) as billnums,sum(salesamount) as salesamount,sum(auxnum) as auxnum, sum(auxremainder) as auxremainder,sum(volume) as volume,
+		sum(weight) as weight,sum(boxnum) as boxnum,sum(collectionamount) as collectionamount
+		from t_storage_logistics_delivery_customer
+		where issaleout = '0' and deliveryid = #{deliveryid}
+	</select>
+
+    <select id="selectDeliveryGoodsSumData" parameterType="com.hd.agent.storage.model.DeliverySaleOut" resultType="Map">
+        select goodsid, sum(unitnum) unitnum
+        from
+        <foreach collection="list" item="item" separator=" union all" open="(" close=") t" >
+            <choose>
+                <when test="item.billtype == 1">
+                    select goodsid, unitnum from t_storage_saleout_detail where saleoutid = #{item.saleoutid }
+                </when>
+                <when test="item.billtype == 2">
+                    select goodsid, unitnum from t_storage_delivery_out_detail where billid = #{item.saleoutid }
+                </when>
+                <when test="item.billtype == 3">
+                    select goodsid, unitnum from t_storage_allocate_out_detail where billno = #{item.saleoutid }
+                </when>
+            </choose>
+        </foreach>
+        group by goodsid
+     </select>
+
+	<insert id="addDelivery" parameterType="com.hd.agent.storage.model.Delivery" >
+    insert into t_storage_logistics_delivery
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="1==1" >
+        businessdate,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="adduserid != null" >
+        adduserid,
+      </if>
+      <if test="addusername != null" >
+        addusername,
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid,
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname,
+      </if>
+      <if test="1==1" >
+        addtime,
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid,
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername,
+      </if>
+      <if test="modifytime != null" >
+        modifytime,
+      </if>
+      <if test="audituserid != null" >
+        audituserid,
+      </if>
+      <if test="auditusername != null" >
+        auditusername,
+      </if>
+      <if test="audittime != null" >
+        audittime,
+      </if>
+      <if test="stopuserid != null" >
+        stopuserid,
+      </if>
+      <if test="stopusername != null" >
+        stopusername,
+      </if>
+      <if test="stoptime != null" >
+        stoptime,
+      </if>
+      <if test="closetime != null" >
+        closetime,
+      </if>
+      <if test="printtimes != null" >
+        printtimes,
+      </if>
+      <if test="lineid != null" >
+        lineid,
+      </if>
+      <if test="carid != null" >
+        carid,
+      </if>
+      <if test="cartype != null" >
+        cartype,
+      </if>
+      <if test="driverid != null" >
+        driverid,
+      </if>
+      <if test="followid != null" >
+        followid,
+      </if>
+      <if test="customernums != null" >
+        customernums,
+      </if>
+      <if test="boxnum != null" >
+        boxnum,
+      </if>
+      <if test="auxnum != null" >
+        auxnum,
+      </if>
+      <if test="auxremainder != null" >
+        auxremainder,
+      </if>
+      <if test="truck != null" >
+        truck,
+      </if>
+      <if test="trucksubsidy != null" >
+        trucksubsidy,
+      </if>
+      <if test="carallowance != null" >
+        carallowance,
+      </if>
+      <if test="carsubsidy != null" >
+        carsubsidy,
+      </if>
+      <if test="customersubsidy != null" >
+        customersubsidy,
+      </if>
+      <if test="collectionamount != null" >
+        collectionamount,
+      </if>
+      <if test="collectionsubsidy != null" >
+        collectionsubsidy,
+      </if>
+      <if test="othersubsidy != null" >
+        othersubsidy,
+      </if>
+      <if test="safebonus != null" >
+        safebonus,
+      </if>
+      <if test="receiptbonus != null" >
+        receiptbonus,
+      </if>
+      <if test="nightbonus != null" >
+        nightbonus,
+      </if>
+      <if test="subamount != null" >
+        subamount,
+      </if>
+      <if test="totalamount != null" >
+        totalamount,
+      </if>
+        <if test="startpoint != null" >
+            startpoint,
+        </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="1==1" >
+      CURDATE(),
+      </if>
+      <if test="status != null" >
+        #{status},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+      <if test="adduserid != null" >
+        #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        #{adddeptname},
+      </if>
+      <if test="1==1" >
+        now(),
+      </if>
+      <if test="modifyuserid != null" >
+        #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        #{modifyusername},
+      </if>
+      <if test="modifytime != null" >
+        #{modifytime},
+      </if>
+      <if test="audituserid != null" >
+        #{audituserid},
+      </if>
+      <if test="auditusername != null" >
+        #{auditusername},
+      </if>
+      <if test="audittime != null" >
+        #{audittime},
+      </if>
+      <if test="stopuserid != null" >
+        #{stopuserid},
+      </if>
+      <if test="stopusername != null" >
+        #{stopusername},
+      </if>
+      <if test="stoptime != null" >
+        #{stoptime},
+      </if>
+      <if test="closetime != null" >
+        #{closetime},
+      </if>
+      <if test="printtimes != null" >
+        #{printtimes},
+      </if>
+      <if test="lineid != null" >
+        #{lineid},
+      </if>
+      <if test="carid != null" >
+        #{carid},
+      </if>
+      <if test="cartype != null" >
+        #{cartype},
+      </if>
+      <if test="driverid != null" >
+        #{driverid},
+      </if>
+      <if test="followid != null" >
+        #{followid},
+      </if>
+      <if test="customernums != null" >
+        #{customernums},
+      </if>
+      <if test="boxnum != null" >
+        #{boxnum},
+      </if>
+      <if test="auxnum != null" >
+        #{auxnum},
+      </if>
+      <if test="auxremainder != null" >
+        #{auxremainder},
+      </if>
+      <if test="truck != null" >
+        #{truck},
+      </if>
+      <if test="trucksubsidy != null" >
+        #{trucksubsidy},
+      </if>
+      <if test="carallowance != null" >
+        #{carallowance},
+      </if>
+      <if test="carsubsidy != null" >
+        #{carsubsidy},
+      </if>
+      <if test="customersubsidy != null" >
+        #{customersubsidy},
+      </if>
+      <if test="collectionamount != null" >
+        #{collectionamount},
+      </if>
+      <if test="collectionsubsidy != null" >
+        #{collectionsubsidy},
+      </if>
+      <if test="othersubsidy != null" >
+        #{othersubsidy},
+      </if>
+      <if test="safebonus != null" >
+        #{safebonus},
+      </if>
+      <if test="receiptbonus != null" >
+        #{receiptbonus},
+      </if>
+      <if test="nightbonus != null" >
+        #{nightbonus},
+      </if>
+      <if test="subamount != null" >
+        #{subamount},
+      </if>
+      <if test="totalamount != null" >
+        #{totalamount},
+      </if>
+        <if test="startpoint != null" >
+            #{startpoint},
+        </if>
+    </trim>
+  </insert>
+  <insert id="addDeliverySaleOut" parameterType="com.hd.agent.storage.model.DeliverySaleOut" >
+    insert into t_storage_logistics_delivery_saleout
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="deliveryid != null" >
+        deliveryid,
+      </if>
+      <if test="saleoutid != null" >
+        saleoutid,
+      </if>
+      <if test="orderid != null" >
+        orderid,
+      </if>
+      <if test="businessdate != null" >
+        businessdate,
+      </if>
+      <if test="customerid != null" >
+        customerid,
+      </if>
+      <if test="billnums != null" >
+        billnums,
+      </if>
+      <if test="salesamount != null" >
+        salesamount,
+      </if>
+      <if test="boxnum != null" >
+        boxnum,
+      </if>
+      <if test="auxnum != null" >
+        auxnum,
+      </if>
+      <if test="auxremainder != null" >
+        auxremainder,
+      </if>
+      <if test="volume != null" >
+        volume,
+      </if>
+      <if test="weight != null" >
+        weight,
+      </if>
+      <if test="salesuser != null" >
+        salesuser,
+      </if>
+       <if test="deliverytype != null" >
+        deliverytype,
+      </if>
+        <if test="billtype != null" >
+            billtype,
+        </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="deliveryid != null" >
+        #{deliveryid},
+      </if>
+      <if test="saleoutid != null" >
+        #{saleoutid},
+      </if>
+      <if test="orderid != null" >
+        #{orderid},
+      </if>
+      <if test="businessdate != null" >
+        #{businessdate},
+      </if>
+      <if test="customerid != null" >
+        #{customerid},
+      </if>
+      <if test="billnums != null" >
+        #{billnums},
+      </if>
+      <if test="salesamount != null" >
+        #{salesamount},
+      </if>
+      <if test="boxnum != null" >
+        #{boxnum},
+      </if>
+      <if test="auxnum != null" >
+        #{auxnum},
+      </if>
+      <if test="auxremainder != null" >
+        #{auxremainder},
+      </if>
+      <if test="volume != null" >
+        #{volume},
+      </if>
+      <if test="weight != null" >
+        #{weight},
+      </if>
+      <if test="salesuser != null" >
+        #{salesuser},
+      </if>
+       <if test="deliverytype != null" >
+        #{deliverytype},
+      </if>
+        <if test="billtype != null" >
+            #{billtype},
+        </if>
+    </trim>
+  </insert>
+  
+  <insert id="addDeliveryCustomerList" parameterType="com.hd.agent.storage.model.DeliveryCustomer" >
+    insert into t_storage_logistics_delivery_customer
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="deliveryid != null" >
+        deliveryid,
+      </if>
+      <if test="customerid != null" >
+        customerid,
+      </if>
+      <if test="billnums != null" >
+        billnums,
+      </if>
+      <if test="salesamount != null" >
+        salesamount,
+      </if>
+      <if test="auxnum != null" >
+        auxnum,
+      </if>
+      <if test="auxremainder != null" >
+        auxremainder,
+      </if>
+      <if test="boxnum != null" >
+        boxnum,
+      </if>
+      <if test="volume != null" >
+        volume,
+      </if>
+      <if test="weight != null" >
+        weight,
+      </if>
+      <if test="collectionamount != null" >
+        collectionamount,
+      </if>
+      <if test="isreceipt != null" >
+        isreceipt,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="issaleout != null" >
+        issaleout,
+      </if>
+      <if test="seq != null" >
+        seq,
+      </if>
+      <if test="isedit != null" >
+        isedit,
+      </if>
+        <if test="billtype != null" >
+            billtype,
+        </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="deliveryid != null" >
+        #{deliveryid},
+      </if>
+      <if test="customerid != null" >
+        #{customerid},
+      </if>
+      <if test="billnums != null" >
+        #{billnums},
+      </if>
+      <if test="salesamount != null" >
+        #{salesamount},
+      </if>
+      <if test="auxnum != null" >
+        #{auxnum},
+      </if>
+      <if test="auxremainder != null" >
+        #{auxremainder},
+      </if>
+      <if test="boxnum != null" >
+        #{boxnum},
+      </if>
+      <if test="volume != null" >
+        #{volume},
+      </if>
+      <if test="weight != null" >
+        #{weight},
+      </if>
+      <if test="collectionamount != null" >
+        #{collectionamount},
+      </if>
+      <if test="isreceipt != null" >
+        #{isreceipt},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+      <if test="issaleout != null" >
+        #{issaleout},
+      </if>
+      <if test="seq != null" >
+        #{seq},
+      </if>
+      <if test="isedit != null" >
+        #{isedit},
+      </if>
+        <if test="billtype != null" >
+            #{billtype},
+        </if>
+    </trim>
+  </insert>
+  
+  <sql id="getDeliveryList_sql">
+  	(
+	  	select t.id, t.businessdate, t.status, t.remark, t.adduserid, t.addusername, t.adddeptid, t.adddeptname, 
+		    t.addtime, t.modifyuserid, t.modifyusername, t.modifytime, t.audituserid, t.auditusername, t.audittime, 
+		    t.stopuserid, t.stopusername, t.stoptime, t.checkdate, t.closetime, t.printtimes, t.lineid, t.carid, t.cartype, 
+		    t.driverid, t.followid, t.customernums, t.auxnum, t.auxremainder,t.boxnum, t.truck, t.trucksubsidy, t.carallowance, 
+		    t.carsubsidy, t.customersubsidy, t.collectionamount, t.collectionsubsidy, t.othersubsidy, t.safebonus, 
+		    t.receiptbonus, t.nightbonus, t.subamount, t.totalamount
+		from t_storage_logistics_delivery t
+		left join t_storage_logistics_delivery_saleout t1 on t.id = t1.deliveryid
+		<trim prefix="where" prefixOverrides="and|or">
+			<include refid="common.Page_querySql"/>
+	      	<include refid="common.Page_dataSql"/>
+	      	<if test="condition.id != null" >
+	         	and (
+	         		t.id like CONCAT('%',#{condition.id},'%') or
+	         		t1.saleoutid like CONCAT('%',#{condition.id},'%') or
+	         		t1.orderid like CONCAT('%',#{condition.id},'%')
+	         	)
+	      	</if>
+			<if test="condition.exportid != null" >
+				and find_in_set(t.id,#{condition.exportid})
+			</if>
+	      	<if test="condition.lineid != null">
+				 and t.lineid =#{condition.lineid}
+			</if>
+	      	<if test="condition.driverid != null">
+				 and (t.driverid =#{condition.driverid} or t.followid =#{condition.driverid})
+			</if>
+			<if test="condition.carid != null">
+				 and t.carid =#{condition.carid}
+			</if>
+			<if test="condition.customerid != null">
+				 and t1.customerid =#{condition.customerid}
+			</if>
+	      	<if test="condition.status != null">
+				 and t.status =#{condition.status}
+			</if>
+	      	<if test="condition.businessdate1 != null">
+				 and t.businessdate >= #{condition.businessdate1}
+			</if>
+			<if test="condition.businessdate2 != null">
+				 <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+			</if>
+		</trim>
+  	)
+  </sql>
+  <select id="getDeliveryList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.storage.model.Delivery">
+  	select * from <include refid="getDeliveryList_sql"/> z
+  	GROUP BY z.id
+	<if test="condition.isflag == null">
+		<include refid="common.Page_limit"/>
+	</if>
+  </select>
+  <select id="getDeliveryListCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  	select count(1) from (
+  		select * from <include refid="getDeliveryList_sql"/> z
+  		GROUP BY z.id
+  	)z
+  </select>
+  
+  <update id="changeSaleOutDeliveryStatus">
+  	update t_storage_saleout set isdelivery = #{flag}
+  	where id =  #{id}
+  </update>
+  <update id="updateSaleOutIsdelivery">
+  	update t_storage_logistics_delivery_saleout t,t_storage_saleout t1
+		SET t1.isdelivery = #{flag}
+	where t.saleoutid = t1.id and t.deliveryid = #{deliveryid} and t.deliverytype = '0'
+  </update>
+	<update id="changeDeliveryOutDeliveryStatus">
+		update t_storage_delivery_out set isdelivery = #{flag}
+		where id =  #{id}
+	</update>
+	<update id="updateDeliveryOutIsdelivery">
+		update t_storage_logistics_delivery_saleout t,t_storage_delivery_out t1
+		SET t1.isdelivery = #{flag}
+		where t.saleoutid = t1.id and t.deliveryid = #{deliveryid} and t.deliverytype = '1'
+	</update>
+    <update id="updateAllocateOutIsdelivery">
+        update t_storage_logistics_delivery_saleout t,t_storage_allocate_out t1
+        SET t1.isdelivery = #{flag}
+        where t.saleoutid = t1.id and t.deliveryid = #{deliveryid} and t.billtype = '3'
+    </update>
+
+  <select id="getDeliveryCustomerList" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.DeliveryCustomer">
+  	SELECT id, deliveryid, customerid, billnums, salesamount, auxnum, auxremainder,volume,weight,boxnum, collectionamount, isreceipt,
+  	 remark,issaleout,seq,isedit,billtype
+  	FROM t_storage_logistics_delivery_customer WHERE deliveryid=#{id} order by seq
+  </select>
+  <select id="getDeliveryCustomerListByMap" parameterType="java.util.Map" resultType="com.hd.agent.storage.model.DeliveryCustomer">
+  	SELECT id, deliveryid, customerid, billnums, salesamount, auxnum, auxremainder,volume,weight,boxnum, collectionamount, isreceipt, 
+  	 remark,issaleout,seq,isedit
+  	FROM t_storage_logistics_delivery_customer
+  	<trim prefix="where" prefixOverrides="and|or">
+      	<if test="deliveryid != null" >
+         	and deliveryid = #{deliveryid}
+      	</if>
+      	<if test="delcustomerArr != null">
+      		and id not in
+      		<foreach collection="delcustomerArr" index="index" item="item" open="(" close=")" separator=",">
+      			#{item}
+      		</foreach>
+		</if>
+	</trim>
+  </select>
+  
+  <select id="getDeliverySaleoutList" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.DeliverySaleOut">
+  	SELECT 
+  	id, deliveryid, saleoutid, orderid, businessdate, customerid, billnums, salesamount, 
+    auxnum, auxremainder,boxnum,volume,weight,salesuser,deliverytype,billtype
+  	FROM t_storage_logistics_delivery_saleout WHERE deliveryid=#{id} order by customerid
+  </select>
+  
+  <select id="getDelivery" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.Delivery">
+  	SELECT
+  	id, businessdate, status, remark, adduserid, addusername, adddeptid, adddeptname, 
+    addtime, modifyuserid, modifyusername, modifytime, audituserid, auditusername, audittime, 
+    stopuserid, stopusername, stoptime, closetime, printtimes, lineid, carid, cartype, 
+    driverid, followid, customernums, auxnum, auxremainder, boxnum, truck, trucksubsidy, carallowance, 
+    carsubsidy, customersubsidy, collectionamount, collectionsubsidy, othersubsidy, safebonus, 
+    receiptbonus, nightbonus, subamount, totalamount,ischecked,startpoint
+    FROM t_storage_logistics_delivery WHERE id=#{id}
+  </select>
+  
+  <select id="getTruckCount" parameterType="java.util.Map" resultType="int">
+  	SELECT count(1) FROM t_storage_logistics_delivery WHERE businessdate=#{businessdate} AND carid=#{carid} 
+  	<if test="status != null" >
+        AND ( status = #{status} or status = '4' )
+      </if>
+  </select>
+  <select id="checkIsLastTruck" parameterType="java.util.Map" resultType="int">
+  	SELECT count(1) from (
+		SELECT * from t_storage_logistics_delivery WHERE status = '3' and businessdate=#{businessdate} AND carid=#{carid}
+		HAVING truck > #{trucknum}
+	)z
+  </select>
+  
+  <!-- 删除DeliverySaleout -->
+  <delete id="deleteDeliverySaleOut" parameterType="java.lang.String" >
+    delete from t_storage_logistics_delivery_saleout
+    where deliveryid = #{id}
+  </delete>
+  
+  <!-- 删除DeliveryCustomer -->
+  <delete id="deleteDeliveryCustomer" parameterType="java.lang.String" >
+    delete from t_storage_logistics_delivery_customer
+    where deliveryid = #{id}
+  </delete>
+  
+  <update id="updateDelivery" parameterType="com.hd.agent.storage.model.Delivery" >
+    update t_storage_logistics_delivery
+    <set >
+      <if test="businessdate != null" >
+        businessdate = #{businessdate},
+      </if>
+      <if test="status != null" >
+        status = #{status},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark},
+      </if>
+      <if test="adduserid != null" >
+        adduserid = #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        addusername = #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid = #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname = #{adddeptname},
+      </if>
+      <if test="addtime != null" >
+        addtime = #{addtime},
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid = #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername = #{modifyusername},
+      </if>
+      <if test="1==1" >
+        modifytime = now(),
+      </if>
+      <if test="audituserid != null" >
+        audituserid = #{audituserid},
+      </if>
+      <if test="auditusername != null" >
+        auditusername = #{auditusername},
+      </if>
+      <if test="audittime != null" >
+        audittime = #{audittime},
+      </if>
+      <if test="stopuserid != null" >
+        stopuserid = #{stopuserid},
+      </if>
+      <if test="stopusername != null" >
+        stopusername = #{stopusername},
+      </if>
+      <if test="stoptime != null" >
+        stoptime = #{stoptime},
+      </if>
+      <if test="closetime != null" >
+        closetime = #{closetime},
+      </if>
+      <if test="printtimes != null" >
+        printtimes = #{printtimes},
+      </if>
+      <if test="lineid != null" >
+        lineid = #{lineid},
+      </if>
+      <if test="carid != null" >
+        carid = #{carid},
+      </if>
+      <if test="cartype != null" >
+        cartype = #{cartype},
+      </if>
+      <if test="driverid != null" >
+        driverid = #{driverid},
+      </if>
+      <if test="followid != null" >
+        followid = #{followid},
+      </if>
+      <if test="customernums != null" >
+        customernums = #{customernums},
+      </if>
+      <if test="boxnum != null" >
+        boxnum = #{boxnum},
+      </if>
+      <if test="auxnum != null" >
+        auxnum = #{auxnum},
+      </if>
+      <if test="auxremainder != null" >
+        auxremainder = #{auxremainder},
+      </if>
+      <if test="truck != null" >
+        truck = #{truck},
+      </if>
+      <if test="trucksubsidy != null" >
+        trucksubsidy = #{trucksubsidy},
+      </if>
+      <if test="carallowance != null" >
+        carallowance = #{carallowance},
+      </if>
+      <if test="carsubsidy != null" >
+        carsubsidy = #{carsubsidy},
+      </if>
+      <if test="customersubsidy != null" >
+        customersubsidy = #{customersubsidy},
+      </if>
+      <if test="collectionamount != null" >
+        collectionamount = #{collectionamount},
+      </if>
+      <if test="collectionsubsidy != null" >
+        collectionsubsidy = #{collectionsubsidy},
+      </if>
+      <if test="othersubsidy != null" >
+        othersubsidy = #{othersubsidy},
+      </if>
+      <if test="safebonus != null" >
+        safebonus = #{safebonus},
+      </if>
+      <if test="receiptbonus != null" >
+        receiptbonus = #{receiptbonus},
+      </if>
+      <if test="nightbonus != null" >
+        nightbonus = #{nightbonus},
+      </if>
+      <if test="subamount != null" >
+        subamount = #{subamount},
+      </if>
+      <if test="totalamount != null" >
+        totalamount = #{totalamount},
+      </if>
+      <if test="checkdate != null" >
+        checkdate = #{checkdate},
+      </if>
+        <if test="startpoint != null" >
+            startpoint = #{startpoint},
+        </if>
+    </set>
+    where id = #{id}
+  </update>
+  
+  <update id="auditDeliverys">
+  	update t_storage_logistics_delivery
+  	set status='3', audituserid = #{audituserid}, auditusername = #{auditusername}, audittime = now()
+  	where id in
+  	<foreach collection="idsArr" item="item" open="(" separator="," close=")">
+  		#{item}
+  	</foreach>
+  </update>
+  
+  <update id="changeCheckDelivery">
+  	update t_storage_logistics_delivery
+  	set ischecked = #{flag}
+  	where id = #{id}
+  </update>
+
+	<insert id="addLogisticsReport" parameterType="com.hd.agent.report.model.LogisticsReport" >
+		insert into
+		<if test="tablename == null " >
+			t_report_storage_logistics
+		</if>
+		<if test="tablename != null " >
+			t_report_storage_logistics_follow
+		</if>
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="deliveryid != null" >
+				deliveryid,
+			</if>
+			<if test="1==1" >
+				businessdate,
+			</if>
+			<if test="status != null" >
+				status,
+			</if>
+			<if test="remark != null" >
+				remark,
+			</if>
+			<if test="adduserid != null" >
+				adduserid,
+			</if>
+			<if test="addusername != null" >
+				addusername,
+			</if>
+			<if test="adddeptid != null" >
+				adddeptid,
+			</if>
+			<if test="adddeptname != null" >
+				adddeptname,
+			</if>
+			<if test="addtime != null" >
+				addtime,
+			</if>
+			<if test="modifyuserid != null" >
+				modifyuserid,
+			</if>
+			<if test="modifyusername != null" >
+				modifyusername,
+			</if>
+			<if test="modifytime != null" >
+				modifytime,
+			</if>
+			<if test="audituserid != null" >
+				audituserid,
+			</if>
+			<if test="auditusername != null" >
+				auditusername,
+			</if>
+			<if test="audittime != null" >
+				audittime,
+			</if>
+			<if test="stopuserid != null" >
+				stopuserid,
+			</if>
+			<if test="stopusername != null" >
+				stopusername,
+			</if>
+			<if test="stoptime != null" >
+				stoptime,
+			</if>
+			<if test="closetime != null" >
+				closetime,
+			</if>
+			<if test="printtimes != null" >
+				printtimes,
+			</if>
+			<if test="lineid != null" >
+				lineid,
+			</if>
+			<if test="carid != null" >
+				carid,
+			</if>
+			<if test="cartype != null" >
+				cartype,
+			</if>
+			<if test="driverid != null" >
+				driverid,
+			</if>
+			<if test="isdriver != null" >
+				isdriver,
+			</if>
+			<if test="customernums != null" >
+				customernums,
+			</if>
+			<if test="boxnum != null" >
+				boxnum,
+			</if>
+			<if test="auxnum != null" >
+				auxnum,
+			</if>
+			<if test="auxremainder != null" >
+				auxremainder,
+			</if>
+			<if test="volume != null" >
+				volume,
+			</if>
+			<if test="weight != null" >
+				weight,
+			</if>
+			<if test="salesamount != null" >
+				salesamount,
+			</if>
+			<if test="truck != null" >
+				truck,
+			</if>
+			<if test="trucksubsidy != null" >
+				trucksubsidy,
+			</if>
+			<if test="carallowance != null" >
+				carallowance,
+			</if>
+			<if test="carsubsidy != null" >
+				carsubsidy,
+			</if>
+			<if test="customersubsidy != null" >
+				customersubsidy,
+			</if>
+			<if test="collectionamount != null" >
+				collectionamount,
+			</if>
+			<if test="salessubsidy != null" >
+				salessubsidy,
+			</if>
+			<if test="collectionsubsidy != null" >
+				collectionsubsidy,
+			</if>
+			<if test="othersubsidy != null" >
+				othersubsidy,
+			</if>
+			<if test="safebonus != null" >
+				safebonus,
+			</if>
+			<if test="receiptbonus != null" >
+				receiptbonus,
+			</if>
+			<if test="nightbonus != null" >
+				nightbonus,
+			</if>
+			<if test="subamount != null" >
+				subamount,
+			</if>
+			<if test="totalamount != null" >
+				totalamount,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="deliveryid != null" >
+				#{deliveryid},
+			</if>
+			<if test="1==1" >
+				CURDATE(),
+			</if>
+			<if test="status != null" >
+				#{status},
+			</if>
+			<if test="remark != null" >
+				#{remark},
+			</if>
+			<if test="adduserid != null" >
+				#{adduserid},
+			</if>
+			<if test="addusername != null" >
+				#{addusername},
+			</if>
+			<if test="adddeptid != null" >
+				#{adddeptid},
+			</if>
+			<if test="adddeptname != null" >
+				#{adddeptname},
+			</if>
+			<if test="addtime != null" >
+				#{addtime},
+			</if>
+			<if test="modifyuserid != null" >
+				#{modifyuserid},
+			</if>
+			<if test="modifyusername != null" >
+				#{modifyusername},
+			</if>
+			<if test="modifytime != null" >
+				#{modifytime},
+			</if>
+			<if test="audituserid != null" >
+				#{audituserid},
+			</if>
+			<if test="auditusername != null" >
+				#{auditusername},
+			</if>
+			<if test="audittime != null" >
+				#{audittime},
+			</if>
+			<if test="stopuserid != null" >
+				#{stopuserid},
+			</if>
+			<if test="stopusername != null" >
+				#{stopusername},
+			</if>
+			<if test="stoptime != null" >
+				#{stoptime},
+			</if>
+			<if test="closetime != null" >
+				#{closetime},
+			</if>
+			<if test="printtimes != null" >
+				#{printtimes},
+			</if>
+			<if test="lineid != null" >
+				#{lineid},
+			</if>
+			<if test="carid != null" >
+				#{carid},
+			</if>
+			<if test="cartype != null" >
+				#{cartype},
+			</if>
+			<if test="driverid != null" >
+				#{driverid},
+			</if>
+			<if test="isdriver != null" >
+				#{isdriver},
+			</if>
+			<if test="customernums != null" >
+				#{customernums},
+			</if>
+			<if test="boxnum != null" >
+				#{boxnum},
+			</if>
+			<if test="auxnum != null" >
+				#{auxnum},
+			</if>
+			<if test="auxremainder != null" >
+				#{auxremainder},
+			</if>
+			<if test="volume != null" >
+				#{volume},
+			</if>
+			<if test="weight != null" >
+				#{weight},
+			</if>
+			<if test="salesamount != null" >
+				#{salesamount},
+			</if>
+			<if test="truck != null" >
+				#{truck},
+			</if>
+			<if test="trucksubsidy != null" >
+				#{trucksubsidy},
+			</if>
+			<if test="carallowance != null" >
+				#{carallowance},
+			</if>
+			<if test="carsubsidy != null" >
+				#{carsubsidy},
+			</if>
+			<if test="customersubsidy != null" >
+				#{customersubsidy},
+			</if>
+			<if test="collectionamount != null" >
+				#{collectionamount},
+			</if>
+			<if test="salessubsidy != null" >
+				#{salessubsidy},
+			</if>
+			<if test="collectionsubsidy != null" >
+				#{collectionsubsidy},
+			</if>
+			<if test="othersubsidy != null" >
+				#{othersubsidy},
+			</if>
+			<if test="safebonus != null" >
+				#{safebonus},
+			</if>
+			<if test="receiptbonus != null" >
+				#{receiptbonus},
+			</if>
+			<if test="nightbonus != null" >
+				#{nightbonus},
+			</if>
+			<if test="subamount != null" >
+				#{subamount},
+			</if>
+			<if test="totalamount != null" >
+				#{totalamount},
+			</if>
+		</trim>
+	</insert>
+  <update id="updateDeliveryCustomer" parameterType="com.hd.agent.storage.model.DeliveryCustomer" >
+    update t_storage_logistics_delivery_customer
+    <set >
+      <if test="deliveryid != null" >
+        deliveryid = #{deliveryid},
+      </if>
+      <if test="customerid != null" > 
+        customerid = #{customerid},
+      </if>
+      <if test="billnums != null" >
+        billnums = #{billnums},
+      </if>
+      <if test="salesamount != null" >
+        salesamount = #{salesamount},
+      </if>
+      <if test="auxnum != null" >
+        auxnum = #{auxnum},
+      </if>
+      <if test="boxnum != null" >
+        boxnum = #{boxnum},
+      </if>
+      <if test="volume != null" >
+        volume = #{volume},
+      </if>
+      <if test="weight != null" >
+        weight = #{weight},
+      </if>
+      <if test="auxremainder != null" >
+        auxremainder = #{auxremainder},
+      </if>
+      <if test="collectionamount != null" >
+        collectionamount = #{collectionamount},
+      </if>
+      <if test="isreceipt != null" >
+        isreceipt = #{isreceipt},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark},
+      </if>
+      <if test="issaleout != null" >
+        issaleout = #{issaleout},
+      </if>
+      <if test="seq != null" >
+        seq = #{seq},
+      </if>
+      <if test="isedit != null" >
+        isedit = #{isedit},
+      </if>
+    </set>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+    where id = #{id}
+  </update>
+  <update id="closeDelivery" parameterType="com.hd.agent.storage.model.Delivery" >
+    update t_storage_logistics_delivery 
+    set status='4', checkuserid = #{checkuserid}, checkusername = #{checkusername}, closetime = now()
+  	where id = #{id}
+  </update>
+  <delete id="deleteDeliverys">
+  	delete from t_storage_logistics_delivery where id in
+  	<foreach collection="idsArr" item="item" open="(" separator="," close=")">
+  		#{item}
+  	</foreach>
+  </delete>
+  <update id="updatePrintTimes" parameterType="java.lang.String" >
+    update t_storage_logistics_delivery 
+    set printtimes=printtimes+1
+  	where id = #{id}
+  </update>
+  <update id="oppauditDeliverys" parameterType="java.lang.String">
+  	update t_storage_logistics_delivery
+  	set status='2', audituserid = '', auditusername = ''
+  	where id in
+  	<foreach collection="idsArr" item="item" open="(" separator="," close=")">
+  		#{item}
+  	</foreach>
+  </update>
+  <update id="unCheckDelivery" parameterType="java.lang.String">
+    update t_storage_logistics_delivery 
+    set status='3', checkuserid = '', checkusername = '' ,checkdate = '' ,ischecked='0'
+  	where id = #{id}
+  </update>
+  <delete id="deleteLogisticsReport" parameterType="java.lang.String" >
+    delete from t_report_storage_logistics
+    where deliveryid = #{id};
+
+    delete from t_report_storage_logistics_follow
+    where deliveryid = #{id}
+  </delete>
+  <select id="isExistSameTruck" parameterType="java.util.Map" resultType="int">
+  	select count(1) from t_storage_logistics_delivery
+  	where status = '3' and businessdate = #{businessdate} and carid = #{carid} and truck = #{truck}
+  </select>
+  <select id="getDeliverySaleOutListByParam" parameterType="java.util.Map" resultType="com.hd.agent.storage.model.DeliverySaleOut">
+  	select * from t_storage_logistics_delivery_saleout
+   	where deliveryid = #{deliveryid} and customerid in
+   	<foreach collection="customerArr" index="index" item="item" open="(" separator="," close=")">
+   		#{item}
+   	</foreach>
+  </select>
+  <delete id="deleteDeliverySaleOutByMap" parameterType="java.util.Map">
+  	delete from t_storage_logistics_delivery_saleout
+	<trim prefix="where" prefixOverrides="and|or">
+		<if test="deliveryid != null">
+			and deliveryid = #{deliveryid}
+		</if>
+		<if test="saleoutid != null">
+			and saleoutid = #{saleoutid}
+		</if>
+	</trim>
+  </delete>
+  <update id="addLineInfoCustomerCarNum" parameterType="java.lang.String">
+      UPDATE t_base_logistics_line_customer t
+        set t.carnum = t.carnum+1
+      where t.lineid = #{lineid} and t.customerid in (
+            SELECT t.customerid from t_storage_logistics_delivery_customer t
+            where t.deliveryid = #{deliveryid}
+      )
+  </update>
+  <update id="deleteLineInfoCustomerCarNum" parameterType="java.lang.String">
+      UPDATE t_base_logistics_line_customer t
+        set t.carnum = t.carnum-1
+      where t.lineid = #{lineid} and t.customerid in (
+            SELECT t.customerid from t_storage_logistics_delivery_customer t
+            where t.deliveryid = #{deliveryid}
+      )
+  </update>
+	
+	<select id="getDeliveryOutByDeliveryId" resultType="com.hd.agent.storage.model.DeliverySaleOut" parameterType="java.lang.String">
+		select * from t_storage_logistics_delivery_saleout where deliveryid=#{id}
+	</select>
+</mapper>

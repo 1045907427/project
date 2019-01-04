@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.journalsheet.dao.DeptCostsSubjectMapper">
+	<!-- 缓存 -->
+	<cache type="org.mybatis.caches.ehcache.EhcacheCache"></cache>
+	<sql id="deptCostsSubject_Base_Column_List" >
+	    id, name, thisid, thisname, pid, state, remark, addtime, adduserid, addusername, 
+	    modifyuserid, modifyusername, modifytime, openuserid, openusername, opentime, closeuserid, 
+	    closeusername, closetime, leaf
+	</sql>
+	<sql id="deptCostsSubject_Column_List" >
+	  	<choose>
+			<when test="cols!=null">
+				<include refid="common.Page_Column"/>
+			</when>
+			<when test="cols==null">
+				<include refid="deptCostsSubject_Base_Column_List"/>
+		    </when>
+		</choose>
+	</sql>
+	<select id="getDeptCostsSubjectList" resultType="com.hd.agent.journalsheet.model.DeptCostsSubject">
+		select
+		<include refid="deptCostsSubject_Base_Column_List"/>
+		from t_js_departmentcosts_subject
+	</select>
+	<select id="showDeptCostsSubjectEnableList" resultType="com.hd.agent.journalsheet.model.DeptCostsSubject">
+		select
+		<include refid="deptCostsSubject_Base_Column_List"/>
+		from t_js_departmentcosts_subject
+		where state='1'
+	</select>	
+	<select id="getDeptCostsSubjectListByMap" resultType="com.hd.agent.journalsheet.model.DeptCostsSubject" parameterType="map">
+		select
+		<include refid="deptCostsSubject_Column_List"/>
+		from t_js_departmentcosts_subject		
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="state != null">
+				and state = #{state}
+			</if>
+			<if test="likeid != null">
+				and id like CONCAT(#{likeid},'%')
+			</if>			
+			<if test="pid != null">
+				and pid like CONCAT(#{pid},'%')
+			</if>
+			<if test="name != null">
+				and name like CONCAT('%',#{name},'%')
+			</if>
+	        <if test="leaf != null" >
+	         	and leaf = #{leaf}
+	        </if>
+	        <if test="nameLenZero!=null">
+	        	and length(name)=0
+	        </if>
+	  		<include refid="common.Page_dataSql"/>
+		</trim>		
+	  	<if test="isQueryByOrder != null">  		
+		  	<choose>
+		  		<when test="orderBySql !=null and orderBySql !=''">
+		  			order by ${orderBySql}
+		  		</when>
+		  		<otherwise>
+		  			<if test="orderSort !=null and orderBy !=null">
+				      	order by ${orderSort} ${orderBy}
+				     </if>
+		  		</otherwise>
+		  		
+		  	</choose>
+	  	</if>
+	</select>
+	<sql id="DeptCostsSubjectPageList_Where_case">		
+		<if test="condition.id != null">
+			and code like CONCAT(#{condition.id},'%')
+		</if>
+		<if test="condition.name != null">
+			and name like CONCAT('%',#{condition.name},'%')
+		</if>
+		<if test="condition.state != null">
+			and state = #{condition.state}
+		</if>
+        <if test="condition.thisid != null" >
+         	and thisid = #{condition.thisid}
+        </if>
+        <if test="condition.thisname != null" >
+         	and thisname = #{condition.thisname}
+        </if>
+        <if test="condition.pid != null" >
+         	and pid like CONCAT(#{condition.pid},'%')
+        </if>
+        <if test="condition.remark != null" >
+         	and remark like CONCAT('%',#{condition.remark},'%')
+        </if>
+        <if test="condition.adduserid != null" >
+         	and adduserid = #{condition.adduserid}
+        </if>
+        <if test="condition.modifyuserid != null" >
+         	and modifyuserid = #{condition.modifyuserid}
+        </if>
+        <if test="condition.openuserid != null" >
+         	and openuserid = #{condition.openuserid}
+        </if>
+        <if test="condition.closeuserid != null" >
+         	and closeuserid = #{condition.closeuserid}
+        </if>
+        <if test="condition.leaf != null" >
+         	and leaf = #{condition.leaf}
+        </if>
+	</sql>
+	<select id="getDeptCostsSubjectPageList" resultType="com.hd.agent.journalsheet.model.DeptCostsSubject" parameterType="com.hd.agent.common.util.PageMap" useCache="false">
+		select
+		<include refid="deptCostsSubject_Column_List"/>
+		from t_js_departmentcosts_subject
+		<trim prefix="where" prefixOverrides="and|or">
+			<include refid="DeptCostsSubjectPageList_Where_case" />
+			<include refid="common.Page_dataSql"/>
+		</trim>
+		<include refid="common.Page_limit"/>
+	</select>
+	<select id="getDeptCostsSubjectCount" resultType="int" parameterType="com.hd.agent.common.util.PageMap" useCache="false">
+		select count(1) from t_js_departmentcosts_subject
+		<trim prefix="where" prefixOverrides="and|or">
+			<include refid="DeptCostsSubjectPageList_Where_case" />
+			<include refid="common.Page_dataSql"/>
+		</trim>
+	</select>
+	<select id="getDeptCostsSubjectById" parameterType="java.lang.String" resultType="com.hd.agent.journalsheet.model.DeptCostsSubject">
+		select 
+		<include refid="deptCostsSubject_Base_Column_List"/>
+		from t_js_departmentcosts_subject
+		where id = #{id}
+	</select>
+	<insert id="addDeptCostsSubject" parameterType="com.hd.agent.journalsheet.model.DeptCostsSubject" >
+		insert into t_js_departmentcosts_subject
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+	      <if test="id != null">
+	        id,
+	      </if>
+	      <if test="name != null">
+	        name,
+	      </if>
+	      <if test="thisid != null">
+	        thisid,
+	      </if>
+	      <if test="thisname != null">
+	        thisname,
+	      </if>
+	      <if test="pid != null">
+	        pid,
+	      </if>
+	      <if test="state != null">
+	        state,
+	      </if>
+	      <if test="remark != null">
+	        remark,
+	      </if>
+	      <if test="1==1">
+	        addtime,
+	      </if>
+	      <if test="adduserid != null">
+	        adduserid,
+	      </if>
+	      <if test="addusername != null">
+	        addusername,
+	      </if>
+	      <if test="modifyuserid != null">
+	        modifyuserid,
+	      </if>
+	      <if test="modifyusername != null">
+	        modifyusername,
+	      </if>
+	      <if test="modifytime != null">
+	        modifytime,
+	      </if>
+	      <if test="openuserid != null">
+	        openuserid,
+	      </if>
+	      <if test="openusername != null">
+	        openusername,
+	      </if>
+	      <if test="opentime != null">
+	        opentime,
+	      </if>
+	      <if test="closeuserid != null">
+	        closeuserid,
+	      </if>
+	      <if test="closeusername != null">
+	        closeusername,
+	      </if>
+	      <if test="closetime != null">
+	        closetime,
+	      </if>
+	      <if test="leaf != null">
+	        leaf,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides=",">
+	      <if test="id != null">
+	        #{id},
+	      </if>
+	      <if test="name != null">
+	        #{name},
+	      </if>
+	      <if test="thisid != null">
+	        #{thisid},
+	      </if>
+	      <if test="thisname != null">
+	        #{thisname},
+	      </if>
+	      <if test="pid != null">
+	        #{pid},
+	      </if>
+	      <if test="state != null">
+	        #{state},
+	      </if>
+	      <if test="remark != null">
+	        #{remark},
+	      </if>
+	      <choose>
+	      	<when test="addtime !=null">	      		
+	        	#{addtime},
+	      	</when>
+	      	<otherwise>
+	        	now(),
+	        </otherwise>
+	      </choose>	
+	      <if test="adduserid != null">
+	        #{adduserid},
+	      </if>
+	      <if test="addusername != null">
+	        #{addusername},
+	      </if>
+	      <if test="modifyuserid != null">
+	        #{modifyuserid},
+	      </if>
+	      <if test="modifyusername != null">
+	        #{modifyusername},
+	      </if>
+	      <if test="modifytime != null">
+	        #{modifytime},
+	      </if>
+	      <if test="openuserid != null">
+	        #{openuserid},
+	      </if>
+	      <if test="openusername != null">
+	        #{openusername},
+	      </if>
+	      <if test="opentime != null">
+	        #{opentime},
+	      </if>
+	      <if test="closeuserid != null">
+	        #{closeuserid},
+	      </if>
+	      <if test="closeusername != null">
+	        #{closeusername},
+	      </if>
+	      <if test="closetime != null">
+	        #{closetime},
+	      </if>
+	      <if test="leaf != null">
+	        #{leaf},
+	      </if>
+	    </trim>
+	</insert>
+	<update id="updateDeptCostsSubject" parameterType="com.hd.agent.journalsheet.model.DeptCostsSubject">
+	    update t_js_departmentcosts_subject
+	    <set>
+			<if test="id != null">
+				id = #{id},
+			</if>
+	      <if test="name != null">
+	        name = #{name},
+	      </if>
+	      <if test="thisid != null">
+	        thisid = #{thisid},
+	      </if>
+	      <if test="thisname != null">
+	        thisname = #{thisname},
+	      </if>
+	      <if test="pid != null">
+	        pid = #{pid},
+	      </if>
+	      <if test="state != null">
+	        state = #{state},
+	      </if>
+	      <if test="remark != null">
+	        remark = #{remark},
+	      </if>
+	      <if test="modifyuserid != null">
+	        modifyuserid = #{modifyuserid},
+	      </if>
+	      <if test="modifyusername != null">
+	        modifyusername = #{modifyusername},
+	      </if>
+	      <if test="modifytime != null">
+	        modifytime = #{modifytime},
+	      </if>
+	      <if test="openuserid != null">
+	        openuserid = #{openuserid},
+	      </if>
+	      <if test="openusername != null">
+	        openusername = #{openusername},
+	      </if>
+	      <if test="opentime != null">
+	        opentime = #{opentime},
+	      </if>
+	      <if test="closeuserid != null">
+	        closeuserid = #{closeuserid},
+	      </if>
+	      <if test="closeusername != null">
+	        closeusername = #{closeusername},
+	      </if>
+	      <if test="closetime != null">
+	        closetime = #{closetime},
+	      </if>
+	      <if test="leaf != null">
+	        leaf = #{leaf},
+	      </if>
+	    </set>
+	    where id = #{oldId}
+	</update>
+	<update id="updateDeptCostsSubjectBatch" parameterType="java.util.List">
+	  	<foreach collection="list" index="index" item="item">
+	  		update t_js_departmentcosts_subject
+		  	<set >
+		      <if test="item.id != null" >
+		        id = #{item.id},
+		      </if>
+		      <if test="item.name != null" >
+		        name = #{item.name},
+		      </if>
+		      <if test="item.thisid != null" >
+		        thisid = #{item.thisid},
+		      </if>
+		      <if test="item.thisname != null" >
+		        thisname = #{item.thisname},
+		      </if>
+		      <if test="item.pid != null" >
+		        pid = #{item.pid},
+		      </if>
+		    </set>
+		    where id = #{item.oldId};
+	  	</foreach>
+	  </update>
+	<update id="disableDeptCostsSubject" parameterType="com.hd.agent.journalsheet.model.DeptCostsSubject">
+		update t_js_departmentcosts_subject
+		set closeuserid = #{closeuserid},
+	      closeusername = #{closeusername},
+	      state = '0',
+	      closetime = now()
+	    where id = #{id} 
+	</update>
+	<update id="enableDeptCostsSubject" parameterType="com.hd.agent.journalsheet.model.DeptCostsSubject">
+		update t_js_departmentcosts_subject 
+		set openuserid = #{openuserid},
+    	openusername = #{openusername},
+      	state = '1',
+      	opentime = now()
+   		 where id = #{id}
+	</update>
+	<delete id="deleteDeptCostsSubjectById" parameterType="java.lang.String">
+		delete from t_js_departmentcosts_subject
+		where id=#{id}
+	</delete>
+	<select id="getDeptCostsSubjectCountByMap" resultType="int" parameterType="map" useCache="false">
+		select count(1) from t_js_departmentcosts_subject
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="id != null">
+				and id = #{id}
+			</if>
+			<if test="notCurId != null">
+				and id != #{notCurId}
+			</if>
+		</trim>
+	</select>
+    <!-- 获取费用分类详情 -->
+    <select id="getDeptCostsSubjectByMap" resultType="com.hd.agent.journalsheet.model.DeptCostsSubject" parameterType="map">
+	 	select
+	 	<include refid="deptCostsSubject_Column_List"/>
+	 	from t_js_departmentcosts_subject
+	 	<trim prefix="where" prefixOverrides="and|or">
+	 		<if test="1==1">
+	 			id = #{id}
+	 		</if>	 		
+	  		<include refid="common.Page_dataSql"/>
+	 	</trim>
+	</select>
+	
+  <!-- 检验费用分类名称是否被使用 -->
+  <select id="isUsedDeptCostsSubjectName" parameterType="java.lang.String" resultType="int">
+  	select count(1) from t_js_departmentcosts_subject where name = #{name}
+  </select>
+  <!-- 费用分类是否为末及标志 -->
+  <select id="isLeafDeptCostsSubject" parameterType="java.lang.String" resultType="java.lang.String">
+  	select distinct pid from t_js_departmentcosts_subject where pid = #{id}
+  </select>  
+</mapper>

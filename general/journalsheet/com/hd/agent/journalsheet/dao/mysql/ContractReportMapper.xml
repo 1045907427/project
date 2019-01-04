@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.journalsheet.dao.ContractReportMapper" >
+  <resultMap id="BaseResultMap" type="com.hd.agent.journalsheet.model.ContractReport" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="month" property="month" jdbcType="VARCHAR" />
+    <result column="contractid" property="contractid" jdbcType="VARCHAR" />
+    <result column="contractbillid" property="contractbillid" jdbcType="VARCHAR" />
+    <result column="contractcaluseid" property="contractcaluseid" jdbcType="VARCHAR" />
+    <result column="customerid" property="customerid" jdbcType="VARCHAR" />
+    <result column="deptid" property="deptid" jdbcType="VARCHAR" />
+    <result column="costamount" property="costamount" jdbcType="DECIMAL" />
+    <result column="matcostsamount" property="matcostsamount" jdbcType="DECIMAL" />
+    <result column="selfamount" property="selfamount" jdbcType="DECIMAL" />
+    <result column="adduserid" property="adduserid" jdbcType="VARCHAR" />
+    <result column="addusername" property="addusername" jdbcType="VARCHAR" />
+    <result column="addtime" property="addtime" jdbcType="TIMESTAMP" />
+    <result column="saleamount" property="saleamount" jdbcType="DECIMAL" />
+    <result column="storenum" property="storenum" jdbcType="DECIMAL" />
+    <result column="newstorenum" property="newstorenum" jdbcType="DECIMAL" />
+    <result column="newgoodsnum" property="newgoodsnum" jdbcType="DECIMAL" />
+    <result column="rate" property="rate" jdbcType="DECIMAL" />
+    <result column="state" property="state" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.month != null" >
+         and month = #{condition.month}
+      </if>
+      <if test="condition.contractid != null" >
+         and contractid = #{condition.contractid}
+      </if>
+        <if test="condition.contractbillid != null" >
+            and contractbillid = #{condition.contractbillid}
+        </if>
+      <if test="condition.contractcaluseid != null" >
+         and contractcaluseid = #{condition.contractcaluseid}
+      </if>
+    <if test="condition.customerid != null" >
+        and FIND_IN_SET(customerid,#{condition.customerid})
+    </if>
+      <if test="condition.deptid != null" >
+         and deptid = #{condition.deptid}
+      </if>
+      <if test="condition.costamount != null" >
+         and costamount = #{condition.costamount}
+      </if>
+      <if test="condition.matcostsamount != null" >
+         and matcostsamount = #{condition.matcostsamount}
+      </if>
+      <if test="condition.selfamount != null" >
+         and selfamount = #{condition.selfamount}
+      </if>
+      <if test="condition.adduserid != null" >
+         and adduserid = #{condition.adduserid}
+      </if>
+      <if test="condition.addusername != null" >
+         and addusername = #{condition.addusername}
+      </if>
+      <if test="condition.addtime != null" >
+         and addtime = #{condition.addtime}
+      </if>
+      <if test="condition.saleamount != null" >
+         and saleamount = #{condition.saleamount}
+      </if>
+      <if test="condition.storenum != null" >
+         and storenum = #{condition.storenum}
+      </if>
+      <if test="condition.newstorenum != null" >
+         and newstorenum = #{condition.newstorenum}
+      </if>
+      <if test="condition.newgoodsnum != null" >
+         and newgoodsnum = #{condition.newgoodsnum}
+      </if>
+      <if test="condition.rate != null" >
+         and rate = #{condition.rate}
+      </if>
+      <if test="condition.state != null" >
+         and state = #{condition.state}
+      </if>
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, month, contractid, contractbillid, contractcaluseid, customerid, deptid, costamount, matcostsamount,
+    selfamount, adduserid, addusername, addtime, saleamount, storenum, newstorenum, newgoodsnum, 
+    rate,state
+  </sql>
+    <select id="getContractReportData" resultType="com.hd.agent.journalsheet.model.ContractReport" parameterType="com.hd.agent.common.util.PageMap" useCache="false">
+        select month,customerid,sum(costamount) as costamount,sum(matcostsamount) as matcostsamount,sum(selfamount) as selfamount,sum(saleamount) as saleamount,
+        sum(storenum) as storenum,sum(newstorenum) as newstorenum,sum(newgoodsnum) as newgoodsnum,state
+        from t_report_finance_customer_contract
+        <include refid="Example_Where_Clause" />
+        GROUP by customerid
+        <include refid="common.Page_dataSql"/>
+        <include refid="common.Page_limit"/>
+    </select>
+
+    <select id="getContractReportDataCount" resultType="int" parameterType="com.hd.agent.common.util.PageMap" useCache="false">
+        select count(1)
+        from(
+            select *
+            from t_report_finance_customer_contract
+            <include refid="Example_Where_Clause" />
+            GROUP by customerid
+        )z
+
+    </select>
+    <select id="getContractReportById" parameterType="java.lang.String" resultType="com.hd.agent.journalsheet.model.ContractReport">
+        select
+        <include refid="Base_Column_List"/>
+        from t_report_finance_customer_contract
+        where id = #{id}
+    </select>
+    <insert id="addContractReport" parameterType="com.hd.agent.journalsheet.model.ContractReport" >
+        insert into t_report_finance_customer_contract
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="month != null" >
+                month,
+            </if>
+            <if test="contractid != null" >
+                contractid,
+            </if>
+            <if test="contractbillid != null" >
+                contractbillid,
+            </if>
+            <if test="contractcaluseid != null" >
+                contractcaluseid,
+            </if>
+            <if test="customerid != null" >
+                customerid,
+            </if>
+            <if test="deptid != null" >
+                deptid,
+            </if>
+            <if test="costamount != null" >
+                costamount,
+            </if>
+            <if test="matcostsamount != null" >
+                matcostsamount,
+            </if>
+            <if test="selfamount != null" >
+                selfamount,
+            </if>
+            <if test="adduserid != null" >
+                adduserid,
+            </if>
+            <if test="addusername != null" >
+                addusername,
+            </if>
+            <if test="addtime != null" >
+                addtime,
+            </if>
+            <if test="saleamount != null" >
+                saleamount,
+            </if>
+            <if test="storenum != null" >
+                storenum,
+            </if>
+            <if test="newstorenum != null" >
+                newstorenum,
+            </if>
+            <if test="newgoodsnum != null" >
+                newgoodsnum,
+            </if>
+            <if test="rate != null" >
+                rate,
+            </if>
+            <if test="state != null" >
+                state,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id},
+            </if>
+            <if test="month != null" >
+                #{month},
+            </if>
+            <if test="contractid != null" >
+                #{contractid},
+            </if>
+            <if test="contractbillid != null" >
+                #{contractbillid},
+            </if>
+            <if test="contractcaluseid != null" >
+                #{contractcaluseid},
+            </if>
+            <if test="customerid != null" >
+                #{customerid},
+            </if>
+            <if test="deptid != null" >
+                #{deptid},
+            </if>
+            <if test="costamount != null" >
+                #{costamount},
+            </if>
+            <if test="matcostsamount != null" >
+                #{matcostsamount},
+            </if>
+            <if test="selfamount != null" >
+                #{selfamount},
+            </if>
+            <if test="adduserid != null" >
+                #{adduserid},
+            </if>
+            <if test="addusername != null" >
+                #{addusername},
+            </if>
+            <if test="addtime != null" >
+                #{addtime},
+            </if>
+            <if test="saleamount != null" >
+                #{saleamount},
+            </if>
+            <if test="storenum != null" >
+                #{storenum},
+            </if>
+            <if test="newstorenum != null" >
+                #{newstorenum},
+            </if>
+            <if test="newgoodsnum != null" >
+                #{newgoodsnum},
+            </if>
+            <if test="rate != null" >
+                #{rate},
+            </if>
+            <if test="state != null" >
+                #{state},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="editContractReport" parameterType="com.hd.agent.journalsheet.model.ContractReport" >
+        update t_report_finance_customer_contract
+        <set >
+            <if test="month != null" >
+                month = #{month},
+            </if>
+            <if test="contractid != null" >
+                contractid = #{contractid},
+            </if>
+            <if test="contractbillid != null" >
+                contractbillid = #{contractbillid},
+            </if>
+            <if test="contractcaluseid != null" >
+                contractcaluseid = #{contractcaluseid},
+            </if>
+            <if test="customerid != null" >
+                customerid = #{customerid},
+            </if>
+            <if test="deptid != null" >
+                deptid = #{deptid},
+            </if>
+            <if test="costamount != null" >
+                costamount = #{costamount},
+            </if>
+            <if test="matcostsamount != null" >
+                matcostsamount = #{matcostsamount},
+            </if>
+            <if test="selfamount != null" >
+                selfamount = #{selfamount},
+            </if>
+            <if test="adduserid != null" >
+                adduserid = #{adduserid},
+            </if>
+            <if test="addusername != null" >
+                addusername = #{addusername},
+            </if>
+            <if test="addtime != null" >
+                addtime = #{addtime},
+            </if>
+            <if test="saleamount != null" >
+                saleamount = #{saleamount},
+            </if>
+            <if test="storenum != null" >
+                storenum = #{storenum},
+            </if>
+            <if test="newstorenum != null" >
+                newstorenum = #{newstorenum},
+            </if>
+            <if test="newgoodsnum != null" >
+                newgoodsnum = #{newgoodsnum},
+            </if>
+            <if test="rate != null" >
+                rate = #{rate},
+            </if>
+            <if test="state != null" >
+                state = #{state},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="editContractReportDetail" parameterType="com.hd.agent.journalsheet.model.ContractReport" >
+        update t_report_finance_customer_contract
+        <set >
+            <if test="costamount != null" >
+                costamount = #{costamount},
+            </if>
+            <if test="matcostsamount != null" >
+                matcostsamount = #{matcostsamount},
+            </if>
+            <if test="selfamount != null" >
+                selfamount = #{selfamount},
+            </if>
+            <if test="saleamount != null" >
+                saleamount = #{saleamount},
+            </if>
+            <if test="storenum != null" >
+                storenum = #{storenum},
+            </if>
+            <if test="newstorenum != null" >
+                newstorenum = #{newstorenum},
+            </if>
+            <if test="newgoodsnum != null" >
+                newgoodsnum = #{newgoodsnum},
+            </if>
+        </set>
+        where month = #{month} and contractbillid = #{contractbillid} and contractcaluseid = #{contractcaluseid}
+    </update>
+
+    <update id="auditContractReport" parameterType="java.lang.String" >
+        update t_report_finance_customer_contract
+        set state = #{state}
+        where id = #{id}
+    </update>
+
+    <select id="getCrmCustomerSaleamount" parameterType="java.lang.String" resultType="map">
+        select if(sum(t1.taxamount) is null,0,sum(t1.taxamount)) as taxamount
+            from t_crm_sales_order t
+            RIGHT JOIN  t_crm_sales_order_detail t1 on t.id = t1.orderid
+        where t.customerid = #{customerid}
+        <![CDATA[ and t.businessdate >=#{begindate} ]]>
+        <![CDATA[ and t.businessdate <= #{enddate}]]>
+    </select>
+
+    <select id="getCustomerSaleamount" parameterType="java.lang.String" resultType="map">
+   select if(sum(t1.taxamount) is null,0,sum(t1.taxamount)) as taxamount
+    from t_sales_order  t
+    right join t_sales_order_detail t1 on t.id=t1.orderid
+    where t.customerid = #{customerid}
+            <![CDATA[ and t.businessdate >=#{begindate} ]]>
+            <![CDATA[ and t.businessdate <= #{enddate}]]>
+           and t.status in (3,4)
+    </select>
+
+    <select id="getContractTitleListByMonthAndCustomerid" parameterType="java.lang.String" resultType="map">
+        select t.contractbillid,t.contractid,t.saleamount,t.storenum,t.newstorenum,t.newgoodsnum
+        from t_report_finance_customer_contract  t
+        where t.customerid = #{customerid} and t.month=#{month}
+        group by t.contractbillid
+        order by t.contractbillid ASC
+    </select>
+
+    <select id="getContractContentListByMonthAndCustomerid" parameterType="java.lang.String" resultType="map">
+        select t.contractcaluseid,t1.type,t1.name
+        from t_report_finance_customer_contract t
+        left join t_finance_customer_contract_caluse t1 on t.contractcaluseid = t1.id
+        where t.customerid = #{customerid} and t.month=#{month}
+        group by t.contractcaluseid
+        order by t1.type ASC
+    </select>
+
+    <select id="getContractContentListByMonthAndBillidAndCaluseid" parameterType="java.lang.String" resultType="com.hd.agent.journalsheet.model.ContractReport">
+        select <include refid="Base_Column_List"/>
+        from t_report_finance_customer_contract
+        where contractbillid = #{contractbillid} and month=#{month} and contractcaluseid=#{contractcaluseid}
+    </select>
+
+
+    <select id="getContractReportListByMonthAndCustomerid" parameterType="java.lang.String" resultType="com.hd.agent.journalsheet.model.ContractReport">
+        select t.*
+        from t_report_finance_customer_contract t
+        where t.customerid = #{customerid} and t.month=#{month}
+    </select>
+
+    <select id="getContractReportNumByContractbillid" resultType="int" parameterType="java.lang.String" >
+        select count(1) from t_report_finance_customer_contract
+        where contractbillid = #{contractbillid}
+    </select>
+
+</mapper>

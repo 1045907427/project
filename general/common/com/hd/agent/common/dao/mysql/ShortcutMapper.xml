@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.common.dao.ShortcutMapper" >
+  	<insert id="addShortcut" parameterType="com.hd.agent.common.model.Shortcut" >
+	    insert into t_sys_shortcut
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="id != null" >
+	        id,
+	      </if>
+	      <if test="userid != null" >
+	        userid,
+	      </if>
+	      <if test="operateid != null" >
+	        operateid,
+	      </if>
+	      <if test="aliasname != null" >
+	        aliasname,
+	      </if>
+	      <if test="1==1" >
+	        addtime,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="id != null" >
+	        #{id},
+	      </if>
+	      <if test="userid != null" >
+	        #{userid},
+	      </if>
+	      <if test="operateid != null" >
+	        #{operateid},
+	      </if>
+	      <if test="aliasname != null" >
+	        #{aliasname},
+	      </if>
+	      <if test="1==1" >
+	        now(),
+	      </if>
+	    </trim>
+	  </insert>
+	  <select id="showShortcutList" parameterType="java.lang.String" resultType="com.hd.agent.common.model.Shortcut">
+	  	select t.id, t.userid, t.operateid, t.aliasname, t1.url, t.addtime,t1.description,t1.image
+	  	from t_sys_shortcut t
+	  	left join t_ac_operate t1 on t.operateid=t1.operateid
+	  	where t.userid=#{userid}
+	  </select>
+	  <delete id="deleteShortcut" parameterType="java.lang.String">
+	  	delete from  t_sys_shortcut where id=#{id} and userid=#{userid}
+	  </delete>
+</mapper>

@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.system.dao.SysCodeMapper">
+	<!-- 缓存 -->
+	<cache type="org.mybatis.caches.ehcache.EhcacheCache"></cache>
+	<sql id="sys_code_Column_List">
+		code,codename,codevalue,type,typename,seq,state
+	</sql>
+	<select id="getSysCodeList" resultType="com.hd.agent.system.model.SysCode" useCache="false">
+		select
+		<include refid="sys_code_Column_List"/>
+		from t_sys_code
+	</select>
+	<sql id="sysCodePage_WhereClause">
+		<if test="condition.code != null">
+			and code like CONCAT('%',#{condition.code},'%')
+		</if>
+		<if test="condition.codename != null">
+			and codename like CONCAT('%',#{condition.codename},'%')
+		</if>
+		<if test="condition.eqcodevalue != null">
+			and codevalue = #{condition.eqcodevalue}
+		</if>
+		<if test="condition.codevalue != null">
+			and codevalue like CONCAT('%',#{condition.codevalue},'%')
+		</if>
+		<if test="condition.type != null">
+			and type = #{condition.type}
+		</if>
+		<if test="condition.typename != null">
+			and typename like CONCAT('%',#{condition.typename},'%')
+		</if>
+		<if test="condition.state != null">
+			and state = #{condition.state}
+		</if>
+	</sql>
+	<select id="getSysCodePageList" resultType="com.hd.agent.system.model.SysCode" parameterType="com.hd.agent.common.util.PageMap">
+		select
+		<include refid="sys_code_Column_List"/>
+		from t_sys_code
+		<trim prefix="where" prefixOverrides="and|or">
+			<include refid="sysCodePage_WhereClause"></include>
+		</trim>
+		order by type,seq
+		<if test="condition.flag == null">
+			<include refid="common.Page_limit"/>
+		</if>
+	</select>
+	<select id="getSysCodeCount" resultType="int" parameterType="com.hd.agent.common.util.PageMap">
+		select count(1) from t_sys_code
+		<trim prefix="where" prefixOverrides="and|or">
+			<include refid="sysCodePage_WhereClause"></include>
+		</trim>
+	</select>
+	<select id="getCodeListCacheByType" resultType="com.hd.agent.system.model.SysCode" parameterType="com.hd.agent.common.util.PageMap" useCache="false">
+		select distinct
+		<include refid="sys_code_Column_List"/>
+		from t_sys_code
+		where type = #{type} and state = '1'
+		order by seq
+	</select>
+	<!--  对外调用的接口 -->
+	<select id="getSysCodeListForeign" resultType="com.hd.agent.system.model.SysCode" parameterType="com.hd.agent.common.util.PageMap" useCache="false">
+		select distinct
+		<include refid="sys_code_Column_List"/>
+		from t_sys_code
+		where type = #{type} and state = '1'
+		order by seq
+	</select>
+	<select id="getSysCodeTypeForeign" resultType="com.hd.agent.system.model.SysCode">
+		select distinct
+		type,typename
+		from t_sys_code
+	</select>
+	<select id="getSysCodeTypes" resultType="com.hd.agent.system.model.SysCode">
+		select distinct type,typename from t_sys_code
+	</select>
+	<select id="getSysCodeCodes" resultType="com.hd.agent.system.model.SysCode">
+		select distinct code,codename,codevalue from t_sys_code
+	</select>
+	<select id="getSysCodeInfo" parameterType="java.lang.String" resultType="com.hd.agent.system.model.SysCode">
+		select 
+		<include refid="sys_code_Column_List"/>
+		from t_sys_code
+		where code = #{code} and type = #{type}
+	</select>
+	<select id="getEnableSysCodeInfo" parameterType="java.lang.String" resultType="com.hd.agent.system.model.SysCode">
+		select
+		<include refid="sys_code_Column_List"/>
+		from t_sys_code
+		where code = #{code} and type = #{type} and state = '1'
+	</select>
+	<insert id="addSysCode" parameterType="com.hd.agent.system.model.SysCode" >
+		insert into t_sys_code
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="code != null">
+				code,
+			</if>
+			<if test="codename != null">
+				codename,
+			</if>
+			<if test="codevalue != null">
+				codevalue,
+			</if>
+			<if test="type != null">
+				type,
+			</if>
+			<if test="typename != null">
+				typename,
+			</if>
+			<if test="seq != null">
+				seq,
+			</if>
+			<if test="state != null">
+				state,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="code != null">
+				#{code},
+			</if>
+			<if test="codename != null">
+				#{codename},
+			</if>
+			<if test="codevalue != null">
+				#{codevalue},
+			</if>
+			<if test="type != null">
+				#{type},
+			</if>
+			<if test="typename != null">
+				#{typename},
+			</if>
+			<if test="seq != null">
+				#{seq},
+			</if>
+			<if test="state != null">
+				#{state},
+			</if>
+		</trim>
+	</insert>
+	<update id="editSysCode" parameterType="com.hd.agent.system.model.SysCode">
+		update t_sys_code
+		<set>
+			<if test="codename != null">
+				codename=#{codename},
+			</if>
+			<if test="codevalue != null">
+				codevalue=#{codevalue},
+			</if>
+			<if test="typename != null">
+				typename=#{typename},
+			</if>
+			<if test="seq != null">
+				seq=#{seq},
+			</if>
+			<if test="state != null">
+				state=#{state},
+			</if>
+		</set>
+		where code=#{code} and type = #{type}
+	</update>
+	<update id="disableSysCode" parameterType="java.lang.String">
+		update t_sys_code set state='0' where code=#{code} and type = #{type}
+	</update>
+	<update id="enableSysCode" parameterType="java.lang.String">
+		update t_sys_code set state='1' where code = #{code} and type = #{type}
+	</update>
+	<!-- <delete id="deleteSysCode" parameterType="java.lang.String">
+		delete from t_sys_code
+		where code=#{code}
+	</delete> -->
+	<!-- 根据模块ID查询模块名称 -->
+	<select id="searchCodename" parameterType="java.lang.String" resultType="java.lang.String">
+		SELECT codename FROM t_sys_code 
+		WHERE code=#{code} and type = #{type}
+ 	</select>
+	<!-- 查询模块ID是否存在 -->
+	<select id="searchCode" resultType="java.lang.String" parameterType="java.lang.String">
+		select code from t_sys_code where code=#{code} and type = #{type}
+	</select>
+	<select id="codenametocode" resultType="java.lang.String" parameterType="java.lang.String">
+		select code from t_sys_code where codename=#{codename} and type = #{type}
+	</select>
+	<!-- 删除编号名称 -->
+	<delete id="deleteSCBillName" parameterType="java.lang.String">
+		delete from t_sys_code
+		where code=#{code} and type = #{type}
+	</delete>
+	<!-- 检验代码唯一性 -->
+	<select id="checkSysCodeList" resultType="com.hd.agent.system.model.SysCode" parameterType="java.lang.String">
+		select distinct
+		<include refid="sys_code_Column_List"/>
+		from t_sys_code
+		where type = #{type}
+	</select>
+	<!-- 删除代码编号 -->
+	<delete id="deleteSysCode" parameterType="java.util.Map">
+		delete from t_sys_code
+		where code=#{code} and type = #{type}
+	</delete>
+	<select id="getEnableSysCodeFirstInfoByType" parameterType="java.lang.String" resultType="com.hd.agent.system.model.SysCode">
+		select
+		<include refid="sys_code_Column_List"/>
+		from t_sys_code
+		where  type = #{type} and state = '1'
+		ORDER BY SEQ ASC
+		limit 1
+	</select>
+</mapper>

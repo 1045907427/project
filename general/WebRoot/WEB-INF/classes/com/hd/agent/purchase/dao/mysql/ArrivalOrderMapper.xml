@@ -1,0 +1,1680 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.purchase.dao.ArrivalOrderMapper" >
+	<sql id="AO_Base_Column_List">
+    id, businessdate, status, remark, adduserid, addusername, adddeptid, adddeptname, 
+    addtime, modifyuserid, modifyusername, modifytime, audituserid, auditusername, audittime, 
+    stopuserid, stopusername, stoptime, closetime, printtimes, supplierid, handlerid, 
+    source, buydeptid, buyuserid, settletype, paytype, storageid, field01, field02, field03, 
+    field04, field05, field06, field07, field08, billno,isrefer,isinvoice,canceldate,'1' as ordertype,buyorderid,vouchertimes
+	</sql>
+	<sql id="AOPageList_Where_Clause" >
+      <if test="condition.id != null" >
+         and id like CONCAT('%',#{condition.id},'%')
+      </if>
+      <if test="condition.businessdate != null" >
+         and businessdate = #{condition.businessdate}
+      </if>
+      <if test="condition.status != null" >
+         and status = #{condition.status}
+      </if>
+      <if test="condition.remark != null" >
+         and remark = #{condition.remark}
+      </if>
+      <if test="condition.adduserid != null" >
+         and adduserid = #{condition.adduserid}
+      </if>
+      <if test="condition.addusername != null" >
+         and addusername = #{condition.addusername}
+      </if>
+      <if test="condition.adddeptid != null" >
+         and adddeptid = #{condition.adddeptid}
+      </if>
+      <if test="condition.adddeptname != null" >
+         and adddeptname = #{condition.adddeptname}
+      </if>
+      <if test="condition.addtime != null" >
+         and addtime = #{condition.addtime}
+      </if>
+      <if test="condition.modifyuserid != null" >
+         and modifyuserid = #{condition.modifyuserid}
+      </if>
+      <if test="condition.modifyusername != null" >
+         and modifyusername = #{condition.modifyusername}
+      </if>
+      <if test="condition.modifytime != null" >
+         and modifytime = #{condition.modifytime}
+      </if>
+      <if test="condition.audituserid != null" >
+         and audituserid = #{condition.audituserid}
+      </if>
+      <if test="condition.auditusername != null" >
+         and auditusername = #{condition.auditusername}
+      </if>
+      <if test="condition.audittime != null" >
+         and audittime = #{condition.audittime}
+      </if>
+      <if test="condition.stopuserid != null" >
+         and stopuserid = #{condition.stopuserid}
+      </if>
+      <if test="condition.stopusername != null" >
+         and stopusername = #{condition.stopusername}
+      </if>
+      <if test="condition.stoptime != null" >
+         and stoptime = #{condition.stoptime}
+      </if>
+      <if test="condition.closetime != null" >
+         and closetime = #{condition.closetime}
+      </if>
+      <if test="condition.printtimes != null" >
+         and printtimes = #{condition.printtimes}
+      </if>
+      <if test="condition.supplierid != null" >
+         and supplierid = #{condition.supplierid}
+      </if>
+      <if test="condition.suppliername != null" >
+         and suppliername = #{condition.suppliername}
+      </if>
+      <if test="condition.handlerid != null" >
+         and handlerid = #{condition.handlerid}
+      </if>
+      <if test="condition.source != null" >
+         and source = #{condition.source}
+      </if>
+      <if test="condition.buydeptid != null" >
+         and buydeptid like CONCAT(#{condition.buydeptid},'%')
+      </if>
+      <if test="condition.buyuserid != null" >
+         and buyuserid = #{condition.buyuserid}
+      </if>
+      <if test="condition.settletype != null" >
+         and settletype = #{condition.settletype}
+      </if>
+      <if test="condition.paytype != null" >
+         and paytype = #{condition.paytype}
+      </if>
+      <if test="condition.storageid != null" >
+         and storageid = #{condition.storageid}
+      </if>
+      <if test="condition.field01 != null" >
+         and field01 = #{condition.field01}
+      </if>
+      <if test="condition.field02 != null" >
+         and field02 = #{condition.field02}
+      </if>
+      <if test="condition.field03 != null" >
+         and field03 = #{condition.field03}
+      </if>
+      <if test="condition.field04 != null" >
+         and field04 = #{condition.field04}
+      </if>
+      <if test="condition.field05 != null" >
+         and field05 = #{condition.field05}
+      </if>
+      <if test="condition.field06 != null" >
+         and field06 = #{condition.field06}
+      </if>
+      <if test="condition.field07 != null" >
+         and field07 = #{condition.field07}
+      </if>
+      <if test="condition.field08 != null" >
+         and field08 = #{condition.field08}
+      </if>
+      <if test="condition.billno != null" >
+        and billno = #{condition.billno},
+      </if>    
+      <if test="condition.isrefer != null">
+         and isrefer = #{condition.isrefer}
+      </if> 
+      <if test="condition.choiceforrefer != null">
+         and (isrefer !='1' and status='3')
+      </if> 
+      <if test="condition.isinvoice != null">
+         and isinvoice=#{condition.isinvoice}
+      </if> 
+      <if test="condition.canceldate != null">
+         and canceldate=#{condition.canceldate}
+      </if>
+      <if test="condition.shownotisinvoice != null">
+         and (isinvoice='0' or isinvoice='3' ) and status='3' and (SELECT COUNT(1) FROM t_purchase_arrivalorder_detail d WHERE d.orderid = t.id AND d.invoicerefer=0)>0
+      </if> 
+  </sql>
+  <select id="getArrivalOrder" parameterType="java.lang.String" resultType="com.hd.agent.purchase.model.ArrivalOrder">
+    select 
+    <include refid="AO_Base_Column_List" />
+    from t_purchase_arrivalorder
+    where id = #{id}
+  </select>
+  <select id="getArrivalOrderBy" parameterType="java.util.Map" resultType="com.hd.agent.purchase.model.ArrivalOrder">
+    select 
+    <choose>
+		<when test="cols!=null">
+			<include refid="common.Page_Column"/>
+		</when>
+		<when test="cols==null">
+ 				<include refid="AO_Base_Column_List" />
+		</when>
+	</choose>
+	from t_purchase_arrivalorder
+	where
+	<trim prefixOverrides="and|or" >	  		
+		<if test="id != null" >
+		   and id = #{id}
+		</if>
+		<if test="billno != null" >
+		   and billno = #{billno}
+		</if>
+		<if test="status != null" >
+		   and status = #{status}
+		</if>
+	    <if test="authDataSql != null">
+	    	and ${authDataSql}
+	    </if>
+    </trim>
+  </select>
+  <insert id="insertArrivalOrder" parameterType="com.hd.agent.purchase.model.ArrivalOrder" >
+    insert into t_purchase_arrivalorder
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="businessdate != null" >
+        businessdate,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="adduserid != null" >
+        adduserid,
+      </if>
+      <if test="addusername != null" >
+        addusername,
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid,
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname,
+      </if>
+      <if test="addtime != null" >
+        addtime,
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid,
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername,
+      </if>
+      <if test="modifytime != null" >
+        modifytime,
+      </if>
+      <if test="audituserid != null" >
+        audituserid,
+      </if>
+      <if test="auditusername != null" >
+        auditusername,
+      </if>
+      <if test="audittime != null" >
+        audittime,
+      </if>
+      <if test="stopuserid != null" >
+        stopuserid,
+      </if>
+      <if test="stopusername != null" >
+        stopusername,
+      </if>
+      <if test="stoptime != null" >
+        stoptime,
+      </if>
+      <if test="closetime != null" >
+        closetime,
+      </if>
+      <if test="printtimes != null" >
+        printtimes,
+      </if>
+      <if test="supplierid != null" >
+        supplierid,
+      </if>
+      <if test="suppliername != null" >
+        suppliername,
+      </if>
+      <if test="handlerid != null" >
+        handlerid,
+      </if>
+      <if test="source != null" >
+        source,
+      </if>
+      <if test="buydeptid != null" >
+        buydeptid,
+      </if>
+      <if test="buyuserid != null" >
+        buyuserid,
+      </if>
+      <if test="settletype != null" >
+        settletype,
+      </if>
+      <if test="paytype != null" >
+        paytype,
+      </if>
+      <if test="storageid != null" >
+        storageid,
+      </if>
+      <if test="field01 != null" >
+        field01,
+      </if>
+      <if test="field02 != null" >
+        field02,
+      </if>
+      <if test="field03 != null" >
+        field03,
+      </if>
+      <if test="field04 != null" >
+        field04,
+      </if>
+      <if test="field05 != null" >
+        field05,
+      </if>
+      <if test="field06 != null" >
+        field06,
+      </if>
+      <if test="field07 != null" >
+        field07,
+      </if>
+      <if test="field08 != null" >
+        field08,
+      </if>
+      <if test="billno != null" >
+        billno,
+      </if>
+      <if test="isrefer != null" >
+        isrefer,
+      </if>
+      <if test="buyorderid != null">
+        buyorderid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="businessdate != null" >
+        #{businessdate},
+      </if>
+      <if test="status != null" >
+        #{status},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+      <if test="adduserid != null" >
+        #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        #{adddeptname},
+      </if>
+      <if test="addtime != null" >
+        #{addtime},
+      </if>
+      <if test="modifyuserid != null" >
+        #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        #{modifyusername},
+      </if>
+      <if test="modifytime != null" >
+        #{modifytime},
+      </if>
+      <if test="audituserid != null" >
+        #{audituserid},
+      </if>
+      <if test="auditusername != null" >
+        #{auditusername},
+      </if>
+      <if test="audittime != null" >
+        #{audittime},
+      </if>
+      <if test="stopuserid != null" >
+        #{stopuserid},
+      </if>
+      <if test="stopusername != null" >
+        #{stopusername},
+      </if>
+      <if test="stoptime != null" >
+        #{stoptime},
+      </if>
+      <if test="closetime != null" >
+        #{closetime},
+      </if>
+      <if test="printtimes != null" >
+        #{printtimes},
+      </if>
+      <if test="supplierid != null" >
+        #{supplierid},
+      </if>
+      <if test="suppliername != null" >
+        #{suppliername},
+      </if>
+      <if test="handlerid != null" >
+        #{handlerid},
+      </if>
+      <if test="source != null" >
+        #{source},
+      </if>
+      <if test="buydeptid != null" >
+        #{buydeptid},
+      </if>
+      <if test="buyuserid != null" >
+        #{buyuserid},
+      </if>
+      <if test="settletype != null" >
+        #{settletype},
+      </if>
+      <if test="paytype != null" >
+        #{paytype},
+      </if>
+      <if test="storageid != null" >
+        #{storageid},
+      </if>
+      <if test="field01 != null" >
+        #{field01},
+      </if>
+      <if test="field02 != null" >
+        #{field02},
+      </if>
+      <if test="field03 != null" >
+        #{field03},
+      </if>
+      <if test="field04 != null" >
+        #{field04},
+      </if>
+      <if test="field05 != null" >
+        #{field05},
+      </if>
+      <if test="field06 != null" >
+        #{field06},
+      </if>
+      <if test="field07 != null" >
+        #{field07},
+      </if>
+      <if test="field08 != null" >
+        #{field08},
+      </if>
+      <if test="billno != null" >
+        #{billno},
+      </if>
+      <if test="isrefer != null" >
+        #{isrefer},
+      </if>
+      <if test="buyorderid != null">
+        #{buyorderid},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateArrivalOrder" parameterType="com.hd.agent.purchase.model.ArrivalOrder" >
+    update t_purchase_arrivalorder
+    <set >
+      <if test="businessdate != null" >
+        businessdate = #{businessdate},
+      </if>
+      <if test="status != null" >
+        status = #{status},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark},
+      </if>
+      <if test="adduserid != null" >
+        adduserid = #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        addusername = #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid = #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname = #{adddeptname},
+      </if>
+      <if test="addtime != null" >
+        addtime = #{addtime},
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid = #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername = #{modifyusername},
+      </if>
+      <if test="modifytime != null" >
+        modifytime = #{modifytime},
+      </if>
+      <if test="audituserid != null" >
+        audituserid = #{audituserid},
+      </if>
+      <if test="auditusername != null" >
+        auditusername = #{auditusername},
+      </if>
+      <if test="audittime != null" >
+        audittime = #{audittime},
+      </if>
+      <if test="stopuserid != null" >
+        stopuserid = #{stopuserid},
+      </if>
+      <if test="stopusername != null" >
+        stopusername = #{stopusername},
+      </if>
+      <if test="stoptime != null" >
+        stoptime = #{stoptime},
+      </if>
+      <if test="closetime != null" >
+        closetime = #{closetime},
+      </if>
+      <if test="printtimes != null" >
+        printtimes = #{printtimes},
+      </if>
+      <if test="supplierid != null" >
+        supplierid = #{supplierid},
+      </if>
+      <if test="suppliername != null" >
+        suppliername = #{suppliername},
+      </if>
+      <if test="handlerid != null" >
+        handlerid = #{handlerid},
+      </if>
+      <if test="source != null" >
+        source = #{source},
+      </if>
+      <if test="buydeptid != null" >
+        buydeptid = #{buydeptid},
+      </if>
+      <if test="buyuserid != null" >
+        buyuserid = #{buyuserid},
+      </if>
+      <if test="settletype != null" >
+        settletype = #{settletype},
+      </if>
+      <if test="paytype != null" >
+        paytype = #{paytype},
+      </if>
+      <if test="storageid != null" >
+        storageid = #{storageid},
+      </if>
+      <if test="field01 != null" >
+        field01 = #{field01},
+      </if>
+      <if test="field02 != null" >
+        field02 = #{field02},
+      </if>
+      <if test="field03 != null" >
+        field03 = #{field03},
+      </if>
+      <if test="field04 != null" >
+        field04 = #{field04},
+      </if>
+      <if test="field05 != null" >
+        field05 = #{field05},
+      </if>
+      <if test="field06 != null" >
+        field06 = #{field06},
+      </if>
+      <if test="field07 != null" >
+        field07 = #{field07},
+      </if>
+      <if test="field08 != null" >
+        field08 = #{field08},
+      </if>
+      <if test="billno != null" >
+        billno = #{billno},
+      </if>
+      <if test="isrefer != null" >
+        isrefer = #{isrefer},
+      </if>
+      <if test="buyorderid != null">
+       	buyorderid = #{buyorderid},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  <update id="updateArrivalOrderBy" parameterType="map" >
+    update t_purchase_arrivalorder
+    <set >
+      <if test="arrivalOrder.id != null" >
+        id = #{arrivalOrder.id},
+      </if>
+      <if test="arrivalOrder.businessdate != null" >
+        businessdate = #{arrivalOrder.businessdate},
+      </if>
+      <if test="arrivalOrder.status != null" >
+        status = #{arrivalOrder.status},
+      </if>
+      <if test="arrivalOrder.remark != null" >
+        remark = #{arrivalOrder.remark},
+      </if>
+      <if test="arrivalOrder.adduserid != null" >
+        adduserid = #{arrivalOrder.adduserid},
+      </if>
+      <if test="arrivalOrder.addusername != null" >
+        addusername = #{arrivalOrder.addusername},
+      </if>
+      <if test="arrivalOrder.adddeptid != null" >
+        adddeptid = #{arrivalOrder.adddeptid},
+      </if>
+      <if test="arrivalOrder.adddeptname != null" >
+        adddeptname = #{arrivalOrder.adddeptname},
+      </if>
+      <if test="arrivalOrder.addtime != null" >
+        addtime = #{arrivalOrder.addtime},
+      </if>
+      <if test="arrivalOrder.modifyuserid != null" >
+        modifyuserid = #{arrivalOrder.modifyuserid},
+      </if>
+      <if test="arrivalOrder.modifyusername != null" >
+        modifyusername = #{arrivalOrder.modifyusername},
+      </if>
+      <if test="arrivalOrder.modifytime != null" >
+        modifytime = #{arrivalOrder.modifytime},
+      </if>
+      <if test="arrivalOrder.audituserid != null" >
+        audituserid = #{arrivalOrder.audituserid},
+      </if>
+      <if test="arrivalOrder.auditusername != null" >
+        auditusername = #{arrivalOrder.auditusername},
+      </if>
+      <if test="arrivalOrder.audittime != null" >
+        audittime = #{arrivalOrder.audittime},
+      </if>
+      <if test="arrivalOrder.stopuserid != null" >
+        stopuserid = #{arrivalOrder.stopuserid},
+      </if>
+      <if test="arrivalOrder.stopusername != null" >
+        stopusername = #{arrivalOrder.stopusername},
+      </if>
+      <if test="arrivalOrder.stoptime != null" >
+        stoptime = #{arrivalOrder.stoptime},
+      </if>
+      <if test="arrivalOrder.closetime != null" >
+        closetime = #{arrivalOrder.closetime},
+      </if>
+      <if test="arrivalOrder.printtimes != null" >
+        printtimes = #{arrivalOrder.printtimes},
+      </if>
+      <if test="arrivalOrder.supplierid != null" >
+        supplierid = #{arrivalOrder.supplierid},
+      </if>
+      <if test="arrivalOrder.suppliername != null" >
+        suppliername = #{arrivalOrder.suppliername},
+      </if>
+      <if test="arrivalOrder.handlerid != null" >
+        handlerid = #{arrivalOrder.handlerid},
+      </if>
+      <if test="arrivalOrder.source != null" >
+        source = #{arrivalOrder.source},
+      </if>
+      <if test="arrivalOrder.buydeptid != null" >
+        buydeptid = #{arrivalOrder.buydeptid},
+      </if>
+      <if test="arrivalOrder.buyuserid != null" >
+        buyuserid = #{arrivalOrder.buyuserid},
+      </if>
+      <if test="arrivalOrder.settletype != null" >
+        settletype = #{arrivalOrder.settletype},
+      </if>
+      <if test="arrivalOrder.paytype != null" >
+        paytype = #{arrivalOrder.paytype},
+      </if>
+      <if test="arrivalOrder.storageid != null" >
+        storageid = #{arrivalOrder.storageid},
+      </if>
+      <if test="arrivalOrder.field01 != null" >
+        field01 = #{arrivalOrder.field01},
+      </if>
+      <if test="arrivalOrder.field02 != null" >
+        field02 = #{arrivalOrder.field02},
+      </if>
+      <if test="arrivalOrder.field03 != null" >
+        field03 = #{arrivalOrder.field03},
+      </if>
+      <if test="arrivalOrder.field04 != null" >
+        field04 = #{arrivalOrder.field04},
+      </if>
+      <if test="arrivalOrder.field05 != null" >
+        field05 = #{arrivalOrder.field05},
+      </if>
+      <if test="arrivalOrder.field06 != null" >
+        field06 = #{arrivalOrder.field06},
+      </if>
+      <if test="arrivalOrder.field07 != null" >
+        field07 = #{arrivalOrder.field07},
+      </if>
+      <if test="arrivalOrder.field08 != null" >
+        field08 = #{arrivalOrder.field08},
+      </if>
+      <if test="arrivalOrder.billno != null" >
+        billno = #{arrivalOrder.billno},
+      </if>
+      <if test="arrivalOrder.isrefer != null" >
+        isrefer = #{arrivalOrder.isrefer},
+      </if>
+      <if test="arrivalOrder.buyorderid != null">
+       	buyorderid = #{arrivalOrder.buyorderid},
+      </if>
+    </set>
+    where
+   	<trim prefixOverrides="and|or">
+   		<if test="1==1">
+   			and id=#{id}
+   		</if>		  	
+	    <if test="authDataSql != null">
+	    	and ${authDataSql}
+	    </if>
+    </trim>
+  </update>  
+	<update id="updateArrivalOrderStatus" parameterType="com.hd.agent.purchase.model.ArrivalOrder">
+	   update t_purchase_arrivalorder
+   	   <set >	       
+   	    <if test="businessdate != null" >
+        businessdate = #{businessdate},
+      </if>   
+		<if test="isrefer != null">
+		  isrefer=#{isrefer},
+		</if>
+		<if test="status != null" >
+		  status = #{status},
+		</if>
+		<if test="audituserid != null">
+	        audituserid = #{audituserid},
+	     </if>
+	     <if test="auditusername != null">
+	        auditusername = #{auditusername},
+	     </if>
+	     <if test="audittime != null">
+	        audittime = #{audittime},
+	     </if>
+	     <if test="stopuserid != null">
+	        stopuserid = #{stopuserid},
+	     </if>
+	     <if test="stopusername != null">
+	        stopusername = #{stopusername},
+	     </if>
+	     <if test="stoptime != null">
+	        stoptime = #{stoptime},
+	     </if>
+	     <if test="closetime != null">
+	        closetime = #{closetime},
+	     </if>
+         <if test="vouchertimes != null">
+           vouchertimes = #{vouchertimes},
+         </if>
+	   </set>
+	   where id = #{id}
+  </update>
+  <delete id="deleteArrivalOrder" parameterType="java.lang.String">
+    delete from t_purchase_arrivalorder
+    where id = #{id}
+  </delete>
+  <select id="getArrivalOrderPageList"  parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.purchase.model.ArrivalOrder">
+  		select
+	  	<choose>
+			<when test="cols!=null">
+				<include refid="common.Page_Column"/>
+			</when>
+			<when test="cols==null">
+				<include refid="AO_Base_Column_List"/>				
+			</when>
+		</choose>
+		from t_purchase_arrivalorder t
+    	<trim prefix="where" prefixOverrides="and|or">
+			<include refid="AOPageList_Where_Clause" />
+			<include refid="common.Page_querySql"/>
+			<include refid="common.Page_dataSql"/>			
+		    <if test="condition.goodsid != null">
+				and EXISTS (select t1.goodsid from t_purchase_arrivalorder_detail t1 where t.id=t1.orderid and t1.goodsid = #{condition.goodsid})
+			</if>
+            <if test="condition.businessdatestart != null" >
+              <![CDATA[ and businessdate >= #{condition.businessdatestart} ]]>
+            </if>
+            <if test="condition.businessdateend != null" >
+              <![CDATA[ and businessdate <= #{condition.businessdateend} ]]>
+            </if>
+            <if test="condition.exportids != null">
+                and FIND_IN_SET(t.id,#{condition.exportids})
+            </if>
+	      	<choose>
+		      	<when test="condition.isClose ==0 ">
+		      		and status='2'
+		      	</when>
+		      	<when test="condition.isClose ==1 ">
+		      		and status='3'
+		      	</when>
+		      	<when test="condition.isClose ==2 ">
+		      		and status='4'
+		      	</when>
+		    </choose>	
+	      	<choose>
+		      	<when test="condition.isAudit ==1 ">
+		      		and status = '2'
+		      	</when>
+		      	<when test="condition.isAudit ==2 ">
+		      		and (status='3' or status='4' )
+		      	</when>
+		    </choose>	    
+	      	<if test="condition.doprintopt != null">
+	      		and status='3'
+		      	<choose>
+		      		<when test="condition.printstatus == null ">
+		      			and 1 != 1
+		      		</when>
+		      		<when test="condition.printstatus ==0 ">
+		      			and (printtimes is null or printtimes=0)
+		      		</when>      		
+		      		<when test="condition.printstatus ==1 ">
+		      		 	<![CDATA[and (printtimes > 0) ]]>
+		      		</when>
+		      		<when test="condition.printstatus == 2 ">
+		      			and 1 = 1 
+		      		</when>
+		      	</choose>
+	      	</if>
+	      	<if test="condition.printsign != null and condition.queryprinttimes != null">
+	      		<choose>
+	      			<when test="condition.printsign == 1">
+	      				<![CDATA[and printtimes = #{condition.queryprinttimes} ]]>
+	      			</when>
+	      			<when test="condition.printsign == 2">
+	      				<![CDATA[and printtimes < #{condition.queryprinttimes} ]]>
+	      			</when>
+	      			<when test="condition.printsign == 3">
+	      				<![CDATA[and printtimes <= #{condition.queryprinttimes} ]]>
+	      			</when>
+	      			<when test="condition.printsign == 4">
+	      				<![CDATA[and printtimes > #{condition.queryprinttimes} ]]>
+	      			</when>
+	      			<when test="condition.printsign == 5">
+	      				<![CDATA[and printtimes >= #{condition.queryprinttimes} ]]>
+	      			</when>
+	      		</choose>
+	      	</if>
+		</trim>
+		<choose>
+			<when test="condition.isNoPageflag !='true'">
+				<include refid="common.Page_limit" />
+			</when>
+			<otherwise>
+				ORDER BY businessdate desc , id desc
+			</otherwise>
+		</choose>
+  	</select>
+  	<select id="getArrivalOrderPageCount"  parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  		select count(*) from t_purchase_arrivalorder t 		
+    	<trim prefix="where" prefixOverrides="and|or">
+			<include refid="AOPageList_Where_Clause" />
+			<include refid="common.Page_querySql"/>
+			<include refid="common.Page_dataSql"/>		
+		    <if test="condition.goodsid != null">
+				and EXISTS (select t1.goodsid from t_purchase_arrivalorder_detail t1 where t.id=t1.orderid and t1.goodsid = #{condition.goodsid})
+			</if>
+            <if test="condition.businessdatestart != null" >
+              <![CDATA[ and businessdate >= #{condition.businessdatestart} ]]>
+            </if>
+            <if test="condition.businessdateend != null" >
+              <![CDATA[ and businessdate <= #{condition.businessdateend} ]]>
+            </if>
+	      	<choose>
+		      	<when test="condition.isClose ==0 ">
+		      		and status='2'
+		      	</when>
+		      	<when test="condition.isClose ==1 ">
+		      		and status='3'
+		      	</when>
+		      	<when test="condition.isClose ==2 ">
+		      		and status='4'
+		      	</when>
+		    </choose>
+	      	<choose>
+		      	<when test="condition.isAudit ==1 ">
+		      		and status = '2'
+		      	</when>
+		      	<when test="condition.isAudit ==2 ">
+		      		and (status='3' or status='4' )
+		      	</when>
+		    </choose>		    
+	      	<if test="condition.doprintopt != null">
+		      	<choose>
+		      		<when test="condition.printstatus == null ">
+		      			and 1 != 1
+		      		</when>
+		      		<when test="condition.printstatus ==0 ">
+		      			and (printtimes is null or printtimes=0)
+		      		</when>      		
+		      		<when test="condition.printstatus ==1 ">
+		      		 	<![CDATA[and (printtimes > 0) ]]>
+		      		</when>
+		      		<when test="condition.printstatus == 2 ">
+		      			and 1 = 1 
+		      		</when>
+		      	</choose>
+	      	</if>
+	      	<if test="condition.printsign != null and condition.queryprinttimes != null">
+	      		<choose>
+	      			<when test="condition.printsign == 1">
+	      				<![CDATA[and printtimes = #{condition.queryprinttimes} ]]>
+	      			</when>
+	      			<when test="condition.printsign == 2">
+	      				<![CDATA[and printtimes < #{condition.queryprinttimes} ]]>
+	      			</when>
+	      			<when test="condition.printsign == 3">
+	      				<![CDATA[and printtimes <= #{condition.queryprinttimes} ]]>
+	      			</when>
+	      			<when test="condition.printsign == 4">
+	      				<![CDATA[and printtimes > #{condition.queryprinttimes} ]]>
+	      			</when>
+	      			<when test="condition.printsign == 5">
+	      				<![CDATA[and printtimes >= #{condition.queryprinttimes} ]]>
+	      			</when>
+	      		</choose>
+	      	</if>
+		</trim>
+  	</select>
+  	<select id="getArrivalOrderDetailTotalSum"  parameterType="com.hd.agent.common.util.PageMap" resultType="java.util.Map">
+  		SELECT SUM(aod.taxamount) AS taxamount,SUM(aod.notaxamount) notaxamount,SUM(aod.tax) AS tax 
+  		FROM t_purchase_arrivalorder_detail aod 
+		INNER JOIN 
+		(SELECT id from t_purchase_arrivalorder t	
+	    	<trim prefix="where" prefixOverrides="and|or">
+				<include refid="AOPageList_Where_Clause" />
+				<include refid="common.Page_querySql"/>
+				<include refid="common.Page_dataSql"/>
+                <if test="condition.businessdatestart != null" >
+                  <![CDATA[ and businessdate >= #{condition.businessdatestart} ]]>
+                </if>
+                <if test="condition.businessdateend != null" >
+                  <![CDATA[ and businessdate <= #{condition.businessdateend} ]]>
+                </if>
+		      	<choose>
+			      	<when test="condition.isClose ==0 ">
+			      		and status='2'
+			      	</when>
+			      	<when test="condition.isClose ==1 ">
+			      		and status='3'
+			      	</when>
+			      	<when test="condition.isClose ==2 ">
+			      		and status='4'
+			      	</when>
+			    </choose>
+		      	<choose>
+			      	<when test="condition.isAudit ==1 ">
+			      		and status = '2'
+			      	</when>
+			      	<when test="condition.isAudit ==2 ">
+			      		and (status='3' or status='4' )
+			      	</when>
+			    </choose>		    
+		      	<if test="condition.doprintopt != null">
+			      	<choose>
+			      		<when test="condition.printstatus == null ">
+			      			and 1 != 1
+			      		</when>
+			      		<when test="condition.printstatus ==0 ">
+			      			and (printtimes is null or printtimes=0)
+			      		</when>      		
+			      		<when test="condition.printstatus ==1 ">
+			      		 	<![CDATA[and (printtimes > 0) ]]>
+			      		</when>
+			      		<when test="condition.printstatus == 2 ">
+			      			and 1 = 1 
+			      		</when>
+			      	</choose>
+		      	</if>
+		      	<if test="condition.printsign != null and condition.queryprinttimes != null">
+		      		<choose>
+		      			<when test="condition.printsign == 1">
+		      				<![CDATA[and printtimes = #{condition.queryprinttimes} ]]>
+		      			</when>
+		      			<when test="condition.printsign == 2">
+		      				<![CDATA[and printtimes < #{condition.queryprinttimes} ]]>
+		      			</when>
+		      			<when test="condition.printsign == 3">
+		      				<![CDATA[and printtimes <= #{condition.queryprinttimes} ]]>
+		      			</when>
+		      			<when test="condition.printsign == 4">
+		      				<![CDATA[and printtimes > #{condition.queryprinttimes} ]]>
+		      			</when>
+		      			<when test="condition.printsign == 5">
+		      				<![CDATA[and printtimes >= #{condition.queryprinttimes} ]]>
+		      			</when>
+		      		</choose>
+		      	</if>
+			</trim>
+			) ao
+		ON aod.orderid=ao.id 		
+    	<trim prefix="where" prefixOverrides="and|or">	
+		    <if test="condition.goodsid != null">
+				and aod.goodsid = #{condition.goodsid}
+			</if>
+		</trim>	
+  	</select>
+  	<select id="getArrivalOrderListByBillno"  parameterType="java.lang.String" resultType="com.hd.agent.purchase.model.ArrivalOrder">
+  		select
+		<include refid="AO_Base_Column_List"/>
+		from t_purchase_arrivalorder
+		where billno=#{billno}		
+  	</select>  
+  	<select id="getArrivalOrderByBillno"  parameterType="java.lang.String" resultType="com.hd.agent.purchase.model.ArrivalOrder">
+  		select
+		<include refid="AO_Base_Column_List"/>
+		from t_purchase_arrivalorder
+		where billno=#{billno}		
+  	</select>	  	
+  	<update id="updateArrivalOrderInvoice" parameterType="java.lang.String">
+  		update t_purchase_arrivalorder
+  		<set>
+  			<if test="isinvoice != null">
+  		 		isinvoice = #{isinvoice},
+  		 	</if>  		 	
+  			<if test="canceldate != null">  		 		
+  		 	 	canceldate = #{canceldate},
+  		 	</if>
+  		 </set> 
+  	    where id = #{id}
+  	</update>
+  	<update id="updateArrivalOrderIsrefer" parameterType="java.lang.String">
+  		update t_purchase_arrivalorder 
+  		<set>
+  			<if test="isrefer != null">
+  		 		isrefer = #{isrefer},
+  		 	</if>
+  		 </set> 
+  	    where id = #{id}
+  	</update>
+  	<update id="updateArrivalOrderStatusAndisinvoice" parameterType="java.lang.String">
+  		update t_purchase_arrivalorder 
+  		<set>
+  			<if test="status != null">
+  		 		status = #{status},
+  		 	</if>
+  		 	<if test="isinvoice != null">
+  		 		isinvoice = #{isinvoice},
+  		 	</if>
+  		 </set> 
+  	    where id = #{id}
+  	</update>
+  	<!-- 采购订单明细 -->
+  	<sql id="AOD_Base_Column_List" >
+    id, orderid, goodsid, unitid, unitname, unitnum, auxunitid, auxunitname, auxnum, 
+    auxnumdetail,totalbox, taxprice, taxamount, taxtype, notaxprice, notaxamount, tax,addcostprice, remark,
+    arrivedate, batchno, produceddate, deadline, field01, field02, field03, field04, 
+    field05, field06, field07, field08, seq, billno, billdetailno, invoicenum, uninvoicenum,auditnum,buyorderid,
+    invoicetaxamount, invoicenotaxamount, uninvoicetaxamount, uninvoicenotaxamount,writeoffamount,invoicerefer,auxremainder,iswriteoff,
+    writeoffnum,brandid,oldtaxamount,oldnotaxamount,oldtax
+  	</sql>
+  	<insert id="insertArrivalOrderDetail" parameterType="com.hd.agent.purchase.model.ArrivalOrderDetail">
+    insert into t_purchase_arrivalorder_detail
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="orderid != null">
+        orderid,
+      </if>
+      <if test="goodsid != null">
+        goodsid,
+      </if>
+      <if test="brandid != null">
+        brandid,
+      </if>
+      <if test="unitid != null">
+        unitid,
+      </if>
+      <if test="unitname != null">
+        unitname,
+      </if>
+      <if test="unitnum != null">
+        unitnum,
+      </if>
+      <if test="auxunitid != null">
+        auxunitid,
+      </if>
+      <if test="auxunitname != null">
+        auxunitname,
+      </if>
+      <if test="auxnum != null">
+        auxnum,
+      </if>
+      <if test="auxnumdetail != null">
+        auxnumdetail,
+      </if>
+      <if test="auxremainder != null">
+        auxremainder,
+      </if>
+      <if test="totalbox != null">
+        totalbox,
+      </if>
+      <if test="taxprice != null">
+        taxprice,oldtaxprice,
+      </if>
+      <if test="taxamount != null">
+        taxamount,oldtaxamount,
+      </if>
+      <if test="taxtype != null">
+        taxtype,
+      </if>
+      <if test="notaxprice != null">
+        notaxprice,oldnotaxprice,
+      </if>
+      <if test="notaxamount != null">
+        notaxamount,oldnotaxamount,
+      </if>
+      <if test="tax != null">
+        tax,oldtax,
+      </if>
+      <if test="addcostprice != null">
+        addcostprice,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="arrivedate != null">
+        arrivedate,
+      </if>
+      <if test="batchno != null">
+        batchno,
+      </if>
+      <if test="produceddate != null">
+        produceddate,
+      </if>
+      <if test="deadline != null">
+        deadline,
+      </if>
+      <if test="field01 != null">
+        field01,
+      </if>
+      <if test="field02 != null">
+        field02,
+      </if>
+      <if test="field03 != null">
+        field03,
+      </if>
+      <if test="field04 != null">
+        field04,
+      </if>
+      <if test="field05 != null">
+        field05,
+      </if>
+      <if test="field06 != null">
+        field06,
+      </if>
+      <if test="field07 != null">
+        field07,
+      </if>
+      <if test="field08 != null">
+        field08,
+      </if>
+      <if test="seq != null">
+        seq,
+      </if>
+      <if test="billno != null">
+        billno,
+      </if>
+      <if test="billdetailno != null">
+        billdetailno,
+      </if>
+      <if test="buyorderid != null">
+        buyorderid,
+      </if>
+      <if test="invoicetaxamount != null">
+        invoicetaxamount,
+      </if>
+      <if test="invoicenotaxamount != null">
+        invoicenotaxamount,
+      </if>
+      <if test="uninvoicetaxamount != null">
+        uninvoicetaxamount,
+      </if>
+      <if test="uninvoicenotaxamount != null">
+        uninvoicenotaxamount,
+      </if>
+      <if test="writeoffamount != null">
+        writeoffamount,
+      </if>
+      <if test="invoicenum != null">
+        invoicenum,
+      </if>
+      <if test="uninvoicenum != null">
+        uninvoicenum,
+      </if>
+      <if test="invoicerefer != null">
+        invoicerefer,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id},
+      </if>
+      <if test="orderid != null">
+        #{orderid},
+      </if>
+      <if test="goodsid != null">
+        #{goodsid},
+      </if>
+      <if test="brandid != null">
+        #{brandid},
+      </if>
+      <if test="unitid != null">
+        #{unitid},
+      </if>
+      <if test="unitname != null">
+        #{unitname},
+      </if>
+      <if test="unitnum != null">
+        #{unitnum},
+      </if>
+      <if test="auxunitid != null">
+        #{auxunitid},
+      </if>
+      <if test="auxunitname != null">
+        #{auxunitname},
+      </if>
+      <if test="auxnum != null">
+        #{auxnum},
+      </if>
+      <if test="auxnumdetail != null">
+        #{auxnumdetail},
+      </if>
+      <if test="auxremainder != null">
+        #{auxremainder},
+      </if>
+      <if test="totalbox != null">
+        #{totalbox},
+      </if>
+      <if test="taxprice != null">
+        #{taxprice},#{taxprice},
+      </if>
+      <if test="taxamount != null">
+        #{taxamount},#{taxamount},
+      </if>
+      <if test="taxtype != null">
+        #{taxtype},
+      </if>
+      <if test="notaxprice != null">
+        #{notaxprice},#{notaxprice},
+      </if>
+      <if test="notaxamount != null">
+        #{notaxamount},#{notaxamount},
+      </if>
+      <if test="tax != null">
+        #{tax},#{tax},
+      </if>
+      <if test="addcostprice != null">
+        #{addcostprice},
+      </if>
+      <if test="remark != null">
+        #{remark},
+      </if>
+      <if test="arrivedate != null">
+        #{arrivedate},
+      </if>
+      <if test="batchno != null">
+        #{batchno},
+      </if>
+      <if test="produceddate != null">
+        #{produceddate},
+      </if>
+      <if test="deadline != null">
+        #{deadline},
+      </if>
+      <if test="field01 != null">
+        #{field01},
+      </if>
+      <if test="field02 != null">
+        #{field02},
+      </if>
+      <if test="field03 != null">
+        #{field03},
+      </if>
+      <if test="field04 != null">
+        #{field04},
+      </if>
+      <if test="field05 != null">
+        #{field05},
+      </if>
+      <if test="field06 != null">
+        #{field06},
+      </if>
+      <if test="field07 != null">
+        #{field07},
+      </if>
+      <if test="field08 != null">
+        #{field08},
+      </if>
+      <if test="seq != null">
+        #{seq},
+      </if>
+      <if test="billno != null">
+        #{billno},
+      </if>
+      <if test="billdetailno != null">
+        #{billdetailno},
+      </if>
+      <if test="buyorderid != null">
+        #{buyorderid},
+      </if>
+      <if test="invoicetaxamount != null">
+        #{invoicetaxamount},
+      </if>
+      <if test="invoicenotaxamount != null">
+        #{invoicenotaxamount},
+      </if>
+      <if test="uninvoicetaxamount != null">
+        #{uninvoicetaxamount},
+      </if>
+      <if test="uninvoicenotaxamount != null">
+        #{uninvoicenotaxamount},
+      </if>
+      <if test="writeoffamount != null">
+        #{writeoffamount},
+      </if>
+      <if test="invoicenum != null">
+        #{invoicenum},
+      </if>
+      <if test="uninvoicenum != null">
+        #{uninvoicenum},
+      </if>
+      <if test="invoicerefer != null">
+         #{invoicerefer},
+      </if>
+    </trim>
+  </insert>
+  <delete id="deleteArrivalOrderDetailByOrderid" parameterType="java.lang.String">
+	    delete from t_purchase_arrivalorder_detail
+	    where orderid = #{orderid}
+  </delete>
+  <select id="getArrivalOrderTotalTaxAmountByOderid" parameterType="java.lang.String" resultType="java.math.BigDecimal">
+	SELECT SUM(taxamount) AS total FROM t_purchase_arrivalorder_detail WHERE orderid = #{orderid}
+  </select>
+  <update id="updateArrivalOrderDetail" parameterType="com.hd.agent.purchase.model.ArrivalOrderDetail">
+    update t_purchase_arrivalorder_detail
+    <set>
+      <if test="id != null">
+        id = #{id},
+      </if>
+      <if test="orderid != null">
+        orderid = #{orderid},
+      </if>
+      <if test="goodsid != null">
+        goodsid = #{goodsid},
+      </if>
+      <if test="brandid != null">
+        brandid = #{brandid},
+      </if>
+      <if test="unitid != null">
+        unitid = #{unitid},
+      </if>
+      <if test="unitname != null">
+        unitname = #{unitname},
+      </if>
+      <if test="unitnum != null">
+        unitnum = #{unitnum},
+      </if>
+      <if test="auxunitid != null">
+        auxunitid = #{auxunitid},
+      </if>
+      <if test="auxunitname != null">
+        auxunitname = #{auxunitname},
+      </if>
+      <if test="auxnum != null">
+        auxnum = #{auxnum},
+      </if>
+      <if test="auxnumdetail != null">
+        auxnumdetail = #{auxnumdetail},
+      </if>
+      <if test="auxremainder != null">
+        auxremainder = #{auxremainder},
+      </if>
+      <if test="totalbox != null">
+        totalbox = #{totalbox},
+      </if>
+      <if test="taxprice != null">
+        taxprice = #{taxprice},oldtaxprice=#{taxprice},
+      </if>
+      <if test="taxamount != null">
+        taxamount = #{taxamount},oldtaxamount= #{taxamount},
+      </if>
+      <if test="taxtype != null">
+        taxtype = #{taxtype},
+      </if>
+      <if test="notaxprice != null">
+        notaxprice = #{notaxprice},oldnotaxprice=#{notaxprice},
+      </if>
+      <if test="notaxamount != null">
+        notaxamount = #{notaxamount},oldnotaxamount= #{notaxamount},
+      </if>
+      <if test="tax != null">
+        tax = #{tax},
+      </if>
+      <if test="addcostprice != null">
+        addcostprice = #{addcostprice},
+      </if>
+      <if test="remark != null">
+        remark = #{remark},
+      </if>
+      <if test="arrivedate != null">
+        arrivedate = #{arrivedate},
+      </if>
+      <if test="batchno != null">
+        batchno = #{batchno},
+      </if>
+      <if test="produceddate != null">
+        produceddate = #{produceddate},
+      </if>
+      <if test="deadline != null">
+        deadline = #{deadline},
+      </if>
+      <if test="field01 != null">
+        field01 = #{field01},
+      </if>
+      <if test="field02 != null">
+        field02 = #{field02},
+      </if>
+      <if test="field03 != null">
+        field03 = #{field03},
+      </if>
+      <if test="field04 != null">
+        field04 = #{field04},
+      </if>
+      <if test="field05 != null">
+        field05 = #{field05},
+      </if>
+      <if test="field06 != null">
+        field06 = #{field06},
+      </if>
+      <if test="field07 != null">
+        field07 = #{field07},
+      </if>
+      <if test="field08 != null">
+        field08 = #{field08},
+      </if>
+      <if test="invoicetaxamount != null">
+        invoicetaxamount = #{invoicetaxamount},
+      </if>
+      <if test="invoicenotaxamount != null">
+        invoicenotaxamount = #{invoicenotaxamount},
+      </if>
+      <if test="uninvoicetaxamount != null">
+        uninvoicetaxamount = #{uninvoicetaxamount},
+      </if>
+      <if test="uninvoicenotaxamount != null">
+        uninvoicenotaxamount = #{uninvoicenotaxamount},
+      </if>
+      <if test="invoicenum != null">
+        invoicenum = #{invoicenum},
+      </if>
+      <if test="uninvoicenum != null">
+        uninvoicenum = #{uninvoicenum},
+      </if>
+      <if test="auditnum != null">
+        auditnum = #{auditnum},
+      </if>
+      <if test="invoicerefer != null">
+        invoicerefer = #{invoicerefer},
+      </if>
+      <if test="seq != null">
+        seq = #{seq},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  <update id="updateArrivalOrderDetailWriteBack" parameterType="com.hd.agent.purchase.model.ArrivalOrderDetail">
+    update t_purchase_arrivalorder_detail
+    <set>
+      <if test="invoicetaxamount != null">
+        invoicetaxamount = #{invoicetaxamount},
+      </if>
+      <if test="invoicenotaxamount != null">
+        invoicenotaxamount = #{invoicenotaxamount},
+      </if>
+      <if test="uninvoicetaxamount != null">
+        uninvoicetaxamount = #{uninvoicetaxamount},
+      </if>
+      <if test="uninvoicenotaxamount != null">
+        uninvoicenotaxamount = #{uninvoicenotaxamount},
+      </if>      
+      <if test="writeoffamount != null">
+        writeoffamount = #{writeoffamount},
+      </if>  
+      <if test="invoicerefer != null">
+        invoicerefer = #{invoicerefer},
+      </if>
+      <if test="invoicenum != null">
+        invoicenum = #{invoicenum},
+      </if>
+      <if test="uninvoicenum != null">
+        uninvoicenum = #{uninvoicenum},
+      </if>
+      <if test="auditnum != null">
+        auditnum = #{auditnum},
+      </if>
+      <if test="iswriteoff != null">
+        iswriteoff = #{iswriteoff},
+      </if>      
+      <if test="writeoffnum != null">
+        writeoffnum = #{writeoffnum},
+      </if> 
+    </set>
+    where id = #{id}
+  </update>  
+  <select id="getArrivalOrderDetailListBy" parameterType="java.util.Map" resultType="com.hd.agent.purchase.model.ArrivalOrderDetail">
+  		select 
+  		<choose>
+			<when test="cols!=null">
+				<include refid="common.Page_Column"/>
+			</when>
+			<when test="cols==null">
+  				<include refid="AOD_Base_Column_List" />
+			</when>
+		</choose>
+		from t_purchase_arrivalorder_detail
+		<trim prefix="where" prefixOverrides="and|or" >	  		
+			<if test="orderid != null" >
+			   and orderid = #{orderid}
+			</if>
+			<if test="invoicerefer !=null">
+				and invoicerefer=#{invoicerefer}
+			</if>
+			<if test="notinvoicerefer !=null">
+				and invoicerefer != #{notinvoicerefer}
+			</if>
+			<if test="orderidarrs != null" >
+			   and FIND_IN_SET(orderid,#{orderidarrs})
+			</if>		  	
+		    <if test="authDataSql != null">
+		    	and ${authDataSql}
+		    </if>
+	    </trim>	
+  </select>	
+  <select id="getArrivalOrderDetailListByOrderid" parameterType="java.lang.String" resultType="com.hd.agent.purchase.model.ArrivalOrderDetail">
+  		select 
+  		<include refid="AOD_Base_Column_List" />
+		from t_purchase_arrivalorder_detail
+		where orderid = #{orderid}
+  </select>
+  <select id="getArrivalOrderDetail" parameterType="java.lang.String" resultType="com.hd.agent.purchase.model.ArrivalOrderDetail">
+		select 
+		<include refid="AOD_Base_Column_List" />
+		from t_purchase_arrivalorder_detail
+		where id = #{id}
+  </select>
+  <select id="getArrivalOrderDetailCountBy" parameterType="java.util.Map" resultType="int">
+  		select count(*) from t_purchase_arrivalorder_detail
+		<trim prefix="where" prefixOverrides="and|or" >	  		
+			<if test="orderid != null" >
+			   and orderid = #{orderid}
+			</if>
+			<if test="invoicerefer !=null">
+				and invoicerefer=#{invoicerefer}
+			</if>
+			<if test="notinvoicerefer !=null">
+				and invoicerefer != #{notinvoicerefer}
+			</if>	
+			<if test="orderidarrs != null" >
+			   and FIND_IN_SET(orderid,#{orderidarrs})
+			</if>	  	
+		    <if test="authDataSql != null">
+		    	and ${authDataSql}
+		    </if>
+	    </trim>	
+  </select>	
+  <update id="updateArrivalOrderDetailInvoiceRefer" parameterType="java.lang.String">
+  	update t_purchase_arrivalorder_detail
+    set invoicerefer = #{invoicerefer}
+    where id = #{id}
+  </update>
+  <select id="getArrivalOrderDetailTotal" parameterType="java.lang.String" resultType="map">
+  	select sum(taxamount) taxamount, sum(notaxamount) notaxamount, sum(tax) tax,
+  	sum(oldtaxamount) oldtaxamount, sum(oldnotaxamount) oldnotaxamount, sum(oldtax) oldtax,sum(oldtaxamount-taxamount) as changeamount
+  	from t_purchase_arrivalorder_detail where orderid = #{id}
+  </select>
+  <select id="getArrivalOrderDetailByOrderidAndGoodsId" parameterType="java.lang.String" resultType="com.hd.agent.purchase.model.ArrivalOrderDetail">
+  	SELECT * FROM t_purchase_arrivalorder_detail WHERE orderid = #{orderid} AND goodsid = #{goodsid}
+  </select>
+  <update id="updateArrivalOrderDetailAuditnum" parameterType="com.hd.agent.purchase.model.ArrivalOrderDetail">
+  	 update t_purchase_arrivalorder_detail
+    <set>
+      <if test="auditnum != null">
+        auditnum = #{auditnum},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  
+	<update id="updateOrderPrinttimes" parameterType="com.hd.agent.purchase.model.ArrivalOrder">
+		update t_purchase_arrivalorder
+	    <set>
+	      <if test="printtimes != null">
+	        printtimes = IFNULL(printtimes,0)+1,
+	      </if>
+	    </set>
+	    where id = #{id}
+	</update>
+	
+  	<select id="showArrivalOrderListBy" parameterType="java.util.Map" resultType="com.hd.agent.purchase.model.ArrivalOrder">
+  		select 
+	    <include refid="AO_Base_Column_List" />
+	    from t_purchase_arrivalorder
+  		<trim prefix="where" prefixOverrides="and|or">
+		  	<if test="dataSql != null">
+		  		and ${dataSql}
+		  	</if>
+  			<if test="idarrs!=null">
+  				and find_in_set(id,#{idarrs})
+  			</if>
+  			<if test="status!=null">
+  				and status=#{status}
+  			</if>
+  			<if test="statusarr!=null">
+			   and FIND_IN_SET(status,#{statusarr})
+  			</if>
+			<if test="notprint != null and notprint == 1">
+	  			 and (printtimes is null or printtimes=0)
+			</if>
+  		</trim>
+  	</select>
+  	<select id="getArrivalOrderCountById" parameterType="java.lang.String" resultType="int">
+  		select count(1) from t_purchase_arrivalorder where id= #{id}
+  	</select>  	
+  	<update id="updateArrivalOrderDetailRemark" parameterType="com.hd.agent.purchase.model.ArrivalOrderDetail">
+	    update t_purchase_arrivalorder_detail
+	    set remark = #{remark}
+	    where 
+		<trim prefixOverrides="and|or">
+		  	<if test="id != null">
+		  		and id = #{id}
+		  	</if>
+		  	<if test="orderid != null">
+		        and orderid = #{orderid}
+		    </if>
+		 </trim>
+    </update>
+    <update id="updateArrivalOrderDetailUncancel" parameterType="java.lang.String">
+        update t_purchase_arrivalorder_detail r1,t_account_purchase_invoice_detail t1
+        set r1.iswriteoff='0',r1.writeoffamount= r1.writeoffamount-t1.taxamount,r1.writeoffnum = r1.writeoffnum-t1.unitnum
+        where r1.orderid=t1.sourceid and r1.id=t1.sourcedetailid and t1.sourcetype='1' and t1.billid=#{invoiceid}
+    </update>
+    
+     <select id="getPurchaseHistoryGoodsPriceList" parameterType="java.util.Map" resultType="java.util.Map">
+        select t.businessdate,t.supplierid,t1.unitname,t1.unitnum,t1.taxamount,t1.notaxamount,t1.tax,t1.taxprice,t1.notaxprice,
+        t1.auxnumdetail,t1.remark
+        from t_purchase_arrivalorder t
+        RIGHT JOIN t_purchase_arrivalorder_detail t1 ON t.id = t1.orderid
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="1==1" >
+                and (t.status = '3' or t.status = '4') and t1.unitnum!= '0'
+            </if>
+            <if test="goodsid != null">
+                and t1.goodsid = #{goodsid}
+            </if>
+            and t1.unitnum!= 0
+        </trim>
+        ORDER BY t.businessdate DESC
+    </select>
+
+    <select id="getSupplierArrivalSumData" resultType="java.util.Map">
+        select t.businessdate,t.supplierid,sum(t1.taxamount) as taxamount,sum(t1.notaxamount) as notaxamount,sum(t1.tax) as tax,count(t.id) as billnums
+        from t_purchase_arrivalorder t
+        RIGHT JOIN t_purchase_arrivalorder_detail t1 on t.id=t1.orderid
+        where (t.status='3' or t.status='4')
+        <if test="list != null">
+            and t.id in
+            <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="list == null">
+            1>2
+        </if>
+        GROUP BY t.id
+    </select>
+  <select id="getSupplierArrivalSumDataForThird" resultType="java.util.Map">
+    select t.businessdate,t.supplierid,sum(t1.taxamount) as taxamount,sum(t1.notaxamount) as notaxamount,sum(t1.tax) as tax,count(t.id) as billnums,
+    t1.goodsid,t.id,sum(t1.unitnum) as unitnum
+    from t_purchase_arrivalorder t
+    RIGHT JOIN t_purchase_arrivalorder_detail t1 on t.id=t1.orderid
+    where (t.status='3' or t.status='4')
+    <if test="list != null">
+      and t.id in
+      <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+        #{item}
+      </foreach>
+    </if>
+    <if test="list == null">
+      1>2
+    </if>
+    GROUP BY t.id,t1.goodsid
+  </select>
+    <select id="selectLastestBuyPriceByGoodsAndBatchno" parameterType="java.lang.String" resultType="java.util.Map">
+        select ad.taxprice
+        from t_purchase_arrivalorder_detail ad
+        left join t_purchase_arrivalorder a on a.id = ad.orderid
+        where ad.taxprice <![CDATA[ <> ]]> 0
+        and ad.goodsid = #{goodsid }
+        <if test="batchno != null">
+            and ad.batchno = #{batchno }
+        </if>
+        and (a.status = '3' or a.status = '4')
+        order by a.businessdate desc, ad.id desc
+    </select>
+  <update id="updateArrivalOrderChange" parameterType="com.hd.agent.purchase.model.ArrivalOrderDetail">
+    UPDATE t_purchase_arrivalorder_detail SET taxamount=#{taxamount},notaxamount=#{notaxamount},tax=#{tax},
+    taxprice=#{taxprice},notaxprice=#{notaxprice} WHERE id=#{id}
+  </update>
+  <update id="updateArrivalOrderChangeById" parameterType="java.lang.String">
+    UPDATE t_purchase_arrivalorder_detail SET taxamount=oldtaxamount,notaxamount=oldnotaxamount,tax=oldtax,
+    taxprice=oldtaxprice,notaxprice=oldnotaxprice WHERE orderid=#{id}
+  </update>
+</mapper>

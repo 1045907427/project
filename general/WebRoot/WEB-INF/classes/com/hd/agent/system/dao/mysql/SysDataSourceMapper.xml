@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.system.dao.SysDataSourceMapper" >
+    <!-- 缓存 -->
+    <cache type="org.mybatis.caches.ehcache.EhcacheCache"></cache>
+    <sql id="SysDataSourceBase_Column_List" >
+        id, code, name, state, jdbcdriver, jdbcurl, dbname, dbuser, dbpasswd, jdbctype,remark
+    </sql>
+    <sql id="SysDataSourceBase_Where_Clause" >
+        <if test="condition.code != null" >
+            and code like CONCAT('%',#{condition.code},'%')
+        </if>
+        <if test="condition.name != null" >
+            and name like CONCAT('%',#{condition.name},'%')
+        </if>
+        <if test="condition.state != null" >
+            and state = #{condition.state}
+        </if>
+        <if test="condition.jdbcdriver != null" >
+            and jdbcdriver like CONCAT('%',#{condition.jdbcdriver},'%')
+        </if>
+        <if test="condition.jdbcurl != null" >
+            and jdbcurl like CONCAT('%',#{condition.jdbcurl},'%')
+        </if>
+        <if test="condition.dbuser != null" >
+            and dbuser like CONCAT('%',#{condition.dbuser},'%')
+        </if>
+        <if test="condition.dbname != null" >
+            and dbname like CONCAT('%',#{condition.dbname},'%')
+        </if>
+        <if test="condition.jdbctype != null" >
+            and jdbctype = #{condition.jdbctype}
+        </if>
+    </sql>
+    <select id="getSysDataSourcePageList" resultType="com.hd.agent.system.model.SysDataSource" parameterType="com.hd.agent.common.util.PageMap"  useCache="false">
+        select
+        <include refid="SysDataSourceBase_Column_List"/>
+        from t_sys_datasource
+        <trim prefix="where" prefixOverrides="and|or">
+            <include refid="SysDataSourceBase_Where_Clause"></include>
+        </trim>
+        <include refid="common.Page_limit"/>
+    </select>
+    <select id="getSysDataSourcePageCount" resultType="int" parameterType="com.hd.agent.common.util.PageMap"  useCache="false">
+        select count(1) from t_sys_datasource
+        <trim prefix="where" prefixOverrides="and|or">
+            <include refid="SysDataSourceBase_Where_Clause"></include>
+        </trim>
+    </select>
+    <insert id="insertSysDataSource" parameterType="com.hd.agent.system.model.SysDataSource" >
+        <selectKey resultType="java.lang.String" keyProperty="id" order="BEFORE" >
+            select uuid_short()
+        </selectKey>
+        insert into t_sys_datasource
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="code != null" >
+                code,
+            </if>
+            <if test="name != null" >
+                name,
+            </if>
+            <if test="state != null" >
+                state,
+            </if>
+            <if test="jdbcdriver != null" >
+                jdbcdriver,
+            </if>
+            <if test="jdbcurl != null" >
+                jdbcurl,
+            </if>
+            <if test="dbname != null" >
+                dbname,
+            </if>
+            <if test="dbuser != null" >
+                dbuser,
+            </if>
+            <if test="dbpasswd != null" >
+                dbpasswd,
+            </if>
+            <if test="jdbctype != null" >
+                jdbctype,
+            </if>
+            <if test="remark != null" >
+                remark,
+            </if>
+            <if test="addtime != null" >
+                addtime,
+            </if>
+            <if test="adduserid != null" >
+                adduserid,
+            </if>
+            <if test="addusername != null" >
+                addusername,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id},
+            </if>
+            <if test="code != null" >
+                #{code},
+            </if>
+            <if test="name != null" >
+                #{name},
+            </if>
+            <if test="state != null" >
+                #{state},
+            </if>
+            <if test="jdbcdriver != null" >
+                #{jdbcdriver},
+            </if>
+            <if test="jdbcurl != null" >
+                #{jdbcurl},
+            </if>
+            <if test="dbname != null" >
+                #{dbname},
+            </if>
+            <if test="dbuser != null" >
+                #{dbuser},
+            </if>
+            <if test="dbpasswd != null" >
+                #{dbpasswd},
+            </if>
+            <if test="jdbctype != null" >
+                #{jdbctype},
+            </if>
+            <if test="remark != null" >
+                #{remark},
+            </if>
+            <if test="addtime != null" >
+                #{addtime},
+            </if>
+            <if test="adduserid != null" >
+                #{adduserid},
+            </if>
+            <if test="addusername != null" >
+                #{addusername},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateSysDataSource" parameterType="com.hd.agent.system.model.SysDataSource" >
+        update t_sys_datasource
+        <set >
+            <if test="name != null" >
+                name = #{name},
+            </if>
+            <if test="state != null" >
+                state = #{state},
+            </if>
+            <if test="jdbcdriver != null" >
+                jdbcdriver = #{jdbcdriver},
+            </if>
+            <if test="jdbcurl != null" >
+                jdbcurl = #{jdbcurl},
+            </if>
+            <if test="dbname != null" >
+                dbname = #{dbname},
+            </if>
+            <if test="dbuser != null" >
+                dbuser = #{dbuser},
+            </if>
+            <if test="dbpasswd != null" >
+                dbpasswd = #{dbpasswd},
+            </if>
+            <if test="jdbctype != null" >
+                jdbctype = #{jdbctype},
+            </if>
+            <if test="remark != null" >
+                remark = #{remark},
+            </if>
+            <if test="modifyuserid != null" >
+                modifyuserid = #{modifyuserid},
+            </if>
+            <if test="modifyusername != null" >
+                modifyusername = #{modifyusername},
+            </if>
+            <if test="modifytime != null" >
+                modifytime = #{modifytime},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <delete id="deleteSysDataSource" parameterType="java.lang.String">
+        delete from t_sys_datasource
+        where id = #{id}
+    </delete>
+    <update id="enableSysDataSource" parameterType="com.hd.agent.system.model.SysDataSource" >
+        update t_sys_datasource
+        <set >
+            <if test="openuserid != null" >
+                openuserid = #{openuserid},
+            </if>
+            <if test="openusername != null" >
+                openusername = #{openusername},
+            </if>
+            <if test="opentime != null" >
+                opentime = #{opentime},
+            </if>
+            <if test="1==1" >
+                state='1',
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <update id="disableSysDataSource" parameterType="com.hd.agent.system.model.SysDataSource" >
+        update t_sys_datasource
+        <set >
+            <if test="closeuserid != null" >
+                closeuserid = #{closeuserid},
+            </if>
+            <if test="closeusername != null" >
+                closeusername = #{closeusername},
+            </if>
+            <if test="closetime != null" >
+                closetime = #{closetime},
+            </if>
+            <if test="1==1" >
+                state='0',
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <select id="getSysDataSource" resultType="com.hd.agent.system.model.SysDataSource" parameterType="java.lang.String">
+        select
+        <include refid="SysDataSourceBase_Column_List"/>
+        from t_sys_datasource
+        where id=#{id}
+    </select>
+    <select id="getSysDataSourceByCode" resultType="com.hd.agent.system.model.SysDataSource" parameterType="java.lang.String">
+        select
+        <include refid="SysDataSourceBase_Column_List"/>
+        from t_sys_datasource
+        where code=#{code}
+    </select>
+    <select id="getEnableSysDataSourceByCode" resultType="com.hd.agent.system.model.SysDataSource" parameterType="java.lang.String">
+        select
+        <include refid="SysDataSourceBase_Column_List"/>
+        from t_sys_datasource
+        where code=#{code}
+    </select>
+    <select id="getEnableSysDataSource" resultType="com.hd.agent.system.model.SysDataSource" parameterType="java.lang.String">
+        select
+        <include refid="SysDataSourceBase_Column_List"/>
+        from t_sys_datasource
+        where id=#{id} and state='1'
+    </select>
+    <select id="getSysDataSourceCountBy" parameterType="Map" resultType="int"  useCache="false">
+        select
+        count(*)
+        from t_sys_datasource
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="name!=null">
+                and name=#{name}
+            </if>
+            <if test="code!=null">
+                and code=#{code}
+            </if>
+            <if test="notequalid!=null">
+                and id!=#{id}
+            </if>
+        </trim>
+    </select>
+</mapper>

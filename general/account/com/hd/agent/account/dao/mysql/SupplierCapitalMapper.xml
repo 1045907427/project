@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.account.dao.SupplierCapitalMapper" >
+  <sql id="supplierCapital_Column_List" >
+    id, amount, remark, addtime, modifytime
+  </sql>
+  <sql id="supplierCapitalLog_Column_List" >
+    id, supplierid, billtype, billid, prtype, incomeamount, payamount, balanceamount,remark, adduserid, 
+    addusername, adddeptid, adddeptname, addtime
+  </sql>
+  <insert id="addSupplierCapital" parameterType="com.hd.agent.account.model.SupplierCapital" >
+    insert into t_account_supplier_capital
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="1 == 1" >
+        addtime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="amount != null" >
+        #{amount},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+      <if test="1 == 1" >
+        now(),
+      </if>
+    </trim>
+  </insert>
+  <update id="updateSupplierCapital" parameterType="com.hd.agent.account.model.SupplierCapital" >
+    update t_account_supplier_capital
+    <set >
+      <if test="amount != null" >
+        amount = #{amount},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark},
+      </if>
+      <if test="1 == 1" >
+        modifytime = now(),
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  <select id="getSupplierCapital" resultType="com.hd.agent.account.model.SupplierCapital" parameterType="java.lang.String" >
+    select 
+    <include refid="supplierCapital_Column_List" />
+    from t_account_supplier_capital
+    where id = #{id}
+  </select>
+  <select id="showSupplierAccountList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.account.model.SupplierCapital">
+  	select * from (
+  		select t.id,t.amount,t.remark, t.addtime, t.modifytime,t1.buydeptid,t1.buyuserid,t1.buyarea
+	    from t_account_supplier_capital t
+	    INNER JOIN t_base_buy_supplier t1 on t.id = t1.id
+	    <trim prefix="where" prefixOverrides="and|or" >
+            <include refid="common.Page_querySql"/>
+            <include refid="common.Page_dataSql"/>
+		    <if test="condition.id != null" >
+	         and t.id like CONCAT(#{condition.id}, '%')
+	      	</if>
+	      	<if test="condition.amount != null" >
+	         and t.amount > #{condition.amount}
+	      	</if>
+	    </trim>
+  	)z
+	<include refid="common.Page_limit"/>
+  </select>
+  <select id="showSupplierAccountCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  	select count(1) from (
+  		select * from (
+  			select t.id,t.amount,t.remark, t.addtime, t.modifytime,t1.buydeptid,t1.buyuserid,t1.buyarea
+		    from t_account_supplier_capital t
+		    INNER JOIN t_base_buy_supplier t1 on t.id = t1.id
+		    <trim prefix="where" prefixOverrides="and|or" >
+                <include refid="common.Page_dataSql"/>
+		    	<include refid="common.Page_querySql"/>
+			    <if test="condition.id != null" >
+		         and t.id like CONCAT(#{condition.id}, '%')
+		      	</if>
+		      	<if test="condition.amount != null" >
+		         and t.amount > #{condition.amount}
+		      	</if>
+		    </trim>
+  		)z
+  	)c
+  </select>
+  <select id="showSupplierAccountSum" parameterType="com.hd.agent.common.util.PageMap" resultType="java.math.BigDecimal">
+  	select sum(y.amount) from (
+  		select * from (
+  			select t.id,t1.name,t1.buydeptid,t1.buyuserid,t1.buyarea,if(t.amount is null,0,t.amount) as amount
+			from t_account_supplier_capital t
+			INNER JOIN t_base_buy_supplier t1 on t.id=t1.id
+			<trim prefix="where" prefixOverrides="and|or" >
+                <include refid="common.Page_dataSql"/>
+		    	<include refid="common.Page_querySql"/>
+			    <if test="condition.id != null" >
+		         and t.id like CONCAT(#{condition.id}, '%')
+		      	</if>
+		      	<if test="condition.amount != null" >
+		         and t.amount > #{condition.amount}
+		      	</if>
+		    </trim>
+  		)z
+	)y
+  	<trim prefix="where" prefixOverrides="and|or" >
+		<if test="condition.amount != null" >
+         and y.amount > #{condition.amount}
+      	</if>
+	</trim>
+  </select>
+  <update id="updateSupplierCapitalAmount">
+  	update t_account_supplier_capital 
+  	set amount=#{amount} where id=#{supplierid}
+  </update>
+  
+  <insert id="addSupplierCapitalLog" parameterType="com.hd.agent.account.model.SupplierCapitalLog" >
+    insert into t_account_supplier_capital_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="supplierid != null" >
+        supplierid,
+      </if>
+      <if test="billtype != null" >
+        billtype,
+      </if>
+      <if test="billid != null" >
+        billid,
+      </if>
+      <if test="prtype != null" >
+        prtype,
+      </if>
+      <if test="incomeamount != null" >
+        incomeamount,
+      </if>
+      <if test="payamount != null" >
+        payamount,
+      </if>
+      <if test="balanceamount != null" >
+        balanceamount,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="adduserid != null" >
+        adduserid,
+      </if>
+      <if test="addusername != null" >
+        addusername,
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid,
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname,
+      </if>
+      <if test="1 == 1" >
+        addtime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="supplierid != null" >
+        #{supplierid},
+      </if>
+      <if test="billtype != null" >
+        #{billtype},
+      </if>
+      <if test="billid != null" >
+        #{billid},
+      </if>
+      <if test="prtype != null" >
+        #{prtype},
+      </if>
+      <if test="incomeamount != null" >
+        #{incomeamount},
+      </if>
+      <if test="payamount != null" >
+        #{payamount},
+      </if>
+      <if test="balanceamount != null" >
+        #{balanceamount},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+      <if test="adduserid != null" >
+        #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        #{adddeptname},
+      </if>
+      <if test="1 == 1" >
+        now(),
+      </if>
+    </trim>
+  </insert>
+  <delete id="deleteSupplierCapitalLog" parameterType="java.lang.String">
+  	delete from t_account_supplier_capital_log where billid=#{billid} and billtype=#{billtype} and supplierid=#{supplierid}
+  </delete>
+  <delete id="deleteSupplierCapitalLogByMap" parameterType="java.util.Map">
+      delete from t_account_supplier_capital_log where billid=#{billid} and billtype=#{billtype} and prtype = #{prtype} and supplierid=#{supplierid}
+  </delete>
+  <select id="showSupplierCapitalLogList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.account.model.SupplierCapitalLog">
+ 	 select <include refid="supplierCapitalLog_Column_List"/>
+ 		from t_account_supplier_capital_log
+ 		<trim prefix="where" prefixOverrides="and|or">
+      <if test="condition.supplierid != null">
+         and supplierid = #{condition.supplierid}
+      </if>
+      <if test="condition.billtype != null">
+         and billtype = #{condition.billtype}
+      </if>
+      <if test="condition.billid != null">
+         and billid = #{condition.billid}
+      </if>
+      <if test="condition.prtype != null">
+         and prtype = #{condition.prtype}
+      </if>
+    </trim>
+    <include refid="common.Page_limit"/>
+ </select>
+  <select id="showSupplierCapitalLogCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  		select count(1)
+  		from t_account_supplier_capital_log
+  		<trim prefix="where" prefixOverrides="and|or">
+	      <if test="condition.supplierid != null">
+	         and supplierid = #{condition.supplierid}
+	      </if>
+	      <if test="condition.billtype != null">
+	         and billtype = #{condition.billtype}
+	      </if>
+	      <if test="condition.billid != null">
+	         and billid = #{condition.billid}
+	      </if>
+	      <if test="condition.prtype != null">
+	         and prtype = #{condition.prtype}
+	      </if>
+	    </trim>
+	    <include refid="common.Page_limit"/>
+  </select>
+</mapper>

@@ -1,0 +1,592 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.system.dao.SysNumberMapper">
+	<sql id="sys_number_Column_List">
+		numberid, tablename, billcode, billname, name, remark, state, type, preview, autocreate, 
+    	modifyflag, serialnumber, seriallength, serialstep, serialstart, testvalue ,afterserialstart
+	</sql>
+	<sql id="sys_numberrule_Column_List" >
+	    numberruleid, numberid, coltype, val, prefix, suffix, length, subtype, substart, 
+	    cover, state, sequencing
+  	</sql>
+	<select id="getSysNumberBillNameList" resultType="com.hd.agent.system.model.SysNumber">
+		select distinct billcode, billname from t_sys_number
+	</select>
+	<select id="getSysNumberPageListByBcode" resultType="com.hd.agent.system.model.SysNumber" parameterType="com.hd.agent.common.util.PageMap">
+		select
+		<include refid="sys_number_Column_List"/>
+		from t_sys_number
+		where tablename = #{condition.tablename}
+		<include refid="common.Page_limit"/>
+	</select>
+	<select id="getSysNumberCount" resultType="int" parameterType="com.hd.agent.common.util.PageMap">
+		select count(1) from t_sys_number
+		where tablename = #{condition.tablename}
+	</select>
+	<!-- 根据表名(单据编码)获取单据编号列表 -->
+	<select id="getSysNumberListByCode" parameterType="java.lang.String" resultType="com.hd.agent.system.model.SysNumber">
+		select
+		<include refid="sys_number_Column_List"/>
+		from t_sys_number
+		where tablename = #{tablename}
+	</select>
+	<select id="getSysNumberInfo" parameterType="java.lang.String" resultType="com.hd.agent.system.model.SysNumber">
+		select
+		<include refid="sys_number_Column_List"/>
+		from t_sys_number
+		where numberid=#{numberid}
+	</select>
+	<select id="getSysNumberSerail" parameterType="java.lang.String" resultType="com.hd.agent.system.model.SysNumber">
+		select
+		autocreate, modifyflag, serialnumber, seriallength, serialstep, serialstart, testvalue ,afterserialstart
+		from t_sys_number
+		where numberid=#{numberid}
+	</select>
+	<!-- 获取启用状态的单据编号 -->
+	<select id="getSysNumberAutoCreate" parameterType="java.lang.String" resultType="com.hd.agent.system.model.SysNumber">
+		select
+		<include refid="sys_number_Column_List"/>
+		from t_sys_number
+		where billcode=#{billcode} and state = '1'
+	</select>
+	<!-- 根据billcode获取numberid-->
+	<select id="getNumIdByBcode" parameterType="java.lang.String" resultType="com.hd.agent.system.model.SysNumber">
+		select numberid
+		from t_sys_number
+		where billcode=#{billcode}
+	</select>
+	<insert id="insertSysNumber" parameterType="com.hd.agent.system.model.SysNumber">
+		<selectKey resultType="java.lang.String" keyProperty="numberid" order="BEFORE" >
+	      select uuid_short()
+	    </selectKey>
+		insert into t_sys_number
+	    <trim prefix="(" suffix=")" suffixOverrides=",">
+	        numberid,
+	      <if test="tablename != null" >
+	        tablename,
+	      </if>
+	      <if test="billcode != null" >
+	        billcode,
+	      </if>
+	      <if test="billname != null" >
+	        billname,
+	      </if>
+	      <if test="name != null" >
+	        name,
+	      </if>
+	      <if test="remark != null" >
+	        remark,
+	      </if>
+	      <if test="state != null" >
+	        state,
+	      </if>
+	      <if test="type != null" >
+	        type,
+	      </if>
+	      <if test="preview != null" >
+	        preview,
+	      </if>
+	      <if test="autocreate != null" >
+	        autocreate,
+	      </if>
+	      <if test="modifyflag != null" >
+	        modifyflag,
+	      </if>
+	      <if test="serialnumber != null" >
+	        serialnumber,
+	      </if>
+	      <if test="seriallength != null" >
+	        seriallength,
+	      </if>
+	      <if test="serialstep != null" >
+	        serialstep,
+	      </if>
+	      <if test="serialstart != null" >
+	        serialstart,
+	      </if>
+	      <if test="testvalue != null" >
+	        testvalue,
+	      </if>
+	        afterserialstart,
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides=",">
+	        #{numberid},
+	      <if test="tablename != null" >
+	        #{tablename},
+	      </if>
+	      <if test="billcode != null" >
+	        #{billcode},
+	      </if>
+	      <if test="billname != null" >
+	        #{billname},
+	      </if>
+	      <if test="name != null" >
+	        #{name},
+	      </if>
+	      <if test="remark != null" >
+	        #{remark},
+	      </if>
+	      <if test="state != null" >
+	        #{state},
+	      </if>
+	      <if test="type != null" >
+	        #{type},
+	      </if>
+	      <if test="preview != null" >
+	        #{preview},
+	      </if>
+	      <if test="autocreate != null" >
+	        #{autocreate},
+	      </if>
+	      <if test="modifyflag != null" >
+	        #{modifyflag},
+	      </if>
+	      <if test="serialnumber != null" >
+	        #{serialnumber},
+	      </if>
+	      <if test="seriallength != null" >
+	        #{seriallength},
+	      </if>
+	      <if test="serialstep != null" >
+	        #{serialstep},
+	      </if>
+	      <if test="serialstart != null" >
+	        #{serialstart},
+	      </if>
+	      <if test="testvalue != null" >
+	        #{testvalue},
+	      </if>
+	        #{afterserialstart},
+	    </trim>
+	</insert>
+	<!-- 修改单据编号 -->
+	<update id="editSysNumber" parameterType="com.hd.agent.system.model.SysNumber">
+		update t_sys_number
+	    <set >
+	      <if test="tablename != null" >
+	        tablename = #{tablename},
+	      </if>
+	      <if test="billcode != null" >
+	        billcode = #{billcode},
+	      </if>
+	      <if test="billname != null" >
+	        billname = #{billname},
+	      </if>
+	      <if test="name != null" >
+	        name = #{name},
+	      </if>
+	      <if test="remark != null" >
+	        remark = #{remark},
+	      </if>
+	      <if test="state != null" >
+	        state = #{state},
+	      </if>
+	      <if test="type != null" >
+	        type = #{type},
+	      </if>
+	        preview = #{preview},
+	      <if test="autocreate != null" >
+	        autocreate = #{autocreate},
+	      </if>
+	      <if test="modifyflag != null" >
+	        modifyflag = #{modifyflag},
+	      </if>
+	      <if test="serialnumber != null" >
+	        serialnumber = #{serialnumber},
+	      </if>
+	      <if test="seriallength != null" >
+	        seriallength = #{seriallength},
+	      </if>
+	      <if test="serialstep != null" >
+	        serialstep = #{serialstep},
+	      </if>
+	      <if test="serialstart != null" >
+	        serialstart = #{serialstart},
+	      </if>
+	      <if test="testvalue != null" >
+	        testvalue = #{testvalue},
+	      </if>
+	      	afterserialstart = #{afterserialstart},
+	    </set>
+	    where numberid = #{numberid}
+	</update>
+	<!-- 更新单据编号是否自动生成 -->
+	<update id="editSysNumbersAutoCreate" parameterType="java.util.Map">
+		UPDATE t_sys_number 
+		SET autocreate = #{autocreate}
+		WHERE billcode = #{billcode}
+	</update>
+	<!-- 更新单据编号是否允许修改 -->
+	<update id="editSysNumbersModifyFlag" parameterType="com.hd.agent.system.model.SysNumber">
+		UPDATE t_sys_number 
+		SET modifyflag=#{modifyflag}
+		WHERE numberid = #{numberid}
+	</update>
+	<!-- 禁用所有单据编号-->
+	<update id="disableAllSysNumbers" parameterType="com.hd.agent.common.util.PageMap">
+		UPDATE t_sys_number 
+		SET state=REPLACE(state,#{condition.oldValue},#{condition.newValue}) 
+		WHERE tablename = #{condition.tablename}
+	</update>
+	<update id="disableSysNumber" parameterType="java.lang.String">
+		update t_sys_number set state='0' where numberid=#{numberid}
+	</update>
+	<update id="enableSysNumber" parameterType="java.lang.String">
+		update t_sys_number set state='1' where numberid = #{numberid}
+	</update>
+	<delete id="deleteSysNumber" parameterType="java.lang.String">
+		delete from t_sys_number
+		where numberid = #{numberid}
+	</delete>
+	<delete id="deleteSysNumberByBillCode" parameterType="java.lang.String">
+		delete from t_sys_number
+		where billcode = #{billcode}
+	</delete>
+	<!-- 根据单据名称类型获取自动生成值去重复 -->
+	<select id="getAutoCreateByBillCode" parameterType="java.lang.String" resultType="com.hd.agent.system.model.SysNumber">
+		SELECT DISTINCT autocreate FROM t_sys_number 
+		WHERE billcode = #{billcode}
+	</select>
+	
+	<!-- 单据编码设置 -->
+	<!-- 单据编码新增 -->
+	<insert id="addSysNumber" parameterType="com.hd.agent.system.model.SysNumber">
+		insert into t_sys_number
+	    <trim prefix="(" suffix=")" suffixOverrides=",">
+	      <if test="numberid != null" >
+	        numberid,
+	      </if>
+	      <if test="tablename != null" >
+	        tablename,
+	      </if>
+	      <if test="billcode != null" >
+	        billcode,
+	      </if>
+	      <if test="billname != null" >
+	        billname,
+	      </if>
+	      <if test="name != null" >
+	        name,
+	      </if>
+	      <if test="remark != null" >
+	        remark,
+	      </if>
+	      <if test="state != null" >
+	        state,
+	      </if>
+	      <if test="type != null" >
+	        type,
+	      </if>
+	      <if test="preview != null" >
+	        preview,
+	      </if>
+	      <if test="autocreate != null" >
+	        autocreate,
+	      </if>
+	      <if test="modifyflag != null" >
+	        modifyflag,
+	      </if>
+	      <if test="serialnumber != null" >
+	        serialnumber,
+	      </if>
+	      <if test="seriallength != null" >
+	        seriallength,
+	      </if>
+	      <if test="serialstep != null" >
+	        serialstep,
+	      </if>
+	      <if test="serialstart != null" >
+	        serialstart,
+	      </if>
+	      <if test="testvalue != null" >
+	        testvalue,
+	      </if>
+	        afterserialstart,
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides=",">
+	      <if test="numberid != null" >
+	        #{numberid},
+	      </if>
+	      <if test="tablename != null" >
+	        #{tablename},
+	      </if>
+	      <if test="billcode != null" >
+	        #{billcode},
+	      </if>
+	      <if test="billname != null" >
+	        #{billname},
+	      </if>
+	      <if test="name != null" >
+	        #{name},
+	      </if>
+	      <if test="remark != null" >
+	        #{remark},
+	      </if>
+	      <if test="state != null" >
+	        #{state},
+	      </if>
+	      <if test="type != null" >
+	        #{type},
+	      </if>
+	      <if test="preview != null" >
+	        #{preview},
+	      </if>
+	      <if test="autocreate != null" >
+	        #{autocreate},
+	      </if>
+	      <if test="modifyflag != null" >
+	        #{modifyflag},
+	      </if>
+	      <if test="serialnumber != null" >
+	        #{serialnumber},
+	      </if>
+	      <if test="seriallength != null" >
+	        #{seriallength},
+	      </if>
+	      <if test="serialstep != null" >
+	        #{serialstep},
+	      </if>
+	      <if test="serialstart != null" >
+	        #{serialstart},
+	      </if>
+	      <if test="testvalue != null" >
+	        #{testvalue},
+	      </if>
+	        #{afterserialstart},
+	    </trim>
+	</insert>
+	<!-- 获取单据编号列表分页 -->
+	<select id="getSysNumberListPage" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.system.model.SysNumber">
+	 select
+	 <include refid="sys_number_Column_List"/>
+	 from t_sys_number
+	 <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.billname != null" >
+         and billname like CONCAT('%',#{condition.billname},'%')
+      </if>
+    </trim>
+	 <include refid="common.Page_limit"/>
+	</select>
+	<!-- 获取单据编号列表数量 -->
+	<select id="getSysNumberListCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+	 select count(1) from t_sys_number
+	 <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.billname != null" >
+         and billname like CONCAT('%',#{condition.billname},'%')
+      </if>
+    </trim>
+	</select>
+	<!-- 单据编码规则 -->
+	
+	<!-- 新增单据编码规则 -->
+	<insert id="addSysNumberRule" parameterType="com.hd.agent.system.model.SysNumberRule">
+		<selectKey resultType="java.lang.String" keyProperty="numberruleid" order="BEFORE" >
+	      select uuid_short()
+	    </selectKey>
+  		insert into t_sys_numberrule
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	        numberruleid,
+	      <if test="numberid != null" >
+	        numberid,
+	      </if>
+	      <if test="coltype != null" >
+	        coltype,
+	      </if>
+	      <if test="val != null" >
+	        val,
+	      </if>
+	      <if test="prefix != null" >
+	        prefix,
+	      </if>
+	      <if test="suffix != null" >
+	        suffix,
+	      </if>
+	      <if test="length != null" >
+	        length,
+	      </if>
+	      <if test="subtype != null" >
+	        subtype,
+	      </if>
+	      <if test="substart != null" >
+	        substart,
+	      </if>
+	      <if test="cover != null" >
+	        cover,
+	      </if>
+	      <if test="state != null" >
+	        state,
+	      </if>
+	      <if test="sequencing != null" >
+	        sequencing,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	        #{numberruleid},
+	      <if test="numberid != null" >
+	        #{numberid},
+	      </if>
+	      <if test="coltype != null" >
+	        #{coltype},
+	      </if>
+	      <if test="val != null" >
+	        #{val},
+	      </if>
+	      <if test="prefix != null" >
+	        #{prefix},
+	      </if>
+	      <if test="suffix != null" >
+	        #{suffix},
+	      </if>
+	      <if test="length != null" >
+	        #{length},
+	      </if>
+	      <if test="subtype != null" >
+	        #{subtype},
+	      </if>
+	      <if test="substart != null" >
+	        #{substart},
+	      </if>
+	      <if test="cover != null" >
+	        #{cover},
+	      </if>
+	      <if test="state != null" >
+	        #{state},
+	      </if>
+	      <if test="sequencing != null" >
+	        #{sequencing},
+	      </if>
+	    </trim>
+	</insert>
+	<!-- 根据单据编码获取单据编码规则详情 -->
+	<select id="getSysNumberRuleList" parameterType="java.lang.String" resultType="com.hd.agent.system.model.SysNumberRule">
+	  select * from t_sys_numberrule
+	  where numberid = #{numberid}
+	  order by sequencing
+	</select>
+	<!-- 获取单据编号规则详情 -->
+	<select id="getSysNumberRuleInfo" resultType="com.hd.agent.system.model.SysNumberRule" parameterType="java.lang.String">
+  		select 
+	    <include refid="sys_numberrule_Column_List" />
+	    from t_sys_numberrule
+	    where numberruleid = #{numberruleid}
+  	</select>
+  	<!-- 修改单据编号规则 -->
+  	<update id="editSysNumberRule" parameterType="com.hd.agent.system.model.SysNumberRule">
+  		update t_sys_numberrule
+	    <set >
+	      <if test="numberid != null" >
+	        numberid = #{numberid},
+	      </if>
+	      <if test="coltype != null" >
+	        coltype = #{coltype},
+	      </if>
+	      <if test="val != null" >
+	        val = #{val},
+	      </if>
+	      <if test="prefix != null" >
+	        prefix = #{prefix},
+	      </if>
+	      <if test="suffix != null" >
+	        suffix = #{suffix},
+	      </if>
+	      <if test="length != null" >
+	        length = #{length},
+	      </if>
+	      <if test="subtype != null" >
+	        subtype = #{subtype},
+	      </if>
+	      <if test="substart != null" >
+	        substart = #{substart},
+	      </if>
+	      <if test="cover != null" >
+	        cover = #{cover},
+	      </if>
+	      <if test="state != null" >
+	        state = #{state},
+	      </if>
+	      <if test="sequencing != null" >
+	       sequencing = #{sequencing},
+	      </if>
+	    </set>
+	    where numberruleid = #{numberruleid}
+  	</update>
+	<!-- 删除单据编号规则 -->
+	<delete id="deleteSysNumberRule">
+  		delete from t_sys_numberrule
+  		where numberruleid in
+  		<foreach collection="delArr" item="item" open="(" separator="," close=")">
+  			#{item}
+  		</foreach>
+  	</delete>
+  	<!-- 根据单据编号删除单据编号规则 -->
+  	<delete id="deleteSysNumberRuleByNumid" parameterType="java.lang.String">
+  		delete from t_sys_numberrule
+  		where numberid = #{numberid}
+  	</delete>
+  	<!-- 根据单据编号获取单据编号规则数量 -->
+  	<select id="getSysNumberRuleCountByNumid" parameterType="java.lang.String" resultType="int">
+  		select count(1) from t_sys_numberrule where numberid = #{numberid}
+  	</select>
+  	<!-- 验证固定值是否重复 -->
+  	<select id="isRepeatFixedVal" parameterType="java.lang.String" resultType="int">
+  		select count(1) from t_sys_numberrule where val = #{val} and coltype = '1'
+  	</select>
+    <select id="isRepeatBillCode" parameterType="java.lang.String" resultType="int">
+        select count(1) from t_sys_number where billcode = #{billcode}
+    </select>
+    <select id="isRepeatBillName" parameterType="java.lang.String" resultType="int">
+         select count(1) from t_sys_number where billname = #{billname}
+    </select>
+    <select id="selectSysNumberSerialByColval"  resultType="com.hd.agent.system.model.SysNumberSerial">
+        select *
+        from t_sys_numberserial
+        where numberid = #{numberid }
+        and serialkey = #{serialkey }
+    </select>
+    <insert id="insertSysNumberSerial" parameterType="com.hd.agent.system.model.SysNumberSerial">
+
+        insert into t_sys_numberserial
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="numberid != null" >
+                numberid,
+            </if>
+            <if test="serialkey != null" >
+                serialkey,
+            </if>
+            <if test="serialval != null" >
+                serialval,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="numberid != null" >
+                #{numberid},
+            </if>
+            <if test="serialkey != null" >
+                #{serialkey},
+            </if>
+            <if test="serialval != null" >
+                #{serialval},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateSysNumberSerial" parameterType="com.hd.agent.system.model.SysNumberSerial">
+        update t_sys_numberserial
+        <set>
+            <if test="numberid != null">
+                numberid = #{numberid},
+            </if>
+            <if test="serialkey != null">
+                serialkey = #{serialkey},
+            </if>
+            <if test="serialval != null">
+                serialval = #{serialval},
+            </if>
+        </set>
+        where numberid = #{numberid}
+        and serialkey = #{serialkey}
+    </update>
+    <select id="selectSysNumberSerial" resultType="com.hd.agent.system.model.SysNumberSerial">
+        select * from t_sys_numberserial
+        where numberid = #{numberid }
+    </select>
+</mapper>

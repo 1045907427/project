@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.oa.dao.OaDailPayDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.hd.agent.oa.model.OaDailyPayDetail" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="billid" property="billid" jdbcType="VARCHAR" />
+    <result column="itemid" property="itemid" jdbcType="VARCHAR" />
+    <result column="itemname" property="itemname" jdbcType="VARCHAR" />
+    <result column="applydetpid" property="applydetpid" jdbcType="VARCHAR" />
+    <result column="uintname" property="uintname" jdbcType="VARCHAR" />
+    <result column="unitnum" property="unitnum" jdbcType="DECIMAL" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="amount" property="amount" jdbcType="DECIMAL" />
+    <result column="isfix" property="isfix" jdbcType="CHAR" />
+    <result column="uselife" property="uselife" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, billid, itemid, itemname, applydetpid, uintname, unitnum, price, amount, isfix, 
+    uselife
+  </sql>
+  <sql id="Base_Column_List2" >
+    a.id, a.billid, a.itemid, a.itemname, a.applydetpid, a.uintname, a.unitnum, a.price, a.amount, a.isfix, a.uselife
+  </sql>
+  <select id="selectOaDailPayDetail" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_oa_dailpay_detail
+    where id = #{id}
+  </select>
+  <delete id="deleteOaDailPayDetail" parameterType="java.lang.Integer" >
+    delete from t_oa_dailpay_detail
+    where billid = #{billid}
+  </delete>
+  <insert id="insertOaDailPayDetail" parameterType="com.hd.agent.oa.model.OaDailyPayDetail" >
+    insert into t_oa_dailpay_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="billid != null" >
+        billid,
+      </if>
+      <if test="itemid != null" >
+        itemid,
+      </if>
+      <if test="itemname != null" >
+        itemname,
+      </if>
+      <if test="applydetpid != null" >
+        applydetpid,
+      </if>
+      <if test="uintname != null" >
+        uintname,
+      </if>
+      <if test="unitnum != null" >
+        unitnum,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="isfix != null" >
+        isfix,
+      </if>
+      <if test="uselife != null" >
+        uselife,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="billid != null" >
+        #{billid},
+      </if>
+      <if test="itemid != null" >
+        #{itemid},
+      </if>
+      <if test="itemname != null" >
+        #{itemname},
+      </if>
+      <if test="applydetpid != null" >
+        #{applydetpid},
+      </if>
+      <if test="uintname != null" >
+        #{uintname},
+      </if>
+      <if test="unitnum != null" >
+        #{unitnum},
+      </if>
+      <if test="price != null" >
+        #{price},
+      </if>
+      <if test="amount != null" >
+        #{amount},
+      </if>
+      <if test="isfix != null" >
+        #{isfix},
+      </if>
+      <if test="uselife != null" >
+        #{uselife},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateOaDailPayDetail" parameterType="com.hd.agent.oa.model.OaDailyPayDetail" >
+    update t_oa_dailpay_detail
+    set billid = #{billid},
+      itemid = #{itemid},
+      itemname = #{itemname},
+      applydetpid = #{applydetpid},
+      uintname = #{uintname},
+      unitnum = #{unitnum},
+      price = #{price},
+      amount = #{amount},
+      isfix = #{isfix},
+      uselife = #{uselife}
+    where id = #{id}
+  </update>
+  
+  <select id="selectOaDailPayDetailList" parameterType="com.hd.agent.common.util.PageMap" resultMap="BaseResultMap">
+  	select
+  		<include refid="Base_Column_List2"/>,
+  		b.name applydetpname
+  	from t_oa_dailpay_detail a
+  	left join t_base_department b on a.applydetpid = b.id
+	<trim prefix="where" prefixOverrides="and|or">
+		a.billid = #{condition.billid }
+	    <include refid="common.Page_querySql"/>
+	  	<include refid="common.Page_dataSql"/>
+	</trim>
+	order by a.id 
+	<include refid="common.Page_limit"/>
+  </select>
+  <select id="selectOaDailPayDetailListCnt" parameterType="com.hd.agent.common.util.PageMap" resultType="java.lang.Integer">
+   	select count(1)
+  	from t_oa_dailpay_detail a
+	<trim prefix="where" prefixOverrides="and|or">
+		a.billid = #{condition.billid }
+	    <include refid="common.Page_querySql"/>
+	  	<include refid="common.Page_dataSql"/>
+	</trim>
+  </select>
+  <select id="selectOaDailPayDetailListByBillid" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List"/>
+  	from t_oa_dailpay_detail
+  	where billid = #{billid }
+  </select>
+</mapper>

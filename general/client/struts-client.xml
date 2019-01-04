@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<package name="client-base" extends="parent" namespace="/client/base">
+	</package>
+
+	<package name="client-interface-open" extends="parent" namespace="/client/interface/open">
+		<action name="getTime" class="clientInterfaceAction" method="getTime">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+	<package name="client-interface" extends="parent" namespace="/client/interface">
+		<action name="getOffPriceGoods" class="clientInterfaceAction" method="getOffPriceGoods">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getUpdatedGoodsList" class="clientInterfaceAction" method="getUpdatedGoodsList">
+			<result name="success" type="json">
+				<param name="root">jsonArray</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+	<package name="client-offprice" extends="parent" namespace="/client/offprice">
+		<action name="offpriceListPage" class="offPriceAction" method="offpriceListPage">
+			<result name="success">/client/offprice/offpriceListPage.jsp</result>
+		</action>
+		<action name="offpriceDetailAddPage" class="offPriceAction" method="offpriceDetailAddPage">
+			<result name="success">/client/offprice/offpriceDetailAddPage.jsp</result>
+		</action>
+		<action name="addOffPrice" class="offPriceAction" method="addOffPrice">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="getOffPriceList" class="offPriceAction" method="getOffPriceList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="updateOffPriceInfo" class="offPriceAction" method="updateOffPriceInfo">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="offpriceLogPage" class="offPriceAction" method="offpriceLogPage">
+			<result name="success">/client/offprice/offpriceLogPage.jsp</result>
+		</action>
+		<action name="getOffPriceLogList" class="offPriceAction" method="getOffPriceLogList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="exportClientOffPrice" class="offPriceAction" method="exportClientOffPrice">
+		</action>
+		<action name="importClientOffPrice" class="offPriceAction" method="importClientOffPrice">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+	</package>
+</struts>    

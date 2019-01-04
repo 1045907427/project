@@ -1,0 +1,684 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.storage.dao.AdjustmentsMapper" >
+  	<sql id="adjustments_Column_List" >
+	    id, businessdate,billtype, storageid, sourcetype, sourceid, status, remark, adduserid, addusername, 
+	    adddeptid, adddeptname, addtime, modifyuserid, modifyusername, modifytime, audituserid, 
+	    auditusername, audittime, stopuserid, stopusername, stoptime, closetime, printtimes, 
+	    field01, field02, field03, field04, field05, field06, field07, field08,vouchertimes
+	</sql>
+	<sql id="adjustmentsDetail_Column_List" >
+	    id, adjustmentsid,summarybatchid, goodsid,brandid, storageid, storagelocationid, unitid, unitname, adjustnum, 
+	    auxunitid, auxunitname, auxadjustnum,auxadjustremainder, auxadjustnumdetail, price, amount, batchno, 
+	    produceddate, deadline, remark, seq,field01, field02, field03, field04, field05, field06, field07, field08,
+	    taxtype,notaxprice,notaxamount,tax
+  	</sql>
+    <sql id="adjustmentsDetail_Column_List2" >
+        t1.id, t1.adjustmentsid, t1.summarybatchid, t1.goodsid, t1.brandid, t1.storageid, t1.storagelocationid, t1.unitid, t1.unitname, t1.adjustnum,
+        t1.auxunitid, t1.auxunitname, t1.auxadjustnum, t1.auxadjustremainder, t1.auxadjustnumdetail, t1.price, t1.amount, t1.batchno,
+        t1.produceddate, t1.deadline, t1.remark, t1.seq, t1.field01, t1.field02, t1.field03, t1.field04, t1.field05, t1.field06, t1.field07, t1.field08,
+        t1.taxtype,t1.notaxprice,t1.notaxamount,t1.tax
+    </sql>
+  	<insert id="addAdjustments" parameterType="com.hd.agent.storage.model.Adjustments">
+  		insert into t_storage_adjustments
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="id != null" >
+	        id,
+	      </if>
+	      <if test="businessdate != null" >
+	        businessdate,
+	      </if>
+	      <if test="billtype != null" >
+	        billtype,
+	      </if>
+	      <if test="storageid != null" >
+	        storageid,
+	      </if>
+	      <if test="sourcetype != null" >
+	        sourcetype,
+	      </if>
+	      <if test="sourceid != null" >
+	        sourceid,
+	      </if>
+	      <if test="status != null" >
+	        status,
+	      </if>
+	      <if test="remark != null" >
+	        remark,
+	      </if>
+	      <if test="adduserid != null" >
+	        adduserid,
+	      </if>
+	      <if test="addusername != null" >
+	        addusername,
+	      </if>
+	      <if test="adddeptid != null" >
+	        adddeptid,
+	      </if>
+	      <if test="adddeptname != null" >
+	        adddeptname,
+	      </if>
+	      <if test="1==1" >
+	        addtime,
+	      </if>
+	      <if test="field01 != null" >
+	        field01,
+	      </if>
+	      <if test="field02 != null" >
+	        field02,
+	      </if>
+	      <if test="field03 != null" >
+	        field03,
+	      </if>
+	      <if test="field04 != null" >
+	        field04,
+	      </if>
+	      <if test="field05 != null" >
+	        field05,
+	      </if>
+	      <if test="field06 != null" >
+	        field06,
+	      </if>
+	      <if test="field07 != null" >
+	        field07,
+	      </if>
+	      <if test="field08 != null" >
+	        field08,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="id != null" >
+	        #{id},
+	      </if>
+	      <if test="businessdate != null" >
+	        #{businessdate},
+	      </if>
+	      <if test="billtype != null" >
+	        #{billtype},
+	      </if>
+	      <if test="storageid != null" >
+	        #{storageid},
+	      </if>
+	      <if test="sourcetype != null" >
+	        #{sourcetype},
+	      </if>
+	      <if test="sourceid != null" >
+	        #{sourceid},
+	      </if>
+	      <if test="status != null" >
+	        #{status},
+	      </if>
+	      <if test="remark != null" >
+	        #{remark},
+	      </if>
+	      <if test="adduserid != null" >
+	        #{adduserid},
+	      </if>
+	      <if test="addusername != null" >
+	        #{addusername},
+	      </if>
+	      <if test="adddeptid != null" >
+	        #{adddeptid},
+	      </if>
+	      <if test="adddeptname != null" >
+	        #{adddeptname},
+	      </if>
+	      <if test="1==1" >
+	        now(),
+	      </if>
+	      <if test="field01 != null" >
+	        #{field01},
+	      </if>
+	      <if test="field02 != null" >
+	        #{field02},
+	      </if>
+	      <if test="field03 != null" >
+	        #{field03},
+	      </if>
+	      <if test="field04 != null" >
+	        #{field04},
+	      </if>
+	      <if test="field05 != null" >
+	        #{field05},
+	      </if>
+	      <if test="field06 != null" >
+	        #{field06},
+	      </if>
+	      <if test="field07 != null" >
+	        #{field07},
+	      </if>
+	      <if test="field08 != null" >
+	        #{field08},
+	      </if>
+	    </trim>
+  	</insert>
+  	<insert id="addAdjustmentsDetail" parameterType="com.hd.agent.storage.model.AdjustmentsDetail">
+  		insert into t_storage_adjustments_detail
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="id != null" >
+	        id,
+	      </if>
+	      <if test="adjustmentsid != null" >
+	        adjustmentsid,
+	      </if>
+	      <if test="summarybatchid != null" >
+	        summarybatchid,
+	      </if>
+	      <if test="goodsid != null" >
+	        goodsid,
+	      </if>
+	      <if test="brandid != null">
+	      	brandid,
+	      </if>
+	      <if test="storageid != null" >
+	        storageid,
+	      </if>
+	      <if test="storagelocationid != null" >
+	        storagelocationid,
+	      </if>
+	      <if test="unitid != null" >
+	        unitid,
+	      </if>
+	      <if test="unitname != null" >
+	        unitname,
+	      </if>
+	      <if test="adjustnum != null" >
+	        adjustnum,
+	      </if>
+	      <if test="auxunitid != null" >
+	        auxunitid,
+	      </if>
+	      <if test="auxunitname != null" >
+	        auxunitname,
+	      </if>
+	      <if test="auxadjustnum != null" >
+	        auxadjustnum,
+	      </if>
+	      <if test="auxadjustremainder != null" >
+	        auxadjustremainder,
+	      </if>
+	      <if test="auxadjustnumdetail != null" >
+	        auxadjustnumdetail,
+	      </if>
+	      <if test="totalbox != null" >
+	        totalbox,
+	      </if>
+	      <if test="price != null" >
+	        price,
+	      </if>
+	      <if test="amount != null" >
+	        amount,
+	      </if>
+	      <if test="batchno != null" >
+	        batchno,
+	      </if>
+	      <if test="produceddate != null" >
+	        produceddate,
+	      </if>
+	      <if test="deadline != null" >
+	        deadline,
+	      </if>
+	      <if test="remark != null" >
+	        remark,
+	      </if>
+	      <if test="seq != null" >
+	        seq,
+	      </if>
+	      <if test="field01 != null" >
+	        field01,
+	      </if>
+	      <if test="field02 != null" >
+	        field02,
+	      </if>
+	      <if test="field03 != null" >
+	        field03,
+	      </if>
+	      <if test="field04 != null" >
+	        field04,
+	      </if>
+	      <if test="field05 != null" >
+	        field05,
+	      </if>
+	      <if test="field06 != null" >
+	        field06,
+	      </if>
+	      <if test="field07 != null" >
+	        field07,
+	      </if>
+	      <if test="field08 != null" >
+	        field08,
+	      </if>
+			<if test="taxtype != null" >
+				taxtype,
+			</if>
+			<if test="notaxprice != null" >
+				notaxprice,
+			</if>
+			<if test="notaxamount != null" >
+				notaxamount,
+			</if>
+			<if test="tax != null" >
+				tax,
+			</if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="id != null" >
+	        #{id},
+	      </if>
+	      <if test="adjustmentsid != null" >
+	        #{adjustmentsid},
+	      </if>
+	      <if test="summarybatchid != null" >
+	        #{summarybatchid},
+	      </if>
+	      <if test="goodsid != null" >
+	        #{goodsid},
+	      </if>
+	      <if test="brandid != null">
+	      	#{brandid},
+	      </if>
+	      <if test="storageid != null" >
+	        #{storageid},
+	      </if>
+	      <if test="storagelocationid != null" >
+	        #{storagelocationid},
+	      </if>
+	      <if test="unitid != null" >
+	        #{unitid},
+	      </if>
+	      <if test="unitname != null" >
+	        #{unitname},
+	      </if>
+	      <if test="adjustnum != null" >
+	        #{adjustnum},
+	      </if>
+	      <if test="auxunitid != null" >
+	        #{auxunitid},
+	      </if>
+	      <if test="auxunitname != null" >
+	        #{auxunitname},
+	      </if>
+	      <if test="auxadjustnum != null" >
+	        #{auxadjustnum},
+	      </if>
+	      <if test="auxadjustremainder != null" >
+	        #{auxadjustremainder},
+	      </if>
+	      <if test="auxadjustnumdetail != null" >
+	        #{auxadjustnumdetail},
+	      </if>
+	      <if test="totalbox != null" >
+	        #{totalbox},
+	      </if>
+	      <if test="price != null" >
+	        #{price},
+	      </if>
+	      <if test="amount != null" >
+	        #{amount},
+	      </if>
+	      <if test="batchno != null" >
+	        #{batchno},
+	      </if>
+	      <if test="produceddate != null" >
+	        #{produceddate},
+	      </if>
+	      <if test="deadline != null" >
+	        #{deadline},
+	      </if>
+	      <if test="remark != null" >
+	        #{remark},
+	      </if>
+	      <if test="seq != null" >
+	        #{seq},
+	      </if>
+	      <if test="field01 != null" >
+	        #{field01},
+	      </if>
+	      <if test="field02 != null" >
+	        #{field02},
+	      </if>
+	      <if test="field03 != null" >
+	        #{field03},
+	      </if>
+	      <if test="field04 != null" >
+	        #{field04},
+	      </if>
+	      <if test="field05 != null" >
+	        #{field05},
+	      </if>
+	      <if test="field06 != null" >
+	        #{field06},
+	      </if>
+	      <if test="field07 != null" >
+	        #{field07},
+	      </if>
+	      <if test="field08 != null" >
+	        #{field08},
+	      </if>
+			<if test="taxtype != null" >
+				#{taxtype},
+			</if>
+			<if test="notaxprice != null" >
+				#{notaxprice},
+			</if>
+			<if test="notaxamount != null" >
+				#{notaxamount},
+			</if>
+			<if test="tax != null" >
+				#{tax},
+			</if>
+	    </trim>
+  	</insert>
+  	<select id="showAdjustmentsList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.storage.model.Adjustments">
+  		select <include refid="adjustments_Column_List"/>
+  		from t_storage_adjustments
+  		<trim prefix="where" prefixOverrides="and|or" >
+  		  <include refid="common.Page_querySql"/>
+	      <include refid="common.Page_dataSql"/>
+  		  <if test="condition.businessdate1 != null">
+			 and businessdate >= #{condition.businessdate1}
+		  </if>
+		  <if test="condition.businessdate2 != null">
+			 <![CDATA[and businessdate <= #{condition.businessdate2}]]>
+		  </if>
+		  <if test="condition.billtype != null" >
+	         and billtype = #{condition.billtype}
+	      </if>
+		  <if test="condition.id != null" >
+	         and id like CONCAT('%',#{condition.id},'%')
+	      </if>
+	      <if test="condition.storageid != null" >
+	         and storageid = #{condition.storageid}
+	      </if>
+	      <if test="condition.sourcetype != null" >
+	         and sourcetype = #{condition.sourcetype}
+	      </if>
+	      <if test="condition.sourceid != null" >
+	         and sourceid = #{condition.sourceid}
+	      </if>
+	      <if test="condition.status != null" >
+	         and status = #{condition.status}
+	      </if>
+	      <choose>
+	      	<when test="condition.isClose ==0 ">
+	      		and status in("1","2")
+	      	</when>
+	      	<when test="condition.isClose ==1 ">
+	      		and status in("3","4")
+	      	</when>
+	      </choose>	      	      
+      	  <if test="condition.printsign != null and condition.queryprinttimes != null">
+      		<choose>
+      			<when test="condition.printsign == 1">
+      				<![CDATA[and printtimes = #{condition.queryprinttimes} ]]>
+      			</when>
+      			<when test="condition.printsign == 2">
+      				<![CDATA[and printtimes < #{condition.queryprinttimes} ]]>
+      			</when>
+      			<when test="condition.printsign == 3">
+      				<![CDATA[and printtimes <= #{condition.queryprinttimes} ]]>
+      			</when>
+      			<when test="condition.printsign == 4">
+      				<![CDATA[and printtimes > #{condition.queryprinttimes} ]]>
+      			</when>
+      			<when test="condition.printsign == 5">
+      				<![CDATA[and printtimes >= #{condition.queryprinttimes} ]]>
+      			</when>
+      		</choose>
+      	 </if>
+	    </trim>
+	    <include refid="common.Page_limit" />
+  	</select>
+  	<select id="showAdjustmentsCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  		select count(1) from t_storage_adjustments
+  		<trim prefix="where" prefixOverrides="and|or" >
+	      <include refid="common.Page_querySql"/>
+	      <include refid="common.Page_dataSql"/>
+  		  <if test="condition.businessdate1 != null">
+			 and businessdate >= #{condition.businessdate1}
+		  </if>
+		  <if test="condition.businessdate2 != null">
+			 <![CDATA[and businessdate <= #{condition.businessdate2}]]>
+		  </if>
+		  <if test="condition.billtype != null" >
+	         and billtype = #{condition.billtype}
+	      </if>
+		  <if test="condition.id != null" >
+	         and id like CONCAT('%',#{condition.id},'%')
+	      </if>
+	      <if test="condition.storageid != null" >
+	         and storageid = #{condition.storageid}
+	      </if>
+	      <if test="condition.sourcetype != null" >
+	         and sourcetype = #{condition.sourcetype}
+	      </if>
+	      <if test="condition.sourceid != null" >
+	         and sourceid = #{condition.sourceid}
+	      </if>
+	      <if test="condition.status != null" >
+	         and status = #{condition.status}
+	      </if>
+	      <choose>
+	      	<when test="condition.isClose ==0 ">
+	      		and status in("1","2")
+	      	</when>
+	      	<when test="condition.isClose ==1 ">
+	      		and status in("3","4")
+	      	</when>
+	      </choose>	      	      
+      	  <if test="condition.printsign != null and condition.queryprinttimes != null">
+      		<choose>
+      			<when test="condition.printsign == 1">
+      				<![CDATA[and printtimes = #{condition.queryprinttimes} ]]>
+      			</when>
+      			<when test="condition.printsign == 2">
+      				<![CDATA[and printtimes < #{condition.queryprinttimes} ]]>
+      			</when>
+      			<when test="condition.printsign == 3">
+      				<![CDATA[and printtimes <= #{condition.queryprinttimes} ]]>
+      			</when>
+      			<when test="condition.printsign == 4">
+      				<![CDATA[and printtimes > #{condition.queryprinttimes} ]]>
+      			</when>
+      			<when test="condition.printsign == 5">
+      				<![CDATA[and printtimes >= #{condition.queryprinttimes} ]]>
+      			</when>
+      		</choose>
+      	 </if>
+	    </trim>
+  	</select>
+  	<select id="getAdjustmentsInfo" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.Adjustments">
+  		select <include refid="adjustments_Column_List"/>
+  		from t_storage_adjustments where id=#{id}
+  	</select>
+  	<select id="getAdjustmentsDetailList" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.AdjustmentsDetail">
+  		select <include refid="adjustmentsDetail_Column_List2"/>
+  		from t_storage_adjustments_detail t1
+        where t1.adjustmentsid=#{adjustmentsid}
+  	</select>
+  	<delete id="deleteAdjustments" parameterType="java.lang.String">
+  		delete from t_storage_adjustments where id=#{id} and (status='1' or status='2')
+  	</delete>
+  	<delete id="deleteAdjustmentsDetail" parameterType="java.lang.String">
+  		delete from t_storage_adjustments_detail where adjustmentsid=#{adjustmentsid}
+  	</delete>
+  	<update id="editAdjustments" parameterType="com.hd.agent.storage.model.Adjustments">
+  		update t_storage_adjustments
+	    <set >
+	      <if test="businessdate != null" >
+	        businessdate = #{businessdate},
+	      </if>
+	      <if test="billtype != null" >
+	        billtype = #{billtype},
+	      </if>
+	      <if test="storageid != null" >
+	        storageid = #{storageid},
+	      </if>
+	      <if test="sourcetype != null" >
+	        sourcetype = #{sourcetype},
+	      </if>
+	      <if test="sourceid != null" >
+	        sourceid = #{sourceid},
+	      </if>
+	      <if test="status != null" >
+	        status = #{status},
+	      </if>
+	      <if test="remark != null" >
+	        remark = #{remark},
+	      </if>
+	      <if test="modifyuserid != null" >
+	        modifyuserid = #{modifyuserid},
+	      </if>
+	      <if test="modifyusername != null" >
+	        modifyusername = #{modifyusername},
+	      </if>
+	      <if test="1==1" >
+	        modifytime = now(),
+	      </if>
+	      <if test="field01 != null" >
+	        field01 = #{field01},
+	      </if>
+	      <if test="field02 != null" >
+	        field02 = #{field02},
+	      </if>
+	      <if test="field03 != null" >
+	        field03 = #{field03},
+	      </if>
+	      <if test="field04 != null" >
+	        field04 = #{field04},
+	      </if>
+	      <if test="field05 != null" >
+	        field05 = #{field05},
+	      </if>
+	      <if test="field06 != null" >
+	        field06 = #{field06},
+	      </if>
+	      <if test="field07 != null" >
+	        field07 = #{field07},
+	      </if>
+	      <if test="field08 != null" >
+	        field08 = #{field08},
+	      </if>
+	    </set>
+	    where id = #{id}
+  	</update>
+  	<select id="getAdjustmentsByCheckListid" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.Adjustments">
+  		select <include refid="adjustments_Column_List"/>
+  		from t_storage_adjustments where sourceid=#{checkListid} and sourcetype='2'
+  		limit 1
+  	</select>
+  	<update id="auditAdjustments" parameterType="java.lang.String">
+  		update t_storage_adjustments set
+		businessdate = #{businessdate},
+  		status='4',audituserid=#{userid},auditusername=#{username},audittime=now()
+  		where id=#{id} and (status='2' or status='6')
+  	</update>
+    <update id="oppauditAdjustments" parameterType="java.lang.String">
+        update t_storage_adjustments set status='2'
+        where id=#{id} and status='4'
+    </update>
+  	<select id="getAdjustmentListExport" parameterType="com.hd.agent.common.util.PageMap" resultType="map">
+  		SELECT t.id,t.businessdate,t.billtype,t.storageid as adjuststorageid,t.printtimes,t1.summarybatchid,
+			t1.goodsid,t1.brandid,t1.storageid,t1.storagelocationid,t1.unitid,t1.unitname,t1.adjustnum,t1.auxunitid,t1.auxunitname,t1.auxadjustnum,t1.auxadjustremainder,t1.auxadjustnumdetail,
+			t1.price,t1.amount,t1.batchno,t1.produceddate,t1.deadline,t1.remark,t1.notaxamount,t1.tax
+		FROM t_storage_adjustments t 
+		RIGHT JOIN t_storage_adjustments_detail t1 ON t.id = t1.adjustmentsid
+		<trim prefix="where" prefixOverrides="and|or" >
+			<choose>
+				<when test="condition.exportids == null">
+					  <if test="condition.businessdate1 != null">
+						 and t.businessdate >= #{condition.businessdate1}
+					  </if>
+					  <if test="condition.businessdate2 != null">
+						 <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+					  </if>
+					  <if test="condition.id != null" >
+				         and t.id like CONCAT('%',#{condition.id},'%')
+				      </if>
+				      <if test="condition.storageid != null" >
+				         and t.storageid = #{condition.storageid}
+				      </if>
+				      <if test="condition.sourcetype != null" >
+				         and t.sourcetype = #{condition.sourcetype}
+				      </if>
+				      <if test="condition.sourceid != null" >
+				         and t.sourceid = #{condition.sourceid}
+				      </if>
+				      <if test="condition.status != null" >
+				         and t.status = #{condition.status}
+				      </if>
+				      <choose>
+				      	<when test="condition.isClose ==0 ">
+				      		and t.status in("1","2")
+				      	</when>
+				      	<when test="condition.isClose ==1 ">
+				      		and t.status in("3","4")
+				      	</when>
+				      </choose>
+				</when>
+				<otherwise>
+					<if test="condition.exportids != null" >
+			         	and FIND_IN_SET(t.id,#{condition.exportids})
+			      	</if>
+				</otherwise>
+			</choose>
+	    </trim>
+  	</select>
+  	
+  	<select id="showAdjustmentsListBy" parameterType="java.util.Map" resultType="com.hd.agent.storage.model.Adjustments">
+  		select 
+	    <include refid="adjustments_Column_List" />
+	    from t_storage_adjustments
+  		<trim prefix="where" prefixOverrides="and|or">
+		  	<if test="dataSql != null">
+		  		and ${dataSql}
+		  	</if>
+  			<if test="idarrs!=null">
+  				and find_in_set(id,#{idarrs})
+  			</if>
+  			<if test="status!=null">
+  				and status=#{status}
+  			</if>
+  			<if test="statusarr!=null">
+			   and FIND_IN_SET(status,#{statusarr})
+  			</if>
+			<if test="notprint != null and notprint == 1">
+	  			 and (printtimes is null or printtimes=0)
+			</if>
+			<if test="billtype!=null">
+				and billtype=${billtype}
+			</if>
+  		</trim>
+  	</select>
+  	
+  	<update id="updateOrderPrinttimes" parameterType="com.hd.agent.storage.model.Adjustments">
+		update t_storage_adjustments
+	    <set>
+	      <if test="printtimes != null">
+	        printtimes = IFNULL(printtimes,0)+1,
+	      </if>
+	    </set>
+	    where id = #{id}
+	</update>
+	<update id="updateAdjustmentsDetailSummarybatchid">
+		update t_storage_adjustments_detail
+		set summarybatchid = #{summarybatchid},price=#{price},amount=adjustnum*#{price}
+		where id=#{id}
+	</update>
+	<select id="getAdjustmentsSumData" resultType="map">
+		select t.businessdate,sum(t1.amount) as taxamount,t1.goodsid,t.id,sum(t1.notaxamount) as notaxamount,sum(t1.adjustnum) as unitnum
+		from t_storage_adjustments t
+		RIGHT JOIN t_storage_adjustments_detail t1 ON t.id=t1.adjustmentsid
+		where (t.status='3' or t.status='4') AND billtype=#{billtype}
+		<if test="list != null">
+			and t.id in
+			<foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		<if test="list == null">
+			1>2
+		</if>
+		GROUP BY t.id,t1.goodsid
+	</select>
+</mapper>

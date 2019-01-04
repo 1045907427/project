@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<package name="signin" extends="parent" namespace="/hr/signin">
+		<action name="signinPage" class="signinAction" method="signinPage">			
+			<result name="success">/hr/signin/signinPage.jsp</result>
+		</action>
+		<action name="signinListPage" class="signinAction" method="signinListPage">			
+			<result name="success">/hr/signin/signinListPage.jsp</result>
+		</action>
+		<action name="selectSigninList" class="signinAction" method="selectSigninList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="signinViewPage" class="signinAction" method="signinViewPage">			
+			<result name="success">/hr/signin/signinViewPage.jsp</result>
+		</action>
+		<action name="selectSigninInfo" class="signinAction" method="selectSigninInfo">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="signinLocationPage" class="signinAction" method="signinLocationPage">			
+			<result name="success">/hr/signin/signinLocationPage.jsp</result>
+		</action>
+        <action name="deleteSignin" class="signinAction" method="deleteSignin">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="exportSignin" class="signinAction" method="exportSignin">
+        </action>
+	</package>
+
+	<package name="statistic" extends="parent" namespace="/hr/statistic">
+		<action name="restListPage" class="statisticAction" method="restListPage">
+			<result name="success">/hr/statistic/restListPage.jsp</result>
+		</action>
+		<action name="selectRestList" class="statisticAction" method="selectRestList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="exportRestList" class="statisticAction" method="exportRestList"></action>
+		<action name="overtimeListPage" class="statisticAction" method="overtimeListPage">
+			<result name="success">/hr/statistic/overtimeListPage.jsp</result>
+		</action>
+		<action name="selectOvertimeList" class="statisticAction" method="selectOvertimeList">
+			<result name="success" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</action>
+		<action name="exportOvertimeList" class="statisticAction" method="exportOvertimeList"></action>
+	</package>
+
+    <package name="hrreport" extends="parent" namespace="/hr/report">
+        <action name="signinReportPage" class="hrReportAction" method="signinReportPage">
+            <result name="success">/hr/report/signinReportPage.jsp</result>
+        </action>
+        <action name="getSignReportData" class="hrReportAction" method="getSignReportData">
+            <result name="success" type="json">
+                <param name="root">jsonResult</param>
+                <param name="contentType">text/html</param>
+            </result>
+        </action>
+        <action name="exportSignReportData" class="hrReportAction" method="exportSignReportData"/>
+    </package>
+
+	<package name="hrmap" extends="parent" namespace="/hr/map">
+		<action name="indexPage" class="hrMapAction" method="indexPage">
+			<result name="success">/hr/map/mapIndexPage.jsp</result>
+		</action>
+	</package>
+</struts>

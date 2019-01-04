@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+    <!-- dao配置 -->
+
+	<!-- service -->
+    <bean id="baseWechatServiceImpl" class="com.hd.agent.wechat.service.impl.BaseWechatServiceImpl" parent="baseFilesServiceImpl">
+    </bean>
+
+    <bean id="wechatUserService" parent="baseTransactionProxy">
+        <property name="target" ref="wechatUserServiceImpl"></property>
+    </bean>
+    <bean id="wechatUserServiceImpl" class="com.hd.agent.wechat.service.impl.WechatUserServiceImpl" parent="baseWechatServiceImpl">
+    </bean>
+
+
+
+	<!-- action -->
+    <bean id="baseWechatAction" class="com.hd.agent.wechat.action.BaseWechatAction" scope="prototype" parent="baseFilesAction">
+        <property name="wechatUserService" ref="wechatUserService"></property>
+        <property name="customerUserService" ref="customerUserService"></property>
+    </bean>
+
+    <bean id="wechatUserAction" class="com.hd.agent.wechat.action.WechatUserAction" scope="prototype" parent="baseWechatAction">
+    </bean>
+</beans>

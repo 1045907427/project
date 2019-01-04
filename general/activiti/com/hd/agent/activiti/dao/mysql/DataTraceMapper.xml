@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.activiti.dao.DataTraceMapper" >
+    <resultMap id="BaseResultMap" type="com.hd.agent.activiti.model.DataTrace" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="processid" property="processid" jdbcType="INTEGER" />
+        <result column="definitionid" property="definitionid" jdbcType="VARCHAR" />
+        <result column="taskid" property="taskid" jdbcType="VARCHAR" />
+        <result column="taskkey" property="taskkey" jdbcType="VARCHAR" />
+        <result column="taskname" property="taskname" jdbcType="VARCHAR" />
+        <result column="adduserid" property="adduserid" jdbcType="VARCHAR" />
+        <result column="addusername" property="addusername" jdbcType="VARCHAR" />
+        <result column="adddeptid" property="adddeptid" jdbcType="VARCHAR" />
+        <result column="adddeptname" property="adddeptname" jdbcType="VARCHAR" />
+        <result column="adddate" property="adddate" jdbcType="TIMESTAMP" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+        id, processid, adduserid, addusername, adddeptid, adddeptname, adddate, definitionid, taskid, taskkey, taskname
+    </sql>
+    <sql id="Blob_Column_List" >
+        trace
+    </sql>
+    <select id="selectDataTraceList" parameterType="java.lang.String" resultType="com.hd.agent.activiti.model.DataTrace">
+        select
+          <include refid="Base_Column_List"/>,
+          <include refid="Blob_Column_List"/>
+        from t_act_data_trace
+        where processid = #{processid }
+        order by id
+    </select>
+    <delete id="deleteDataTrace" parameterType="java.lang.String">
+        delete from t_act_data_trace
+        where processid = #{processid }
+    </delete>
+    <select id="selectDataTraceByProcessid" parameterType="java.lang.String" resultType="com.hd.agent.activiti.model.DataTrace">
+        select
+        <include refid="Base_Column_List"/>,
+        <include refid="Blob_Column_List"/>
+        from t_act_data_trace
+        where processid = #{processid }
+          and id = #{id }
+        order by id
+    </select>
+    <insert id="insertDataTrace" parameterType="com.hd.agent.activiti.model.DataTrace" >
+        insert into t_act_data_trace
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="processid != null" >
+                processid,
+            </if>
+            <if test="adduserid != null" >
+                adduserid,
+            </if>
+            <if test="addusername != null" >
+                addusername,
+            </if>
+            <if test="adddeptid != null" >
+                adddeptid,
+            </if>
+            <if test="adddeptname != null" >
+                adddeptname,
+            </if>
+            adddate,
+            <if test="trace != null" >
+                trace,
+            </if>
+            <if test="definitionid != null" >
+                definitionid,
+            </if>
+            <if test="taskid != null" >
+                taskid,
+            </if>
+            <if test="taskkey != null" >
+                taskkey,
+            </if>
+            <if test="taskname != null" >
+                taskname,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="processid != null" >
+                #{processid},
+            </if>
+            <if test="adduserid != null" >
+                #{adduserid},
+            </if>
+            <if test="addusername != null" >
+                #{addusername},
+            </if>
+            <if test="adddeptid != null" >
+                #{adddeptid},
+            </if>
+            <if test="adddeptname != null" >
+                #{adddeptname},
+            </if>
+            now(),
+            <if test="trace != null" >
+                #{trace},
+            </if>
+            <if test="definitionid != null" >
+                #{definitionid},
+            </if>
+            <if test="taskid != null" >
+                #{taskid},
+            </if>
+            <if test="taskkey != null" >
+                #{taskkey},
+            </if>
+            <if test="taskname != null" >
+                #{taskname},
+            </if>
+        </trim>
+    </insert>
+
+</mapper>

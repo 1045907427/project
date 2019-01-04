@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.client.dao.ClientOffpriceMapper" >
+    <sql id="Base_Column_List" >
+        id, deptid, goodsid ,retailprice, begintime, endtime, begindate, enddate , addtime
+    </sql>
+    <sql id="ClientOffPriceQuery" >
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="condition.deptid != null">
+                and t.deptid = #{condition.deptid}
+            </if>
+            <if test="condition.goodsid != null">
+                and t.goodsid = #{condition.goodsid}
+            </if>
+            <if test="condition.supplierid != null" >
+                and (
+                t2.defaultsupplier = #{condition.supplierid}
+                or t2.secondsupplier = #{condition.supplierid}
+                )
+            </if>
+            <if test="condition.brand != null">
+                and t2.brand = #{condition.brand}
+            </if>
+            <if test="condition.goodstype != null">
+                and t2.defaultsort = #{condition.goodstype}
+            </if>
+            <if test="condition.expired != null">
+                and FIND_IN_SET(
+                    CASE
+                    WHEN (concat(t.begindate, ' ', t.begintime) <![CDATA[ > ]]> #{condition.now }) THEN 1
+                    WHEN (concat(t.enddate, ' ', t.endtime) <![CDATA[ < ]]> #{condition.now }) THEN 3
+                    ELSE 2
+                    END, #{condition.expired}
+                )
+            </if>
+            <include refid="common.Page_dataSql"/>
+        </trim>
+    </sql>
+    <select id="getOffPriceList"  parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.client.model.ClientOffprice">
+        select
+        t.id, t.deptid, t.goodsid ,t.retailprice, t.begintime, t.endtime, t.begindate, t.enddate , t.addtime,
+        (select operateuserid from t_client_offpricelog t3 where t3.deptid = t.deptid and t3.goodsid = t.goodsid order by t3.id asc limit 0, 1) operateuserid,
+        CASE
+            WHEN (concat(t.begindate, ' ', t.begintime) <![CDATA[ > ]]> #{condition.now }) THEN 1
+            WHEN (concat(t.enddate, ' ', t.endtime) <![CDATA[ < ]]> #{condition.now }) THEN 3
+            ELSE 2
+        END status
+        from t_client_offprice t
+        left join t_base_goods_info t2 on t.goodsid = t2.id
+        <include refid="ClientOffPriceQuery" />
+        <include refid="common.Page_limit" />
+    </select>
+    <select id="getOffPriceCount" resultType="int" parameterType="com.hd.agent.common.util.PageMap">
+        select count(1)
+        from t_client_offprice t
+        left join t_base_goods_info t2 on t.goodsid = t2.id
+        <include refid="ClientOffPriceQuery" />
+    </select>
+    <insert id="insertOffPriceGoods" parameterType="com.hd.agent.client.model.ClientOffprice">
+        insert into t_client_offprice
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="deptid != null">
+                deptid,
+            </if>
+            <if test="goodsid != null">
+                goodsid,
+            </if>
+            <if test="retailprice != null">
+                retailprice,
+            </if>
+            <if test="begintime != null">
+                begintime,
+            </if>
+            <if test="endtime != null">
+                endtime,
+            </if>
+            <if test="begindate != null">
+                begindate,
+            </if>
+            <if test="enddate != null">
+                enddate,
+            </if>
+            addtime,
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="deptid != null">
+                #{deptid},
+            </if>
+            <if test="goodsid != null">
+                #{goodsid},
+            </if>
+            <if test="retailprice != null">
+                #{retailprice},
+            </if>
+            <if test="begintime != null">
+                #{begintime},
+            </if>
+            <if test="endtime != null">
+                #{endtime},
+            </if>
+            <if test="begindate != null">
+                #{begindate},
+            </if>
+            <if test="enddate != null">
+                #{enddate},
+            </if>
+            now(),
+        </trim>
+    </insert>
+    <select id="findOffPriceGoodsByGoodsIdAndDeptId" resultType="com.hd.agent.client.model.ClientOffprice">
+        select	<include refid="Base_Column_List" />
+        from t_client_offprice  where  deptid = #{deptid} and goodsid = #{goodsid}
+    </select>
+    <update id="updateOffPriceGoodsInfo" parameterType="com.hd.agent.client.model.ClientOffprice">
+        update t_client_offprice
+        <set>
+            <if test="retailprice != null">
+                retailprice = #{retailprice},
+            </if>
+            <if test="begintime != null">
+                begintime = #{begintime},
+            </if>
+            <if test="endtime != null">
+                endtime = #{endtime},
+            </if>
+            <if test="begindate != null">
+                begindate = #{begindate},
+            </if>
+            <if test="enddate != null">
+                enddate = #{enddate},
+            </if>
+        </set>
+        where id = #{id }
+    </update>
+
+    <select id="selectOffPriceGoodsByDeptId" resultType="com.hd.agent.client.model.ClientOffprice">
+        select t.goodsid,t.retailprice,t.begindate,t.begintime,t.endtime,t.enddate,g.name goodsname,g.barcode barcode, g.basesaleprice basesaleprice,
+        g.mainunit mainunitid,
+        m.name mainunitname
+        from t_client_offprice t
+        left join t_base_goods_info g on t.goodsid = g.id
+        left join t_base_goods_meteringunit m on g.mainunit = m.id
+        where t.deptid = #{deptid}
+        <if test="goodsid != null">
+            and t.goodsid = #{goodsid }
+        </if>
+    </select>
+    <select id="selectClientOffPriceById" parameterType="java.lang.String" resultType="com.hd.agent.client.model.ClientOffprice">
+        select <include refid="Base_Column_List"/>
+        from t_client_offprice
+        where id = #{id}
+    </select>
+</mapper>

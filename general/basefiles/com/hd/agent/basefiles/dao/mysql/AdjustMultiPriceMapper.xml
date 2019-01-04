@@ -1,0 +1,583 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.basefiles.dao.AdjustMultiPriceMapper" >
+  <resultMap id="multiPriceResultMap" type="com.hd.agent.basefiles.model.AdjustMultiPrice" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="businessdate" property="businessdate" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="adduserid" property="adduserid" jdbcType="VARCHAR" />
+    <result column="addusername" property="addusername" jdbcType="VARCHAR" />
+    <result column="adddeptid" property="adddeptid" jdbcType="VARCHAR" />
+    <result column="adddeptname" property="adddeptname" jdbcType="VARCHAR" />
+    <result column="addtime" property="addtime" jdbcType="TIMESTAMP" />
+    <result column="modifyuserid" property="modifyuserid" jdbcType="VARCHAR" />
+    <result column="modifyusername" property="modifyusername" jdbcType="VARCHAR" />
+    <result column="modifytime" property="modifytime" jdbcType="TIMESTAMP" />
+    <result column="audituserid" property="audituserid" jdbcType="VARCHAR" />
+    <result column="auditusername" property="auditusername" jdbcType="VARCHAR" />
+    <result column="audittime" property="audittime" jdbcType="TIMESTAMP" />
+    <result column="stopuserid" property="stopuserid" jdbcType="VARCHAR" />
+    <result column="stopusername" property="stopusername" jdbcType="VARCHAR" />
+    <result column="stoptime" property="stoptime" jdbcType="TIMESTAMP" />
+    <result column="closetime" property="closetime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="multiPrice_Column_List" >
+    id, businessdate, status, name, remark, adduserid, addusername, adddeptid, adddeptname, 
+    addtime, modifyuserid, modifyusername, modifytime, audituserid, auditusername, audittime, 
+    stopuserid, stopusername, stoptime, closetime
+  </sql>
+  <sql id="getAdjustPriceList_sql">
+    select  <include refid="multiPrice_Column_List"/>
+    from t_base_adjust_multiprice
+    <trim prefix="where" prefixOverrides="and|or">
+      <include refid="common.Page_querySql"/>
+      <include refid="common.Page_dataSql"/>
+      <if test="condition.businessdate1 != null">
+        and businessdate >= #{condition.businessdate1}
+      </if>
+      <if test="condition.businessdate2 != null">
+        <![CDATA[and businessdate <= #{condition.businessdate2}]]>
+      </if>
+      <if test="condition.id != null" >
+        and id like CONCAT('%',#{condition.id},'%')
+      </if>
+      <if test="condition.type != null">
+        and type = #{condition.type}
+      </if>
+      <if test="condition.status != null">
+        and status = #{condition.status}
+      </if>
+      <if test="condition.name != null">
+        and name = #{condition.name}
+      </if>
+    </trim>
+  </sql>
+  <select id="getAdjustMultiPriceListData" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.basefiles.model.AdjustMultiPrice">
+    <include refid="getAdjustPriceList_sql" />
+    <include refid="common.Page_limit" />
+  </select>
+  <select id="getAdjustMultiPriceListDataCount" parameterType="com.hd.agent.common.util.PageMap" resultType="java.lang.Integer">
+    SELECT count(1) from (  <include refid="getAdjustPriceList_sql" /> ) z
+  </select>
+  <select id="getAdjustMultiPriceById" resultMap="multiPriceResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="multiPrice_Column_List" />
+    from t_base_adjust_multiprice
+    where id = #{id}
+  </select>
+  <delete id="deleteAdjustMultiPriceById" parameterType="java.lang.String" >
+    delete from t_base_adjust_multiprice
+    where id = #{id}
+  </delete>
+  <insert id="addAdjustMultiPrice" parameterType="com.hd.agent.basefiles.model.AdjustMultiPrice" >
+    insert into t_base_adjust_multiprice
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="businessdate != null" >
+        businessdate,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="adduserid != null" >
+        adduserid,
+      </if>
+      <if test="addusername != null" >
+        addusername,
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid,
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname,
+      </if>
+      <if test="addtime != null" >
+        addtime,
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid,
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername,
+      </if>
+      <if test="modifytime != null" >
+        modifytime,
+      </if>
+      <if test="audituserid != null" >
+        audituserid,
+      </if>
+      <if test="auditusername != null" >
+        auditusername,
+      </if>
+      <if test="audittime != null" >
+        audittime,
+      </if>
+      <if test="stopuserid != null" >
+        stopuserid,
+      </if>
+      <if test="stopusername != null" >
+        stopusername,
+      </if>
+      <if test="stoptime != null" >
+        stoptime,
+      </if>
+      <if test="closetime != null" >
+        closetime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="businessdate != null" >
+        #{businessdate},
+      </if>
+      <if test="status != null" >
+        #{status},
+      </if>
+      <if test="name != null" >
+        #{name},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+      <if test="adduserid != null" >
+        #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        #{adddeptname},
+      </if>
+      <if test="addtime != null" >
+        #{addtime},
+      </if>
+      <if test="modifyuserid != null" >
+        #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        #{modifyusername},
+      </if>
+      <if test="modifytime != null" >
+        #{modifytime},
+      </if>
+      <if test="audituserid != null" >
+        #{audituserid},
+      </if>
+      <if test="auditusername != null" >
+        #{auditusername},
+      </if>
+      <if test="audittime != null" >
+        #{audittime},
+      </if>
+      <if test="stopuserid != null" >
+        #{stopuserid},
+      </if>
+      <if test="stopusername != null" >
+        #{stopusername},
+      </if>
+      <if test="stoptime != null" >
+        #{stoptime},
+      </if>
+      <if test="closetime != null" >
+        #{closetime},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateAdjustMultiPrice" parameterType="com.hd.agent.basefiles.model.AdjustMultiPrice" >
+    update t_base_adjust_multiprice
+    <set >
+      <if test="businessdate != null" >
+        businessdate = #{businessdate},
+      </if>
+      <if test="status != null" >
+        status = #{status},
+      </if>
+      <if test="name != null" >
+        name = #{name},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark},
+      </if>
+      <if test="adduserid != null" >
+        adduserid = #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        addusername = #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid = #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname = #{adddeptname},
+      </if>
+      <if test="addtime != null" >
+        addtime = #{addtime},
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid = #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername = #{modifyusername},
+      </if>
+      <if test="modifytime != null" >
+        modifytime = #{modifytime},
+      </if>
+      <if test="audituserid != null" >
+        audituserid = #{audituserid},
+      </if>
+      <if test="auditusername != null" >
+        auditusername = #{auditusername},
+      </if>
+      <if test="audittime != null" >
+        audittime = #{audittime},
+      </if>
+      <if test="stopuserid != null" >
+        stopuserid = #{stopuserid},
+      </if>
+      <if test="stopusername != null" >
+        stopusername = #{stopusername},
+      </if>
+      <if test="stoptime != null" >
+        stoptime = #{stoptime},
+      </if>
+      <if test="closetime != null" >
+        closetime = #{closetime},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+<resultMap id="BaseResultMap" type="com.hd.agent.basefiles.model.AdjustMultiPriceDetail" >
+  <id column="id" property="id" jdbcType="INTEGER" />
+  <result column="billid" property="billid" jdbcType="VARCHAR" />
+  <result column="goodsid" property="goodsid" jdbcType="VARCHAR" />
+  <result column="oldbuyprice" property="oldbuyprice" jdbcType="DECIMAL" />
+  <result column="newbuyprice" property="newbuyprice" jdbcType="DECIMAL" />
+  <result column="oldsalesprice" property="oldsalesprice" jdbcType="DECIMAL" />
+  <result column="newsalesprice" property="newsalesprice" jdbcType="DECIMAL" />
+  <result column="oldprice1" property="oldprice1" jdbcType="DECIMAL" />
+  <result column="newprice1" property="newprice1" jdbcType="DECIMAL" />
+  <result column="oldprice2" property="oldprice2" jdbcType="DECIMAL" />
+  <result column="newprice2" property="newprice2" jdbcType="DECIMAL" />
+  <result column="oldprice3" property="oldprice3" jdbcType="DECIMAL" />
+  <result column="newprice3" property="newprice3" jdbcType="DECIMAL" />
+  <result column="oldprice4" property="oldprice4" jdbcType="DECIMAL" />
+  <result column="newprice4" property="newprice4" jdbcType="DECIMAL" />
+  <result column="oldprice5" property="oldprice5" jdbcType="DECIMAL" />
+  <result column="newprice5" property="newprice5" jdbcType="DECIMAL" />
+  <result column="oldprice6" property="oldprice6" jdbcType="DECIMAL" />
+  <result column="newprice6" property="newprice6" jdbcType="DECIMAL" />
+  <result column="oldprice7" property="oldprice7" jdbcType="DECIMAL" />
+  <result column="newprice7" property="newprice7" jdbcType="DECIMAL" />
+  <result column="oldprice8" property="oldprice8" jdbcType="DECIMAL" />
+  <result column="newprice8" property="newprice8" jdbcType="DECIMAL" />
+  <result column="oldprice9" property="oldprice9" jdbcType="DECIMAL" />
+  <result column="newprice9" property="newprice9" jdbcType="DECIMAL" />
+  <result column="oldprice10" property="oldprice10" jdbcType="DECIMAL" />
+  <result column="newprice10" property="newprice10" jdbcType="DECIMAL" />
+  <result column="rate" property="rate" jdbcType="DECIMAL" />
+  <result column="remark" property="remark" jdbcType="VARCHAR" />
+</resultMap>
+<sql id="Detail_Column_List" >
+  id, billid, goodsid, oldbuyprice, newbuyprice, oldsalesprice, newsalesprice, oldprice1,
+  newprice1, oldprice2, newprice2, oldprice3, newprice3, oldprice4, newprice4, oldprice5,
+  newprice5, oldprice6, newprice6, oldprice7, newprice7, oldprice8, newprice8, oldprice9,
+  newprice9, oldprice10, newprice10, rate, remark
+</sql>
+<select id="getMultiPriceDetailByBillid" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  select
+  <include refid="Detail_Column_List" />
+  from t_base_adjust_multiprice_detail
+  where billid = #{id}
+</select>
+<delete id="deleteMultiPriceDetailByBillid" parameterType="java.lang.String" >
+  delete from t_base_adjust_multiprice_detail
+  where billid = #{id}
+</delete>
+<insert id="addMultiPriceDetail" parameterType="com.hd.agent.basefiles.model.AdjustMultiPriceDetail" >
+  insert into t_base_adjust_multiprice_detail
+  <trim prefix="(" suffix=")" suffixOverrides="," >
+    <if test="id != null" >
+      id,
+    </if>
+    <if test="billid != null" >
+      billid,
+    </if>
+    <if test="goodsid != null" >
+      goodsid,
+    </if>
+    <if test="oldbuyprice != null" >
+      oldbuyprice,
+    </if>
+    <if test="newbuyprice != null" >
+      newbuyprice,
+    </if>
+    <if test="oldsalesprice != null" >
+      oldsalesprice,
+    </if>
+    <if test="newsalesprice != null" >
+      newsalesprice,
+    </if>
+    <if test="oldprice1 != null" >
+      oldprice1,
+    </if>
+    <if test="newprice1 != null" >
+      newprice1,
+    </if>
+    <if test="oldprice2 != null" >
+      oldprice2,
+    </if>
+    <if test="newprice2 != null" >
+      newprice2,
+    </if>
+    <if test="oldprice3 != null" >
+      oldprice3,
+    </if>
+    <if test="newprice3 != null" >
+      newprice3,
+    </if>
+    <if test="oldprice4 != null" >
+      oldprice4,
+    </if>
+    <if test="newprice4 != null" >
+      newprice4,
+    </if>
+    <if test="oldprice5 != null" >
+      oldprice5,
+    </if>
+    <if test="newprice5 != null" >
+      newprice5,
+    </if>
+    <if test="oldprice6 != null" >
+      oldprice6,
+    </if>
+    <if test="newprice6 != null" >
+      newprice6,
+    </if>
+    <if test="oldprice7 != null" >
+      oldprice7,
+    </if>
+    <if test="newprice7 != null" >
+      newprice7,
+    </if>
+    <if test="oldprice8 != null" >
+      oldprice8,
+    </if>
+    <if test="newprice8 != null" >
+      newprice8,
+    </if>
+    <if test="oldprice9 != null" >
+      oldprice9,
+    </if>
+    <if test="newprice9 != null" >
+      newprice9,
+    </if>
+    <if test="oldprice10 != null" >
+      oldprice10,
+    </if>
+    <if test="newprice10 != null" >
+      newprice10,
+    </if>
+    <if test="rate != null" >
+      rate,
+    </if>
+    <if test="remark != null" >
+      remark,
+    </if>
+  </trim>
+  <trim prefix="values (" suffix=")" suffixOverrides="," >
+    <if test="id != null" >
+      #{id},
+    </if>
+    <if test="billid != null" >
+      #{billid},
+    </if>
+    <if test="goodsid != null" >
+      #{goodsid},
+    </if>
+    <if test="oldbuyprice != null" >
+      #{oldbuyprice},
+    </if>
+    <if test="newbuyprice != null" >
+      #{newbuyprice},
+    </if>
+    <if test="oldsalesprice != null" >
+      #{oldsalesprice},
+    </if>
+    <if test="newsalesprice != null" >
+      #{newsalesprice},
+    </if>
+    <if test="oldprice1 != null" >
+      #{oldprice1},
+    </if>
+    <if test="newprice1 != null" >
+      #{newprice1},
+    </if>
+    <if test="oldprice2 != null" >
+      #{oldprice2},
+    </if>
+    <if test="newprice2 != null" >
+      #{newprice2},
+    </if>
+    <if test="oldprice3 != null" >
+      #{oldprice3},
+    </if>
+    <if test="newprice3 != null" >
+      #{newprice3},
+    </if>
+    <if test="oldprice4 != null" >
+      #{oldprice4},
+    </if>
+    <if test="newprice4 != null" >
+      #{newprice4},
+    </if>
+    <if test="oldprice5 != null" >
+      #{oldprice5},
+    </if>
+    <if test="newprice5 != null" >
+      #{newprice5},
+    </if>
+    <if test="oldprice6 != null" >
+      #{oldprice6},
+    </if>
+    <if test="newprice6 != null" >
+      #{newprice6},
+    </if>
+    <if test="oldprice7 != null" >
+      #{oldprice7},
+    </if>
+    <if test="newprice7 != null" >
+      #{newprice7},
+    </if>
+    <if test="oldprice8 != null" >
+      #{oldprice8},
+    </if>
+    <if test="newprice8 != null" >
+      #{newprice8},
+    </if>
+    <if test="oldprice9 != null" >
+      #{oldprice9},
+    </if>
+    <if test="newprice9 != null" >
+      #{newprice9},
+    </if>
+    <if test="oldprice10 != null" >
+      #{oldprice10},
+    </if>
+    <if test="newprice10 != null" >
+      #{newprice10},
+    </if>
+    <if test="rate != null" >
+      #{rate},
+    </if>
+    <if test="remark != null" >
+      #{remark},
+    </if>
+  </trim>
+</insert>
+<update id="updateMultiPriceDetail" parameterType="com.hd.agent.basefiles.model.AdjustMultiPriceDetail" >
+  update t_base_adjust_multiprice_detail
+  <set >
+    <if test="billid != null" >
+      billid = #{billid},
+    </if>
+    <if test="goodsid != null" >
+      goodsid = #{goodsid},
+    </if>
+    <if test="oldbuyprice != null" >
+      oldbuyprice = #{oldbuyprice},
+    </if>
+    <if test="newbuyprice != null" >
+      newbuyprice = #{newbuyprice},
+    </if>
+    <if test="oldsalesprice != null" >
+      oldsalesprice = #{oldsalesprice},
+    </if>
+    <if test="newsalesprice != null" >
+      newsalesprice = #{newsalesprice},
+    </if>
+    <if test="oldprice1 != null" >
+      oldprice1 = #{oldprice1},
+    </if>
+    <if test="newprice1 != null" >
+      newprice1 = #{newprice1},
+    </if>
+    <if test="oldprice2 != null" >
+      oldprice2 = #{oldprice2},
+    </if>
+    <if test="newprice2 != null" >
+      newprice2 = #{newprice2},
+    </if>
+    <if test="oldprice3 != null" >
+      oldprice3 = #{oldprice3},
+    </if>
+    <if test="newprice3 != null" >
+      newprice3 = #{newprice3},
+    </if>
+    <if test="oldprice4 != null" >
+      oldprice4 = #{oldprice4},
+    </if>
+    <if test="newprice4 != null" >
+      newprice4 = #{newprice4},
+    </if>
+    <if test="oldprice5 != null" >
+      oldprice5 = #{oldprice5},
+    </if>
+    <if test="newprice5 != null" >
+      newprice5 = #{newprice5},
+    </if>
+    <if test="oldprice6 != null" >
+      oldprice6 = #{oldprice6},
+    </if>
+    <if test="newprice6 != null" >
+      newprice6 = #{newprice6},
+    </if>
+    <if test="oldprice7 != null" >
+      oldprice7 = #{oldprice7},
+    </if>
+    <if test="newprice7 != null" >
+      newprice7 = #{newprice7},
+    </if>
+    <if test="oldprice8 != null" >
+      oldprice8 = #{oldprice8},
+    </if>
+    <if test="newprice8 != null" >
+      newprice8 = #{newprice8},
+    </if>
+    <if test="oldprice9 != null" >
+      oldprice9 = #{oldprice9},
+    </if>
+    <if test="newprice9 != null" >
+      newprice9 = #{newprice9},
+    </if>
+    <if test="oldprice10 != null" >
+      oldprice10 = #{oldprice10},
+    </if>
+    <if test="newprice10 != null" >
+      newprice10 = #{newprice10},
+    </if>
+    <if test="rate != null" >
+      rate = #{rate},
+    </if>
+    <if test="remark != null" >
+      remark = #{remark},
+    </if>
+  </set>
+  where id = #{id}
+</update>
+
+</mapper>

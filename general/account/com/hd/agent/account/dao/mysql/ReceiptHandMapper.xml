@@ -1,0 +1,1873 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.account.dao.ReceiptHandMapper" >
+	 <sql id="ReceiptHand_Cols" >
+	    id, businessdate, status, remark, adduserid, addusername, adddeptid, adddeptname, 
+	    addtime, modifyuserid, modifyusername, modifytime, audituserid, auditusername, audittime, 
+	    stopuserid, stopusername, stoptime, closetime, printtimes, handuserid, handdeptid, cnums, 
+	    totalamount, collectamount, uncollectamount
+	  </sql>
+	<sql id="ReceiptHandBill_Cols">
+		id,billid,relatebillid,billtype,businessdate,customerid,pcustomerid,customersort,salesarea,salesdept,salesuser,
+		amount,isrecycle,recycledate,remark
+	</sql>
+	<sql id="ReceiptHandCustomer_Cols">
+		id,billid,customerid,billnums,amount,collectionamount,remark,isreceipt,isedit
+	</sql>
+	<!-- 交接单新增页面客户明细数据 -->
+	<sql id="getReceiptListForReceiptHand_sql">
+  	(
+  		SELECT z.billtype,z.id, z.yearmonth,z.businessdate, z.status, z.remark,z.customerid,z.pcustomerid,z.customersort,z.payeeid,z.customername,
+			z.adduserid, z.addusername, z.adddeptid, z.adddeptname, z.addtime, z.modifyuserid, z.modifyusername, z.modifytime, 
+			z.audituserid, z.auditusername, z.audittime, z.stopuserid, z.stopusername, z.stoptime, z.closetime,
+			z.salesarea,z.salesdept, z.salesuser, z.source, z.billno, z.duefromdate,
+			z.saleorderid,z.indooruserid,SUM(z.totalreceipttaxamount) as totalreceipttaxamount
+		from (
+			select '1' as billtype,t.id, DATE_FORMAT(t.businessdate,'%Y-%m') as yearmonth,t.businessdate, t.status, t.remark,
+					t.customerid,t.pcustomerid,t.customersort,c.payeeid,c.name as customername,
+					t.adduserid, t.addusername, t.adddeptid, t.adddeptname, t.addtime, t.modifyuserid, t.modifyusername, t.modifytime,
+					t.audituserid, t.auditusername, t.audittime, t.stopuserid, t.stopusername, t.stoptime, t.closetime,
+					t.salesarea,t.salesdept, t.salesuser, t.source, t.billno, t.duefromdate,
+					t.saleorderid,t.indooruserid,t1.receipttaxamount as totalreceipttaxamount
+			from t_sales_receipt t
+			left join t_sales_receipt_detail t1 on t.id = t1.billid
+            INNER JOIN t_base_sales_customer c on t.customerid=c.id
+            <if test="condition.isBrandUser != null" >
+                INNER JOIN t_base_personnel_customer pc on t.customerid=pc.customerid
+            </if>
+			<trim prefix="where" prefixOverrides="and|or">
+                <choose>
+                    <when test="condition.isBrandUser != null">
+                        <if test="dataSql != null" >
+                            and (${dataSql} or pc.personid=#{condition.personnelid})
+                        </if>
+                        <if test="dataSql == null" >
+                            and  pc.personid=#{condition.personnelid}
+                        </if>
+                    </when>
+                    <otherwise>
+                        <if test="dataSql != null" >
+                            and ${dataSql}
+                        </if>
+                    </otherwise>
+                </choose>
+                <if test="1 == 1">
+			  		and t.status = '3' and t.ishand = '0' and t1.iswriteoff = '0'
+			  	</if>
+		      	<if test="condition.idsArr != null" >
+		      		AND t.id not in
+		      		<foreach collection="condition.idsArr" index="index" item="item" open="(" separator="," close=")">
+		  				#{item}
+		  			</foreach>
+		     	</if>
+			  	<if test="condition.businessdate1 != null" >
+		         <![CDATA[ and str_to_date(t.audittime, '%Y-%m-%d') >= #{condition.businessdate1} ]]>
+		      	</if>
+				<if test="condition.businessdate2 != null" >
+		         <![CDATA[ and str_to_date(t.audittime, '%Y-%m-%d') <= #{condition.businessdate2} ]]>
+		      	</if>
+			  	<if test="condition.billid != null" >
+		         and ( t.id like concat('%',#{condition.billid},'%') or
+		         	t.saleorderid like CONCAT('%',#{condition.billid},'%') )
+		      	</if>
+				<if test="condition.customerid != null" >
+		         and FIND_IN_SET(t.customerid,#{condition.customerid})
+		      	</if>
+		      	<if test="condition.pcustomerid != null" >
+		         and t.pcustomerid = #{condition.pcustomerid}
+		      	</if>
+				<if test="condition.salesarea != null" >
+				 and FIND_IN_SET(t.salesarea,#{condition.salesarea})
+		      	</if>
+				<if test="condition.salesuser != null" >
+		         and t.salesuser = #{condition.salesuser}
+		      	</if>
+                <if test="condition.payeeid != null" >
+                    and c.payeeid = #{condition.payeeid}
+                </if>
+                <if test="condition.billtype != null" >
+                    <if test="condition.billtype != 1" >
+                        and 1!=1
+                    </if>
+                </if>
+			</trim>
+            group by t1.id
+			union ALL
+			select '2' as billtype,t.id, DATE_FORMAT(t.businessdate,'%Y-%m') as yearmonth,t.businessdate, t.status, t.remark, 
+					t.customerid,t.pcustomerid,t.customersort,c.payeeid,c.name as customername,
+					t.adduserid, t.addusername, t.adddeptid, t.adddeptname, t.addtime, t.modifyuserid, t.modifyusername, t.modifytime, 
+					t.audituserid, t.auditusername, t.audittime, t.stopuserid, t.stopusername, t.stoptime, t.closetime,
+					t.salesarea,t.salesdept, t.salesuser, t.source, '' as billno, t.duefromdate,
+					'' as saleorderid,t.indooruserid,-t1.taxamount as totalreceipttaxamount
+			from t_sales_rejectbill t
+			left join t_sales_rejectbill_detail t1 on t.id = t1.billid
+            INNER JOIN t_base_sales_customer c on t.customerid=c.id
+            <if test="condition.isBrandUser != null" >
+                INNER JOIN t_base_personnel_customer pc on t.customerid=pc.customerid
+            </if>
+			<trim prefix="where" prefixOverrides="and|or">
+                <choose>
+                    <when test="condition.isBrandUser != null">
+                        <if test="dataSql != null" >
+                            and (${dataSql} or pc.personid=#{condition.personnelid})
+                        </if>
+                        <if test="dataSql == null" >
+                            and  pc.personid=#{condition.personnelid}
+                        </if>
+                    </when>
+                    <otherwise>
+                        <if test="dataSql != null" >
+                            and ${dataSql}
+                        </if>
+                    </otherwise>
+                </choose>
+			  	<if test="1 == 1">
+			  		and t.billtype='2' and t.isinvoice in('1','3','4') and t.ishand = '0' and t1.iswriteoff = '0'
+			  	</if>
+		      	<if test="condition.idsArr != null" >
+		      		AND t.id not in 
+		      		<foreach collection="condition.idsArr" index="index" item="item" open="(" separator="," close=")">
+		  				#{item}
+		  			</foreach>
+		     	</if>
+			  	<if test="condition.businessdate1 != null" >
+		         <![CDATA[ and str_to_date(t.audittime, '%Y-%m-%d') >= #{condition.businessdate1} ]]>
+		      	</if>
+				<if test="condition.businessdate2 != null" >
+		         <![CDATA[ and str_to_date(t.audittime, '%Y-%m-%d') <= #{condition.businessdate2} ]]>
+		      	</if>
+			  	<if test="condition.billid != null" >
+		         and t.id like concat('%',#{condition.billid},'%')
+		      	</if>
+				<if test="condition.customerid != null" >
+		         and FIND_IN_SET(t.customerid,#{condition.customerid})
+		      	</if>
+		      	<if test="condition.pcustomerid != null" >
+		         and t.pcustomerid = #{condition.pcustomerid}
+		      	</if>
+				<if test="condition.salesarea != null" >
+				 and FIND_IN_SET(t.salesarea,#{condition.salesarea})
+		      	</if>
+				<if test="condition.salesuser != null" >
+		         and t.salesuser = #{condition.salesuser}
+		      	</if>
+                <if test="condition.payeeid != null" >
+                    and c.payeeid = #{condition.payeeid}
+                </if>
+                <if test="condition.billtype != null" >
+                    <if test="condition.billtype != 2" >
+                        and 1!=1
+                    </if>
+                </if>
+			</trim>
+            group by t1.id
+			UNION ALL
+			select '3' as billtype,t.id, DATE_FORMAT(t.businessdate,'%Y-%m') as yearmonth,t.businessdate, t.status, t.remark, 
+					t.customerid,t.pcustomerid,t.customersort,c.payeeid,c.name as customername,
+					t.adduserid, t.addusername, t.adddeptid, t.adddeptname, t.addtime, t.modifyuserid, t.modifyusername, t.modifytime, 
+					t.audituserid, t.auditusername, t.audittime, t.stopuserid, t.stopusername, t.stoptime, t.closetime,
+					t.salesarea,t.salesdept, t.salesuser, '' as source,'' as billno, '' as duefromdate,
+					'' as saleorderid,t.indooruserid,t.amount as totalreceipttaxamount
+			from t_account_customer_push_balance t
+            INNER JOIN t_base_sales_customer c on t.customerid=c.id
+            <if test="condition.isBrandUser != null" >
+                INNER JOIN t_base_personnel_customer pc on t.customerid=pc.customerid
+            </if>
+			<trim prefix="where" prefixOverrides="and|or">
+                <choose>
+                    <when test="condition.isBrandUser != null">
+                        <if test="dataSql != null" >
+                            and (${dataSql} or pc.personid=#{condition.personnelid})
+                        </if>
+                        <if test="dataSql == null" >
+                            and  pc.personid=#{condition.personnelid}
+                        </if>
+                    </when>
+                    <otherwise>
+                        <if test="dataSql != null" >
+                            and ${dataSql}
+                        </if>
+                    </otherwise>
+                </choose>
+                <if test="1 == 1">
+			  		and t.status = '3' and t.ishand = '0' and (t.isinvoice = '0' or t.isinvoice = '1') and t.iswriteoff = '0'
+			  	</if>
+		      	<if test="condition.idsArr != null" >
+		      		AND t.id not in 
+		      		<foreach collection="condition.idsArr" index="index" item="item" open="(" separator="," close=")">
+		  				#{item}
+		  			</foreach>
+		     	</if>
+			  	<if test="condition.businessdate1 != null" >
+		         <![CDATA[ and str_to_date(t.audittime, '%Y-%m-%d') >= #{condition.businessdate1} ]]>
+		      	</if>
+				<if test="condition.businessdate2 != null" >
+		         <![CDATA[ and str_to_date(t.audittime, '%Y-%m-%d') <= #{condition.businessdate2} ]]>
+		      	</if>
+			  	<if test="condition.billid != null" >
+		         and t.id like concat('%',#{condition.billid},'%')
+		      	</if>
+				<if test="condition.customerid != null" >
+		         and FIND_IN_SET(t.customerid,#{condition.customerid})
+		      	</if>
+		      	<if test="condition.pcustomerid != null" >
+		         and t.pcustomerid = #{condition.pcustomerid}
+		      	</if>
+				<if test="condition.salesarea != null" >
+				 and FIND_IN_SET(t.salesarea,#{condition.salesarea})
+		      	</if>
+				<if test="condition.salesuser != null" >
+		         and t.salesuser = #{condition.salesuser}
+		      	</if>
+                <if test="condition.payeeid != null" >
+                    and c.payeeid = #{condition.payeeid}
+                </if>
+                <if test="condition.billtype != null" >
+                    <if test="condition.billtype != 3" >
+                        and 1!=1
+                    </if>
+                </if>
+			</trim>
+            group by t.id
+		)z
+		GROUP BY z.id
+        order by z.yearmonth
+	)
+	</sql>
+	<!-- 交接单详情页面单据明细新增页面数据查询 -->
+	<sql id="getReceiptListForAddReceiptHand_sql">
+  	(
+  		SELECT z.billtype,z.id, z.yearmonth,z.businessdate, z.status, z.remark,z.customerid,z.pcustomerid,z.customersort,z.payeeid,z.customername,
+			z.adduserid, z.addusername, z.adddeptid, z.adddeptname, z.addtime, z.modifyuserid, z.modifyusername, z.modifytime, 
+			z.audituserid, z.auditusername, z.audittime, z.stopuserid, z.stopusername, z.stoptime, z.closetime,
+			z.salesarea,z.salesdept, z.salesuser, z.source, z.billno, z.duefromdate,
+			z.saleorderid,z.indooruserid,SUM(z.totalreceipttaxamount) as totalreceipttaxamount
+		from (
+			select '1' as billtype,t.id, DATE_FORMAT(t.businessdate,'%Y-%m') as yearmonth,t.businessdate, t.status, t.remark, 
+					t.customerid,t.pcustomerid,t.customersort,c.payeeid,c.name as customername,
+					t.adduserid, t.addusername, t.adddeptid, t.adddeptname, t.addtime, t.modifyuserid, t.modifyusername, t.modifytime, 
+					t.audituserid, t.auditusername, t.audittime, t.stopuserid, t.stopusername, t.stoptime, t.closetime,
+					t.salesarea,t.salesdept, t.salesuser, t.source, t.billno, t.duefromdate,
+					t.saleorderid,t.indooruserid,t1.receipttaxamount as totalreceipttaxamount
+			from t_sales_receipt t
+			left join t_sales_receipt_detail t1 on t.id = t1.billid
+            INNER JOIN t_base_sales_customer c on t.customerid=c.id
+            <if test="condition.isBrandUser != null" >
+                INNER JOIN t_base_personnel_customer pc on t.customerid=pc.customerid
+            </if>
+			<trim prefix="where" prefixOverrides="and|or">
+                <choose>
+                    <when test="condition.isBrandUser != null">
+                        <if test="dataSql != null" >
+                            and (${dataSql} or pc.personid=#{condition.personnelid})
+                        </if>
+                        <if test="dataSql == null" >
+                            and  pc.personid=#{condition.personnelid}
+                        </if>
+                    </when>
+                    <otherwise>
+                        <if test="dataSql != null" >
+                            and ${dataSql}
+                        </if>
+                    </otherwise>
+                </choose>
+			  	<if test="1 == 1">
+			  		and t.status = '3' and t.ishand = '0' and t1.iswriteoff = '0'
+			  	</if>
+		      	<if test="condition.idsArr != null" >
+		      		AND t.id not in 
+		      		<foreach collection="condition.idsArr" index="index" item="item" open="(" separator="," close=")">
+		  				#{item}
+		  			</foreach>
+		     	</if>
+			  	<if test="condition.businessdate1 != null" >
+		         <![CDATA[ and str_to_date(t.audittime, '%Y-%m-%d') >= #{condition.businessdate1} ]]>
+		      	</if>
+				<if test="condition.businessdate2 != null" >
+		         <![CDATA[ and str_to_date(t.audittime, '%Y-%m-%d') <= #{condition.businessdate2} ]]>
+		      	</if>
+			  	<if test="condition.billid != null" >
+		         and ( t.id like concat('%',#{condition.billid},'%') or
+		         	t.saleorderid like CONCAT('%',#{condition.billid},'%') )
+		      	</if>
+				<if test="condition.customerid != null" >
+		         and FIND_IN_SET(t.customerid,#{condition.customerid})
+		      	</if>
+		      	<if test="condition.pcustomerid != null" >
+		         and t.pcustomerid = #{condition.pcustomerid}
+		      	</if>
+				<if test="condition.salesarea != null" >
+				 and FIND_IN_SET(t.salesarea,#{condition.salesarea})
+		      	</if>
+				<if test="condition.salesuser != null" >
+		         and t.salesuser = #{condition.salesuser}
+		      	</if>
+                <if test="condition.payeeid != null" >
+                    and c.payeeid = #{condition.payeeid}
+                </if>
+                <if test="condition.billtype != null" >
+                    <if test="condition.billtype != 1" >
+                        and 1!=1
+                    </if>
+                </if>
+			</trim>
+            group by t1.id
+			union ALL
+			select '2' as billtype,t.id, DATE_FORMAT(t.businessdate,'%Y-%m') as yearmonth,t.businessdate, t.status, t.remark, 
+					t.customerid,t.pcustomerid,t.customersort,c.payeeid,c.name as customername,
+					t.adduserid, t.addusername, t.adddeptid, t.adddeptname, t.addtime, t.modifyuserid, t.modifyusername, t.modifytime, 
+					t.audituserid, t.auditusername, t.audittime, t.stopuserid, t.stopusername, t.stoptime, t.closetime,
+					t.salesarea,t.salesdept, t.salesuser, t.source,'' as billno, t.duefromdate,
+					'' as saleorderid,t.indooruserid,-t1.taxamount as totalreceipttaxamount
+			from t_sales_rejectbill t
+			left join t_sales_rejectbill_detail t1 on t.id = t1.billid
+            INNER JOIN t_base_sales_customer c on t.customerid=c.id
+            <if test="condition.isBrandUser != null" >
+                INNER JOIN t_base_personnel_customer pc on t.customerid=pc.customerid
+            </if>
+			<trim prefix="where" prefixOverrides="and|or">
+                <choose>
+                    <when test="condition.isBrandUser != null">
+                        <if test="dataSql != null" >
+                            and (${dataSql} or pc.personid=#{condition.personnelid})
+                        </if>
+                        <if test="dataSql == null" >
+                            and  pc.personid=#{condition.personnelid}
+                        </if>
+                    </when>
+                    <otherwise>
+                        <if test="dataSql != null" >
+                            and ${dataSql}
+                        </if>
+                    </otherwise>
+                </choose>
+			  	<if test="1 == 1">
+			  		and t.billtype='2' and t.isinvoice in('1','3','4') and t.ishand = '0' and t1.iswriteoff = '0'
+			  	</if>
+		      	<if test="condition.idsArr != null" >
+		      		AND t.id not in 
+		      		<foreach collection="condition.idsArr" index="index" item="item" open="(" separator="," close=")">
+		  				#{item}
+		  			</foreach>
+		     	</if>
+			  	<if test="condition.businessdate1 != null" >
+		         <![CDATA[ and str_to_date(t.audittime, '%Y-%m-%d') >= #{condition.businessdate1} ]]>
+		      	</if>
+				<if test="condition.businessdate2 != null" >
+		         <![CDATA[ and str_to_date(t.audittime, '%Y-%m-%d') <= #{condition.businessdate2} ]]>
+		      	</if>
+			  	<if test="condition.billid != null" >
+		         and t.id like concat('%',#{condition.billid},'%')
+		      	</if>
+				<if test="condition.customerid != null" >
+		         and FIND_IN_SET(t.customerid,#{condition.customerid})
+		      	</if>
+		      	<if test="condition.pcustomerid != null" >
+		         and t.pcustomerid = #{condition.pcustomerid}
+		      	</if>
+				<if test="condition.salesarea != null" >
+				 and FIND_IN_SET(t.salesarea,#{condition.salesarea})
+		      	</if>
+				<if test="condition.salesuser != null" >
+		         and t.salesuser = #{condition.salesuser}
+		      	</if>
+                <if test="condition.payeeid != null" >
+                    and c.payeeid = #{condition.payeeid}
+                </if>
+                <if test="condition.billtype != null" >
+                    <if test="condition.billtype != 2" >
+                        and 1!=1
+                    </if>
+                </if>
+			</trim>
+            group by t1.id
+			UNION ALL
+			select '3' as billtype,t.id, DATE_FORMAT(t.businessdate,'%Y-%m') as yearmonth,t.businessdate, t.status, t.remark, 
+					t.customerid,t.pcustomerid,t.customersort,c.payeeid,c.name as customername,
+					t.adduserid, t.addusername, t.adddeptid, t.adddeptname, t.addtime, t.modifyuserid, t.modifyusername, t.modifytime, 
+					t.audituserid, t.auditusername, t.audittime, t.stopuserid, t.stopusername, t.stoptime, t.closetime,
+					t.salesarea,t.salesdept, t.salesuser, '' as source,'' as billno, '' as duefromdate,
+					'' as saleorderid,t.indooruserid,t.amount as totalreceipttaxamount
+			from t_account_customer_push_balance t
+            INNER JOIN t_base_sales_customer c on t.customerid=c.id
+            <if test="condition.isBrandUser != null" >
+                INNER JOIN t_base_personnel_customer pc on t.customerid=pc.customerid
+            </if>
+			<trim prefix="where" prefixOverrides="and|or">
+                <choose>
+                    <when test="condition.isBrandUser != null">
+                        <if test="dataSql != null" >
+                            and (${dataSql} or pc.personid=#{condition.personnelid})
+                        </if>
+                        <if test="dataSql == null" >
+                            and  pc.personid=#{condition.personnelid}
+                        </if>
+                    </when>
+                    <otherwise>
+                        <if test="dataSql != null" >
+                            and ${dataSql}
+                        </if>
+                    </otherwise>
+                </choose>
+			  	<if test="1 == 1">
+			  		and t.status = '3' and t.ishand = '0' and (t.isinvoice = '0' or t.isinvoice = '1') and t.iswriteoff = '0'
+			  	</if>
+		      	<if test="condition.idsArr != null" >
+		      		AND t.id not in 
+		      		<foreach collection="condition.idsArr" index="index" item="item" open="(" separator="," close=")">
+		  				#{item}
+		  			</foreach>
+		     	</if>
+			  	<if test="condition.businessdate1 != null" >
+		         <![CDATA[ and str_to_date(t.audittime, '%Y-%m-%d') >= #{condition.businessdate1} ]]>
+		      	</if>
+				<if test="condition.businessdate2 != null" >
+		         <![CDATA[ and str_to_date(t.audittime, '%Y-%m-%d') <= #{condition.businessdate2} ]]>
+		      	</if>
+			  	<if test="condition.billid != null" >
+		         and t.id like concat('%',#{condition.billid},'%')
+		      	</if>
+				<if test="condition.customerid != null" >
+		         and FIND_IN_SET(t.customerid,#{condition.customerid})
+		      	</if>
+		      	<if test="condition.pcustomerid != null" >
+		         and t.pcustomerid = #{condition.pcustomerid}
+		      	</if>
+				<if test="condition.salesarea != null" >
+				 and FIND_IN_SET(t.salesarea,#{condition.salesarea})
+		      	</if>
+				<if test="condition.salesuser != null" >
+		         and t.salesuser = #{condition.salesuser}
+		      	</if>
+                <if test="condition.payeeid != null" >
+                    and c.payeeid = #{condition.payeeid}
+                </if>
+                <if test="condition.billtype != null" >
+                    <if test="condition.billtype != 3" >
+                        and 1!=1
+                    </if>
+                </if>
+			</trim>
+            group by t.id
+		)z 
+		GROUP BY z.id
+        UNION ALL
+        SELECT z.billtype,z.id, z.yearmonth,z.businessdate, z.status, z.remark,z.customerid,z.pcustomerid,z.customersort,z.payeeid,z.customername,
+        z.adduserid, z.addusername, z.adddeptid, z.adddeptname, z.addtime, z.modifyuserid, z.modifyusername, z.modifytime,
+        z.audituserid, z.auditusername, z.audittime, z.stopuserid, z.stopusername, z.stoptime, z.closetime,
+        z.salesarea,z.salesdept, z.salesuser,z.source, z.billno, z.duefromdate,
+        z.saleorderid,z.indooruserid,z.totalreceipttaxamount
+        from (
+            select z.billtype,z.relatebillid as id, DATE_FORMAT(t.businessdate,'%Y-%m') as yearmonth,z.businessdate, t.status, t.remark,
+                z.customerid,z.pcustomerid,z.customersort,c.payeeid,c.name as customername,
+                t.adduserid, t.addusername, t.adddeptid, t.adddeptname, t.addtime, t.modifyuserid, t.modifyusername, t.modifytime,
+                t.audituserid, t.auditusername, t.audittime, t.stopuserid, t.stopusername, t.stoptime, t.closetime,
+                z.salesarea,z.salesdept, z.salesuser,t.source, t.billno, t.duefromdate,
+                t.saleorderid,t.indooruserid,z.amount as totalreceipttaxamount
+            from t_account_receipt_bill z
+            left join t_sales_receipt t on z.relatebillid = t.id
+            INNER JOIN t_base_sales_customer c on t.customerid=c.id
+            <if test="condition.isBrandUser != null" >
+                INNER JOIN t_base_personnel_customer pc on t.customerid=pc.customerid
+            </if>
+            <trim prefix="where" prefixOverrides="and|or">
+                <choose>
+                    <when test="condition.isBrandUser != null">
+                        <if test="dataSql != null" >
+                            and (${dataSql} or pc.personid=#{condition.personnelid})
+                        </if>
+                        <if test="dataSql == null" >
+                            and  pc.personid=#{condition.personnelid}
+                        </if>
+                    </when>
+                    <otherwise>
+                        <if test="dataSql != null" >
+                            and ${dataSql}
+                        </if>
+                    </otherwise>
+                </choose>
+                <if test="1 == 1">
+                    and z.billtype = '1' and z.billid = #{condition.receipthandid}
+                </if>
+                <if test="condition.idsArr != null" >
+                    AND t.id not in
+                    <foreach collection="condition.idsArr" index="index" item="item" open="(" separator="," close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                <if test="condition.businessdate1 != null" >
+                    <![CDATA[ and str_to_date(t.audittime, '%Y-%m-%d') >= #{condition.businessdate1} ]]>
+                </if>
+                <if test="condition.businessdate2 != null" >
+                    <![CDATA[ and str_to_date(t.audittime, '%Y-%m-%d') <= #{condition.businessdate2} ]]>
+                </if>
+                <if test="condition.billid != null" >
+                    and ( t.id like concat('%',#{condition.billid},'%') or
+                    t.saleorderid like CONCAT('%',#{condition.billid},'%') )
+                </if>
+                <if test="condition.customerid != null" >
+                    and FIND_IN_SET(t.customerid,#{condition.customerid})
+                </if>
+                <if test="condition.pcustomerid != null" >
+                    and t.pcustomerid = #{condition.pcustomerid}
+                </if>
+                <if test="condition.salesarea != null" >
+                    and FIND_IN_SET(t.salesarea,#{condition.salesarea})
+                </if>
+                <if test="condition.salesuser != null" >
+                    and t.salesuser = #{condition.salesuser}
+                </if>
+                <if test="condition.payeeid != null" >
+                    and c.payeeid = #{condition.payeeid}
+                </if>
+                <if test="condition.billtype != null" >
+                    <if test="condition.billtype != 1" >
+                        and 1!=1
+                    </if>
+                </if>
+            </trim>
+            UNION ALL
+            select z.billtype,z.relatebillid as id, DATE_FORMAT(t.businessdate,'%Y-%m') as yearmonth,z.businessdate, t.status, t.remark,
+                z.customerid,z.pcustomerid,z.customersort,c.payeeid,c.name as customername,
+                t.adduserid, t.addusername, t.adddeptid, t.adddeptname, t.addtime, t.modifyuserid, t.modifyusername, t.modifytime,
+                t.audituserid, t.auditusername, t.audittime, t.stopuserid, t.stopusername, t.stoptime, t.closetime,
+                z.salesarea,z.salesdept, z.salesuser,t.source, t.billno, t.duefromdate,
+                '' as saleorderid,t.indooruserid,z.amount as totalreceipttaxamount
+            from t_account_receipt_bill z
+            left join t_sales_rejectbill t on z.relatebillid = t.id
+            INNER JOIN t_base_sales_customer c on t.customerid=c.id
+            <if test="condition.isBrandUser != null" >
+                INNER JOIN t_base_personnel_customer pc on t.customerid=pc.customerid
+            </if>
+            <trim prefix="where" prefixOverrides="and|or">
+                <choose>
+                    <when test="condition.isBrandUser != null">
+                        <if test="dataSql != null" >
+                            and (${dataSql} or pc.personid=#{condition.personnelid})
+                        </if>
+                        <if test="dataSql == null" >
+                            and  pc.personid=#{condition.personnelid}
+                        </if>
+                    </when>
+                    <otherwise>
+                        <if test="dataSql != null" >
+                            and ${dataSql}
+                        </if>
+                    </otherwise>
+                </choose>
+                <if test="1 == 1">
+                    and z.billtype = '2' and z.billid = #{condition.receipthandid}
+                </if>
+                <if test="condition.idsArr != null" >
+                    AND t.id not in
+                    <foreach collection="condition.idsArr" index="index" item="item" open="(" separator="," close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                <if test="condition.businessdate1 != null" >
+                    <![CDATA[ and str_to_date(t.audittime, '%Y-%m-%d') >= #{condition.businessdate1} ]]>
+                </if>
+                <if test="condition.businessdate2 != null" >
+                    <![CDATA[ and str_to_date(t.audittime, '%Y-%m-%d') <= #{condition.businessdate2} ]]>
+                </if>
+                <if test="condition.billid != null" >
+                    and t.id like concat('%',#{condition.billid},'%')
+                </if>
+                <if test="condition.customerid != null" >
+                    and FIND_IN_SET(t.customerid,#{condition.customerid})
+                </if>
+                <if test="condition.pcustomerid != null" >
+                    and t.pcustomerid = #{condition.pcustomerid}
+                </if>
+                <if test="condition.salesarea != null" >
+                    and FIND_IN_SET(t.salesarea,#{condition.salesarea})
+                </if>
+                <if test="condition.salesuser != null" >
+                    and t.salesuser = #{condition.salesuser}
+                </if>
+                <if test="condition.payeeid != null" >
+                    and c.payeeid = #{condition.payeeid}
+                </if>
+                <if test="condition.billtype != null" >
+                    <if test="condition.billtype != 2" >
+                        and 1!=1
+                    </if>
+                </if>
+            </trim>
+            UNION ALL
+            select z.billtype,z.relatebillid as id, DATE_FORMAT(t.businessdate,'%Y-%m') as yearmonth,z.businessdate, t.status, t.remark,
+            z.customerid,z.pcustomerid,z.customersort,c.payeeid,c.name as customername,
+            t.adduserid, t.addusername, t.adddeptid, t.adddeptname, t.addtime, t.modifyuserid, t.modifyusername, t.modifytime,
+            t.audituserid, t.auditusername, t.audittime, t.stopuserid, t.stopusername, t.stoptime, t.closetime,
+            z.salesarea,z.salesdept, z.salesuser,'' as source, '' as billno, '' as duefromdate,
+            '' as saleorderid,t.indooruserid,z.amount as totalreceipttaxamount
+            from t_account_receipt_bill z
+            left join t_account_customer_push_balance t on z.relatebillid = t.id
+            INNER JOIN t_base_sales_customer c on t.customerid=c.id
+            <if test="condition.isBrandUser != null" >
+                INNER JOIN t_base_personnel_customer pc on t.customerid=pc.customerid
+            </if>
+            <trim prefix="where" prefixOverrides="and|or">
+                <choose>
+                    <when test="condition.isBrandUser != null">
+                        <if test="dataSql != null" >
+                            and (${dataSql} or pc.personid=#{condition.personnelid})
+                        </if>
+                        <if test="dataSql == null" >
+                            and  pc.personid=#{condition.personnelid}
+                        </if>
+                    </when>
+                    <otherwise>
+                        <if test="dataSql != null" >
+                            and ${dataSql}
+                        </if>
+                    </otherwise>
+                </choose>
+                <if test="1 == 1">
+                    and z.billtype = '3' and z.billid = #{condition.receipthandid}
+                </if>
+                <if test="condition.idsArr != null" >
+                    AND t.id not in
+                    <foreach collection="condition.idsArr" index="index" item="item" open="(" separator="," close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                <if test="condition.businessdate1 != null" >
+                    <![CDATA[ and str_to_date(t.audittime, '%Y-%m-%d') >= #{condition.businessdate1} ]]>
+                </if>
+                <if test="condition.businessdate2 != null" >
+                    <![CDATA[ and str_to_date(t.audittime, '%Y-%m-%d') <= #{condition.businessdate2} ]]>
+                </if>
+                <if test="condition.billid != null" >
+                    and t.id like concat('%',#{condition.billid},'%')
+                </if>
+                <if test="condition.customerid != null" >
+                    and FIND_IN_SET(t.customerid,#{condition.customerid})
+                </if>
+                <if test="condition.pcustomerid != null" >
+                    and t.pcustomerid = #{condition.pcustomerid}
+                </if>
+                <if test="condition.salesarea != null" >
+                    and FIND_IN_SET(t.salesarea,#{condition.salesarea})
+                </if>
+                <if test="condition.salesuser != null" >
+                    and t.salesuser = #{condition.salesuser}
+                </if>
+                <if test="condition.payeeid != null" >
+                    and c.payeeid = #{condition.payeeid}
+                </if>
+                <if test="condition.billtype != null" >
+                    <if test="condition.billtype != 3" >
+                        and 1!=1
+                    </if>
+                </if>
+            </trim>
+        )z
+	)
+	</sql>
+	<select id="getReceiptListForReceiptHand" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.sales.model.Receipt">
+  		select z.billtype,z.id,z.yearmonth,z.businessdate, z.status, z.remark, z.customerid,z.pcustomerid,z.customersort, z.payeeid,
+  			z.adduserid, z.addusername, z.adddeptid, z.adddeptname, z.addtime,z.customername,
+  			z.audituserid, z.auditusername, z.audittime, z.stopuserid, z.stopusername, z.stoptime, z.closetime,
+  			z.salesarea,z.salesdept, z.salesuser, z.source, z.billno, z.duefromdate,
+  			z.saleorderid,z.indooruserid,z.totalreceipttaxamount
+		from <include refid="getReceiptListForReceiptHand_sql"/> z
+        order by z.businessdate,z.id asc
+		<if test="condition.isflag == null">
+			<include refid="common.Page_LimitOnly"/>
+		</if>
+    </select>
+	<select id="getReceiptListForAddReceiptHand" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.sales.model.Receipt">
+  		select z.id,z.billtype,z.yearmonth,z.businessdate, z.status, z.remark, z.customerid,z.pcustomerid,z.customersort,z.payeeid,
+  			z.adduserid, z.addusername, z.adddeptid, z.adddeptname, z.addtime,z.customername,
+  			z.audituserid, z.auditusername, z.audittime, z.stopuserid, z.stopusername, z.stoptime, z.closetime,
+  			z.salesarea,z.salesdept, z.salesuser,z.source,z.billno, z.duefromdate,
+  			z.saleorderid,z.indooruserid,z.totalreceipttaxamount
+		from <include refid="getReceiptListForAddReceiptHand_sql"/> z
+        order by z.businessdate,z.id asc
+		<if test="condition.isflag == null">
+			<include refid="common.Page_LimitOnly"/>
+		</if>
+    </select>
+    <select id="getReceiptCountForAddReceiptHand" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  		select count(1) from (
+  			select z.id,z.billtype,z.yearmonth,z.businessdate, z.status, z.remark, z.customerid,z.pcustomerid,z.customersort, z.payeeid,
+	  			z.adduserid, z.addusername, z.adddeptid, z.adddeptname, z.addtime,z.customername,
+	  			z.audituserid, z.auditusername, z.audittime, z.stopuserid, z.stopusername, z.stoptime, z.closetime,
+	  			z.salesarea,z.salesdept, z.salesuser,z.source,z.billno, z.duefromdate,
+	  			z.saleorderid,z.indooruserid,z.totalreceipttaxamount
+			from <include refid="getReceiptListForAddReceiptHand_sql"/> z
+  		) z
+    </select>
+    <select id="getReceiptSumForAddReceiptHand" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.sales.model.Receipt">
+	  	select sum(z.totalreceipttaxamount) as totalreceipttaxamount from (
+			select z.id,z.billtype,z.yearmonth,z.businessdate, z.status, z.remark, z.customerid,z.pcustomerid,z.customersort, z.payeeid,
+	  			z.adduserid, z.addusername, z.adddeptid, z.adddeptname, z.addtime,z.customername,
+	  			z.audituserid, z.auditusername, z.audittime, z.stopuserid, z.stopusername, z.stoptime, z.closetime,
+	  			z.salesarea,z.salesdept, z.salesuser, z.source, z.billno, z.duefromdate,
+	  			z.saleorderid,z.indooruserid,z.totalreceipttaxamount
+			from <include refid="getReceiptListForAddReceiptHand_sql"/> z
+		) z
+    </select>
+	
+	<select id="getReceiptHandBillListByIds" parameterType="java.util.Map" resultType="com.hd.agent.account.model.ReceiptHandBill">
+		SELECT '${billid}' as billid,z.relatebillid,z.billtype,z.businessdate,z.customerid,z.pcustomerid,z.customersort,z.salesarea,z.remark,
+			z.salesdept,z.salesuser,SUM(z.amount) as amount,'0' as isrecycle,'' as recycledate
+		from (
+			SELECT t.id as relatebillid,'1' as billtype,t.businessdate,t.customerid,t.pcustomerid,t.customersort,t.salesarea,t.remark,
+				t.salesdept,t.salesuser,t1.receipttaxamount as amount
+			from t_sales_receipt t
+			left JOIN t_sales_receipt_detail t1 on t.id = t1.billid
+			<trim prefix="where" prefixOverrides="and|or">
+				<if test="1 == 1">
+					and t.status = '3' and t.ishand = '0' and t1.iswriteoff = '0'
+				</if>
+				<if test="idArr != null">
+					 and t.id in
+					<foreach collection="idArr" index="index" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+				</if>
+			</trim>
+			UNION ALL
+			SELECT t.id as relatebillid,'2' as billtype,t.businessdate,t.customerid,t.pcustomerid,t.customersort,t.salesarea,t.remark,
+				t.salesdept,t.salesuser,-t1.taxamount as amount
+			from t_sales_rejectbill t
+			left JOIN t_sales_rejectbill_detail t1 on t.id = t1.billid
+			<trim prefix="where" prefixOverrides="and|or">
+				<if test="1 == 1">
+					and t.billtype='2' and t.isinvoice in('1','3','4') and t.ishand = '0' and t1.iswriteoff = '0'
+				</if>
+				<if test="idArr != null">
+					 and t.id in
+					<foreach collection="idArr" index="index" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+				</if>
+			</trim>
+			UNION ALL
+			SELECT t.id as relatebillid,'3' as billtype,t.businessdate,t.customerid,t.pcustomerid,t.customersort,t.salesarea,t.remark,
+				t.salesdept,t.salesuser,t.amount
+			from t_account_customer_push_balance t
+			<trim prefix="where" prefixOverrides="and|or">
+				<if test="1 == 1">
+					and t.status = '3' and t.ishand = '0' and t.iswriteoff = '0' and (t.isinvoice = '0' or t.isinvoice = '1')
+				</if>
+				<if test="idArr != null">
+					 and t.id in
+					<foreach collection="idArr" index="index" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+				</if>
+			</trim>
+		)z
+		GROUP BY z.relatebillid
+	</select>
+	<select id="getReceiptHandCustomerListByIds" parameterType="java.util.Map" resultType="com.hd.agent.account.model.ReceiptHandCustomer">
+		SELECT '${billid}' as billid,z.customerid,COUNT(z.customerid) as billnums,SUM(z.amount) as amount,SUM(z.collectionamount) as collectionamount,
+			'' as remark,'1' as isreceipt
+		from (
+			SELECT z.id,z.customerid,SUM(z.amount) as amount,SUM(z.collectionamount) as collectionamount 
+			from (
+				SELECT t.id,t.customerid,t1.taxamount as amount,t1.receipttaxamount as collectionamount
+				from t_sales_receipt t
+				left JOIN t_sales_receipt_detail t1 on t.id = t1.billid
+				<trim prefix="where" prefixOverrides="and|or">
+					<if test="1 == 1">
+						and t.status = '3' and t.ishand = '0' and t1.iswriteoff = '0'
+					</if>
+					<if test="idArr != null">
+						 and t.id in
+						<foreach collection="idArr" index="index" item="item" open="(" separator="," close=")">
+							#{item}
+						</foreach>
+					</if>
+				</trim>
+				UNION ALL
+				SELECT t.id,t.customerid,-t1.taxamount as amount,-t1.taxamount as collectionamount
+				from t_sales_rejectbill t
+				left JOIN t_sales_rejectbill_detail t1 on t.id = t1.billid
+				<trim prefix="where" prefixOverrides="and|or">
+					<if test="1 == 1">
+						and t.billtype='2' and t.isinvoice in('1','3','4') and t.ishand = '0' and t1.iswriteoff = '0'
+					</if>
+					<if test="idArr != null">
+						 and t.id in
+						<foreach collection="idArr" index="index" item="item" open="(" separator="," close=")">
+							#{item}
+						</foreach>
+					</if>
+				</trim>
+				UNION ALL
+				SELECT t.id,t.customerid,t.amount,t.amount as collectionamount
+				from t_account_customer_push_balance t
+				<trim prefix="where" prefixOverrides="and|or">
+					<if test="1 == 1">
+						and t.status = '3' and t.ishand = '0' and t.iswriteoff = '0' and (t.isinvoice = '0' or t.isinvoice = '1')
+					</if>
+					<if test="idArr != null">
+						 and t.id in
+						<foreach collection="idArr" index="index" item="item" open="(" separator="," close=")">
+							#{item}
+						</foreach>
+					</if>
+				</trim>
+			)z
+			GROUP BY z.customerid,z.id
+		)z 
+		GROUP BY z.customerid
+	</select>
+	<insert id="addReceiptHand" parameterType="com.hd.agent.account.model.ReceiptHand">
+		insert into t_account_receipt
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+		  <if test="id != null" >
+	        id,
+	      </if>
+	      <if test="1==1" >
+	        businessdate,
+	      </if>
+	      <if test="status != null" >
+	        status,
+	      </if>
+	      <if test="remark != null" >
+	        remark,
+	      </if>
+	      <if test="adduserid != null" >
+	        adduserid,
+	      </if>
+	      <if test="addusername != null" >
+	        addusername,
+	      </if>
+	      <if test="adddeptid != null" >
+	        adddeptid,
+	      </if>
+	      <if test="adddeptname != null" >
+	        adddeptname,
+	      </if>
+	      <if test="1==1" >
+	        addtime,
+	      </if>
+	      <if test="printtimes != null" >
+	        printtimes,
+	      </if>
+	      <if test="handuserid != null" >
+	        handuserid,
+	      </if>
+	      <if test="handdeptid != null" >
+	        handdeptid,
+	      </if>
+	      <if test="cnums != null" >
+	        cnums,
+	      </if>
+	      <if test="totalamount != null" >
+	        totalamount,
+	      </if>
+	      <if test="collectamount != null" >
+	        collectamount,
+	      </if>
+	      <if test="uncollectamount != null" >
+	        uncollectamount,
+	      </if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+		  <if test="id != null" >
+	        #{id},
+	      </if>
+	      <if test="1==1" >
+	        CURDATE(),
+	      </if>
+	      <if test="status != null" >
+	        #{status},
+	      </if>
+	      <if test="remark != null" >
+	        #{remark},
+	      </if>
+	      <if test="adduserid != null" >
+	        #{adduserid},
+	      </if>
+	      <if test="addusername != null" >
+	        #{addusername},
+	      </if>
+	      <if test="adddeptid != null" >
+	        #{adddeptid},
+	      </if>
+	      <if test="adddeptname != null" >
+	        #{adddeptname},
+	      </if>
+	      <if test="1==1" >
+	        now(),
+	      </if>
+	      <if test="printtimes != null" >
+	        #{printtimes},
+	      </if>
+	      <if test="handuserid != null" >
+	        #{handuserid},
+	      </if>
+	      <if test="handdeptid != null" >
+	        #{handdeptid},
+	      </if>
+	      <if test="cnums != null" >
+	        #{cnums},
+	      </if>
+	      <if test="totalamount != null" >
+	        #{totalamount},
+	      </if>
+	      <if test="collectamount != null" >
+	        #{collectamount},
+	      </if>
+	      <if test="uncollectamount != null" >
+	        #{uncollectamount},
+	      </if>
+		</trim>
+	</insert>
+	<insert id="addReceiptHandBillDetail" parameterType="java.util.List">
+		insert into t_account_receipt_bill 
+		(billid,relatebillid,billtype,businessdate,customerid,pcustomerid,customersort,salesarea,remark,salesdept,salesuser,amount,isrecycle,recycledate)
+		values
+		<foreach collection="list" index="index" item="item" separator=",">
+			(#{item.billid},#{item.relatebillid},#{item.billtype},#{item.businessdate},#{item.customerid},#{item.pcustomerid},#{item.customersort},#{item.salesarea},#{item.remark},#{item.salesdept},#{item.salesuser},
+			#{item.amount},#{item.isrecycle},#{item.recycledate})
+		</foreach>
+	</insert>
+	<insert id="addReceiptHandCustomerDetail" parameterType="java.util.List">
+		insert into t_account_receipt_customer
+		(billid,customerid,billnums,amount,collectionamount,remark,isreceipt,isedit)
+		values
+		<foreach collection="list" index="index" item="item" separator="," >
+			(#{item.billid},#{item.customerid},#{item.billnums},#{item.amount},#{item.collectionamount},#{item.remark},#{item.isreceipt},#{item.isedit})
+		</foreach>
+	</insert>
+	<select id="getReceiptHandInfo" parameterType="java.lang.String" resultType="com.hd.agent.account.model.ReceiptHand">
+		select <include refid="ReceiptHand_Cols"/> from t_account_receipt
+		where id = #{id}
+	</select>
+	<select id="getReceiptHandBillListByBillid" parameterType="java.lang.String" resultType="com.hd.agent.account.model.ReceiptHandBill">
+	  select z.* FROM
+		(
+		select t.*,t1.saleorderid,t2.sourceid from t_account_receipt_bill t
+		INNER JOIN t_sales_receipt t1 ON t.relatebillid = t1.id
+		INNER JOIN t_sales_order t2 ON t1.saleorderid = t2.id
+		where t.billtype = '1' and t.billid = #{id}
+
+		union all
+		select t.*,'' as saleorderid,'' as sourceid from t_account_receipt_bill t
+		INNER JOIN t_sales_rejectbill t1 ON t.relatebillid = t1.id
+		where t.billtype = '2' and t.billid = #{id}
+
+		union all
+		select t.*,'' as saleorderid,'' as sourceid from t_account_receipt_bill t
+		INNER JOIN t_account_customer_push_balance t1 ON t.relatebillid = t1.id
+		where t.billtype = '3' and t.billid = #{id}
+
+		) z	order by customerid,businessdate,relatebillid
+	</select>
+    <select id="getReceiptHandBillListByBillidAndCustomerid" parameterType="java.lang.String" resultType="com.hd.agent.account.model.ReceiptHandBill">
+        select <include refid="ReceiptHandBill_Cols"/> from t_account_receipt_bill
+        where billid = #{id} and customerid=#{customerid} order by businessdate,relatebillid
+    </select>
+	<select id="getReceiptHandCustomerListByBillid" parameterType="java.lang.String" resultType="com.hd.agent.account.model.ReceiptHandCustomer">
+		select <include refid="ReceiptHandCustomer_Cols"/> from t_account_receipt_customer
+		where billid = #{id} order by customerid
+	</select>
+	<select id="getReceiptHandList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.account.model.ReceiptHand">
+		SELECT t.id,t.businessdate,t.status,t.printtimes,t.handdeptid,t.handuserid,t.cnums,t.totalamount,t.collectamount,t.uncollectamount,
+			t.adduserid,t.addusername,t.adddeptid,t.adddeptname,t.addtime,t.modifyuserid,t.modifyusername,t.modifytime,t.audituserid,t.auditusername,
+			t.audittime,t.stopuserid,t.stopusername,t.stoptime,t.closetime,
+			t1.customerid,t1.customersort,t1.isrecycle,t1.pcustomerid,t1.relatebillid,t1.salesarea,t1.salesdept,t1.salesuser,sum(1) as billnums
+		FROM t_account_receipt t
+		LEFT JOIN t_account_receipt_bill t1 ON t.id = t1.billid
+        <if test="condition.pcon != null">
+        inner join t_base_sales_customer c on t1.customerid=c.id
+        </if>
+		<trim prefix="where" prefixOverrides="and|or">
+			<include refid="common.Page_querySql"/>
+      		<include refid="common.Page_dataSql"/>
+      		<if test="condition.status != null">
+		  		and t.status = #{condition.status}
+		  	</if>
+			<if test="condition.businessdate1 != null">
+				 and t.businessdate >= #{condition.businessdate1}
+			</if>
+			<if test="condition.businessdate2 != null">
+				 <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+			</if>
+			<if test="condition.id != null" >
+	         	and t.id like CONCAT('%',#{condition.id},'%')
+	      	</if>
+	      	<if test="condition.handuserid != null">
+				 and t.handuserid =#{condition.handuserid}
+			</if>
+			<if test="condition.handdeptid != null">
+				 and t.handdeptid =#{condition.handdeptid}
+			</if>
+			<if test="condition.customerid != null">
+				 and t1.customerid =#{condition.customerid}
+			</if>
+			<if test="condition.customersort != null">
+				 and t1.customersort =#{condition.customersort}
+			</if>
+			<if test="condition.pcustomerid != null">
+				 and t1.pcustomerid =#{condition.pcustomerid}
+			</if>
+			<if test="condition.salesarea != null">
+				 and FIND_IN_SET(t1.salesarea,#{condition.salesarea})
+			</if>
+			<if test="condition.salesdept != null">
+				 and t1.salesdept =#{condition.salesdept}
+			</if>
+			<if test="condition.salesuser != null">
+				 and t1.salesuser =#{condition.salesuser}
+			</if>
+            <if test="condition.pcon != null">
+                and (t1.customerid like '${condition.pcon}%' or c.name like '%${condition.pcon}%'
+                or t1.pcustomerid like '${condition.pcon}%')
+            </if>
+		</trim>
+		GROUP BY t.id
+        <if test="condition.isPageFlag==null">
+            <include refid="common.Page_limit"/>
+        </if>
+	</select>
+	<select id="getReceiptHandListCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+		select count(1) from (
+			SELECT t.id,t.businessdate,t.status,t.printtimes,t.handdeptid,t.handuserid,t.cnums,t.totalamount,t.collectamount,t.uncollectamount,
+				t.adduserid,t.addusername,t.adddeptid,t.adddeptname,t.addtime,t.modifyuserid,t.modifyusername,t.modifytime,t.audituserid,t.auditusername,
+				t.audittime,t.stopuserid,t.stopusername,t.stoptime,t.closetime,
+				t1.customerid,t1.customersort,t1.isrecycle,t1.pcustomerid,t1.relatebillid,t1.salesarea,t1.salesdept,t1.salesuser
+			FROM t_account_receipt t
+			LEFT JOIN t_account_receipt_bill t1 ON t.id = t1.billid
+			<trim prefix="where" prefixOverrides="and|or">
+				<include refid="common.Page_querySql"/>
+	      		<include refid="common.Page_dataSql"/>
+	      		<if test="condition.status != null">
+			  		and t.status = #{condition.status}
+			  	</if>
+				<if test="condition.businessdate1 != null">
+					 and t.businessdate >= #{condition.businessdate1}
+				</if>
+				<if test="condition.businessdate2 != null">
+					 <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+				</if>
+				<if test="condition.id != null" >
+		         	and t.id like CONCAT('%',#{condition.id},'%')
+		      	</if>
+		      	<if test="condition.handuserid != null">
+					 and t.handuserid =#{condition.handuserid}
+				</if>
+				<if test="condition.handdeptid != null">
+					 and t.handdeptid =#{condition.handdeptid}
+				</if>
+				<if test="condition.customerid != null">
+					 and t1.customerid =#{condition.customerid}
+				</if>
+				<if test="condition.customersort != null">
+					 and t1.customersort =#{condition.customersort}
+				</if>
+				<if test="condition.pcustomerid != null">
+					 and t1.pcustomerid =#{condition.pcustomerid}
+				</if>
+				<if test="condition.salesarea != null">
+					 and FIND_IN_SET(t1.salesarea,#{condition.salesarea})
+				</if>
+				<if test="condition.salesdept != null">
+					 and t1.salesdept =#{condition.salesdept}
+				</if>
+				<if test="condition.salesuser != null">
+					 and t1.salesuser =#{condition.salesuser}
+				</if>
+			</trim>
+			GROUP BY t.id
+		)z
+	</select>
+	<select id="getReceiptHandListSum" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.account.model.ReceiptHand">
+		select sum(z.cnums) as cnums,sum(z.totalamount) as totalamount,sum(z.collectamount) as collectamount,sum(z.uncollectamount) as uncollectamount
+		from (
+			SELECT t.id,t.businessdate,t.status,t.printtimes,t.handdeptid,t.handuserid,t.cnums,t.totalamount,t.collectamount,t.uncollectamount,
+				t.adduserid,t.addusername,t.adddeptid,t.adddeptname,t.addtime,t.modifyuserid,t.modifyusername,t.modifytime,t.audituserid,t.auditusername,
+				t.audittime,t.stopuserid,t.stopusername,t.stoptime,t.closetime,
+				t1.customerid,t1.customersort,t1.isrecycle,t1.pcustomerid,t1.relatebillid,t1.salesarea,t1.salesdept,t1.salesuser
+			FROM t_account_receipt t
+			LEFT JOIN t_account_receipt_bill t1 ON t.id = t1.billid
+			<trim prefix="where" prefixOverrides="and|or">
+				<include refid="common.Page_querySql"/>
+	      		<include refid="common.Page_dataSql"/>
+	      		<if test="condition.status != null">
+			  		and t.status = #{condition.status}
+			  	</if>
+				<if test="condition.businessdate1 != null">
+					 and t.businessdate >= #{condition.businessdate1}
+				</if>
+				<if test="condition.businessdate2 != null">
+					 <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+				</if>
+				<if test="condition.id != null" >
+		         	and t.id like CONCAT('%',#{condition.id},'%')
+		      	</if>
+		      	<if test="condition.handuserid != null">
+					 and t.handuserid =#{condition.handuserid}
+				</if>
+				<if test="condition.handdeptid != null">
+					 and t.handdeptid =#{condition.handdeptid}
+				</if>
+				<if test="condition.customerid != null">
+					 and t1.customerid =#{condition.customerid}
+				</if>
+				<if test="condition.customersort != null">
+					 and t1.customersort =#{condition.customersort}
+				</if>
+				<if test="condition.pcustomerid != null">
+					 and t1.pcustomerid =#{condition.pcustomerid}
+				</if>
+				<if test="condition.salesarea != null">
+					 and FIND_IN_SET(t1.salesarea,#{condition.salesarea})
+				</if>
+				<if test="condition.salesdept != null">
+					 and t1.salesdept =#{condition.salesdept}
+				</if>
+				<if test="condition.salesuser != null">
+					 and t1.salesuser =#{condition.salesuser}
+				</if>
+			</trim>
+			GROUP BY t.id
+		)z
+	</select>
+	<delete id="deleteReceiptHand" parameterType="java.lang.String">
+		delete from t_account_receipt
+		where id = #{id}
+	</delete>
+	<delete id="deleteReceiptHandBillListByMap" parameterType="java.util.Map">
+		delete from t_account_receipt_bill
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="billid != null">
+				and billid = #{billid}
+			</if>
+			<if test="relatebillid != null">
+				and relatebillid = #{relatebillid}
+			</if>
+		</trim>
+	</delete>
+	<delete id="deleteReceiptHandCustomerListByMap" parameterType="java.util.Map">
+		delete from t_account_receipt_customer
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="billid != null">
+				and billid = #{billid}
+			</if>
+			<if test="customerid != null">
+				and customerid = #{customerid}
+			</if>
+		</trim>
+	</delete>
+	<update id="auditReceiptHands" parameterType="java.util.Map">
+		update t_account_receipt set 
+			status = '3',
+			audituserid = #{audituserid},
+			auditusername = #{auditusername},
+			audittime = now()
+		where id in
+		<foreach collection="idArr" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+	<update id="oppauditReceiptHands" parameterType="java.util.Map">
+		update t_account_receipt set 
+			status = '2',
+			audituserid = #{audituserid},
+			auditusername = #{auditusername},
+			audittime = now()
+		where id in
+		<foreach collection="idArr" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+	<update id="editReceiptHand" parameterType="com.hd.agent.account.model.ReceiptHand">
+		update t_account_receipt
+		<set>
+		  <if test="remark != null" >
+		    remark = #{remark},
+		  </if>
+		  <if test="modifyuserid != null" >
+		    modifyuserid = #{modifyuserid},
+		  </if>
+		  <if test="modifyusername != null" >
+		    modifyusername = #{modifyusername},
+		  </if>
+		  <if test="1 == 1" >
+		    modifytime = now(),
+		  </if>
+		  <if test="handuserid != null" >
+	        handuserid = #{handuserid},
+	      </if>
+	      <if test="handdeptid != null" >
+	        handdeptid = #{handdeptid},
+	      </if>
+	      <if test="cnums != null" >
+	        cnums = #{cnums},
+	      </if>
+	      <if test="totalamount != null" >
+	        totalamount = #{totalamount},
+	      </if>
+	      <if test="collectamount != null" >
+	        collectamount = #{collectamount},
+	      </if>
+	      <if test="uncollectamount != null" >
+	        uncollectamount = #{uncollectamount},
+	      </if>
+		</set>
+		where id = #{id}
+	</update>
+	<sql id="getReceiptListByHand_sql">
+		(
+			SELECT t.id,t.billid,t.relatebillid,t.billtype,t.businessdate,t.customerid,t.pcustomerid,t.customersort,t.salesarea,t.salesdept,t.salesuser,
+				t.amount,t.isrecycle,t.recycledate,t1.handuserid,t1.businessdate as handdate,t2.status,t2.saleorderid
+			from t_account_receipt_bill t
+			LEFT JOIN t_account_receipt t1 on t1.id = t.billid
+			INNER JOIN t_sales_receipt t2 ON t.relatebillid = t2.id
+			<trim prefix="where" prefixOverrides="and|or">
+			  	<if test="1 == 1">
+			  		AND t.billtype = '1'
+			  	</if>
+			  	<if test="condition.datasql1 != null" >
+		         and ${condition.datasql1}
+		      	</if>
+			  	<if test="condition.status != null">
+					<choose>
+					 	<when test="condition.status == 0">
+					 		and t2.status = '3'
+					 	</when>
+					 	<when test="condition.status == 1">
+					 		and t2.status = '4'
+					 	</when>
+					 </choose>
+				</if>
+				<if test="condition.isrecycle != null">
+					and t.isrecycle = #{condition.isrecycle}
+				</if>
+			  	<if test="condition.businessdate1 != null" >
+		         <![CDATA[ and t.businessdate >= #{condition.businessdate1} ]]>
+		      	</if>
+				<if test="condition.businessdate2 != null" >
+		         <![CDATA[ and t.businessdate <= #{condition.businessdate2} ]]>
+		      	</if>
+		      	<if test="condition.handdate1 != null" >
+		         <![CDATA[ and t1.businessdate >= #{condition.handdate1} ]]>
+		      	</if>
+				<if test="condition.handdate2 != null" >
+		         <![CDATA[ and t1.businessdate <= #{condition.handdate2} ]]>
+		      	</if>
+			  	<if test="condition.billid != null" >
+			  	 and (
+			  	 	t.billid like concat('%',#{condition.billid},'%') or
+			  	 	t.relatebillid like CONCAT('%',#{condition.billid},'%') or
+			  	 	t2.saleorderid like CONCAT('%',#{condition.billid},'%')
+			  	 )
+		      	</if>
+				<if test="condition.customerid != null" >
+		         and t.customerid = #{condition.customerid}
+		      	</if>
+		      	<if test="condition.pcustomerid != null" >
+		         and t.pcustomerid = #{condition.pcustomerid}
+		      	</if>
+				<if test="condition.salesarea != null" >
+				 and FIND_IN_SET(t.salesarea,#{condition.salesarea})
+		      	</if>
+				<if test="condition.salesuser != null" >
+		         and t.salesuser = #{condition.salesuser}
+		      	</if>
+		      	<if test="condition.handuserid != null" >
+		         and t1.handuserid = #{condition.handuserid}
+		      	</if>
+		      	<if test="condition.billtype != null">
+				 and t.billtype = #{condition.billtype}
+				</if>
+				<if test="condition.audituserid != null">
+					and t1.audituserid = #{condition.audituserid}
+				</if>
+			</trim>
+			UNION ALL
+			SELECT t.id,t.billid,t.relatebillid,t.billtype,t.businessdate,t.customerid,t.pcustomerid,t.customersort,t.salesarea,t.salesdept,t.salesuser,
+				t.amount,t.isrecycle,t.recycledate,t1.handuserid,t1.businessdate as handdate,t2.status,'' as saleorderid
+			from t_account_receipt_bill t
+			LEFT JOIN t_account_receipt t1 on t1.id = t.billid
+			INNER JOIN t_sales_rejectbill t2 ON t.relatebillid = t2.id
+			<trim prefix="where" prefixOverrides="and|or">
+			  	<if test="1 == 1">
+			  		AND t.billtype = '2'
+			  	</if>
+			  	<if test="condition.datasql2 != null" >
+		         and ${condition.datasql2}
+		      	</if>
+			  	<if test="condition.status != null">
+					<choose>
+					 	<when test="condition.status == 0">
+					 		and t2.status = '3'
+					 	</when>
+					 	<when test="condition.status == 1">
+					 		and t2.status = '4'
+					 	</when>
+					 </choose>
+				</if>
+				<if test="condition.isrecycle != null">
+					and t.isrecycle = #{condition.isrecycle}
+				</if>
+			  	<if test="condition.businessdate1 != null" >
+		         <![CDATA[ and t.businessdate >= #{condition.businessdate1} ]]>
+		      	</if>
+				<if test="condition.businessdate2 != null" >
+		         <![CDATA[ and t.businessdate <= #{condition.businessdate2} ]]>
+		      	</if>
+		      	<if test="condition.handdate1 != null" >
+		         <![CDATA[ and t1.businessdate >= #{condition.handdate1} ]]>
+		      	</if>
+				<if test="condition.handdate2 != null" >
+		         <![CDATA[ and t1.businessdate <= #{condition.handdate2} ]]>
+		      	</if>
+			  	<if test="condition.billid != null" >
+			  	 and (
+			  	 	t.billid like concat('%',#{condition.billid},'%') or
+			  	 	t.relatebillid like CONCAT('%',#{condition.billid},'%')
+			  	 )
+		      	</if>
+				<if test="condition.customerid != null" >
+		         and t.customerid = #{condition.customerid}
+		      	</if>
+		      	<if test="condition.pcustomerid != null" >
+		         and t.pcustomerid = #{condition.pcustomerid}
+		      	</if>
+				<if test="condition.salesarea != null" >
+				 and FIND_IN_SET(t.salesarea,#{condition.salesarea})
+		      	</if>
+				<if test="condition.salesuser != null" >
+		         and t.salesuser = #{condition.salesuser}
+		      	</if>
+		      	<if test="condition.handuserid != null" >
+		         and t1.handuserid = #{condition.handuserid}
+		      	</if>
+		      	<if test="condition.billtype != null">
+				 and t.billtype = #{condition.billtype}
+				</if>
+				<if test="condition.audituserid != null">
+					and t1.audituserid = #{condition.audituserid}
+				</if>
+			</trim>
+			UNION ALL
+			SELECT t.id,t.billid,t.relatebillid,t.billtype,t.businessdate,t.customerid,t.pcustomerid,t.customersort,t.salesarea,t.salesdept,t.salesuser,
+				t.amount,t.isrecycle,t.recycledate,t1.handuserid,t1.businessdate as handdate,t2.status,'' as saleorderid
+			from t_account_receipt_bill t
+			LEFT JOIN t_account_receipt t1 on t1.id = t.billid
+			INNER JOIN t_account_customer_push_balance t2 ON t.relatebillid = t2.id
+			<trim prefix="where" prefixOverrides="and|or">
+			  	<if test="1 == 1">
+			  		AND t.billtype = '3'
+			  	</if>
+			  	<if test="condition.datasql3 != null" >
+		         and ${condition.datasql3}
+		      	</if>
+			  	<if test="condition.status != null">
+					<choose>
+					 	<when test="condition.status == 0">
+					 		and t2.status = '3'
+					 	</when>
+					 	<when test="condition.status == 1">
+					 		and t2.status = '4'
+					 	</when>
+					 </choose>
+				</if>
+				<if test="condition.isrecycle != null">
+					and t.isrecycle = #{condition.isrecycle}
+				</if>
+			  	<if test="condition.businessdate1 != null" >
+		         <![CDATA[ and t.businessdate >= #{condition.businessdate1} ]]>
+		      	</if>
+				<if test="condition.businessdate2 != null" >
+		         <![CDATA[ and t.businessdate <= #{condition.businessdate2} ]]>
+		      	</if>
+		      	<if test="condition.handdate1 != null" >
+		         <![CDATA[ and t1.businessdate >= #{condition.handdate1} ]]>
+		      	</if>
+				<if test="condition.handdate2 != null" >
+		         <![CDATA[ and t1.businessdate <= #{condition.handdate2} ]]>
+		      	</if>
+			  	<if test="condition.billid != null" >
+			  	 and (
+			  	 	t.billid like concat('%',#{condition.billid},'%') or
+			  	 	t.relatebillid like CONCAT('%',#{condition.billid},'%')
+			  	 )
+		      	</if>
+				<if test="condition.customerid != null" >
+		         and t.customerid = #{condition.customerid}
+		      	</if>
+		      	<if test="condition.pcustomerid != null" >
+		         and t.pcustomerid = #{condition.pcustomerid}
+		      	</if>
+				<if test="condition.salesarea != null" >
+				 and FIND_IN_SET(t.salesarea,#{condition.salesarea})
+		      	</if>
+				<if test="condition.salesuser != null" >
+		         and t.salesuser = #{condition.salesuser}
+		      	</if>
+		      	<if test="condition.handuserid != null" >
+		         and t1.handuserid = #{condition.handuserid}
+		      	</if>
+		      	<if test="condition.billtype != null">
+				 and t.billtype = #{condition.billtype}
+				</if>
+				<if test="condition.audituserid != null">
+					and t1.audituserid = #{condition.audituserid}
+				</if>
+			</trim>
+		)
+	</sql>
+	<select id="getReceiptListByHand" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.account.model.ReceiptHandBill">
+		select z.id,z.billid,z.relatebillid,z.billtype,z.businessdate,z.customerid,z.pcustomerid,z.customersort,z.salesarea,z.salesdept,z.salesuser,
+			z.amount,z.isrecycle,z.recycledate,z.handuserid,z.handdate,z.status,z.saleorderid
+		from <include refid="getReceiptListByHand_sql"/> z
+		<if test="condition.isflag == null">
+			<include refid="common.Page_limit"/>
+		</if>
+	</select>
+	<select id="getReceiptListByHandCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+		select count(1) from (
+			select z.id,z.billid,z.relatebillid,z.billtype,z.businessdate,z.customerid,z.pcustomerid,z.customersort,z.salesarea,z.salesdept,z.salesuser,
+				z.amount,z.isrecycle,z.recycledate,z.handuserid,z.handdate,z.status,z.saleorderid
+			from <include refid="getReceiptListByHand_sql"/> z
+		)z
+	</select>
+	<select id="getReceiptListByHandSum" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.account.model.ReceiptHandBill">
+		select sum(z.amount) as amount from (
+			select z.id,z.billid,z.relatebillid,z.billtype,z.businessdate,z.customerid,z.pcustomerid,z.customersort,z.salesarea,z.salesdept,z.salesuser,
+				z.amount,z.isrecycle,z.recycledate,z.handuserid,z.handdate,z.status,z.saleorderid
+			from <include refid="getReceiptListByHand_sql"/> z
+		)z
+	</select>
+	<update id="updateReceiptHandBillIsrecycle" parameterType="java.lang.String">
+		update t_account_receipt_bill set
+			isrecycle = '1',
+			recycledate = CURDATE()
+		where billid = #{billid} and relatebillid = #{relatebillid}
+	</update>
+	<select id="getReceiptHandCustomerListByBills" parameterType="java.util.Map" resultType="com.hd.agent.account.model.ReceiptHandCustomer">
+		SELECT '${billid}' as billid,z.customerid,COUNT(z.customerid) as billnums,SUM(z.amount) as amount,SUM(z.collectionamount) as collectionamount,
+			'' as remark,'1' as isreceipt,'0' as isedit
+		from (
+			SELECT z.id,z.customerid,sum(z.amount) as amount,sum(z.collectionamount) as collectionamount
+			from (
+				SELECT t.id,t.customerid,t1.taxamount as amount,t1.receipttaxamount as collectionamount
+				from t_sales_receipt t
+				left JOIN t_sales_receipt_detail t1 on t.id = t1.billid
+				<trim prefix="where" prefixOverrides="and|or">
+					<if test="1 == 1">
+						and t.status = '3' and t1.iswriteoff = '0'
+					</if>
+					<if test="idArr != null">
+						and t.id in
+						<foreach collection="idArr" index="index" item="item" open="(" separator="," close=")">
+							#{item}
+						</foreach>
+					</if>
+				</trim>
+				UNION ALL
+				select t.id,t.customerid,-t1.taxamount as amount,-t1.taxamount as collectionamount
+				from t_sales_rejectbill t
+				LEFT JOIN t_sales_rejectbill_detail t1 on t.id = t1.billid
+				<trim prefix="where" prefixOverrides="and|or">
+					<if test="1 == 1">
+						and t.billtype='2' and t.isinvoice in('1','3','4') and t1.iswriteoff = '0'
+					</if>
+					<if test="idArr != null">
+						and t.id in
+						<foreach collection="idArr" index="index" item="item" open="(" separator="," close=")">
+							#{item}
+						</foreach>
+					</if>
+				</trim>
+				UNION ALL
+				select t.id,t.customerid,t.amount,t.amount
+				from t_account_customer_push_balance t
+				<trim prefix="where" prefixOverrides="and|or">
+					<if test="1 == 1">
+						and t.status = '3' and t.iswriteoff = '0'
+					</if>
+					<if test="idArr != null">
+						and t.id in
+						<foreach collection="idArr" index="index" item="item" open="(" separator="," close=")">
+							#{item}
+						</foreach>
+					</if>
+				</trim>
+			)z
+			GROUP BY z.customerid,z.id
+		)z 
+		GROUP BY z.customerid
+	</select>
+	<select id="getReceiptHandBillListByBills" parameterType="java.util.Map" resultType="com.hd.agent.account.model.ReceiptHandBill">
+		SELECT '${billid}' as billid,z.relatebillid,z.billtype,z.businessdate,z.customerid,z.pcustomerid,z.customersort,z.salesarea,
+			z.salesdept,z.salesuser,SUM(z.amount) as amount,'0' as isrecycle,'' as recycledate
+		from (
+			SELECT t.id as relatebillid,'1' as billtype,t.businessdate,t.customerid,t.pcustomerid,t.customersort,t.salesarea,
+				t.salesdept,t.salesuser,t1.receipttaxamount as amount
+			from t_sales_receipt t
+			left JOIN t_sales_receipt_detail t1 on t.id = t1.billid
+			<trim prefix="where" prefixOverrides="and|or">
+				<if test="1 == 1">
+			  		and t.status = '3' and t1.iswriteoff = '0'
+			  	</if>
+			  	<if test="idArr != null">
+			  		and t.id in
+					<foreach collection="idArr" index="index" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+			  	</if>
+			</trim>
+			UNION ALL
+			SELECT t.id as relatebillid,'2' as billtype,t.businessdate,t.customerid,t.pcustomerid,t.customersort,t.salesarea,
+				t.salesdept,t.salesuser,-t1.taxamount as amount
+			from t_sales_rejectbill t
+			left JOIN t_sales_rejectbill_detail t1 on t.id = t1.billid
+			<trim prefix="where" prefixOverrides="and|or">
+				<if test="1 == 1">
+			  		and t.billtype='2' and t.isinvoice in('1','3','4') and t1.iswriteoff = '0'
+			  	</if>
+			  	<if test="idArr != null">
+			  		and t.id in
+					<foreach collection="idArr" index="index" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+			  	</if>
+			</trim>
+			UNION ALL
+			SELECT t.id as relatebillid,'3' as billtype,t.businessdate,t.customerid,t.pcustomerid,t.customersort,t.salesarea,
+				t.salesdept,t.salesuser,t.amount
+			from t_account_customer_push_balance t
+			<trim prefix="where" prefixOverrides="and|or">
+				<if test="1 == 1">
+			  		and t.status = '3' and t.iswriteoff = '0'
+			  	</if>
+			  	<if test="idArr != null">
+			  		and t.id in
+					<foreach collection="idArr" index="index" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+			  	</if>
+			</trim>
+		)z
+		GROUP BY z.relatebillid
+	</select>
+	<delete id="deleteReceiptHandBillByBillid" parameterType="java.lang.String">
+		delete from t_account_receipt_bill
+		where billid = #{billid}
+	</delete>
+	<delete id="deleteReceiptHandCustomerByBill" parameterType="java.lang.String">
+		delete from t_account_receipt_customer
+		where billid = #{billid}
+	</delete>
+	<select id="getReceiptHandCustomerInfo" parameterType="java.util.Map" resultType="com.hd.agent.account.model.ReceiptHandCustomer">
+		SELECT '${billid}' as billid,z.customerid,COUNT(z.customerid) as billnums,SUM(z.amount) as amount,SUM(z.collectionamount) as collectionamount,
+			'' as remark,'1' as isreceipt,'0' as isedit
+		from (
+			SELECT z.id,z.customerid,sum(z.amount) as amount,sum(z.collectionamount) as collectionamount
+			from (
+				SELECT t.id,t.customerid,t1.taxamount as amount,t1.receipttaxamount as collectionamount
+				from t_sales_receipt t
+				left JOIN t_sales_receipt_detail t1 on t.id = t1.billid
+				where t.id in
+				<foreach collection="idArr" index="index" item="item" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+				UNION ALL
+				select t.id,t.customerid,-t1.taxamount as amount,-t1.taxamount as collectionamount
+				from t_sales_rejectbill t
+				LEFT JOIN t_sales_rejectbill_detail t1 on t.id = t1.billid
+				where t.id in
+				<foreach collection="idArr" index="index" item="item" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+				UNION ALL
+				select t.id,t.customerid,t.amount,t.amount
+				from t_account_customer_push_balance t
+				where t.id in
+				<foreach collection="idArr" index="index" item="item" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			)z
+			GROUP BY z.customerid,z.id
+		)z 
+		where z.customerid = #{customerid}
+		GROUP BY z.customerid
+	</select>
+	<select id="getAllReceiptClosedOfReceiptHandList" resultType="java.lang.String">
+		select t.id,t.status from t_account_receipt t where t.id not IN (
+			SELECT DISTINCT z.billid from (
+				SELECT t.billid,t1.status,'' as isinvoice from t_account_receipt_bill t
+				left JOIN t_sales_receipt t1 on t.relatebillid = t1.id
+				HAVING t1.status = '3'
+				UNION ALL
+				SELECT t.billid,t1.status,t1.isinvoice from t_account_receipt_bill t
+				left JOIN t_sales_rejectbill t1 on t.relatebillid = t1.id and t1.billtype='2'
+				HAVING t1.isinvoice in('3','4','5')
+				UNION ALL
+				SELECT t.billid,t1.status,'' as isinvoice from t_account_receipt_bill t
+				left JOIN t_account_customer_push_balance t1 on t.relatebillid = t1.id
+				HAVING t1.status = '3'
+			) z 
+		) AND (t.status = '3' or t.status = '2')
+	</select>
+	<update id="closeReceiptHand" parameterType="java.lang.String">
+		update t_account_receipt set
+			status = '4'
+		where id = #{id}
+	</update>
+	<sql id="getReceiptListGroupByCustomer_sql">
+  	(
+  		SELECT z.billtype,z.customerid,z.pcustomerid,z.customersort,z.salesarea,z.salesdept,z.payeeid,z.customername as customername,
+			z.salesuser,z.indooruserid,SUM(z.totalreceipttaxamount)as totalreceipttaxamount
+		from (
+			SELECT '1' as billtype,t.customerid,t.pcustomerid,t.customersort,t.salesarea,t.salesdept, c.payeeid,c.name as customername,
+				t.salesuser,t.indooruserid,t1.receipttaxamount as totalreceipttaxamount
+			from t_sales_receipt t
+			left join t_sales_receipt_detail t1 on t.id = t1.billid
+            INNER JOIN t_base_sales_customer c on t.customerid=c.id
+            <if test="condition.isBrandUser != null" >
+                INNER JOIN t_base_personnel_customer pc on t.customerid=pc.customerid
+            </if>
+			<trim prefix="where" prefixOverrides="and|or">
+                <choose>
+                    <when test="condition.isBrandUser != null">
+                        <if test="dataSql != null" >
+                            and (${dataSql} or pc.personid=#{condition.personnelid})
+                        </if>
+                        <if test="dataSql == null" >
+                            and  pc.personid=#{condition.personnelid}
+                        </if>
+                    </when>
+                    <otherwise>
+                        <if test="dataSql != null" >
+                            and ${dataSql}
+                        </if>
+                    </otherwise>
+                </choose>
+			  	<if test="1 == 1">
+			  		and t.status = '3' and t.ishand = '0' and t1.iswriteoff = '0'
+			  	</if>
+			  	<if test="condition.businessdate1 != null" >
+		         <![CDATA[ and str_to_date(t.audittime, '%Y-%m-%d') >= #{condition.businessdate1} ]]>
+		      	</if>
+				<if test="condition.businessdate2 != null" >
+		         <![CDATA[ and str_to_date(t.audittime, '%Y-%m-%d') <= #{condition.businessdate2} ]]>
+		      	</if>
+			  	<if test="condition.billid != null" >
+		         and ( t.id like concat('%',#{condition.billid},'%') or
+		         	t.saleorderid like CONCAT('%',#{condition.billid},'%') )
+		      	</if>
+				<if test="condition.customerid != null" >
+				 and FIND_IN_SET(t.customerid,#{condition.customerid})
+		      	</if>
+		      	<if test="condition.pcustomerid != null" >
+		         and t.pcustomerid = #{condition.pcustomerid}
+		      	</if>
+				<if test="condition.salesarea != null" >
+		         and FIND_IN_SET(t.salesarea,#{condition.salesarea})
+		      	</if>
+				<if test="condition.salesuser != null" >
+		         and t.salesuser = #{condition.salesuser}
+		      	</if>
+                <if test="condition.payeeid != null" >
+                    and c.payeeid = #{condition.payeeid}
+                </if>
+                <if test="condition.con != null" >
+                    and (t.customerid like '${condition.con}%' or t.pcustomerid like '${condition.con}%' or c.name like '%${condition.con}%')
+                </if>
+                <if test="condition.billtype != null" >
+                    <if test="condition.billtype != 1" >
+                        and 1!=1
+                    </if>
+                </if>
+			</trim>
+            group by t1.id
+			UNION ALL
+			SELECT '2' as billtype,t.customerid,t.pcustomerid,t.customersort,t.salesarea,t.salesdept,c.payeeid,c.name as customername,
+				t.salesuser,t.indooruserid,-t1.taxamount as totalreceipttaxamount
+			from t_sales_rejectbill t
+			left JOIN t_sales_rejectbill_detail t1 on t.id = t1.billid
+            INNER JOIN t_base_sales_customer c on t.customerid=c.id
+            <if test="condition.isBrandUser != null" >
+                INNER JOIN t_base_personnel_customer pc on t.customerid=pc.customerid
+            </if>
+			<trim prefix="where" prefixOverrides="and|or">
+                <choose>
+                    <when test="condition.isBrandUser != null">
+                        <if test="dataSql != null" >
+                            and (${dataSql} or pc.personid=#{condition.personnelid})
+                        </if>
+                        <if test="dataSql == null" >
+                            and  pc.personid=#{condition.personnelid}
+                        </if>
+                    </when>
+                    <otherwise>
+                        <if test="dataSql != null" >
+                            and ${dataSql}
+                        </if>
+                    </otherwise>
+                </choose>
+			  	<if test="1 == 1">
+			  		and t.billtype='2'  and t.isinvoice in('1','3','4') and t.ishand = '0' and t1.iswriteoff = '0'
+			  	</if>
+			  	<if test="condition.businessdate1 != null" >
+		         <![CDATA[ and str_to_date(t.audittime, '%Y-%m-%d') >= #{condition.businessdate1} ]]>
+		      	</if>
+				<if test="condition.businessdate2 != null" >
+		         <![CDATA[ and str_to_date(t.audittime, '%Y-%m-%d') <= #{condition.businessdate2} ]]>
+		      	</if>
+			  	<if test="condition.billid != null" >
+		         and t.id like concat('%',#{condition.billid},'%')
+		      	</if>
+				<if test="condition.customerid != null" >
+				 and FIND_IN_SET(t.customerid,#{condition.customerid})
+		      	</if>
+		      	<if test="condition.pcustomerid != null" >
+		         and t.pcustomerid = #{condition.pcustomerid}
+		      	</if>
+				<if test="condition.salesarea != null" >
+		         and FIND_IN_SET(t.salesarea,#{condition.salesarea})
+		      	</if>
+				<if test="condition.salesuser != null" >
+		         and t.salesuser = #{condition.salesuser}
+		      	</if>
+                <if test="condition.payeeid != null" >
+                    and c.payeeid = #{condition.payeeid}
+                </if>
+                <if test="condition.con != null" >
+                    and (t.customerid like '${condition.con}%' or t.pcustomerid like '${condition.con}%' or c.name like '%${condition.con}%')
+                </if>
+                <if test="condition.billtype != null" >
+                    <if test="condition.billtype != 2" >
+                        and 1!=1
+                    </if>
+                </if>
+			</trim>
+            group by t1.id
+			UNION ALL
+			SELECT '3' as billtype,t.customerid,t.pcustomerid,t.customersort,t.salesarea,t.salesdept,c.payeeid,c.name as customername,
+				t.salesuser,t.indooruserid,t.amount as totalreceipttaxamount
+			from t_account_customer_push_balance t
+            INNER JOIN t_base_sales_customer c on t.customerid=c.id
+            <if test="condition.isBrandUser != null" >
+                INNER JOIN t_base_personnel_customer pc on t.customerid=pc.customerid
+            </if>
+			<trim prefix="where" prefixOverrides="and|or">
+                <choose>
+                    <when test="condition.isBrandUser != null">
+                        <if test="dataSql != null" >
+                            and (${dataSql} or pc.personid=#{condition.personnelid})
+                        </if>
+                        <if test="dataSql == null" >
+                            and  pc.personid=#{condition.personnelid}
+                        </if>
+                    </when>
+                    <otherwise>
+                        <if test="dataSql != null" >
+                            and ${dataSql}
+                        </if>
+                    </otherwise>
+                </choose>
+			  	<if test="1 == 1">
+			  		and t.status = '3' and t.ishand = '0' and (t.isinvoice = '0' or t.isinvoice = '1') and t.iswriteoff = '0'
+			  	</if>
+			  	<if test="condition.datasql3 != null" >
+		         and ${condition.datasql3}
+		      	</if>
+			  	<if test="condition.businessdate1 != null" >
+		         <![CDATA[ and str_to_date(t.audittime, '%Y-%m-%d') >= #{condition.businessdate1} ]]>
+		      	</if>
+				<if test="condition.businessdate2 != null" >
+		         <![CDATA[ and str_to_date(t.audittime, '%Y-%m-%d') <= #{condition.businessdate2} ]]>
+		      	</if>
+			  	<if test="condition.billid != null" >
+		         and t.id like concat('%',#{condition.billid},'%')
+		      	</if>
+				<if test="condition.customerid != null" >
+				 and FIND_IN_SET(t.customerid,#{condition.customerid})
+		      	</if>
+		      	<if test="condition.pcustomerid != null" >
+		         and t.pcustomerid = #{condition.pcustomerid}
+		      	</if>
+				<if test="condition.salesarea != null" >
+		         and FIND_IN_SET(t.salesarea,#{condition.salesarea})
+		      	</if>
+				<if test="condition.salesuser != null" >
+		         and t.salesuser = #{condition.salesuser}
+		      	</if>
+                <if test="condition.payeeid != null" >
+                    and c.payeeid = #{condition.payeeid}
+                </if>
+                <if test="condition.con != null" >
+                    and (t.customerid like '${condition.con}%' or t.pcustomerid like '${condition.con}%' or c.name like '%${condition.con}%')
+                </if>
+                <if test="condition.billtype != null" >
+                    <if test="condition.billtype != 3" >
+                        and 1!=1
+                    </if>
+                </if>
+			</trim>
+            group by t.id
+		)z 
+		GROUP BY z.customerid
+  	)
+  </sql>
+	<select id="getReceiptListGroupByCustomer" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.sales.model.Receipt">
+		select z.customerid,z.pcustomerid,z.customersort, z.payeeid,z.customername,
+  			z.salesarea,z.salesdept, z.salesuser, z.indooruserid,z.totalreceipttaxamount
+		from <include refid="getReceiptListGroupByCustomer_sql"/> z
+		<include refid="common.Page_limit"/>
+	</select>
+	<select id="getReceiptCountGroupByCustomer" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+		select count(1) from (
+			select z.customerid,z.pcustomerid,z.customersort, z.payeeid,z.customername,
+	  			z.salesarea,z.salesdept, z.salesuser, z.indooruserid,z.totalreceipttaxamount
+			from <include refid="getReceiptListGroupByCustomer_sql"/> z
+		)z
+	</select>
+    <select id="getReceiptListGroupByCustomerForPhone" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.sales.model.Receipt">
+        select z.customerid,z.pcustomerid,z.customersort, z.payeeid,z.customername,
+        z.salesarea,z.salesdept, z.salesuser, z.indooruserid,z.totalreceipttaxamount
+        from <include refid="getReceiptListGroupByCustomer_sql"/> z
+    </select>
+	<select id="getReceiptSumGroupByCustomer" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.sales.model.Receipt">
+		select sum(z.totalreceipttaxamount) as totalreceipttaxamount
+	from <include refid="getReceiptListGroupByCustomer_sql"/> z
+	</select>
+	<select id="getReceiptHandCustomerDetailList" parameterType="java.lang.String" resultType="java.util.Map">
+		SELECT z.billid,z.customerid,t.collectionamount,t.billnums,t.remark,z.businessdate1,z.businessdate2,z.addtime1,z.addtime2
+		from (
+				select t.billid,t.customerid,t1.id,DATE_FORMAT(MIN(t1.businessdate),'%Y/%m/%d') as businessdate1,DATE_FORMAT(MAX(t1.businessdate),'%Y/%m/%d') as businessdate2,
+				DATE_FORMAT(MIN(t1.addtime),'%Y/%m/%d') as addtime1,DATE_FORMAT(MAX(t1.addtime),'%Y/%m/%d') as addtime2
+			from t_account_receipt_bill t
+			LEFT JOIN t_sales_receipt t1 on t.relatebillid = t1.id
+			where t.billid = #{id}
+			GROUP BY t.customerid
+		)z
+		LEFT JOIN t_account_receipt_customer t ON z.customerid = t.customerid
+		where t.billid = #{id}
+		GROUP BY z.customerid
+	</select>
+	<select id="getReceiptHandBillListForPrint" parameterType="java.lang.String" resultType="com.hd.agent.account.model.ReceiptHandBill">
+		select t.customerid,t.relatebillid,t.billtype,t.businessdate,c.name as customername,t.relatebillid,t.salesuser,SUM(t.amount) as amount,t.remark,
+		t.recycledate,t.isrecycle,t.salesdept,t.salesarea,t.customersort,t.pcustomerid,t.billid
+		from t_account_receipt_bill t
+		INNER JOIN t_base_sales_customer c ON t.customerid = c.id
+		where t.billid = #{billid}
+		GROUP BY t.customerid,t.relatebillid
+		ORDER BY t.customerid ASC
+	</select>
+	<update id="updatePrintTimes" parameterType="java.lang.String" >
+	    update t_account_receipt 
+	    set printtimes=printtimes+1
+	  	where id = #{id}
+    </update>
+    <select id="getReceiptHandBillListByParam" parameterType="java.util.Map" resultType="com.hd.agent.account.model.ReceiptHandBill">
+    	select * from t_account_receipt_bill
+    	where billid = #{billid} and customerid in
+    	<foreach collection="customerArr" index="index" item="item" open="(" separator="," close=")">
+    		#{item}
+    	</foreach>
+    </select>
+</mapper>

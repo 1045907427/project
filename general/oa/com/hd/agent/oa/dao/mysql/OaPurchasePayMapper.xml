@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.oa.dao.OaPurchasePayMapper" >
+    <resultMap id="BaseResultMap" type="com.hd.agent.oa.model.OaPurchasePay" >
+        <id column="id" property="id" jdbcType="VARCHAR" />
+        <result column="businessdate" property="businessdate" jdbcType="VARCHAR" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="adduserid" property="adduserid" jdbcType="VARCHAR" />
+        <result column="addusername" property="addusername" jdbcType="VARCHAR" />
+        <result column="adddeptid" property="adddeptid" jdbcType="VARCHAR" />
+        <result column="adddeptname" property="adddeptname" jdbcType="VARCHAR" />
+        <result column="addtime" property="addtime" jdbcType="TIMESTAMP" />
+        <result column="modifyuserid" property="modifyuserid" jdbcType="VARCHAR" />
+        <result column="modifyusername" property="modifyusername" jdbcType="VARCHAR" />
+        <result column="modifytime" property="modifytime" jdbcType="TIMESTAMP" />
+        <result column="printtimes" property="printtimes" jdbcType="INTEGER" />
+        <result column="oaid" property="oaid" jdbcType="VARCHAR" />
+        <result column="paydate" property="paydate" jdbcType="VARCHAR" />
+        <result column="relateoaid" property="relateoaid" jdbcType="VARCHAR" />
+        <result column="receivername" property="receivername" jdbcType="VARCHAR" />
+        <result column="receiverbank" property="receiverbank" jdbcType="VARCHAR" />
+        <result column="receiverbankno" property="receiverbankno" jdbcType="VARCHAR" />
+        <result column="payamount" property="payamount" jdbcType="DECIMAL" />
+        <result column="upperpayamount" property="upperpayamount" jdbcType="VARCHAR" />
+        <result column="usage" property="usage" jdbcType="VARCHAR" />
+        <result column="paybank" property="paybank" jdbcType="VARCHAR" />
+        <result column="invoiceamount" property="invoiceamount" jdbcType="DECIMAL" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+        id, businessdate, remark, adduserid, addusername, adddeptid, adddeptname, addtime,
+        modifyuserid, modifyusername, modifytime, printtimes, oaid, paydate, relateoaid,
+        receivername, receiverbank, receiverbankno, payamount, upperpayamount, `usage`, paybank,
+        invoiceamount
+    </sql>
+    <insert id="insertPurchasePay" parameterType="com.hd.agent.oa.model.OaPurchasePay" >
+        insert into t_oa_purchase_pay
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="businessdate != null" >
+                businessdate,
+            </if>
+            <if test="remark != null" >
+                remark,
+            </if>
+            <if test="adduserid != null" >
+                adduserid,
+            </if>
+            <if test="addusername != null" >
+                addusername,
+            </if>
+            <if test="adddeptid != null" >
+                adddeptid,
+            </if>
+            <if test="adddeptname != null" >
+                adddeptname,
+            </if>
+            addtime,
+            <if test="modifyuserid != null" >
+                modifyuserid,
+            </if>
+            <if test="modifyusername != null" >
+                modifyusername,
+            </if>
+            <if test="modifytime != null" >
+                modifytime,
+            </if>
+            <if test="printtimes != null" >
+                printtimes,
+            </if>
+            <if test="oaid != null" >
+                oaid,
+            </if>
+            <if test="paydate != null" >
+                paydate,
+            </if>
+            <if test="relateoaid != null" >
+                relateoaid,
+            </if>
+            <if test="receivername != null" >
+                receivername,
+            </if>
+            <if test="receiverbank != null" >
+                receiverbank,
+            </if>
+            <if test="receiverbankno != null" >
+                receiverbankno,
+            </if>
+            <if test="payamount != null" >
+                payamount,
+            </if>
+            <if test="upperpayamount != null" >
+                upperpayamount,
+            </if>
+            <if test="usage != null" >
+                `usage`,
+            </if>
+            <if test="paybank != null" >
+                paybank,
+            </if>
+            <if test="invoiceamount != null" >
+                invoiceamount,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id},
+            </if>
+            <if test="businessdate != null" >
+                #{businessdate},
+            </if>
+            <if test="remark != null" >
+                #{remark},
+            </if>
+            <if test="adduserid != null" >
+                #{adduserid},
+            </if>
+            <if test="addusername != null" >
+                #{addusername},
+            </if>
+            <if test="adddeptid != null" >
+                #{adddeptid},
+            </if>
+            <if test="adddeptname != null" >
+                #{adddeptname},
+            </if>
+            now(),
+            <if test="modifyuserid != null" >
+                #{modifyuserid},
+            </if>
+            <if test="modifyusername != null" >
+                #{modifyusername},
+            </if>
+            <if test="modifytime != null" >
+                #{modifytime},
+            </if>
+            <if test="printtimes != null" >
+                #{printtimes},
+            </if>
+            <if test="oaid != null" >
+                #{oaid},
+            </if>
+            <if test="paydate != null" >
+                #{paydate},
+            </if>
+            <if test="relateoaid != null" >
+                #{relateoaid},
+            </if>
+            <if test="receivername != null" >
+                #{receivername},
+            </if>
+            <if test="receiverbank != null" >
+                #{receiverbank},
+            </if>
+            <if test="receiverbankno != null" >
+                #{receiverbankno},
+            </if>
+            <if test="payamount != null" >
+                #{payamount},
+            </if>
+            <if test="upperpayamount != null" >
+                #{upperpayamount},
+            </if>
+            <if test="usage != null" >
+                #{usage},
+            </if>
+            <if test="paybank != null" >
+                #{paybank},
+            </if>
+            <if test="invoiceamount != null" >
+                #{invoiceamount},
+            </if>
+        </trim>
+    </insert>
+    <update id="updatePurchasePay" parameterType="com.hd.agent.oa.model.OaPurchasePay" >
+        update t_oa_purchase_pay
+        <set >
+            <if test="businessdate != null" >
+                businessdate = #{businessdate},
+            </if>
+            <if test="remark != null" >
+                remark = #{remark},
+            </if>
+            <if test="adduserid != null" >
+                adduserid = #{adduserid},
+            </if>
+            <if test="addusername != null" >
+                addusername = #{addusername},
+            </if>
+            <if test="adddeptid != null" >
+                adddeptid = #{adddeptid},
+            </if>
+            <if test="adddeptname != null" >
+                adddeptname = #{adddeptname},
+            </if>
+            <if test="addtime != null" >
+                addtime = #{addtime},
+            </if>
+            <if test="modifyuserid != null" >
+                modifyuserid = #{modifyuserid},
+            </if>
+            <if test="modifyusername != null" >
+                modifyusername = #{modifyusername},
+            </if>
+            modifytime = now(),
+            <if test="printtimes != null" >
+                printtimes = #{printtimes},
+            </if>
+            <if test="oaid != null" >
+                oaid = #{oaid},
+            </if>
+            <if test="paydate != null" >
+                paydate = #{paydate},
+            </if>
+            <if test="relateoaid != null" >
+                relateoaid = #{relateoaid},
+            </if>
+            <if test="receivername != null" >
+                receivername = #{receivername},
+            </if>
+            <if test="receiverbank != null" >
+                receiverbank = #{receiverbank},
+            </if>
+            <if test="receiverbankno != null" >
+                receiverbankno = #{receiverbankno},
+            </if>
+            <if test="payamount != null" >
+                payamount = #{payamount},
+            </if>
+            <if test="upperpayamount != null" >
+                upperpayamount = #{upperpayamount},
+            </if>
+            <if test="usage != null" >
+                `usage` = #{usage},
+            </if>
+            <if test="paybank != null" >
+                paybank = #{paybank},
+            </if>
+            <if test="invoiceamount != null" >
+                invoiceamount = #{invoiceamount},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <select id="selectPurchasePay" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/>
+        from t_oa_purchase_pay
+        where id = #{id }
+    </select>
+</mapper>

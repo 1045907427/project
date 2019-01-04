@@ -1,0 +1,1228 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.journalsheet.dao.CustomerCostPayableMapper" >
+	<sql id="Base_Column_List" >
+	    id, oaid, businessdate, remark, supplierid, customerid, pcustomerid, deptid, expensesort, 
+        amount, paydate, ispay, applyuserid, applydeptid, addtime, payuserid, paydeptid, 
+        paytime, billtype, relateoaid, isbegin, billno, sourcefrom, hcflag, hcreferid, paytype, bankid,vouchertimes
+	  </sql>
+	<insert id="addCustomerCostPayable" parameterType="com.hd.agent.journalsheet.model.CustomerCostPayable" >
+	   insert into t_js_customercost_payable
+	    <trim prefix="(" suffix=")" suffixOverrides=",">
+		  <if test="1==1" >
+	        id,
+	      </if>
+	      <if test="oaid != null">
+	        oaid,
+	      </if>
+	      <if test="businessdate != null">
+	        businessdate,
+	      </if>
+	      <if test="remark != null">
+	        remark,
+	      </if>
+	      <if test="supplierid != null">
+	        supplierid,
+	      </if>
+	      <if test="customerid != null">
+	        customerid,
+	      </if>
+	      <if test="pcustomerid != null">
+	        pcustomerid,
+	      </if>
+	      <if test="deptid != null">
+	        deptid,
+	      </if>
+	      <if test="expensesort != null">
+	        expensesort,
+	      </if>
+	      <if test="amount != null">
+	        amount,
+	      </if>
+	      <if test="paydate != null">
+	        paydate,
+	      </if>
+	      <if test="ispay != null">
+	        ispay,
+	      </if>
+	      <if test="applyuserid != null">
+	        applyuserid,
+	      </if>
+	      <if test="applydeptid != null">
+	        applydeptid,
+	      </if>
+		      <if test="1==1" >
+	        addtime,
+	      </if>
+	      <if test="payuserid != null">
+	        payuserid,
+	      </if>
+	      <if test="paydeptid != null">
+	        paydeptid,
+	      </if>
+	      <if test="paytime != null">
+	        paytime,
+	      </if>
+	      <if test="billtype != null">
+	        billtype,
+	      </if>
+	      <if test="relateoaid != null">
+	        relateoaid,
+	      </if>
+	      <if test="isbegin != null">
+	        isbegin,
+	      </if>
+	      <if test="billno != null">
+	        billno,
+	      </if>
+	      <if test="sourcefrom != null">
+	        sourcefrom,
+	      </if>
+	      <if test="hcflag != null">
+	        hcflag,
+	      </if>
+	      <if test="hcreferid != null">
+	        hcreferid,
+	      </if>
+	      <if test="paytype != null">
+	        paytype,
+	      </if>
+			<if test="bankid != null">
+				bankid,
+			</if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides=",">
+		      <choose>
+		      	<when test="id != null">
+		      		#{id},
+		      	</when>
+		      	<otherwise>
+		      		UUID_SHORT(),
+		      	</otherwise>
+		      </choose>
+	      <if test="oaid != null">
+	        #{oaid},
+	      </if>
+	      <if test="businessdate != null">
+	        #{businessdate},
+	      </if>
+	      <if test="remark != null">
+	        #{remark},
+	      </if>
+	      <if test="supplierid != null">
+	        #{supplierid},
+	      </if>
+	      <if test="customerid != null">
+	        #{customerid},
+	      </if>
+	      <if test="pcustomerid != null">
+	        #{pcustomerid},
+	      </if>
+	      <if test="deptid != null">
+	        #{deptid},
+	      </if>
+	      <if test="expensesort != null">
+	        #{expensesort},
+	      </if>
+	      <if test="amount != null">
+	        #{amount},
+	      </if>
+	      <if test="paydate != null">
+	        #{paydate},
+	      </if>
+	      <if test="ispay != null">
+	        #{ispay},
+	      </if>
+	      <if test="applyuserid != null">
+	        #{applyuserid},
+	      </if>
+	      <if test="applydeptid != null">
+	        #{applydeptid},
+	      </if>
+		      <choose>
+		      	<when test="addtime != null">
+		      		#{addtime},
+		      	</when>
+		      	<otherwise>
+		      		now(),
+		      	</otherwise>
+		      </choose>
+	      <if test="payuserid != null">
+	        #{payuserid},
+	      </if>
+	      <if test="paydeptid != null">
+	        #{paydeptid},
+	      </if>
+	      <if test="paytime != null">
+	        #{paytime},
+	      </if>
+	      <if test="billtype != null">
+	        #{billtype},
+	      </if>
+	      <if test="relateoaid != null">
+	        #{relateoaid},
+	      </if>
+	      <if test="isbegin != null">
+	        #{isbegin},
+	      </if>
+	      <if test="billno != null">
+	        #{billno},
+	      </if>
+	      <if test="sourcefrom != null">
+	        #{sourcefrom},
+	      </if>
+	      <if test="hcflag != null">
+	        #{hcflag},
+	      </if>
+	      <if test="hcreferid != null">
+	        #{hcreferid},
+	      </if>
+	      <if test="paytype != null">
+	        #{paytype},
+	      </if>
+			<if test="bankid != null">
+				#{bankid},
+			</if>
+	    </trim>
+  	</insert>
+  	<update id="updateCustomerCostPayableBySource" parameterType="com.hd.agent.journalsheet.model.CustomerCostPayable" >
+	    update t_js_customercost_payable
+	    <set >
+	      <if test="oaid != null" >
+	        oaid = #{oaid},
+	      </if>
+	      <if test="businessdate != null" >
+	        businessdate = #{businessdate},
+	      </if>
+	      <if test="remark != null" >
+	        remark = #{remark},
+	      </if>
+	      <if test="supplierid != null" >
+	        supplierid = #{supplierid},
+	      </if>
+	      <if test="customerid != null" >
+	        customerid = #{customerid} ,
+	      </if>
+	      <if test="pcustomerid != null" >
+	        pcustomerid = #{pcustomerid},
+	      </if>
+	      <if test="deptid != null">
+	        deptid = #{deptid},
+	      </if>
+	      <if test="expensesort != null" >
+	        expensesort = #{expensesort},
+	      </if>
+	      <if test="amount != null" >
+	        amount = #{amount},
+	      </if>
+	      <if test="paydate != null" >
+	        paydate = #{paydate},
+	      </if>
+	      <if test="ispay != null" >
+	        ispay = #{ispay},
+	      </if>
+	      <if test="applyuserid != null" >
+	        applyuserid = #{applyuserid},
+	      </if>
+	      <if test="applydeptid != null" >
+	        applydeptid = #{applydeptid},
+	      </if>
+	      <if test="addtime != null">
+	        addtime = #{addtime},
+	      </if>
+	      <if test="payuserid != null" >
+	        payuserid = #{payuserid},
+	      </if>
+	      <if test="paydeptid != null" >
+	        paydeptid = #{paydeptid},
+	      </if>
+	      <if test="paytime != null" >
+	        paytime = #{paytime},
+	      </if>
+	      <if test="billtype != null" >
+	        billtype = #{billtype},
+	      </if>
+	      <if test="relateoaid != null" >
+	        relateoaid = #{relateoaid},
+	      </if>
+	      <if test="isbegin != null" >
+	        isbegin = #{isbegin},
+	      </if>
+			<if test="bankid != null" >
+				bankid = #{bankid},
+			</if>
+	    </set>
+	    where 
+	    <trim prefixOverrides="and|or" >	    	
+	      <if test="sourcefrom != null" >
+	        and sourcefrom = #{sourcefrom}
+	      </if>
+	      <if test="billno != null" >
+	         and billno = #{billno}
+	      </if>
+          <if test="hcflag != null" >
+             and hcflag = #{ hcflag },
+          </if>
+	      <if test="hcreferid != null">
+	        hcreferid = #{hcreferid},
+	      </if>
+	    </trim>
+  	</update>
+  	<update id="updateCustomerCostPayable" parameterType="com.hd.agent.journalsheet.model.CustomerCostPayable" >
+	    update t_js_customercost_payable
+	    <set>
+	      <if test="oaid != null">
+	        oaid = #{oaid},
+	      </if>
+	      <if test="businessdate != null">
+	        businessdate = #{businessdate},
+	      </if>
+	      <if test="remark != null">
+	        remark = #{remark},
+	      </if>
+	      <if test="supplierid != null">
+	        supplierid = #{supplierid},
+	      </if>
+	      <if test="customerid != null">
+	        customerid = #{customerid},
+	      </if>
+	      <if test="pcustomerid != null">
+	        pcustomerid = #{pcustomerid},
+	      </if>
+	      <if test="deptid != null">
+	        deptid = #{deptid},
+	      </if>
+	      <if test="expensesort != null">
+	        expensesort = #{expensesort},
+	      </if>
+	      <if test="amount != null">
+	        amount = #{amount},
+	      </if>
+	      <if test="paydate != null">
+	        paydate = #{paydate},
+	      </if>
+	      <if test="ispay != null">
+	        ispay = #{ispay},
+	      </if>
+	      <if test="applyuserid != null">
+	        applyuserid = #{applyuserid},
+	      </if>
+	      <if test="applydeptid != null">
+	        applydeptid = #{applydeptid},
+	      </if>
+	      <if test="addtime != null">
+	        addtime = #{addtime},
+	      </if>
+	      <if test="payuserid != null">
+	        payuserid = #{payuserid},
+	      </if>
+	      <if test="paydeptid != null">
+	        paydeptid = #{paydeptid},
+	      </if>
+	      <if test="paytime != null">
+	        paytime = #{paytime},
+	      </if>
+	      <if test="billtype != null">
+	        billtype = #{billtype},
+	      </if>
+	      <if test="relateoaid != null">
+	        relateoaid = #{relateoaid},
+	      </if>
+	      <if test="isbegin != null">
+	        isbegin = #{isbegin},
+	      </if>
+	      <if test="billno != null">
+	        billno = #{billno},
+	      </if>
+	      <if test="sourcefrom != null">
+	        sourcefrom = #{sourcefrom},
+	      </if>
+	      <if test="hcflag != null">
+	        hcflag = #{hcflag},
+	      </if>
+	      <if test="hcreferid != null">
+	        hcreferid = #{hcreferid},
+	      </if>
+	      <if test="paytype != null">
+	        paytype=#{paytype},
+	      </if>
+			<if test="bankid != null" >
+				bankid = #{bankid},
+			</if>
+	    </set>
+	    where id = #{id}
+  	</update>
+  	<delete id="deleteCustomerCostPayableByOaid" parameterType="java.lang.String">
+  		delete from t_js_customercost_payable where oaid=#{oaid} and billtype in (1, 2) and sourcefrom in ('11', '12', '13', '14', '15', '16', '17', '18', '19')
+  	</delete>
+	<delete id="deleteCustomerCostPayableByOaidBilltype" parameterType="java.lang.String">
+		delete from t_js_customercost_payable
+		where oaid = #{oaid }
+		<if test="billtype != null">
+			and billtype = #{billtype }
+		</if>
+	</delete>
+	<update id="updateCustomerCostPayableIsPay" parameterType="java.lang.String">
+  		update t_js_customercost_payable t
+  		<set >
+	      <if test="1==1" >
+	       t.paydate=#{paydate},t.payuserid=#{payuserid},t.paydeptid=#{paydeptid},t.ispay=#{ispay},
+	      </if>
+	      <if test="ispay== 1">
+	      	t.paytime=now(),
+	      </if>
+	      <if test="ispay== 0">
+	      	t.paytime=null,
+	      </if>
+	    </set>
+  		where t.oaid=#{oaid}
+  	</update>
+  	<sql id="customerCostPayableList_Where_Clause">
+  		<if test="condition.salesarea != null" >
+	         and t1.salesarea like concat(#{condition.salesarea},'%')
+	      </if>
+	      <if test="condition.salesuserid != null" >
+	         and t1.salesuserid = #{condition.salesuserid}
+	      </if>
+	      <if test="condition.salesdeptid!= null" >
+	         and t1.salesdeptid like concat(#{condition.salesdeptid},'%')
+	      </if>
+	      <if test="condition.branddeptid!= null" >
+	         and t.deptid like concat(#{condition.branddeptid},'%')
+	      </if>
+	      <if test="condition.supplierid != null" >
+	         and t.supplierid = #{condition.supplierid}
+	      </if>
+	      <if test="condition.customerid != null" >
+			  <choose>
+				<when test="condition.isPcustomer == 1">
+					and (t.customerid = #{condition.customerid} or t.pcustomerid=#{condition.customerid})
+				</when>
+				<otherwise>
+					and t.customerid = #{condition.customerid}
+				</otherwise>
+			</choose>
+	      </if>
+		  <if test="condition.enddate != null" >
+	         <![CDATA[ and t.businessdate <= #{condition.enddate} ]]>
+	      </if>
+		  <choose>
+				<when test="condition.reporttype != null">
+					and t.billtype in(2, 3)
+				</when>
+				<otherwise>
+					and t.billtype in(1, 2)
+				</otherwise>
+		  </choose>
+		  <choose>
+			  <when test="condition.ishcflag == 1">
+				and (t.hcflag = '1' or t.hcflag = '2')
+			  </when>
+			  <when test="condition.ishcflag == 2">
+				and (t.hcflag='0' or length(t.hcflag)=0)
+			  </when>
+	      </choose>
+	      <if test="condition.paytype != null" >
+	         and t.paytype = #{condition.paytype}
+	      </if>
+  	</sql>
+  	<select id="showCustomerCostPayableListData" parameterType="com.hd.agent.common.util.PageMap" resultType="map">
+		select z.customerid,z.pcustomerid,z.supplierid,
+		sum(z.beginamount) as beginamount,sum(z.lendamount) as lendamount,sum(z.payamount) as payamount,
+		sum(z.beginamount+lendamount-payamount) as endamount,
+		z.salesarea,z.salesuserid,z.salesdeptid
+		from (
+			select
+				<choose>
+					<when test="condition.isPcustomer == 1">
+						if(t.pcustomerid!='' and t.pcustomerid is not null,t.pcustomerid,t.customerid) as customerid,t.pcustomerid,
+					</when>
+					<otherwise>
+						t.customerid,t.pcustomerid,
+					</otherwise>
+				</choose>
+				t.supplierid,
+				<![CDATA[
+				if((t.billtype='1' or t.billtype='3') and t.businessdate < #{condition.begindate},t.amount,0)-if((t.billtype='2') and t.businessdate < #{condition.begindate},t.amount,0) as beginamount,
+				if((t.billtype='1' or t.billtype='3') and t.businessdate >= #{condition.begindate},t.amount,0) as lendamount,
+				if(t.billtype='2' and t.businessdate >= #{condition.begindate},t.amount,0) as payamount,
+				t1.salesarea,t1.salesuserid,t1.salesdeptid
+				]]>
+			from t_js_customercost_payable t
+			INNER JOIN t_base_sales_customer t1 on t.customerid=t1.id
+			left join t_base_buy_supplier t2 on t.supplierid=t2.id
+			<trim prefix="where" prefixOverrides="and|or" >
+			  <include refid="common.Page_dataSql"/>
+			  <include refid="customerCostPayableList_Where_Clause"/>
+			</trim>
+		) z
+		GROUP BY z.customerid
+		<include refid="common.Page_limit"/>
+  	</select>
+  	<select id="showCustomerCostPayableListCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  		select count(1) from (
+	  		select z.customerid,z.pcustomerid,z.supplierid,
+			sum(z.beginamount) as beginamount,sum(z.lendamount) as lendamount,sum(z.payamount) as payamount,
+			sum(z.lendamount+lendamount-payamount) as endamount,
+			z.salesarea,z.salesuserid,z.salesdeptid
+			from (
+				select
+					<choose>
+						<when test="condition.isPcustomer == 1">
+							if(t.pcustomerid!='' and t.pcustomerid is not null,t.pcustomerid,t.customerid) as customerid,t.pcustomerid,
+						</when>
+						<otherwise>
+							t.customerid,t.pcustomerid,
+						</otherwise>
+					</choose>
+					t.supplierid,
+					<![CDATA[
+					if((t.billtype='1' or t.billtype='3') and t.businessdate < #{condition.begindate},t.amount,0)-if((t.billtype='2') and t.businessdate < #{condition.begindate},t.amount,0) as beginamount,
+					if((t.billtype='1' or t.billtype='3') and t.businessdate >= #{condition.begindate},t.amount,0) as lendamount,
+					if(t.billtype='2' and t.businessdate >= #{condition.begindate},t.amount,0) as payamount,
+					t1.salesarea,t1.salesuserid,t1.salesdeptid
+					]]>
+				from t_js_customercost_payable t
+				INNER JOIN t_base_sales_customer t1 on t.customerid=t1.id
+				left join t_base_buy_supplier t2 on t.supplierid=t2.id
+				<trim prefix="where" prefixOverrides="and|or" >
+				  <include refid="common.Page_dataSql"/>
+				  <include refid="customerCostPayableList_Where_Clause"/>
+				</trim>
+			) z
+			GROUP BY z.customerid
+		) x
+  	</select>
+  	<select id="showCustomerCostPayableSumData" parameterType="com.hd.agent.common.util.PageMap" resultType="map">
+		select sum(beginamount) beginamount, sum(lendamount) lendamount, sum(payamount) payamount, sum(endamount) endamount
+		from (
+		select
+		t.customerid,
+		t.supplierid,
+		t.pcustomerid,
+		<choose>
+			<when test="condition.begindate == null">
+				0
+			</when>
+			<otherwise>
+				sum(if((t.billtype='1' or t.billtype='3') and t.businessdate <![CDATA[<]]> #{condition.begindate},t.amount,0)-if((t.billtype='2') and t.businessdate <![CDATA[<]]> #{condition.begindate},t.amount,0))
+			</otherwise>
+		</choose> beginamount,
+		sum(if((t.billtype='1' or t.billtype='3') and t.businessdate <![CDATA[>=]]> #{condition.begindate},t.amount,0)) as lendamount,
+		sum(if(t.billtype='2' and t.businessdate <![CDATA[>=]]> #{condition.begindate},t.amount,0)) as payamount,
+		<choose>
+			<when test="condition.begindate == null">
+				sum(if(t.billtype='1' or t.billtype='3',t.amount,0)-if(t.billtype='2',t.amount,0))
+			</when>
+			<otherwise>
+				sum(if((t.billtype='1' or t.billtype='3') and t.businessdate <![CDATA[<]]> #{condition.begindate},t.amount,0)-if((t.billtype='2') and t.businessdate <![CDATA[<]]> #{condition.begindate},t.amount,0)) + sum(if((t.billtype='1' or t.billtype='3') and t.businessdate <![CDATA[>=]]> #{condition.begindate},t.amount,0)) - sum(if(t.billtype='2' and t.businessdate <![CDATA[>=]]> #{condition.begindate},t.amount,0))
+			</otherwise>
+		</choose> endamount,
+		t1.salesarea,
+		t1.salesuserid,
+		t1.salesdeptid
+		from t_js_customercost_payable t
+		INNER JOIN t_base_sales_customer t1 on t.customerid=t1.id
+		left join t_base_buy_supplier t2 on t.supplierid=t2.id
+		<trim prefix="where" prefixOverrides="and|or" >
+			<include refid="common.Page_dataSql"/>
+			<include refid="customerCostPayableList_Where_Clause"/>
+		</trim>
+		GROUP BY t.customerid
+		) t
+  	</select>
+  	<sql id="customerCostPayableDetailList_SQL">
+		select t.id, t.oaid, t.businessdate, t.remark, t.supplierid, t.customerid, t.pcustomerid, t.expensesort,
+		0 as lendamount, t.amount as payamount, '0' as ispay, t.applyuserid, t.applydeptid, t.addtime, t.relateoaid,'2' as billtype,
+		t.isbegin,t.billno,t.sourcefrom,t.hcflag,t.hcreferid,t.paytype,t.bankid,t.vouchertimes
+		from t_js_customercost_payable t
+		left join t_base_buy_supplier t2 on t.supplierid=t2.id
+		<trim prefix="where" prefixOverrides="and|or" >
+			<if test="condition.oaid != null" >
+				and (t.oaid like concat('%',#{condition.oaid},'%') or t.relateoaid like concat('%',#{condition.oaid},'%'))
+			</if>
+			<if test="condition.supplierid != null" >
+				and t.supplierid = #{condition.supplierid}
+			</if>
+			<if test="condition.customerid != null" >
+				<choose>
+					<when test="condition.isPcustomer == 1">
+						and (t.customerid = #{condition.customerid} or t.pcustomerid=#{condition.customerid})
+					</when>
+					<otherwise>
+						and t.customerid = #{condition.customerid}
+					</otherwise>
+				</choose>
+			</if>
+			<if test="condition.pcustomerid != null" >
+				and t.pcustomerid = #{condition.pcustomerid}
+			</if>
+			<if test="condition.expensesort != null" >
+				and t.expensesort = #{condition.expensesort}
+			</if>
+			<if test="condition.applyuserid != null" >
+				and t.applyuserid = #{condition.applyuserid}
+			</if>
+			<if test="condition.applydeptid != null" >
+				and t.applydeptid like concat(#{condition.applydeptid},'%')
+			</if>
+			<if test="condition.branddeptid != null" >
+				and t.deptid like concat(#{condition.branddeptid},'%')
+			</if>
+			<choose>
+				<when test="condition.ishcflag == 1">
+					and (t.hcflag = '1' or t.hcflag = '2')
+				</when>
+				<when test="condition.ishcflag == 2">
+					and (t.hcflag='0' or length(t.hcflag)=0)
+				</when>
+			</choose>
+			<choose>
+				<when test="condition.sourcefrom == 33330">
+					<![CDATA[ and t.sourcefrom !='11' and t.sourcefrom != '19' ]]>
+				</when>
+				<when test="condition.sourcefrom == 33333">
+					and length(t.sourcefrom)=0
+				</when>
+				<when test="condition.sourcefrom == 11">
+					and (t.sourcefrom = '11' or t.sourcefrom = '19')
+				</when>
+				<when test="condition.sourcefrom == 15">
+					and (t.sourcefrom = '15' or t.sourcefrom = '16')
+				</when>
+				<when test="condition.sourcefrom == 17">
+					and (t.sourcefrom = '17' or t.sourcefrom = '18')
+				</when>
+				<when test="condition.sourcefrom != null">
+					and t.sourcefrom = #{condition.sourcefrom}
+				</when>
+			</choose>
+			<if test="condition.billno != null" >
+				and t.billno like concat('%',#{condition.billno},'%')
+			</if>
+			<if test="condition.hcreferid != null" >
+				and t.hcreferid like concat('%',#{condition.hcreferid},'%')
+			</if>
+			<if test="1==1">
+				and t.billtype='2'
+			</if>
+			<if test="condition.idarrs != null" >
+				and FIND_IN_SET(t.id,#{condition.idarrs})
+			</if>
+			<choose>
+				<when test="condition.fastfilter == 1">
+					and t.billtype='2' and t.sourcefrom !='11' and t.hcflag='0' and t.isbegin='0'
+				</when>
+				<when test="condition.fastfilter == 2">
+					and t.billtype='2' and t.sourcefrom !='11' and (t.hcflag='1' or t.hcflag='2')
+				</when>
+				<when test="condition.fastfilter == 3">
+					and t.billtype='2' and t.hcflag='0' and t.isbegin='0' and t.sourcefrom='0'
+				</when>
+				<when test="condition.fastfilter == 4">
+					and t.billtype='2' and t.hcflag='0' and t.isbegin='0' and t.sourcefrom='0'
+				</when>
+				<when test="condition.fastfilter == 5">
+					and t.billtype='2' and t.hcflag='0' and t.isbegin='0' and t.sourcefrom='0'
+				</when>
+			</choose>
+			<if test="condition.paytype!=null">
+				and t.paytype = #{condition.paytype}
+			</if>
+		</trim>
+
+		<choose>
+			<when test="condition.reporttype != null">
+
+				UNION ALL
+				select t.id, t.oaid, t.businessdate, t.remark, t.supplierid, t.customerid, t.pcustomerid, t.expensesort,
+				t.amount as lendamount, 0 as payamount, '0' as ispay, t.applyuserid, t.applydeptid, t.addtime, t.relateoaid,'3' as billtype,
+				t.isbegin,t.billno,t.sourcefrom,t.hcflag,t.hcreferid,t.paytype,t.bankid,t.vouchertimes
+				from t_js_customercost_payable t
+				left join t_base_buy_supplier t2 on t.supplierid=t2.id
+				<trim prefix="where" prefixOverrides="and|or" >
+					<if test="condition.oaid != null" >
+						and (t.oaid like concat('%',#{condition.oaid},'%') or t.relateoaid like concat('%',#{condition.oaid},'%'))
+					</if>
+					<if test="condition.supplierid != null" >
+						and t.supplierid = #{condition.supplierid}
+					</if>
+					<if test="condition.customerid != null" >
+						<choose>
+							<when test="condition.isPcustomer == 1">
+								and (t.customerid = #{condition.customerid} or t.pcustomerid=#{condition.customerid})
+							</when>
+							<otherwise>
+								and t.customerid = #{condition.customerid}
+							</otherwise>
+						</choose>
+					</if>
+					<if test="condition.pcustomerid != null" >
+						and t.pcustomerid = #{condition.pcustomerid}
+					</if>
+					<if test="condition.expensesort != null" >
+						and t.expensesort = #{condition.expensesort}
+					</if>
+					<if test="condition.applyuserid != null" >
+						and t.applyuserid = #{condition.applyuserid}
+					</if>
+					<if test="condition.applydeptid != null" >
+						and t.applydeptid like concat(#{condition.applydeptid},'%')
+					</if>
+					<if test="condition.branddeptid != null" >
+						and t.deptid like concat(#{condition.branddeptid},'%')
+					</if>
+					<choose>
+						<when test="condition.ishcflag == 1">
+							and (t.hcflag = '1' or t.hcflag = '2')
+						</when>
+						<when test="condition.ishcflag == 2">
+							and (t.hcflag='0' or length(t.hcflag)=0)
+						</when>
+					</choose>
+					<choose>
+						<when test="condition.sourcefrom == 33330">
+							<![CDATA[ and t.sourcefrom !='11' ]]>
+						</when>
+						<when test="condition.sourcefrom == 33333">
+							and length(t.sourcefrom)=0
+						</when>
+						<when test="condition.sourcefrom != null">
+							and t.sourcefrom = #{condition.sourcefrom}
+						</when>
+					</choose>
+					<if test="condition.billno != null" >
+						and t.billno like concat('%',#{condition.billno},'%')
+					</if>
+					<if test="condition.hcreferid != null" >
+						and t.hcreferid like concat('%',#{condition.hcreferid},'%')
+					</if>
+					<if test="1==1">
+						and t.billtype='3'
+					</if>
+					<if test="condition.idarrs != null" >
+						and FIND_IN_SET(t.id,#{condition.idarrs})
+					</if>
+					<choose>
+						<when test="condition.fastfilter == 1">
+							and t.billtype='2' and t.sourcefrom !='11' and t.hcflag='0' and t.isbegin='0'
+						</when>
+						<when test="condition.fastfilter == 2">
+							and t.billtype='2' and t.sourcefrom !='11' and (t.hcflag='1' or t.hcflag='2')
+						</when>
+						<when test="condition.fastfilter == 3">
+							and t.billtype='2' and t.hcflag='0' and t.isbegin='0' and t.sourcefrom='0'
+						</when>
+						<when test="condition.fastfilter == 4">
+							and t.billtype='2' and t.hcflag='0' and t.isbegin='0' and t.sourcefrom='0'
+						</when>
+						<when test="condition.fastfilter == 5">
+							and t.billtype='2' and t.hcflag='0' and t.isbegin='0' and t.sourcefrom='0'
+						</when>
+					</choose>
+					<if test="condition.paytype!=null">
+						and t.paytype = #{condition.paytype}
+					</if>
+				</trim>
+			</when>
+			<otherwise>
+
+				UNION ALL
+				select t.id, t.oaid, t.businessdate, t.remark, t.supplierid, t.customerid, t.pcustomerid, t.expensesort,
+				t.amount as lendamount, 0 as payamount, '0' as ispay, t.applyuserid, t.applydeptid, t.addtime,
+				t.relateoaid,'1' as billtype,t.isbegin,t.billno,t.sourcefrom,t.hcflag,t.hcreferid,t.paytype,t.bankid,t.vouchertimes
+				from t_js_customercost_payable t
+				left join t_base_buy_supplier t2 on t.supplierid=t2.id
+				<trim prefix="where" prefixOverrides="and|or" >
+					<if test="condition.oaid != null" >
+						and (t.oaid like concat('%',#{condition.oaid},'%') or t.relateoaid like concat('%',#{condition.oaid},'%'))
+					</if>
+					<if test="condition.supplierid != null" >
+						and t.supplierid = #{condition.supplierid}
+					</if>
+					<if test="condition.customerid != null" >
+						<choose>
+							<when test="condition.isPcustomer == 1">
+								and (t.customerid = #{condition.customerid} or t.pcustomerid=#{condition.customerid})
+							</when>
+							<otherwise>
+								and t.customerid = #{condition.customerid}
+							</otherwise>
+						</choose>
+					</if>
+					<if test="condition.pcustomerid != null" >
+						and t.pcustomerid = #{condition.pcustomerid}
+					</if>
+					<if test="condition.expensesort != null" >
+						and t.expensesort = #{condition.expensesort}
+					</if>
+					<if test="condition.applyuserid != null" >
+						and t.applyuserid = #{condition.applyuserid}
+					</if>
+					<if test="condition.applydeptid != null" >
+						and t.applydeptid like concat(#{condition.applydeptid},'%')
+					</if>
+					<if test="condition.branddeptid != null" >
+						and t.deptid like concat(#{condition.branddeptid},'%')
+					</if>
+					<choose>
+						<when test="condition.ishcflag == 1">
+							and (t.hcflag = '1' or t.hcflag = '2')
+						</when>
+						<when test="condition.ishcflag == 2">
+							and (t.hcflag='0' or length(t.hcflag)=0)
+						</when>
+					</choose>
+					<choose>
+						<when test="condition.sourcefrom == 33330">
+							<![CDATA[ and t.sourcefrom !='11' ]]>
+						</when>
+						<when test="condition.sourcefrom == 33333">
+							and length(t.sourcefrom)=0
+						</when>
+						<when test="condition.sourcefrom != null">
+							and t.sourcefrom = #{condition.sourcefrom}
+						</when>
+					</choose>
+					<if test="condition.billno != null" >
+						and billno like concat('%',#{condition.billno},'%')
+					</if>
+					<if test="condition.hcreferid != null" >
+						and t.hcreferid like concat('%',#{condition.hcreferid},'%')
+					</if>
+					<if test="1==1">
+						and t.billtype='1'
+					</if>
+					<choose>
+						<when test="condition.fastfilter == 1">
+							and t.billtype='2' and t.sourcefrom !='11' and t.hcflag='0' and t.isbegin='0'
+						</when>
+						<when test="condition.fastfilter == 2">
+							and t.billtype='2' and t.sourcefrom !='11' and (t.hcflag='1' or t.hcflag='2')
+						</when>
+						<when test="condition.fastfilter == 3">
+							and t.billtype='2' and t.hcflag='0' and t.isbegin='0' and t.sourcefrom='0'
+						</when>
+						<when test="condition.fastfilter == 4">
+							and t.billtype='2' and t.hcflag='0' and t.isbegin='0' and t.sourcefrom='0'
+						</when>
+						<when test="condition.fastfilter == 5">
+							and t.billtype='2' and t.hcflag='0' and t.isbegin='0' and t.sourcefrom='0'
+						</when>
+					</choose>
+					<if test="condition.idarrs != null" >
+						and FIND_IN_SET(t.id,#{condition.idarrs})
+					</if>
+					<if test="condition.paytype!=null">
+						and t.paytype = #{condition.paytype}
+					</if>
+				</trim>
+			</otherwise>
+		</choose>
+
+  	</sql>
+  	<select id="showCustomerCostPayableDetailList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.journalsheet.model.CustomerCostPayable">
+	    select * from (
+	    	<include refid="customerCostPayableDetailList_SQL"></include>
+		) z
+		<trim prefix="where" prefixOverrides="and|or" >
+			<if test="condition.businessdate != null" >
+		         <![CDATA[ and z.businessdate >= #{condition.businessdate} ]]>
+		      </if>
+			  <if test="condition.businessdate1 != null" >
+		         <![CDATA[ and z.businessdate <= #{condition.businessdate1} ]]>
+		      </if>
+		      <if test="condition.billtype != null" >
+		         <![CDATA[ and z.billtype = #{condition.billtype} ]]>
+		      </if>
+		</trim>
+	  	<if test="condition.isPageflag !='true'">	
+	  		<include refid="common.Page_limit" />
+	  	</if>
+  	</select>
+  	<select id="showCustomerCostPayableDetailCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  		select count(1) from (			
+	    	<include refid="customerCostPayableDetailList_SQL"></include>
+		) z
+		<trim prefix="where" prefixOverrides="and|or" >
+			<if test="condition.businessdate != null" >
+		         <![CDATA[ and z.businessdate >= #{condition.businessdate} ]]>
+		      </if>
+			  <if test="condition.businessdate1 != null" >
+		         <![CDATA[ and z.businessdate <= #{condition.businessdate1} ]]>
+		      </if>
+		      <if test="condition.billtype != null" >
+		         <![CDATA[ and z.billtype = #{condition.billtype} ]]>
+		      </if>
+		</trim>
+  	</select>
+  	<select id="showCustomerCostPayableDetailSum" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.journalsheet.model.CustomerCostPayable">
+  		select sum(z.lendamount) as lendamount, sum(z.payamount) as payamount,(sum(z.lendamount)-sum(payamount)) as amount
+  		from (			
+	    	<include refid="customerCostPayableDetailList_SQL"></include>
+		) z
+		<trim prefix="where" prefixOverrides="and|or" >
+			<if test="condition.businessdate != null" >
+		         <![CDATA[ and z.businessdate >= #{condition.businessdate} ]]>
+		      </if>
+			  <if test="condition.businessdate1 != null" >
+		         <![CDATA[ and z.businessdate <= #{condition.businessdate1} ]]>
+		      </if>
+		      <if test="condition.billtype != null" >
+		         <![CDATA[ and z.billtype = #{condition.billtype} ]]>
+		      </if>
+		</trim>
+  	</select>
+	<select id="showCustomerCostPayableBeginEnd" parameterType="java.lang.String" resultType="java.util.Map">
+		select
+			ifnull(sum(if(t1.billtype='1',t1.amount,0)-if(t1.billtype='2',t1.amount,0)), 0) beginamount
+		from t_js_customercost_payable t1
+		where
+		  <choose>
+                <when test="isPcustomer == 1">
+                    (t1.customerid = #{customerid} or t1.pcustomerid=#{customerid})
+                </when>
+                <otherwise>
+                    t1.customerid = #{customerid}
+                </otherwise>
+            </choose>
+		  and
+		  (
+		  	t1.businessdate <![CDATA[ < ]]> #{businessdate}
+		  	or (
+		  	t1.businessdate <![CDATA[ = ]]> #{businessdate}
+		  	and t1.addtime <![CDATA[ < ]]> (select addtime from t_js_customercost_payable where id = #{id })
+		  	)
+		  	or (
+		  	t1.businessdate <![CDATA[ = ]]> #{businessdate}
+		  	and t1.addtime <![CDATA[ = ]]> (select addtime from t_js_customercost_payable where id = #{id })
+		  	and t1.id <![CDATA[ < ]]> #{id }
+		  	)
+		  )
+	</select>
+  	<select id="selectCustomerCostPayableByOaid" parameterType="java.lang.String" resultType="com.hd.agent.journalsheet.model.CustomerCostPayable">
+  		select <include refid="Base_Column_List"/>
+  		from t_js_customercost_payable
+  		where oaid = #{oaid }
+        and sourcefrom in('11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21')
+		order by addtime desc, id desc
+  	</select>
+  	<select id="showCustomerCostPayableInitList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.journalsheet.model.CustomerCostPayable">
+  		select t.* from t_js_customercost_payable t
+  		<if test="condition.salesarea != null" >
+	     inner join t_base_sales_customer c on t.customerid=c.id and c.salesarea=#{condition.salesarea}
+	    </if>
+  		<trim prefix="where" prefixOverrides="and|or" >
+	      <if test="condition.oaid != null" >
+	         and t.oaid like concat('%',#{condition.oaid},'%')
+	      </if>
+	      <if test="condition.supplierid != null" >
+	         and t.supplierid = #{condition.supplierid}
+	      </if>
+	      <if test="condition.customerid != null" >
+	         and t.customerid = #{condition.customerid}
+	      </if>
+	      <if test="condition.pcustomerid != null" >
+	         and t.pcustomerid = #{condition.pcustomerid}
+	      </if>
+	      <if test="condition.expensesort != null" >
+	         and t.expensesort = #{condition.expensesort}
+	      </if>
+	      <if test="condition.applyuserid != null" >
+	         and t.applyuserid = #{condition.applyuserid}
+	      </if>
+	      <if test="condition.applydeptid != null" >
+	         and t.applydeptid like concat(#{condition.applydeptid},'%')
+	      </if>
+	      <if test="condition.businessdate != null" >
+	         <![CDATA[ and t.businessdate >= #{condition.businessdate} ]]>
+	      </if>
+		  <if test="condition.businessdate1 != null" >
+	         <![CDATA[ and t.businessdate <= #{condition.businessdate1} ]]>
+	      </if>
+	      <if test="1==1">
+	      	and t.isbegin = '1'
+	      </if>
+	    </trim>
+	    <if test="condition.isPageflag == null" >
+	         <include refid="common.Page_limit"/>
+	    </if>
+  	</select>
+  	<select id="showCustomerCostPayableInitCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  		select count(1)
+  		from t_js_customercost_payable t
+  		<if test="condition.salesarea != null" >
+	     inner join t_base_sales_customer c on t.customerid=c.id and c.salesarea=#{condition.salesarea}
+	    </if>
+  		<trim prefix="where" prefixOverrides="and|or" >
+	      <if test="condition.oaid != null" >
+	         and t.oaid like concat('%',#{condition.oaid},'%')
+	      </if>
+	      <if test="condition.supplierid != null" >
+	         and t.supplierid = #{condition.supplierid}
+	      </if>
+	      <if test="condition.customerid != null" >
+	         and t.customerid = #{condition.customerid}
+	      </if>
+	      <if test="condition.pcustomerid != null" >
+	         and t.pcustomerid = #{condition.pcustomerid}
+	      </if>
+	      <if test="condition.expensesort != null" >
+	         and t.expensesort = #{condition.expensesort}
+	      </if>
+	      <if test="condition.applyuserid != null" >
+	         and t.applyuserid = #{condition.applyuserid}
+	      </if>
+	      <if test="condition.applydeptid != null" >
+	         and t.applydeptid like concat(#{condition.applydeptid},'%')
+	      </if>
+	      <if test="condition.businessdate != null" >
+	         <![CDATA[ and t.businessdate >= #{condition.businessdate} ]]>
+	      </if>
+		  <if test="condition.businessdate1 != null" >
+	         <![CDATA[ and t.businessdate <= #{condition.businessdate1} ]]>
+	      </if>
+	      <if test="1==1">
+	      	and t.isbegin = '1'
+	      </if>
+	    </trim>
+  	</select>
+  	<select id="showCustomerCostPayableInitSum" parameterType="com.hd.agent.common.util.PageMap" resultType="map">
+  		select sum(t.amount) as amount
+  		from t_js_customercost_payable t
+  		<if test="condition.salesarea != null" >
+	     inner join t_base_sales_customer c on t.customerid=c.id and c.salesarea=#{condition.salesarea}
+	    </if>
+  		<trim prefix="where" prefixOverrides="and|or" >
+	      <if test="condition.oaid != null" >
+	         and t.oaid like concat('%',#{condition.oaid},'%')
+	      </if>
+	      <if test="condition.supplierid != null" >
+	         and t.supplierid = #{condition.supplierid}
+	      </if>
+	      <if test="condition.customerid != null" >
+	         and t.customerid = #{condition.customerid}
+	      </if>
+	      <if test="condition.pcustomerid != null" >
+	         and t.pcustomerid = #{condition.pcustomerid}
+	      </if>
+	      <if test="condition.expensesort != null" >
+	         and t.expensesort = #{condition.expensesort}
+	      </if>
+	      <if test="condition.applyuserid != null" >
+	         and t.applyuserid = #{condition.applyuserid}
+	      </if>
+	      <if test="condition.applydeptid != null" >
+	         and t.applydeptid like concat(#{condition.applydeptid},'%')
+	      </if>
+	      <if test="condition.businessdate != null" >
+	         <![CDATA[ and t.businessdate >= #{condition.businessdate} ]]>
+	      </if>
+		  <if test="condition.businessdate1 != null" >
+	         <![CDATA[ and t.businessdate <= #{condition.businessdate1} ]]>
+	      </if>
+	      <if test="1==1">
+	      	and t.isbegin = '1'
+	      </if>
+	    </trim>
+  	</select>
+  	<select id="getCustomerCostPayableByID" parameterType="java.lang.String" resultType="com.hd.agent.journalsheet.model.CustomerCostPayable">
+  		select <include refid="Base_Column_List"/>
+  		from t_js_customercost_payable where id=#{id}
+  	</select>
+  	<select id="getCustomerCostPayableByMap" parameterType="map" resultType="com.hd.agent.journalsheet.model.CustomerCostPayable">
+  		select <include refid="Base_Column_List"/>
+  		from t_js_customercost_payable where
+		<trim prefixOverrides="and|or" >			
+	      <if test="billno != null" >
+	       	and billno = #{billno}
+	      </if>		
+	      <if test="oaid != null" >
+	       	and oaid = #{oaid}
+	      </if>				
+	      <if test="sourcefrom != null" >
+	       	and sourcefrom = #{sourcefrom}
+	      </if>			
+	      <if test="sourcefromnot != null" >
+	       	and FIND_IN_SET(sourcefrom,#{sourcefromnot})=0
+	      </if>		
+	      <if test="hcflag != null" >
+	       	and hcflag = #{hcflag}
+	      </if>		
+	      <if test="hcreferid != null" >
+	       	and hcreferid = #{hcreferid}
+	      </if>
+		</trim>
+  	</select>
+  	<update id="editCustomerCostPayableInit" parameterType="com.hd.agent.journalsheet.model.CustomerCostPayable">
+  		update t_js_customercost_payable
+	    <set >
+	      <if test="oaid != null" >
+	        oaid = #{oaid},
+	      </if>
+	      <if test="businessdate != null" >
+	        businessdate = #{businessdate},
+	      </if>
+	      <if test="remark != null" >
+	        remark = #{remark},
+	      </if>
+	      <if test="supplierid != null" >
+	        supplierid = #{supplierid},
+	      </if>
+	      <if test="customerid != null" >
+	        customerid = #{customerid},
+	      </if>
+	      <if test="pcustomerid != null" >
+	        pcustomerid = #{pcustomerid},
+	      </if>
+	      <if test="expensesort != null" >
+	        expensesort = #{expensesort},
+	      </if>
+	      <if test="amount != null" >
+	        amount = #{amount},
+	      </if>
+	      <if test="paydate != null" >
+	        paydate = #{paydate},
+	      </if>
+	    </set>
+	    where id = #{id}
+  	</update>
+  	<delete id="deleteCustomerCostPayableByID" parameterType="java.lang.String">
+  		delete from t_js_customercost_payable where id=#{id}
+  	</delete>
+  	<select id="getCustomerCostPayableCountBySource" parameterType="java.util.Map" resultType="int">
+  		select count(1)
+  		from t_js_customercost_payable
+  		where
+  		<trim prefixOverrides="and|or" >		
+	      <if test="sourcefrom != null" >
+	        and sourcefrom = #{sourcefrom}
+	      </if>
+	      <if test="billno != null" >
+	        and billno = #{billno}
+	      </if>
+  		</trim>
+  	</select>
+  	
+  	<delete id="deleteCustomerCostPayableByMap" parameterType="java.util.Map">
+  		delete from t_js_customercost_payable
+  		where
+  		<trim prefixOverrides="and|or" >		
+	      <if test="sourcefrom != null" >
+	        and sourcefrom = #{sourcefrom}
+	      </if>
+	      <if test="billno != null" >
+	        and billno = #{billno}
+	      </if>
+	      <if test="hcflag != null" >
+	        and hcflag = #{hcflag}
+	      </if>	
+  		  <if test="id">
+  			and id=#{id}
+  		  </if>
+  		  <if test="isbegin">
+  			and isbegin=#{isbegin}
+  		  </if>
+  		  <if test="candelete==1">
+  			 and sourcefrom='0' and billtype='2' and hcflag='0' and isbegin='0'
+  		  </if>
+  		  <if test="dataAuthSql != null">
+  			and ${dataAuthSql}
+  		  </if> 
+  		</trim>
+  	</delete>
+    <delete id="deleteCustomerCostPayableByOa" parameterType="java.lang.String">
+        delete from t_js_customercost_payable
+        where oaid = #{oaid }
+        and sourcefrom = #{sourcefrom }
+    </delete>
+	<update id="updateCustomerFee" parameterType="com.hd.agent.journalsheet.model.CustomerCostPayable">
+		update t_js_customercost_payable
+		<set>
+			<if test="businessdate != null">
+				businessdate = #{businessdate},
+			</if>
+			<if test="remark != null">
+				remark = #{remark},
+			</if>
+			<if test="supplierid != null">
+				supplierid = #{supplierid},
+			</if>
+			<if test="customerid != null">
+				customerid = #{customerid},
+			</if>
+			<if test="pcustomerid != null">
+				pcustomerid = #{pcustomerid},
+			</if>
+			<if test="expensesort != null">
+				expensesort = #{expensesort},
+			</if>
+			<if test="amount != null">
+				amount = #{amount},
+			</if>
+			<if test="paydate != null">
+				paydate = #{paydate},
+			</if>
+			<if test="ispay != null">
+				ispay = #{ispay},
+			</if>
+			<if test="applyuserid != null">
+				applyuserid = #{applyuserid},
+			</if>
+			<if test="applydeptid != null">
+				applydeptid = #{applydeptid},
+			</if>
+			<if test="addtime != null">
+				addtime = #{addtime},
+			</if>
+			<if test="payuserid != null">
+				payuserid = #{payuserid},
+			</if>
+			<if test="paydeptid != null">
+				paydeptid = #{paydeptid},
+			</if>
+			<if test="paytime != null">
+				paytime = #{paytime},
+			</if>
+			<if test="billtype != null">
+				billtype = #{billtype},
+			</if>
+			<if test="relateoaid != null">
+				relateoaid = #{relateoaid},
+			</if>
+			<if test="isbegin != null">
+				isbegin = #{isbegin},
+			</if>
+			<if test="bankid != null">
+				bankid = #{bankid},
+			</if>
+		</set>
+		where id = #{id }
+	</update>
+	<select id="selectCustomerFee" parameterType="java.lang.String" resultType="com.hd.agent.journalsheet.model.CustomerCostPayable">
+		select
+		<include refid="Base_Column_List"/>
+		from t_js_customercost_payable
+		where 1 = 1
+		<if test="oaid != null">
+			and oaid = #{oaid }
+		</if>
+		<if test="billtype != null">
+			and billtype = #{billtype }
+		</if>
+	</select>
+	<select id="getCustomerCostPayableSumData" resultType="java.util.Map">
+		select t.businessdate,t.supplierid,t.customerid,t.expensesort,t.id,t.amount,t.bankid
+		from t_js_customercost_payable t
+		where t.billtype='2'
+		<if test="list != null">
+			and t.id in
+			<foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		<if test="list == null">
+			1>2
+		</if>
+	</select>
+</mapper>

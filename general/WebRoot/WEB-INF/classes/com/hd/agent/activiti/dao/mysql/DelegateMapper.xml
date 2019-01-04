@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.activiti.dao.DelegateMapper" >
+    <resultMap id="BaseResultMap" type="com.hd.agent.activiti.model.Delegate" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="status" property="status" jdbcType="VARCHAR" />
+        <!--<result column="adddate" property="adddate" jdbcType="TIMESTAMP" />-->
+        <result column="adduserid" property="adduserid" jdbcType="VARCHAR" />
+        <result column="addusername" property="addusername" jdbcType="VARCHAR" />
+        <result column="adddeptid" property="adddeptid" jdbcType="VARCHAR" />
+        <result column="adddeptname" property="adddeptname" jdbcType="VARCHAR" />
+        <result column="addtime" property="addtime" jdbcType="TIMESTAMP" />
+        <result column="modifyuserid" property="modifyuserid" jdbcType="VARCHAR" />
+        <result column="modifyusername" property="modifyusername" jdbcType="VARCHAR" />
+        <result column="modifytime" property="modifytime" jdbcType="TIMESTAMP" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="definitionkey" property="definitionkey" jdbcType="VARCHAR" />
+        <result column="userid" property="userid" jdbcType="VARCHAR" />
+        <result column="delegateuserid" property="delegateuserid" jdbcType="VARCHAR" />
+        <result column="begindate" property="begindate" jdbcType="VARCHAR" />
+        <result column="enddate" property="enddate" jdbcType="VARCHAR" />
+        <result column="remain" property="remain" jdbcType="VARCHAR" />
+        <result column="oaid" property="oaid" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        id, status, adduserid, addusername, adddeptid, adddeptname, addtime, modifyuserid,
+        modifyusername, modifytime, remark, definitionkey, userid, delegateuserid, begindate, oaid,
+        enddate, remain
+    </sql>
+    <select id="getDelegate" resultMap="BaseResultMap" parameterType="java.lang.String" >
+        select
+        <include refid="Base_Column_List" />
+        from t_act_delegate
+        where id = #{id}
+    </select>
+    <select id="getDelegateListByUserAndKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+        select
+        <include refid="Base_Column_List" />
+        from t_act_delegate
+        where userid = #{0} and (definitionkey = #{1} or definitionkey = '0') and (remain = '1' or (begindate <![CDATA[<=]]> DATE_FORMAT(NOW(), '%Y-%m-%d %T')) and enddate <![CDATA[>=]]> DATE_FORMAT(NOW(), '%Y-%m-%d %T'))
+        order by id
+    </select>
+    <select id="getDelegateList" resultType="com.hd.agent.activiti.model.Delegate" parameterType="com.hd.agent.common.util.PageMap">
+        select
+        a.id, a.begindate, a.enddate, a.remain, u1.name delegateusername, u2.name username, a.definitionkey, c.name definitionname
+        from t_act_delegate a
+        left join t_sys_user u1 on a.delegateuserid = u1.userid
+        left join t_sys_user u2 on a.userid = u2.userid
+        left join (select * from t_act_definition where isdeploy = '1') c on a.definitionkey = c.unkey
+        where
+        <if test="condition.type == 0">
+            a.userid = #{condition.userid}
+        </if>
+        <if test="condition.type == 1">
+            a.delegateuserid = #{condition.userid}
+        </if>
+        order by a.addtime desc
+        <include refid="common.Page_LimitOnly" />
+    </select>
+    <select id="getDelegateCount" resultType="java.lang.Integer" parameterType="com.hd.agent.common.util.PageMap">
+        select count(1)
+        from t_act_delegate
+        where
+        <if test="condition.type == 0">
+            userid = #{condition.userid}
+        </if>
+        <if test="condition.type == 1">
+            delegateuserid = #{condition.userid}
+        </if>
+    </select>
+    <delete id="deleteDelegate" parameterType="java.lang.String" >
+        delete from t_act_delegate
+        where id = #{id}
+    </delete>
+    <insert id="addDelegate" parameterType="com.hd.agent.activiti.model.Delegate" >
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+        insert into t_act_delegate
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="status != null" >
+                status,
+            </if>
+            <if test="adduserid != null" >
+                adduserid,
+            </if>
+            <if test="addusername != null" >
+                addusername,
+            </if>
+            <if test="adddeptid != null" >
+                adddeptid,
+            </if>
+            <if test="adddeptname != null" >
+                adddeptname,
+            </if>
+            addtime,
+            <if test="modifyuserid != null" >
+                modifyuserid,
+            </if>
+            <if test="modifyusername != null" >
+                modifyusername,
+            </if>
+            <if test="modifytime != null" >
+                modifytime,
+            </if>
+            <if test="remark != null" >
+                remark,
+            </if>
+            <if test="definitionkey != null" >
+                definitionkey,
+            </if>
+            <if test="userid != null" >
+                userid,
+            </if>
+            <if test="delegateuserid != null" >
+                delegateuserid,
+            </if>
+            <if test="begindate != null" >
+                begindate,
+            </if>
+            <if test="enddate != null" >
+                enddate,
+            </if>
+            <if test="remain != null" >
+                remain,
+            </if>
+            <if test="oaid != null" >
+                oaid,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id},
+            </if>
+            <if test="status != null" >
+                #{status},
+            </if>
+            <if test="adduserid != null" >
+                #{adduserid},
+            </if>
+            <if test="addusername != null" >
+                #{addusername},
+            </if>
+            <if test="adddeptid != null" >
+                #{adddeptid},
+            </if>
+            <if test="adddeptname != null" >
+                #{adddeptname},
+            </if>
+            now(),
+            <if test="modifyuserid != null" >
+                #{modifyuserid},
+            </if>
+            <if test="modifyusername != null" >
+                #{modifyusername},
+            </if>
+            <if test="modifytime != null" >
+                #{modifytime},
+            </if>
+            <if test="remark != null" >
+                #{remark},
+            </if>
+            <if test="definitionkey != null" >
+                #{definitionkey},
+            </if>
+            <if test="userid != null" >
+                #{userid},
+            </if>
+            <if test="delegateuserid != null" >
+                #{delegateuserid},
+            </if>
+            <if test="begindate != null" >
+                #{begindate},
+            </if>
+            <if test="enddate != null" >
+                #{enddate},
+            </if>
+            <if test="remain != null" >
+                #{remain},
+            </if>
+            <if test="oaid != null" >
+                #{oaid},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateDelegate" parameterType="com.hd.agent.activiti.model.Delegate" >
+        update t_act_delegate
+        <set >
+            <if test="status != null" >
+                status = #{status},
+            </if>
+            <if test="modifyuserid != null" >
+                modifyuserid = #{modifyuserid},
+            </if>
+            <if test="modifyusername != null" >
+                modifyusername = #{modifyusername},
+            </if>
+            modifytime = now(),
+            <if test="remark != null" >
+                remark = #{remark},
+            </if>
+            <if test="definitionkey != null" >
+                definitionkey = #{definitionkey},
+            </if>
+            <if test="userid != null" >
+                userid = #{userid},
+            </if>
+            <if test="delegateuserid != null" >
+                delegateuserid = #{delegateuserid},
+            </if>
+            <if test="begindate != null" >
+                begindate = #{begindate},
+            </if>
+            <if test="enddate != null" >
+                enddate = #{enddate},
+            </if>
+            <if test="remain != null" >
+                remain = #{remain},
+            </if>
+            <if test="oaid != null" >
+                oaid = #{oaid},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <delete id="deleteDelegateByOaid" parameterType="java.lang.String">
+        delete from t_act_delegate where oaid = #{oaid }
+    </delete>
+    <select id="selectDelegateByOaid" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" />
+        from t_act_delegate
+        where oaid = #{oaid}
+    </select>
+</mapper>

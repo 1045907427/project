@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+        <package name="module-salestargetinput" extends="parent" namespace="/module/salestargetinput">
+                <!-- 销售目标列表页面 -->
+                <action name="showSalesTargetInputListPage" class="salesTargetInputAction" method="showSalesTargetInputListPage">
+                        <result name="success">/module/salestarget/salesTargetInputListPage.jsp</result>
+                </action>
+                <!-- 销售目标列表数据 -->
+                <action name="getSalesTargetInputListPageData" class="salesTargetInputAction" method="getSalesTargetInputListPageData">
+                        <result name="success" type="json">
+                                <param name="root">jsonResult</param>
+                                <param name="contentType">text/html</param>
+                        </result>
+                </action>
+                <!-- 销售目标添加页面 -->
+                <action name="showSalesTargetInputAddPage" class="salesTargetInputAction" method="showSalesTargetInputAddPage">
+                        <result name="success">/module/salestarget/salesTargetInputAddPage.jsp</result>
+                </action>
+                <!-- 添加销售目标操作 -->
+                <action name="addSalesTargetInput" class="salesTargetInputAction" method="addSalesTargetInput">
+                        <result name="success" type="json">
+                                <param name="root">jsonResult</param>
+                                <param name="contentType">text/html</param>
+                        </result>
+                </action>
+                <!-- 销售目标编辑页面 -->
+                <action name="showSalesTargetInputEditPage" class="salesTargetInputAction" method="showSalesTargetInputEditPage">
+                        <result name="addSuccess">/module/salestarget/salesTargetInputAddPage.jsp</result>
+                        <result name="editSuccess">/module/salestarget/salesTargetInputEditPage.jsp</result>
+                        <result name="viewSuccess">/module/salestarget/salesTargetInputViewPage.jsp</result>
+                </action>
+                <!-- 编辑销售目标操作 -->
+                <action name="editSalesTargetInput" class="salesTargetInputAction" method="editSalesTargetInput">
+                        <result name="success" type="json">
+                                <param name="root">jsonResult</param>
+                                <param name="contentType">text/html</param>
+                        </result>
+                </action>
+                <!-- 销售目标查看页面 -->
+                <action name="showSalesTargetInputViewPage" class="salesTargetInputAction" method="showSalesTargetInputViewPage">
+                        <result name="addSuccess">/module/salestarget/salesTargetInputAddPage.jsp</result>
+                        <result name="editSuccess">/module/salestarget/salesTargetInputEditPage.jsp</result>
+                        <result name="viewSuccess">/module/salestarget/salesTargetInputViewPage.jsp</result>
+                </action>
+                <!-- 删除销售目标操作 -->
+                <action name="deleteSalesTargetInputMore" class="salesTargetInputAction" method="deleteSalesTargetInputMore">
+                        <result name="success" type="json">
+                                <param name="root">jsonResult</param>
+                                <param name="contentType">text/html</param>
+                        </result>
+                </action>
+                <!-- 审核销售目标操作 -->
+                <action name="auditSalesTargetInput" class="salesTargetInputAction" method="auditSalesTargetInput">
+                        <result name="success" type="json">
+                                <param name="root">jsonResult</param>
+                                <param name="contentType">text/html</param>
+                        </result>
+                </action>
+                <!-- 反审销售目标操作 -->
+                <action name="oppauditSalesTargetInput" class="salesTargetInputAction" method="oppauditSalesTargetInput">
+                        <result name="success" type="json">
+                                <param name="root">jsonResult</param>
+                                <param name="contentType">text/html</param>
+                        </result>
+                </action>
+                <!-- 导出销售目标操作 -->
+                <action name="exportSalesTargetInputData" class="salesTargetInputAction" method="exportSalesTargetInputData"></action>
+                <!-- 导入销售目标操作 -->
+                <action name="importSalesTargetInputData" class="salesTargetInputAction" method="importSalesTargetInputData">
+                        <result name="success" type="json">
+                                <param name="root">jsonResult</param>
+                                <param name="contentType">text/html</param>
+                        </result>
+                </action>
+                <!--获取销售目标获取客户分类信息列表-->
+                <action name="getSalesTargetInputCustomerSortGroupList" class="salesTargetInputAction" method="getSalesTargetInputCustomerSortGroupList">
+                        <result name="success" type="json">
+                                <param name="root">jsonArray</param>
+                                <param name="contentType">text/html</param>
+                        </result>
+                </action>
+                <!--获取销售目标中品牌信息列表-->
+                <action name="getSalesTargetInputBrandGroupList" class="salesTargetInputAction" method="getSalesTargetInputBrandGroupList">
+                        <result name="success" type="json">
+                                <param name="root">jsonArray</param>
+                                <param name="contentType">text/html</param>
+                        </result>
+                </action>
+                <!--获取销售报表中品牌列表-->
+                <action name="getBrandListInSalesReportCache" class="salesTargetInputAction" method="getBrandListInSalesReportCache">
+                        <result name="success" type="json">
+                                <param name="root">jsonArray</param>
+                                <param name="contentType">text/html</param>
+                        </result>
+                </action>
+                <!--获取销售报表中渠道列表-->
+                <action name="getCustomerSortListInSalesReportCache" class="salesTargetInputAction" method="getCustomerSortListInSalesReportCache">
+                        <result name="success" type="json">
+                                <param name="root">jsonArray</param>
+                                <param name="contentType">text/html</param>
+                        </result>
+                </action>
+                <!--清除销售报表中品牌和渠道列表缓存-->
+                <action name="clearBrandCustomerSortListInSalesReportCache" class="salesTargetInputAction" method="clearBrandCustomerSortListInSalesReportCache">
+                        <result name="success" type="json">
+                                <param name="root">jsonResult</param>
+                                <param name="contentType">text/html</param>
+                        </result>
+                </action>
+        </package>
+        <package name="module-salestargetreport" extends="parent" namespace="/module/salestargetreport">
+                <!-- 销售目标跟踪报表页面 -->
+                <action name="showSalesTargetTraceReportPage" class="salesTargetReportAction" method="showSalesTargetTraceReportPage">
+                        <result name="success">/module/salestarget/salesTargetTraceReportPage.jsp</result>
+                </action>
+                <!-- 销售目标跟踪报表数据 -->
+                <action name="showSalesTargetTraceReportData" class="salesTargetReportAction" method="showSalesTargetTraceReportData">
+                        <result name="success" type="json">
+                                <param name="root">jsonResult</param>
+                                <param name="contentType">text/html</param>
+                        </result>
+                </action>
+                <!-- 导出销售目标跟踪报表数据 -->
+                <action name="exportSalesTargetTraceReportData" class="salesTargetReportAction" method="exportSalesTargetTraceReportData">
+                </action>
+                <!-- 毛利目标跟踪报表页面 -->
+                <action name="showSalesTargetGrossTraceReportPage" class="salesTargetReportAction" method="showSalesTargetGrossTraceReportPage">
+                        <result name="success">/module/salestarget/salesTargetGrossTraceReportPage.jsp</result>
+                </action>
+                <!-- 毛利目标跟踪报表数据 -->
+                <action name="showSalesTargetGrossTraceReportData" class="salesTargetReportAction" method="showSalesTargetGrossTraceReportData">
+                        <result name="success" type="json">
+                                <param name="root">jsonResult</param>
+                                <param name="contentType">text/html</param>
+                        </result>
+                </action>
+                <!-- 导出毛利目标跟踪报表数据 -->
+                <action name="exportSalesTargetGrossTraceReportData" class="salesTargetReportAction" method="exportSalesTargetGrossTraceReportData">
+                </action>
+
+
+                <!-- 按品牌月度目标分析报表页面 -->
+                <action name="showSalesTargetBrandMonthAnalyzeReportPage" class="salesTargetReportAction" method="showSalesTargetBrandMonthAnalyzeReportPage">
+                        <result name="success">/module/salestarget/salesTargetBrandMonthAnalyzeReportPage.jsp</result>
+                </action>
+                <!-- 按品牌月度目标分析报表数据 -->
+                <action name="showSalesTargetBrandMonthAnalyzeReportData" class="salesTargetReportAction" method="showSalesTargetBrandMonthAnalyzeReportData">
+                        <result name="success" type="json">
+                                <param name="root">jsonResult</param>
+                                <param name="contentType">text/html</param>
+                        </result>
+                </action>
+                <!-- 导出按品牌月度目标分析报表数据 -->
+                <action name="exportSalesTargetBrandMonthAnalyzeReportData" class="salesTargetReportAction" method="exportSalesTargetBrandMonthAnalyzeReportData">
+                </action>
+
+
+                <!-- 按渠道月度目标分析报表页面 -->
+                <action name="showSalesTargetCustomerSortMonthAnalyzeReportPage" class="salesTargetReportAction" method="showSalesTargetCustomerSortMonthAnalyzeReportPage">
+                        <result name="success">/module/salestarget/salesTargetCustomerSortMonthAnalyzeReportPage.jsp</result>
+                </action>
+                <!-- 按渠道月度目标分析报表数据 -->
+                <action name="showSalesTargetCustomerSortMonthAnalyzeReportData" class="salesTargetReportAction" method="showSalesTargetCustomerSortMonthAnalyzeReportData">
+                        <result name="success" type="json">
+                                <param name="root">jsonResult</param>
+                                <param name="contentType">text/html</param>
+                        </result>
+                </action>
+                <!-- 导出按渠道月度目标分析报表 -->
+                <action name="exportSalesTargetCustomerSortMonthAnalyzeReportData" class="salesTargetReportAction" method="exportSalesTargetCustomerSortMonthAnalyzeReportData">
+                </action>
+                <!-- 获取月度分解时间进度 -->
+                <action name="getCalcMonthAnalyzeTimeSchedule" class="salesTargetReportAction" method="getCalcMonthAnalyzeTimeSchedule">
+                        <result name="success" type="json">
+                                <param name="root">jsonResult</param>
+                                <param name="contentType">text/html</param>
+                        </result>
+                </action>
+                <!-- 根据业务计算月进度年进度 -->
+                <action name="getCalcYearAndMonthTimeSchedule" class="salesTargetReportAction" method="getCalcYearAndMonthTimeSchedule">
+                        <result name="success" type="json">
+                                <param name="root">jsonResult</param>
+                                <param name="contentType">text/html</param>
+                        </result>
+                </action>
+                <!-- 按品牌月度目标分解报表品牌列取值说明 -->
+                <action name="showBrandMonthAnalyzeReportColSelectHelp" class="salesTargetReportAction" method="showBrandMonthAnalyzeReportColSelectHelp">
+                        <result name="success">/module/salestarget/brandMonthAnalyzeReportColSelectHelp.jsp</result>
+                </action>
+                <!-- 按渠道月度目标分解报表渠道列取值说明 -->
+                <action name="showCustomerSortMonthAnalyzeReportColSelectHelp" class="salesTargetReportAction" method="showCustomerSortMonthAnalyzeReportColSelectHelp">
+                        <result name="success">/module/salestarget/customerSortMonthAnalyzeReportColSelectHelp.jsp</result>
+                </action>
+        </package>
+</struts>

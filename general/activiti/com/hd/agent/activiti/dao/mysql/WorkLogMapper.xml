@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.activiti.dao.WorkLogMapper" >
+  <resultMap id="BaseResultMap" type="com.hd.agent.activiti.model.WorkLog" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="instanceid" property="instanceid" jdbcType="VARCHAR" />
+    <result column="processid" property="processid" jdbcType="VARCHAR" />
+    <result column="definitionkey" property="definitionkey" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="stepnum" property="stepnum" jdbcType="VARCHAR" />
+    <result column="taskkey" property="taskkey" jdbcType="VARCHAR" />
+    <result column="taskname" property="taskname" jdbcType="VARCHAR" />
+    <result column="applyuserid" property="applyuserid" jdbcType="VARCHAR" />
+    <result column="applyusername" property="applyusername" jdbcType="VARCHAR" />
+    <result column="assigneeid" property="assigneeid" jdbcType="VARCHAR" />
+    <result column="assigneename" property="assigneename" jdbcType="VARCHAR" />
+    <result column="ip" property="ip" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="adddate" property="adddate" jdbcType="TIMESTAMP" />
+    <result column="nexttaskkey" property="nexttaskkey" jdbcType="VARCHAR" />
+    <result column="device" property="device" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, instanceid, processid, definitionkey, title, stepnum, taskname, applyuserid, applyusername, 
+    assigneeid, assigneename, ip, type, content, adddate, taskkey, nexttaskkey, device
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_act_log
+    where id = #{id}
+  </select>
+  <select id="getLogList" resultType="com.hd.agent.activiti.model.WorkLog" parameterType="com.hd.agent.common.util.PageMap">
+  	select 
+  		id, /*instanceid, */title, stepnum, taskname, applyuserid, applyusername, assigneeid, assigneename, ip, type, content, adddate, processid, 
+  		case when exists (select 1 from t_act_process t2 where t1.instanceid = t2.instanceid) then t1.instanceid
+  		else null end instanceid,
+        t1.device
+  	from t_act_log t1
+  	<trim prefix="where" prefixOverrides="and|or" >
+  		<if test="condition.type != null and condition.type != '' ">
+  			type = #{condition.type}
+  		</if>
+  		<if test="condition.time1 != null">
+  			<![CDATA[ and adddate > #{condition.time1} ]]>  
+  		</if>
+  		<if test="condition.time2 != null">
+  			<![CDATA[ and adddate < #{condition.time2} ]]>
+  		</if>
+  		<if test="condition.ip != null">
+  			and ip = #{condition.ip}
+  		</if>
+  		<if test="condition.assigneeid != null">
+  			and assigneeid = #{condition.assigneeid}
+  		</if>
+  		<if test="condition.applyuserid != null">
+  			and applyuserid = #{condition.applyuserid}
+  		</if>
+  		<if test="condition.title != null">
+  			and title like CONCAT('%', CONCAT(#{condition.title}, '%'))
+  		</if>
+  		<if test="condition.processid != null">
+  			and processid = #{condition.processid}
+  		</if>
+  		<if test="condition.definitionkey != null">
+  			and definitionkey = #{condition.definitionkey}
+  		</if>
+		<include refid="common.Page_dataSql"/>
+  	</trim>
+  	order by adddate desc
+  	<include refid="common.Page_LimitOnly" />
+  </select>
+  <select id="getLogCount" resultType="java.lang.Integer" parameterType="com.hd.agent.common.util.PageMap">
+  	select count(1) from t_act_log
+  	<trim prefix="where" prefixOverrides="and|or" >
+  		<if test="condition.type != null and condition.type != '' ">
+  			type = #{condition.type}
+  		</if>
+  		<if test="condition.time1 != null">
+  			<![CDATA[ and adddate > #{condition.time1} ]]>  
+  		</if>
+  		<if test="condition.time2 != null">
+  			<![CDATA[ and adddate < #{condition.time2} ]]>
+  		</if>
+  		<if test="condition.ip != null">
+  			and ip = #{condition.ip}
+  		</if>
+  		<if test="condition.assigneeid != null">
+  			and assigneeid = #{condition.assigneeid}
+  		</if>
+  		<if test="condition.applyuserid != null">
+  			and applyuserid = #{condition.applyuserid}
+  		</if>
+  		<if test="condition.title != null">
+  			and title like CONCAT('%', CONCAT(#{condition.title}, '%'))
+  		</if>
+  		<if test="condition.processid != null">
+  			and processid = #{condition.processid}
+  		</if>
+  		<if test="condition.definitionkey != null">
+  			and definitionkey = #{condition.definitionkey}
+  		</if>
+  	</trim>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_act_log
+    where id = #{id}
+  </delete>
+  <insert id="addLog" parameterType="com.hd.agent.activiti.model.WorkLog" >
+    insert into t_act_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="instanceid != null" >
+        instanceid,
+      </if>
+      <if test="processid != null" >
+        processid,
+      </if>
+      <if test="definitionkey != null" >
+        definitionkey,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="stepnum != null" >
+        stepnum,
+      </if>
+      <if test="taskname != null" >
+        taskname,
+      </if>
+      <if test="applyuserid != null" >
+        applyuserid,
+      </if>
+      <if test="applyusername != null" >
+        applyusername,
+      </if>
+      <if test="assigneeid != null" >
+        assigneeid,
+      </if>
+      <if test="assigneename != null" >
+        assigneename,
+      </if>
+      <if test="ip != null" >
+        ip,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+        <if test="taskkey != null" >
+            taskkey,
+        </if>
+        <if test="nexttaskkey != null" >
+            nexttaskkey,
+        </if>
+        adddate,
+      <if test="device != null" >
+        device,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="instanceid != null" >
+        #{instanceid},
+      </if>
+      <if test="processid != null" >
+        #{processid},
+      </if>
+      <if test="definitionkey != null" >
+        #{definitionkey},
+      </if>
+      <if test="title != null" >
+        #{title},
+      </if>
+      <if test="stepnum != null" >
+        #{stepnum},
+      </if>
+      <if test="taskname != null" >
+        #{taskname},
+      </if>
+      <if test="applyuserid != null" >
+        #{applyuserid},
+      </if>
+      <if test="applyusername != null" >
+        #{applyusername},
+      </if>
+      <if test="assigneeid != null" >
+        #{assigneeid},
+      </if>
+      <if test="assigneename != null" >
+        #{assigneename},
+      </if>
+      <if test="ip != null" >
+        #{ip},
+      </if>
+      <if test="type != null" >
+        #{type},
+      </if>
+      <if test="content != null" >
+        #{content},
+      </if>
+        <if test="taskkey != null" >
+            #{taskkey},
+        </if>
+        <if test="nexttaskkey != null" >
+            #{nexttaskkey},
+        </if>
+        now(),
+      <if test="device != null" >
+        #{device},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateLog" parameterType="com.hd.agent.activiti.model.WorkLog" >
+    update t_act_log
+    <set >
+      <if test="instanceid != null" >
+        instanceid = #{instanceid},
+      </if>
+      <if test="definitionkey != null" >
+        definitionkey = #{definitionkey},
+      </if>
+      <if test="title != null" >
+        title = #{title},
+      </if>
+      <if test="stepnum != null" >
+        stepnum = #{stepnum},
+      </if>
+      <if test="taskname != null" >
+        taskname = #{taskname},
+      </if>
+      <if test="applyuserid != null" >
+        applyuserid = #{applyuserid},
+      </if>
+      <if test="applyusername != null" >
+        applyusername = #{applyusername},
+      </if>
+      <if test="assigneeid != null" >
+        assigneeid = #{assigneeid},
+      </if>
+      <if test="assigneename != null" >
+        assigneename = #{assigneename},
+      </if>
+      <if test="ip != null" >
+        ip = #{ip},
+      </if>
+      <if test="type != null" >
+        type = #{type},
+      </if>
+      <if test="content != null" >
+        content = #{content},
+      </if>
+      <if test="adddate != null" >
+        adddate = #{adddate},
+      </if>
+        <if test="taskkey != null" >
+            taskkey = #{taskkey},
+        </if>
+        <if test="nexttaskkey != null" >
+            nexttaskkey = #{nexttaskkey},
+        </if>
+      <if test="device != null" >
+        device = #{device},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  
+</mapper>

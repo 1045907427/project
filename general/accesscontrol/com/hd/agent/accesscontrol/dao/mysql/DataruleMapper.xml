@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hd.agent.accesscontrol.dao.DataruleMapper">
+	<cache type="org.mybatis.caches.ehcache.EhcacheCache"/> 
+	<insert id="addDatarule" parameterType="com.hd.agent.accesscontrol.model.Datarule">
+		<selectKey resultType="java.lang.String" keyProperty="dataid" order="BEFORE" >
+	      select uuid_short()
+	    </selectKey>
+		insert into t_ac_datarule
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	        dataid,
+	      <if test="dataname != null" >
+	        dataname,
+	      </if>
+	      <if test="tablename != null" >
+	        tablename,
+	      </if>
+	      <if test="type != null" >
+	        type,
+	      </if>
+	      <if test="state != null" >
+	        state,
+	      </if>
+	      <if test="moduleid != null" >
+	        moduleid,
+	      </if>
+	      <if test="scope != null" >
+	        scope,
+	      </if>
+	      <if test="userid != null" >
+	        userid,
+	      </if>
+	      <if test="1==1" >
+	        addtime,
+	      </if>
+	      <if test="adduserid != null" >
+	        adduserid,
+	      </if>
+	      <if test="rule != null" >
+	        rule,
+	      </if>
+	      <if test="remark != null" >
+	        remark,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	        #{dataid},
+	      <if test="dataname != null" >
+	        #{dataname},
+	      </if>
+	      <if test="tablename != null" >
+	        #{tablename},
+	      </if>
+	      <if test="type != null" >
+	        #{type},
+	      </if>
+	      <if test="state != null" >
+	        #{state},
+	      </if>
+	      <if test="moduleid != null" >
+	        #{moduleid},
+	      </if>
+	      <if test="scope != null" >
+	        #{scope},
+	      </if>
+	      <if test="userid != null" >
+	        #{userid},
+	      </if>
+	      <if test="1==1" >
+	        now(),
+	      </if>
+	      <if test="adduserid != null" >
+	        #{adduserid},
+	      </if>
+	      <if test="rule != null" >
+	        #{rule},
+	      </if>
+	      <if test="remark != null" >
+	        #{remark},
+	      </if>
+	    </trim>
+	</insert>
+	<select id="showDataruleList" resultType="com.hd.agent.accesscontrol.model.Datarule" useCache="false">
+		select dataid, dataname, tablename,type, state, moduleid,scope,userid, addtime, adduserid, modifytime, modifyuserid,rule,remark
+		from t_ac_datarule where scope='1'
+	</select>
+	<delete id="deleteDatarule" parameterType="java.lang.String">
+		delete from t_ac_datarule where dataid=#{dataid}
+	</delete>
+	<select id="getDatarule" parameterType="java.lang.String" resultType="com.hd.agent.accesscontrol.model.Datarule">
+		select dataid, dataname, tablename,type, state, moduleid,scope,userid, addtime, adduserid, modifytime, modifyuserid,rule,remark
+		from t_ac_datarule where tablename=#{tablename} and state='1' and scope='1'
+	</select>
+	<select id="getDataruleByUserid" parameterType="java.lang.String" resultType="com.hd.agent.accesscontrol.model.Datarule">
+		select dataid, dataname, tablename,type, state, moduleid,scope,userid, addtime, adduserid, modifytime, modifyuserid,rule,remark
+		from t_ac_datarule where tablename=#{tablename} and userid=#{userid} and state='1' and scope='2'
+	</select>
+	<select id="checkDatarule" parameterType="com.hd.agent.accesscontrol.model.Datarule" resultType="com.hd.agent.accesscontrol.model.Datarule">
+		select dataid, dataname, tablename,type, state, moduleid,scope,userid, addtime, adduserid, modifytime, modifyuserid,rule,remark
+		from t_ac_datarule 
+		<trim prefix="where" prefixOverrides="and|or" >		
+	      <if test="tablename != null" >
+	         and tablename = #{tablename}
+	      </if>
+	      <if test="userid != null" >
+	         and userid = #{userid} and scope='2'
+	      </if>
+	      <if test="userid == null" >
+	         and scope='1'
+	      </if>
+	    </trim>
+	</select>
+	<select id="showDataruleInfo" parameterType="java.lang.String" resultType="com.hd.agent.accesscontrol.model.Datarule" useCache="false">
+		select dataid, dataname, tablename,type, state, moduleid,scope,userid, addtime, adduserid, modifytime, modifyuserid,rule,remark
+		from t_ac_datarule where dataid=#{dataid}
+	</select>
+	<update id="editDatarule" parameterType="com.hd.agent.accesscontrol.model.Datarule">
+		update t_ac_datarule
+	    <set >
+	      <if test="state != null" >
+	        state = #{state},
+	      </if>
+	      <if test="type != null" >
+	        type = #{type},
+	      </if>
+	      <if test="1==1" >
+	        modifytime = now(),
+	      </if>
+	      <if test="modifyuserid != null" >
+	        modifyuserid = #{modifyuserid},
+	      </if>
+	      <if test="scope != null" >
+	        scope = #{scope},
+	      </if>
+	      <if test="userid != null" >
+	        userid = #{userid},
+	      </if>
+	      <if test="rule != null" >
+	        rule = #{rule},
+	      </if>
+	      <if test="remark != null" >
+	        remark = #{remark},
+	      </if>
+	    </set>
+	    where dataid = #{dataid}
+	</update>
+	<select id="checkDataruleTable" parameterType="java.lang.String" resultType="int" useCache="false">
+		select count(1) from t_ac_datarule where tablename=#{tablename}
+	</select>
+	<select id="getDataruleListByUserid" parameterType="java.lang.String" resultType="com.hd.agent.accesscontrol.model.Datarule">
+		select dataid, dataname, tablename,type, state, moduleid,scope,userid, addtime, adduserid, modifytime, modifyuserid,rule,remark
+		from t_ac_datarule where userid=#{userid} and scope='2'
+	</select>
+	<select id="getDataruleOpneList" resultType="map">
+		select DISTINCT tablename,dataname,type,remark from t_ac_datarule where type=#{type} and scope='1' and state='1' order by tablename
+	</select>
+</mapper>

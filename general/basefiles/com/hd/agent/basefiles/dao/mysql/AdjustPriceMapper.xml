@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.basefiles.dao.AdjustPriceMapper" >
+
+  <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.businessdate != null" >
+         and businessdate = #{condition.businessdate}
+      </if>
+      <if test="condition.status != null" >
+         and status = #{condition.status}
+      </if>
+      <if test="condition.name != null" >
+         and name = #{condition.name}
+      </if>
+      <if test="condition.type != null" >
+         and type = #{condition.type}
+      </if>
+      <if test="condition.busid != null" >
+         and busid = #{condition.busid}
+      </if>
+      <if test="condition.remark != null" >
+         and remark = #{condition.remark}
+      </if>
+      <if test="condition.adduserid != null" >
+         and adduserid = #{condition.adduserid}
+      </if>
+      <if test="condition.addusername != null" >
+         and addusername = #{condition.addusername}
+      </if>
+      <if test="condition.adddeptid != null" >
+         and adddeptid = #{condition.adddeptid}
+      </if>
+      <if test="condition.adddeptname != null" >
+         and adddeptname = #{condition.adddeptname}
+      </if>
+      <if test="condition.addtime != null" >
+         and addtime = #{condition.addtime}
+      </if>
+      <if test="condition.modifyuserid != null" >
+         and modifyuserid = #{condition.modifyuserid}
+      </if>
+      <if test="condition.modifyusername != null" >
+         and modifyusername = #{condition.modifyusername}
+      </if>
+      <if test="condition.modifytime != null" >
+         and modifytime = #{condition.modifytime}
+      </if>
+      <if test="condition.audituserid != null" >
+         and audituserid = #{condition.audituserid}
+      </if>
+      <if test="condition.auditusername != null" >
+         and auditusername = #{condition.auditusername}
+      </if>
+      <if test="condition.audittime != null" >
+         and audittime = #{condition.audittime}
+      </if>
+      <if test="condition.stopuserid != null" >
+         and stopuserid = #{condition.stopuserid}
+      </if>
+      <if test="condition.stopusername != null" >
+         and stopusername = #{condition.stopusername}
+      </if>
+      <if test="condition.stoptime != null" >
+         and stoptime = #{condition.stoptime}
+      </if>
+      <if test="condition.closetime != null" >
+         and closetime = #{condition.closetime}
+      </if>
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, businessdate, status, name, type, busid, remark, adduserid, addusername, adddeptid, 
+    adddeptname, addtime, modifyuserid, modifyusername, modifytime, audituserid, auditusername, 
+    audittime, stopuserid, stopusername, stoptime, closetime
+  </sql>
+    <!-- 获取到调价单列表 -->
+   <select id="getAdjustPriceList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.basefiles.model.AdjustPrice">
+	    select  <include refid="Base_Column_List"/> 
+	    from t_base_adjust_price
+	    <trim prefix="where" prefixOverrides="and|or">
+  		  <include refid="common.Page_querySql"/>
+	      <include refid="common.Page_dataSql"/>
+		  <if test="condition.businessdate1 != null">
+			 and businessdate >= #{condition.businessdate1}
+		  </if>
+		  <if test="condition.businessdate2 != null">
+			 <![CDATA[and businessdate <= #{condition.businessdate2}]]>
+		  </if>
+		  <if test="condition.id != null" >
+	         and id like CONCAT('%',#{condition.id},'%')
+	      </if>
+	      <if test="condition.type != null">
+	         and type = #{condition.type}
+	      </if>
+	      <if test="condition.status != null">
+	         and status = #{condition.status}
+	      </if>
+	      <if test="condition.name != null">
+	         and name = #{condition.name}
+	      </if>
+	    </trim>
+	    <include refid="common.Page_limit" />
+    </select>
+  <select id="getAdjustPriceListCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  	    select count(1) from t_base_adjust_price
+  	    <trim prefix="where" prefixOverrides="and|or">
+  		  <include refid="common.Page_querySql"/>
+	      <include refid="common.Page_dataSql"/>
+		  <if test="condition.businessdate1 != null">
+			 and businessdate >= #{condition.businessdate1}
+		  </if>
+		  <if test="condition.businessdate2 != null">
+			 <![CDATA[and businessdate <= #{condition.businessdate2}]]>
+		  </if>
+		  <if test="condition.id != null" >
+	         and id like CONCAT('%',#{condition.id},'%')
+	      </if>
+	      <if test="condition.addusername != null">
+	         and addusername like CONCAT ('%',#{condition.addusername},'%')
+	      </if>
+	      <if test="condition.storageid != null">
+	         and storageid = #{condition.storageid}
+	      </if>
+	      <if test="condition.status != null">
+	         and status = #{condition.status}
+	      </if>
+	      <if test="condition.supplierid != null">
+	         and supplierid = #{condition.supplierid}
+	      </if>
+	    </trim>
+  </select>
+  <insert id="addAdjustPrice" parameterType="com.hd.agent.basefiles.model.AdjustPrice" >
+    insert into t_base_adjust_price
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="businessdate != null" >
+        businessdate,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="busid != null" >
+        busid,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="adduserid != null" >
+        adduserid,
+      </if>
+      <if test="addusername != null" >
+        addusername,
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid,
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname,
+      </if>
+      <if test="addtime != null" >
+        addtime,
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid,
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername,
+      </if>
+      <if test="modifytime != null" >
+        modifytime,
+      </if>
+      <if test="audituserid != null" >
+        audituserid,
+      </if>
+      <if test="auditusername != null" >
+        auditusername,
+      </if>
+      <if test="audittime != null" >
+        audittime,
+      </if>
+      <if test="stopuserid != null" >
+        stopuserid,
+      </if>
+      <if test="stopusername != null" >
+        stopusername,
+      </if>
+      <if test="stoptime != null" >
+        stoptime,
+      </if>
+      <if test="closetime != null" >
+        closetime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="businessdate != null" >
+        #{businessdate},
+      </if>
+      <if test="status != null" >
+        #{status},
+      </if>
+      <if test="name != null" >
+        #{name},
+      </if>
+      <if test="type != null" >
+        #{type},
+      </if>
+      <if test="busid != null" >
+        #{busid},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+      <if test="adduserid != null" >
+        #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        #{adddeptname},
+      </if>
+      <if test="addtime != null" >
+        #{addtime},
+      </if>
+      <if test="modifyuserid != null" >
+        #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        #{modifyusername},
+      </if>
+      <if test="modifytime != null" >
+        #{modifytime},
+      </if>
+      <if test="audituserid != null" >
+        #{audituserid},
+      </if>
+      <if test="auditusername != null" >
+        #{auditusername},
+      </if>
+      <if test="audittime != null" >
+        #{audittime},
+      </if>
+      <if test="stopuserid != null" >
+        #{stopuserid},
+      </if>
+      <if test="stopusername != null" >
+        #{stopusername},
+      </if>
+      <if test="stoptime != null" >
+        #{stoptime},
+      </if>
+      <if test="closetime != null" >
+        #{closetime},
+      </if>
+    </trim>
+  </insert>
+   <select id="getAdjustPriceByID" parameterType="java.lang.String" resultType="com.hd.agent.basefiles.model.AdjustPrice">
+  		select <include refid="Base_Column_List"/>
+  		from t_base_adjust_price where id=#{id}
+  	</select>
+  	<update id="auditAdjustPrice" parameterType="java.lang.String">
+  		update t_base_adjust_price set audittime = #{date},status='3',audituserid=#{userid},auditusername=#{username},businessdate=#{businessdate}
+  		where id=#{id} and (status='2' or status='6')
+  	</update>
+  	<update id="editAdjustPrice" parameterType="com.hd.agent.basefiles.model.AdjustPrice" >
+    update t_base_adjust_price
+    <set >
+      <if test="businessdate != null" >
+        businessdate = #{businessdate},
+      </if>
+      <if test="status != null" >
+        status = #{status},
+      </if>
+      <if test="name != null" >
+        name = #{name},
+      </if>
+      <if test="type != null" >
+        type = #{type},
+      </if>
+      <if test="busid != null" >
+        busid = #{busid},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark},
+      </if>
+      <if test="adduserid != null" >
+        adduserid = #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        addusername = #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid = #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname = #{adddeptname},
+      </if>
+      <if test="addtime != null" >
+        addtime = #{addtime},
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid = #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername = #{modifyusername},
+      </if>
+      <if test="modifytime != null" >
+        modifytime = #{modifytime},
+      </if>
+      <if test="audituserid != null" >
+        audituserid = #{audituserid},
+      </if>
+      <if test="auditusername != null" >
+        auditusername = #{auditusername},
+      </if>
+      <if test="audittime != null" >
+        audittime = #{audittime},
+      </if>
+      <if test="stopuserid != null" >
+        stopuserid = #{stopuserid},
+      </if>
+      <if test="stopusername != null" >
+        stopusername = #{stopusername},
+      </if>
+      <if test="stoptime != null" >
+        stoptime = #{stoptime},
+      </if>
+      <if test="closetime != null" >
+        closetime = #{closetime},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  	<delete id="deleteAdjustPrice" parameterType="java.lang.String">
+		delete from t_base_adjust_price where id = #{id}
+	</delete>
+	<update id="oppauditAdjustPrice" parameterType="java.lang.String">
+  		update t_base_adjust_price set stoptime = #{date},status='2',stopuserid=#{userid},stopusername=#{username}
+  		where id=#{id} 
+  	</update>
+  	<select id="getAdjustPriceExportList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.basefiles.model.AdjustPriceExport">
+  	SELECT a.businessdate,a.type,a.busid,a.name,
+  	    b.goodsid,b.oldprice,b.nowprice,b.rate,b.remark
+	FROM t_base_adjust_price a 
+	RIGHT JOIN t_base_adjust_price_detail b ON a.id = b.billid
+	  <trim prefix="where" prefixOverrides="and|or">
+  		  <include refid="common.Page_querySql"/>
+	      <include refid="common.Page_dataSql"/>
+		  <if test="condition.businessdate1 != null">
+			 and businessdate >= #{condition.businessdate1}
+		  </if>
+		  <if test="condition.businessdate2 != null">
+			 <![CDATA[and businessdate <= #{condition.businessdate2}]]>
+		  </if>
+		  <if test="condition.id != null" >
+	         and id like CONCAT('%',#{condition.id},'%')
+	      </if>
+	      <if test="condition.addusername != null">
+	         and addusername like CONCAT ('%',#{condition.addusername},'%')
+	      </if>
+	      <if test="condition.storageid != null">
+	         and storageid = #{condition.storageid}
+	      </if>
+	      <if test="condition.status != null">
+	         and status = #{condition.status}
+	      </if>
+	      <if test="condition.supplierid != null">
+	         and supplierid = #{condition.supplierid}
+	      </if>
+	      <if test="condition.exportids != null" >
+         and FIND_IN_SET(a.id,#{condition.exportids})
+      	</if>
+	    </trim>
+  </select>
+</mapper>

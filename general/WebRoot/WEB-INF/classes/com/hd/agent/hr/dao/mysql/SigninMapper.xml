@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hd.agent.hr.dao.SigninMapper">  
+  <!-- t_hr_singin列 -->
+  <sql id="commonSigninCols">
+  	id, businessdate, remark, personid, userid, ambegin, ambeginfile, ambeginx, ambeginy, 
+    amend, amendfile, amendx, amendy, pmbegin, pmbeginfile, pmbeginx, pmbeginy, pmend, 
+    pmendfile, pmendx, pmendy, outtime, outpic, outx, outy, 
+    adduserid, addusername, adddeptid, adddeptname, addtime
+  </sql>
+  <sql id="commonSigninCols2">
+    t1.id, t1.businessdate, t1.remark, t1.personid, t1.userid, t1.ambegin, t1.ambeginfile, t1.ambeginx, t1.ambeginy, 
+    t1.amend, t1.amendfile, t1.amendx, t1.amendy, t1.pmbegin, t1.pmbeginfile, t1.pmbeginx, t1.pmbeginy, t1.pmend, 
+    t1.pmendfile, t1.pmendx, t1.pmendy, t1.outtime, t1.outpic, t1.outx, t1.outy, 
+    t1.adduserid, t1.addusername, t1.adddeptid, t1.adddeptname, t1.addtime
+  </sql>
+
+  <select id="selectSigninListCount" resultType="java.lang.Integer" parameterType="com.hd.agent.common.util.PageMap">
+  	select count(1)
+  	from t_hr_singin t1
+    left join t_sys_user t3 on t1.userid = t3.userid
+  	<trim prefix=" where " prefixOverrides="and|or">
+        <if test="condition.datefrom != null">
+            and t1.businessdate <![CDATA[>=]]> #{condition.datefrom }
+        </if>
+        <if test="condition.dateto != null">
+            and t1.businessdate <![CDATA[<=]]> #{condition.dateto }
+        </if>
+        <if test="condition.personid != null">
+            and t1.personid = #{condition.personid }
+        </if>
+        <if test="condition.userid != null">
+            and t1.userid in
+            <foreach collection="condition.userid" item="item" open="("  separator="," close=")">
+                #{item }
+            </foreach>
+        </if>
+        <if test="condition.deptid != null">
+            and find_in_set(t3.departmentid, #{condition.deptid })
+        </if>
+  	</trim>
+  </select>
+  
+  <select id="selectSigninList" resultType="com.hd.agent.hr.model.Signin" parameterType="com.hd.agent.common.util.PageMap">
+  	select 
+  		<include refid="commonSigninCols2"/>,
+  		t2.name personname,
+  		t3.name username,
+        t3.departmentid deptid
+  	from t_hr_singin t1
+  	left join t_base_personnel t2 on t1.personid = t2.id
+  	left join t_sys_user t3 on t1.userid = t3.userid
+  	<trim prefix=" where " prefixOverrides="and|or">
+  		<if test="condition.datefrom != null">
+  			and t1.businessdate <![CDATA[>=]]> #{condition.datefrom }
+  		</if>
+  		<if test="condition.dateto != null">
+  			and t1.businessdate <![CDATA[<=]]> #{condition.dateto }
+  		</if>
+  		<if test="condition.personid != null">
+  			and t1.personid = #{condition.personid }
+  		</if>
+  		<if test="condition.userid != null">
+  			 and t1.userid in 
+			<foreach collection="condition.userid" item="item" open="("  separator="," close=")">  
+				#{item }  
+			</foreach>
+		</if>
+        <if test="condition.deptid != null">
+            and find_in_set(t3.departmentid, #{condition.deptid })
+        </if>
+	    <include refid="common.Page_querySql"/>
+	  	<include refid="common.Page_dataSql"/>
+  	</trim>
+  	order by businessdate desc, personid, userid
+	<include refid="common.Page_limit"/>
+  </select>
+  <select id="selectSigninInfo" parameterType="java.lang.String" resultType="com.hd.agent.hr.model.Signin">
+  	select 
+  		<include refid="commonSigninCols2"/>,
+  		t2.name personname,
+  		t3.name username
+  	from t_hr_singin t1
+  	left join t_base_personnel t2 on t1.personid = t2.id
+  	left join t_sys_user t3 on t1.userid = t3.userid
+  	where t1.id = #{id }
+  </select>
+  <insert id="addSignin" parameterType="com.hd.agent.hr.model.Signin" >
+    insert into t_hr_singin
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="businessdate != null" >
+        businessdate,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="personid != null" >
+        personid,
+      </if>
+      <if test="userid != null" >
+        userid,
+      </if>
+      <if test="ambegin != null" >
+        ambegin,
+      </if>
+      <if test="ambeginfile != null" >
+        ambeginfile,
+      </if>
+      <if test="ambeginx != null" >
+        ambeginx,
+      </if>
+      <if test="ambeginy != null" >
+        ambeginy,
+      </if>
+      <if test="amend != null" >
+        amend,
+      </if>
+      <if test="amendfile != null" >
+        amendfile,
+      </if>
+      <if test="amendx != null" >
+        amendx,
+      </if>
+      <if test="amendy != null" >
+        amendy,
+      </if>
+      <if test="pmbegin != null" >
+        pmbegin,
+      </if>
+      <if test="pmbeginfile != null" >
+        pmbeginfile,
+      </if>
+      <if test="pmbeginx != null" >
+        pmbeginx,
+      </if>
+      <if test="pmbeginy != null" >
+        pmbeginy,
+      </if>
+      <if test="pmend != null" >
+        pmend,
+      </if>
+      <if test="pmendfile != null" >
+        pmendfile,
+      </if>
+      <if test="pmendx != null" >
+        pmendx,
+      </if>
+      <if test="pmendy != null" >
+        pmendy,
+      </if>
+      <if test="outtime != null">
+        outtime,
+      </if>
+      <if test="outpic != null">
+        outpic,
+      </if>
+      <if test="outx != null">
+        outx,
+      </if>
+      <if test="outy != null">
+        outy,
+      </if>
+      <if test="adduserid != null" >
+        adduserid,
+      </if>
+      <if test="addusername != null" >
+        addusername,
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid,
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname,
+      </if>
+      <if test="1==1" >
+        addtime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="businessdate != null" >
+        #{businessdate},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+      <if test="personid != null" >
+        #{personid},
+      </if>
+      <if test="userid != null" >
+        #{userid},
+      </if>
+      <if test="ambegin != null" >
+        now(),
+      </if>
+      <if test="ambeginfile != null" >
+        #{ambeginfile},
+      </if>
+      <if test="ambeginx != null" >
+        #{ambeginx},
+      </if>
+      <if test="ambeginy != null" >
+        #{ambeginy},
+      </if>
+      <if test="amend != null" >
+        now(),
+      </if>
+      <if test="amendfile != null" >
+        #{amendfile},
+      </if>
+      <if test="amendx != null" >
+        #{amendx},
+      </if>
+      <if test="amendy != null" >
+        #{amendy},
+      </if>
+      <if test="pmbegin != null" >
+        now(),
+      </if>
+      <if test="pmbeginfile != null" >
+        #{pmbeginfile},
+      </if>
+      <if test="pmbeginx != null" >
+        #{pmbeginx},
+      </if>
+      <if test="pmbeginy != null" >
+        #{pmbeginy},
+      </if>
+      <if test="pmend != null" >
+        now(),
+      </if>
+      <if test="pmendfile != null" >
+        #{pmendfile},
+      </if>
+      <if test="pmendx != null" >
+        #{pmendx},
+      </if>
+      <if test="pmendy != null" >
+        #{pmendy},
+      </if>
+      <if test="outtime != null">
+        now(),
+      </if>
+      <if test="outpic != null">
+        #{outpic},
+      </if>
+      <if test="outx != null">
+        #{outx},
+      </if>
+      <if test="outy != null">
+        #{outy},
+      </if>
+      <if test="adduserid != null" >
+        #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        #{adddeptname},
+      </if>
+      <if test="1==1" >
+        now(),
+      </if>
+    </trim>
+  </insert>
+  <select id="getSigninByUseridAndDate" parameterType="java.lang.String" resultType="com.hd.agent.hr.model.Signin">
+  	select <include refid="commonSigninCols"/>
+  	from t_hr_singin 
+  	where businessdate=#{businessdate} and userid=#{userid}
+  </select>
+  <update id="updateSignin" parameterType="com.hd.agent.hr.model.Signin" >
+    update t_hr_singin
+    <set >
+      <if test="businessdate != null" >
+        businessdate = #{businessdate},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark},
+      </if>
+      <if test="personid != null" >
+        personid = #{personid},
+      </if>
+      <if test="userid != null" >
+        userid = #{userid},
+      </if>
+      <if test="ambegin != null" >
+        ambegin = now(),
+      </if>
+      <if test="ambeginfile != null" >
+        ambeginfile = #{ambeginfile},
+      </if>
+      <if test="ambeginx != null" >
+        ambeginx = #{ambeginx},
+      </if>
+      <if test="ambeginy != null" >
+        ambeginy = #{ambeginy},
+      </if>
+      <if test="amend != null" >
+        amend = now(),
+      </if>
+      <if test="amendfile != null" >
+        amendfile = #{amendfile},
+      </if>
+      <if test="amendx != null" >
+        amendx = #{amendx},
+      </if>
+      <if test="amendy != null" >
+        amendy = #{amendy},
+      </if>
+      <if test="pmbegin != null" >
+        pmbegin = now(),
+      </if>
+      <if test="pmbeginfile != null" >
+        pmbeginfile = #{pmbeginfile},
+      </if>
+      <if test="pmbeginx != null" >
+        pmbeginx = #{pmbeginx},
+      </if>
+      <if test="pmbeginy != null" >
+        pmbeginy = #{pmbeginy},
+      </if>
+      <if test="pmend != null" >
+        pmend = now(),
+      </if>
+      <if test="pmendfile != null" >
+        pmendfile = #{pmendfile},
+      </if>
+      <if test="pmendx != null" >
+        pmendx = #{pmendx},
+      </if>
+      <if test="pmendy != null" >
+        pmendy = #{pmendy},
+      </if>
+      <if test="outtime != null">
+        outtime = now(),
+      </if>
+      <if test="outpic != null">
+        outpic = #{outpic},
+      </if>
+      <if test="outx != null">
+        outx = #{outx},
+      </if>
+      <if test="outy != null">
+        outy = #{outy},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  <select id="showSigninList" parameterType="java.lang.String" resultType="map">
+  	select t.businessdate,t.userid,t.personid,DATE_FORMAT(t.ambegin, '%T') as amtime,DATE_FORMAT(t.amend, '%T') as amendtime,
+      DATE_FORMAT(t.pmbegin, '%T') as pmbegintime,DATE_FORMAT(t.pmend, '%T') as pmtime,DATE_FORMAT(t.outtime, '%T') as outtime
+  	from t_hr_singin t
+  	<trim prefix=" where " prefixOverrides="and|or">
+  		<if test="begindate != null">
+  			and t.businessdate <![CDATA[>=]]> #{begindate }
+  		</if>
+  		<if test="enddate != null">
+  			and t.businessdate <![CDATA[<=]]> #{enddate }
+  		</if>
+  		<if test="1==1">
+  			and userid = #{userid }
+  		</if>
+  	</trim>
+  </select>
+  <delete id="deleteSignin" parameterType="java.lang.String">
+      delete from t_hr_singin where id = #{id }
+  </delete>
+</mapper>

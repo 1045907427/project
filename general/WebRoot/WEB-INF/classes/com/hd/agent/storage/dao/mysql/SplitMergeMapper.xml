@@ -1,0 +1,666 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.storage.dao.SplitMergeMapper" >
+    <resultMap id="BaseResultMap" type="com.hd.agent.storage.model.SplitMerge" >
+        <id column="id" jdbcType="VARCHAR" property="id" />
+        <result column="businessdate" jdbcType="VARCHAR" property="businessdate" />
+        <result column="status" jdbcType="VARCHAR" property="status" />
+        <result column="remark" jdbcType="VARCHAR" property="remark" />
+        <result column="adduserid" jdbcType="VARCHAR" property="adduserid" />
+        <result column="addusername" jdbcType="VARCHAR" property="addusername" />
+        <result column="adddeptid" jdbcType="VARCHAR" property="adddeptid" />
+        <result column="adddeptname" jdbcType="VARCHAR" property="adddeptname" />
+        <result column="addtime" jdbcType="TIMESTAMP" property="addtime" />
+        <result column="modifyuserid" jdbcType="VARCHAR" property="modifyuserid" />
+        <result column="modifyusername" jdbcType="VARCHAR" property="modifyusername" />
+        <result column="modifytime" jdbcType="TIMESTAMP" property="modifytime" />
+        <result column="audituserid" jdbcType="VARCHAR" property="audituserid" />
+        <result column="auditusername" jdbcType="VARCHAR" property="auditusername" />
+        <result column="audittime" jdbcType="TIMESTAMP" property="audittime" />
+        <result column="stopuserid" jdbcType="VARCHAR" property="stopuserid" />
+        <result column="stopusername" jdbcType="VARCHAR" property="stopusername" />
+        <result column="stoptime" jdbcType="TIMESTAMP" property="stoptime" />
+        <result column="closetime" jdbcType="TIMESTAMP" property="closetime" />
+        <result column="printtimes" jdbcType="INTEGER" property="printtimes" />
+        <result column="billtype" jdbcType="VARCHAR" property="billtype" />
+        <result column="supplierid" jdbcType="VARCHAR" property="supplierid" />
+        <result column="goodsid" jdbcType="VARCHAR" property="goodsid" />
+        <result column="bomid" jdbcType="VARCHAR" property="bomid" />
+        <result column="storageid" jdbcType="VARCHAR" property="storageid" />
+        <result column="storagedate" jdbcType="VARCHAR" property="storagedate" />
+        <result column="storagestatus" jdbcType="VARCHAR" property="storagestatus" />
+        <result column="price" jdbcType="DECIMAL" property="price" />
+        <result column="unitnum" jdbcType="DECIMAL" property="unitnum" />
+        <result column="batchid" jdbcType="VARCHAR" property="batchid" />
+        <result column="summarybatchid" jdbcType="VARCHAR" property="summarybatchid" />
+        <result column="storagelocationid" jdbcType="VARCHAR" property="storagelocationid" />
+        <result column="produceddate" jdbcType="VARCHAR" property="produceddate" />
+        <result column="deadline" jdbcType="VARCHAR" property="deadline" />
+        <result column="barcode" jdbcType="VARCHAR" property="barcode" />
+    </resultMap>
+    <resultMap id="DetailResultMap" type="com.hd.agent.storage.model.SplitMergeDetail" >
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="billid" jdbcType="VARCHAR" property="billid" />
+        <result column="goodsid" jdbcType="VARCHAR" property="goodsid" />
+        <result column="storageid" jdbcType="VARCHAR" property="storageid" />
+        <result column="storagedate" jdbcType="VARCHAR" property="storagedate" />
+        <result column="storagestatus" jdbcType="VARCHAR" property="storagestatus" />
+        <result column="price" jdbcType="DECIMAL" property="price" />
+        <result column="unitnum" jdbcType="DECIMAL" property="unitnum" />
+        <result column="rate" jdbcType="DECIMAL" property="rate" />
+        <result column="batchid" jdbcType="VARCHAR" property="batchid" />
+        <result column="summarybatchid" jdbcType="VARCHAR" property="summarybatchid" />
+        <result column="storagelocationid" jdbcType="VARCHAR" property="storagelocationid" />
+        <result column="produceddate" jdbcType="VARCHAR" property="produceddate" />
+        <result column="deadline" jdbcType="VARCHAR" property="deadline" />
+        <result column="barcode" jdbcType="VARCHAR" property="barcode" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+        id, businessdate, status, remark, adduserid, addusername, adddeptid, adddeptname,
+        addtime, modifyuserid, modifyusername, modifytime, audituserid, auditusername, audittime,
+        stopuserid, stopusername, stoptime, closetime, printtimes, billtype, supplierid,
+        goodsid, bomid, storageid, storagedate, storagestatus, price, unitnum, batchid, summarybatchid,
+        storagelocationid, produceddate, deadline, barcode
+    </sql>
+    <sql id="Base_Column_List2" >
+        t1.id, t1.businessdate, t1.status, t1.remark, t1.adduserid, t1.addusername, t1.adddeptid, t1.adddeptname,
+        t1.addtime, t1.modifyuserid, t1.modifyusername, t1.modifytime, t1.audituserid, t1.auditusername, t1.audittime,
+        t1.stopuserid, t1.stopusername, t1.stoptime, t1.closetime, t1.printtimes, t1.billtype, t1.supplierid,
+        t1.goodsid, t1.bomid, t1.storageid, t1.storagedate, t1.storagestatus, t1.price, t1.unitnum, t1.batchid,
+        t1.summarybatchid, t1.storagelocationid, t1.produceddate, t1.deadline
+    </sql>
+    <sql id="Detail_Column_List" >
+        id, billid, goodsid, storageid, storagedate, storagestatus, price, unitnum, rate, batchid, summarybatchid,
+        storagelocationid, produceddate, deadline, barcode
+    </sql>
+    <sql id="Detail_Column_List2" >
+        t1.id, t1.billid, t1.goodsid, t1.storageid, t1.storagedate, t1.storagestatus, t1.price, t1.unitnum, t1.rate, t1.batchid,
+        t1.summarybatchid, t1.summarybatchid, t1.storagelocationid, t1.produceddate, t1.deadline
+    </sql>
+    <delete id="deleteSplitMerge" parameterType="java.lang.String" >
+        delete from t_storage_splitmerge
+        where id = #{id}
+    </delete>
+    <delete id="deleteSplitMergeDetail" parameterType="java.lang.String" >
+        delete from t_storage_splitmerge_detail
+        where billid = #{billid}
+    </delete>
+    <insert id="insertSplitMerge" parameterType="com.hd.agent.storage.model.SplitMerge" >
+        insert into t_storage_splitmerge
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="businessdate != null">
+                businessdate,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="adduserid != null">
+                adduserid,
+            </if>
+            <if test="addusername != null">
+                addusername,
+            </if>
+            <if test="adddeptid != null">
+                adddeptid,
+            </if>
+            <if test="adddeptname != null">
+                adddeptname,
+            </if>
+            addtime,
+            <if test="modifyuserid != null">
+                modifyuserid,
+            </if>
+            <if test="modifyusername != null">
+                modifyusername,
+            </if>
+            <if test="modifytime != null">
+                modifytime,
+            </if>
+            <if test="audituserid != null">
+                audituserid,
+            </if>
+            <if test="auditusername != null">
+                auditusername,
+            </if>
+            <if test="audittime != null">
+                audittime,
+            </if>
+            <if test="stopuserid != null">
+                stopuserid,
+            </if>
+            <if test="stopusername != null">
+                stopusername,
+            </if>
+            <if test="stoptime != null">
+                stoptime,
+            </if>
+            <if test="closetime != null">
+                closetime,
+            </if>
+            <if test="printtimes != null">
+                printtimes,
+            </if>
+            <if test="billtype != null">
+                billtype,
+            </if>
+            <if test="supplierid != null">
+                supplierid,
+            </if>
+            <if test="goodsid != null">
+                goodsid,
+            </if>
+            <if test="bomid != null">
+                bomid,
+            </if>
+            <if test="storageid != null">
+                storageid,
+            </if>
+            <if test="storagedate != null">
+                storagedate,
+            </if>
+            <if test="storagestatus != null">
+                storagestatus,
+            </if>
+            <if test="price != null">
+                price,
+            </if>
+            <if test="unitnum != null">
+                unitnum,
+            </if>
+            <if test="batchid != null">
+                batchid,
+            </if>
+            <if test="summarybatchid != null">
+                summarybatchid,
+            </if>
+            <if test="storagelocationid != null">
+                storagelocationid,
+            </if>
+            <if test="produceddate != null">
+                produceddate,
+            </if>
+            <if test="deadline != null">
+                deadline,
+            </if>
+            <if test="barcode != null">
+                barcode,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="businessdate != null">
+                #{businessdate},
+            </if>
+            <if test="status != null">
+                #{status},
+            </if>
+            <if test="remark != null">
+                #{remark},
+            </if>
+            <if test="adduserid != null">
+                #{adduserid},
+            </if>
+            <if test="addusername != null">
+                #{addusername},
+            </if>
+            <if test="adddeptid != null">
+                #{adddeptid},
+            </if>
+            <if test="adddeptname != null">
+                #{adddeptname},
+            </if>
+            now(),
+            <if test="modifyuserid != null">
+                #{modifyuserid},
+            </if>
+            <if test="modifyusername != null">
+                #{modifyusername},
+            </if>
+            <if test="modifytime != null">
+                #{modifytime},
+            </if>
+            <if test="audituserid != null">
+                #{audituserid},
+            </if>
+            <if test="auditusername != null">
+                #{auditusername},
+            </if>
+            <if test="audittime != null">
+                #{audittime},
+            </if>
+            <if test="stopuserid != null">
+                #{stopuserid},
+            </if>
+            <if test="stopusername != null">
+                #{stopusername},
+            </if>
+            <if test="stoptime != null">
+                #{stoptime},
+            </if>
+            <if test="closetime != null">
+                #{closetime},
+            </if>
+            <if test="printtimes != null">
+                #{printtimes},
+            </if>
+            <if test="billtype != null">
+                #{billtype},
+            </if>
+            <if test="supplierid != null">
+                #{supplierid},
+            </if>
+            <if test="goodsid != null">
+                #{goodsid},
+            </if>
+            <if test="bomid != null">
+                #{bomid},
+            </if>
+            <if test="storageid != null">
+                #{storageid},
+            </if>
+            <if test="storagedate != null">
+                #{storagedate},
+            </if>
+            <if test="storagestatus != null">
+                #{storagestatus},
+            </if>
+            <if test="price != null">
+                #{price},
+            </if>
+            <if test="unitnum != null">
+                #{unitnum},
+            </if>
+            <if test="batchid != null">
+                #{batchid},
+            </if>
+            <if test="summarybatchid != null">
+                #{summarybatchid},
+            </if>
+            <if test="storagelocationid != null">
+                #{storagelocationid},
+            </if>
+            <if test="produceddate != null">
+                #{produceddate},
+            </if>
+            <if test="deadline != null">
+                #{deadline},
+            </if>
+            <if test="barcode != null">
+                #{barcode},
+            </if>
+        </trim>
+    </insert>
+    <insert id="insertSplitMergeDetail" parameterType="com.hd.agent.storage.model.SplitMergeDetail" >
+        insert into t_storage_splitmerge_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="billid != null">
+                billid,
+            </if>
+            <if test="goodsid != null">
+                goodsid,
+            </if>
+            <if test="storageid != null">
+                storageid,
+            </if>
+            <if test="storagedate != null">
+                storagedate,
+            </if>
+            <if test="storagestatus != null">
+                storagestatus,
+            </if>
+            <if test="price != null">
+                price,
+            </if>
+            <if test="unitnum != null">
+                unitnum,
+            </if>
+            <if test="rate != null">
+                rate,
+            </if>
+            <if test="batchid != null">
+                batchid,
+            </if>
+            <if test="summarybatchid != null">
+                summarybatchid,
+            </if>
+            <if test="storagelocationid != null">
+                storagelocationid,
+            </if>
+            <if test="produceddate != null">
+                produceddate,
+            </if>
+            <if test="deadline != null">
+                deadline,
+            </if>
+            <if test="barcode != null">
+                barcode,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="billid != null">
+                #{billid},
+            </if>
+            <if test="goodsid != null">
+                #{goodsid},
+            </if>
+            <if test="storageid != null">
+                #{storageid},
+            </if>
+            <if test="storagedate != null">
+                #{storagedate},
+            </if>
+            <if test="storagestatus != null">
+                #{storagestatus},
+            </if>
+            <if test="price != null">
+                #{price},
+            </if>
+            <if test="unitnum != null">
+                #{unitnum},
+            </if>
+            <if test="rate != null">
+                #{rate},
+            </if>
+            <if test="batchid != null">
+                #{batchid},
+            </if>
+            <if test="summarybatchid != null">
+                #{summarybatchid},
+            </if>
+            <if test="storagelocationid != null">
+                #{storagelocationid},
+            </if>
+            <if test="produceddate != null">
+                #{produceddate},
+            </if>
+            <if test="deadline != null">
+                #{deadline},
+            </if>
+            <if test="barcode != null">
+                #{barcode},
+            </if>
+        </trim>
+    </insert>
+    <sql id="selectSplitMergeList_Where_Condition">
+        <trim prefix="where" prefixOverrides="and|or">
+            and 1 = 1
+            <if test="condition.id != null">
+                and t1.id LIKE concat('%', #{condition.id }, '%')
+            </if>
+            <if test="condition.billtype != null">
+                and t1.billtype = #{condition.billtype }
+            </if>
+            <if test="condition.startdate != null">
+                and t1.businessdate <![CDATA[ >= ]]> #{condition.startdate }
+            </if>
+            <if test="condition.enddate != null">
+                and t1.businessdate <![CDATA[ <= ]]> #{condition.enddate }
+            </if>
+            <if test="condition.status != null">
+                and t1.status = #{condition.status }
+            </if>
+            <if test="condition.goodsid != null">
+                and t1.goodsid = #{condition.goodsid }
+            </if>
+            <if test="condition.supplierid != null">
+                and t1.supplierid = #{condition.supplierid }
+            </if>
+            <if test="condition.idarrs != null">
+                and find_in_set(t1.id, #{condition.idarrs })
+            </if>
+            <include refid="common.Page_querySql"/>
+            <include refid="common.Page_dataSql"/>
+        </trim>
+    </sql>
+    <select id="selectSplitMergeListCount" resultType="int" parameterType="com.hd.agent.common.util.PageMap">
+        select count(1) from t_storage_splitmerge t1
+        <include refid="selectSplitMergeList_Where_Condition"/>
+    </select>
+    <select id="selectSplitMergeList" resultType="com.hd.agent.storage.model.SplitMerge" parameterType="com.hd.agent.common.util.PageMap">
+        select
+            <include refid="Base_Column_List2"/>,
+            ifnull(t1.barcode, t2.barcode) barcode,
+            t2.name goodsname
+        from t_storage_splitmerge t1
+        left join t_base_goods_info t2 on t1.goodsid = t2.id
+        <include refid="selectSplitMergeList_Where_Condition"/>
+        order by t1.businessdate desc, t1.id desc
+        <include refid="common.Page_limit"/>
+    </select>
+    <update id="updateSplitMerge" parameterType="com.hd.agent.storage.model.SplitMerge" >
+        update t_storage_splitmerge
+        <set>
+            <if test="businessdate != null">
+                businessdate = #{businessdate},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="remark != null">
+                remark = #{remark},
+            </if>
+            <if test="modifyuserid != null">
+                modifyuserid = #{modifyuserid},
+            </if>
+            <if test="modifyusername != null">
+                modifyusername = #{modifyusername},
+            </if>
+            modifytime = now(),
+            <if test="audituserid != null">
+                audituserid = #{audituserid},
+            </if>
+            <if test="auditusername != null">
+                auditusername = #{auditusername},
+            </if>
+            <if test="audittime != null">
+                audittime = #{audittime},
+            </if>
+            <if test="stopuserid != null">
+                stopuserid = #{stopuserid},
+            </if>
+            <if test="stopusername != null">
+                stopusername = #{stopusername},
+            </if>
+            <if test="stoptime != null">
+                stoptime = #{stoptime},
+            </if>
+            <if test="closetime != null">
+                closetime = #{closetime},
+            </if>
+            <if test="printtimes != null">
+                printtimes = #{printtimes},
+            </if>
+            <if test="billtype != null">
+                billtype = #{billtype},
+            </if>
+            <if test="supplierid != null">
+                supplierid = #{supplierid},
+            </if>
+            <if test="goodsid != null">
+                goodsid = #{goodsid},
+            </if>
+            <if test="bomid != null">
+                bomid = #{bomid},
+            </if>
+            <if test="storageid != null">
+                storageid = #{storageid},
+            </if>
+            <if test="storagedate != null">
+                storagedate = #{storagedate},
+            </if>
+            <if test="storagestatus != null">
+                storagestatus = #{storagestatus},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+            <if test="unitnum != null">
+                unitnum = #{unitnum},
+            </if>
+            <if test="batchid != null">
+                batchid = #{batchid},
+            </if>
+            <if test="summarybatchid != null">
+                summarybatchid = #{summarybatchid},
+            </if>
+            <if test="storagelocationid != null">
+                storagelocationid = #{storagelocationid},
+            </if>
+            <if test="produceddate != null">
+                produceddate = #{produceddate},
+            </if>
+            <if test="deadline != null">
+                deadline = #{deadline},
+            </if>
+            <if test="barcode != null">
+                barcode = #{barcode},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <select id="selectSplitMerge" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.SplitMerge">
+        SELECT
+            <include refid="Base_Column_List2"/>,
+            ifnull(t1.barcode, t2.barcode) barcode,
+            t2.name goodsname
+        from t_storage_splitmerge t1
+        left join t_base_goods_info t2 on t1.goodsid = t2.id
+        where t1.id = #{id }
+    </select>
+    <select id="selectSplitMergeDetailList" parameterType="com.hd.agent.common.util.PageMap" resultType="java.util.Map">
+        select
+            <include refid="Detail_Column_List2"/>,
+            t2.name goodsname,
+            ifnull(t1.barcode, t2.barcode) barcode,
+            t2.isbatch isbatch,
+            t3.name storagename,
+            t3.isbatch storageisbatch,
+            t4.produceddate produceddate,
+            t4.deadline deadline,
+            t4.usablenum usablenum
+        from t_storage_splitmerge_detail t1
+        left join t_base_goods_info t2 on t1.goodsid = t2.id
+        left join t_base_storage_info t3 on t1.storageid = t3.id
+        left join t_storage_summary_batch t4 on t1.goodsid = t4.goodsid and t1.storageid = t4.storageid and t1.batchid = t4.batchno
+        <trim prefix="where" prefixOverrides="and|or">
+            and 1 = 1
+            and t1.billid = #{condition.billid }
+            <include refid="common.Page_querySql"/>
+            <include refid="common.Page_dataSql"/>
+        </trim>
+        order by id
+        <include refid="common.Page_limit"/>
+    </select>
+    <select id="selectSplitMergeDetailListCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+        select count(1)
+        from t_storage_splitmerge_detail t1
+        <trim prefix="where" prefixOverrides="and|or">
+            and 1 = 1
+            and t1.billid = #{condition.billid }
+            <include refid="common.Page_querySql"/>
+            <include refid="common.Page_dataSql"/>
+        </trim>
+        order by id
+    </select>
+    <update id="auditSplitMerge" parameterType="com.hd.agent.storage.model.SplitMerge" >
+        update t_storage_splitmerge
+        <set>
+            <if test="businessdate != null">
+                businessdate = #{businessdate},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="remark != null">
+                remark = #{remark},
+            </if>
+            <if test="audituserid != null">
+                audituserid = #{audituserid},
+            </if>
+            <if test="auditusername != null">
+                auditusername = #{auditusername},
+            </if>
+            audittime = now(),
+            <if test="stopuserid != null">
+                stopuserid = #{stopuserid},
+            </if>
+            <if test="stopusername != null">
+                stopusername = #{stopusername},
+            </if>
+            <if test="stoptime != null">
+                stoptime = #{stoptime},
+            </if>
+            <if test="closetime != null">
+                closetime = #{closetime},
+            </if>
+            <if test="printtimes != null">
+                printtimes = #{printtimes},
+            </if>
+            <if test="billtype != null">
+                billtype = #{billtype},
+            </if>
+            <if test="supplierid != null">
+                supplierid = #{supplierid},
+            </if>
+            <if test="goodsid != null">
+                goodsid = #{goodsid},
+            </if>
+            <if test="bomid != null">
+                bomid = #{bomid},
+            </if>
+            <if test="storageid != null">
+                storageid = #{storageid},
+            </if>
+            <if test="storagedate != null">
+                storagedate = #{storagedate},
+            </if>
+            <if test="storagestatus != null">
+                storagestatus = #{storagestatus},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+            <if test="unitnum != null">
+                unitnum = #{unitnum},
+            </if>
+            <if test="batchid != null">
+                batchid = #{batchid},
+            </if>
+            <if test="summarybatchid != null">
+                summarybatchid = #{summarybatchid},
+            </if>
+            <if test="storagelocationid != null">
+                storagelocationid = #{storagelocationid},
+            </if>
+            <if test="produceddate != null">
+                produceddate = #{produceddate},
+            </if>
+            <if test="deadline != null">
+                deadline = #{deadline},
+            </if>
+            <if test="barcode != null">
+                barcode = #{barcode},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <select id="selectSplitMergeDetailListByBillid" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.SplitMergeDetail">
+        SELECT
+        <include refid="Detail_Column_List"/>
+        from t_storage_splitmerge_detail
+        where billid = #{billid }
+    </select>
+    <update id="updateSplitMergePrinttimes" parameterType="java.lang.String">
+        UPDATE t_storage_splitmerge
+        SET printtimes = ifnull(printtimes, 0) + 1
+        where id = #{id }
+    </update>
+</mapper>

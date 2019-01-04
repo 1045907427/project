@@ -1,0 +1,1031 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.journalsheet.dao.CostsFeeMapper" >
+
+  <sql id="DepartmentCosts_Column_List" >
+	  <choose>
+			<when test="cols!=null">
+				<include refid="common.Page_Column"/>
+			</when>
+			<when test="cols==null">
+			    <include refid="departmentcosts_BaseColumn"/>
+			 </when>
+		</choose>
+  </sql>
+  
+  <sql id="departmentcosts_BaseColumn">
+    id, year, month, businessdate, deptid, status, remark, adduserid, addusername, addtime, 
+    modifyuserid, modifyusername, modifytime, audituserid, auditusername, audittime, 
+    sourcefrome,salesamount
+  </sql>
+  <sql id="DepartmentCostsPageList_Where_Clause">
+  		<if test="condition.begintime != null">
+		    and STR_TO_DATE(businessdate,'%Y-%m') >= STR_TO_DATE(#{condition.begintime},'%Y-%m')
+	    </if>
+	    <if test="condition.endtime != null">
+		   <![CDATA[and STR_TO_DATE(businessdate,'%Y-%m') <= STR_TO_DATE(#{condition.endtime},'%Y-%m')]]>
+	    </if>
+	    <if test="condition.deptid != null">
+		   and deptid=#{condition.deptid}
+	    </if>
+	    <if test="condition.deptcostsid != null">
+		   and id=#{condition.deptcostsid}
+	    </if>	    
+	    <if test="condition.businessdate != null">		  
+		   <![CDATA[and STR_TO_DATE(businessdate,'%Y-%m') = STR_TO_DATE(#{condition.businessdate},'%Y-%m')]]>
+	    </if>
+	  	<if test="condition.businessyearmonth != null">
+		 	<![CDATA[and businessdate like CONCAT(#{condition.businessyearmonth},'%')]]>
+	  	</if>
+	    <choose>
+	    	<when test="condition.isAudit==1">
+	    		and (status!='3' or status is null)
+	    	</when>
+	    	<when test="condition.isAudit==2">
+	    		and status='3'
+	    	</when>
+	    </choose>     	
+  </sql>
+  <sql id="departCostsPageList_Sql">
+  	select
+  	 <include refid="departmentcosts_BaseColumn"/>    
+     <if test="condition.dyncSubjectSumColumn !=null">
+		${condition.dyncSubjectSumColumn}
+	 </if>
+    from (
+	  	select
+	  	 m.id, m.year, m.month, m.businessdate, m.deptid, m.status, m.remark, m.adduserid, m.addusername, m.addtime, 
+	     m.modifyuserid, m.modifyusername, m.modifytime, m.audituserid, m.auditusername, m.audittime, 
+	     m.sourcefrome,m.salesamount
+	     <if test="condition.dyncSubjectColumn !=null">
+			${condition.dyncSubjectColumn}
+		 </if>
+	 	from (
+		  	select 
+		  	<include refid="DepartmentCosts_Column_List"/>
+		  	from t_js_departmentcosts
+		  	<trim prefix="where" prefixOverrides="and|or" >
+		  		<include refid="common.Page_dataSql"/>
+		      	<include refid="DepartmentCostsPageList_Where_Clause" />
+		  	</trim>
+	  	) m inner join t_js_departmentcosts_detail md on m.id=md.deptcostsid
+ 	) t
+  	group by id
+  </sql>
+  <select id="getDepartmentCostsPageList" parameterType="com.hd.agent.common.util.PageMap" resultType="Map">
+  	<include refid="departCostsPageList_Sql"/>
+  	<choose>
+		<when test="condition.isPageflag !='true'">
+			<include refid="common.Page_limit" />
+		</when>
+		<when test="condition.showOrderOnly == 'true' ">
+			<include refid="common.Page_OrderOnly" />
+		</when>
+	</choose>
+  </select>
+  <select id="getDepartmentCostsPageCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  	select 
+  	count(*)
+  	from (
+  		<include refid="departCostsPageList_Sql"/>
+  	)t
+  </select>
+  <select id="getDepartmentCostsPageSums" parameterType="com.hd.agent.common.util.PageMap" resultType="Map">
+  	select
+  		 sum(mymarkamount) as mymarkamount 
+	     <if test="condition.dyncSubjectSumColumn !=null">
+			${condition.dyncSubjectSumColumn}
+		 </if>
+	    from (
+		  	select
+		  	 1 as mymarkamount
+		     <if test="condition.dyncSubjectColumn !=null">
+				${condition.dyncSubjectColumn}
+			 </if>
+		 	from (
+			  	select 
+			  	<include refid="DepartmentCosts_Column_List"/>
+			  	from t_js_departmentcosts
+			  	<trim prefix="where" prefixOverrides="and|or" >
+			  		<include refid="common.Page_dataSql"/>
+			      	<include refid="DepartmentCostsPageList_Where_Clause" />
+			  	</trim>
+		  	) m inner join t_js_departmentcosts_detail md on m.id=md.deptcostsid
+  	) t
+  </select>
+  <insert id="insertDepartmentCosts" parameterType="com.hd.agent.journalsheet.model.DepartmentCosts" >
+    insert into t_js_departmentcosts
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="year != null" >
+        year,
+      </if>
+      <if test="month != null" >
+        month,
+      </if>
+      <if test="businessdate != null" >
+        businessdate,
+      </if>
+      <if test="deptid != null" >
+        deptid,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="adduserid != null" >
+        adduserid,
+      </if>
+      <if test="addusername != null" >
+        addusername,
+      </if>
+      <if test="1==1" >
+        addtime,
+      </if>
+      <if test="sourcefrome != null" >
+        sourcefrome,
+      </if>
+      <if test="salesamount != null" >
+        salesamount,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="year != null" >
+        #{year},
+      </if>
+      <if test="month != null" >
+        #{month},
+      </if>
+      <if test="businessdate != null" >
+        #{businessdate},
+      </if>
+      <if test="deptid != null" >
+        #{deptid},
+      </if>
+      <if test="status != null" >
+        #{status},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+      <if test="adduserid != null" >
+        #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        #{addusername},
+      </if>
+      <choose>
+      	<when test="addtime !=null">	      		
+        	#{addtime},
+      	</when>
+      	<otherwise>
+        	now(),
+        </otherwise>
+      </choose>
+      <if test="sourcefrome != null" >
+        #{sourcefrome},
+      </if>
+      <if test="salesamount != null" >
+        #{salesamount},
+      </if>
+    </trim>
+	<selectKey resultType="int" keyProperty="id"
+		order="AFTER">
+		select LAST_INSERT_ID() as id
+    </selectKey>
+  </insert>
+  <update id="updateDepartmentCosts" parameterType="com.hd.agent.journalsheet.model.DepartmentCosts" >
+    update t_js_departmentcosts
+    <set >
+      <if test="remark != null" >
+        remark = #{remark},
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid = #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername = #{modifyusername},
+      </if>
+      <if test="modifytime != null" >
+        modifytime = #{modifytime},
+      </if>
+      <if test="salesamount != null" >
+        salesamount=#{salesamount},
+      </if>
+    </set>
+    where id = #{id}
+  </update>   
+  
+  <update id="updateDepartmentCostsByMap" parameterType="Map" >
+    update t_js_departmentcosts
+    <set >
+      <if test="departmentCosts.status != null" >
+        status = #{departmentCosts.status},
+      </if>
+      <if test="departmentCosts.remark != null" >
+        remark = #{departmentCosts.remark},
+      </if>
+      <if test="departmentCosts.modifyuserid != null" >
+        modifyuserid = #{departmentCosts.modifyuserid},
+      </if>
+      <if test="departmentCosts.modifyusername != null" >
+        modifyusername = #{departmentCosts.modifyusername},
+      </if>
+      <if test="departmentCosts.modifytime != null" >
+        modifytime = #{departmentCosts.modifytime},
+      </if>
+      <if test="departmentCosts.audituserid != null" >
+        audituserid = #{departmentCosts.audituserid},
+      </if>
+      <if test="departmentCosts.auditusername != null" >
+        auditusername = #{departmentCosts.auditusername},
+      </if>
+      <if test="departmentCosts.audittime != null" >
+        audittime = #{departmentCosts.audittime},
+      </if>
+      <if test="departmentCosts.salesamount != null" >
+        salesamount=#{departmentCosts.salesamount},
+      </if>
+    </set>
+    where 
+	<trim prefixOverrides="and|or" >
+		<if test="id != null" >
+	    	and id = #{id}
+      	</if>
+  		<if test="notAudit!=null">
+  			and (status!='3' or status is null)
+  		</if>
+  		<if test="isAudit!=null">
+  			and status='3'
+  		</if>
+  		<if test="dataAuthSql != null">
+  			and ${dataAuthSql}
+  		</if>    
+	</trim>
+  </update>   
+  <select id="getDepartmentCostsCountByMap" parameterType="map" resultType="int">
+  	select count(*)
+  	from t_js_departmentcosts
+  	<trim prefix="where" prefixOverrides="and|or" >
+	    <if test="businessdate != null" >
+	    	and businessdate = #{businessdate}
+      	</if>     		
+	    <if test="deptid != null" >
+	    	and deptid = #{deptid}
+      	</if>    		
+	    <if test="id != null" >
+	    	and id = #{id}
+      	</if>   
+  	</trim>
+  </select>
+  <select id="getDepartmentCostsByMap" parameterType="map" resultType="com.hd.agent.journalsheet.model.DepartmentCosts">
+  	select 
+  	<include refid="departmentcosts_BaseColumn"/>
+  	from t_js_departmentcosts
+  	<trim prefix="where" prefixOverrides="and|or" >
+	    <if test="businessdate != null" >
+	    	and businessdate = #{businessdate}
+      	</if>     		
+	    <if test="deptid != null" >
+	    	and deptid = #{deptid}
+      	</if>     		
+	    <if test="id != null" >
+	    	and id = #{id}
+      	</if> 
+  	</trim>
+  </select>  
+  <select id="getDepartmentCosts" parameterType="java.lang.String" resultType="com.hd.agent.journalsheet.model.DepartmentCosts">
+  	select 
+  	<include refid="departmentcosts_BaseColumn"/>
+  	from t_js_departmentcosts
+  	where id=#{id}
+  </select> 
+  <delete id="deleteDepartmentCostsByMap" parameterType="map">
+  	delete 
+  	from t_js_departmentcosts
+  	<trim prefix="where" prefixOverrides="and|or" >  	  		     		
+	    <if test="id != null" >
+	    	and id = #{id}
+      	</if> 
+  		<if test="notAudit!=null">
+  			and (status!='3' or status is null)
+  		</if>
+  		<if test="dataAuthSql != null">
+  			and ${dataAuthSql}
+  		</if> 
+  	</trim>
+  </delete>
+  <select id="getDepartmentCostsSumsAll" parameterType="com.hd.agent.common.util.PageMap" resultType="Map">  	
+  	select sum(amount) as amount from (
+	  	select 
+	  	<include refid="DepartmentCosts_Column_List"/>
+	  	from t_js_departmentcosts
+	  	<trim prefix="where" prefixOverrides="and|or" >
+	      	<include refid="DepartmentCostsPageList_Where_Clause" />
+	  	</trim>
+  	) m inner join t_js_departmentcosts_detail md on m.id=md.deptcostsid
+  </select>
+   
+  <!-- 费用明细表 ################################################################# -->  
+  <sql id="DepartmentCostsDetail_Base_Column_List" >
+    id, subjectid, amount, deptcostsid,supplierid
+  </sql>
+  <select id="getDepartmentCostsDetail" parameterType="map" resultType="java.lang.String">
+  	select 
+  	<include refid="DepartmentCostsDetail_Base_Column_List"/>
+  	from t_js_departmentcosts_detail
+  	where id=#{id}
+  </select>
+  <insert id="insertDepartmentCostsDetail" parameterType="com.hd.agent.journalsheet.model.DepartmentCostsDetail" >
+    insert into t_js_departmentcosts_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="subjectid != null" >
+        subjectid,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="deptcostsid != null" >
+        deptcostsid,
+      </if>
+      <if test="supplierid != null" >
+        supplierid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="subjectid != null" >
+        #{subjectid},
+      </if>
+      <if test="amount != null" >
+        #{amount},
+      </if>
+      <if test="deptcostsid != null" >
+        #{deptcostsid},
+      </if>
+      <if test="supplierid != null" >
+        #{supplierid},
+      </if>
+    </trim>
+	<selectKey resultType="long" keyProperty="id"
+		order="AFTER">
+		select LAST_INSERT_ID() as id
+    </selectKey>
+  </insert>
+  <update id="updateDepartmentCostsDetail" parameterType="com.hd.agent.journalsheet.model.DepartmentCostsDetail" >
+    update t_js_departmentcosts_detail
+    <set >
+      <if test="amount != null" >
+        amount = #{amount},
+      </if>
+      <if test="supplierid != null" >
+       supplierid = #{supplierid},
+      </if>
+    </set>    
+    where
+	subjectid = #{subjectid}
+    and deptcostsid = #{deptcostsid}
+  </update>  
+  <delete id="deleteDepartmentCostsDetailByDeptcostsId" parameterType="java.lang.String">
+	delete
+	from t_js_departmentcosts_detail
+	where deptcostsid=#{deptcostsid}
+  </delete>  
+  <select id="getDepartmentCostsDetailCountByMap" parameterType="map" resultType="int">
+  	select count(*)
+  	from t_js_departmentcosts_detail
+  	<trim prefix="where" prefixOverrides="and|or" >
+	    <if test="subjectid != null" >
+	    	and subjectid = #{subjectid}
+      	</if>     		
+	    <if test="deptcostsid != null" >
+	    	and deptcostsid = #{deptcostsid}
+      	</if>   
+  	</trim>
+  </select>
+  <select id="getDepartmentCostsDetailListByDeptcostsId" parameterType="java.lang.String" resultType="com.hd.agent.journalsheet.model.DepartmentCostsDetail">
+  	select 
+  	<include refid="DepartmentCostsDetail_Base_Column_List"/>
+  	from t_js_departmentcosts_detail
+  	where deptcostsid = #{deptcostsid}
+  </select> 
+   <!-- 费用供应商摊派 ################################################################# -->
+   <sql id="deptSupplierCostsPageList_Sql">
+  	select
+  	 <include refid="departmentcosts_BaseColumn"/>    
+     <if test="condition.dyncSubjectSumColumn !=null">
+		${condition.dyncSubjectSumColumn}
+	 </if>
+	 ,supplierid
+    from (
+	  	select
+	  	 s.supplierid,m.id,m.year, m.month, m.businessdate, m.deptid, m.status, m.remark, m.adduserid, m.addusername, m.addtime, 
+	     m.modifyuserid, m.modifyusername, m.modifytime, m.audituserid, m.auditusername, m.audittime, 
+	     m.sourcefrome,m.salesamount
+	     <if test="condition.dyncSubjectColumn !=null">
+			${condition.dyncSubjectColumn}
+		 </if>
+	 	from (
+		  	select 
+		  	<include refid="DepartmentCosts_Column_List"/>
+		  	from t_js_departmentcosts
+		  	<trim prefix="where" prefixOverrides="and|or" >
+		  		<include refid="common.Page_dataSql"/>
+		      	<include refid="DepartmentCostsPageList_Where_Clause" />
+		  	</trim>
+	  	) m inner join t_js_deptsuppliercosts s on m.id=s.deptcostsid	  	
+	  	<trim prefix="where" prefixOverrides="and|or" >
+	  		<if test="condition.supplierid != null">
+	  			and s.supplierid=#{condition.supplierid}
+	  		</if>
+	  	</trim>
+ 	) t
+  	group by id,supplierid
+  </sql>
+  <select id="getDeptSupplierCostsPageList" parameterType="com.hd.agent.common.util.PageMap" resultType="Map">
+  	<include refid="deptSupplierCostsPageList_Sql"/>
+  	<choose>
+		<when test="condition.isPageflag !='true'">
+			<include refid="common.Page_limit" />
+		</when>
+		<when test="condition.showOrderOnly == 'true' ">
+			<include refid="common.Page_OrderOnly" />
+		</when>
+	</choose>
+  </select>
+  <select id="getDeptSupplierCostsPageCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  	select 
+  	count(*)
+  	from (
+  		<include refid="deptSupplierCostsPageList_Sql"/>
+  	)t
+  </select>
+  <select id="getDeptSupplierCostsPageSums" parameterType="com.hd.agent.common.util.PageMap" resultType="Map">
+  	select
+  		 sum(mymarkamount) as mymarkamount 
+	     <if test="condition.dyncSubjectSumColumn !=null">
+			${condition.dyncSubjectSumColumn}
+		 </if>
+	    from (
+		  	select
+		  	 1 as mymarkamount
+		     <if test="condition.dyncSubjectColumn !=null">
+				${condition.dyncSubjectColumn}
+			 </if>
+		 	from (
+			  	select 
+			  	<include refid="DepartmentCosts_Column_List"/>
+			  	from t_js_departmentcosts
+			  	<trim prefix="where" prefixOverrides="and|or" >
+			  		<include refid="common.Page_dataSql"/>
+			      	<include refid="DepartmentCostsPageList_Where_Clause" />
+			  	</trim>
+		  	) m inner join t_js_deptsuppliercosts s on m.id=s.deptcostsid
+		  	<trim prefix="where" prefixOverrides="and|or" >
+		  		<if test="condition.supplierid != null">
+		  			and s.supplierid=#{condition.supplierid}
+		  		</if>
+		  	</trim>
+  	) t
+  </select>
+  <insert id="insertDeptSupplierCosts" parameterType="com.hd.agent.journalsheet.model.DeptSupplierCosts" >
+    insert into t_js_deptsuppliercosts
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="deptcostsid != null" >
+        deptcostsid,
+      </if>
+      <if test="subjectid != null" >
+        subjectid,
+      </if>
+      <if test="supplierid != null" >
+        supplierid,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="deptcostsid != null" >
+        #{deptcostsid},
+      </if>
+      <if test="subjectid != null" >
+        #{subjectid},
+      </if>
+      <if test="supplierid != null" >
+        #{supplierid},
+      </if>
+      <if test="amount != null" >
+        #{amount},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateDeptSupplierCosts" parameterType="com.hd.agent.journalsheet.model.DeptSupplierCosts" >
+    update t_js_deptsuppliercosts
+    set amount = #{amount}
+    where deptcostsid = #{deptcostsid} and subjectid = #{subjectid} and supplierid = #{supplierid}
+  </update>
+   <delete id="deleteDeptSupplierCostsByDeptcostsId" parameterType="java.lang.String">
+	delete
+	from t_js_deptsuppliercosts
+	where deptcostsid=#{deptcostsid}
+  </delete>
+   <delete id="deleteDeptSupplierCostsBy" parameterType="java.lang.String">
+	delete
+	from t_js_deptsuppliercosts
+	where deptcostsid=#{deptcostsid} and subjectid = #{subjectid}
+  </delete>    
+  <select id="getDeptSupplierCostsCountByMap" parameterType="map" resultType="int">
+  	select count(*)
+  	from t_js_deptsuppliercosts
+  	<trim prefix="where" prefixOverrides="and|or" >
+	    <if test="subjectid != null" >
+	    	and subjectid = #{subjectid}
+      	</if>     		
+	    <if test="deptcostsid != null" >
+	    	and deptcostsid = #{deptcostsid}
+      	</if>      		
+	    <if test="supplierid != null" >
+	    	and supplierid = #{supplierid}
+      	</if>   
+  	</trim>
+  </select>
+  <!-- 报表 ################################################################# -->
+  <!-- 部门费用明细报表 -->
+  <sql id="departCostsMonthReportPageList_Sql">
+  	  select d.subjectid,s.name as subjectname,year,deptid,s.seq,sum(amount) as totalamount
+  	  <if test="condition.dyncSubjectIfSumColumn !=null">
+		${condition.dyncSubjectIfSumColumn}
+	  </if>
+	  from t_js_departmentcosts c inner join t_js_departmentcosts_detail d on c.id=d.deptcostsid
+	  inner join t_js_departmentcosts_subject s on d.subjectid=s.id
+	  <trim prefix="where" prefixOverrides="and|or" >
+	  	<if test="1==1">
+	  		and c.status='3' and s.state='1'
+	  	</if>
+	  	<if test="condition.year != null">
+	  		and c.year=#{condition.year}
+	  	</if>
+	  	<if test="condition.deptid !=null">
+	  		and c.deptid=#{condition.deptid}
+	  	</if>
+		<include refid="common.Page_dataSql"/>      	
+  	  </trim>
+  	  <if test="condition.isSumAll !='true'">
+	  	group by subjectid,year,deptid
+	  </if>
+  </sql>
+  <select id="getDepartmentCostsMonthReportPageList" parameterType="com.hd.agent.common.util.PageMap" resultType="Map">
+  	select subjectid,subjectname,year,deptid,seq,totalamount
+  	<if test="condition.dyncSubjectColumn !=null">
+		${condition.dyncSubjectColumn}
+	</if>
+  	from (
+  		<if test="condition.groupBycols!=null">
+	  		select subjectid,subjectname,year,deptid,seq,sum(totalamount) as totalamount
+		  	<if test="condition.dyncSubjectOnlySumColumn !=null">
+				${condition.dyncSubjectOnlySumColumn}
+			</if>
+		  	from (	  	
+  		</if>
+  			<include refid="departCostsMonthReportPageList_Sql"/>
+  		<if test="condition.groupBycols!=null">
+  			) t
+	  		group by ${condition.groupBycols}
+  		</if>
+  	) t
+  	<choose>
+		<when test="condition.isPageflag !='true'">
+			<include refid="common.Page_limit" />
+		</when>
+		<when test="condition.showOrderOnly == 'true' ">
+			<include refid="common.Page_OrderOnly" />
+		</when>
+	</choose>
+  </select>
+  <select id="getDepartmentCostsMonthReportPageCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  	select 
+  	count(*)
+  	from (
+  		select subjectid,subjectname,year,deptid,seq,totalamount
+	  	<if test="condition.dyncSubjectColumn !=null">
+			${condition.dyncSubjectColumn}
+		</if>
+	  	from (
+	  		<if test="condition.groupBycols!=null">
+		  		select subjectid,subjectname,year,deptid,seq,sum(totalamount) as totalamount
+			  	<if test="condition.dyncSubjectOnlySumColumn !=null">
+					${condition.dyncSubjectOnlySumColumn}
+				</if>
+			  	from (	  	
+	  		</if>
+	  			<include refid="departCostsMonthReportPageList_Sql"/>
+	  		<if test="condition.groupBycols!=null">
+	  			) t
+	  			group by ${condition.groupBycols}
+	  		</if>
+	  	) t
+  	)t
+  </select>
+  <select id="getDepartmentCostsMonthReportPageSums" parameterType="com.hd.agent.common.util.PageMap" resultType="Map">
+  	<include refid="departCostsMonthReportPageList_Sql"/>
+  </select> 
+  
+  <!-- 费用对应的供应商分摊报表 -->
+  <sql id="deptSupplierCostsMonthReportPageList_Sql">
+  	  select d.subjectid,s.name as subjectname,year,deptid,s.thisid as subjectthisid,sum(amount) as totalamount,d.supplierid
+  	  <if test="condition.dyncSubjectIfSumColumn !=null">
+		${condition.dyncSubjectIfSumColumn}
+	  </if>
+	  from t_js_departmentcosts c inner join t_js_deptsuppliercosts d on c.id=d.deptcostsid
+	  inner join t_js_departmentcosts_subject s on d.subjectid=s.id
+	  <trim prefix="where" prefixOverrides="and|or" >
+	  	<if test="1==1">
+	  		and c.status='3' and s.state='1'
+	  	</if>
+	  	<if test="condition.year != null">
+	  		and c.year=#{condition.year}
+	  	</if>
+	  	<if test="condition.deptid !=null">
+	  		and c.deptid=#{condition.deptid}
+	  	</if>
+	  	<if test="condition.supplierid !=null">
+	  		and d.supplierid=#{condition.supplierid}
+	  	</if>
+		<include refid="common.Page_dataSql"/>      	
+  	  </trim>
+  	  <if test="condition.isSumAll !='true'">
+	  		group by d.subjectid,c.year,d.supplierid
+	  </if>
+  </sql>
+  <select id="getDeptSupplierCostsMonthReportPageList" parameterType="com.hd.agent.common.util.PageMap" resultType="Map">
+  	select subjectid,subjectname,year,deptid,subjectthisid,totalamount,supplierid
+  	<if test="condition.dyncSubjectColumn !=null">
+		${condition.dyncSubjectColumn}
+	</if>
+  	from (
+  		<if test="condition.groupBycols!=null">
+	  		select subjectid,subjectname,year,deptid,subjectthisid,sum(totalamount) as totalamount,supplierid
+		  	<if test="condition.dyncSubjectOnlySumColumn !=null">
+				${condition.dyncSubjectOnlySumColumn}
+			</if>
+		  	from (	  	
+  		</if>
+  			<include refid="deptSupplierCostsMonthReportPageList_Sql"/>
+  		<if test="condition.groupBycols!=null">
+  			) t
+	  		group by ${condition.groupBycols}
+  		</if>
+  	) t
+  	<choose>
+		<when test="condition.isPageflag !='true'">
+			<include refid="common.Page_limit" />
+		</when>
+		<when test="condition.showOrderOnly == 'true' ">
+			<include refid="common.Page_OrderOnly" />
+		</when>
+	</choose>
+  </select>
+  <select id="getDeptSupplierCostsMonthReportPageCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  	select 
+  	count(*)
+  	from (
+  		select subjectid,subjectname,year,deptid,subjectthisid,totalamount,supplierid
+	  	<if test="condition.dyncSubjectColumn !=null">
+			${condition.dyncSubjectColumn}
+		</if>
+	  	from (
+	  		<if test="condition.groupBycols!=null">
+		  		select subjectid,subjectname,year,deptid,subjectthisid,sum(totalamount) as totalamount,supplierid
+			  	<if test="condition.dyncSubjectOnlySumColumn !=null">
+					${condition.dyncSubjectOnlySumColumn}
+				</if>
+			  	from (	  	
+	  		</if>
+	  			<include refid="deptSupplierCostsMonthReportPageList_Sql"/>
+	  		<if test="condition.groupBycols!=null">
+	  			) t
+	  			group by ${condition.groupBycols}
+	  		</if>
+	  	) t
+  	)t
+  </select>
+  <select id="getDeptSupplierCostsMonthReportPageSums" parameterType="com.hd.agent.common.util.PageMap" resultType="Map">
+  	<include refid="deptSupplierCostsMonthReportPageList_Sql"/>
+  </select>
+  <!-- 分客户投入产出比报表 -->
+    <sql id="getCustomerInputOutputData_sql">
+        select z.customerid,z.salesuser,z.supplierid,SUM(z.sendamount) AS sendamount,SUM(z.returnamount) AS returnamount,sum(fee) as fee,
+        sum(z.pushbalanceamount) AS pushbalanceamount,SUM(z.costamount) AS costamount,sum(z.factoryamount) AS factoryamount,
+        sum(z.factoryamount)+ sum(fee) as charge,SUM(directreturnamount) AS directreturnamount,SUM(checkreturnamount) AS checkreturnamount
+        FROM
+        (
+        SELECT t.* FROM (
+        <if test="condition.salesdatatype == 0">
+			SELECT t.customerid,t.salesuser,t1.supplierid,0 AS returnamount,t1.taxamount as sendamount,c.pid,
+			0 as pushbalanceamount,t1.unitnum*t1.costprice as costamount,0 AS factoryamount ,0 as fee ,
+			0 as directreturnamount,0 as checkreturnamount
+			FROM t_storage_saleout t
+			RIGHT JOIN t_storage_saleout_detail t1 ON t1.saleoutid = t.id
+			left join t_base_sales_customer c on c.id = t.customerid
+			<trim prefix="where" prefixOverrides="and|or">
+				t.STATUS IN ('3', '4')
+				<if test="condition.businessdate1 != null">
+					<![CDATA[and t.businessdate >= #{condition.businessdate1} ]]>
+				</if>
+				<if test="condition.businessdate2 != null">
+					<![CDATA[and t.businessdate <= #{condition.businessdate2} ]]>
+				</if>
+				<if test="condition.supplierid != null">
+					and FIND_IN_SET(t1.supplierid,#{condition.supplierid})
+				</if>
+				<if test="condition.customerid != null" >
+					and FIND_IN_SET(t.customerid,#{condition.customerid})
+				</if>
+				<if test="condition.pid != null" >
+					and ( FIND_IN_SET(c.pid,#{condition.pid}) || FIND_IN_SET(t.customerid,#{condition.pid})  )
+				</if>
+				<if test="condition.salesuser != null" >
+					and FIND_IN_SET(t.salesuser,#{condition.salesuser})
+				</if>
+			</trim>
+			UNION ALL
+			SELECT t.customerid,t.salesuser,t1.supplierid,t1.taxamount AS returnamount,0 as sendamount,c.pid,
+			0 as pushbalanceamount,-t1.unitnum*t1.costprice as costamount,0 AS factoryamount ,0 as fee ,
+			0 as directreturnamount,0 as checkreturnamount
+			FROM t_storage_salereject_enter t
+			RIGHT JOIN t_storage_salereject_enter_detail t1 ON t1.salerejectid = t.id
+			left join t_base_sales_customer c on c.id = t.customerid
+			<trim prefix="where" prefixOverrides="and|or">
+				<if test="1==1">
+					t.STATUS IN ('3', '4') and t.ischeck = '1'
+				</if>
+				<if test="condition.businessdate1 != null">
+					<![CDATA[and t.businessdate >= #{condition.businessdate1} ]]>
+				</if>
+				<if test="condition.businessdate2 != null">
+					<![CDATA[and t.businessdate <= #{condition.businessdate2} ]]>
+				</if>
+				<if test="condition.supplierid != null">
+					and FIND_IN_SET(t1.supplierid,#{condition.supplierid})
+				</if>
+				<if test="condition.customerid != null" >
+					and FIND_IN_SET(t.customerid,#{condition.customerid})
+				</if>
+				<if test="condition.pid != null" >
+					and ( FIND_IN_SET(c.pid,#{condition.pid}) || FIND_IN_SET(t.customerid,#{condition.pid})  )
+				</if>
+				<if test="condition.salesuser != null" >
+					and FIND_IN_SET(t.salesuser,#{condition.salesuser})
+				</if>
+			</trim>
+			UNION ALL
+			SELECT t.customerid,t.salesuser,t1.supplierid,0 AS returnamount,0 as sendamount,c.pid,
+			0 as pushbalanceamount,0 as costamount,0 AS factoryamount ,0 as fee ,
+			if(t.sourcetype = '2',t1.taxamount,0) as directreturnamount,if(t.sourcetype = '1',t1.taxamount,0) as checkreturnamount
+			FROM t_storage_salereject_enter t
+			RIGHT JOIN t_storage_salereject_enter_detail t1 ON t1.salerejectid = t.id
+			left join t_base_sales_customer c on c.id = t.customerid
+			<trim prefix="where" prefixOverrides="and|or">
+				<if test="1==1">
+					t.STATUS IN ('3', '4') and t.ischeck = '1'
+				</if>
+				<if test="condition.businessdate1 != null">
+					<![CDATA[and t.businessdate >= #{condition.businessdate1} ]]>
+				</if>
+				<if test="condition.businessdate2 != null">
+					<![CDATA[and t.businessdate <= #{condition.businessdate2} ]]>
+				</if>
+				<if test="condition.supplierid != null">
+					and FIND_IN_SET(t1.supplierid,#{condition.supplierid})
+				</if>
+				<if test="condition.customerid != null" >
+					and FIND_IN_SET(t.customerid,#{condition.customerid})
+				</if>
+				<if test="condition.pid != null" >
+					and ( FIND_IN_SET(c.pid,#{condition.pid}) || FIND_IN_SET(t.customerid,#{condition.pid}) )
+				</if>
+				<if test="condition.salesuser != null" >
+					and FIND_IN_SET(t.salesuser,#{condition.salesuser})
+				</if>
+			</trim>
+		</if>
+		<if test="condition.salesdatatype == 1">
+			select t.customerid,t.salesuser,t1.supplierid,0 AS returnamount,t1.taxamount as sendamount,c.pid,0 as pushbalanceamount,
+			t1.unitnum*t1.costprice as costamount,0 AS factoryamount, 0 AS fee ,0 as directreturnamount,0 as checkreturnamount
+			FROM t_crm_sales_order t
+			RIGHT JOIN t_crm_sales_order_detail t1 ON t1.orderid = t.id
+			left join t_base_sales_customer c on c.id = t.customerid
+			<trim prefix="where" prefixOverrides="and|or">
+				<if test="condition.businessdate1 != null">
+					<![CDATA[and t.businessdate >= #{condition.businessdate1} ]]>
+				</if>
+				<if test="condition.businessdate2 != null">
+					<![CDATA[and t.businessdate <= #{condition.businessdate2} ]]>
+				</if>
+				<if test="condition.supplierid != null">
+					and FIND_IN_SET(t1.supplierid,#{condition.supplierid})
+				</if>
+				<if test="condition.customerid != null" >
+					and FIND_IN_SET(t.customerid,#{condition.customerid})
+				</if>
+				<if test="condition.pid != null" >
+					and ( FIND_IN_SET(c.pid,#{condition.pid}) || FIND_IN_SET(t.customerid,#{condition.pid})  )
+				</if>
+				<if test="condition.salesuser != null" >
+					and FIND_IN_SET(t.salesuser,#{condition.salesuser})
+				</if>
+			</trim>
+		</if>
+        UNION ALL
+        SELECT t.customerid,t.salesuser,t.supplierid,0 AS returnamount,0 as sendamount,c.pid,
+        t.amount as pushbalanceamount,0 as costamount,0 AS factoryamount, 0 AS fee ,
+		0 as directreturnamount,0 as checkreturnamount
+        FROM t_account_customer_push_balance t
+		left join t_base_sales_customer c on c.id = t.customerid
+        <trim prefix="where" prefixOverrides="and|or">
+            t.STATUS IN ('3', '4')
+            <if test="condition.businessdate1 != null">
+                <![CDATA[and t.businessdate >= #{condition.businessdate1} ]]>
+            </if>
+            <if test="condition.businessdate2 != null">
+                <![CDATA[and t.businessdate <= #{condition.businessdate2} ]]>
+            </if>
+			<if test="condition.supplierid != null">
+				and FIND_IN_SET(t.supplierid,#{condition.supplierid})
+			</if>
+			<if test="condition.customerid != null" >
+				and FIND_IN_SET(t.customerid,#{condition.customerid})
+			</if>
+			<if test="condition.pid != null" >
+				and ( FIND_IN_SET(c.pid,#{condition.pid}) || FIND_IN_SET(t.customerid,#{condition.pid})  )
+			</if>
+			<if test="condition.salesuser != null" >
+				and FIND_IN_SET(t.salesuser,#{condition.salesuser})
+			</if>
+        </trim>
+        UNION ALL
+        SELECT t.customerid, t1.salesuserid as salesuser,t.supplierid,0 AS returnamount,0 as sendamount,c.pid,
+        0 as pushbalanceamount,0 as costamount,0 AS factoryamount ,t.amount as fee ,
+		0 as directreturnamount,0 as checkreturnamount
+        FROM t_js_customercost_payable t
+        LEFT JOIN t_base_sales_customer t1 on t.customerid = t1.id
+		left join t_base_sales_customer c on c.id = t.customerid
+        <trim prefix="where" prefixOverrides="and|or">
+            t.billtype = '2' and t.paytype = '1'
+            <if test="condition.businessdate1 != null">
+                <![CDATA[and t.businessdate >= #{condition.businessdate1} ]]>
+            </if>
+            <if test="condition.businessdate2 != null">
+                <![CDATA[and t.businessdate <= #{condition.businessdate2} ]]>
+            </if>
+			<if test="condition.supplierid != null">
+				and FIND_IN_SET(t.supplierid,#{condition.supplierid})
+			</if>
+			<if test="condition.customerid != null" >
+				and FIND_IN_SET(t.customerid,#{condition.customerid})
+			</if>
+			<if test="condition.pid != null" >
+				and ( FIND_IN_SET(c.pid,#{condition.pid}) || FIND_IN_SET(t.customerid,#{condition.pid})  )
+			</if>
+			<if test="condition.salesuser != null" >
+				and FIND_IN_SET(t1.salesuserid,#{condition.salesuser})
+			</if>
+        </trim>
+        <if test="condition.type == 1">
+            UNION ALL
+            SELECT t.customerid , t1.salesuserid as salesuser,t.supplierid,0 AS returnamount,0 as sendamount,c.pid,0 as pushbalanceamount,0 as costamount,
+            factoryamount ,0 as fee ,0 as directreturnamount,0 as checkreturnamount
+            FROM t_js_matcostsinput t
+            LEFT JOIN t_base_sales_customer t1 on t.customerid = t1.id
+			left join t_base_sales_customer c on c.id = t.customerid
+            <trim prefix="where" prefixOverrides="and|or">
+				t.billtype = '1'
+                <if test="condition.businessdate1 != null">
+                    <![CDATA[and t.businessdate >= #{condition.businessdate1} ]]>
+                </if>
+                <if test="condition.businessdate2 != null">
+                    <![CDATA[and t.businessdate <= #{condition.businessdate2} ]]>
+                </if>
+				<if test="condition.supplierid != null">
+					and FIND_IN_SET(t.supplierid,#{condition.supplierid})
+				</if>
+				<if test="condition.customerid != null" >
+					and FIND_IN_SET(t.customerid,#{condition.customerid})
+				</if>
+				<if test="condition.pid != null" >
+					and ( FIND_IN_SET(c.pid,#{condition.pid}) || FIND_IN_SET(t.customerid,#{condition.pid})  )
+				</if>
+				<if test="condition.salesuser != null" >
+					and FIND_IN_SET(t1.salesuserid,#{condition.salesuser})
+				</if>
+            </trim>
+        </if>
+        <if test="condition.type == 2">
+            UNION ALL
+            SELECT '' as customerid ,salesuser as salesuser,supplierid,0 AS returnamount,0 as sendamount,0 as pushbalanceamount,0 as costamount,'' as pid,
+            amount as factoryamount ,0 as fee  ,0 as directreturnamount,0 as checkreturnamount
+            FROM t_js_dept_dailycost t
+            <trim prefix="where" prefixOverrides="and|or">
+				  status != 2
+                <if test="condition.businessdate1 != null">
+                    <![CDATA[and businessdate >= #{condition.businessdate1} ]]>
+                </if>
+                <if test="condition.businessdate2 != null">
+                    <![CDATA[and businessdate <= #{condition.businessdate2} ]]>
+                </if>
+				<if test="condition.supplierid != null">
+					and FIND_IN_SET(t.supplierid,#{condition.supplierid})
+				</if>
+				<if test="condition.customerid != null" >
+					and 1=2
+				</if>
+				<if test="condition.pid != null" >
+					and 1=2
+				</if>
+				<if test="condition.salesuser != null" >
+					and FIND_IN_SET(t.salesuser,#{condition.salesuser})
+				</if>
+            </trim>
+        </if>
+        ) t
+        ) z
+        group by  ${condition.groupcols}
+    </sql>
+    <select id="getCustomerInputOutputData" parameterType="com.hd.agent.common.util.PageMap" resultType="Map">
+        <include refid="getCustomerInputOutputData_sql"/>
+        <if test="condition.isPageflag == null and condition.isPageflag !='true'">
+            <include refid="common.Page_limit" />
+        </if>
+    </select>
+    <select id="getCustomerInputOutputDataCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+        select count(*) from ( <include refid="getCustomerInputOutputData_sql"/> ) t
+    </select>
+    <select id="getCustomerInputOutputDataSum" parameterType="com.hd.agent.common.util.PageMap" resultType="Map">
+        select SUM(z.sendamount) AS sendamount,SUM(z.returnamount) AS returnamount,sum(fee) as fee,sum(charge) as charge,
+        sum(z.pushbalanceamount) AS pushbalanceamount,SUM(z.costamount) AS costamount,sum(z.factoryamount) AS factoryamount,
+		SUM(directreturnamount) AS directreturnamount,SUM(checkreturnamount) AS checkreturnamount
+        from ( <include refid="getCustomerInputOutputData_sql"/>  ) z
+    </select>
+	<sql id="getPayableDetailList_sql">
+		select t.id, t.oaid, t.businessdate, t.remark, t.supplierid, t.customerid, t.expensesort,t.amount ,t1.salesuserid
+		from t_js_customercost_payable t
+		LEFT JOIN t_base_sales_customer t1 on t.customerid=t1.id
+		<trim prefix="where" prefixOverrides="and|or" >
+			t.billtype='2' and t.paytype = '1'
+			<if test="condition.customerid != null" >
+				and t.customerid = #{condition.customerid}
+			</if>
+			<if test="condition.salesuser != null" >
+				and t1.salesuserid = #{condition.salesuser}
+			</if>
+			<if test="condition.supplierid != null" >
+				and t.supplierid = #{condition.supplierid}
+			</if>
+			<if test="condition.pid != null" >
+				and t1.pid = #{condition.pid}
+			</if>
+			<if test="condition.businessdate1 != null" >
+				<![CDATA[ and t.businessdate >= #{condition.businessdate1} ]]>
+			</if>
+			<if test="condition.businessdate2 != null" >
+				<![CDATA[ and t.businessdate <= #{condition.businessdate2} ]]>
+			</if>
+		</trim>
+	</sql>
+	<select id="getPayableDetailList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.journalsheet.model.CustomerCostPayable">
+		<include refid="getPayableDetailList_sql"/>
+		<if test="condition.ispageFlag == null">
+			<include refid="common.Page_limit" />
+		</if>
+	</select>
+	<select id="getPayableDetailListCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+		select count(*) from ( <include refid="getPayableDetailList_sql"/> ) t
+	</select>
+	<sql id="getDailyCostDetailData_sql">
+		SELECT * FROM t_js_dept_dailycost
+		<trim prefix="where" prefixOverrides="and|or">
+			status != 2
+			<if test="condition.businessdate1 != null">
+				<![CDATA[and businessdate >= #{condition.businessdate1} ]]>
+			</if>
+			<if test="condition.businessdate2 != null">
+				<![CDATA[and businessdate <= #{condition.businessdate2} ]]>
+			</if>
+			<if test="condition.salesuser != null" >
+				and salesuser = #{condition.salesuser}
+			</if>
+			<if test="condition.supplierid != null" >
+				and supplierid = #{condition.supplierid}
+			</if>
+		</trim>
+	</sql>
+	<select id="getDailyCostDetailData" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.journalsheet.model.DeptDailyCost">
+		<include refid="getDailyCostDetailData_sql"/>
+		<if test="condition.ispageFlag == null">
+			<include refid="common.Page_limit" />
+		</if>
+	</select>
+	<select id="getDailyCostDetailDataCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+		select count(*) from ( <include refid="getDailyCostDetailData_sql"/> ) z
+	</select>
+</mapper>

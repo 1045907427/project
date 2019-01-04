@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.activiti.dao.CommentMapper" >
+  <resultMap id="BaseResultMap" type="com.hd.agent.activiti.model.Comment" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="instanceid" property="instanceid" jdbcType="VARCHAR" />
+    <result column="taskid" property="taskid" jdbcType="VARCHAR" />
+    <result column="taskkey" property="taskkey" jdbcType="VARCHAR" />
+    <result column="taskname" property="taskname" jdbcType="VARCHAR" />
+    <result column="assignee" property="assignee" jdbcType="VARCHAR" />
+    <result column="agree" property="agree" jdbcType="VARCHAR" />
+    <result column="comment" property="comment" jdbcType="VARCHAR" />
+    <result column="signature" property="signature" jdbcType="VARCHAR" />
+    <result column="begintime" property="begintime" jdbcType="VARCHAR" />
+    <result column="endtime" property="endtime" jdbcType="VARCHAR" />
+    <result column="processid" property="processid" jdbcType="VARCHAR" />
+    <result column="device" property="device" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, instanceid, taskid, taskkey, taskname, assignee, agree, comment, signature, begintime,
+    endtime, processid, device
+  </sql>
+  <select id="getComment" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from t_act_comment
+    where id = #{id}
+  </select>
+  <select id="getCommentByTask" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from t_act_comment
+    where taskid = #{id}
+    order by id desc
+    limit 0, 1
+  </select>
+  <select id="getCommentByUserTask" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from t_act_comment
+    where assignee = #{0} and taskid = #{1}
+    order by id desc
+    limit 0, 1
+  </select>
+  <select id="getCommentListByInstance" resultType="com.hd.agent.activiti.model.Comment" parameterType="java.lang.String">
+    select
+    a.id, a.instanceid, a.taskid, a.taskkey, a.taskname, a.assignee, a.agree, a.comment, a.signature, a.begintime, a.endtime, b.name assigneename, a.device
+    from t_act_comment a left join t_sys_user b on a.assignee = b.userid
+    where a.instanceid = #{id} order by a.id
+  </select>
+  <select id="getCommentByUser" resultType="com.hd.agent.activiti.model.Comment" parameterType="java.lang.String">
+    select
+    <include refid="Base_Column_List" />
+    from t_act_comment
+    where instanceid = #{0} and assignee = #{1} order by id desc limit 0, 1
+  </select>
+  <delete id="deleteComment" parameterType="java.lang.String" >
+    delete from t_act_comment
+    where id = #{id}
+  </delete>
+  <insert id="addComment" parameterType="com.hd.agent.activiti.model.Comment" >
+    <selectKey resultType="java.lang.String" order="AFTER" keyProperty="id">
+      SELECT LAST_INSERT_ID() AS id
+    </selectKey>
+    delete from t_act_comment where (taskid <![CDATA[<> ]]> '' or taskid is null) and taskid = #{taskid };
+    insert into t_act_comment
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="instanceid != null" >
+        instanceid,
+      </if>
+      <if test="processid != null" >
+        processid,
+      </if>
+      <if test="taskid != null" >
+        taskid,
+      </if>
+      <if test="taskkey != null" >
+        taskkey,
+      </if>
+      <if test="taskname != null" >
+        taskname,
+      </if>
+      <if test="assignee != null" >
+        assignee,
+      </if>
+      <if test="agree != null" >
+        agree,
+      </if>
+      <if test="comment != null" >
+        comment,
+      </if>
+      <if test="signature != null" >
+        signature,
+      </if>
+      <if test="begintime != null" >
+        begintime,
+      </if>
+      <if test="endtime != null" >
+        endtime,
+      </if>
+      <if test="device != null" >
+        device,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="instanceid != null" >
+        #{instanceid},
+      </if>
+      <if test="processid != null" >
+        #{processid},
+      </if>
+      <if test="taskid != null" >
+        #{taskid},
+      </if>
+      <if test="taskkey != null" >
+        #{taskkey},
+      </if>
+      <if test="taskname != null" >
+        #{taskname},
+      </if>
+      <if test="assignee != null" >
+        #{assignee},
+      </if>
+      <if test="agree != null" >
+        #{agree},
+      </if>
+      <if test="comment != null" >
+        #{comment},
+      </if>
+      <if test="signature != null" >
+        #{signature},
+      </if>
+      <if test="begintime != null" >
+        #{begintime},
+      </if>
+      <if test="endtime != null" >
+        #{endtime},
+      </if>
+      <if test="device != null" >
+        #{device},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateComment" parameterType="com.hd.agent.activiti.model.Comment" >
+    update t_act_comment
+    <set >
+      <if test="instanceid != null" >
+        instanceid = #{instanceid},
+      </if>
+      <if test="taskid != null" >
+        taskid = #{taskid},
+      </if>
+      <if test="taskkey != null" >
+        taskkey = #{taskkey},
+      </if>
+      <if test="taskname != null" >
+        taskname = #{taskname},
+      </if>
+      <if test="assignee != null" >
+        assignee = #{assignee},
+      </if>
+      <if test="agree != null" >
+        agree = #{agree},
+      </if>
+      <if test="comment != null" >
+        comment = #{comment},
+      </if>
+      <if test="signature != null" >
+        signature = #{signature},
+      </if>
+      <if test="begintime != null" >
+        begintime = #{begintime},
+      </if>
+      <if test="endtime != null" >
+        endtime = #{endtime},
+      </if>
+      <if test="device != null" >
+        device = #{device},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+
+  <select id="getViewerByTask" resultType="com.hd.agent.activiti.model.Viewer" parameterType="java.lang.String" >
+    select id, instanceid, taskid, taskkey, taskname, viewerid, viewername
+    from t_act_viewer
+    where taskid = #{taskid}
+  </select>
+  <select id="getViewerByInstance" resultType="com.hd.agent.activiti.model.Viewer" parameterType="java.lang.String" >
+    select id, instanceid, taskid, taskkey, taskname, viewerid, viewername
+    from t_act_viewer
+    where instanceid = #{id}
+  </select>
+  <insert id="addViewer" parameterType="com.hd.agent.activiti.model.Viewer" >
+    insert into t_act_viewer
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="instanceid != null" >
+        instanceid,
+      </if>
+      <if test="taskid != null" >
+        taskid,
+      </if>
+      <if test="taskkey != null" >
+        taskkey,
+      </if>
+      <if test="taskname != null" >
+        taskname,
+      </if>
+      <if test="viewerid != null" >
+        viewerid,
+      </if>
+      <if test="viewername != null" >
+        viewername,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="instanceid != null" >
+        #{instanceid},
+      </if>
+      <if test="taskid != null" >
+        #{taskid},
+      </if>
+      <if test="taskkey != null" >
+        #{taskkey},
+      </if>
+      <if test="taskname != null" >
+        #{taskname},
+      </if>
+      <if test="viewerid != null" >
+        #{viewerid},
+      </if>
+      <if test="viewername != null" >
+        #{viewername},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateViewer" parameterType="com.hd.agent.activiti.model.Viewer" >
+    update t_act_viewer
+    <set >
+      <if test="viewerid != null" >
+        viewerid = #{viewerid},
+      </if>
+      <if test="viewername != null" >
+        viewername = #{viewername},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  <select id="getCommentListByProcessid" resultType="com.hd.agent.activiti.model.Comment" parameterType="java.lang.String">
+    select
+    a.id, a.instanceid, a.taskid, a.taskkey, a.taskname, a.assignee, a.agree, a.comment, a.signature, a.begintime, a.endtime, b.name assigneename, a.device
+    from t_act_comment a left join t_sys_user b on a.assignee = b.userid
+    where a.processid = #{id} order by a.id
+  </select>
+  <select id="getComments" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from t_act_comment
+    <trim prefix="where" prefixOverrides="and|or">
+      <if test="processid != null and processid != ''">
+        and processid = #{processid }
+      </if>
+      <if test="instanceid != null and instanceid != ''">
+        and instanceid = #{instanceid }
+      </if>
+      <if test="taskkeys != null">
+        and taskkey in
+        <foreach collection="taskkeys" item="item" open="(" close=")" separator=",">
+          #{item }
+        </foreach>
+      </if>
+      <if test="agree != null and agree != ''">
+        and agree = #{agree }
+      </if>
+    </trim>
+  </select>
+  <delete id="deleteCommentByProcessid" parameterType="java.lang.String">
+    delete from t_act_comment where processid = #{processid }
+  </delete>
+</mapper>

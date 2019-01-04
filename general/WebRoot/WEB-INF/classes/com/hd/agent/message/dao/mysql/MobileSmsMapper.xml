@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.message.dao.MobileSmsMapper">
+	<sql id="PageList_Query_Where_Clause">
+      <if test="condition.adduserid != null" >
+         and adduserid = #{condition.adduserid}
+      </if>
+      <if test="condition.addtime != null" >
+         and addtime = #{condition.addtime}
+      </if>
+      <if test="condition.sendtime != null" >
+         and sendtime = #{condition.sendtime}
+      </if>
+      <if test="condition.sendflag != null" >
+         and sendflag = #{condition.sendflag}
+      </if>
+      <if test="condition.delflag != null" >
+         and delflag = #{condition.delflag}
+      </if>
+      <if test="condition.deltime != null" >
+         and deltime = #{condition.deltime}
+      </if>
+      <if test="condition.recvuserid != null" >
+         and recvuserid = #{condition.recvuserid}
+      </if>
+      <if test="condition.mobile != null" >
+         and mobile = #{condition.mobile}
+      </if>
+      <if test="condition.sendnum != null" >
+         and sendnum = #{condition.sendnum}
+      </if>
+      <if test="condition.dealtime != null" >
+         and dealtime = #{condition.dealtime}
+      </if>
+      <if test="condition.content != null" >
+        	and content like CONCAT('%', #{condition.content} ,'%')
+      </if>	      
+      <if test="condition.stopqueryflag != null" >
+      	and 1 != 1
+      </if>	      
+      <if test="condition.delflagarr != null" >
+      	and FIND_IN_SET(delflag,#{condition.delflagarr})
+      </if>
+      <if test="condition.notdelflag != null" >
+      	and delflag!=#{condition.notdelflag}
+      </if>
+	</sql>
+	<sql id="Base_Column_List" >
+	    id, adduserid, addtime, sendtime, sendflag, delflag, deltime, recvuserid, 
+	    mobile, sendnum, dealtime,content,serialno
+  	</sql>
+  	<insert id="insertMobileSms" parameterType="com.hd.agent.message.model.MobileSms" >
+	    insert into t_msg_mobilesms
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="id != null" >
+	        id,
+	      </if>
+	      <if test="serialno != null" >
+	        serialno,
+	      </if>
+	      <if test="adduserid != null" >
+	        adduserid,
+	      </if>
+	      <if test="1==1" >
+	        addtime,
+	      </if>
+	      <if test="sendtime != null" >
+	        sendtime,
+	      </if>
+	      <if test="sendflag != null" >
+	        sendflag,
+	      </if>
+	      <if test="delflag != null" >
+	        delflag,
+	      </if>
+	      <if test="deltime != null" >
+	        deltime,
+	      </if>
+	      <if test="recvuserid != null" >
+	        recvuserid,
+	      </if>
+	      <if test="mobile != null" >
+	        mobile,
+	      </if>
+	      <if test="sendnum != null" >
+	        sendnum,
+	      </if>
+	      <if test="dealtime != null" >
+	        dealtime,
+	      </if>
+	      <if test="content != null" >
+	        content,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="id != null" >
+	        #{id},
+	      </if>
+	      <if test="serialno != null" >
+	        #{serialno},
+	      </if>
+	      <if test="adduserid != null" >
+	        #{adduserid},
+	      </if>
+	      <if test="1==1" >
+	        now(),
+	      </if>
+	      <if test="sendtime != null" >
+	        #{sendtime},
+	      </if>
+	      <if test="sendflag != null" >
+	        #{sendflag},
+	      </if>
+	      <if test="delflag != null" >
+	        #{delflag},
+	      </if>
+	      <if test="deltime != null" >
+	        #{deltime},
+	      </if>
+	      <if test="recvuserid != null" >
+	        #{recvuserid},
+	      </if>
+	      <if test="mobile != null" >
+	        #{mobile},
+	      </if>
+	      <if test="sendnum != null" >
+	        #{sendnum},
+	      </if>
+	      <if test="dealtime != null" >
+	        #{dealtime},
+	      </if>
+	      <if test="content != null" >
+	        #{content},
+	      </if>
+	    </trim>
+  	</insert>
+  	<update id="updateMobileSms" parameterType="com.hd.agent.message.model.MobileSms" >
+	    update t_msg_mobilesms
+	    <set >
+	      <if test="adduserid != null" >
+	        adduserid = #{adduserid},
+	      </if>
+	      <if test="addtime != null" >
+	        addtime = #{addtime},
+	      </if>
+	      <if test="sendtime != null" >
+	        sendtime = #{sendtime},
+	      </if>
+	      <if test="sendflag != null" >
+	        sendflag = #{sendflag},
+	      </if>
+	      <if test="delflag != null" >
+	        delflag = #{delflag},
+	      </if>
+	      <if test="deltime != null" >
+	        deltime = #{deltime},
+	      </if>
+	      <if test="recvuserid != null" >
+	        recvuserid = #{recvuserid},
+	      </if>
+	      <if test="mobile != null" >
+	        mobile = #{mobile},
+	      </if>
+	      <if test="sendnum != null" >
+	        sendnum = #{sendnum},
+	      </if>
+	      <if test="dealtime != null" >
+	        dealtime = #{dealtime},
+	      </if>
+	      <if test="content != null" >
+	        content = #{content},
+	      </if>
+	    </set>
+	    where id = #{id}
+  	</update>
+  	<update id="updateMobileSmsBy" parameterType="java.util.Map" >
+	    update t_msg_mobilesms
+	    <set>
+	      <if test="addtime != null" >
+	        addtime = #{addtime},
+	      </if>
+	      <if test="sendtime != null" >
+	        sendtime = #{sendtime},
+	      </if>
+	      <if test="sendflag != null" >
+	        sendflag = #{sendflag},
+	      </if>
+	      <if test="delflag != null" >
+	        delflag = #{delflag},
+	      </if>
+	      <if test="deltime != null" >
+	        deltime = #{deltime},
+	      </if>
+	      <if test="sendnum != null" >
+	        sendnum = #{sendnum},
+	      </if>
+	      <if test="dealtime != null" >
+	        dealtime = #{dealtime},
+	      </if>
+	    </set>
+	    where
+	    <trim prefixOverrides="and|or">	   	
+	      <if test="id != null" >
+	        and id = #{id}
+	      </if>    	
+	      <if test="adduserid != null" >
+	        and adduserid = #{adduserid}
+	      </if>
+	      <if test="recvuserid != null" >
+	        and recvuserid = #{recvuserid}
+	      </if>
+	      <if test="wdelflag != null" >
+	        and delflag = #{wdelflag}
+	      </if>
+	      <if test="wsendflag != null" >
+	        and sendflag = #{wsendflag}
+	      </if>
+	      <if test="wnotsendflag != null" >
+	        and sendflag != #{wnotsendflag}
+	      </if>
+	      <if test="authDataSql != null">
+	      	and ${authDataSql}
+	      </if>
+	    </trim>
+  	</update>
+  	<select id="getSendMobileSmsPageList"  parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.message.model.MobileSms" useCache="false">
+  		select * from (
+  		select sms.id, sms.adduserid, sms.addtime, sms.sendtime, sms.sendflag, 
+  		sms.delflag, sms.deltime, sms.recvuserid, sms.mobile, sms.sendnum,sms. dealtime,
+  		sms.content,sms.serialno
+  		,sendu.name addusername
+  		,recvu.name recvusername
+	    from (
+	    	select 
+	    	<choose>
+			<when test="cols!=null">
+				<include refid="common.Page_Column"/>
+			</when>
+			<when test="cols==null">
+				*
+			</when>
+			</choose>
+			from t_msg_mobilesms ) sms 
+    	left join t_sys_user recvu on sms.recvuserid=recvu.userid
+    	left join t_sys_user sendu on sms.adduserid=sendu.userid
+	    ) t
+	    <trim prefix="where" prefixOverrides="and|or" >
+	  		<include refid="PageList_Query_Where_Clause"></include>
+			<include refid="common.Page_querySql"/>
+	    </trim>
+		<include refid="common.Page_limit" />
+  	</select>
+  	<select id="getSendMobileSmsCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int" useCache="false">
+  		select count(1) from t_msg_mobilesms  		
+	    <trim prefix="where" prefixOverrides="and|or" >
+	  		<include refid="PageList_Query_Where_Clause"></include>
+			<include refid="common.Page_querySql"/>
+	    </trim>
+  	</select>  	
+  	<select id="getReceiveMobileSmsPageList"  parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.message.model.MobileSms" useCache="false">
+  		select * from (
+  		select sms.id, sms.adduserid, sms.addtime, sms.sendtime, sms.sendflag, 
+  		sms.delflag, sms.deltime, sms.recvuserid, sms.mobile, sms.sendnum,sms. dealtime,
+  		sms.content,sms.serialno
+  		,sendu.name addusername
+	    from t_msg_mobilesms sms 
+	    left join t_sys_user sendu on sms.adduserid=sendu.userid
+	    ) t
+	    <trim prefix="where" prefixOverrides="and|or" >
+	  		<include refid="PageList_Query_Where_Clause"></include>
+			<include refid="common.Page_querySql"/>
+	    </trim>
+		<include refid="common.Page_limit" />
+  	</select>
+  	<select id="getReceiveMobileSmsCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int" useCache="false">
+  		select count(1) from t_msg_mobilesms  		
+	    <trim prefix="where" prefixOverrides="and|or" >
+	  		<include refid="PageList_Query_Where_Clause"></include>
+			<include refid="common.Page_querySql"/>
+	    </trim>
+  	</select>
+  	<select id="getMobileSmsListBy"  parameterType="java.util.Map" resultType="com.hd.agent.message.model.MobileSms" useCache="false">
+  	select  	
+	<include refid="PageList_Query_Where_Clause"></include>
+	from t_msg_mobilesms
+		<trim prefixOverrides="and|or">
+		      <if test="adduserid != null" >
+		        and adduserid = #{adduserid}
+		      </if>
+		      <if test="recvuserid != null" >
+		        and recvuserid = #{recvuserid}
+		      </if>
+		      <if test="delflag != null" >
+		        and delflag = #{delflag}
+		      </if>
+		      <if test="notdelflag != null" >
+		        and delflag != #{notdelflag}
+		      </if>
+		      <if test="sendflag != null" >
+		        and sendflag = #{sendflag}
+		      </if>
+		      <if test="notsendflag != null" >
+		        and sendflag != #{notsendflag}
+		      </if>	   	
+		      <if test="serialno != null" >
+		        and serialno = #{serialno}
+		      </if>	   	
+		      <if test="mobile != null" >
+		        and mobile = #{mobile}
+		      </if>
+		</trim>
+  	</select>  	
+	<select id="getSerialno" resultType="java.lang.String">
+		select uuid_short()
+	</select>
+</mapper>

@@ -1,0 +1,587 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.accesscontrol.dao.SysUserMapper" >
+	<cache type="org.mybatis.caches.ehcache.EhcacheCache"/> 
+	<select id="getUserAuthorityList" parameterType="java.lang.String" resultType="java.lang.String">
+		select a.authorityid from t_sys_user u,t_ac_userauthority ua,t_ac_authority a
+		where a.authorityid=ua.authorityid and u.userid=ua.userid
+		and u.username=#{username}
+		and a.state='1'
+	</select>
+	<select id="getUserAuthorityListById" parameterType="java.lang.String" resultType="java.lang.String">
+		select a.authorityid from t_sys_user u,t_ac_userauthority ua,t_ac_authority a
+		where a.authorityid=ua.authorityid and u.userid=ua.userid
+		and u.userid=#{userid}
+		and a.state='1'
+	</select>
+	<select id="getAuthorityListByUserid" parameterType="java.lang.String" resultType="com.hd.agent.accesscontrol.model.Authority">
+		select a.authorityid,a.authorityname from t_sys_user u,t_ac_userauthority ua,t_ac_authority a
+		where a.authorityid=ua.authorityid and u.userid=ua.userid
+		and u.userid=#{userid}
+		and a.state='1'
+	</select>
+	<select id="getUserAuthorityListByWorkjob" parameterType="java.lang.String" resultType="java.lang.String">
+		SELECT a.authorityid FROM t_sys_user u, t_ac_jobauthority ja, t_ac_authority a 
+		WHERE a.authorityid = ja.authorityid AND u.workjobid = ja.workjobid AND u.username = #{username} AND a.state = '1'
+	</select>
+	<sql id="Base_Column_List">
+	    userid, username,password, name, sex, birthday, telphone, mobilephone, email, qq, 
+	    msn, icq, addr, zip, hometelphone, image, state, addtime, adduserid, modifytime, 
+	    modifyuserid,departmentid ,departmentname,personnelid,workjobid,seq,ispwd,isphone,
+	    isuploadlocation,lastip,lastmac,lastsid,cid
+	</sql>
+	<sql id="sysUser_usersColumn">
+		<choose>
+			<when test="cols!=null">
+				<include refid="common.Page_Column"/>
+			</when>
+			<when test="cols==null">
+				<include refid="Base_Column_List"/>
+			</when>
+		</choose>
+	</sql>
+	<select id="getUser" parameterType="java.lang.String" resultType="com.hd.agent.accesscontrol.model.SysUser">
+		select 
+		<include refid="Base_Column_List"/>
+		from t_sys_user
+		where username= #{username} and state='1'
+	</select>
+	<select id="getUserById" parameterType="java.lang.String" resultType="com.hd.agent.accesscontrol.model.SysUser">
+		select userid, username, password, name, sex, birthday, telphone, mobilephone, email, qq, 
+	    msn, icq, addr, zip, hometelphone, image, state, addtime, adduserid, modifytime, 
+	    modifyuserid,departmentid,departmentname,personnelid,workjobid,seq,ispwd,isphone,
+	    isuploadlocation,lastip,lastmac,lastsid,cid
+		from t_sys_user
+		where userid= #{0} 
+	</select>
+	<select id="getSysUserList" parameterType="java.lang.String" resultType="com.hd.agent.accesscontrol.model.SysUser">
+		select 
+		<include refid="Base_Column_List"/>
+		from t_sys_user where state='1'
+	</select>
+	<select id="getSysUserListByDeptid" parameterType="java.lang.String" resultType="com.hd.agent.accesscontrol.model.SysUser">
+		select 
+		<include refid="Base_Column_List"/>
+		from t_sys_user where state='1' and departmentid like '${deptid}%'
+	</select>
+	<select id="getSysUserListByNoDeptid" parameterType="java.lang.String" resultType="com.hd.agent.accesscontrol.model.SysUser">
+		select 
+		<include refid="Base_Column_List"/>
+		from t_sys_user where state='1' and (departmentid='' or departmentid is null)
+	</select>	
+	<sql id="sysUserList_Where_Clause">
+		<if test="condition.userid != null" >
+			and t.userid = #{condition.userid}
+		</if>
+		<if test="condition.username != null" >
+			and t.username like CONCAT('%',#{condition.username},'%')
+		</if>
+		<if test="condition.name != null" >
+			and t.name like CONCAT('%',#{condition.name},'%')
+		</if>
+		<if test="condition.sex != null" >
+			and t.sex = #{condition.sex}
+		</if>
+		<if test="condition.departmentid != null" >
+			and t.departmentid like CONCAT(#{condition.departmentid},'%')
+		</if>
+		<if test="condition.workjobid != null" >
+			and t.workjobid = #{condition.workjobid}
+		</if>
+		<if test="condition.isphone != null" >
+			and t.isphone = #{condition.isphone}
+		</if>
+		<if test="condition.state != null" >
+			and t.state = #{condition.state}
+		</if>
+		<if test="condition.userList !=null">
+			and t.userid in
+			<foreach collection="condition.userList" item="item" open="("  separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		<if test="condition.useridarrs != null">
+			and FIND_IN_SET(t.userid,#{condition.useridarrs})
+		</if>
+	</sql>
+	<select id="showSysUserList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.accesscontrol.model.SysUser">
+		select 
+		t.userid, t.username,t.password, t.name, t.sex, t.birthday, t.telphone, t.mobilephone, t.email, t.qq, 
+	    t.msn, t.icq, t.addr, t.zip, t.hometelphone, t.image, t.state, t.addtime, t.adduserid, t.modifytime, 
+	    t.modifyuserid,t.departmentid ,t.departmentname,t.personnelid,t.workjobid,t.seq,t.ispwd,t.isphone,
+	    t.isuploadlocation,t.lastip,t.lastmac,t.lastsid,t.cid
+		from t_sys_user t
+		<if test="condition.roleid != null" >
+		INNER JOIN t_ac_userauthority t1 on t.userid=t1.userid and t1.authorityid=#{condition.roleid}
+		</if>
+		<trim prefix="where" prefixOverrides="and|or" >
+			<include refid="sysUserList_Where_Clause" />
+		  <include refid="common.Page_querySql"/>
+	      <include refid="common.Page_dataSql"/>
+	    </trim>
+	    <include refid="common.Page_limit" />
+	</select>
+	<select id="showSysUserCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+		select count(1) from t_sys_user t
+		<if test="condition.roleid != null" >
+		INNER JOIN t_ac_userauthority t1 on t.userid=t1.userid and t1.authorityid=#{condition.roleid}
+		</if>
+		<trim prefix="where" prefixOverrides="and|or" >
+			<include refid="sysUserList_Where_Clause" />
+		  <include refid="common.Page_querySql"/>
+	      <include refid="common.Page_dataSql"/>
+	    </trim>
+	</select>
+	<select id="getSysUserListByPersonnelid" parameterType="java.lang.String" resultType="com.hd.agent.accesscontrol.model.SysUser">
+		select * from t_sys_user where personnelid = #{personnelid}
+	</select>
+
+	<select id="getSysUserCountByMap" parameterType="Map" resultType="int">
+		select count(1) from t_sys_user t
+		<trim prefix="where" prefixOverrides="and|or" >
+			<if test="userid != null" >
+				and t.userid = #{userid}
+			</if>
+			<if test="username != null" >
+				and t.username like CONCAT('%',#{username},'%')
+			</if>
+			<if test="name != null" >
+				and t.name like CONCAT('%',#{name},'%')
+			</if>
+			<if test="sex != null" >
+				and t.sex = #{sex}
+			</if>
+			<if test="departmentid != null" >
+				and t.departmentid like CONCAT(#{departmentid},'%')
+			</if>
+			<if test="workjobid != null" >
+				and t.workjobid = #{workjobid}
+			</if>
+			<if test="isphone != null" >
+				and t.isphone = #{isphone}
+			</if>
+			<if test="state != null" >
+				and t.state = #{state}
+			</if>
+		</trim>
+	</select>
+	
+	<!-- 分配系统用户 -->
+	<insert id="addAllotSystemUser" parameterType="java.util.Map">
+		insert into t_sys_user 
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			userid,
+	      	<if test="password != null" >
+	        	password,
+	      	</if>
+	      	username,icq,state,addtime,adduserid,name,sex, birthday,telphone,mobilephone,email,qq,msn,addr,zip,hometelphone,image,departmentid,departmentname,personnelid,workjobid
+		</trim>
+		<trim prefix="select" suffixOverrides="," >
+			'${userid}',
+	    	<if test="password != null" >
+	        	'${password}',
+	      	</if>
+	    	name,'','2',now(),'${adduserid}',p.name,p.sex,p.birthday,p.tel,p.telphone,p.email,p.qq,p.MSN,p.address,p.addrpostcode,p.fax,p.photograph,p.belongdeptid,'${departmentname}',p.id,p.belongpost
+	      	from t_base_personnel p
+	      	where p.id = #{id}
+		</trim>
+	</insert>
+	<select id="getUserListByUsernames" parameterType="java.util.List" resultType="com.hd.agent.accesscontrol.model.SysUser">
+		select 
+		<include refid="Base_Column_List"/>
+		from t_sys_user
+		where username in 
+		<foreach collection="userList" item="item" open="("  separator="," close=")">  
+	  		#{item}  
+	    </foreach>
+	</select>
+	<select id="getSysUserListByRole" parameterType="java.lang.String" resultType="com.hd.agent.accesscontrol.model.SysUser">
+		select 
+		<include refid="Base_Column_List"/>
+		from t_sys_user
+		where userid in (select t.userid from t_ac_userauthority t,t_ac_authority t1 where t1.authorityid=t.authorityid and t1.authorityname=#{rolename}) and state='1'
+	</select>
+	<select id="getSysUserListByRoleid" parameterType="java.lang.String" resultType="com.hd.agent.accesscontrol.model.SysUser">
+		select 
+		<include refid="Base_Column_List"/>
+		from t_sys_user
+		where userid in (select t.userid from t_ac_userauthority t where t.authorityid=#{roleid} ) and state='1'
+	</select>
+	<select id="getSysUserListByDept" parameterType="java.lang.String" resultType="com.hd.agent.accesscontrol.model.SysUser">
+		select 
+		<include refid="Base_Column_List"/>
+		from t_sys_user
+		where departmentid =#{deptid} and state='1'
+	</select>
+	<select id="getSysUserListByRoleAndDept" parameterType="java.lang.String" resultType="com.hd.agent.accesscontrol.model.SysUser">
+		select 
+		<include refid="Base_Column_List"/>
+		from t_sys_user
+		where userid in (select t.userid from t_ac_userauthority t,t_ac_authority t1 where t1.authorityid=t.authorityid and t1.authorityname=#{rolename})
+		and departmentid =#{deptid} and state='1'
+	</select>
+	<select id="getSysUserListByRoleidAndDeptid" parameterType="java.lang.String" resultType="com.hd.agent.accesscontrol.model.SysUser">
+		select 
+		<include refid="Base_Column_List"/>
+		from t_sys_user
+		where userid in (select t.userid from t_ac_userauthority t,t_ac_authority t1 where t1.authorityid=t.authorityid and t1.authorityid=#{roleid})
+		and departmentid =#{deptid} and state='1'
+	</select>
+	<select id="getSysUserListByWorkjob" parameterType="java.lang.String" resultType="com.hd.agent.accesscontrol.model.SysUser">
+		select 
+		<include refid="Base_Column_List"/>
+		from t_sys_user
+		where workjobid in (select t.id from t_base_workjob t where t.jobname=#{workjobname})
+		and state='1'
+	</select>
+	<select id="getSysUserListByWorkjobid" parameterType="java.lang.String" resultType="com.hd.agent.accesscontrol.model.SysUser">
+		select 
+		<include refid="Base_Column_List"/>
+		from t_sys_user
+		where workjobid =#{workjobid} and state='1'
+	</select>
+	<!-- 新增系统用户 -->
+	<insert id="addSysUser" parameterType="com.hd.agent.accesscontrol.model.SysUser">
+		insert into t_sys_user
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+	      	<if test="1 == 1">
+	      		addtime,
+	      	</if>
+	      	userid,username,password,icq,state,adduserid,name,sex, birthday,telphone,mobilephone,email,qq,msn,addr,zip,hometelphone,image,departmentid,departmentname,personnelid,workjobid,seq,
+	      	ispwd,isphone,isuploadlocation
+		</trim>
+		<trim prefix="value (" suffix=")" suffixOverrides=",">
+	    	<if test="1 == 1">
+	    		now(),
+	    	</if>
+	    	<choose>
+	    		<when test=" userid == null or userid = ''">
+	    			uuid_short(),
+	    		</when>
+	    		<otherwise>
+				    #{userid},
+	    		</otherwise>
+	    	</choose>
+	    	#{username},#{password},#{icq},#{state},#{adduserid},#{name},#{sex}, #{birthday},#{telphone},#{mobilephone},#{email},
+	    	#{qq},#{msn},#{addr},#{zip},#{hometelphone},#{image},#{departmentid},#{departmentname},#{personnelid},#{workjobid},#{seq},
+	    	#{ispwd},#{isphone},#{isuploadlocation}
+		</trim>
+	</insert>
+	<!-- 用户名唯一性检验 -->
+	<select id="usernameCheck" parameterType="java.lang.String" resultType="int">
+		select count(1) from t_sys_user where username = #{username}
+	</select>
+	<!-- 显示系统用户详情 -->
+	<select id="showSysUserInfo" parameterType="java.lang.String" resultType="com.hd.agent.accesscontrol.model.SysUser" useCache="false">
+		select
+		<include refid="Base_Column_List"/>
+		from t_sys_user
+		where userid = #{userid}
+	</select>
+	<!-- 修改系统用户信息 -->
+	<update id="editSysUser" parameterType="com.hd.agent.accesscontrol.model.SysUser">
+		update t_sys_user
+	    <set >
+	      <if test="username != null" >
+	        username = #{username},
+	      </if>
+	      <if test="password != null" >
+	        password = #{password},
+	      </if>
+	      <if test="name != null" >
+	        name = #{name},
+	      </if>
+	      <if test="sex != null" >
+	        sex = #{sex},
+	      </if>
+	      <if test="birthday != null" >
+	        birthday = #{birthday},
+	      </if>
+	      <if test="telphone != null" >
+	        telphone = #{telphone},
+	      </if>
+	      <if test="mobilephone != null" >
+	        mobilephone = #{mobilephone},
+	      </if>
+	      <if test="email != null" >
+	        email = #{email},
+	      </if>
+	      <if test="qq != null" >
+	        qq = #{qq},
+	      </if>
+	      <if test="msn != null" >
+	        msn = #{msn},
+	      </if>
+	      <if test="icq != null" >
+	        icq = #{icq},
+	      </if>
+	      <if test="addr != null" >
+	        addr = #{addr},
+	      </if>
+	      <if test="zip != null" >
+	        zip = #{zip},
+	      </if>
+	      <if test="hometelphone != null" >
+	        hometelphone = #{hometelphone},
+	      </if>
+	      <if test="image != null" >
+	        image = #{image},
+	      </if>
+	      <if test="state != null" >
+	        state = #{state},
+	      </if>
+	      <if test="1 == 1" >
+	        modifytime = now(),
+	      </if>
+	      <if test="modifyuserid != null" >
+	        modifyuserid = #{modifyuserid},
+	      </if>
+	      <if test="departmentid != null" >
+	        departmentid = #{departmentid},
+	      </if>
+	      <if test="departmentname != null" >
+	        departmentname = #{departmentname},
+	      </if>
+	      <if test="personnelid != null" >
+	        personnelid = #{personnelid},
+	      </if>
+	      <if test="workjobid != null" >
+	        workjobid = #{workjobid},
+	      </if>
+	      <if test="seq != null" >
+	        seq = #{seq},
+	      </if>
+	      <if test="ispwd != null" >
+	        ispwd = #{ispwd},
+	      </if>
+	      <if test="isphone != null" >
+	        isphone = #{isphone},
+	      </if>
+	      <if test="isuploadlocation != null" >
+	        isuploadlocation = #{isuploadlocation},
+	      </if>
+	    </set>
+	    where userid = #{userid}
+	</update>
+	<!-- 启用系统用户 -->
+	<update id="enableSysUser" parameterType="java.lang.String">
+		update t_sys_user set state = '1'
+		where userid = #{userid}
+	</update>
+	<!-- 禁用系统用户 -->
+	<update id="disableSysUser" parameterType="java.lang.String">
+		update t_sys_user set state = '0'
+		where userid = #{userid}
+	</update>
+	<!-- 删除系统用户 -->
+	<delete id="deleteSysUser" parameterType="java.lang.String">
+		delete from t_sys_user where userid = #{userid}
+	</delete>
+	<select id="getUserByUsername" parameterType="java.lang.String" resultType="com.hd.agent.accesscontrol.model.SysUser">
+		select 
+		<include refid="Base_Column_List"/>
+		from t_sys_user
+		where username= #{username}
+	</select>
+	<!-- 重置密码 -->
+	<update id="editResetSysUserPwd" parameterType="java.util.Map">
+		update t_sys_user set password = #{password}
+		where userid = #{userid}
+	</update>
+	<!-- 修改密码 -->
+	<update id="modifySysUserPwd" parameterType="java.util.Map">
+		update t_sys_user set password = #{newPwd}
+		where userid = #{userid}
+	</update>
+	<!-- 根据人员编码批量禁用系统用户 -->
+	<update id="disableSysUserByPerId" >
+		update t_sys_user set state = '0'
+		where personnelid in
+		<foreach collection="perIdArr" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+	<!-- 根据人员编号判断是否该人员是否分配系统用户 -->
+	<select id="checkSysUserByPerId" parameterType="java.lang.String" resultType="com.hd.agent.accesscontrol.model.SysUser">
+		select 
+		<include refid="Base_Column_List"/>
+		from t_sys_user
+		where personnelid = #{personnelid}
+		limit 1
+	</select>
+	<select id="getSysUserByUseridWithoutCache" parameterType="java.lang.String" resultType="com.hd.agent.accesscontrol.model.SysUser">
+		select <include refid="Base_Column_List"/>
+		from t_sys_user where userid=#{userid}
+	</select>
+	<update id="updateSysLogin" parameterType="java.lang.String" flushCache="false">
+		update t_sys_user
+		<set >
+	      <if test="ip != null" >
+	        lastip=#{ip},
+	      </if>
+	      <if test="mac != null" >
+	        lastmac = #{mac},
+	      </if>
+	      <if test="sid != null" >
+	        lastsid = #{sid},
+	      </if>
+          <if test="cid != null" >
+            cid = #{cid},
+          </if>
+	    </set>
+	    where userid=#{userid}
+	</update>
+	<select id="showSysLoginRuleList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.accesscontrol.model.SysLoginRule" useCache="false">
+		select r.userid,t.username,t.name,t.departmentid,t.departmentname,t.isphone, r.logintype, r.ip, r.mac, r.ptype, r.psid 
+		from t_sys_login_rule r,t_sys_user t
+		<if test="condition.roleid != null" >
+		INNER JOIN t_ac_userauthority t1 on t.userid=t1.userid and t1.authorityid=#{condition.roleid}
+		</if>
+		<trim prefix="where" prefixOverrides="and|or" >	
+		  <if test="1==1" >
+	         and r.userid = t.userid
+	      </if>	
+	      <if test="condition.userid != null" >
+	         and t.userid = #{condition.userid}
+	      </if>
+	      <if test="condition.name != null" >
+	         and t.name like CONCAT('%',#{condition.name},'%')
+	      </if>
+	      <if test="condition.sex != null" >
+	         and t.sex = #{condition.sex}
+	      </if>
+	      <if test="condition.departmentid != null" >
+	         and t.departmentid like CONCAT(#{condition.departmentid},'%')
+	      </if>
+	      <if test="condition.workjobid != null" >
+	         and t.workjobid = #{condition.workjobid}
+	      </if>
+	      <if test="condition.isphone != null" >
+	         and t.isphone = #{condition.isphone}
+	      </if>
+	      <if test="condition.userList !=null">
+	         and t.userid in
+		      <foreach collection="condition.userList" item="item" open="("  separator="," close=")">  
+			  	#{item}  
+			  </foreach>
+	      </if>
+	    </trim>
+	    <include refid="common.Page_limit" />
+	</select>
+	<select id="showSysLoginRuleListCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int" useCache="false">
+		select count(1) from (
+			select r.userid,t.username,t.name,t.departmentid,t.departmentname,t.isphone, r.logintype, r.ip, r.mac, r.ptype, r.psid 
+			from t_sys_login_rule r,t_sys_user t
+			<if test="condition.roleid != null" >
+			INNER JOIN t_ac_userauthority t1 on t.userid=t1.userid and t1.authorityid=#{condition.roleid}
+			</if>
+			<trim prefix="where" prefixOverrides="and|or" >		
+			  <if test="1==1" >
+		         and r.userid = t.userid
+		      </if>	
+		      <if test="condition.userid != null" >
+		         and t.userid = #{condition.userid}
+		      </if>
+		      <if test="condition.name != null" >
+		         and t.name like CONCAT('%',#{condition.name},'%')
+		      </if>
+		      <if test="condition.sex != null" >
+		         and t.sex = #{condition.sex}
+		      </if>
+		      <if test="condition.departmentid != null" >
+		         and t.departmentid like CONCAT(#{condition.departmentid},'%')
+		      </if>
+		      <if test="condition.workjobid != null" >
+		         and t.workjobid = #{condition.workjobid}
+		      </if>
+		      <if test="condition.isphone != null" >
+		         and t.isphone = #{condition.isphone}
+		      </if>
+		      <if test="condition.userList !=null">
+		         and t.userid in
+			      <foreach collection="condition.userList" item="item" open="("  separator="," close=")">  
+				  	#{item}  
+				  </foreach>
+		      </if>
+		    </trim>
+		)z
+	</select>
+	<insert id="addSysLoginRule" parameterType="com.hd.agent.accesscontrol.model.SysLoginRule" >
+	    insert into t_sys_login_rule
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="userid != null" >
+	        userid,
+	      </if>
+	      <if test="logintype != null" >
+	        logintype,
+	      </if>
+	      <if test="ip != null" >
+	        ip,
+	      </if>
+	      <if test="mac != null" >
+	        mac,
+	      </if>
+	      <if test="ptype != null" >
+	        ptype,
+	      </if>
+	      <if test="psid != null" >
+	        psid,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="userid != null" >
+	        #{userid},
+	      </if>
+	      <if test="logintype != null" >
+	        #{logintype},
+	      </if>
+	      <if test="ip != null" >
+	        #{ip},
+	      </if>
+	      <if test="mac != null" >
+	        #{mac},
+	      </if>
+	      <if test="ptype != null" >
+	        #{ptype},
+	      </if>
+	      <if test="psid != null" >
+	        #{psid},
+	      </if>
+	    </trim>
+	  </insert>
+	  <delete id="deleteSysLoginRule" parameterType="java.lang.String">
+	  	delete from t_sys_login_rule where userid=#{userid}
+	  </delete>
+	  <select id="getSysLoginRuleInfo" parameterType="java.lang.String" resultType="com.hd.agent.accesscontrol.model.SysLoginRule">
+	  	select userid, logintype, ip, mac, ptype, psid
+	  	from t_sys_login_rule where userid=#{userid}
+	  </select>
+	  <update id="updateSysLoginRule" parameterType="com.hd.agent.accesscontrol.model.SysLoginRule" >
+	    update t_sys_login_rule
+	    <set >
+	      <if test="logintype != null" >
+	        logintype = #{logintype},
+	      </if>
+	      <if test="ip != null" >
+	        ip = #{ip},
+	      </if>
+	      <if test="mac != null" >
+	        mac = #{mac},
+	      </if>
+	      <if test="ptype != null" >
+	        ptype = #{ptype},
+	      </if>
+	      <if test="psid != null" >
+	        psid = #{psid},
+	      </if>
+	    </set>
+	    where userid = #{userid}
+	  </update>
+	<select id="getSysUserListByRoleidAndUserid" parameterType="java.lang.String" resultType="com.hd.agent.accesscontrol.model.SysUser">
+		select
+		<include refid="Base_Column_List"/>
+		from t_sys_user
+		WHERE (userid in (select t.userid from t_ac_userauthority t where t.authorityid=#{roleid} ) OR find_in_set(userid,#{userid})) and state='1'
+	</select>
+
+</mapper>

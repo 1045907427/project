@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+			 xmlns:beans="http://www.springframework.org/schema/beans"
+			 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			 xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.xsd">
+
+	<beans:bean id="WebInvocationPrivilegeEvaluator" class="org.springframework.security.web.access.DefaultWebInvocationPrivilegeEvaluator">
+		<beans:constructor-arg ref="customFilter"></beans:constructor-arg>
+	</beans:bean>
+	<http use-expressions="true" entry-point-ref="loginUrlEntryPoint">
+		<intercept-url pattern="/common/error.jsp" filters="none"/>
+		<intercept-url pattern="/common/403.jsp" filters="none"/>
+		<intercept-url pattern="/checkCode.do" filters="none"/>
+		<intercept-url pattern="/noLogin.do" filters="none"/>
+		<intercept-url pattern="/sessionConcurrent.do" filters="none"/>
+		<intercept-url pattern="/login.do" filters="none"/>
+		<intercept-url pattern="/pvLogin.do" filters="none"/>
+		<intercept-url pattern="/checkPwd.do" filters="none"/>
+		<intercept-url pattern="/js/**" filters="none" />
+		<intercept-url pattern="/css/**" filters="none" />
+		<intercept-url pattern="/image/**" filters="none" />
+		<intercept-url pattern="/*.ico" filters="none" />
+		<intercept-url pattern="/upload/goods/**" filters="none" />
+		<intercept-url pattern="/webservice/**" filters="none"/>
+		<intercept-url pattern="/workflow/uploadResource.do" filters="none"/>
+		<intercept-url pattern="/**" access="isAuthenticated()"/>
+		<access-denied-handler ref="accessDeniedHandler"/>
+		<intercept-url pattern="/common/upload.do" filters="none"/>
+		<intercept-url pattern="/common/deleteAttachFile.do" filters="none"/>
+		<!-- 		<intercept-url pattern="/phone/**" filters="none"/> -->
+		<intercept-url pattern="/phone/uploadLocation.do" filters="none"/>
+		<intercept-url pattern="/phone/testLink.do" filters="none"/>
+		<intercept-url pattern="/phone/a.do" filters="none"/>
+		<intercept-url pattern="/phone/b.do" filters="none"/>
+		<intercept-url pattern="/phone/addRouteDistance.do" filters="none"/>
+		<intercept-url pattern="/phone/getPhoneOutURL.do" filters="none"/>
+		<intercept-url pattern="/phone/update/**" filters="none"/>
+		<intercept-url pattern="/phone/download/**" filters="none"/>
+		<intercept-url pattern="/accesscontrol/accessSetPage.do" filters="none"/>
+		<intercept-url pattern="/accesscontrol/addAccessSet.do" filters="none"/>
+		<intercept-url pattern="/agprint/tplprintjob/getPrintJobDetailContentData.do" filters="none"/>
+		<intercept-url pattern="/agprint/tplprintjob/getPrintContentImageFile.do" filters="none"/>
+		<intercept-url pattern="/basefiles/goods/interface/**" filters="none"/>
+		<intercept-url  pattern="/common/showCommonWebuploaderPage.do" filters="none"/>
+		<intercept-url  pattern="/common/uploadMenuProperties.do" filters="none"/>
+		<custom-filter ref="customFilter" before="FILTER_SECURITY_INTERCEPTOR"/>
+		<!-- 登录 -->
+		<custom-filter ref="loginFilter" before="FORM_LOGIN_FILTER"  />
+		<!-- 退出 -->
+		<custom-filter position="LOGOUT_FILTER" ref="logoutFilter"/>
+		<!-- session管理 防止session并发 -->
+		<custom-filter ref="concurentFilter" position="CONCURRENT_SESSION_FILTER"/>
+		<session-management session-authentication-strategy-ref="sas"/>
+	</http>
+	<!-- 无权限时，页面跳转处理 -->
+	<beans:bean id="accessDeniedHandler" class="com.hd.agent.accesscontrol.base.UserAccessDeniedHandler">
+		<beans:property name="accessDeniedUrl" value="./../noAccessPage.do"></beans:property>
+	</beans:bean>
+	<!--session管理 防止session并发-->
+	<beans:bean id="sas" class="org.springframework.security.web.authentication.session.ConcurrentSessionControlStrategy">
+		<beans:constructor-arg name="sessionRegistry" ref="sessionRegistry"></beans:constructor-arg>
+		<beans:property name="maximumSessions" value="1"></beans:property>
+		<!-- 后登录的用户不能顶替前面已登录的用户
+		<beans:property name="exceptionIfMaximumExceeded" value="true"></beans:property>
+		-->
+	</beans:bean>
+	<beans:bean id="sessionRegistry" class="org.springframework.security.core.session.SessionRegistryImpl"></beans:bean>
+	<!-- session并发后跳转到登录页面 -->
+	<beans:bean id="concurentFilter" class="org.springframework.security.web.session.ConcurrentSessionFilter">
+		<beans:property name="sessionRegistry" ref="sessionRegistry"></beans:property>
+		<beans:property name="expiredUrl" value="/sessionConcurrent.do"></beans:property>
+	</beans:bean>
+	<!-- 登录验证器 -->
+	<beans:bean id="loginFilter"
+				class="com.hd.agent.accesscontrol.base.UserLoginAuthenticationFilter">
+		<!-- 处理登录的action -->
+		<beans:property name="filterProcessesUrl" value="/login_safe"></beans:property>
+		<!-- 验证成功后的处理-->
+		<beans:property name="authenticationSuccessHandler" ref="loginLogAuthenticationSuccessHandler"></beans:property>
+		<!-- 验证失败后的处理-->
+		<beans:property name="authenticationFailureHandler" ref="simpleUrlAuthenticationFailureHandler"></beans:property>
+		<beans:property name="authenticationManager" ref="authenticationManager"></beans:property>
+		<beans:property name="sessionAuthenticationStrategy" ref="sas"></beans:property>
+
+		<!-- 注入service为了查询相应的用户 -->
+		<beans:property name="sysUserService" ref="sysUserService"></beans:property>
+		<beans:property name="sysLogService" ref="sysLogService"></beans:property>
+		<beans:property name="securityService" ref="securityService"></beans:property>
+		<beans:property name="sysParamService" ref="sysParamService"></beans:property>
+	</beans:bean>
+
+	<beans:bean id="loginLogAuthenticationSuccessHandler"
+				class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
+		<beans:property name="defaultTargetUrl" value="/logining.do"></beans:property>
+		<beans:property name="alwaysUseDefaultTargetUrl" value="true"></beans:property>
+	</beans:bean>
+	<beans:bean id="simpleUrlAuthenticationFailureHandler"
+				class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
+		<!-- 可以配置相应的跳转方式。属性forwardToDestination为true采用forward false为sendRedirect -->
+		<beans:property name="defaultFailureUrl" value="/noLogin.do"></beans:property>
+	</beans:bean>
+
+	<!-- 注销过滤器，完成后台用户注销时的定向功能 -->
+	<beans:bean id="logoutFilter" class="org.springframework.security.web.authentication.logout.LogoutFilter">
+		<beans:constructor-arg value="/noLogin.do" />
+		<beans:constructor-arg>
+			<beans:list>
+				<beans:bean class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler" />
+			</beans:list>
+		</beans:constructor-arg>
+		<beans:property name="filterProcessesUrl" value="/logout_safe" />
+	</beans:bean>
+
+	<!-- 未登录的切入点 -->
+	<beans:bean id="loginUrlEntryPoint" class="com.hd.agent.accesscontrol.base.LoginUrlEntryPoint" />
+	<!-- 一个自定义的filter，必须包含authenticationManager,accessDecisionManager,securityMetadataSource三个属性，
+    	所有的权限控制将在这三个类中实现 -->
+	<beans:bean id="customFilter" class="com.hd.agent.accesscontrol.base.CustomFilter">
+		<beans:property name="authenticationManager" ref="authenticationManager"></beans:property>
+		<beans:property name="accessDecisionManager" ref="accessDecisionBaseManager"></beans:property>
+		<beans:property name="securityMetadataSource" ref="securityMetadataSource"></beans:property>
+	</beans:bean>
+	<!-- 验证配置 ， 认证管理器，实现用户认证的入口，主要实现UserDetailsService接口即可 -->
+	<authentication-manager alias="authenticationManager">
+		<authentication-provider user-service-ref="userDetailBaseService">
+			<password-encoder hash="md5"></password-encoder>
+		</authentication-provider>
+	</authentication-manager>
+	<!-- 用户权限查询 -->
+	<beans:bean id="userDetailBaseService" class="com.hd.agent.accesscontrol.base.UserDetailBaseService">
+		<beans:property name="securityService" ref="securityService"></beans:property>
+		<beans:property name="sysUserService" ref="sysUserService"></beans:property>
+	</beans:bean>
+	<!-- 访问决策器，决定某个用户具有的角色，是否有足够的权限去访问某个资源 -->
+	<beans:bean id="accessDecisionBaseManager" class="com.hd.agent.accesscontrol.base.AccessDecisionBaseManager"></beans:bean>
+	<!-- 资源源数据定义，将所有的资源和权限对应关系建立起来，即定义某一资源可以被哪些角色访问 -->
+	<beans:bean id="securityMetadataSource" class="com.hd.agent.accesscontrol.base.AccessControlMetadataSource">
+		<beans:constructor-arg>
+			<beans:ref bean="securityService"/>
+		</beans:constructor-arg>
+	</beans:bean>
+
+</beans:beans>

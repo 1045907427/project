@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.common.dao.PageSettingMapper" >
+	<cache type="org.mybatis.caches.ehcache.EhcacheCache"></cache>
+	<insert id="savePageCulumn" parameterType="com.hd.agent.common.model.PageSetting">
+		<selectKey resultType="java.lang.String" keyProperty="id" order="BEFORE" >
+	      select uuid_short()
+	    </selectKey>
+		insert into t_sys_pagesetting
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	        id,
+	      <if test="userid != null" >
+	        userid,
+	      </if>
+	      <if test="grid != null" >
+	        grid,
+	      </if>
+	      <if test="1==1" >
+	        addtime,
+	      </if>
+	      <if test="frozencol != null" >
+	        frozencol,
+	      </if>
+	      <if test="commoncol != null" >
+	        commoncol,
+	      </if>
+	      <if test="tablename != null" >
+	        tablename,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	        #{id},
+	      <if test="userid != null" >
+	        #{userid},
+	      </if>
+	      <if test="grid != null" >
+	        #{grid},
+	      </if>
+	      <if test="1==1" >
+	        now(),
+	      </if>
+	      <if test="frozencol != null" >
+	        #{frozencol},
+	      </if>
+	      <if test="commoncol != null" >
+	        #{commoncol},
+	      </if>
+	      <if test="tablename != null" >
+	        #{tablename},
+	      </if>
+	    </trim>
+	</insert>
+	<select id="getPageCulumnSet" parameterType="java.lang.String" resultType="int">
+		select count(*) from t_sys_pagesetting
+		where grid=#{grid} and userid=#{userid} and tablename=#{tablename}
+	</select>
+	<update id="updagePageCulumn" parameterType="com.hd.agent.common.model.PageSetting">
+		update t_sys_pagesetting
+	    <set >
+	      <if test="1==1" >
+	        modifytime = now(),
+	      </if>
+	      <if test="frozencol != null" >
+	        frozencol = #{frozencol},
+	      </if>
+	      <if test="commoncol != null" >
+	        commoncol = #{commoncol},
+	      </if>
+	    </set>
+    	where grid=#{grid} and userid=#{userid} and tablename=#{tablename}
+	</update>
+	<select id="getPageCulumnInfo" parameterType="java.lang.String" resultType="com.hd.agent.common.model.PageSetting">
+		select id, userid, grid, addtime, modifytime,frozencol, commoncol,tablename from t_sys_pagesetting
+		where grid=#{grid} and userid=#{userid} and tablename=#{tablename}
+	</select>
+	<delete id="deletePageCulumn" parameterType="java.lang.String" >
+		delete from t_sys_pagesetting where grid=#{grid} and userid=#{userid} and tablename=#{tablename}
+	</delete>
+	<delete id="deletePageCulmnAll" parameterType="java.lang.String" >
+		delete from t_sys_pagesetting where tablename = #{tablename}
+	</delete>
+</mapper>

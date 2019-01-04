@@ -1,0 +1,559 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.storage.dao.LendMapper" >
+  <sql id="lend_Column_List">
+   id, businessdate, billtype, lendtype, lendid, deptid, storageid, status, remark,
+    adduserid, addusername, adddeptid, adddeptname, addtime, modifyuserid, modifyusername,
+    modifytime, audituserid, auditusername, audittime, stopuserid, stopusername, stoptime,
+    closetime, printtimes, otherid
+  </sql>
+  <sql id="lendDetail_Column_List">
+   id, billid, summarybatchid, goodsid, brandid, unitid, unitname, unitnum, auxunitid,
+    auxunitname, auxnum, auxremainder, auxnumdetail, totalbox, taxprice, taxamount, notaxprice,
+    notaxamount, taxtype, tax, remark, storageid, storagelocationid, batchno, produceddate,
+    deadline, seq
+  </sql>
+  <insert id="addLendDetail" parameterType="com.hd.agent.storage.model.LendDetail">
+    insert into t_storage_lend_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="billid != null" >
+        billid,
+      </if>
+      <if test="summarybatchid != null" >
+        summarybatchid,
+      </if>
+      <if test="goodsid != null" >
+        goodsid,
+      </if>
+      <if test="brandid != null" >
+        brandid,
+      </if>
+      <if test="unitid != null" >
+        unitid,
+      </if>
+      <if test="unitname != null" >
+        unitname,
+      </if>
+      <if test="unitnum != null" >
+        unitnum,
+      </if>
+      <if test="auxunitid != null" >
+        auxunitid,
+      </if>
+      <if test="auxunitname != null" >
+        auxunitname,
+      </if>
+      <if test="auxnum != null" >
+        auxnum,
+      </if>
+      <if test="auxremainder != null" >
+        auxremainder,
+      </if>
+      <if test="auxnumdetail != null" >
+        auxnumdetail,
+      </if>
+      <if test="totalbox != null" >
+        totalbox,
+      </if>
+      <if test="taxprice != null" >
+        taxprice,
+      </if>
+      <if test="taxamount != null" >
+        taxamount,
+      </if>
+      <if test="notaxprice != null" >
+        notaxprice,
+      </if>
+      <if test="notaxamount != null" >
+        notaxamount,
+      </if>
+      <if test="taxtype != null" >
+        taxtype,
+      </if>
+      <if test="tax != null" >
+        tax,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="storageid != null" >
+        storageid,
+      </if>
+      <if test="storagelocationid != null" >
+        storagelocationid,
+      </if>
+      <if test="batchno != null" >
+        batchno,
+      </if>
+      <if test="produceddate != null" >
+        produceddate,
+      </if>
+      <if test="deadline != null" >
+        deadline,
+      </if>
+      <if test="seq != null" >
+        seq,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="billid != null" >
+        #{billid,jdbcType=VARCHAR},
+      </if>
+      <if test="summarybatchid != null" >
+        #{summarybatchid,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsid != null" >
+        #{goodsid,jdbcType=VARCHAR},
+      </if>
+      <if test="brandid != null" >
+        #{brandid,jdbcType=VARCHAR},
+      </if>
+      <if test="unitid != null" >
+        #{unitid,jdbcType=VARCHAR},
+      </if>
+      <if test="unitname != null" >
+        #{unitname,jdbcType=VARCHAR},
+      </if>
+      <if test="unitnum != null" >
+        #{unitnum,jdbcType=DECIMAL},
+      </if>
+      <if test="auxunitid != null" >
+        #{auxunitid,jdbcType=VARCHAR},
+      </if>
+      <if test="auxunitname != null" >
+        #{auxunitname,jdbcType=VARCHAR},
+      </if>
+      <if test="auxnum != null" >
+        #{auxnum,jdbcType=DECIMAL},
+      </if>
+      <if test="auxremainder != null" >
+        #{auxremainder,jdbcType=DECIMAL},
+      </if>
+      <if test="auxnumdetail != null" >
+        #{auxnumdetail,jdbcType=VARCHAR},
+      </if>
+      <if test="totalbox != null" >
+        #{totalbox,jdbcType=DECIMAL},
+      </if>
+      <if test="taxprice != null" >
+        #{taxprice,jdbcType=DECIMAL},
+      </if>
+      <if test="taxamount != null" >
+        #{taxamount,jdbcType=DECIMAL},
+      </if>
+      <if test="notaxprice != null" >
+        #{notaxprice,jdbcType=DECIMAL},
+      </if>
+      <if test="notaxamount != null" >
+        #{notaxamount,jdbcType=DECIMAL},
+      </if>
+      <if test="taxtype != null" >
+        #{taxtype,jdbcType=VARCHAR},
+      </if>
+      <if test="tax != null" >
+        #{tax,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="storageid != null" >
+        #{storageid,jdbcType=VARCHAR},
+      </if>
+      <if test="storagelocationid != null" >
+        #{storagelocationid,jdbcType=VARCHAR},
+      </if>
+      <if test="batchno != null" >
+        #{batchno,jdbcType=VARCHAR},
+      </if>
+      <if test="produceddate != null" >
+        #{produceddate,jdbcType=VARCHAR},
+      </if>
+      <if test="deadline != null" >
+        #{deadline,jdbcType=VARCHAR},
+      </if>
+      <if test="seq != null" >
+        #{seq,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <insert id="addLend" parameterType="com.hd.agent.storage.model.Lend">
+    insert into t_storage_lend
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="businessdate != null" >
+        businessdate,
+      </if>
+      <if test="billtype != null" >
+        billtype,
+      </if>
+      <if test="lendtype != null" >
+        lendtype,
+      </if>
+      <if test="lendid != null" >
+        lendid,
+      </if>
+      <if test="deptid != null" >
+        deptid,
+      </if>
+      <if test="storageid != null" >
+        storageid,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="adduserid != null" >
+        adduserid,
+      </if>
+      <if test="addusername != null" >
+        addusername,
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid,
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname,
+      </if>
+      <if test="1 == 1" >
+        addtime,
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid,
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername,
+      </if>
+      <if test="modifytime != null" >
+        modifytime,
+      </if>
+      <if test="audituserid != null" >
+        audituserid,
+      </if>
+      <if test="auditusername != null" >
+        auditusername,
+      </if>
+      <if test="audittime != null" >
+        audittime,
+      </if>
+      <if test="stopuserid != null" >
+        stopuserid,
+      </if>
+      <if test="stopusername != null" >
+        stopusername,
+      </if>
+      <if test="stoptime != null" >
+        stoptime,
+      </if>
+      <if test="closetime != null" >
+        closetime,
+      </if>
+      <if test="printtimes != null" >
+        printtimes,
+      </if>
+      <if test="otherid != null" >
+        otherid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="businessdate != null" >
+        #{businessdate,jdbcType=VARCHAR},
+      </if>
+      <if test="billtype != null" >
+        #{billtype,jdbcType=CHAR},
+      </if>
+      <if test="lendtype != null" >
+        #{lendtype,jdbcType=CHAR},
+      </if>
+      <if test="lendid != null" >
+        #{lendid,jdbcType=VARCHAR},
+      </if>
+      <if test="deptid != null" >
+        #{deptid,jdbcType=VARCHAR},
+      </if>
+      <if test="storageid != null" >
+        #{storageid,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="adduserid != null" >
+        #{adduserid,jdbcType=VARCHAR},
+      </if>
+      <if test="addusername != null" >
+        #{addusername,jdbcType=VARCHAR},
+      </if>
+      <if test="adddeptid != null" >
+        #{adddeptid,jdbcType=VARCHAR},
+      </if>
+      <if test="adddeptname != null" >
+        #{adddeptname,jdbcType=VARCHAR},
+      </if>
+      <if test="1 == 1">
+        now(),
+      </if>
+      <if test="modifyuserid != null" >
+        #{modifyuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyusername != null" >
+        #{modifyusername,jdbcType=VARCHAR},
+      </if>
+      <if test="modifytime != null" >
+        #{modifytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="audituserid != null" >
+        #{audituserid,jdbcType=VARCHAR},
+      </if>
+      <if test="auditusername != null" >
+        #{auditusername,jdbcType=VARCHAR},
+      </if>
+      <if test="audittime != null" >
+        #{audittime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="stopuserid != null" >
+        #{stopuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="stopusername != null" >
+        #{stopusername,jdbcType=VARCHAR},
+      </if>
+      <if test="stoptime != null" >
+        #{stoptime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="closetime != null" >
+        #{closetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="printtimes != null" >
+        #{printtimes,jdbcType=INTEGER},
+      </if>
+      <if test="otherid != null" >
+        #{otherid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="getLendInfo" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.Lend">
+    select <include refid="lend_Column_List"/>
+    from t_storage_lend where id = #{id}
+  </select>
+  <select id="getLendDetailListByID" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.LendDetail">
+    select <include refid="lendDetail_Column_List"/>
+    from t_storage_lend_detail where billid=#{billid}
+  </select>
+  <select id="showLendList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.storage.model.Lend">
+    select <include refid="lend_Column_List"/>
+    from t_storage_lend
+    <trim prefix="where" prefixOverrides="and|or">
+      <include refid="common.Page_querySql"/>
+      <include refid="common.Page_dataSql"/>
+      <if test="condition.businessdate1 != null">
+        and businessdate >= #{condition.businessdate1}
+      </if>
+      <if test="condition.businessdate2 != null">
+        <![CDATA[and businessdate <= #{condition.businessdate2}]]>
+      </if>
+      <if test="condition.id != null" >
+        and id like CONCAT('%',#{condition.id},'%')
+      </if>
+      <if test="condition.status != null">
+        and status = #{condition.status}
+      </if>
+      <if test="condition.deptid != null">
+        and deptid = #{condition.deptid}
+      </if>
+      <if test="condition.userid != null">
+        and userid = #{condition.userid}
+      </if>
+      <if test="condition.storageid != null">
+        and storageid = #{condition.storageid}
+      </if>
+      <if test="condition.lendtype != null">
+        and lendtype = #{condition.lendtype}
+      </if>
+      <if test="condition.billtype != null">
+        and billtype = #{condition.billtype}
+      </if>
+      <choose>
+        <when test="condition.isClose ==0 ">
+          and status in("1","2")
+        </when>
+        <when test="condition.isClose ==1 ">
+          and status in("3","4")
+        </when>
+      </choose>
+      <if test="condition.printsign != null and condition.queryprinttimes != null">
+        <choose>
+          <when test="condition.printsign == 1">
+            <![CDATA[and printtimes = #{condition.queryprinttimes} ]]>
+          </when>
+          <when test="condition.printsign == 2">
+            <![CDATA[and printtimes < #{condition.queryprinttimes} ]]>
+          </when>
+          <when test="condition.printsign == 3">
+            <![CDATA[and printtimes <= #{condition.queryprinttimes} ]]>
+          </when>
+          <when test="condition.printsign == 4">
+            <![CDATA[and printtimes > #{condition.queryprinttimes} ]]>
+          </when>
+          <when test="condition.printsign == 5">
+            <![CDATA[and printtimes >= #{condition.queryprinttimes} ]]>
+          </when>
+        </choose>
+      </if>
+    </trim>
+    <include refid="common.Page_limit" />
+  </select>
+  <select id="showLendListCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+    select count(1) from t_storage_lend
+    <trim prefix="where" prefixOverrides="and|or">
+      <include refid="common.Page_querySql"/>
+      <include refid="common.Page_dataSql"/>
+    </trim>
+  </select>
+  <delete id="deleteLendDetailListByBillid" parameterType="java.lang.String">
+    delete from t_storage_lend_detail where billid=#{billid}
+  </delete>
+  <update id="editLend" parameterType="com.hd.agent.storage.model.Lend">
+    update t_storage_lend
+    <set >
+      <if test="businessdate != null" >
+        businessdate = #{businessdate,jdbcType=VARCHAR},
+      </if>
+      <if test="billtype != null" >
+        billtype = #{billtype,jdbcType=CHAR},
+      </if>
+      <if test="lendtype != null" >
+        lendtype = #{lendtype,jdbcType=CHAR},
+      </if>
+      <if test="lendid != null" >
+        lendid = #{lendid,jdbcType=VARCHAR},
+      </if>
+      <if test="deptid != null" >
+        deptid = #{deptid,jdbcType=VARCHAR},
+      </if>
+      <if test="storageid != null" >
+        storageid = #{storageid,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="adduserid != null" >
+        adduserid = #{adduserid,jdbcType=VARCHAR},
+      </if>
+      <if test="addusername != null" >
+        addusername = #{addusername,jdbcType=VARCHAR},
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid = #{adddeptid,jdbcType=VARCHAR},
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname = #{adddeptname,jdbcType=VARCHAR},
+      </if>
+      <if test="addtime != null" >
+        addtime = #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid = #{modifyuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername = #{modifyusername,jdbcType=VARCHAR},
+      </if>
+      <if test="modifytime != null" >
+        modifytime = #{modifytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="audituserid != null" >
+        audituserid = #{audituserid,jdbcType=VARCHAR},
+      </if>
+      <if test="auditusername != null" >
+        auditusername = #{auditusername,jdbcType=VARCHAR},
+      </if>
+      <if test="audittime != null" >
+        audittime = #{audittime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="stopuserid != null" >
+        stopuserid = #{stopuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="stopusername != null" >
+        stopusername = #{stopusername,jdbcType=VARCHAR},
+      </if>
+      <if test="stoptime != null" >
+        stoptime = #{stoptime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="closetime != null" >
+        closetime = #{closetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="printtimes != null" >
+        printtimes = #{printtimes,jdbcType=INTEGER},
+      </if>
+      <if test="otherid != null" >
+        otherid = #{otherid,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <delete id="deleteLend" parameterType="java.lang.String">
+    delete from t_storage_lend where id=#{id} and (status='2' or status='1')
+  </delete>
+  <update id="auditLend" parameterType="java.lang.String">
+    update t_storage_lend set
+    businessdate = #{businessdate},
+    status ='4',audituserid=#{userid},auditusername=#{username},audittime=now(),closetime=now()
+    where id=#{id} and (status='2' or status='6')
+  </update>
+  <update id="oppauditLend" parameterType="java.lang.String">
+    update t_storage_lend set status ='2'
+    where id=#{id} and (status='3' or status='4')
+  </update>
+  <select id="getLendDetail" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.LendDetail">
+    select <include refid="lendDetail_Column_List"/>
+    from t_storage_lend_detail where id=#{id}
+  </select>
+  <select id="showLendListBy" parameterType="java.util.Map" resultType="com.hd.agent.storage.model.Lend">
+    select
+    <include refid="lend_Column_List" />
+    from t_storage_lend
+    <trim prefix="where" prefixOverrides="and|or">
+      <if test="dataSql != null">
+        and ${dataSql}
+      </if>
+      <if test="idarrs!=null">
+        and find_in_set(id,#{idarrs})
+      </if>
+      <if test="status!=null">
+        and status=#{status}
+      </if>
+      <if test="statusarr!=null">
+        and FIND_IN_SET(status,#{statusarr})
+      </if>
+      <if test="notprint != null and notprint == 1">
+        and (printtimes is null or printtimes=0)
+      </if>
+    </trim>
+  </select>
+
+  <update id="updateOrderPrinttimes" parameterType="com.hd.agent.storage.model.Lend">
+    update t_storage_lend
+    <set>
+      <if test="printtimes != null">
+        printtimes = IFNULL(printtimes,0)+1,
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+</mapper>

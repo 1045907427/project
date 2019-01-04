@@ -1,0 +1,974 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.sales.dao.DemandMapper" >
+  <resultMap id="BaseResultMap" type="com.hd.agent.sales.model.Demand" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="keyid" property="keyid" jdbcType="VARCHAR" />
+    <result column="businessdate" property="businessdate" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="adduserid" property="adduserid" jdbcType="VARCHAR" />
+    <result column="addusername" property="addusername" jdbcType="VARCHAR" />
+    <result column="adddeptid" property="adddeptid" jdbcType="VARCHAR" />
+    <result column="adddeptname" property="adddeptname" jdbcType="VARCHAR" />
+    <result column="addtime" property="addtime" jdbcType="TIMESTAMP" />
+    <result column="modifyuserid" property="modifyuserid" jdbcType="VARCHAR" />
+    <result column="modifyusername" property="modifyusername" jdbcType="VARCHAR" />
+    <result column="modifytime" property="modifytime" jdbcType="TIMESTAMP" />
+    <result column="audituserid" property="audituserid" jdbcType="VARCHAR" />
+    <result column="auditusername" property="auditusername" jdbcType="VARCHAR" />
+    <result column="audittime" property="audittime" jdbcType="TIMESTAMP" />
+    <result column="stopuserid" property="stopuserid" jdbcType="VARCHAR" />
+    <result column="stopusername" property="stopusername" jdbcType="VARCHAR" />
+    <result column="stoptime" property="stoptime" jdbcType="TIMESTAMP" />
+    <result column="closetime" property="closetime" jdbcType="TIMESTAMP" />
+    <result column="printtimes" property="printtimes" jdbcType="INTEGER" />
+    <result column="customerid" property="customerid" jdbcType="VARCHAR" />
+    <result column="customersort" property="customersort" jdbcType="VARCHAR" />
+    <result column="handlerid" property="handlerid" jdbcType="VARCHAR" />
+    <result column="isgoodsseq" property="isgoodsseq" jdbcType="CHAR" />
+    <result column="salesdept" property="salesdept" jdbcType="VARCHAR" />
+    <result column="salesuser" property="salesuser" jdbcType="VARCHAR" />
+    <result column="settletype" property="settletype" jdbcType="VARCHAR" />
+    <result column="paytype" property="paytype" jdbcType="VARCHAR" />
+    <result column="field01" property="field01" jdbcType="VARCHAR" />
+    <result column="field02" property="field02" jdbcType="VARCHAR" />
+    <result column="field03" property="field03" jdbcType="VARCHAR" />
+    <result column="field04" property="field04" jdbcType="VARCHAR" />
+    <result column="field05" property="field05" jdbcType="VARCHAR" />
+    <result column="field06" property="field06" jdbcType="VARCHAR" />
+    <result column="field07" property="field07" jdbcType="VARCHAR" />
+    <result column="field08" property="field08" jdbcType="VARCHAR" />
+    <result column="seq" property="seq" jdbcType="INTEGER" />
+    <result column="indooruserid" property="indooruserid" jdbcType="VARCHAR" />
+    <result column="ordergoodsid" property="ordergoodsid" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, keyid,businessdate, status, remark, adduserid, addusername, adddeptid, adddeptname, 
+    addtime, modifyuserid, modifyusername, modifytime, audituserid, auditusername, audittime, 
+    stopuserid, stopusername, stoptime, closetime, printtimes, customerid,customersort, handlerid, 
+    isgoodsseq, salesdept, salesuser, settletype, paytype, field01, field02, field03, 
+    field04, field05, field06, field07, field08, seq,indooruserid,ordergoodsid
+  </sql>
+  <select id="getDemandList" resultMap="BaseResultMap" parameterType="com.hd.agent.common.util.PageMap">
+  	select 
+  	<include refid="Base_Column_List" />
+  	from t_sales_demand
+	<trim prefix="where" prefixOverrides="and|or">
+		<include refid="common.Page_querySql"/>
+	  	<include refid="common.Page_dataSql"/>
+		<if test="condition.id != null" >
+         and id like concat('%',#{condition.id},'%')
+      	</if>
+		<if test="condition.businessdate != null" >
+         <![CDATA[ and businessdate>= #{condition.businessdate} ]]>
+      	</if>
+		<if test="condition.businessdate1 != null" >
+         <![CDATA[ and businessdate<= #{condition.businessdate1} ]]>
+      	</if>
+		<if test="condition.customerid != null" >
+         and customerid = #{condition.customerid}
+      	</if>
+		<if test="condition.adduserid != null" >
+         and adduserid = #{condition.adduserid}
+      	</if>
+		<if test="condition.salesdept != null" >
+         and salesdept = #{condition.salesdept}
+      	</if>
+		<if test="condition.salesuser != null" >
+         and salesuser = #{condition.salesuser}
+      	</if>
+		<if test="condition.addtime != null" >
+         <![CDATA[ and addtime > #{condition.addtime} ]]>
+      	</if>
+		<if test="condition.addtime1 != null" >
+         <![CDATA[ and addtime <= date_add(str_to_date(#{condition.addtime1}, '%Y-%m-%d'), interval '1' day) ]]>
+      	</if>
+		<if test="condition.status != null" >
+         and find_in_set(status,#{condition.status})
+      	</if>
+	</trim>
+	<include refid="common.Page_limit"/>
+  </select>
+  <select id="getDemandCount" resultType="java.lang.Integer" parameterType="com.hd.agent.common.util.PageMap">
+  	select count(1) from t_sales_demand
+	<trim prefix="where" prefixOverrides="and|or">
+		<include refid="common.Page_querySql"/>
+	  	<include refid="common.Page_dataSql"/>
+		<if test="condition.id != null" >
+         and id like concat('%',#{condition.id},'%')
+      	</if>
+		<if test="condition.businessdate != null" >
+         <![CDATA[ and businessdate >= #{condition.businessdate} ]]>
+      	</if>
+		<if test="condition.businessdate1 != null" >
+         <![CDATA[ and businessdate <= #{condition.businessdate1} ]]>
+      	</if>
+		<if test="condition.customerid != null" >
+         and customerid = #{condition.customerid}
+      	</if>
+		<if test="condition.adduserid != null" >
+         and adduserid = #{condition.adduserid}
+      	</if>
+		<if test="condition.salesdept != null" >
+         and salesdept = #{condition.salesdept}
+      	</if>
+		<if test="condition.salesuser != null" >
+         and salesuser = #{condition.salesuser}
+      	</if>
+		<if test="condition.addtime != null" >
+         <![CDATA[ and addtime > #{condition.addtime} ]]>
+      	</if>
+		<if test="condition.addtime1 != null" >
+         <![CDATA[ and addtime <= date_add(str_to_date(#{condition.addtime1}, '%Y-%m-%d'), interval '1' day) ]]>
+      	</if>
+		<if test="condition.status != null" >
+         and find_in_set(status,#{condition.status})
+      	</if>
+	</trim>
+  </select>
+  <select id="getDemand" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_sales_demand
+    where id = #{id}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_sales_demand
+    where id = #{id}
+  </delete>
+  <insert id="addDemand" parameterType="com.hd.agent.sales.model.Demand" >
+    insert into t_sales_demand
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="keyid != null" >
+        keyid,
+      </if>
+      <if test="businessdate != null" >
+        businessdate,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="adduserid != null" >
+        adduserid,
+      </if>
+      <if test="addusername != null" >
+        addusername,
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid,
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname,
+      </if>
+        addtime,
+      <if test="modifyuserid != null" >
+        modifyuserid,
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername,
+      </if>
+      <if test="modifytime != null" >
+        modifytime,
+      </if>
+      <if test="audituserid != null" >
+        audituserid,
+      </if>
+      <if test="auditusername != null" >
+        auditusername,
+      </if>
+      <if test="audittime != null" >
+        audittime,
+      </if>
+      <if test="stopuserid != null" >
+        stopuserid,
+      </if>
+      <if test="stopusername != null" >
+        stopusername,
+      </if>
+      <if test="stoptime != null" >
+        stoptime,
+      </if>
+      <if test="closetime != null" >
+        closetime,
+      </if>
+      <if test="printtimes != null" >
+        printtimes,
+      </if>
+      <if test="customerid != null" >
+        customerid,
+      </if>
+      <if test="customersort != null" >
+        customersort,
+      </if>
+      <if test="handlerid != null" >
+        handlerid,
+      </if>
+      <if test="isgoodsseq != null" >
+        isgoodsseq,
+      </if>
+      <if test="salesarea != null" >
+        salesarea,
+      </if>
+      <if test="salesdept != null" >
+        salesdept,
+      </if>
+      <if test="salesuser != null" >
+        salesuser,
+      </if>
+      <if test="settletype != null" >
+        settletype,
+      </if>
+      <if test="paytype != null" >
+        paytype,
+      </if>
+      <if test="field01 != null" >
+        field01,
+      </if>
+      <if test="field02 != null" >
+        field02,
+      </if>
+      <if test="field03 != null" >
+        field03,
+      </if>
+      <if test="field04 != null" >
+        field04,
+      </if>
+      <if test="field05 != null" >
+        field05,
+      </if>
+      <if test="field06 != null" >
+        field06,
+      </if>
+      <if test="field07 != null" >
+        field07,
+      </if>
+      <if test="field08 != null" >
+        field08,
+      </if>
+      <if test="seq != null" >
+        seq,
+      </if>
+      <if test="indooruserid != null" >
+        indooruserid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="keyid != null" >
+        #{keyid},
+      </if>
+      <if test="businessdate != null" >
+        #{businessdate},
+      </if>
+      <if test="status != null" >
+        #{status},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+      <if test="adduserid != null" >
+        #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        #{adddeptname},
+      </if>
+        now(),
+      <if test="modifyuserid != null" >
+        #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        #{modifyusername},
+      </if>
+      <if test="modifytime != null" >
+        #{modifytime},
+      </if>
+      <if test="audituserid != null" >
+        #{audituserid},
+      </if>
+      <if test="auditusername != null" >
+        #{auditusername},
+      </if>
+      <if test="audittime != null" >
+        #{audittime},
+      </if>
+      <if test="stopuserid != null" >
+        #{stopuserid},
+      </if>
+      <if test="stopusername != null" >
+        #{stopusername},
+      </if>
+      <if test="stoptime != null" >
+        #{stoptime},
+      </if>
+      <if test="closetime != null" >
+        #{closetime},
+      </if>
+      <if test="printtimes != null" >
+        #{printtimes},
+      </if>
+      <if test="customerid != null" >
+        #{customerid},
+      </if>
+      <if test="customersort != null" >
+        #{customersort},
+      </if>
+      <if test="handlerid != null" >
+        #{handlerid},
+      </if>
+      <if test="isgoodsseq != null" >
+        #{isgoodsseq},
+      </if>
+      <if test="salesarea != null" >
+        #{salesarea},
+      </if>
+      <if test="salesdept != null" >
+        #{salesdept},
+      </if>
+      <if test="salesuser != null" >
+        #{salesuser},
+      </if>
+      <if test="settletype != null" >
+        #{settletype},
+      </if>
+      <if test="paytype != null" >
+        #{paytype},
+      </if>
+      <if test="field01 != null" >
+        #{field01},
+      </if>
+      <if test="field02 != null" >
+        #{field02},
+      </if>
+      <if test="field03 != null" >
+        #{field03},
+      </if>
+      <if test="field04 != null" >
+        #{field04},
+      </if>
+      <if test="field05 != null" >
+        #{field05},
+      </if>
+      <if test="field06 != null" >
+        #{field06},
+      </if>
+      <if test="field07 != null" >
+        #{field07},
+      </if>
+      <if test="field08 != null" >
+        #{field08},
+      </if>
+      <if test="seq != null" >
+        #{seq},
+      </if>
+      <if test="indooruserid != null" >
+        #{indooruserid},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateDemand" parameterType="com.hd.agent.sales.model.Demand" >
+    update t_sales_demand
+    <set >
+      <if test="businessdate != null" >
+        businessdate = #{businessdate},
+      </if>
+      <if test="status != null" >
+        status = #{status},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark},
+      </if>
+      <if test="adduserid != null" >
+        adduserid = #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        addusername = #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid = #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname = #{adddeptname},
+      </if>
+      <if test="addtime != null" >
+        addtime = #{addtime},
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid = #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername = #{modifyusername},
+      </if>
+      <if test="modifytime != null" >
+        modifytime = #{modifytime},
+      </if>
+      <if test="audituserid != null" >
+        audituserid = #{audituserid},
+      </if>
+      <if test="auditusername != null" >
+        auditusername = #{auditusername},
+      </if>
+      <if test="audittime != null" >
+        audittime = #{audittime},
+      </if>
+      <if test="stopuserid != null" >
+        stopuserid = #{stopuserid},
+      </if>
+      <if test="stopusername != null" >
+        stopusername = #{stopusername},
+      </if>
+      <if test="stoptime != null" >
+        stoptime = #{stoptime},
+      </if>
+      <if test="closetime != null" >
+        closetime = #{closetime},
+      </if>
+      <if test="printtimes != null" >
+        printtimes = #{printtimes},
+      </if>
+      <if test="customerid != null" >
+        customerid = #{customerid},
+      </if>
+      <if test="customersort != null" >
+        customersort = #{customersort},
+      </if>
+      <if test="handlerid != null" >
+        handlerid = #{handlerid},
+      </if>
+      <if test="isgoodsseq != null" >
+        isgoodsseq = #{isgoodsseq},
+      </if>
+      <if test="salesarea != null" >
+        salesarea = #{salesarea},
+      </if>
+      <if test="salesdept != null" >
+        salesdept = #{salesdept},
+      </if>
+      <if test="salesuser != null" >
+        salesuser = #{salesuser},
+      </if>
+      <if test="settletype != null" >
+        settletype = #{settletype},
+      </if>
+      <if test="paytype != null" >
+        paytype = #{paytype},
+      </if>
+      <if test="field01 != null" >
+        field01 = #{field01},
+      </if>
+      <if test="field02 != null" >
+        field02 = #{field02},
+      </if>
+      <if test="field03 != null" >
+        field03 = #{field03},
+      </if>
+      <if test="field04 != null" >
+        field04 = #{field04},
+      </if>
+      <if test="field05 != null" >
+        field05 = #{field05},
+      </if>
+      <if test="field06 != null" >
+        field06 = #{field06},
+      </if>
+      <if test="field07 != null" >
+        field07 = #{field07},
+      </if>
+      <if test="field08 != null" >
+        field08 = #{field08},
+      </if>
+      <if test="seq != null" >
+        seq = #{seq},
+      </if>
+      <if test="indooruserid != null" >
+        indooruserid = #{indooruserid},
+      </if>
+      <if test="orderid != null" >
+        orderid = #{orderid},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  <update id="updateDemandStatus" parameterType="com.hd.agent.sales.model.Demand">
+  	 update t_sales_demand
+    <set>
+      <if test="status != null" >
+        status = #{status},
+      </if>
+      <if test="audituserid != null" >
+        audituserid = #{audituserid},
+      </if>
+      <if test="auditusername != null" >
+        auditusername = #{auditusername},
+      </if>
+      <if test="audittime != null" >
+        audittime = now(),
+      </if>
+      <if test="stopuserid != null" >
+        stopuserid = #{stopuserid},
+      </if>
+      <if test="stopusername != null" >
+        stopusername = #{stopusername},
+      </if>
+      <if test="stoptime != null" >
+        stoptime = now(),
+      </if>
+      <if test="closetime != null" >
+        closetime = now(),
+      </if>
+      <if test="orderid != null" >
+        orderid = #{orderid},
+      </if>
+    </set>
+    where id=#{id} and status='0'
+  </update>
+  
+  
+  <resultMap id="BaseResultMapDetail" type="com.hd.agent.sales.model.DemandDetail" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="orderid" property="orderid" jdbcType="VARCHAR" />
+    <result column="goodsid" property="goodsid" jdbcType="VARCHAR" />
+    <result column="groupid" property="groupid" jdbcType="VARCHAR" />
+    <result column="goodssort" property="goodssort" jdbcType="VARCHAR" />
+    <result column="brandid" property="brandid" jdbcType="VARCHAR" />
+    <result column="supplierid" property="supplierid" jdbcType="VARCHAR" />
+    <result column="supplieruser" property="supplieruser" jdbcType="VARCHAR" />
+    <result column="unitid" property="unitid" jdbcType="VARCHAR" />
+    <result column="unitname" property="unitname" jdbcType="VARCHAR" />
+    <result column="unitnum" property="unitnum" jdbcType="DECIMAL" />
+    <result column="auxunitid" property="auxunitid" jdbcType="VARCHAR" />
+    <result column="auxunitname" property="auxunitname" jdbcType="VARCHAR" />
+    <result column="auxnum" property="auxnum" jdbcType="DECIMAL" />
+    <result column="auxnumdetail" property="auxnumdetail" jdbcType="VARCHAR" />
+    <result column="overnum" property="overnum" jdbcType="DECIMAL" />
+    <result column="totalbox" property="totalbox" jdbcType="DECIMAL" />
+    <result column="taxprice" property="taxprice" jdbcType="DECIMAL" />
+    <result column="taxamount" property="taxamount" jdbcType="DECIMAL" />
+    <result column="notaxprice" property="notaxprice" jdbcType="DECIMAL" />
+    <result column="notaxamount" property="notaxamount" jdbcType="DECIMAL" />
+    <result column="costprice" property="costprice" jdbcType="DECIMAL" />
+    <result column="taxtype" property="taxtype" jdbcType="VARCHAR" />
+    <result column="tax" property="tax" jdbcType="DECIMAL" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="deliverytype" property="deliverytype" jdbcType="VARCHAR" />
+    <result column="deliverydate" property="deliverydate" jdbcType="VARCHAR" />
+    <result column="batchno" property="batchno" jdbcType="VARCHAR" />
+    <result column="expirationdate" property="expirationdate" jdbcType="DATE" />
+    <result column="billno" property="billno" jdbcType="VARCHAR" />
+    <result column="billdetailno" property="billdetailno" jdbcType="VARCHAR" />
+    <result column="field01" property="field01" jdbcType="VARCHAR" />
+    <result column="field02" property="field02" jdbcType="VARCHAR" />
+    <result column="field03" property="field03" jdbcType="VARCHAR" />
+    <result column="field04" property="field04" jdbcType="VARCHAR" />
+    <result column="field05" property="field05" jdbcType="VARCHAR" />
+    <result column="field06" property="field06" jdbcType="VARCHAR" />
+    <result column="field07" property="field07" jdbcType="VARCHAR" />
+    <result column="field08" property="field08" jdbcType="VARCHAR" />
+    <result column="seq" property="seq" jdbcType="INTEGER" />
+    <result column="oldprice" property="oldprice" jdbcType="DECIMAL" />
+    <result column="relationordergoodsid" property="relationordergoodsid" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List_Detail" >
+    id, orderid, goodsid,groupid,goodssort, brandid, unitid, unitname, unitnum, auxunitid, auxunitname, 
+    auxnum, auxnumdetail, overnum,totalbox, taxprice, taxamount, notaxprice, notaxamount, costprice, 
+    taxtype, tax, remark, deliverytype,deliverydate, batchno, expirationdate, billno, billdetailno, 
+    field01, field02, field03, field04, field05, field06, field07, field08, seq, oldprice,relationordergoodsid
+  </sql>
+  <select id="getDemandDetailByDemand" parameterType="java.lang.String" resultType="com.hd.agent.sales.model.DemandDetail">
+  	select 
+  	<include refid="Base_Column_List_Detail"/>
+  	from t_sales_demand_detail
+  	where orderid = #{id}
+  	ORDER BY (CASE WHEN deliverytype='1' then groupid else goodsid end) asc,deliverytype asc 
+  </select>
+  <select id="getDemandDetailByDemandSum" parameterType="java.lang.String" resultType="com.hd.agent.sales.model.DemandDetail">
+  	select 
+  	id, orderid, goodsid,groupid, brandid, group_concat(DISTINCT relationordergoodsid) as relationordergoodsid,
+  	unitid, unitname, sum(unitnum) unitnum, auxunitid, auxunitname, 
+    taxprice, sum(taxamount) taxamount, notaxprice, sum(notaxamount) notaxamount, costprice, 
+    taxtype, sum(tax) tax, remark, deliverytype,deliverydate, batchno, expirationdate, billno, billdetailno, 
+    field01, field02, field03, field04, field05, field06, field07, field08, seq, oldprice
+  	from t_sales_demand_detail
+  	where find_in_set(orderid, #{id}) 
+  	group by groupid,deliverytype,goodsid,taxprice
+  	order by groupid asc,deliverytype asc, goodsid asc
+  </select>
+  <select id="getDemandDetailTotal" parameterType="java.lang.String" resultType="map">
+  	select sum(taxamount) taxamount, sum(notaxamount) notaxamount, sum(tax) tax from t_sales_demand_detail where orderid = #{id}
+  </select>
+  <insert id="addDemandDetail" parameterType="com.hd.agent.sales.model.DemandDetail" >
+    insert into t_sales_demand_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="orderid != null" >
+        orderid,
+      </if>
+      <if test="goodsid != null" >
+        goodsid,
+      </if>
+      <if test="groupid != null" >
+        groupid,
+      </if>
+      <if test="goodssort != null" >
+        goodssort,
+      </if>
+      <if test="brandid != null" >
+        brandid,
+      </if>
+      <if test="branduser != null" >
+        branduser,
+      </if>
+      <if test="branddept != null" >
+        branddept,
+      </if>
+      <if test="supplierid != null" >
+        supplierid,
+      </if>
+      <if test="supplieruser != null" >
+        supplieruser,
+      </if>
+      <if test="unitid != null" >
+        unitid,
+      </if>
+      <if test="unitname != null" >
+        unitname,
+      </if>
+      <if test="unitnum != null" >
+        unitnum,
+      </if>
+      <if test="auxunitid != null" >
+        auxunitid,
+      </if>
+      <if test="auxunitname != null" >
+        auxunitname,
+      </if>
+      <if test="auxnum != null" >
+        auxnum,
+      </if>
+      <if test="auxnumdetail != null" >
+        auxnumdetail,
+      </if>
+      <if test="overnum != null" >
+        overnum,
+      </if>
+      <if test="totalbox != null" >
+        totalbox,
+      </if>
+      <if test="taxprice != null" >
+        taxprice,
+      </if>
+      <if test="taxamount != null" >
+        taxamount,
+      </if>
+      <if test="notaxprice != null" >
+        notaxprice,
+      </if>
+      <if test="notaxamount != null" >
+        notaxamount,
+      </if>
+      <if test="costprice != null" >
+        costprice,
+      </if>
+      <if test="taxtype != null" >
+        taxtype,
+      </if>
+      <if test="tax != null" >
+        tax,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="deliverytype != null" >
+        deliverytype,
+      </if>
+      <if test="deliverydate != null" >
+        deliverydate,
+      </if>
+      <if test="batchno != null" >
+        batchno,
+      </if>
+      <if test="expirationdate != null" >
+        expirationdate,
+      </if>
+      <if test="billno != null" >
+        billno,
+      </if>
+      <if test="billdetailno != null" >
+        billdetailno,
+      </if>
+      <if test="field01 != null" >
+        field01,
+      </if>
+      <if test="field02 != null" >
+        field02,
+      </if>
+      <if test="field03 != null" >
+        field03,
+      </if>
+      <if test="field04 != null" >
+        field04,
+      </if>
+      <if test="field05 != null" >
+        field05,
+      </if>
+      <if test="field06 != null" >
+        field06,
+      </if>
+      <if test="field07 != null" >
+        field07,
+      </if>
+      <if test="field08 != null" >
+        field08,
+      </if>
+      <if test="seq != null" >
+        seq,
+      </if>
+      <if test="oldprice != null" >
+        oldprice,
+      </if>
+      <if test="relationordergoodsid != null" >
+        relationordergoodsid,
+      </if>
+
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="orderid != null" >
+        #{orderid},
+      </if>
+      <if test="goodsid != null" >
+        #{goodsid},
+      </if>
+      <if test="groupid != null" >
+        #{groupid},
+      </if>
+      <if test="goodssort != null" >
+        #{goodssort},
+      </if>
+      <if test="brandid != null" >
+        #{brandid},
+      </if>
+      <if test="branduser != null" >
+        #{branduser},
+      </if>
+      <if test="branddept != null" >
+        #{branddept},
+      </if>
+      <if test="supplierid != null" >
+        #{supplierid},
+      </if>
+      <if test="supplieruser != null" >
+        #{supplieruser},
+      </if>
+      <if test="unitid != null" >
+        #{unitid},
+      </if>
+      <if test="unitname != null" >
+        #{unitname},
+      </if>
+      <if test="unitnum != null" >
+        #{unitnum},
+      </if>
+      <if test="auxunitid != null" >
+        #{auxunitid},
+      </if>
+      <if test="auxunitname != null" >
+        #{auxunitname},
+      </if>
+      <if test="auxnum != null" >
+        #{auxnum},
+      </if>
+      <if test="auxnumdetail != null" >
+        #{auxnumdetail},
+      </if>
+      <if test="overnum != null" >
+        #{overnum},
+      </if>
+      <if test="totalbox != null" >
+        #{totalbox},
+      </if>
+      <if test="taxprice != null" >
+        #{taxprice},
+      </if>
+      <if test="taxamount != null" >
+        #{taxamount},
+      </if>
+      <if test="notaxprice != null" >
+        #{notaxprice},
+      </if>
+      <if test="notaxamount != null" >
+        #{notaxamount},
+      </if>
+      <if test="costprice != null" >
+        #{costprice},
+      </if>
+      <if test="taxtype != null" >
+        #{taxtype},
+      </if>
+      <if test="tax != null" >
+        #{tax},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+      <if test="deliverytype != null" >
+        #{deliverytype},
+      </if>
+      <if test="deliverydate != null" >
+        #{deliverydate},
+      </if>
+      <if test="batchno != null" >
+        #{batchno},
+      </if>
+      <if test="expirationdate != null" >
+        #{expirationdate},
+      </if>
+      <if test="billno != null" >
+        #{billno},
+      </if>
+      <if test="billdetailno != null" >
+        #{billdetailno},
+      </if>
+      <if test="field01 != null" >
+        #{field01},
+      </if>
+      <if test="field02 != null" >
+        #{field02},
+      </if>
+      <if test="field03 != null" >
+        #{field03},
+      </if>
+      <if test="field04 != null" >
+        #{field04},
+      </if>
+      <if test="field05 != null" >
+        #{field05},
+      </if>
+      <if test="field06 != null" >
+        #{field06},
+      </if>
+      <if test="field07 != null" >
+        #{field07},
+      </if>
+      <if test="field08 != null" >
+        #{field08},
+      </if>
+      <if test="seq != null" >
+        #{seq},
+      </if>
+      <if test="oldprice != null" >
+        #{oldprice},
+      </if>
+      <if test="relationordergoodsid != null" >
+        #{relationordergoodsid},
+      </if>
+    </trim>
+  </insert>
+  <delete id="deleteDemand" parameterType="java.lang.String">
+  	delete from t_sales_demand where id=#{id}
+  </delete>
+  <delete id="deleteDemandDetail" parameterType="java.lang.String">
+  	delete from t_sales_demand_detail where orderid=#{id}
+  </delete>
+  <select id="checkDemandRepeat" parameterType="java.lang.String" resultType="map">
+  	select GROUP_CONCAT(z.id) as id,z.customerid,z.amount,count(1) as count from (
+		select t.id,t.customerid,sum(t1.taxamount) as amount from t_sales_demand t
+		RIGHT JOIN t_sales_demand_detail t1 on t.id=t1.orderid
+		where t.addtime>DATE_ADD(now(),INTERVAL -${days} DAY) and t.customerid=#{customerid}
+		GROUP BY t.id) z
+		GROUP BY z.customerid,z.amount
+		HAVING count(1)>1 and id like concat('%',#{id},'%')
+  </select>
+  
+  <select id="getDemandByKeyid" parameterType="java.lang.String" resultType="com.hd.agent.sales.model.Demand">
+  	select <include refid="Base_Column_List" /> from t_sales_demand where keyid=#{keyid}
+  </select>
+    <select id="getBrandListInDemand" resultType="java.lang.String">
+        select DISTINCT  t.brandid from t_sales_demand_detail t where t.orderid = #{id}
+    </select>
+    <select id="getBrandListInDemandByIds" resultType="java.lang.String">
+        select DISTINCT  t.brandid from t_sales_demand_detail t
+        where t.orderid in
+        <foreach item="id" index="index" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+    <select id="getDemandImageData" resultType="map">
+SELECT z.* FROM(SELECT t2.customernum,p.id,p.name,SUM(t1.taxamount) taxamount,MAX(t.addtime) addtime,p.photograph photograph
+FROM t_base_personnel p LEFT JOIN t_sys_user s ON s.personnelid=p.id
+LEFT JOIN (SELECT adduserid,addtime,customerid,id FROM t_sales_demand WHERE STR_TO_DATE(ADDTIME,'%Y-%m-%d')=STR_TO_DATE(NOW(),'%Y-%m-%d')) t ON t.adduserid=s.userid
+LEFT JOIN t_sales_demand_detail t1 ON t1.orderid=t.id
+LEFT JOIN (SELECT COUNT(adduserid) customernum ,adduserid FROM  t_sales_demand WHERE STR_TO_DATE(ADDTIME,'%Y-%m-%d')=STR_TO_DATE(NOW(),'%Y-%m-%d') GROUP BY adduserid) t2 ON t2.adduserid=t.adduserid
+WHERE (FIND_IN_SET('1',p.employetype) OR FIND_IN_SET('3',p.employetype)) AND p.state='1'
+GROUP BY p.id) z  ORDER BY z.taxamount DESC
+  </select>
+  <select id="getDemandImageList" resultType="map" parameterType="map">
+    SELECT t.id,t.addtime,t.addusername,customerid FROM t_sales_demand t  WHERE
+    STR_TO_DATE(t.addtime,'%Y-%m-%d')=STR_TO_DATE(now(),'%Y-%m-%d') ORDER BY addtime DESC
+    <if test="startNum != null and rows != null" >
+      <![CDATA[ limit #{startNum} , #{rows} ]]>
+    </if>
+  </select>
+  <select id="getDemandTotalToday" resultType="java.lang.String">
+    SELECT SUM(t1.taxamount) taxamount FROM t_sales_demand t LEFT JOIN t_sales_demand_detail t1 ON t.id=t1.orderid
+    WHERE STR_TO_DATE(t.addtime,'%Y-%m-%d')=STR_TO_DATE(now(),'%Y-%m-%d')
+  </select>
+  <select id="getPersonnelDemandList" parameterType="com.hd.agent.common.util.PageMap" resultMap="BaseResultMap">
+    SELECT  t2.id, t2.keyid,t2.businessdate, t2.status, t2.remark, t2.adduserid, t2.addusername, t2.adddeptid, t2.adddeptname,
+    t2.addtime, t2.modifyuserid, t2.modifyusername, t2.modifytime, t2.audituserid, t2.auditusername, t2.audittime,
+    t2.stopuserid, t2.stopusername, t2.stoptime, t2.closetime, t2.printtimes, t2.customerid,t2.customersort, t2.handlerid,
+    t2.isgoodsseq, t2.salesdept, t2.salesuser, t2.settletype, t2.paytype, t2.field01, t2.field02, t2.field03,
+    t2.field04, t2.field05, t2.field06, t2.field07, t2.field08, t2.seq,t2.indooruserid
+    FROM t_sys_user t1 LEFT JOIN t_sales_demand t2 ON t1.userid=t2.adduserid
+    <trim prefix="where" prefixOverrides="and|or">
+      <include refid="common.Page_dataSql"/>
+      <if test="condition.personnelid != null" >
+        and t1.personnelid=#{condition.personnelid}
+      </if>
+      <if test="1==1" >
+        and STR_TO_DATE(t2.addtime,'%Y-%m-%d')=STR_TO_DATE(now(),'%Y-%m-%d')
+      </if>
+    </trim>
+    <include refid="common.Page_limit"/>
+  </select>
+  <select id="getPersonnelDemandCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+    SELECT count(1)
+    FROM t_sys_user t1 LEFT JOIN t_sales_demand t2 ON t1.userid=t2.adduserid
+    <trim prefix="where" prefixOverrides="and|or">
+      <include refid="common.Page_dataSql"/>
+      <if test="condition.personnelid != null" >
+        and t1.personnelid=#{condition.personnelid}
+      </if>
+      <if test="1==1" >
+        and STR_TO_DATE(t2.addtime,'%Y-%m-%d')=STR_TO_DATE(now(),'%Y-%m-%d')
+      </if>
+    </trim>
+  </select>
+  <select id="getDemandGoodsNum" parameterType="java.lang.String" resultType="int">
+    SELECT count(1) from(
+    (select orderid,goodsid,deliverytype,sum(unitnum) as unitnum from t_sales_demand_detail where
+     orderid=#{orderid} group by goodsid,deliverytype)
+    )t
+  </select>
+  <select id="getDemandRemarks" parameterType="java.lang.String" resultType="java.lang.String">
+    SELECT group_concat(remark) FROM t_sales_demand_detail where orderid=#{orderid} AND remark!=''
+  </select>
+  <update id="updateDemandOrderGoodsid" parameterType="java.lang.String">
+    UPDATE t_sales_demand SET ordergoodsid=#{ordergoodsid} WHERE id=#{demandid}
+  </update>
+  <select id="getOrderGoodsInDemand" parameterType="java.lang.String" resultType="java.lang.String">
+    SELECT group_concat(id) FROM t_sales_demand WHERE find_in_set(#{ordergoodsid},ordergoodsid)
+  </select>
+</mapper>

@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.storage.dao.StockInitMapper" >
+	<sql id="base_stockinit_column">
+		id, storageid, goodsid, storagelocationid, status, price, unitid, unitname, unitnum, 
+	    unitamount,notaxamount,tax,taxtype, auxunitid, auxunitname, auxnum, auxnumdetail, summarybatchid,batchno, produceddate,
+	    deadline, adduserid, addusername, adddeptid, adddeptname, addtime, modifyuserid, 
+	    modifyusername, modifytime, audituserid, auditusername, audittime, closetime, printtimes,remark
+	</sql>
+	<sql id="StockInit_Column_List">
+		<choose>
+			<when test="cols!=null">
+				<include refid="common.Page_Column"/>
+			</when>
+			<when test="cols==null">
+				id, storageid, goodsid, storagelocationid, status, price, unitid, unitname, unitnum, 
+			    unitamount,notaxamount,tax,taxtype, auxunitid, auxunitname, auxnum, auxnumdetail,summarybatchid, batchno, produceddate,
+			    deadline, adduserid, addusername, adddeptid, adddeptname, addtime, modifyuserid, 
+			    modifyusername, modifytime, audituserid, auditusername, audittime, closetime, printtimes,remark
+			</when>
+		</choose>
+	</sql>
+
+	<insert id="addStockInit" parameterType="com.hd.agent.storage.model.StockInit">
+	    insert into t_storage_stockinit
+	    <trim prefix="(" suffix=")" suffixOverrides=",">
+	      <if test="id != null">
+	        id,
+	      </if>
+	      <if test="storageid != null">
+	        storageid,
+	      </if>
+	      <if test="goodsid != null">
+	        goodsid,
+	      </if>
+	      <if test="storagelocationid != null">
+	        storagelocationid,
+	      </if>
+	      <if test="status != null">
+	        status,
+	      </if>
+	      <if test="price != null">
+	        price,
+	      </if>
+	      <if test="unitid != null">
+	        unitid,
+	      </if>
+	      <if test="unitname != null">
+	        unitname,
+	      </if>
+	      <if test="unitnum != null">
+	        unitnum,
+	      </if>
+	      <if test="unitamount != null">
+	        unitamount,
+	      </if>
+            <if test="notaxamount != null">
+                notaxamount,
+            </if>
+            <if test="tax != null">
+                tax,
+            </if>
+            <if test="taxtype != null">
+                taxtype,
+            </if>
+	      <if test="auxunitid != null">
+	        auxunitid,
+	      </if>
+	      <if test="auxunitname != null">
+	        auxunitname,
+	      </if>
+	      <if test="auxnum != null">
+	        auxnum,
+	      </if>
+	      <if test="auxnumdetail != null">
+	        auxnumdetail,
+	      </if>
+	      <if test="summarybatchid != null">
+	        summarybatchid,
+	      </if>
+	      <if test="batchno != null">
+	        batchno,
+	      </if>
+	      <if test="produceddate != null">
+	        produceddate,
+	      </if>
+	      <if test="deadline != null">
+	        deadline,
+	      </if>
+	      <if test="adduserid != null">
+	        adduserid,
+	      </if>
+	      <if test="addusername != null">
+	        addusername,
+	      </if>
+	      <if test="adddeptid != null">
+	        adddeptid,
+	      </if>
+	      <if test="adddeptname != null">
+	        adddeptname,
+	      </if>
+	      <if test="1==1">
+	        addtime,
+	      </if>
+			<if test="remark != null">
+				remark,
+			</if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides=",">
+	      <if test="id != null">
+	        #{id},
+	      </if>
+	      <if test="storageid != null">
+	        #{storageid},
+	      </if>
+	      <if test="goodsid != null">
+	        #{goodsid},
+	      </if>
+	      <if test="storagelocationid != null">
+	        #{storagelocationid},
+	      </if>
+	      <if test="status != null">
+	        #{status},
+	      </if>
+	      <if test="price != null">
+	        #{price},
+	      </if>
+	      <if test="unitid != null">
+	        #{unitid},
+	      </if>
+	      <if test="unitname != null">
+	        #{unitname},
+	      </if>
+	      <if test="unitnum != null">
+	        #{unitnum},
+	      </if>
+	      <if test="unitamount != null">
+	        #{unitamount},
+	      </if>
+            <if test="notaxamount != null">
+                #{notaxamount},
+            </if>
+            <if test="tax != null">
+                #{tax},
+            </if>
+            <if test="taxtype != null">
+                #{taxtype},
+            </if>
+	      <if test="auxunitid != null">
+	        #{auxunitid},
+	      </if>
+	      <if test="auxunitname != null">
+	        #{auxunitname},
+	      </if>
+	      <if test="auxnum != null">
+	        #{auxnum},
+	      </if>
+	      <if test="auxnumdetail != null">
+	        #{auxnumdetail},
+	      </if>
+	      <if test="summarybatchid != null">
+	        #{summarybatchid},
+	      </if>
+	      <if test="batchno != null">
+	        #{batchno},
+	      </if>
+	      <if test="produceddate != null">
+	        #{produceddate},
+	      </if>
+	      <if test="deadline != null">
+	        #{deadline},
+	      </if>
+	      <if test="adduserid != null">
+	        #{adduserid},
+	      </if>
+	      <if test="addusername != null">
+	        #{addusername},
+	      </if>
+	      <if test="adddeptid != null">
+	        #{adddeptid},
+	      </if>
+	      <if test="adddeptname != null">
+	        #{adddeptname},
+	      </if>
+	      <if test="1==1">
+	        now(),
+	      </if>
+			<if test="remark != null">
+				#{remark},
+			</if>
+	    </trim>
+	</insert>
+	 <select id="showStockInitList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.storage.model.StockInit">
+	 	select t.id, t.storageid, t.goodsid, t.storagelocationid, t.status, t.price, t.unitid, t.unitname, t.unitnum, 
+		    t.unitamount,t.notaxamount,t.tax,t.taxtype, t.auxunitid, t.auxunitname, t.auxnum, t.auxnumdetail,t.summarybatchid, t.batchno, t.produceddate,
+		    t.deadline, t.adduserid, t.addusername, t.adddeptid, t.adddeptname, t.addtime, t.modifyuserid, 
+		    t.modifyusername, t.modifytime, t.audituserid, t.auditusername, t.audittime, t.closetime, t.printtimes,t.remark
+    	from t_storage_stockinit t
+    	<if test="condition.brandid != null">
+	        INNER JOIN t_base_goods_info g on t.goodsid=g.id and g.brand=#{condition.brandid}
+	    </if>
+    	<trim prefix="where" prefixOverrides="and|or">
+    	  <include refid="common.Page_querySql"/>
+	      <include refid="common.Page_dataSql"/>
+	      <if test="condition.storageid != null">
+	         and t.storageid = #{condition.storageid}
+	      </if>
+	      <if test="condition.goodsid != null">
+	         and t.goodsid = #{condition.goodsid}
+	      </if>
+          <if test="condition.exportids != null" >
+                and FIND_IN_SET(t.id,#{condition.exportids})
+          </if>
+	      <if test="condition.storagelocationid != null">
+	         and t.storagelocationid = #{condition.storagelocationid}
+	      </if>
+	      <if test="condition.status != null">
+	         and t.status = #{condition.status}
+	      </if>
+	      <if test="condition.batchno != null">
+	         and t.batchno = #{condition.batchno}
+	      </if>
+	      <if test="condition.produceddate != null">
+	         and t.produceddate = #{condition.produceddate}
+	      </if>
+	      <if test="condition.deadline != null">
+	         and t.deadline = #{condition.deadline}
+	      </if>
+	    </trim>
+         <if test="condition.ordersql != null">
+             order by ${condition.ordersql}
+         </if>
+         <if test="condition.isflag == null">
+             <include refid="common.Page_limit" />
+         </if>
+	 </select>
+	 <select id="showStockInitCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+	 	select count(1) from t_storage_stockinit t
+	 	<if test="condition.brandid != null">
+	        INNER JOIN t_base_goods_info g on t.goodsid=g.id and g.brand=#{condition.brandid}
+	    </if>
+	 	<trim prefix="where" prefixOverrides="and|or">
+	 	  <include refid="common.Page_querySql"/>
+	      <include refid="common.Page_dataSql"/>
+	      <if test="condition.storageid != null">
+	         and t.storageid = #{condition.storageid}
+	      </if>
+	      <if test="condition.goodsid != null">
+	         and t.goodsid = #{condition.goodsid}
+	      </if>
+	      <if test="condition.storagelocationid != null">
+	         and t.storagelocationid = #{condition.storagelocationid}
+	      </if>
+	      <if test="condition.status != null">
+	         and t.status = #{condition.status}
+	      </if>
+	      <if test="condition.batchno != null">
+	         and t.batchno = #{condition.batchno}
+	      </if>
+	      <if test="condition.produceddate != null">
+	         and t.produceddate = #{condition.produceddate}
+	      </if>
+	      <if test="condition.deadline != null">
+	         and t.deadline = #{condition.deadline}
+	      </if>
+	    </trim>
+	 </select>
+	 <select id="showStockInitSum" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.storage.model.StockInit">
+	 	select sum(t.unitamount)  as unitamount,sum(t.unitnum) as unitnum,sum(t.auxnum) as auxnum,
+         sum(t.notaxamount) as notaxamount,sum(t.tax) as tax
+	 	from t_storage_stockinit t
+	 	<if test="condition.brandid != null">
+	        INNER JOIN t_base_goods_info g on t.goodsid=g.id and g.brand=#{condition.brandid}
+	    </if>
+	 	<trim prefix="where" prefixOverrides="and|or">
+	 	  <include refid="common.Page_querySql"/>
+	      <include refid="common.Page_dataSql"/>
+	      <if test="condition.storageid != null">
+	         and t.storageid = #{condition.storageid}
+	      </if>
+	      <if test="condition.goodsid != null">
+	         and t.goodsid = #{condition.goodsid}
+	      </if>
+	      <if test="condition.storagelocationid != null">
+	         and t.storagelocationid = #{condition.storagelocationid}
+	      </if>
+	      <if test="condition.status != null">
+	         and t.status = #{condition.status}
+	      </if>
+	      <if test="condition.batchno != null">
+	         and t.batchno = #{condition.batchno}
+	      </if>
+	      <if test="condition.produceddate != null">
+	         and t.produceddate = #{condition.produceddate}
+	      </if>
+	      <if test="condition.deadline != null">
+	         and t.deadline = #{condition.deadline}
+	      </if>
+	    </trim>
+	 </select>
+	 <select id="showStockInitListByStorageid" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.StockInit">
+	 	select <include refid="base_stockinit_column" />
+    	from t_storage_stockinit
+	    where storageid = #{storageid}
+         order by goodsid asc
+	 </select>
+	 <select id="getStockInitInfo" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.StockInit">
+	 	select <include refid="base_stockinit_column" />
+    	from t_storage_stockinit
+	    where id = #{id}
+	 </select>
+	 <delete id="deleteStockInit" parameterType="java.lang.String">
+	 	delete from t_storage_stockinit where id = #{id}
+	 </delete>
+	 <update id="editStockInit" parameterType="com.hd.agent.storage.model.StockInit">
+	 	update t_storage_stockinit
+	    <set>
+	      <if test="storageid != null">
+	        storageid = #{storageid},
+	      </if>
+	      <if test="goodsid != null">
+	        goodsid = #{goodsid},
+	      </if>
+	      <if test="storagelocationid != null">
+	        storagelocationid = #{storagelocationid},
+	      </if>
+	      <if test="status != null">
+	        status = #{status},
+	      </if>
+	      <if test="price != null">
+	        price = #{price},
+	      </if>
+	      <if test="unitid != null">
+	        unitid = #{unitid},
+	      </if>
+	      <if test="unitname != null">
+	        unitname = #{unitname},
+	      </if>
+	      <if test="unitnum != null">
+	        unitnum = #{unitnum},
+	      </if>
+	      <if test="unitamount != null">
+	        unitamount = #{unitamount},
+	      </if>
+            <if test="notaxamount != null">
+                notaxamount = #{notaxamount},
+            </if>
+            <if test="tax != null">
+                tax = #{tax},
+            </if>
+            <if test="taxtype != null">
+                taxtype = #{taxtype},
+            </if>
+	      <if test="auxunitid != null">
+	        auxunitid = #{auxunitid},
+	      </if>
+	      <if test="auxunitname != null">
+	        auxunitname = #{auxunitname},
+	      </if>
+	      <if test="auxnum != null">
+	        auxnum = #{auxnum},
+	      </if>
+	      <if test="auxnumdetail != null">
+	        auxnumdetail = #{auxnumdetail},
+	      </if>
+	      <if test="summarybatchid != null">
+	        summarybatchid = #{summarybatchid},
+	      </if>
+	      <if test="batchno != null">
+	        batchno = #{batchno},
+	      </if>
+	      <if test="produceddate != null">
+	        produceddate = #{produceddate},
+	      </if>
+	      <if test="deadline != null">
+	        deadline = #{deadline},
+	      </if>
+	      <if test="modifyuserid != null">
+	        modifyuserid = #{modifyuserid},
+	      </if>
+	      <if test="modifyusername != null">
+	        modifyusername = #{modifyusername},
+	      </if>
+	      <if test="1==1">
+	        modifytime = now(),
+	      </if>
+			<if test="remark != null">
+				remark = #{remark},
+			</if>
+	    </set>
+	    where id = #{id}
+	 </update>
+	 <select id="getStockInitBatchnoCount" parameterType="java.lang.String" resultType="int">
+	 	select count(1) from t_storage_stockinit where batchno=#{batchno}
+	 </select>
+	 <update id="auditStockInit" parameterType="java.lang.String">
+	 	update t_storage_stockinit 
+	 	set status='3',audituserid=#{audituserid},auditusername=#{auditusername},audittime = now(),
+	 	summarybatchid=#{summarybatchid}
+	 	where id=#{id}
+	 </update>
+	 <update id="oppauditStockInit" parameterType="java.lang.String">
+	 	update t_storage_stockinit 
+	 	set status='2',audituserid=#{audituserid},auditusername=#{auditusername},audittime = null,
+	 	summarybatchid=''
+	 	where id=#{id}
+	 </update>
+	 <select id="getStockInitSumByGoodsid" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.StockInit">
+	 	select sum(unitnum) as unitnum, sum(unitamount) as unitamount,sum(notaxamount) as notaxamount,sum(tax) as tax
+	 	from t_storage_stockinit where goodsid=#{goodsid}  and status='3'
+	 </select>
+	 <select id="getStockInitSumByGoodsidAndStorageid" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.StockInit">
+	 	select sum(unitnum) as unitnum, sum(unitamount) as unitamount,sum(notaxamount) as notaxamount,sum(tax) as tax
+	 	from t_storage_stockinit where goodsid=#{goodsid} and storageid=#{storageid} and status='3'
+	 </select>
+</mapper>

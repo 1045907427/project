@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.sales.dao.ImportSetMapper" >
+    <resultMap id="BaseResultMap" type="com.hd.agent.sales.model.ImportSet" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="url" property="url" jdbcType="VARCHAR" />
+        <result column="ctype" property="ctype" jdbcType="CHAR" />
+        <result column="gtype" property="gtype" jdbcType="CHAR" />
+        <result column="busid" property="busid" jdbcType="VARCHAR" />
+        <result column="filepath" property="filepath" jdbcType="VARCHAR" />
+        <result column="state" property="state" jdbcType="CHAR" />
+        <result column="adduserid" property="adduserid" jdbcType="VARCHAR" />
+        <result column="addusername" property="addusername" jdbcType="VARCHAR" />
+        <result column="adddeptid" property="adddeptid" jdbcType="VARCHAR" />
+        <result column="adddeptname" property="adddeptname" jdbcType="VARCHAR" />
+        <result column="addtime" property="addtime" jdbcType="TIMESTAMP" />
+        <result column="modifyuserid" property="modifyuserid" jdbcType="VARCHAR" />
+        <result column="modifyusername" property="modifyusername" jdbcType="VARCHAR" />
+        <result column="modifytime" property="modifytime" jdbcType="TIMESTAMP" />
+        <result column="audituserid" property="audituserid" jdbcType="VARCHAR" />
+        <result column="auditusername" property="auditusername" jdbcType="VARCHAR" />
+        <result column="audittime" property="audittime" jdbcType="TIMESTAMP" />
+        <result column="stopuserid" property="stopuserid" jdbcType="VARCHAR" />
+        <result column="stopusername" property="stopusername" jdbcType="VARCHAR" />
+        <result column="stoptime" property="stoptime" jdbcType="TIMESTAMP" />
+        <result column="closetime" property="closetime" jdbcType="TIMESTAMP" />
+        <result column="fileparam" property="fileparam" jdbcType="VARCHAR" />
+        <result column="pricetype" property="pricetype" jdbcType="CHAR" />
+        <result column="modeltype" property="modeltype" jdbcType="CHAR" />
+        <result column="supplierid" property="supplierid" jdbcType="VARCHAR" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+    <sql id="Example_Where_Clause" >
+        <trim prefix="where" prefixOverrides="and|or" >
+            <if test="condition.name != null" >
+                and name like concat ('%',#{condition.name},'%')
+            </if>
+            <if test="condition.url != null" >
+                and url = #{condition.url}
+            </if>
+            <if test="condition.ctype != null" >
+                and ctype = #{condition.ctype}
+            </if>
+            <if test="condition.gtype != null" >
+                and gtype = #{condition.gtype}
+            </if>
+            <if test="condition.busid != null" >
+                and busid = #{condition.busid}
+            </if>
+            <if test="condition.filepath != null" >
+                and filepath = #{condition.filepath}
+            </if>
+            <if test="condition.state != null" >
+                and state = #{condition.state}
+            </if>
+            <if test="condition.adduserid != null" >
+                and adduserid = #{condition.adduserid}
+            </if>
+            <if test="condition.addusername != null" >
+                and addusername = #{condition.addusername}
+            </if>
+            <if test="condition.adddeptid != null" >
+                and adddeptid = #{condition.adddeptid}
+            </if>
+            <if test="condition.adddeptname != null" >
+                and adddeptname = #{condition.adddeptname}
+            </if>
+            <if test="condition.addtime != null" >
+                and addtime = #{condition.addtime}
+            </if>
+            <if test="condition.modifyuserid != null" >
+                and modifyuserid = #{condition.modifyuserid}
+            </if>
+            <if test="condition.modifyusername != null" >
+                and modifyusername = #{condition.modifyusername}
+            </if>
+            <if test="condition.modifytime != null" >
+                and modifytime = #{condition.modifytime}
+            </if>
+            <if test="condition.audituserid != null" >
+                and audituserid = #{condition.audituserid}
+            </if>
+            <if test="condition.auditusername != null" >
+                and auditusername = #{condition.auditusername}
+            </if>
+            <if test="condition.audittime != null" >
+                and audittime = #{condition.audittime}
+            </if>
+            <if test="condition.stopuserid != null" >
+                and stopuserid = #{condition.stopuserid}
+            </if>
+            <if test="condition.stopusername != null" >
+                and stopusername = #{condition.stopusername}
+            </if>
+            <if test="condition.stoptime != null" >
+                and stoptime = #{condition.stoptime}
+            </if>
+            <if test="condition.closetime != null" >
+                and closetime = #{condition.closetime}
+            </if>
+            <if test="condition.remark != null" >
+                and remark = #{condition.remark}
+            </if>
+            <if test="condition.fileparam != null" >
+                and fileparam = #{condition.fileparam}
+            </if>
+            <if test="condition.pricetype != null" >
+                and pricetype = #{condition.pricetype}
+            </if>
+            <if test="condition.modeltype != null" >
+                and modeltype = #{condition.modeltype}
+            </if>
+        </trim>
+    </sql>
+    <sql id="Base_Column_List" >
+        id, name, url, ctype, gtype, busid, filepath, state, adduserid, addusername, adddeptid,
+        adddeptname, addtime, modifyuserid, modifyusername, modifytime, audituserid, auditusername,
+        audittime, stopuserid, stopusername, stoptime, closetime,remark ,fileparam,pricetype , modeltype , supplierid
+    </sql>
+    <select id="showImportModelData" resultMap="BaseResultMap" parameterType="com.hd.agent.common.util.PageMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_sales_import_set
+        <include refid="Example_Where_Clause" />
+        <include refid="common.Page_limit" />
+    </select>
+    <select id="showImportModelDataCount" resultType="java.lang.Integer" parameterType="com.hd.agent.common.util.PageMap">
+        select count(1)  from t_sales_import_set
+        <include refid="Example_Where_Clause" />
+    </select>
+    <select id="showImportModelById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select
+        <include refid="Base_Column_List" />
+        from t_sales_import_set
+        where id = #{id}
+    </select>
+    <delete id="deleteImportModelById" parameterType="java.lang.Integer" >
+        delete from t_sales_import_set
+        where id = #{id}
+    </delete>
+    <insert id="insertImportSet" parameterType="com.hd.agent.sales.model.ImportSet" >
+        insert into t_sales_import_set
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="name != null" >
+                name,
+            </if>
+            <if test="url != null" >
+                url,
+            </if>
+            <if test="ctype != null" >
+                ctype,
+            </if>
+            <if test="gtype != null" >
+                gtype,
+            </if>
+            <if test="busid != null" >
+                busid,
+            </if>
+            <if test="filepath != null" >
+                filepath,
+            </if>
+            <if test="state != null" >
+                state,
+            </if>
+            <if test="adduserid != null" >
+                adduserid,
+            </if>
+            <if test="addusername != null" >
+                addusername,
+            </if>
+            <if test="adddeptid != null" >
+                adddeptid,
+            </if>
+            <if test="adddeptname != null" >
+                adddeptname,
+            </if>
+            <if test="addtime != null" >
+                addtime,
+            </if>
+            <if test="modifyuserid != null" >
+                modifyuserid,
+            </if>
+            <if test="modifyusername != null" >
+                modifyusername,
+            </if>
+            <if test="modifytime != null" >
+                modifytime,
+            </if>
+            <if test="audituserid != null" >
+                audituserid,
+            </if>
+            <if test="auditusername != null" >
+                auditusername,
+            </if>
+            <if test="audittime != null" >
+                audittime,
+            </if>
+            <if test="stopuserid != null" >
+                stopuserid,
+            </if>
+            <if test="stopusername != null" >
+                stopusername,
+            </if>
+            <if test="stoptime != null" >
+                stoptime,
+            </if>
+            <if test="closetime != null" >
+                closetime,
+            </if>
+            <if test="remark != null" >
+                remark,
+            </if>
+            <if test="fileparam != null" >
+                fileparam,
+            </if>
+            <if test="pricetype != null" >
+                pricetype,
+            </if>
+            <if test="modeltype != null" >
+                modeltype,
+            </if>
+            <if test="supplierid != null" >
+                supplierid,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id},
+            </if>
+            <if test="name != null" >
+                #{name},
+            </if>
+            <if test="url != null" >
+                #{url},
+            </if>
+            <if test="ctype != null" >
+                #{ctype},
+            </if>
+            <if test="gtype != null" >
+                #{gtype},
+            </if>
+            <if test="busid != null" >
+                #{busid},
+            </if>
+            <if test="filepath != null" >
+                #{filepath},
+            </if>
+            <if test="state != null" >
+                #{state},
+            </if>
+            <if test="adduserid != null" >
+                #{adduserid},
+            </if>
+            <if test="addusername != null" >
+                #{addusername},
+            </if>
+            <if test="adddeptid != null" >
+                #{adddeptid},
+            </if>
+            <if test="adddeptname != null" >
+                #{adddeptname},
+            </if>
+            <if test="addtime != null" >
+                #{addtime},
+            </if>
+            <if test="modifyuserid != null" >
+                #{modifyuserid},
+            </if>
+            <if test="modifyusername != null" >
+                #{modifyusername},
+            </if>
+            <if test="modifytime != null" >
+                #{modifytime},
+            </if>
+            <if test="audituserid != null" >
+                #{audituserid},
+            </if>
+            <if test="auditusername != null" >
+                #{auditusername},
+            </if>
+            <if test="audittime != null" >
+                #{audittime},
+            </if>
+            <if test="stopuserid != null" >
+                #{stopuserid},
+            </if>
+            <if test="stopusername != null" >
+                #{stopusername},
+            </if>
+            <if test="stoptime != null" >
+                #{stoptime},
+            </if>
+            <if test="closetime != null" >
+                #{closetime},
+            </if>
+            <if test="remark != null" >
+                #{remark},
+            </if>
+            <if test="fileparam != null">
+                #{fileparam},
+            </if>
+            <if test="pricetype != null">
+                #{pricetype},
+            </if>
+            <if test="modeltype != null">
+                #{modeltype},
+            </if>
+            <if test="supplierid != null">
+                #{supplierid},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByExample" parameterType="map" >
+        update t_sales_import_set
+        set id = #{record.id},
+        name = #{record.name},
+        url = #{record.url},
+        ctype = #{record.ctype},
+        gtype = #{record.gtype},
+        busid = #{record.busid},
+        filepath = #{record.filepath},
+        state = #{record.state},
+        adduserid = #{record.adduserid},
+        addusername = #{record.addusername},
+        adddeptid = #{record.adddeptid},
+        adddeptname = #{record.adddeptname},
+        addtime = #{record.addtime},
+        modifyuserid = #{record.modifyuserid},
+        modifyusername = #{record.modifyusername},
+        modifytime = #{record.modifytime},
+        audituserid = #{record.audituserid},
+        auditusername = #{record.auditusername},
+        audittime = #{record.audittime},
+        stopuserid = #{record.stopuserid},
+        stopusername = #{record.stopusername},
+        stoptime = #{record.stoptime},
+        closetime = #{record.closetime},
+        remark = #{record.remark},
+        fileparam = #{record.fileparam}
+        pricetype = #{record.pricetype}
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </update>
+    <update id="updateImportSet" parameterType="com.hd.agent.sales.model.ImportSet" >
+        update t_sales_import_set
+        <set >
+            <if test="name != null" >
+                name = #{name},
+            </if>
+            <if test="url != null" >
+                url = #{url},
+            </if>
+            <if test="ctype != null" >
+                ctype = #{ctype},
+            </if>
+            <if test="gtype != null" >
+                gtype = #{gtype},
+            </if>
+            <if test="busid != null" >
+                busid = #{busid},
+            </if>
+            <if test="filepath != null" >
+                filepath = #{filepath},
+            </if>
+            <if test="state != null" >
+                state = #{state},
+            </if>
+            <if test="adduserid != null" >
+                adduserid = #{adduserid},
+            </if>
+            <if test="addusername != null" >
+                addusername = #{addusername},
+            </if>
+            <if test="adddeptid != null" >
+                adddeptid = #{adddeptid},
+            </if>
+            <if test="adddeptname != null" >
+                adddeptname = #{adddeptname},
+            </if>
+            <if test="addtime != null" >
+                addtime = #{addtime},
+            </if>
+            <if test="modifyuserid != null" >
+                modifyuserid = #{modifyuserid},
+            </if>
+            <if test="modifyusername != null" >
+                modifyusername = #{modifyusername},
+            </if>
+            <if test="modifytime != null" >
+                modifytime = #{modifytime},
+            </if>
+            <if test="audituserid != null" >
+                audituserid = #{audituserid},
+            </if>
+            <if test="auditusername != null" >
+                auditusername = #{auditusername},
+            </if>
+            <if test="audittime != null" >
+                audittime = #{audittime},
+            </if>
+            <if test="stopuserid != null" >
+                stopuserid = #{stopuserid},
+            </if>
+            <if test="stopusername != null" >
+                stopusername = #{stopusername},
+            </if>
+            <if test="stoptime != null" >
+                stoptime = #{stoptime},
+            </if>
+            <if test="closetime != null" >
+                closetime = #{closetime},
+            </if>
+            <if test="remark != null" >
+                remark = #{remark},
+            </if>
+            <if test="fileparam != null" >
+                fileparam = #{fileparam},
+            </if>
+            <if test="pricetype != null" >
+                pricetype = #{pricetype},
+            </if>
+            <if test="modeltype != null">
+                modeltype = #{modeltype},
+            </if>
+            <if test="supplierid != null">
+                supplierid = #{supplierid},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.hd.agent.sales.model.ImportSet" >
+    update t_sales_import_set
+    set name = #{name},
+      url = #{url},
+      ctype = #{ctype},
+      gtype = #{gtype},
+      busid = #{busid},
+      filepath = #{filepath},
+      state = #{state},
+      adduserid = #{adduserid},
+      addusername = #{addusername},
+      adddeptid = #{adddeptid},
+      adddeptname = #{adddeptname},
+      addtime = #{addtime},
+      modifyuserid = #{modifyuserid},
+      modifyusername = #{modifyusername},
+      modifytime = #{modifytime},
+      audituserid = #{audituserid},
+      auditusername = #{auditusername},
+      audittime = #{audittime},
+      stopuserid = #{stopuserid},
+      stopusername = #{stopusername},
+      stoptime = #{stoptime},
+      closetime = #{closetime},
+      remark = #{remark},
+      fileparam = #{fileparam}
+      pricetype = #{pricetype}
+    where id = #{id}
+  </update>
+</mapper>

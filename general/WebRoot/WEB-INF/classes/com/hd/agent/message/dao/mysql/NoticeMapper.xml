@@ -1,0 +1,891 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.message.dao.NoticeMapper">	
+	<sql id="Notice_Base_Column_List">
+	   id, title, tcolor, type, form, istop, topday, ismsg, keyword, intro, startdate, enddate, 
+	   state, isaud, audstate, url, attach, adduserid, addtime, adddeptid, modifyuserid, 
+	   modifytime, delflag, deltime,content, receivedept, receiverole, receiveuser,publishtime,publisherid,publishdeptid
+	</sql>
+	<sql id="NPrefx_Notice_Base_Column_List">
+		n.id, n.title, n.tcolor, n.type, n.form, n.istop, n.topday, n.ismsg, n.keyword, n.intro, n.startdate, n.enddate,
+		n.state, n.isaud, n.audstate, n.url, n.attach, n.adduserid, n.addtime, n.adddeptid, n.modifyuserid,
+		n.modifytime, n.delflag, n.deltime,n.content, n.receivedept, n.receiverole, n.receiveuser,n.publishtime,n.publisherid,n.publishdeptid
+	</sql>
+	<sql id="Noticeread_Base_Column_List" >
+	    id, noticeid, receiveuserid, receivetime
+	</sql>
+	<sql id="NRPrefix_Noticeread_Base_Column_List" >
+		nr.id, nr.noticeid, nr.receiveuserid, nr.receivetime
+	</sql>
+	<sql id="Notice_PageList_Where_Clause">
+		<if test="condition.title != null" >
+			and title like CONCAT('%', #{condition.title} ,'%')
+		</if>
+		<if test="condition.tlecont != null" >
+			and (title like CONCAT('%', #{condition.tlecont} ,'%')
+				or content like CONCAT('%',#{condition.tlecont},'%')
+			)
+		</if>
+	      <if test="condition.querynoticeid != null" >
+	         and id = #{condition.querynoticeid}
+	      </if>
+	      <if test="condition.type != null" >
+	         and type = #{condition.type}
+	      </if>
+	      <if test="condition.form != null" >
+	         and form = #{condition.form}
+	      </if>
+	      <if test="condition.istop != null" >
+	         and istop = #{condition.istop}
+	      </if>
+	      <if test="condition.topday != null" >
+	         and topday = #{condition.topday}
+	      </if>
+	      <if test="condition.ismsg != null" >
+	         and ismsg = #{condition.ismsg}
+	      </if>
+	      <if test="condition.keyword != null" >
+	         and keyword = #{condition.keyword}
+	      </if>
+	      <if test="condition.intro != null" >
+	         and intro = #{condition.intro}
+	      </if>
+	      <if test="condition.startdate != null" >
+	         <![CDATA[ and startdate <=  #{condition.startdate}  ]]>
+	      </if>
+	      <if test="condition.enddate != null" >
+	        <![CDATA[ and ( enddate >=#{condition.enddate}  or length(enddate)=0 ) ]]>
+	      </if>
+	      <if test="condition.startaddtime != null" >
+	         <![CDATA[ and addtime >=  #{condition.startaddtime} ]]>
+	      </if>
+	      <if test="condition.endaddtime != null" >
+	        <![CDATA[ and  addtime <= #{condition.endaddtime}  ]]>
+	      </if>
+		<if test="condition.startpublishtime != null" >
+			<![CDATA[ and publishtime >=  #{condition.startpublishtime} ]]>
+		</if>
+		<if test="condition.endpublishtime != null" >
+			<![CDATA[ and  publishtime <= #{condition.endpublishtime}  ]]>
+		</if>
+	      <if test="condition.state != null" >
+	         and state = #{condition.state}
+	      </if>
+	      <if test="condition.isaud != null" >
+	         and isaud = #{condition.isaud}
+	      </if>
+	      <if test="condition.audstate != null" >
+	         and audstate = #{condition.audstate}
+	      </if>
+	      <if test="condition.url != null" >
+	         and url = #{condition.url}
+	      </if>
+	      <if test="condition.attach != null" >
+	         and attach = #{condition.attach}
+	      </if>
+	      <if test="condition.adduserid != null" >
+	         and adduserid = #{condition.adduserid}
+	      </if>
+	      <if test="condition.adddeptid != null" >
+	         and adddeptid = #{condition.adddeptid}
+	      </if>
+	      <if test="condition.modifyuserid != null" >
+	         and modifyuserid = #{condition.modifyuserid}
+	      </if>
+	      <if test="condition.delflag != null" >
+	         and delflag = #{condition.delflag}
+	      </if>
+	      <if test="condition.content != null" >
+	         and content like concat('%', #{condition.content},'%')
+	      </if>
+	</sql>
+	<sql id="NPrefix_Notice_PageList_Where_Clause">
+		<if test="condition.title != null" >
+			and n.title like CONCAT('%', #{condition.title} ,'%')
+		</if>
+		<if test="condition.tlecont != null" >
+			and (n.title like CONCAT('%', #{condition.tlecont} ,'%')
+			or n.content like CONCAT('%',#{condition.tlecont},'%')
+			)
+		</if>
+		<if test="condition.querynoticeid != null" >
+			and n.id = #{condition.querynoticeid}
+		</if>
+		<if test="condition.type != null" >
+			and n.type = #{condition.type}
+		</if>
+		<if test="condition.form != null" >
+			and n.form = #{condition.form}
+		</if>
+		<if test="condition.istop != null" >
+			and n.istop = #{condition.istop}
+		</if>
+		<if test="condition.topday != null" >
+			and n.topday = #{condition.topday}
+		</if>
+		<if test="condition.ismsg != null" >
+			and n.ismsg = #{condition.ismsg}
+		</if>
+		<if test="condition.keyword != null" >
+			and n.keyword = #{condition.keyword}
+		</if>
+		<if test="condition.intro != null" >
+			and n.intro = #{condition.intro}
+		</if>
+		<if test="condition.startdate != null" >
+			<![CDATA[ and n.startdate <=  #{condition.startdate}  ]]>
+		</if>
+		<if test="condition.enddate != null" >
+			<![CDATA[ and ( n.enddate >=#{condition.enddate}  or length(enddate)=0 ) ]]>
+		</if>
+		<if test="condition.startaddtime != null" >
+			<![CDATA[ and n.addtime >=  #{condition.startaddtime} ]]>
+		</if>
+		<if test="condition.endaddtime != null" >
+			<![CDATA[ and  n.addtime <= #{condition.endaddtime}  ]]>
+		</if>
+		<if test="condition.startpublishtime != null" >
+			<![CDATA[ and n.publishtime >=  #{condition.startpublishtime} ]]>
+		</if>
+		<if test="condition.endpublishtime != null" >
+			<![CDATA[ and  n.publishtime <= #{condition.endpublishtime}  ]]>
+		</if>
+		<if test="condition.state != null" >
+			and n.state = #{condition.state}
+		</if>
+		<if test="condition.isaud != null" >
+			and n.isaud = #{condition.isaud}
+		</if>
+		<if test="condition.audstate != null" >
+			and n.audstate = #{condition.audstate}
+		</if>
+		<if test="condition.url != null" >
+			and n.url = #{condition.url}
+		</if>
+		<if test="condition.attach != null" >
+			and n.attach = #{condition.attach}
+		</if>
+		<if test="condition.adduserid != null" >
+			and n.adduserid = #{condition.adduserid}
+		</if>
+		<if test="condition.adddeptid != null" >
+			and n.adddeptid = #{condition.adddeptid}
+		</if>
+		<if test="condition.modifyuserid != null" >
+			and n.modifyuserid = #{condition.modifyuserid}
+		</if>
+		<if test="condition.delflag != null" >
+			and n.delflag = #{condition.delflag}
+		</if>
+		<if test="condition.content != null" >
+			and n.content like concat('%', #{condition.content},'%')
+		</if>
+		<if test="condition.queryreceiverArr!=null ">
+			and
+			<foreach collection="condition.queryreceiverArr" item="item" open="("  separator="or" close=")">
+				<![CDATA[ find_in_set(#{item}, n.receiveuser )  ]]>
+			</foreach>
+		</if>
+		<if test="condition.querydeptArr!=null">
+			and
+			<foreach collection="condition.querydeptArr" item="item" open="("  separator="or" close=")">
+				<![CDATA[ find_in_set(#{item}, n.receivedept )  ]]>
+			</foreach>
+		</if>
+		<if test="condition.queryroleArr!=null">
+			and
+			<foreach collection="condition.queryroleArr" item="item" open="("  separator="or" close=")">
+				<![CDATA[ find_in_set(#{item}, n.receiverole )  ]]>
+			</foreach>
+		</if>
+	</sql>
+	<sql id="Notice_PublishRange_PageList_Where_Clause">			            	
+	      <trim prefix="and (	" suffix=")" prefixOverrides="and|or" >	      	
+		      <if test="condition.isqueryviewrang==1">
+	      		<if test="condition.curuserdept!=null and condition.curuserdept!=''">	      			
+			       <![CDATA[ or find_in_set(#{condition.curuserdept}, receivedept )  ]]>
+	      		</if>
+	      		<if test="condition.curusrolelist!=null and condition.curusrolelist.size>0">
+		      		or      			
+			        <foreach collection="condition.curusrolelist" item="item" open="("  separator="or" close=")">
+			       			<![CDATA[ find_in_set(#{item}, receiverole )  ]]>
+			      	</foreach>
+	      		</if>
+	      		<if test="condition.curuserid !=null and condition.curuserid !='' ">	      			
+			        <![CDATA[ or  find_in_set(#{condition.curuserid}, receiveuser )   ]]>
+	      		</if>
+	      		or receivedept='ALL' or receiverole='ALL' or receiveuser='ALL'
+	      		or 
+				(receivedept = ''
+					and receiverole = ''
+					and receiveuser = '')
+		      </if> 		      	
+	      </trim>
+	</sql>
+	<sql id="NPrefix_Notice_PublishRange_PageList_Where_Clause">
+		<trim prefix="and (	" suffix=")" prefixOverrides="and|or" >
+			<if test="condition.isqueryviewrang==1">
+				<if test="condition.curuserdept!=null and condition.curuserdept!=''">
+					<![CDATA[ or find_in_set(#{condition.curuserdept}, n.receivedept )  ]]>
+				</if>
+				<if test="condition.curusrolelist!=null and condition.curusrolelist.size>0">
+					or
+					<foreach collection="condition.curusrolelist" item="item" open="("  separator="or" close=")">
+						<![CDATA[ find_in_set(#{item}, n.receiverole )  ]]>
+					</foreach>
+				</if>
+				<if test="condition.curuserid !=null and condition.curuserid !='' ">
+					<![CDATA[ or  find_in_set(#{condition.curuserid}, n.receiveuser )   ]]>
+				</if>
+				or n.receivedept='ALL' or n.receiverole='ALL' or n.receiveuser='ALL'
+				or
+				(n.receivedept = ''
+				and n.receiverole = ''
+				and n.receiveuser = '')
+			</if>
+		</trim>
+	</sql>
+	<sql id="Noticeread_PageList_Where_Clause" >
+		<if test="condition.noticeid != null" >
+			and noticeid = #{condition.noticeid}
+		</if>
+		<if test="condition.receiveuserid != null" >
+			and receiveuserid = #{condition.receiveuserid}
+		</if>
+		<if test="condition.receivetime != null" >
+			and receivetime = #{condition.receivetime}
+		</if>
+	</sql>
+	<sql id="NRPrefix_Noticeread_PageList_Where_Clause" >
+      <if test="condition.noticeid != null" >
+         and nr.noticeid = #{condition.noticeid}
+      </if>
+      <if test="condition.receiveuserid != null" >
+         and nr.receiveuserid = #{condition.receiveuserid}
+      </if>
+      <if test="condition.receivetime != null" >
+         and nr.receivetime = #{condition.receivetime}
+      </if>
+	</sql>
+	<insert id="insertMsgNotice" parameterType="com.hd.agent.message.model.MsgNotice">
+		insert into t_msg_notice
+	    <trim prefix="(" suffix=")" suffixOverrides=",">
+	      <if test="title != null">
+	        title,
+	      </if>
+	      <if test="tcolor != null">
+	        tcolor,
+	      </if>
+	      <if test="type != null">
+	        type,
+	      </if>
+	      <if test="form != null">
+	        form,
+	      </if>
+	      <if test="istop != null">
+	        istop,
+	      </if>
+	      <if test="topday != null">
+	        topday,
+	      </if>
+	      <if test="ismsg != null">
+	        ismsg,
+	      </if>
+	      <if test="keyword != null">
+	        keyword,
+	      </if>
+	      <if test="intro != null">
+	        intro,
+	      </if>
+	      <if test="startdate != null">
+	        startdate,
+	      </if>
+	      <if test="enddate != null">
+	        enddate,
+	      </if>
+	      <if test="state != null">
+	        state,
+	      </if>
+	      <if test="isaud != null">
+	        isaud,
+	      </if>
+	      <if test="audstate != null">
+	        audstate,
+	      </if>
+	      <if test="url != null">
+	        url,
+	      </if>
+	      <if test="attach != null">
+	        attach,
+	      </if>
+	      <if test="adduserid != null">
+	        adduserid,
+	      </if>
+	      <if test="1==1">
+	        addtime,
+	      </if>
+	      <if test="adddeptid != null">
+	        adddeptid,
+	      </if>
+	      <if test="modifyuserid != null">
+	        modifyuserid,
+	      </if>
+	      <if test="modifytime != null">
+	        modifytime,
+	      </if>
+	      <if test="delflag != null">
+	        delflag,
+	      </if>
+	      <if test="deltime != null">
+	        deltime,
+	      </if>
+	      <if test="content != null">
+	        content,
+	      </if>
+	      <if test="receivedept != null">
+	        receivedept,
+	      </if>
+	      <if test="receiverole != null">
+	        receiverole,
+	      </if>
+	      <if test="receiveuser != null">
+	        receiveuser,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides=",">
+	      <if test="title != null">
+	        #{title},
+	      </if>
+	      <if test="tcolor != null">
+	        #{tcolor},
+	      </if>
+	      <if test="type != null">
+	        #{type},
+	      </if>
+	      <if test="form != null">
+	        #{form},
+	      </if>
+	      <if test="istop != null">
+	        #{istop},
+	      </if>
+	      <if test="topday != null">
+	        #{topday},
+	      </if>
+	      <if test="ismsg != null">
+	        #{ismsg},
+	      </if>
+	      <if test="keyword != null">
+	        #{keyword},
+	      </if>
+	      <if test="intro != null">
+	        #{intro},
+	      </if>
+	      <if test="startdate != null">
+	        #{startdate},
+	      </if>
+	      <if test="enddate != null">
+	        #{enddate},
+	      </if>
+	      <if test="state != null">
+	        #{state},
+	      </if>
+	      <if test="isaud != null">
+	        #{isaud},
+	      </if>
+	      <if test="audstate != null">
+	        #{audstate},
+	      </if>
+	      <if test="url != null">
+	        #{url},
+	      </if>
+	      <if test="attach != null">
+	        #{attach},
+	      </if>
+	      <if test="adduserid != null">
+	        #{adduserid},
+	      </if>
+	      <choose>
+	      	<when  test="addtime != null">
+	        	#{addtime},
+	      	</when>
+	      	<otherwise>
+	      		now(),
+	      	</otherwise>
+	      </choose>
+	      <if test="adddeptid != null">
+	        #{adddeptid},
+	      </if>
+	      <if test="modifyuserid != null">
+	        #{modifyuserid},
+	      </if>
+	      <if test="modifytime != null">
+	        #{modifytime},
+	      </if>
+	      <if test="delflag != null">
+	        #{delflag},
+	      </if>
+	      <if test="deltime != null">
+	        #{deltime},
+	      </if>
+	      <if test="content != null">
+	        #{content},
+	      </if>
+	      <if test="receivedept != null">
+	        #{receivedept},
+	      </if>
+	      <if test="receiverole != null">
+	        #{receiverole},
+	      </if>
+	      <if test="receiveuser != null">
+	        #{receiveuser},
+	      </if>
+	    </trim>
+		<selectKey resultType="int" keyProperty="id"
+			order="AFTER">
+			select LAST_INSERT_ID() as id
+	    </selectKey>
+	</insert>
+	<update id="updateMsgNotice" parameterType="com.hd.agent.message.model.MsgNotice">
+	    update t_msg_notice
+	    <set>
+	      <if test="title != null">
+	        title = #{title},
+	      </if>
+	      <if test="tcolor != null">
+	        tcolor = #{tcolor},
+	      </if>
+	      <if test="type != null">
+	        type = #{type},
+	      </if>
+	      <if test="form != null">
+	        form = #{form},
+	      </if>
+	      <if test="istop != null">
+	        istop = #{istop},
+	      </if>
+	      <if test="topday != null">
+	        topday = #{topday},
+	      </if>
+	      <if test="ismsg != null">
+	        ismsg = #{ismsg},
+	      </if>
+	      <if test="keyword != null">
+	        keyword = #{keyword},
+	      </if>
+	      <if test="intro != null">
+	        intro = #{intro},
+	      </if>
+	      <if test="startdate != null">
+	        startdate = #{startdate},
+	      </if>
+	      <if test="enddate != null">
+	        enddate = #{enddate},
+	      </if>
+	      <if test="state != null">
+	        state = #{state},
+	      </if>
+	      <if test="isaud != null">
+	        isaud = #{isaud},
+	      </if>
+	      <if test="audstate != null">
+	        audstate = #{audstate},
+	      </if>
+	      <if test="url != null">
+	        url = #{url},
+	      </if>
+	      <if test="attach != null">
+	        attach = #{attach},
+	      </if>
+	      <if test="adduserid != null">
+	        adduserid = #{adduserid},
+	      </if>
+	      <if test="addtime != null">
+	        addtime = #{addtime},
+	      </if>
+	      <if test="adddeptid != null">
+	        adddeptid = #{adddeptid},
+	      </if>
+	      <if test="modifyuserid != null">
+	        modifyuserid = #{modifyuserid},
+	      </if>
+	      <if test="modifytime != null">
+	        modifytime = #{modifytime},
+	      </if>
+	      <if test="delflag != null">
+	        delflag = #{delflag},
+	      </if>
+	      <if test="deltime != null">
+	        deltime = #{deltime},
+	      </if>
+	      <if test="content != null">
+	        content = #{content},
+	      </if>
+	      <if test="receivedept != null">
+	        receivedept = #{receivedept},
+	      </if>
+	      <if test="receiverole != null">
+	        receiverole = #{receiverole},
+	      </if>
+	      <if test="receiveuser != null">
+	        receiveuser = #{receiveuser},
+	      </if>
+	    </set>
+	    where id = #{id}
+	</update>
+	<update id="updateMsgNoticeBy" parameterType="java.util.HashMap">
+	    update t_msg_notice
+	    <set>
+	      <if test="type != null">
+	        type = #{type},
+	      </if>
+	      <if test="form != null">
+	        form = #{form},
+	      </if>
+	      <if test="istop != null">
+	        istop = #{istop},
+	      </if>
+	      <if test="topday != null">
+	        topday = #{topday},
+	      </if>
+	      <if test="ismsg != null">
+	        ismsg = #{ismsg},
+	      </if>
+	      <if test="state != null">
+	        state = #{state},
+			  <choose>
+				  <when test="state == 1">
+					  <if test="publishtime != null">
+						  publishtime = #{publishtime},
+					  </if>
+					  <if test="publisherid != null">
+						  publisherid = #{publisherid},
+					  </if>
+					  <if test="publishdeptid != null">
+						  publishdeptid = #{publishdeptid},
+					  </if>
+				  </when>
+				  <otherwise>
+					  publishtime = NULL ,
+					  publisherid = '',
+					  publishdeptid = '',
+				  </otherwise>
+			  </choose>
+	      </if>
+	      <if test="audstate != null">
+	        audstate = #{audstate},
+	      </if>
+	      <if test="modifyuserid != null">
+	        modifyuserid = #{modifyuserid},
+	      </if>
+	      <if test="modifytime != null">
+	        modifytime = #{modifytime},
+	      </if>
+	      <if test="delflag != null">
+	        delflag = #{delflag},
+	      </if>
+	      <if test="deltime != null">
+	        deltime = #{deltime},
+	      </if>
+	    </set>
+	    where
+	    <trim prefixOverrides="and|or">	    	
+	      <if test="id != null">
+	        and id = #{id}
+	      </if>   	
+	      <if test="idarrs != null">
+	        and FIND_IN_SET(id,#{idarrs})
+	      </if>
+	      <if test="wadduserid != null">
+	        and adduserid = #{wadduserid}
+	      </if>
+	      <if test="wstate != null">
+	        and state = #{wstate}
+	      </if>
+	      <if test="wstatearr != null">
+	        and find_in_set(state,#{wstate})
+	      </if>
+	      <if test="wisaud != null">
+	        and isaud = #{wisaud}
+	      </if>
+	      <if test="waudstate != null">
+	        and audstate = #{waudstate}
+	      </if>
+	      <if test="wmodifyuserid != null">
+	        and modifyuserid = #{wmodifyuserid}
+	      </if>
+	      <if test="wdelflag != null">
+	        and delflag = #{wdelflag}
+	      </if>
+	      <if test="authDataSql != null">
+	      	and ${authDataSql}
+	      </if>
+	    </trim> 
+	</update>
+	<select id="showMsgNotice" parameterType="java.lang.String" resultType="com.hd.agent.message.model.MsgNotice">
+		select
+		<include refid="Notice_Base_Column_List"/> 
+		 from t_msg_notice
+		where id = #{id}
+	</select>
+	<delete id="deleteMsgNoticeBy" parameterType="java.util.Map">
+		delete from t_msg_notice 
+		where		
+	    <trim prefixOverrides="and|or">	    	
+	      <if test="id != null">
+	        and id = #{id}
+	      </if>   	
+	      <if test="idarrs != null">
+	        and FIND_IN_SET(id,#{idarrs})
+	      </if>
+	      <if test="wadduserid != null">
+	        and adduserid = #{wadduserid}
+	      </if>
+	      <if test="wstate != null">
+	        and state = #{wstate}
+	      </if>
+	      <if test="wstatearr != null">
+	        and find_in_set(state,#{wstate})
+	      </if>	      
+	      <if test="wnotstatearr != null">
+	        and (not find_in_set(state,#{wnotstatearr}) )
+	      </if>
+	      <if test="wisaud != null">
+	        and isaud = #{wisaud}
+	      </if>
+	      <if test="waudstate != null">
+	        and audstate = #{waudstate}
+	      </if>
+	      <if test="wmodifyuserid != null">
+	        and modifyuserid = #{wmodifyuserid}
+	      </if>
+	      <if test="wdelflag != null">
+	        and delflag = #{wdelflag}
+	      </if>
+	      <if test="authDataSql != null">
+	      	and ${authDataSql}
+	      </if>
+	    </trim> 
+	</delete>
+	<sql id="MsgNoticePageList_Common">
+		SELECT
+		<include refid="NPrefx_Notice_Base_Column_List"></include>
+		,suser.name as addusername,
+		case WHEN n.topday>0 AND n.istop!='0' AND  not n.publishtime is null AND TO_DAYS(NOW())-TO_DAYS(n.publishtime) >= (n.topday-1)   then '3'
+		when n.topday=0 AND n.istop!=0 then '2'
+		else '1' end as myseq
+		<if test="condition.isshowcuruserrc==1 ">
+			,(SELECT COUNT(*) FROM t_msg_noticeread nr WHERE nr.noticeid=n.id
+			<if test="condition.readcountuserid !=null ">
+				and nr.receiveuserid=#{condition.readcountuserid}
+			</if>
+			) readcount
+		</if>
+		<if test="condition.isCurUserNotRead==1 ">
+			,(SELECT COUNT(*) FROM t_msg_noticeread nr WHERE nr.noticeid=n.id
+			<if test="condition.notReadCountUserid !=null ">
+				and nr.receiveuserid=#{condition.notReadCountUserid}
+			</if>
+			) readCountFlag
+		</if>
+		FROM
+		t_msg_notice n
+		LEFT JOIN t_sys_user suser ON n.adduserid=suser.userid
+		<trim prefix="where" prefixOverrides="and|or" >
+			<if test="1==1">
+				and 1=1
+			</if>
+			<include refid="NPrefix_Notice_PageList_Where_Clause"/>
+			<include refid="NPrefix_Notice_PublishRange_PageList_Where_Clause" />
+			<include refid="common.Page_querySql"/>
+		</trim>
+	</sql>
+	<select id="getMsgNoticePageList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.message.model.MsgNotice" useCache="false">
+		select t.*
+		from (
+        	<include refid="MsgNoticePageList_Common" />
+			order by myseq desc, n.publishtime desc, n.ADDTIME desc
+		) t
+		<trim prefix="where" prefixOverrides="and|or" >
+			<if test="condition.isCurUserNotRead==1 ">
+				and readCountFlag=0
+			</if>
+			<if test="condition.readcount != null">
+				and readcount = #{condition.readcount}
+			</if>
+			<choose>
+				<when  test="condition.viewflag ==1"> 	<!-- 未读 -->
+					and readcount =0
+				</when>
+				<when  test="condition.viewflag ==0">
+					<![CDATA[and readcount >0 ]]>
+				</when>
+			</choose>
+		</trim>
+		<include refid="common.Page_limit" />
+	</select>
+	<select id="getMsgNoticeCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int" useCache="false">
+		select count(*)
+		from (
+			<include refid="MsgNoticePageList_Common" />
+		) t
+		<trim prefix="where" prefixOverrides="and|or" >
+			<if test="condition.isCurUserNotRead==1 ">
+				and readCountFlag=0
+			</if>
+			<if test="condition.readcount != null">
+				and readcount = #{condition.readcount}
+			</if>
+			<choose>
+				<when  test="condition.viewflag ==1"> 	<!-- 未读 -->
+					and readcount =0
+				</when>
+				<when  test="condition.viewflag ==0">
+					<![CDATA[and readcount >0 ]]>
+				</when>
+			</choose>
+	  	</trim>
+	</select>
+	<select id="getMsgNoticePublishPageList"  parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.message.model.MsgNotice" useCache="false">
+		select
+		<choose>
+			<when test="cols!=null">
+				<include refid="common.Page_Column"/>
+			</when>
+			<when test="cols==null">
+				<include refid="NPrefx_Notice_Base_Column_List"></include>
+			</when>
+		</choose>
+		FROM t_msg_notice n
+		LEFT JOIN t_sys_user auser ON n.adduserid=auser.userid
+		LEFT JOIN t_sys_user muser ON n.modifyuserid=muser.userid
+		<trim prefix="where" prefixOverrides="and|or" >
+			<include refid="NPrefix_Notice_PageList_Where_Clause"/>
+			<include refid="common.Page_querySql"/>
+			<include refid="common.Page_dataSql"/>
+		</trim>
+		<include refid="common.Page_limit" />
+	</select>
+	<select id="getMsgNoticePublishCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int" useCache="false">
+		select
+		count(*)
+		FROM t_msg_notice  n
+		LEFT JOIN t_sys_user auser ON n.adduserid=auser.userid
+		LEFT JOIN t_sys_user muser ON n.modifyuserid=muser.userid
+		<trim prefix="where" prefixOverrides="and|or" >
+			<include refid="NPrefix_Notice_PageList_Where_Clause"/>
+			<include refid="common.Page_querySql"/>
+			<include refid="common.Page_dataSql"/>
+		</trim>
+	</select>
+	<select id="getMsgNoticeList" parameterType="java.util.HashMap" resultType="com.hd.agent.message.model.MsgNotice" useCache="false">
+		select 
+		id, title, tcolor, type, form, istop, topday, ismsg, keyword, intro, startdate, enddate, 
+	   	state, isaud, audstate, url, adduserid, addtime, adddeptid, modifyuserid, 
+	   	modifytime, delflag, deltime
+	   	<if test="withrecvuser==1">
+	   		, receivedept, receiverole, receiveuser
+	   	</if>
+	   	<if test="withcontent==1">
+	   		,content
+	   	</if>
+	   	<if test="withattachment == 1">
+	   		, attach
+	   	</if>		
+		from t_msg_notice
+		<trim prefix="where" prefixOverrides="and|or" >
+			<if test="idarrs!=null">				   			
+        		and FIND_IN_SET(id,#{idarrs})
+	      	</if>
+	      	<if test="adduserid !=null ">
+	      		and adduserid=${adduserid}
+	      	</if>
+	      	<if test="delflag !=null ">
+	      		and delflag=${delflag}
+	      	</if>
+	      	<if test="state !=null ">
+	      		and state=${state}
+	      	</if>
+	      	<if test="overTopday == 1">
+	      		 <![CDATA[ and  topday>0 AND istop!='0' AND TO_DAYS(ADDTIME)-TO_DAYS(NOW()) < topday ]]>
+	      	</if>
+	      	<if test="overEndday == 1">
+	      	<![CDATA[ and (NOT enddate IS NULL) and LENGTH(enddate)>0 and enddate < date_format(NOW(),'%Y-%m-%d')  ]]>
+	      	</if>
+		</trim>
+	</select>
+	
+	<!-- *********************通知通告阅读 人部分************** -->
+	<insert id="insertMsgNoticeread" parameterType="com.hd.agent.message.model.MsgNoticeread">
+		insert into t_msg_noticeread
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="noticeid != null" >
+	        noticeid,
+	      </if>
+	      <if test="receiveuserid != null" >
+	        receiveuserid,
+	      </if>
+	      <if test="1==1" >
+	        receivetime,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="noticeid != null" >
+	        #{noticeid},
+	      </if>
+	      <if test="receiveuserid != null" >
+	        #{receiveuserid},
+	      </if>
+	      <if test="receivetime != null" >
+	        now(),
+	      </if>
+	    </trim>
+	</insert>
+	<update id="updateMsgNoticeread" parameterType="com.hd.agent.message.model.MsgNoticeread" >
+	    update t_msg_noticeread
+	    <set >
+	      <if test="noticeid != null" >
+	        noticeid = #{noticeid},
+	      </if>
+	      <if test="receiveuserid != null" >
+	        receiveuserid = #{receiveuserid},
+	      </if>
+	      <if test="receivetime != null" >
+	        receivetime = #{receivetime},
+	      </if>
+	    </set>
+	    where id = #{id}
+  </update>
+  <delete id="deleteMsgNoticereadByNotice" parameterType="java.lang.String" >
+    delete from t_msg_noticeread
+    where noticeid = #{noticeid}
+  </delete>
+  <select id="getMsgNoticereadPageList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.message.model.MsgNoticeread" useCache="false">
+  	select t.* from(  	
+		select
+	  	<include refid="NRPrefix_Noticeread_Base_Column_List" />
+	  	,suser.name recvusername,suser.departmentname as recvuserdeptname
+		 from t_msg_noticeread nr left join t_sys_user suser on nr.receiveuserid=suser.userid
+		<trim prefix="where" prefixOverrides="and|or" >
+			<include refid="NRPrefix_Noticeread_PageList_Where_Clause"/>
+		</trim>
+	) t
+	<include refid="common.Page_limit" />
+  </select>
+  <select id="getMsgNoticereadCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  	select count(1) from t_msg_noticeread nr
+    <trim prefix="where" prefixOverrides="and|or" >
+    	<include refid="NRPrefix_Noticeread_PageList_Where_Clause"/>
+    </trim>
+  </select>
+  <select id="getMsgNoticereadCountBy" parameterType="java.lang.String" resultType="int">
+  	select count(1) from t_msg_noticeread  		  	  	
+    <trim prefix="where" prefixOverrides="and|or" >
+    	<if test="noticeid != null" >
+	       and noticeid = #{noticeid}
+	      </if>
+	      <if test="receiveuserid != null" >
+	       and receiveuserid = #{receiveuserid}
+	      </if>
+    </trim>
+  </select>
+</mapper>

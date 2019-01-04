@@ -1,0 +1,2915 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hd.agent.report.dao.FinancePaymentsMapper">
+  	<sql id="supplierPayments_sql">
+  		(
+		SELECT t.supplierid,t.buydeptid,t.buyuserid,s.buyarea,
+		t1.taxamount AS initunpayamount,
+		0 AS buyamount, 0 AS returnamount, 0 AS payamount,0 as invoiceamount,0 as prepayamount,0 as prepaybalance,0 as pushbalanceamount
+		FROM t_purchase_arrivalorder t
+		RIGHT JOIN t_purchase_arrivalorder_detail t1 ON t1.orderid = t.id
+		INNER JOIN t_base_buy_supplier s on t.supplierid = s.id
+		<trim prefix="where" prefixOverrides="and|or" >
+			<if test="condition.businessdate1 != null">
+				<![CDATA[and t.businessdate < #{condition.businessdate1}]]>
+			</if>
+			<if test="condition.supplierid != null" >
+				and t.supplierid = #{condition.supplierid}
+			</if>
+			<if test="condition.buydeptid != null" >
+				and t.buydeptid like concat(#{condition.buydeptid},'%')
+			</if>
+			<if test="1==1">
+				and (t.status='3' or t.status='4')
+			</if>
+		</trim>
+		UNION ALL
+		SELECT t.supplierid,t.buydeptid,t.buyuserid,s.buyarea,
+		-t1.taxamount AS initunpayamount,
+		0 AS buyamount, 0 AS returnamount, 0 AS payamount,0 as invoiceamount,0 as prepayamount,0 as prepaybalance,0 as pushbalanceamount
+		FROM t_storage_purchasereject_out t
+		RIGHT JOIN t_storage_purchasereject_out_detail t1 ON t1.orderid = t.id
+		INNER JOIN t_base_buy_supplier s on t.supplierid = s.id
+		<trim prefix="where" prefixOverrides="and|or" >
+			<if test="condition.businessdate1 != null">
+				<![CDATA[and t.businessdate < #{condition.businessdate1}]]>
+			</if>
+			<if test="condition.supplierid != null" >
+				and t.supplierid = #{condition.supplierid}
+			</if>
+			<if test="condition.buydeptid != null" >
+				and t.buydeptid like concat(#{condition.buydeptid},'%')
+			</if>
+			<if test="1==1">
+				and t.status='4' <!-- 采购退货出库单验收后，关闭 -->
+			</if>
+		</trim>
+		UNION ALL
+		SELECT t.supplierid,t.buydept as buydeptid,t.buyuser as buyuserid,s.buyarea,
+		-t.invoiceamount AS initunpayamount,
+		0 AS buyamount, 0 AS returnamount, 0 AS payamount,0 as invoiceamount,0 as prepayamount,0 as prepaybalance,0 as pushbalanceamount
+		FROM t_account_purchase_invoice t
+		INNER JOIN t_base_buy_supplier s on t.supplierid = s.id
+		<trim prefix="where" prefixOverrides="and|or" >
+			<if test="condition.businessdate1 != null">
+				<![CDATA[and t.writeoffdate < #{condition.businessdate1}]]>
+			</if>
+			<if test="condition.supplierid != null" >
+				and t.supplierid = #{condition.supplierid}
+			</if>
+			<if test="condition.buydeptid != null" >
+				and t.buydept like concat(#{condition.buydeptid},'%')
+			</if>
+			<if test="1==1">
+				and t.iswriteoff = '1' and (t. STATUS = '3' OR t. STATUS = '4')
+			</if>
+		</trim>
+		UNION ALL
+		select t.supplierid,s.buydeptid,s.buyuserid,s.buyarea,
+		t.amount as initunpayamount,
+		0 AS buyamount, 0 AS returnamount, 0 AS payamount,0 as invoiceamount,0 as prepayamount,0 as prepaybalance,0 as pushbalanceamount
+		from t_account_purchase_invoice_push t
+		INNER JOIN t_base_buy_supplier s on t.supplierid = s.id
+		<trim prefix="where" prefixOverrides="and|or" >
+			<if test="condition.businessdate1 != null">
+				<![CDATA[and t.businessdate < #{condition.businessdate1}]]>
+			</if>
+			<if test="condition.supplierid != null" >
+				and t.supplierid = #{condition.supplierid}
+			</if>
+			<if test="condition.buydeptid != null" >
+				and s.buydeptid like concat(#{condition.buydeptid},'%')
+			</if>
+			<if test="1==1">
+				and (t.status='3' or t.status='4')
+			</if>
+		</trim>
+		UNION ALL
+		SELECT t.supplierid,t.buydeptid,t.buyuserid,s.buyarea,
+		0 as initunpayamount,
+		t1.taxamount AS buyamount, 0 AS returnamount, 0 AS payamount,0 as invoiceamount,0 as prepayamount,0 as prepaybalance,0 as pushbalanceamount
+		FROM t_purchase_arrivalorder t
+		RIGHT JOIN t_purchase_arrivalorder_detail t1 ON t1.orderid = t.id
+		INNER JOIN t_base_buy_supplier s on t.supplierid = s.id
+		<trim prefix="where" prefixOverrides="and|or" >
+			<if test="condition.businessdate1 != null">
+				and t.businessdate >= #{condition.businessdate1}
+			</if>
+			<if test="condition.businessdate2 != null">
+				<![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+			</if>
+			<if test="condition.supplierid != null" >
+				and t.supplierid = #{condition.supplierid}
+			</if>
+			<if test="condition.buydeptid != null" >
+				and t.buydeptid like concat(#{condition.buydeptid},'%')
+			</if>
+			<if test="1==1">
+				and (t.status='3' or t.status='4')
+			</if>
+		</trim>
+		UNION ALL
+		SELECT t.supplierid,t.buydeptid,t.buyuserid,t.buyarea,
+		0 as initunpayamount,
+		t.amount AS buyamount, 0 AS returnamount, 0 AS payamount,0 as invoiceamount,0 as prepayamount,0 as prepaybalance,0 as pushbalanceamount
+		FROM t_account_begin_due t
+		<trim prefix="where" prefixOverrides="and|or" >
+			<if test="condition.businessdate1 != null">
+				and t.businessdate >= #{condition.businessdate1}
+			</if>
+			<if test="condition.businessdate2 != null">
+				<![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+			</if>
+			<if test="condition.supplierid != null" >
+				and t.supplierid = #{condition.supplierid}
+			</if>
+			<if test="condition.buydeptid != null" >
+				and t.buydeptid like concat(#{condition.buydeptid},'%')
+			</if>
+			<if test="1==1">
+				and (t.status='3' or t.status='4')
+			</if>
+		</trim>
+		UNION ALL
+		SELECT t.supplierid,t.buydeptid,t.buyuserid,s.buyarea,
+		0 as initunpayamount,
+		0 AS buyamount, t1.taxamount AS returnamount, 0 AS payamount,0 as invoiceamount,0 as prepayamount,0 as prepaybalance,0 as pushbalanceamount
+		FROM t_storage_purchasereject_out t
+		RIGHT JOIN t_storage_purchasereject_out_detail t1 ON t1.orderid = t.id
+		INNER JOIN t_base_buy_supplier s on t.supplierid = s.id
+		<trim prefix="where" prefixOverrides="and|or" >
+			<if test="condition.businessdate1 != null">
+				and t.businessdate >= #{condition.businessdate1}
+			</if>
+			<if test="condition.businessdate2 != null">
+				<![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+			</if>
+			<if test="condition.supplierid != null" >
+				and t.supplierid = #{condition.supplierid}
+			</if>
+			<if test="condition.buydeptid != null" >
+				and t.buydeptid like concat(#{condition.buydeptid},'%')
+			</if>
+			<if test="1==1">
+				and t.status='4' <!-- 采购退货出库单验收后，关闭 -->
+			</if>
+		</trim>
+		UNION ALL
+		SELECT t.supplierid,t.buydept as buydeptid,t.buyuser as buyuserid,s.buyarea,
+		0 as initunpayamount,
+		0 AS buyamount, 0 AS returnamount, t.invoiceamount AS payamount,0 as invoiceamount,0 as prepayamount,0 as prepaybalance,0 as pushbalanceamount
+		FROM t_account_purchase_invoice t
+		INNER JOIN t_base_buy_supplier s on t.supplierid = s.id
+		<trim prefix="where" prefixOverrides="and|or" >
+			<if test="condition.businessdate1 != null">
+				and t.writeoffdate >= #{condition.businessdate1}
+			</if>
+			<if test="condition.businessdate2 != null">
+				<![CDATA[and t.writeoffdate <= #{condition.businessdate2}]]>
+			</if>
+			<if test="condition.supplierid != null" >
+				and t.supplierid = #{condition.supplierid}
+			</if>
+			<if test="condition.buydeptid != null" >
+				and t.buydept like concat(#{condition.buydeptid},'%')
+			</if>
+			<if test="1==1">
+				and t.iswriteoff='1' and (t. STATUS = '3' OR t. STATUS = '4')
+			</if>
+		</trim>
+		UNION ALL
+		select t.supplierid,t.buydept as buydeptid,t.buyuser as buyuserid,s.buyarea,
+		0 as initunpayamount,
+		0 as buyamount,0 as returnamount,0 as payamount,t.invoiceamount,0 as prepayamount,0 as prepaybalance,0 as pushbalanceamount
+		from t_account_purchase_invoice t
+		INNER JOIN t_base_buy_supplier s on t.supplierid = s.id
+		<trim prefix="where" prefixOverrides="and|or" >
+			<if test="condition.businessdate1 != null">
+				and t.businessdate >= #{condition.businessdate1}
+			</if>
+			<if test="condition.businessdate2 != null">
+				<![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+			</if>
+			<if test="condition.supplierid != null" >
+				and t.supplierid = #{condition.supplierid}
+			</if>
+			<if test="condition.buydeptid != null" >
+				and t.buydept like concat(#{condition.buydeptid},'%')
+			</if>
+			<if test="1==1">
+				and (t.status='3' or t.status='4')
+			</if>
+		</trim>
+		UNION ALL
+		select t.supplierid,a.buydeptid,a.buyuserid,a.buyarea,
+		0 as initunpayamount,
+		0 AS buyamount, 0 AS returnamount, 0 as payamount, 0 AS invoiceamount, t.balanceamount as prepayamount,0 as prepaybalance,0 as pushbalanceamount
+		from (SELECT t.* FROM t_account_supplier_capital_log t, (SELECT t.supplierid, max(t.addtime) addtime,MAX(t.id) as id FROM t_account_supplier_capital_log t
+		<trim prefix="where" prefixOverrides="and|or" >
+			<if test="condition.businessdate2 != null">
+				<![CDATA[and DATE_FORMAT(t.addtime,'%Y-%m-%d') <= #{condition.businessdate2}]]>
+			</if>
+		</trim>
+		GROUP BY t.supplierid ) t1
+		<trim prefix="where" prefixOverrides="and|or" >
+			<if test="1 == 1">
+				and t.id=t1.id and t.supplierid = t1.supplierid AND t.addtime = t1.addtime
+			</if>
+			<if test="condition.businessdate2 != null">
+				<![CDATA[and t.balanceamount <> 0]]>
+			</if>
+		</trim>) t
+		left join t_base_buy_supplier a on a.id = t.supplierid
+		<trim prefix="where" prefixOverrides="and|or" >
+			<if test="condition.supplierid != null" >
+				and t.supplierid = #{condition.supplierid}
+			</if>
+			<if test="condition.buydeptid != null" >
+				and a.buydeptid like concat(#{condition.buydeptid},'%')
+			</if>
+		</trim>
+		UNION ALL
+		select t.supplierid,s.buydeptid,s.buyuserid,s.buyarea,
+		0 as initunpayamount,
+		0 as buyamount,0 as returnamount,0 as payamount,0 as invoiceamount,0 as prepayamount,0 as prepaybalance,t.amount as pushbalanceamount
+		from t_account_purchase_invoice_push t
+		INNER JOIN t_base_buy_supplier s on t.supplierid = s.id
+		<trim prefix="where" prefixOverrides="and|or" >
+			<if test="condition.businessdate1 != null">
+				and t.businessdate >= #{condition.businessdate1}
+			</if>
+			<if test="condition.businessdate2 != null">
+				<![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+			</if>
+			<if test="condition.supplierid != null" >
+				and t.supplierid = #{condition.supplierid}
+			</if>
+			<if test="condition.buydeptid != null" >
+				and s.buydeptid like concat(#{condition.buydeptid},'%')
+			</if>
+			<if test="1==1">
+				and (t.status='3' or t.status='4')
+			</if>
+		</trim>
+		)
+  	</sql>
+  	<!-- 供应商应付款统计 -->
+  	<select id="showSupplierPaymentsData" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.report.model.SupplierPayments">
+  		SELECT z.supplierid,z.buydeptid,
+		sum(z.initunpayamount) as initunpayamount,
+		sum(z.buyamount) AS buyamount,sum(z.returnamount) AS returnamount,sum(z.payamount) AS payamount,
+		sum(z.invoiceamount) as invoiceamount,sum(z.prepayamount) as prepayamount,sum(z.prepaybalance) as prepaybalance,sum(z.pushbalanceamount) as pushbalanceamount,
+		SUM(z.buyamount - z.returnamount) as realpayamount, SUM(z.initunpayamount + z.buyamount - z.returnamount + z.pushbalanceamount - z.payamount) as unpayamount,
+		SUM(z.initunpayamount + z.buyamount - z.returnamount - z.payamount - z.prepayamount + z.pushbalanceamount) as payableamount
+		FROM <include refid="supplierPayments_sql"/>  z
+		<trim prefix="where" prefixOverrides="and|or" >
+			<include refid="common.Page_dataSql"/>
+		</trim>
+		GROUP BY z.supplierid
+		<if test="condition.isflag == null">
+	 		<include refid="common.Page_limit"/>
+	 	</if>
+  	</select>
+  	<select id="showSupplierPaymentsDataCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  		select count(1) from (
+  			SELECT z.supplierid,z.buydeptid,
+			sum(z.initunpayamount) as initunpayamount,
+			sum(z.buyamount) AS buyamount,sum(z.returnamount) AS returnamount,sum(z.payamount) AS payamount,
+			sum(z.invoiceamount) as invoiceamount,sum(z.prepayamount) as prepayamount,sum(z.prepaybalance) as prepaybalance,sum(z.pushbalanceamount) as pushbalanceamount,
+			SUM(z.buyamount - z.returnamount) as realpayamount, SUM(z.initunpayamount + z.buyamount - z.returnamount + z.pushbalanceamount - z.payamount) as unpayamount,
+			SUM(z.initunpayamount + z.buyamount - z.returnamount - z.payamount - z.prepayamount + z.pushbalanceamount) as payableamount
+			FROM <include refid="supplierPayments_sql"/> z
+			<trim prefix="where" prefixOverrides="and|or" >
+				<include refid="common.Page_dataSql"/>
+			</trim>
+			GROUP BY z.supplierid
+  		)y
+  	</select>
+  	<select id="showSupplierPaymentsSumData" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.report.model.SupplierPayments">
+		SELECT sum(z.initunpayamount) as initunpayamount,sum(z.buyamount) AS buyamount,sum(z.returnamount) AS returnamount,sum(z.payamount) AS payamount,
+		sum(z.invoiceamount) as invoiceamount,sum(z.prepayamount) as prepayamount,sum(z.prepaybalance) as prepaybalance,sum(z.pushbalanceamount) as pushbalanceamount,
+		SUM(z.buyamount - z.returnamount) as realpayamount, SUM(z.initunpayamount + z.buyamount - z.returnamount + z.pushbalanceamount - z.payamount) as unpayamount,
+		SUM(z.initunpayamount + z.buyamount - z.returnamount - z.payamount - z.prepayamount + z.pushbalanceamount) as payableamount
+		FROM <include refid="supplierPayments_sql"/> z
+		<trim prefix="where" prefixOverrides="and|or" >
+			<include refid="common.Page_dataSql"/>
+		</trim>
+  	</select>
+	<select id="getSupplierPaymentDetailList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.report.model.SupplierPayments">
+		SELECT z.id,z.billtype,z.supplierid,z.buydeptid,z.buyuserid,z.buyarea,z.businessdate,z.remark,
+		sum(z.initunpayamount) as initunpayamount,sum(z.buyamount) AS buyamount,sum(z.returnamount) AS returnamount,sum(z.payamount) AS payamount,
+		sum(z.invoiceamount) as invoiceamount,sum(z.prepayamount) as prepayamount,sum(z.prepaybalance) as prepaybalance,sum(z.pushbalanceamount) as pushbalanceamount,
+		SUM(z.buyamount - z.returnamount) as realpayamount, SUM(z.buyamount - z.returnamount + z.pushbalanceamount - z.payamount) as unpayamount,
+		SUM(z.buyamount - z.returnamount - z.payamount - z.prepayamount + z.pushbalanceamount) as payableamount
+		from (
+		SELECT '1' as billtype,t.id,t.supplierid,t.buydeptid,t.buyuserid,s.buyarea,t.businessdate,t.remark,
+		0 as initunpayamount,
+		t1.taxamount AS buyamount, 0 AS returnamount, 0 AS payamount,0 as invoiceamount,0 as prepayamount,0 as prepaybalance,0 as pushbalanceamount
+		FROM t_purchase_arrivalorder t
+		RIGHT JOIN t_purchase_arrivalorder_detail t1 ON t1.orderid = t.id
+		INNER JOIN t_base_buy_supplier s on t.supplierid = s.id
+		<trim prefix="where" prefixOverrides="and|or" >
+			<if test="condition.businessdate1 != null">
+				and t.businessdate >= #{condition.businessdate1}
+			</if>
+			<if test="condition.businessdate2 != null">
+				<![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+			</if>
+			<if test="condition.supplierid != null" >
+				and t.supplierid = #{condition.supplierid}
+			</if>
+			<if test="condition.buydeptid != null" >
+				and t.buydeptid like concat(#{condition.buydeptid},'%')
+			</if>
+			<if test="1==1">
+				and (t.status='3' or t.status='4')
+			</if>
+		</trim>
+		UNION ALL
+		SELECT '5' as billtype,t.id,t.supplierid,t.buydeptid,t.buyuserid,t.buyarea,t.businessdate,t.remark,
+		0 as initunpayamount,
+		t.amount AS buyamount, 0 AS returnamount, 0 AS payamount,0 as invoiceamount,0 as prepayamount,0 as prepaybalance,0 as pushbalanceamount
+		FROM t_account_begin_due t
+		<trim prefix="where" prefixOverrides="and|or" >
+			<if test="condition.businessdate1 != null">
+				and t.businessdate >= #{condition.businessdate1}
+			</if>
+			<if test="condition.businessdate2 != null">
+				<![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+			</if>
+			<if test="condition.supplierid != null" >
+				and t.supplierid = #{condition.supplierid}
+			</if>
+			<if test="condition.buydeptid != null" >
+				and t.buydeptid like concat(#{condition.buydeptid},'%')
+			</if>
+			<if test="1==1">
+				and (t.status='3' or t.status='4')
+			</if>
+		</trim>
+		UNION ALL
+		SELECT '2' as billtype,t.id,t.supplierid,t.buydeptid,t.buyuserid,s.buyarea,t.businessdate,t.remark,
+		0 as initunpayamount,
+		0 AS buyamount, t1.taxamount AS returnamount, 0 AS payamount,0 as invoiceamount,0 as prepayamount,0 as prepaybalance,0 as pushbalanceamount
+		FROM t_storage_purchasereject_out t
+		RIGHT JOIN t_storage_purchasereject_out_detail t1 ON t1.orderid = t.id
+		INNER JOIN t_base_buy_supplier s on t.supplierid = s.id
+		<trim prefix="where" prefixOverrides="and|or" >
+			<if test="condition.businessdate1 != null">
+				and t.businessdate >= #{condition.businessdate1}
+			</if>
+			<if test="condition.businessdate2 != null">
+				<![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+			</if>
+			<if test="condition.supplierid != null" >
+				and t.supplierid = #{condition.supplierid}
+			</if>
+			<if test="condition.buydeptid != null" >
+				and t.buydeptid like concat(#{condition.buydeptid},'%')
+			</if>
+			<if test="1==1">
+				and t.status='4' <!-- 采购退货出库单验收后，关闭 -->
+			</if>
+		</trim>
+		UNION ALL
+		SELECT '3' as billtype,t.id,t.supplierid,t.buydept as buydeptid,t.buyuser as buyuserid,s.buyarea,t.writeoffdate as businessdate,t.remark,
+		0 as initunpayamount,
+		0 AS buyamount, 0 AS returnamount, t.invoiceamount AS payamount,0 as invoiceamount,0 as prepayamount,0 as prepaybalance,0 as pushbalanceamount
+		FROM t_account_purchase_invoice t
+		INNER JOIN t_base_buy_supplier s on t.supplierid = s.id
+		<trim prefix="where" prefixOverrides="and|or" >
+			<if test="condition.businessdate1 != null">
+				and t.writeoffdate >= #{condition.businessdate1}
+			</if>
+			<if test="condition.businessdate2 != null">
+				<![CDATA[and t.writeoffdate <= #{condition.businessdate2}]]>
+			</if>
+			<if test="condition.supplierid != null" >
+				and t.supplierid = #{condition.supplierid}
+			</if>
+			<if test="condition.buydeptid != null" >
+				and t.buydept like concat(#{condition.buydeptid},'%')
+			</if>
+			<if test="1==1">
+				and t.iswriteoff='1' and (t. STATUS = '3' OR t. STATUS = '4')
+			</if>
+		</trim>
+		UNION ALL
+		select '4' as billtype,t.invoiceid as id,t.supplierid,s.buydeptid,s.buyuserid,s.buyarea,t.businessdate,t.remark,
+		0 as initunpayamount,
+		0 as buyamount,0 as returnamount,0 as payamount,0 as invoiceamount,0 as prepayamount,0 as prepaybalance,t.amount as pushbalanceamount
+		from t_account_purchase_invoice_push t
+		INNER JOIN t_base_buy_supplier s on t.supplierid = s.id
+		<trim prefix="where" prefixOverrides="and|or" >
+			<if test="condition.businessdate1 != null">
+				and t.businessdate >= #{condition.businessdate1}
+			</if>
+			<if test="condition.businessdate2 != null">
+				<![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+			</if>
+			<if test="condition.supplierid != null" >
+				and t.supplierid = #{condition.supplierid}
+			</if>
+			<if test="condition.buydeptid != null" >
+				and s.buydeptid like concat(#{condition.buydeptid},'%')
+			</if>
+			<if test="1==1">
+				and (t.status='3' or t.status='4')
+			</if>
+		</trim>
+		)z
+		<trim prefix="where" prefixOverrides="and|or" >
+			<include refid="common.Page_dataSql"/>
+		</trim>
+		GROUP BY z.id
+		order by z.businessdate,z.id ASC
+	</select>
+  	<select id="getSupplierPaymentInitunpayamount" parameterType="com.hd.agent.common.util.PageMap" resultType="java.math.BigDecimal">
+		select sum(z.initunpayamount) AS initbuyamount
+		from (
+		SELECT t.supplierid,t.buydeptid,t.buyuserid,s.buyarea,
+		t1.taxamount AS initunpayamount,
+		0 AS buyamount, 0 AS returnamount, 0 AS payamount,0 as invoiceamount,0 as prepayamount,0 as prepaybalance,0 as pushbalanceamount
+		FROM t_purchase_arrivalorder t
+		RIGHT JOIN t_purchase_arrivalorder_detail t1 ON t1.orderid = t.id
+		INNER JOIN t_base_buy_supplier s on t.supplierid = s.id
+		<trim prefix="where" prefixOverrides="and|or" >
+			<if test="condition.businessdate1 != null">
+				<![CDATA[and t.businessdate < #{condition.businessdate1}]]>
+			</if>
+			<if test="condition.supplierid != null" >
+				and t.supplierid = #{condition.supplierid}
+			</if>
+			<if test="condition.buydeptid != null" >
+				and t.buydeptid like concat(#{condition.buydeptid},'%')
+			</if>
+			<if test="1==1">
+				and (t.status='3' or t.status='4')
+			</if>
+		</trim>
+		UNION ALL
+		SELECT t.supplierid,t.buydeptid,t.buyuserid,s.buyarea,
+		-t1.taxamount AS initunpayamount,
+		0 AS buyamount, 0 AS returnamount, 0 AS payamount,0 as invoiceamount,0 as prepayamount,0 as prepaybalance,0 as pushbalanceamount
+		FROM t_storage_purchasereject_out t
+		RIGHT JOIN t_storage_purchasereject_out_detail t1 ON t1.orderid = t.id
+		INNER JOIN t_base_buy_supplier s on t.supplierid = s.id
+		<trim prefix="where" prefixOverrides="and|or" >
+			<if test="condition.businessdate1 != null">
+				<![CDATA[and t.businessdate < #{condition.businessdate1}]]>
+			</if>
+			<if test="condition.supplierid != null" >
+				and t.supplierid = #{condition.supplierid}
+			</if>
+			<if test="condition.buydeptid != null" >
+				and t.buydeptid like concat(#{condition.buydeptid},'%')
+			</if>
+			<if test="1==1">
+				and t.status='4' <!-- 采购退货出库单验收后，关闭 -->
+			</if>
+		</trim>
+		UNION ALL
+		SELECT t.supplierid,t.buydept as buydeptid,t.buyuser as buyuserid,s.buyarea,
+		-t.invoiceamount AS initunpayamount,
+		0 AS buyamount, 0 AS returnamount, 0 AS payamount,0 as invoiceamount,0 as prepayamount,0 as prepaybalance,0 as pushbalanceamount
+		FROM t_account_purchase_invoice t
+		INNER JOIN t_base_buy_supplier s on t.supplierid = s.id
+		<trim prefix="where" prefixOverrides="and|or" >
+			<if test="condition.businessdate1 != null">
+				<![CDATA[and t.writeoffdate < #{condition.businessdate1}]]>
+			</if>
+			<if test="condition.supplierid != null" >
+				and t.supplierid = #{condition.supplierid}
+			</if>
+			<if test="condition.buydeptid != null" >
+				and t.buydept like concat(#{condition.buydeptid},'%')
+			</if>
+			<if test="1==1">
+				and t.iswriteoff = '1' and (t. STATUS = '3' OR t. STATUS = '4')
+			</if>
+		</trim>
+		UNION ALL
+		select t.supplierid,s.buydeptid,s.buyuserid,s.buyarea,
+		t.amount as initunpayamount,
+		0 AS buyamount, 0 AS returnamount, 0 AS payamount,0 as invoiceamount,0 as prepayamount,0 as prepaybalance,0 as pushbalanceamount
+		from t_account_purchase_invoice_push t
+		INNER JOIN t_base_buy_supplier s on t.supplierid = s.id
+		<trim prefix="where" prefixOverrides="and|or" >
+			<if test="condition.businessdate1 != null">
+				<![CDATA[and t.businessdate < #{condition.businessdate1}]]>
+			</if>
+			<if test="condition.supplierid != null" >
+				and t.supplierid = #{condition.supplierid}
+			</if>
+			<if test="condition.buydeptid != null" >
+				and s.buydeptid like concat(#{condition.buydeptid},'%')
+			</if>
+			<if test="1==1">
+				and (t.status='3' or t.status='4')
+			</if>
+		</trim>
+		)z
+		<trim prefix="where" prefixOverrides="and|or" >
+			<include refid="common.Page_dataSql"/>
+		</trim>
+	</select>
+
+  	<!-- 供应商开票核销情况统计 -->
+  	<select id="getSupplierInvoiceWriteoffData" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.report.model.SupplierPayments">
+  		SELECT z.supplierid,z.buydeptid,sum(z.buyamount) AS buyamount,sum(z.returnamount) AS returnamount,sum(z.payamount) AS payamount,
+		sum(z.invoiceamount) as invoiceamount,sum(z.prepayamount) as prepayamount,sum(z.prepaybalance) as prepaybalance
+		FROM
+			(
+				SELECT t.supplierid,t.buydeptid, t1.taxamount AS buyamount, 0 AS returnamount, 
+					IF(t.isinvoice != '0',t1.writeoffamount,0) AS payamount,
+					IF(t.isinvoice != '0',t1.invoicetaxamount,0) as invoiceamount,
+					0 as prepayamount,0 as prepaybalance
+				FROM t_purchase_arrivalorder t
+				RIGHT JOIN t_purchase_arrivalorder_detail t1 ON t1.orderid = t.id
+				<trim prefix="where" prefixOverrides="and|or" >
+		  		  <if test="condition.businessdate1 != null">
+					 and t.businessdate >= #{condition.businessdate1}
+				  </if>
+				  <if test="condition.businessdate2 != null">
+					 <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+				  </if>
+				  <if test="condition.supplierid != null" >
+			         and t.supplierid = #{condition.supplierid}
+			      </if>
+			      <if test="condition.buydeptid != null" >
+			         and t.buydeptid like concat(#{condition.buydeptid},'%')
+			      </if>
+			      <if test="1==1">
+			      	and (t.status='3' or t.status='4')
+			      </if>
+				</trim>
+				UNION ALL
+				SELECT t.supplierid,t.buydeptid, 0 AS buyamount, t1.taxamount AS returnamount, 
+					IF(t1.iswriteoff = '1',-t1.taxamount,0) AS payamount,
+					IF(t1.isinvoice = '1',-t1.taxamount,0) as invoiceamount,
+					0 as prepayamount,0 as prepaybalance
+				FROM t_storage_purchasereject_out t
+				RIGHT JOIN t_storage_purchasereject_out_detail t1 ON t1.orderid = t.id
+				<trim prefix="where" prefixOverrides="and|or" >
+		  			<if test="condition.businessdate1 != null">
+					 and t.businessdate >= #{condition.businessdate1}
+				  </if>
+				  <if test="condition.businessdate2 != null">
+					 <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+				  </if>
+				  <if test="condition.supplierid != null" >
+			         and t.supplierid = #{condition.supplierid}
+			      </if>
+			      <if test="condition.buydeptid != null" >
+			         and t.buydeptid like concat(#{condition.buydeptid},'%')
+			      </if>
+			      <if test="1==1">
+			      	and t.status='4' <!-- 采购退货出库单验收后，关闭 -->
+			      </if>
+				</trim>
+				UNION ALL 
+				select t.id as supplierid,a.buydeptid as buydept, 0 AS buyamount, 0 AS returnamount, 0 as payamount, 0 AS invoiceamount, t.amount as prepayamount,0 as prepaybalance
+   				from t_account_supplier_capital t
+   				left join t_base_buy_supplier a on a.id = t.id
+   				<trim prefix="where" prefixOverrides="and|or" >
+				  <if test="condition.supplierid != null" >
+			         and t.id = #{condition.supplierid}
+			      </if>
+			      <if test="condition.buydeptid != null" >
+			         and a.buydeptid like concat(#{condition.buydeptid},'%')
+			      </if>
+				</trim>
+			) z
+		GROUP BY z.supplierid
+		<if test="condition.isflag == null">
+	 		<include refid="common.Page_limit"/>
+	 	</if>
+  	</select>
+  	<select id="getSupplierInvoiceWriteoffDataCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  		select count(1) from (
+  			SELECT z.supplierid,z.buydeptid,sum(z.buyamount) AS buyamount,sum(z.returnamount) AS returnamount,sum(z.payamount) AS payamount,
+			sum(z.invoiceamount) as invoiceamount,sum(z.prepayamount) as prepayamount,sum(z.prepaybalance) as prepaybalance
+			FROM
+				(
+					SELECT t.supplierid,t.buydeptid, t1.taxamount AS buyamount, 0 AS returnamount, 
+						IF(t.isinvoice != '0',t1.writeoffamount,0) AS payamount,
+						IF(t.isinvoice != '0',t1.invoicetaxamount,0) as invoiceamount,
+						0 as prepayamount,0 as prepaybalance
+					FROM t_purchase_arrivalorder t
+					RIGHT JOIN t_purchase_arrivalorder_detail t1 ON t1.orderid = t.id
+					<trim prefix="where" prefixOverrides="and|or" >
+			  			<if test="condition.businessdate1 != null">
+						 and t.businessdate >= #{condition.businessdate1}
+					  </if>
+					  <if test="condition.businessdate2 != null">
+						 <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+					  </if>
+					  <if test="condition.supplierid != null" >
+				         and t.supplierid = #{condition.supplierid}
+				      </if>
+				      <if test="condition.buydeptid != null" >
+				         and t.buydeptid like concat(#{condition.buydeptid},'%')
+				      </if>
+				      <if test="1==1">
+				      	and (t.status='3' or t.status='4')
+				      </if>
+					</trim>
+					UNION ALL
+					SELECT t.supplierid,t.buydeptid, 0 AS buyamount, t1.taxamount AS returnamount, 
+						IF(t1.iswriteoff = '1',-t1.taxamount,0) AS payamount,
+						IF(t1.isinvoice = '1',-t1.taxamount,0) as invoiceamount,
+						0 as prepayamount,0 as prepaybalance
+					FROM t_storage_purchasereject_out t
+					RIGHT JOIN t_storage_purchasereject_out_detail t1 ON t1.orderid = t.id
+					<trim prefix="where" prefixOverrides="and|or" >
+			  			<if test="condition.businessdate1 != null">
+						 and t.businessdate >= #{condition.businessdate1}
+					  </if>
+					  <if test="condition.businessdate2 != null">
+						 <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+					  </if>
+					  <if test="condition.supplierid != null" >
+				         and t.supplierid = #{condition.supplierid}
+				      </if>
+				      <if test="condition.buydeptid != null" >
+				         and t.buydeptid like concat(#{condition.buydeptid},'%')
+				      </if>
+				      <if test="1==1">
+				      	and t.status='4' <!-- 采购退货出库单验收后，关闭 -->
+				      </if>
+					</trim>
+					UNION ALL 
+					select t.id as supplierid,NULL as buydept, 0 AS buyamount, 0 AS returnamount, 0 as payamount, 0 AS invoiceamount, t.amount as prepayamount,0 as prepaybalance
+	   				from t_account_supplier_capital t
+	   				left join t_base_buy_supplier a on a.id = t.id
+	   				<trim prefix="where" prefixOverrides="and|or" >
+					  <if test="condition.supplierid != null" >
+				         and t.id = #{condition.supplierid}
+				      </if>
+				      <if test="condition.buydeptid != null" >
+				         and a.buydeptid like concat(#{condition.buydeptid},'%')
+				      </if>
+					</trim>
+				) z
+			GROUP BY z.supplierid
+  		)y
+  	</select>
+  	<select id="getSupplierInvoiceWriteoffSumData" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.report.model.SupplierPayments">
+  		select sum(z.buyamount) AS buyamount,sum(z.returnamount) AS returnamount,sum(z.payamount) AS payamount,
+		sum(z.invoiceamount) as invoiceamount,sum(z.prepayamount) as prepayamount,sum(z.prepaybalance) as prepaybalance
+		from (
+			SELECT z.supplierid,z.buydeptid,sum(z.buyamount) AS buyamount,sum(z.returnamount) AS returnamount,sum(z.payamount) AS payamount,
+				sum(z.invoiceamount) as invoiceamount,sum(z.prepayamount) as prepayamount,sum(z.prepaybalance) as prepaybalance
+			FROM (
+				SELECT t.supplierid,t.buydeptid, t1.taxamount AS buyamount, 0 AS returnamount, 
+					IF(t.isinvoice != '0',t1.writeoffamount,0) AS payamount,
+					IF(t.isinvoice != '0',t1.invoicetaxamount,0) as invoiceamount,
+					0 as prepayamount,0 as prepaybalance
+				FROM t_purchase_arrivalorder t
+				RIGHT JOIN t_purchase_arrivalorder_detail t1 ON t1.orderid = t.id
+				<trim prefix="where" prefixOverrides="and|or" >
+		  			<if test="condition.businessdate1 != null">
+					 and t.businessdate >= #{condition.businessdate1}
+				  </if>
+				  <if test="condition.businessdate2 != null">
+					 <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+				  </if>
+				  <if test="condition.supplierid != null" >
+			         and t.supplierid = #{condition.supplierid}
+			      </if>
+			      <if test="condition.buydeptid != null" >
+			         and t.buydeptid like concat(#{condition.buydeptid},'%')
+			      </if>
+			      <if test="1==1">
+			      	and (t.status='3' or t.status='4')
+			      </if>
+				</trim>
+				UNION ALL
+				SELECT t.supplierid,t.buydeptid, 0 AS buyamount, t1.taxamount AS returnamount, 
+					IF(t1.iswriteoff = '1',-t1.taxamount,0) AS payamount,
+					IF(t1.isinvoice = '1',-t1.taxamount,0) as invoiceamount,
+					0 as prepayamount,0 as prepaybalance
+				FROM t_storage_purchasereject_out t
+				RIGHT JOIN t_storage_purchasereject_out_detail t1 ON t1.orderid = t.id
+				<trim prefix="where" prefixOverrides="and|or" >
+		  			<if test="condition.businessdate1 != null">
+					 and t.businessdate >= #{condition.businessdate1}
+				  </if>
+				  <if test="condition.businessdate2 != null">
+					 <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+				  </if>
+				  <if test="condition.supplierid != null" >
+			         and t.supplierid = #{condition.supplierid}
+			      </if>
+			      <if test="condition.buydeptid != null" >
+			         and t.buydeptid like concat(#{condition.buydeptid},'%')
+			      </if>
+			      <if test="1==1">
+			      	and t.status='4' <!-- 采购退货出库单验收后，关闭 -->
+			      </if>
+				</trim>
+				UNION ALL 
+				select t.id as supplierid,NULL as buydept, 0 AS buyamount, 0 AS returnamount, 0 as payamount, 0 AS invoiceamount, t.amount as prepayamount,0 as prepaybalance
+   				from t_account_supplier_capital t
+   				left join t_base_buy_supplier a on a.id = t.id
+   				<trim prefix="where" prefixOverrides="and|or" >
+				  <if test="condition.supplierid != null" >
+			         and t.id = #{condition.supplierid}
+			      </if>
+			      <if test="condition.buydeptid != null" >
+			         and a.buydeptid like concat(#{condition.buydeptid},'%')
+			      </if>
+				</trim>
+			) z
+		)z
+  	</select>
+  	<!-- 供应商应付款流水明细 -->
+  	<sql id="supplierPaysFlowList_sql">
+  		(
+  		select '1' as billtype,t1.billno AS id,t.supplierid,t.buydeptid,t.buyuserid,s.buyarea,t1.brandid,
+  		t.businessdate,t1.goodsid,t1.unitid,t1.unitname,t1.unitnum,t1.auxnum,t1.auxremainder,t1.auxunitname,t1.taxprice as price,t1.taxamount,
+  		CASE 
+			WHEN t1.iswriteoff='1' THEN '1'
+			WHEN (t.status='3' OR t.status='4') AND t1.invoicerefer='1' AND t1.taxamount = t1.invoicetaxamount THEN '1'
+			ELSE 0 END isinvoice,
+  		t1.iswriteoff as iswriteoff,t1.remark,'1' as ischeck
+		from t_purchase_arrivalorder t
+		RIGHT JOIN t_purchase_arrivalorder_detail t1 on t.id=t1.orderid
+		INNER JOIN t_base_buy_supplier s on t.supplierid=s.id
+		<trim prefix="where" prefixOverrides="and|or" >
+			<if test="condition.id != null">
+				and t1.billno = #{condition.id}
+			</if>
+  			<if test="condition.businessdate1 != null">
+			 	and t.businessdate >= #{condition.businessdate1}
+		  	</if>
+		  <if test="condition.businessdate2 != null">
+			 <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+		  </if>
+		  <if test="condition.supplierid != null" >
+	         and t.supplierid = #{condition.supplierid}
+	      </if>
+	      <if test="condition.invoice1!=null or condition.invoice2!=null or condition.writeoff1!=null or condition.writeoff2!=null">
+	      	  <trim prefixOverrides="and|or" prefix="and (" suffix=")">
+		       <if test="condition.invoice1==1">
+		      	or t1.invoicerefer='0' 
+		      	or <![CDATA[ (t1.invoicerefer='1' AND t1.taxamount <> t1.invoicetaxamount )]]>
+		      </if>
+		      <if test="condition.invoice2==1">
+		      	or t1.iswriteoff='1' or ( (t.status='3' OR t.status='4') AND t1.invoicerefer='1' AND t1.taxamount = t1.invoicetaxamount and t1.iswriteoff='0' )
+		      </if>
+		      </trim>
+		      <trim prefixOverrides="and|or" prefix="and (" suffix=")">
+		      <if test="condition.writeoff1==1">
+		      	or t1.iswriteoff='0'
+		      </if>
+		      <if test="condition.writeoff2==1">
+		      	or t1.iswriteoff='1'
+		      </if>
+		      </trim>
+	      </if>
+	      <if test="1==1">
+	      	and (t.status='3' or t.status='4')
+	      </if>
+		  <if test="condition.brandid != null" >
+	         and FIND_IN_SET(t1.brandid,#{condition.brandid})
+	      </if>
+		</trim>
+		UNION ALL
+		select '2' as billtype,t.id,t.supplierid,t.buydeptid,t.buyuserid,s.buyarea,t1.brandid,
+		t.businessdate,t1.goodsid,t1.unitid,t1.unitname,-t1.unitnum,-t1.auxnum,-t1.auxremainder,t1.auxunitname,t1.taxprice as price,-t1.taxamount,t1.isinvoice as isinvoice,t1.iswriteoff as iswriteoff,t1.remark,t.ischeck 
+		from t_storage_purchasereject_out t
+		RIGHT JOIN t_storage_purchasereject_out_detail t1 on t.id=t1.orderid
+		INNER JOIN t_base_buy_supplier s on t.supplierid=s.id
+  		<trim prefix="where" prefixOverrides="and|or" >
+  			<if test="condition.id != null">
+				and t.id = #{condition.id}
+			</if>
+  			<if test="condition.businessdate1 != null">
+			 	and t.businessdate >= #{condition.businessdate1}
+		  </if>
+		  <if test="condition.businessdate2 != null">
+			 <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+		  </if>
+		  <if test="condition.supplierid != null" >
+	         and t.supplierid = #{condition.supplierid}
+	      </if>
+	      <if test="condition.invoice1!=null or condition.invoice2!=null or condition.writeoff1!=null or condition.writeoff2!=null">
+	      	<trim prefixOverrides="and|or" prefix="and (" suffix=")">
+		       <if test="condition.invoice1==1">
+		      	or t1.isinvoice='0'
+		      </if>
+		      <if test="condition.invoice2==1">
+		      	or t1.isinvoice='1'
+		      </if>
+		      </trim>
+		      <trim prefixOverrides="and|or" prefix="and (" suffix=")">
+		      <if test="condition.writeoff1==1">
+		      	or t1.iswriteoff='0'
+		      </if>
+		      <if test="condition.writeoff2==1">
+		      	or t1.iswriteoff='1'
+		      </if>
+		      </trim>
+	      </if>
+	      <if test="1==1">
+	      	and t.status='4' <!-- 采购退货出库单验收后，关闭 -->
+	      </if>
+		  <if test="condition.brandid != null" >
+	         and FIND_IN_SET(t1.brandid,#{condition.brandid})
+	      </if>
+		</trim>)
+  	</sql>
+  	<select id="showSupplierPaysFlowListData" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.report.model.SupplierPayFlow">
+  		select billtype,id,supplierid,businessdate,goodsid,brandid,unitid,unitname,price,unitnum,auxnum,auxremainder,auxunitname,taxamount as taxamount,isinvoice,iswriteoff,remark,ischeck
+  		from (
+	  		select  z.billtype,z.id,z.supplierid,z.businessdate,z.goodsid,z.brandid,z.unitid,z.unitname,z.price,z.unitnum,z.auxnum,z.auxremainder,z.auxunitname,z.taxamount as taxamount,z.isinvoice,z.iswriteoff,z.remark,z.ischeck
+	  		from  <include refid="supplierPaysFlowList_sql"/> z 
+	  		<trim prefix="where" prefixOverrides="and|or" >
+	  			<include refid="common.Page_dataSql"/>
+	  			<if test="condition.billtype != null">
+					and z.billtype = #{condition.billtype}
+				</if>
+			</trim>
+	  		union all 
+	  		select '9' as billtype,z.id,z.supplierid,z.businessdate,z.goodsid,z.brandid,z.unitid,z.unitname,0 as price,sum(z.unitnum) as unitnum,sum(z.auxnum) as auxnum,sum(z.auxremainder) as auxremainder,z.auxunitname,sum(z.taxamount) as taxamount,z.isinvoice,z.iswriteoff,'' as remark,'1' as ischeck
+			from  <include refid="supplierPaysFlowList_sql"/> z 
+			<trim prefix="where" prefixOverrides="and|or" >
+				<include refid="common.Page_dataSql"/>
+	  			<if test="condition.billtype != null">
+					and z.billtype = #{condition.billtype}
+				</if>
+			</trim>
+			group by z.businessdate
+		) y
+  		order by businessdate asc,billtype asc,id	
+		<if test="condition.isflag !='true'">
+			<include refid="common.Page_LimitOnly" /> 
+		</if>
+  	</select>
+  	<select id="showSupplierPaysFlowListCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  		select count(1) from (
+  			select z.billtype,z.id,z.supplierid,z.businessdate,z.goodsid,z.brandid,z.unitid,z.unitname,z.price,z.unitnum,z.taxamount as taxamount,z.isinvoice,z.iswriteoff,z.remark
+	  		from  <include refid="supplierPaysFlowList_sql"/> z 
+	  		<trim prefix="where" prefixOverrides="and|or" >
+	  			<include refid="common.Page_dataSql"/>
+	  			<if test="condition.billtype != null">
+					and z.billtype = #{condition.billtype}
+				</if>
+			</trim>
+	  		union all 
+	  		select '9' as billtype,z.supplierid,z.id,z.businessdate,z.goodsid,z.brandid,z.unitid,z.unitname,0 as price,sum(z.unitnum) as unitnum,sum(z.taxamount) as taxamount,z.isinvoice,z.iswriteoff,'' as remark
+			from  <include refid="supplierPaysFlowList_sql"/> z 
+			<trim prefix="where" prefixOverrides="and|or" >
+				<include refid="common.Page_dataSql"/>
+	  			<if test="condition.billtype != null">
+				 	and z.billtype = #{condition.billtype}
+			    </if>
+			</trim>
+			group by z.businessdate
+  		)x
+  	</select>
+  	<select id="getSupplierPaysFlowSumData" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.report.model.SupplierPayFlow">
+  		select sum(z.unitnum) as unitnum, sum(z.taxamount) as taxamount, sum(z.auxnum) as auxnum,sum(z.auxremainder) as auxremainder 
+  		from <include refid="supplierPaysFlowList_sql"/> z 
+  		<trim prefix="where" prefixOverrides="and|or" >
+  			<include refid="common.Page_dataSql"/>
+  			<if test="condition.billtype != null">
+				and z.billtype = #{condition.billtype}
+			</if>
+		</trim>
+  	</select>
+  	
+  	<select id="showSupplierPayData" parameterType="com.hd.agent.common.util.PageMap" resultType="java.util.Map">
+  		select t.supplierid,sum(t.amount) as amount from t_account_purchase_payorder t
+  		<trim prefix="where" prefixOverrides="and|or" >
+  			<if test="condition.businessdate1 != null">
+			 and t.businessdate >= #{condition.businessdate1}
+		  </if>
+		  <if test="condition.businessdate2 != null">
+			 <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+		  </if>
+		  <if test="condition.supplierid != null" >
+	         and t.supplierid = #{condition.supplierid}
+	      </if>
+	      <if test="1==1">
+	      	and t.status in ('3','4')
+	      </if>
+		</trim>
+		group by t.supplierid
+		<if test="condition.isflag == null">
+	 		<include refid="common.Page_limit"/>
+	 	</if>
+  	</select>
+  	<select id="showSupplierPayCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  		select count(1) from (
+	  		select t.supplierid,sum(t.amount) as amount from t_account_purchase_payorder t
+	  		<trim prefix="where" prefixOverrides="and|or" >
+	  			<if test="condition.businessdate1 != null">
+				 and t.businessdate >= #{condition.businessdate1}
+			  </if>
+			  <if test="condition.businessdate2 != null">
+				 <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+			  </if>
+			  <if test="condition.supplierid != null" >
+		         and t.supplierid = #{condition.supplierid}
+		      </if>
+		      <if test="1==1">
+		      	and t.status in ('3','4')
+		      </if>
+			</trim>
+			group by t.supplierid
+		) z
+  	</select>
+  	<select id="getSupplierPayBankSumBySupplieridAndBank" parameterType="com.hd.agent.common.util.PageMap" resultType="java.math.BigDecimal">
+  		select sum(t.amount) as amount from t_account_purchase_payorder t 
+  			<trim prefix="where" prefixOverrides="and|or" >
+	  		  <if test="condition.businessdate1 != null">
+				 and t.businessdate >= #{condition.businessdate1}
+			  </if>
+			  <if test="condition.businessdate2 != null">
+				 <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+			  </if>
+			  <if test="condition.thissupplierid != null" >
+		         and t.supplierid = #{condition.thissupplierid}
+		      </if>
+		      <choose>
+		      	<when test="condition.bank != null">
+		      		 and t.bank = #{condition.bank}
+		      	</when>
+		      	<when test="condition.bank == null">
+		      		and (t.bank = '' or t.bank is null)
+		      	</when>
+		      </choose>
+		      <if test="1==1">
+		      	and t.status in ('3','4')
+		      </if>
+			</trim>
+  	</select>
+  	<select id="getSupplierPaySum" parameterType="com.hd.agent.common.util.PageMap" resultType="java.math.BigDecimal">
+  		select sum(t.amount) as amount from t_account_purchase_payorder t 
+  		<trim prefix="where" prefixOverrides="and|or" >
+  			<if test="condition.businessdate1 != null">
+			 and t.businessdate >= #{condition.businessdate1}
+		  </if>
+		  <if test="condition.businessdate2 != null">
+			 <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+		  </if>
+		  <if test="condition.supplierid != null" >
+	         and t.supplierid = #{condition.supplierid}
+	      </if>
+	      <if test="1==1">
+	      	and t.status in ('3','4')
+	      </if>
+		</trim>
+  	</select>
+  	<select id="getSupplierPayBankSumByBank" parameterType="com.hd.agent.common.util.PageMap" resultType="java.math.BigDecimal">
+  		select sum(t.amount) as amount from t_account_purchase_payorder t 
+  		<trim prefix="where" prefixOverrides="and|or" >
+  			<if test="condition.businessdate1 != null">
+			 and t.businessdate >= #{condition.businessdate1}
+		  </if>
+		  <if test="condition.businessdate2 != null">
+			 <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+		  </if>
+		  <if test="condition.supplierid != null" >
+	         and t.supplierid = #{condition.supplierid}
+	      </if>
+	      <choose>
+	      	<when test="condition.bank != null">
+	      		 and t.bank = #{condition.bank}
+	      	</when>
+	      	<when test="condition.bank == null">
+	      		and (t.bank = '' or t.bank is null)
+	      	</when>
+	      </choose>
+	      <if test="1==1">
+	      	and t.status in ('3','4')
+	      </if>
+		</trim>
+  	</select>
+  	<!-- 应付单据动态 -->
+	<sql id="supplierPaymentsBillDetailSql_common">
+		(
+		SELECT '1' AS billtype, t.id,t1.buyorderid,t.supplierid,t.suppliername,s.buyarea,s.buydeptid,s.buyuserid,t.businessdate,t.adduserid,t.addusername,t1.taxamount,
+		t1.invoicetaxamount as invoiceamount,if(t1.invoicerefer='1' and t1.uninvoicenum = 0,0,t1.taxamount-t1.invoicetaxamount) uninvoiceamount,t1.writeoffamount AS payamount,if(t1.iswriteoff='1' ,0,t1.taxamount-t1.writeoffamount) AS unpayamount
+		FROM t_purchase_arrivalorder t
+		RIGHT JOIN t_purchase_arrivalorder_detail t1 ON t.id=t1.orderid
+		left join t_base_buy_supplier s on t.supplierid = s.id
+		<trim prefix="WHERE" prefixOverrides="and|or" >
+			<if test="1==1">
+				AND (t.status='3' OR t.status='4')
+			</if>
+			<if test="condition.supplierid !=null ">
+				<choose>
+					<when test="condition.issupplierarr !=null and condition.issupplierarr == 1">
+						and FIND_IN_SET(t.supplierid,#{condition.supplierid})
+					</when>
+					<otherwise>
+						AND t.supplierid = #{condition.supplierid}
+					</otherwise>
+				</choose>
+			</if>
+			<if test="condition.businessdate1 != null">
+				and t.businessdate >= #{condition.businessdate1}
+			</if>
+			<if test="condition.businessdate2 != null">
+				<![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+			</if>
+			<if test="condition.id != null">
+				and t.id=#{condition.id}
+			</if>
+			<if test="condition.invoicestate != null">
+				<choose>
+					<when test="condition.invoicestate == 1">
+						and ( t.isinvoice='1' or t.isinvoice = '2')
+					</when>
+					<otherwise>
+						and t.isinvoice != '1' and t.isinvoice != '2'
+					</otherwise>
+				</choose>
+			</if>
+			<if test="condition.adduserid != null">
+				and t.adduserid=#{condition.adduserid}
+			</if>
+		</trim>
+		UNION ALL
+		SELECT '2' AS billtype, t.id,'' AS buyorderid,t.supplierid,s.name AS suppliername,s.buyarea,s.buydeptid,s.buyuserid,t.businessdate,t.adduserid,t.addusername,-t1.taxamount AS taxamount,
+		-t1.invoicetaxamount as invoiceamount,if(t1.invoicerefer='1' and t1.uninvoicenum = 0,0,-(t1.taxamount-t1.invoicetaxamount)) uninvoiceamount,-t1.writeoffamount AS payamount,if(t1.iswriteoff='1' ,0,-(t1.taxamount-t1.writeoffamount)) AS unpayamount
+		FROM t_purchase_returnorder t
+		RIGHT JOIN t_purchase_returnorder_detail t1 ON t.id=t1.orderid
+		INNER JOIN t_storage_purchasereject_out t2 on t.id=t2.sourceid
+		left join t_base_buy_supplier s on t.supplierid = s.id
+		<trim prefix="WHERE" prefixOverrides="and|or" >
+			<if test="1==1">
+				AND t2.status='4' <!-- 采购退货出库单验收后，关闭 -->
+			</if>
+			<if test="condition.supplierid !=null ">
+				<choose>
+					<when test="condition.issupplierarr !=null and condition.issupplierarr == 1">
+						and FIND_IN_SET(t.supplierid,#{condition.supplierid})
+					</when>
+					<otherwise>
+						AND t.supplierid = #{condition.supplierid}
+					</otherwise>
+				</choose>
+			</if>
+			<if test="condition.businessdate1 != null">
+				and t.businessdate >= #{condition.businessdate1}
+			</if>
+			<if test="condition.businessdate2 != null">
+				<![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+			</if>
+			<if test="condition.id != null">
+				and t.id=#{condition.id}
+			</if>
+			<if test="condition.invoicestate != null">
+				<choose>
+					<when test="condition.invoicestate == 1">
+						and ( t.isinvoice='1' or t.isinvoice = '2')
+					</when>
+					<otherwise>
+						and t.isinvoice != '1' and t.isinvoice != '2'
+					</otherwise>
+				</choose>
+			</if>
+			<if test="condition.adduserid != null">
+				and t.adduserid=#{condition.adduserid}
+			</if>
+		</trim>
+		UNION ALL
+		SELECT '3' AS billtype, t.id,'' AS buyorderid,t.supplierid,s.name AS suppliername,t.buyarea,t.buydeptid,t.buyuserid,t.businessdate,t.adduserid,t.addusername,t.amount AS taxamount,
+		t.invoiceamount as invoiceamount,if(t.invoicerefer='1',0,(t.amount-t.invoiceamount)) uninvoiceamount,t.writeoffamount AS payamount,if(t.iswriteoff='1' ,0,(t.amount-t.writeoffamount)) AS unpayamount
+		FROM t_account_begin_due t
+		left join t_base_buy_supplier s on t.supplierid = s.id
+		<trim prefix="WHERE" prefixOverrides="and|or" >
+			<if test="1==1">
+				AND (t.status='3' OR t.status='4')
+			</if>
+			<if test="condition.supplierid !=null ">
+				<choose>
+					<when test="condition.issupplierarr !=null and condition.issupplierarr == 1">
+						and FIND_IN_SET(t.supplierid,#{condition.supplierid})
+					</when>
+					<otherwise>
+						AND t.supplierid = #{condition.supplierid}
+					</otherwise>
+				</choose>
+			</if>
+			<if test="condition.businessdate1 != null">
+				and t.businessdate >= #{condition.businessdate1}
+			</if>
+			<if test="condition.businessdate2 != null">
+				<![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+			</if>
+			<if test="condition.id != null">
+				and t.id=#{condition.id}
+			</if>
+			<if test="condition.invoicestate != null">
+				<choose>
+					<when test="condition.invoicestate == 1">
+						and ( t.isinvoice='1' or t.iswriteoff = '1')
+					</when>
+					<otherwise>
+						and t.isinvoice = '0' and t.iswriteoff = '0'
+					</otherwise>
+				</choose>
+			</if>
+			<if test="condition.adduserid != null">
+				and t.adduserid=#{condition.adduserid}
+			</if>
+		</trim>
+		)
+	</sql>
+  	<sql id="supplierPaymentsBillDetailSql">
+  		(
+  			SELECT billtype, id,buyorderid,supplierid,suppliername,buyarea,buydeptid,buyuserid,businessdate,adduserid,addusername,buyamount,
+				invoiceamount,uninvoiceamount,payamount,unpayamount,isgroupbycol,invoicedate
+			FROM (
+				SELECT billtype, id,buyorderid,supplierid,suppliername,buyarea,buydeptid,buyuserid,businessdate,adduserid,addusername,SUM(taxamount) AS buyamount,
+					SUM(invoiceamount) AS invoiceamount,SUM(uninvoiceamount) AS uninvoiceamount,SUM(payamount) AS payamount,
+					SUM(unpayamount) AS unpayamount,0 AS isgroupbycol,(SELECT businessdate FROM t_account_purchase_invoice  WHERE FIND_IN_SET(t.id,sourceid) AND (status='3' or status='4') ORDER BY businessdate LIMIT 0,1) AS invoicedate
+				FROM <include refid="supplierPaymentsBillDetailSql_common"/> t
+				<trim prefix="WHERE" prefixOverrides="and|or" >
+					<if test="condition.billtype">
+						AND t.billtype=#{condition.billtype}
+					</if>
+			  		<include refid="common.Page_dataSql"/>
+				</trim>				
+				<if test="condition.groupcols !=null and condition.groupcols !='' and condition.groupcols != 'all' ">
+					GROUP BY ${condition.groupcols}
+				</if>
+				<if test="condition.showgroupbycol != null and condition.groupcolsort != null and condition.groupcolorder != null">
+					ORDER BY ${condition.groupcolsort} ${condition.groupcolorder}
+				</if>
+			) t
+			
+			<if test="condition.showgroupbycol != null">
+				UNION ALL		
+				SELECT billtype,#{condition.showgroupbycol} AS id,buyorderid,supplierid,suppliername,buyarea,buydeptid,buyuserid,businessdate,adduserid,addusername,buyamount,
+					invoiceamount,uninvoiceamount,payamount,unpayamount,isgroupbycol,invoicedate
+				FROM (
+					SELECT billtype, id,buyorderid,supplierid,suppliername,buyarea,buydeptid,buyuserid,businessdate,adduserid,addusername,SUM(taxamount) AS buyamount,
+						SUM(invoiceamount) AS invoiceamount,SUM(uninvoiceamount) AS uninvoiceamount,SUM(payamount) AS payamount,
+						SUM(unpayamount) AS unpayamount,1 AS isgroupbycol,'' as invoicedate
+					FROM <include refid="supplierPaymentsBillDetailSql_common"/> t
+					<trim prefix="WHERE" prefixOverrides="and|or" >
+						<if test="condition.billtype">
+							AND t.billtype=#{condition.billtype}
+						</if>
+				  		<include refid="common.Page_dataSql"/>
+					</trim>	
+					GROUP BY ${condition.showgroupbycol}
+				) t
+				<trim prefix="where" prefixOverrides="and|or">
+					<include refid="common.Page_dataSql"/>
+				</trim>
+				GROUP BY ${condition.showgrouplastbycol}
+			</if>
+  		)
+  	</sql>
+  	<select id="getSupplierPaymentsBillDetailData" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.report.model.SupplierPaymentsBillDetail">
+  		select * from <include refid="supplierPaymentsBillDetailSql"/> t
+		<if test="condition.ispageflag !='true' and condition.groupcols != 'all'">
+			<include refid="common.Page_limit" /> 
+		</if>
+  	</select>
+  	<select id="getSupplierPaymentsBillDetailCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  		SELECT count(1)	FROM <include refid="supplierPaymentsBillDetailSql"/> t
+  	</select>
+  	<sql id="supplierPaymentsInvoiceReport_QuerySql">
+      <if test="condition.businessdate1 != null">
+		 	and pi.businessdate >= #{condition.businessdate1}
+	  </if>
+	  <if test="condition.businessdate2 != null">
+			 <![CDATA[and pi.businessdate <= #{condition.businessdate2}]]>
+	  </if>
+	  <if test="condition.status != null">
+         and pi.status = #{condition.status}
+      </if>
+      <if test="condition.supplierid != null">
+         and FIND_IN_SET(pi.supplierid,#{condition.supplierid} )
+      </if>
+      <if test="condition.id != null">
+         and pi.id = #{condition.id}
+      </if>
+      <if test="condition.adduserid != null">
+         and pi.adduserid = #{condition.adduserid}
+      </if>
+      <if test="condition.invoiceno != null">
+      	 and pi.invoiceno = #{condition.invoiceno}
+      </if>
+      <choose>
+	      	<when test="condition.invoicestate == 1">
+	      		and pi.status = '3'
+	      	</when>
+	      	<when test="condition.invoicestate == 2">
+	      		and pi.status='4' and pi.iswriteoff = '1'
+	      	</when>
+	      	<otherwise>
+	      		and ( pi.status='3' or pi.status='4')
+	      	</otherwise>
+      </choose>
+      <if test="condition.invoicedate1 != null">
+		 	and pi.writeoffdate >= #{condition.invoicedate1}
+	  </if>
+	  <if test="condition.invoicedate2 != null">
+			 <![CDATA[and pi.writeoffdate <= #{condition.invoicedate2}]]>
+	  </if>
+      <if test="condition.sourceid != null">
+      		and FIND_IN_SET(#{condition.sourceid},pi.sourceid  )
+      </if>
+  	</sql>
+  	<select id="getSupplierPaymentsInvoiceReportData"  parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.report.model.SupplierPaymentsInvoiceReport">
+  		select
+  			id, businessdate, supplierid,buydeptid, invoiceno,writeoffdate, 
+			taxamount, notaxamount, invoiceamount, writeoffamount, 
+			tailamount, remark,paydate,sourceid,columnflag,
+			adduserid,addusername,adddeptid,adddeptname,pushamount
+			from (
+				select pi.id, pi.businessdate, pi.supplierid,pi.buydept as buydeptid,pi.buyuser as buyuserid,s.buyarea, pi.invoiceno,pi.writeoffdate, 
+					pi.taxamount,pi.notaxamount, pi.invoiceamount, pi.writeoffamount, 
+					pi.tailamount, pi.remark,pi.paydate,pi.sourceid,'1' AS columnflag,
+					pi.adduserid,pi.addusername,pi.adddeptid,pi.adddeptname,sum(pip.amount) as pushamount
+				from t_account_purchase_invoice	pi
+				left join t_account_purchase_invoice_push pip on pi.id=pip.invoiceid
+				INNER JOIN t_base_buy_supplier s on pi.supplierid = s.id
+			  	<trim prefix="where" prefixOverrides="and|or">
+			      	<include refid="supplierPaymentsInvoiceReport_QuerySql"/>	      
+				</trim>
+				group by pi.id			
+				<if test="condition.groupcols != null">
+					union all
+						SELECT 						
+						id, businessdate, supplierid,buydeptid,buyuserid,buyarea,'' as invoiceno,'' as writeoffdate, 
+						SUM(taxamount) AS taxamount,SUM(notaxamount) as notaxamount, SUM(invoiceamount) as invoiceamount, 
+						SUM(writeoffamount) AS writeoffamount,SUM(tailamount) AS tailamount, '' AS remark,
+						'' AS paydate ,'' AS sourceid,'2' AS columnflag,
+						'' AS adduserid,'' AS addusername,'' AS adddeptid,'' AS adddeptname,SUM( pushamount ) AS pushamount						
+						FROM (
+							select pi.id, pi.businessdate, pi.supplierid,pi.buydept as buydeptid,pi.buyuser as buyuserid,s.buyarea, pi.invoiceno,pi.writeoffdate, 
+								pi.taxamount,pi.notaxamount, pi.invoiceamount, pi.writeoffamount, 
+								pi.tailamount, pi.remark,pi.paydate,pi.sourceid,'1' AS columnflag,
+								pi.adduserid,pi.addusername,pi.adddeptid,pi.adddeptname,sum(pip.amount) as pushamount
+							from t_account_purchase_invoice	pi
+							left join t_account_purchase_invoice_push pip on pi.id=pip.invoiceid
+							INNER JOIN t_base_buy_supplier s on pi.supplierid = s.id
+						  	<trim prefix="where" prefixOverrides="and|or">
+						      	<include refid="supplierPaymentsInvoiceReport_QuerySql"/>	      
+							</trim>
+							group by pi.id
+						) t	
+						GROUP BY
+					  <if test="condition.groupcols != null">
+					  	${condition.groupcols}
+					  </if>
+				</if>
+			) t
+			<trim prefix="where" prefixOverrides="and|or">
+				<include refid="common.Page_dataSql"/>
+			</trim>
+		order by					
+		<choose>
+			<when test="condition.order !=null and ( condition.sort == 'supplierid' and condition.groupcols == 'supplierid' )">						
+		 		<if test="condition.sort !=null and condition.order !=null">
+			      	${condition.sort} ${condition.order},
+			    </if>
+			    columnflag asc
+			</when>
+			<when test="condition.order !=null and ( condition.sort == 'businessdate' and condition.groupcols == 'businessdate' )">						
+		 		<if test="condition.sort !=null and condition.order !=null">
+			      	${condition.sort} ${condition.order},
+			    </if>
+			    columnflag asc
+			</when>
+	  		<otherwise>
+				<if test="condition.groupcols != null">
+		  			${condition.groupcols}, 		
+				</if>
+				columnflag asc		
+		 		<if test="condition.sort !=null and condition.order !=null">
+			      	,${condition.sort} ${condition.order}
+			    </if>		
+	  		</otherwise>
+		</choose>	
+		<if test="condition.ispageflag !='true'">
+			<include refid="common.Page_LimitOnly" /> 
+		</if>
+  	</select>
+  	<select id="getSupplierPaymentsInvoiceReportCount"  parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  		select count(1) from (
+  			select * from (
+  				select pi.id, pi.businessdate, pi.supplierid,pi.buydept as buydeptid,pi.buyuser as buyuserid,s.buyarea, pi.invoiceno,pi.writeoffdate, 
+					pi.taxamount,pi.notaxamount, pi.invoiceamount, pi.writeoffamount, 
+					pi.tailamount, pi.remark,pi.paydate,pi.sourceid,'1' AS columnflag,
+					pi.adduserid,pi.addusername,pi.adddeptid,pi.adddeptname,pip.amount as pushamount
+				from t_account_purchase_invoice	pi
+				left join t_account_purchase_invoice_push pip on pi.id=pip.invoiceid
+				INNER JOIN t_base_buy_supplier s on pi.supplierid = s.id
+				<trim prefix="where" prefixOverrides="and|or">
+			      	<include refid="supplierPaymentsInvoiceReport_QuerySql"/>
+				</trim>
+				group by pi.id
+  			)t
+  			<trim prefix="where" prefixOverrides="and|or">
+  				<include refid="common.Page_dataSql"/>
+  			</trim>
+  		) c
+  	</select>
+  	<!-- 获取采购发票合计 -->
+  <select id="getSupplierPaymentsInvoiceReportSum" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.report.model.SupplierPaymentsInvoiceReport">
+  	select sum(s.taxamount) as taxamount, sum(s.notaxamount) as notaxamount, sum(s.invoiceamount) as invoiceamount, 
+  		sum(s.writeoffamount) as writeoffamount, sum(s.tailamount) as tailamount,sum(s.pushamount) as pushamount
+  	from (
+  		select * from (
+  			select pi.id, pi.businessdate, pi.supplierid,pi.buydept as buydeptid,pi.buyuser as buyuserid,s.buyarea, pi.invoiceno,pi.writeoffdate, 
+				pi.taxamount,pi.notaxamount, pi.invoiceamount, pi.writeoffamount, 
+				pi.tailamount, pi.remark,pi.paydate,pi.sourceid,'1' AS columnflag,
+				pi.adduserid,pi.addusername,pi.adddeptid,pi.adddeptname,sum(pip.amount) as pushamount
+			from t_account_purchase_invoice	pi
+			left join t_account_purchase_invoice_push pip on pi.id=pip.invoiceid
+			INNER JOIN t_base_buy_supplier s on pi.supplierid = s.id
+			<trim prefix="where" prefixOverrides="and|or">
+				<include refid="supplierPaymentsInvoiceReport_QuerySql"/>
+			</trim>
+			group by pi.id
+  		)t
+  		<trim prefix="where" prefixOverrides="and|or">
+  			<include refid="common.Page_dataSql"/>
+  		</trim>
+  	)s
+  </select>
+  <!-- 供应商对应付账报表 -->
+  <sql id="getSupplierPayBillData_sql">
+      (
+	  SELECT z.id,z.supplierid,z.buydeptid,z.buyuserid,z.buyarea,z.businessdate,
+	  sum(z.initpayableamount - z.initpayamount + z.initpushbalanceamount) AS initbuyamount,
+	  SUM(z.payableamount) as payableamount,sum(z.payamount) as payamount,sum(z.pushbalanceamount) as pushbalanceamount,
+	  sum(z.payableamount-z.payamount+z.pushbalanceamount+(z.initpayableamount - z.initpayamount + z.initpushbalanceamount)) as balanceamount
+	  from (
+	  SELECT '1' as billtype,t.id,t.supplierid,t.buydeptid,t.buyuserid,s.buyarea,t.businessdate,t.remark,
+	  t1.taxamount AS initpayableamount, 0 AS initpayamount, 0 AS initpushbalanceamount,
+	  0 AS payableamount, 0 AS payamount, 0 AS pushbalanceamount
+	  from t_purchase_arrivalorder t
+	  left JOIN t_purchase_arrivalorder_detail t1 on t.id=t1.orderid
+	  INNER JOIN t_base_buy_supplier s on t.supplierid=s.id
+	  <trim prefix="where" prefixOverrides="and|or">
+		  <if test="condition.businessdate1 != null">
+			  <![CDATA[and t.businessdate < #{condition.businessdate1}]]>
+		  </if>
+		  <if test="condition.supplierid != null">
+			  and t.supplierid = #{condition.supplierid}
+		  </if>
+		  <if test="condition.buydeptid != null">
+			  and t.buydeptid like concat(#{condition.buydeptid},'%')
+		  </if>
+		  <if test="1==1">
+			  and (t.status='3' or t.status='4')
+		  </if>
+	  </trim>
+	  UNION ALL
+	  SELECT '2' as billtype,t.id,t.supplierid,t.buydeptid,t.buyuserid,s.buyarea,t.businessdate,t.remark,
+	  - t1.taxamount AS initpayableamount, 0 AS initpayamount, 0 AS initpushbalanceamount,
+	  0 AS payableamount, 0 AS payamount, 0 AS pushbalanceamount
+	  from t_storage_purchasereject_out t
+	  left JOIN t_storage_purchasereject_out_detail t1 on t.id=t1.orderid
+	  INNER JOIN t_base_buy_supplier s on t.supplierid=s.id
+	  <trim prefix="where" prefixOverrides="and|or">
+		  <if test="condition.businessdate1 != null">
+			  <![CDATA[and t.businessdate < #{condition.businessdate1}]]>
+		  </if>
+		  <if test="condition.supplierid != null">
+			  and t.supplierid = #{condition.supplierid}
+		  </if>
+		  <if test="condition.buydeptid != null">
+			  and t.buydeptid like concat(#{condition.buydeptid},'%')
+		  </if>
+		  <if test="1==1">
+			  and t.status='4' <!-- 采购退货出库单验收后，关闭 -->
+		  </if>
+	  </trim>
+	  UNION ALL
+	  SELECT '3' as billtype,t.id,t.supplierid,t.buydeptid,t.buyuserid,s.buyarea,t.businessdate,t.remark,
+	  0 AS initpayableamount, t.amount AS initpayamount, 0 AS initpushbalanceamount,
+	  0 AS payableamount, 0 AS payamount, 0 AS pushbalanceamount
+	  from t_account_purchase_payorder t
+	  INNER JOIN t_base_buy_supplier s on t.supplierid=s.id
+	  <trim prefix="where" prefixOverrides="and|or">
+		  <if test="condition.businessdate1 != null">
+			  <![CDATA[and t.businessdate < #{condition.businessdate1}]]>
+		  </if>
+		  <if test="condition.supplierid != null">
+			  and t.supplierid = #{condition.supplierid}
+		  </if>
+		  <if test="condition.buydeptid != null">
+			  and t.buydeptid like concat(#{condition.buydeptid},'%')
+		  </if>
+		  <if test="1==1">
+			  and t.status='4'
+		  </if>
+	  </trim>
+	  UNION ALL
+	  SELECT '4' as billtype,t.id,t.supplierid,s.buydeptid,s.buyuserid,s.buyarea,t.businessdate,t.remark,
+	  0 AS initpayableamount, 0 AS initpayamount, t.amount AS initpushbalanceamount,
+	  0 AS payableamount, 0 AS payamount, 0 AS pushbalanceamount
+	  from t_account_purchase_invoice_push t
+	  INNER JOIN t_base_buy_supplier s on t.supplierid=s.id
+	  <trim prefix="where" prefixOverrides="and|or">
+		  <if test="condition.businessdate1 != null">
+			  <![CDATA[and t.businessdate < #{condition.businessdate1}]]>
+		  </if>
+		  <if test="condition.supplierid != null">
+			  and t.supplierid = #{condition.supplierid}
+		  </if>
+		  <if test="condition.buydeptid != null">
+			  and s.buydeptid like concat(#{condition.buydeptid},'%')
+		  </if>
+		  <if test="1==1">
+			  and (t.status = '3' or t.status = '4')
+		  </if>
+	  </trim>
+	  UNION ALL
+	  SELECT '5' as billtype,t.id,t.supplierid,t.buydeptid,t.buyuserid,t.buyarea,t.businessdate,t.remark,
+	  t.amount AS initpayableamount, 0 AS initpayamount, 0 AS initpushbalanceamount,
+	  0 as payableamount,0 as payamount,0 as pushbalanceamount
+	  from t_account_begin_due t
+	  <trim prefix="where" prefixOverrides="and|or" >
+		  <if test="condition.businessdate1 != null">
+			  <![CDATA[and t.businessdate < #{condition.businessdate1}]]>
+		  </if>
+		  <if test="condition.supplierid != null" >
+			  and t.supplierid = #{condition.supplierid}
+		  </if>
+		  <if test="condition.buydeptid != null" >
+			  and t.buydeptid like concat(#{condition.buydeptid},'%')
+		  </if>
+		  <if test="1==1">
+			  and (t.status = '3' or t.status = '4')
+		  </if>
+	  </trim>
+	  UNION ALL
+	  SELECT '1' as billtype,t.id,t.supplierid,t.buydeptid,t.buyuserid,s.buyarea,t.businessdate,t.remark,
+	  0 AS initpayableamount, 0 AS initpayamount, 0 AS initpushbalanceamount,
+	  t1.taxamount as payableamount,0 as payamount,0 as pushbalanceamount
+	  from t_purchase_arrivalorder t
+	  left JOIN t_purchase_arrivalorder_detail t1 on t.id=t1.orderid
+	  INNER JOIN t_base_buy_supplier s on t.supplierid=s.id
+	  <trim prefix="where" prefixOverrides="and|or" >
+		  <if test="condition.businessdate1 != null">
+			  and t.businessdate >= #{condition.businessdate1}
+		  </if>
+		  <if test="condition.businessdate2 != null">
+			  <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+		  </if>
+		  <if test="condition.supplierid != null" >
+			  and t.supplierid = #{condition.supplierid}
+		  </if>
+		  <if test="condition.buydeptid != null" >
+			  and t.buydeptid like concat(#{condition.buydeptid},'%')
+		  </if>
+		  <if test="1==1">
+			  and (t.status='3' or t.status='4')
+		  </if>
+	  </trim>
+	  UNION ALL
+	  SELECT '2' as billtype,t.id,t.supplierid,t.buydeptid,t.buyuserid,s.buyarea,t.businessdate,t.remark,
+	  0 AS initpayableamount, 0 AS initpayamount, 0 AS initpushbalanceamount,
+	  -t1.taxamount as payableamount,0 as payamount,0 as pushbalanceamount
+	  from t_storage_purchasereject_out t
+	  left JOIN t_storage_purchasereject_out_detail t1 on t.id=t1.orderid
+	  INNER JOIN t_base_buy_supplier s on t.supplierid=s.id
+	  <trim prefix="where" prefixOverrides="and|or" >
+		  <if test="condition.businessdate1 != null">
+			  and t.businessdate >= #{condition.businessdate1}
+		  </if>
+		  <if test="condition.businessdate2 != null">
+			  <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+		  </if>
+		  <if test="condition.supplierid != null" >
+			  and t.supplierid = #{condition.supplierid}
+		  </if>
+		  <if test="condition.buydeptid != null" >
+			  and t.buydeptid like concat(#{condition.buydeptid},'%')
+		  </if>
+		  <if test="1==1">
+			  and t.status='4' <!-- 采购退货出库单验收后，关闭 -->
+		  </if>
+	  </trim>
+	  UNION ALL
+	  SELECT '3' as billtype,t.id,t.supplierid,t.buydeptid,t.buyuserid,s.buyarea,t.businessdate,t.remark,
+	  0 AS initpayableamount, 0 AS initpayamount, 0 AS initpushbalanceamount,
+	  0 as payableamount,t.amount as payamount,0 as pushbalanceamount
+	  from t_account_purchase_payorder t
+	  INNER JOIN t_base_buy_supplier s on t.supplierid=s.id
+	  <trim prefix="where" prefixOverrides="and|or" >
+		  <if test="condition.businessdate1 != null">
+			  and t.businessdate >= #{condition.businessdate1}
+		  </if>
+		  <if test="condition.businessdate2 != null">
+			  <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+		  </if>
+		  <if test="condition.supplierid != null" >
+			  and t.supplierid = #{condition.supplierid}
+		  </if>
+		  <if test="condition.buydeptid != null" >
+			  and t.buydeptid like concat(#{condition.buydeptid},'%')
+		  </if>
+		  <if test="1==1">
+			  and t.status='4'
+		  </if>
+	  </trim>
+	  UNION ALL
+	  SELECT '4' as billtype,t.id,t.supplierid,s.buydeptid,s.buyuserid,s.buyarea,t.businessdate,t.remark,
+	  0 AS initpayableamount, 0 AS initpayamount, 0 AS initpushbalanceamount,
+	  0 as payableamount,0 as payamount,t.amount as pushbalanceamount
+	  from t_account_purchase_invoice_push t
+	  INNER JOIN t_base_buy_supplier s on t.supplierid=s.id
+	  <trim prefix="where" prefixOverrides="and|or" >
+		  <if test="condition.businessdate1 != null">
+			  and t.businessdate >= #{condition.businessdate1}
+		  </if>
+		  <if test="condition.businessdate2 != null">
+			  <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+		  </if>
+		  <if test="condition.supplierid != null" >
+			  and t.supplierid = #{condition.supplierid}
+		  </if>
+		  <if test="condition.buydeptid != null" >
+			  and s.buydeptid like concat(#{condition.buydeptid},'%')
+		  </if>
+		  <if test="1==1">
+			  and (t.status = '3' or t.status = '4')
+		  </if>
+	  </trim>
+	  UNION ALL
+	  SELECT '5' as billtype,t.id,t.supplierid,t.buydeptid,t.buyuserid,t.buyarea,t.businessdate,t.remark,
+	  0 AS initpayableamount, 0 AS initpayamount, 0 AS initpushbalanceamount,
+	  t.amount as payableamount,0 as payamount,0 as pushbalanceamount
+	  from t_account_begin_due t
+	  <trim prefix="where" prefixOverrides="and|or" >
+		  <if test="condition.businessdate1 != null">
+			  and t.businessdate >= #{condition.businessdate1}
+		  </if>
+		  <if test="condition.businessdate2 != null">
+			  <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+		  </if>
+		  <if test="condition.supplierid != null" >
+			  and t.supplierid = #{condition.supplierid}
+		  </if>
+		  <if test="condition.buydeptid != null" >
+			  and t.buydeptid like concat(#{condition.buydeptid},'%')
+		  </if>
+		  <if test="1==1">
+			  and (t.status = '3' or t.status = '4')
+		  </if>
+	  </trim>
+	  )z
+	  <trim prefix="where" prefixOverrides="and|or" >
+		  <include refid="common.Page_dataSql"/>
+	  </trim>
+	  <if test="condition.isgroups != 'all'">
+		  GROUP BY ${condition.isgroups}
+	  </if>
+      )
+  </sql>
+  <select id="getSupplierPayBillData" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.report.model.SupplierPayBill">
+    SELECT z.*
+    from <include refid="getSupplierPayBillData_sql" /> z
+    <if test="condition.isflag == null">
+      <include refid="common.Page_limit"/>
+    </if>
+  </select>
+  <select id="getSupplierPayBillCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+      select count(1) from(
+	  SELECT z.*
+	  from <include refid="getSupplierPayBillData_sql" /> z
+      )z
+  </select>
+  <select id="getSupplierPayBillSum" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.report.model.SupplierPayBill">
+	  SELECT z.*
+      from <include refid="getSupplierPayBillData_sql" /> z
+  </select>
+  <select id="getSupplierPayBillDetailData" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.report.model.SupplierPayBill">
+	  SELECT z.id,z.billtype,z.supplierid,z.buydeptid,z.buyuserid,z.buyarea,z.businessdate,z.remark,
+	  SUM(z.payableamount) as payableamount,sum(z.payamount) as payamount,sum(z.pushbalanceamount) as pushbalanceamount
+	  from (
+	  SELECT '1' as billtype,t.id,t.supplierid,t.buydeptid,t.buyuserid,s.buyarea,t.businessdate,t.remark,
+	  0 as initbuyamount,t1.taxamount as payableamount,0 as payamount,0 as pushbalanceamount
+	  from t_purchase_arrivalorder t
+	  left JOIN t_purchase_arrivalorder_detail t1 on t.id=t1.orderid
+	  INNER JOIN t_base_buy_supplier s on t.supplierid=s.id
+	  <trim prefix="where" prefixOverrides="and|or" >
+		  <if test="condition.businessdate1 != null">
+			  and t.businessdate >= #{condition.businessdate1}
+		  </if>
+		  <if test="condition.businessdate2 != null">
+			  <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+		  </if>
+		  <if test="condition.supplierid != null" >
+			  and t.supplierid = #{condition.supplierid}
+		  </if>
+		  <if test="condition.buydeptid != null" >
+			  and t.buydeptid like concat(#{condition.buydeptid},'%')
+		  </if>
+		  <if test="1==1">
+			  and (t.status='3' or t.status='4')
+		  </if>
+	  </trim>
+	  UNION ALL
+	  SELECT '2' as billtype,t.id,t.supplierid,t.buydeptid,t.buyuserid,s.buyarea,t.businessdate,t.remark,
+	  0 as initbuyamount,-t1.taxamount as payableamount,0 as payamount,0 as pushbalanceamount
+	  from t_storage_purchasereject_out t
+	  left JOIN t_storage_purchasereject_out_detail t1 on t.id=t1.orderid
+	  INNER JOIN t_base_buy_supplier s on t.supplierid=s.id
+	  <trim prefix="where" prefixOverrides="and|or" >
+		  <if test="condition.businessdate1 != null">
+			  and t.businessdate >= #{condition.businessdate1}
+		  </if>
+		  <if test="condition.businessdate2 != null">
+			  <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+		  </if>
+		  <if test="condition.supplierid != null" >
+			  and t.supplierid = #{condition.supplierid}
+		  </if>
+		  <if test="condition.buydeptid != null" >
+			  and t.buydeptid like concat(#{condition.buydeptid},'%')
+		  </if>
+		  <if test="1==1">
+			  and t.status='4' <!-- 采购退货出库单验收后，关闭 -->
+		  </if>
+	  </trim>
+	  UNION ALL
+	  SELECT '3' as billtype,t.id,t.supplierid,t.buydeptid,t.buyuserid,s.buyarea,t.businessdate,t.remark,
+	  0 as initbuyamount,0 as payableamount,t.amount as payamount,0 as pushbalanceamount
+	  from t_account_purchase_payorder t
+	  INNER JOIN t_base_buy_supplier s on t.supplierid=s.id
+	  <trim prefix="where" prefixOverrides="and|or" >
+		  <if test="condition.businessdate1 != null">
+			  and t.businessdate >= #{condition.businessdate1}
+		  </if>
+		  <if test="condition.businessdate2 != null">
+			  <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+		  </if>
+		  <if test="condition.supplierid != null" >
+			  and t.supplierid = #{condition.supplierid}
+		  </if>
+		  <if test="condition.buydeptid != null" >
+			  and t.buydeptid like concat(#{condition.buydeptid},'%')
+		  </if>
+		  <if test="1==1">
+			  and t.status='4'
+		  </if>
+	  </trim>
+	  UNION ALL
+	  SELECT '4' as billtype,t.invoiceid,t.supplierid,s.buydeptid,s.buyuserid,s.buyarea,t.businessdate,t.remark,
+	  0 as initbuyamount,0 as payableamount,0 as payamount,t.amount as pushbalanceamount
+	  from t_account_purchase_invoice_push t
+	  INNER JOIN t_base_buy_supplier s on t.supplierid=s.id
+	  <trim prefix="where" prefixOverrides="and|or" >
+		  <if test="condition.businessdate1 != null">
+			  and t.businessdate >= #{condition.businessdate1}
+		  </if>
+		  <if test="condition.businessdate2 != null">
+			  <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+		  </if>
+		  <if test="condition.supplierid != null" >
+			  and t.supplierid = #{condition.supplierid}
+		  </if>
+		  <if test="condition.buydeptid != null" >
+			  and s.buydeptid like concat(#{condition.buydeptid},'%')
+		  </if>
+		  <if test="1==1">
+			  and (t.status = '3' or t.status = '4')
+		  </if>
+	  </trim>
+	  UNION ALL
+	  SELECT '5' as billtype,t.id,t.supplierid,t.buydeptid,t.buyuserid,t.buyarea,t.businessdate,t.remark,
+	  0 as initbuyamount,t.amount as payableamount,0 as payamount,0 as pushbalanceamount
+	  from t_account_begin_due t
+	  <trim prefix="where" prefixOverrides="and|or" >
+		  <if test="condition.businessdate1 != null">
+			  and t.businessdate >= #{condition.businessdate1}
+		  </if>
+		  <if test="condition.businessdate2 != null">
+			  <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+		  </if>
+		  <if test="condition.supplierid != null" >
+			  and t.supplierid = #{condition.supplierid}
+		  </if>
+		  <if test="condition.buydeptid != null" >
+			  and t.buydeptid like concat(#{condition.buydeptid},'%')
+		  </if>
+		  <if test="1==1">
+			  and (t.status = '3' or t.status = '4')
+		  </if>
+	  </trim>
+	  ) z
+	  <trim prefix="where" prefixOverrides="and|or" >
+		  <include refid="common.Page_dataSql"/>
+	  </trim>
+	  GROUP BY z.id
+      order by z.businessdate,z.id ASC
+  </select>
+	<select id="getSupplierPayBillInitbuyamount" parameterType="com.hd.agent.common.util.PageMap" resultType="java.math.BigDecimal">
+		select sum(z.initpayableamount - z.initpayamount + z.initpushbalanceamount) AS initbuyamount
+		from (
+		SELECT '1' as billtype,t.id,t.supplierid,t.buydeptid,t.buyuserid,s.buyarea,t.businessdate,t.remark,
+		t1.taxamount AS initpayableamount, 0 AS initpayamount, 0 AS initpushbalanceamount,
+		0 AS payableamount, 0 AS payamount, 0 AS pushbalanceamount
+		from t_purchase_arrivalorder t
+		left JOIN t_purchase_arrivalorder_detail t1 on t.id=t1.orderid
+		INNER JOIN t_base_buy_supplier s on t.supplierid=s.id
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="condition.businessdate1 != null">
+				<![CDATA[and t.businessdate < #{condition.businessdate1}]]>
+			</if>
+			<if test="condition.supplierid != null">
+				and t.supplierid = #{condition.supplierid}
+			</if>
+			<if test="condition.buydeptid != null">
+				and t.buydeptid like concat(#{condition.buydeptid},'%')
+			</if>
+			<if test="1==1">
+				and (t.status='3' or t.status='4')
+			</if>
+		</trim>
+		UNION ALL
+		SELECT '2' as billtype,t.id,t.supplierid,t.buydeptid,t.buyuserid,s.buyarea,t.businessdate,t.remark,
+		- t1.taxamount AS initpayableamount, 0 AS initpayamount, 0 AS initpushbalanceamount,
+		0 AS payableamount, 0 AS payamount, 0 AS pushbalanceamount
+		from t_storage_purchasereject_out t
+		left JOIN t_storage_purchasereject_out_detail t1 on t.id=t1.orderid
+		INNER JOIN t_base_buy_supplier s on t.supplierid=s.id
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="condition.businessdate1 != null">
+				<![CDATA[and t.businessdate < #{condition.businessdate1}]]>
+			</if>
+			<if test="condition.supplierid != null">
+				and t.supplierid = #{condition.supplierid}
+			</if>
+			<if test="condition.buydeptid != null">
+				and t.buydeptid like concat(#{condition.buydeptid},'%')
+			</if>
+			<if test="1==1">
+				and t.status='4' <!-- 采购退货出库单验收后，关闭 -->
+			</if>
+		</trim>
+		UNION ALL
+		SELECT '3' as billtype,t.id,t.supplierid,t.buydeptid,t.buyuserid,s.buyarea,t.businessdate,t.remark,
+		0 AS initpayableamount, t.amount AS initpayamount, 0 AS initpushbalanceamount,
+		0 AS payableamount, 0 AS payamount, 0 AS pushbalanceamount
+		from t_account_purchase_payorder t
+		INNER JOIN t_base_buy_supplier s on t.supplierid=s.id
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="condition.businessdate1 != null">
+				<![CDATA[and t.businessdate < #{condition.businessdate1}]]>
+			</if>
+			<if test="condition.supplierid != null">
+				and t.supplierid = #{condition.supplierid}
+			</if>
+			<if test="condition.buydeptid != null">
+				and t.buydeptid like concat(#{condition.buydeptid},'%')
+			</if>
+			<if test="1==1">
+				and t.status='4'
+			</if>
+		</trim>
+		UNION ALL
+		SELECT '4' as billtype,t.id,t.supplierid,s.buydeptid,s.buyuserid,s.buyarea,t.businessdate,t.remark,
+		0 AS initpayableamount, 0 AS initpayamount, t.amount AS initpushbalanceamount,
+		0 AS payableamount, 0 AS payamount, 0 AS pushbalanceamount
+		from t_account_purchase_invoice_push t
+		INNER JOIN t_base_buy_supplier s on t.supplierid=s.id
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="condition.businessdate1 != null">
+				<![CDATA[and t.businessdate < #{condition.businessdate1}]]>
+			</if>
+			<if test="condition.supplierid != null">
+				and t.supplierid = #{condition.supplierid}
+			</if>
+			<if test="condition.buydeptid != null">
+				and s.buydeptid like concat(#{condition.buydeptid},'%')
+			</if>
+			<if test="1==1">
+				and (t.status = '3' or t.status = '4')
+			</if>
+		</trim>
+		UNION ALL
+		SELECT '5' as billtype,t.id,t.supplierid,t.buydeptid,t.buyuserid,t.buyarea,t.businessdate,t.remark,
+		t.amount AS initpayableamount, 0 AS initpayamount, 0 AS initpushbalanceamount,
+		0 as payableamount,0 as payamount,0 as pushbalanceamount
+		from t_account_begin_due t
+		<trim prefix="where" prefixOverrides="and|or" >
+			<if test="condition.businessdate1 != null">
+				<![CDATA[and t.businessdate < #{condition.businessdate1}]]>
+			</if>
+			<if test="condition.supplierid != null" >
+				and t.supplierid = #{condition.supplierid}
+			</if>
+			<if test="condition.buydeptid != null" >
+				and t.buydeptid like concat(#{condition.buydeptid},'%')
+			</if>
+			<if test="1==1">
+				and (t.status = '3' or t.status = '4')
+			</if>
+		</trim>
+		)z
+		<trim prefix="where" prefixOverrides="and|or" >
+			<include refid="common.Page_dataSql"/>
+		</trim>
+	</select>
+
+	<sql id="getReceiptAmountReportList_sql">
+		(
+		SELECT z.customerid, z.pcustomerid, z.customersort, z.salesarea, z.salesdept, z.salesuser, z.goodssort,
+		z.supplierid, z.brandid, z.branduser, z.supplieruser, z.branddept,
+		z.initunwithdrawnamount,z.salesamount,z.withdrawnamount,z.balanceamount,z.surplusamount,t.amount as customeramount
+		from (
+		SELECT z.customerid,z.pcustomerid,z.customersort,z.salesarea,z.salesdept,z.salesuser,z.goodssort,z.supplierid,
+		z.brandid,z.branduser,z.supplieruser,z.branddept,
+		SUM(z.initsalesamount - z.initwithdrawnamount) as initunwithdrawnamount, SUM(z.salesamount) as salesamount,
+		SUM(z.withdrawnamount) as withdrawnamount,
+		sum(z.salesamount - z.withdrawnamount + (z.initsalesamount - z.initwithdrawnamount)) as balanceamount,
+		sum(z.surplusamount) as surplusamount
+		from (
+		SELECT t.customerid,t.pcustomerid,t.customersort,t.salesarea,t.salesdept,t.salesuser,t1.goodssort,t1.supplierid,
+		t1.brandid,t1.branduser,t1.supplieruser,t1.branddept,
+		t1.taxamount AS initsalesamount, 0 AS salesamount, 0 as initwithdrawnamount,0 AS withdrawnamount,0 as surplusamount
+		FROM t_storage_saleout t
+		RIGHT JOIN t_storage_saleout_detail t1 ON t1.saleoutid = t.id
+		left join t_base_sales_customer c on t.customerid = c.id
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="condition.businessdate1 != null">
+				<![CDATA[and t.businessdate < #{condition.businessdate1}]]>
+			</if>
+			<if test="condition.customerid != null">
+				and t.customerid = #{condition.customerid}
+			</if>
+			<if test="condition.salesarea != null">
+				and FIND_IN_SET(t.salesarea,#{condition.salesarea})
+			</if>
+			<if test="condition.salesdept != null">
+				and FIND_IN_SET(t.salesdept,#{condition.salesdept})
+			</if>
+			<if test="1==1">
+				and (t.STATUS = '3' or t.STATUS = '4')
+			</if>
+			<if test="condition.salesuser != null">
+				and FIND_IN_SET(c.salesuserid,#{condition.salesuser})
+			</if>
+			<if test="condition.pcustomerid != null">
+				and (FIND_IN_SET(t.pcustomerid,#{condition.pcustomerid}) or FIND_IN_SET(t.customerid,#{condition.pcustomerid}))
+			</if>
+		</trim>
+		UNION ALL
+		SELECT t.customerid,t.pcustomerid,t.customersort,t.salesarea,t.salesdept,t.salesuser,t1.goodssort,t1.supplierid,
+		t1.brandid,t1.branduser,t1.supplieruser,t1.branddept,
+		-t1.taxamount AS initsalesamount, 0 AS salesamount, 0 as initwithdrawnamount, 0 AS withdrawnamount,0 as surplusamount
+		FROM t_storage_salereject_enter t
+		RIGHT JOIN t_storage_salereject_enter_detail t1 ON t1.salerejectid = t.id
+		left join t_base_sales_customer c on t.customerid = c.id
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="condition.businessdate1 != null">
+				<![CDATA[and t.businessdate < #{condition.businessdate1}]]>
+			</if>
+			<if test="condition.customerid != null">
+				and t.customerid = #{condition.customerid}
+			</if>
+			<if test="condition.salesarea != null">
+				and FIND_IN_SET(t.salesarea,#{condition.salesarea})
+			</if>
+			<if test="condition.salesdept != null">
+				and FIND_IN_SET(t.salesdept,#{condition.salesdept})
+			</if>
+			<if test="1==1">
+				and ischeck='1' AND (t.STATUS = '3' or t.STATUS = '4')
+			</if>
+			<if test="condition.salesuser != null">
+				and FIND_IN_SET(c.salesuserid,#{condition.salesuser})
+			</if>
+			<if test="condition.pcustomerid != null">
+				and (FIND_IN_SET(t.pcustomerid,#{condition.pcustomerid}) or FIND_IN_SET(t.customerid,#{condition.pcustomerid}))
+			</if>
+		</trim>
+		UNION ALL
+		SELECT t.customerid,t.pcustomerid,t.customersort,t.salesarea,t.salesdept,t.salesuser,'' as
+		goodssort,t.supplierid,
+		t.brandid,t.branduser,t.supplieruser,t.branddept,
+		t.amount AS initsalesamount, 0 AS salesamount, 0 as initwithdrawnamount, 0 AS withdrawnamount,0 as surplusamount
+		FROM t_account_customer_push_balance t
+		left join t_base_sales_customer c on t.customerid = c.id
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="condition.businessdate1 != null">
+				<![CDATA[and t.businessdate < #{condition.businessdate1}]]>
+			</if>
+			<if test="condition.customerid != null">
+				and t.customerid = #{condition.customerid}
+			</if>
+			<if test="condition.salesarea != null">
+				and FIND_IN_SET(t.salesarea,#{condition.salesarea})
+			</if>
+			<if test="condition.salesdept != null">
+				and FIND_IN_SET(t.salesdept,#{condition.salesdept})
+			</if>
+			<if test="1==1">
+				and (t.STATUS = '3' or t.STATUS = '4')
+			</if>
+			<if test="condition.salesuser != null">
+				and FIND_IN_SET(c.salesuserid,#{condition.salesuser})
+			</if>
+			<if test="condition.pcustomerid != null">
+				and (FIND_IN_SET(t.pcustomerid,#{condition.pcustomerid}) or FIND_IN_SET(t.customerid,#{condition.pcustomerid}))
+			</if>
+		</trim>
+		UNION ALL
+		SELECT t.customerid,t.pcustomerid,t.customersort,t.salesarea,t.salesdept,t.salesuser,'' as goodssort,'' as
+		supplierid,
+		'' as brandid,'' as branduser,'' as supplieruser,'' as branddept,
+		t.amount AS initsalesamount, 0 AS salesamount, 0 as initwithdrawnamount, 0 AS withdrawnamount,0 as surplusamount
+		FROM t_account_begin_amount t
+		left join t_base_sales_customer c on t.customerid = c.id
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="condition.businessdate1 != null">
+				<![CDATA[and t.businessdate < #{condition.businessdate1}]]>
+			</if>
+			<if test="condition.customerid != null">
+				and t.customerid = #{condition.customerid}
+			</if>
+			<if test="condition.salesarea != null">
+				and FIND_IN_SET(t.salesarea,#{condition.salesarea})
+			</if>
+			<if test="condition.salesdept != null">
+				and FIND_IN_SET(t.salesdept,#{condition.salesdept})
+			</if>
+			<if test="1==1">
+				and (t.STATUS = '3' or t.STATUS = '4')
+			</if>
+			<if test="condition.salesuser != null">
+				and FIND_IN_SET(c.salesuserid,#{condition.salesuser})
+			</if>
+			<if test="condition.pcustomerid != null">
+				and (FIND_IN_SET(t.pcustomerid,#{condition.pcustomerid}) or FIND_IN_SET(t.customerid,#{condition.pcustomerid}))
+			</if>
+		</trim>
+		UNION ALL
+		select t.customerid,t.pcustomerid,t.customersort,t.salesarea,t.salesdept,t.salesuser,t1.goodssort,t1.supplierid,
+		t1.brandid,t1.branduser,t1.supplieruser,t1.branddept,
+		0 AS initsalesamount, 0 as salesamount,t1.taxamount as initwithdrawnamount, 0 AS withdrawnamount,0 as surplusamount
+		from t_storage_saleout t
+		RIGHT JOIN t_storage_saleout_detail t1 on t1.saleoutid=t.id
+		left join t_base_sales_customer c on t.customerid = c.id
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="condition.businessdate1 != null">
+				<choose>
+					<when test="condition.businessdate1 != '1900-01-01'">
+						<![CDATA[and t1.writeoffdate < #{condition.businessdate1}]]>
+					</when>
+					<otherwise>
+						<![CDATA[and t1.writeoffdate < '']]>
+					</otherwise>
+				</choose>
+			</if>
+			<if test="condition.customerid != null">
+				and t.customerid = #{condition.customerid}
+			</if>
+			<if test="condition.salesarea != null">
+				and FIND_IN_SET(t.salesarea,#{condition.salesarea})
+			</if>
+			<if test="condition.salesdept != null">
+				and FIND_IN_SET(t.salesdept,#{condition.salesdept})
+			</if>
+			<if test="1==1">
+				and t1.iswriteoff='1' and (t.STATUS = '3' or t.STATUS = '4')
+			</if>
+			<if test="condition.salesuser != null">
+				and FIND_IN_SET(c.salesuserid,#{condition.salesuser})
+			</if>
+			<if test="condition.pcustomerid != null">
+				and (FIND_IN_SET(t.pcustomerid,#{condition.pcustomerid}) or FIND_IN_SET(t.customerid,#{condition.pcustomerid}))
+			</if>
+		</trim>
+		UNION ALL
+		SELECT t.customerid,t.pcustomerid,t.customersort,t.salesarea,t.salesdept,t.salesuser,t1.goodssort,t1.supplierid,
+		t1.brandid,t1.branduser,t1.supplieruser,t1.branddept,
+		0 AS initsalesamount, 0 as salesamount,-t1.taxamount as initwithdrawnamount, 0 AS withdrawnamount,0 as surplusamount
+		FROM t_storage_salereject_enter t
+		RIGHT JOIN t_storage_salereject_enter_detail t1 ON t1.salerejectid = t.id
+		left join t_base_sales_customer c on t.customerid = c.id
+		<trim prefix="where" prefixOverrides="and|or">
+			<choose>
+				<when test="condition.businessdate1 != '1900-01-01'">
+					<![CDATA[and t1.writeoffdate < #{condition.businessdate1}]]>
+				</when>
+				<otherwise>
+					<![CDATA[and t1.writeoffdate < '']]>
+				</otherwise>
+			</choose>
+			<if test="condition.customerid != null">
+				and t.customerid = #{condition.customerid}
+			</if>
+			<if test="condition.salesarea != null">
+				and FIND_IN_SET(t.salesarea,#{condition.salesarea})
+			</if>
+			<if test="condition.salesdept != null">
+				and FIND_IN_SET(t.salesdept,#{condition.salesdept})
+			</if>
+			<if test="1==1">
+				and t.ischeck='1' and t1.iswriteoff='1' and (t.STATUS = '3' or t.STATUS = '4')
+			</if>
+			<if test="condition.salesuser != null">
+				and FIND_IN_SET(c.salesuserid,#{condition.salesuser})
+			</if>
+			<if test="condition.pcustomerid != null">
+				and (FIND_IN_SET(t.pcustomerid,#{condition.pcustomerid}) or FIND_IN_SET(t.customerid,#{condition.pcustomerid}))
+			</if>
+		</trim>
+		UNION ALL
+		SELECT t.customerid,t.pcustomerid,t.customersort,t.salesarea,t.salesdept,t.salesuser,'' as
+		goodssort,t.supplierid,
+		t.brandid,t.branduser,t.supplieruser,t.branddept,
+		0 AS initsalesamount, 0 as salesamount,t.amount as initwithdrawnamount, 0 AS withdrawnamount,0 as surplusamount
+		FROM t_account_customer_push_balance t
+		left join t_base_sales_customer c on t.customerid = c.id
+		<trim prefix="where" prefixOverrides="and|or">
+			<choose>
+				<when test="condition.businessdate1 != '1900-01-01'">
+					<![CDATA[and t.writeoffdate < #{condition.businessdate1}]]>
+				</when>
+				<otherwise>
+					<![CDATA[and t.writeoffdate < '']]>
+				</otherwise>
+			</choose>
+			<if test="condition.customerid != null">
+				and t.customerid = #{condition.customerid}
+			</if>
+			<if test="condition.salesarea != null">
+				and FIND_IN_SET(t.salesarea,#{condition.salesarea})
+			</if>
+			<if test="condition.salesdept != null">
+				and FIND_IN_SET(t.salesdept,#{condition.salesdept})
+			</if>
+			<if test="1==1">
+				and t.iswriteoff='1' and (t.STATUS = '3' or t.STATUS = '4')
+			</if>
+			<if test="condition.salesuser != null">
+				and FIND_IN_SET(c.salesuserid,#{condition.salesuser})
+			</if>
+			<if test="condition.pcustomerid != null">
+				and (FIND_IN_SET(t.pcustomerid,#{condition.pcustomerid}) or FIND_IN_SET(t.customerid,#{condition.pcustomerid}))
+			</if>
+		</trim>
+		UNION ALL
+		SELECT t.customerid,t.pcustomerid,t.customersort,t.salesarea,t.salesdept,t.salesuser,'' as goodssort,'' as
+		supplierid,
+		'' as brandid,'' as branduser,'' as supplieruser,'' as branddept,
+		0 AS initsalesamount, 0 as salesamount,t.amount as initwithdrawnamount, 0 AS withdrawnamount,0 as surplusamount
+		FROM t_account_begin_amount t
+		left join t_base_sales_customer c on t.customerid = c.id
+		<trim prefix="where" prefixOverrides="and|or">
+			<choose>
+				<when test="condition.businessdate1 != '1900-01-01'">
+					<![CDATA[and t.writeoffdate < #{condition.businessdate1}]]>
+				</when>
+				<otherwise>
+					<![CDATA[and t.writeoffdate < '']]>
+				</otherwise>
+			</choose>
+			<if test="condition.customerid != null">
+				and t.customerid = #{condition.customerid}
+			</if>
+			<if test="condition.salesarea != null">
+				and FIND_IN_SET(t.salesarea,#{condition.salesarea})
+			</if>
+			<if test="condition.salesdept != null">
+				and FIND_IN_SET(t.salesdept,#{condition.salesdept})
+			</if>
+			<if test="1==1">
+				and t.iswriteoff='1' and t.STATUS = '4'
+			</if>
+			<if test="condition.salesuser != null">
+				and FIND_IN_SET(c.salesuserid,#{condition.salesuser})
+			</if>
+			<if test="condition.pcustomerid != null">
+				and (FIND_IN_SET(t.pcustomerid,#{condition.pcustomerid}) or FIND_IN_SET(t.customerid,#{condition.pcustomerid}))
+			</if>
+		</trim>
+		UNION ALL
+		SELECT t.customerid,t.pcustomerid,t.customersort,t.salesarea,t.salesdept,t.salesuser,t1.goodssort,t1.supplierid,
+		t1.brandid,t1.branduser,t1.supplieruser,t1.branddept,
+		0 AS initsalesamount, t1.taxamount AS salesamount, 0 as initwithdrawnamount,0 AS withdrawnamount,0 as surplusamount
+		FROM t_storage_saleout t
+		left join t_base_sales_customer c on t.customerid = c.id
+		RIGHT JOIN t_storage_saleout_detail t1 ON t1.saleoutid = t.id
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="condition.businessdate1 != null">
+				and t.businessdate >= #{condition.businessdate1}
+			</if>
+			<if test="condition.businessdate2 != null">
+				<![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+			</if>
+			<if test="condition.customerid != null">
+				and t.customerid = #{condition.customerid}
+			</if>
+			<if test="condition.salesarea != null">
+				and FIND_IN_SET(t.salesarea,#{condition.salesarea})
+			</if>
+			<if test="condition.salesdept != null">
+				and FIND_IN_SET(t.salesdept,#{condition.salesdept})
+			</if>
+			<if test="1==1">
+				and (t.STATUS = '3' or t.STATUS = '4')
+			</if>
+			<if test="condition.salesuser != null">
+				and FIND_IN_SET(c.salesuserid,#{condition.salesuser})
+			</if>
+			<if test="condition.pcustomerid != null">
+				and (FIND_IN_SET(t.pcustomerid,#{condition.pcustomerid}) or FIND_IN_SET(t.customerid,#{condition.pcustomerid}))
+			</if>
+		</trim>
+		UNION ALL
+		SELECT t.customerid,t.pcustomerid,t.customersort,t.salesarea,t.salesdept,t.salesuser,t1.goodssort,t1.supplierid,
+		t1.brandid,t1.branduser,t1.supplieruser,t1.branddept,
+		0 AS initsalesamount, -t1.taxamount AS salesamount,0 as initwithdrawnamount, 0 AS withdrawnamount,0 as surplusamount
+		FROM t_storage_salereject_enter t
+		RIGHT JOIN t_storage_salereject_enter_detail t1 ON t1.salerejectid = t.id
+		left join t_base_sales_customer c on t.customerid = c.id
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="condition.businessdate1 != null">
+				and t.businessdate >= #{condition.businessdate1}
+			</if>
+			<if test="condition.businessdate2 != null">
+				<![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+			</if>
+			<if test="condition.customerid != null">
+				and t.customerid = #{condition.customerid}
+			</if>
+			<if test="condition.salesarea != null">
+				and FIND_IN_SET(t.salesarea,#{condition.salesarea})
+			</if>
+			<if test="condition.salesdept != null">
+				and FIND_IN_SET(t.salesdept,#{condition.salesdept})
+			</if>
+			<if test="1==1">
+				and ischeck='1' AND (t.STATUS = '3' or t.STATUS = '4')
+			</if>
+			<if test="condition.salesuser != null">
+				and FIND_IN_SET(c.salesuserid,#{condition.salesuser})
+			</if>
+			<if test="condition.pcustomerid != null">
+				and (FIND_IN_SET(t.pcustomerid,#{condition.pcustomerid}) or FIND_IN_SET(t.customerid,#{condition.pcustomerid}))
+			</if>
+		</trim>
+		UNION ALL
+		SELECT t.customerid,t.pcustomerid,t.customersort,t.salesarea,t.salesdept,t.salesuser,'' as
+		goodssort,t.supplierid,
+		t.brandid,t.branduser,t.supplieruser,t.branddept,
+		0 AS initsalesamount, t.amount as salesamount,0 as initwithdrawnamount, 0 AS withdrawnamount,0 as surplusamount
+		FROM t_account_customer_push_balance t
+		left join t_base_sales_customer c on t.customerid = c.id
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="condition.businessdate1 != null">
+				and t.businessdate >= #{condition.businessdate1}
+			</if>
+			<if test="condition.businessdate2 != null">
+				<![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+			</if>
+			<if test="condition.customerid != null">
+				and t.customerid = #{condition.customerid}
+			</if>
+			<if test="condition.salesarea != null">
+				and FIND_IN_SET(t.salesarea,#{condition.salesarea})
+			</if>
+			<if test="condition.salesdept != null">
+				and FIND_IN_SET(t.salesdept,#{condition.salesdept})
+			</if>
+			<if test="1==1">
+				and (t.STATUS = '3' or t.STATUS = '4')
+			</if>
+			<if test="condition.salesuser != null">
+				and FIND_IN_SET(c.salesuserid,#{condition.salesuser})
+			</if>
+			<if test="condition.pcustomerid != null">
+				and (FIND_IN_SET(t.pcustomerid,#{condition.pcustomerid}) or FIND_IN_SET(t.customerid,#{condition.pcustomerid}))
+			</if>
+		</trim>
+		UNION ALL
+		SELECT t.customerid,t.pcustomerid,t.customersort,t.salesarea,t.salesdept,t.salesuser,'' as goodssort,'' as
+		supplierid,
+		'' as brandid,'' as branduser,'' as supplieruser,'' as branddept,
+		0 AS initsalesamount, t.amount as salesamount,0 as initwithdrawnamount, 0 AS withdrawnamount,0 as surplusamount
+		FROM t_account_begin_amount t
+		left join t_base_sales_customer c on t.customerid = c.id
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="condition.businessdate1 != null">
+				and t.businessdate >= #{condition.businessdate1}
+			</if>
+			<if test="condition.businessdate2 != null">
+				<![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+			</if>
+			<if test="condition.customerid != null">
+				and t.customerid = #{condition.customerid}
+			</if>
+			<if test="condition.salesarea != null">
+				and FIND_IN_SET(t.salesarea,#{condition.salesarea})
+			</if>
+			<if test="condition.salesdept != null">
+				and FIND_IN_SET(t.salesdept,#{condition.salesdept})
+			</if>
+			<if test="1==1">
+				and (t.STATUS = '3' or t.STATUS = '4')
+			</if>
+			<if test="condition.salesuser != null">
+				and FIND_IN_SET(c.salesuserid,#{condition.salesuser})
+			</if>
+			<if test="condition.pcustomerid != null">
+				and (FIND_IN_SET(t.pcustomerid,#{condition.pcustomerid}) or FIND_IN_SET(t.customerid,#{condition.pcustomerid}))
+			</if>
+		</trim>
+		UNION ALL
+		select t.customerid,t.pcustomerid,t.customersort,t.salesarea,t.salesdept,t.salesuser,t1.goodssort,t1.supplierid,
+		t1.brandid,t1.branduser,t1.supplieruser,t1.branddept,
+		0 AS initsalesamount, 0 as salesamount,0 as initwithdrawnamount, t1.taxamount AS withdrawnamount,0 as surplusamount
+		from t_storage_saleout t
+		RIGHT JOIN t_storage_saleout_detail t1 on t1.saleoutid=t.id
+		left join t_base_sales_customer c on t.customerid = c.id
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="condition.businessdate1 != null and condition.businessdate1 != '1900-01-01'">
+				and t1.writeoffdate >= #{condition.businessdate1}
+			</if>
+			<if test="condition.businessdate2 != null">
+				<![CDATA[and t1.writeoffdate <= #{condition.businessdate2}]]>
+			</if>
+			<if test="condition.customerid != null">
+				and t.customerid = #{condition.customerid}
+			</if>
+			<if test="condition.salesarea != null">
+				and FIND_IN_SET(t.salesarea,#{condition.salesarea})
+			</if>
+			<if test="condition.salesdept != null">
+				and FIND_IN_SET(t.salesdept,#{condition.salesdept})
+			</if>
+			<if test="1==1">
+				and t1.iswriteoff='1' and (t.STATUS = '3' or t.STATUS = '4')
+			</if>
+			<if test="condition.salesuser != null">
+				and FIND_IN_SET(c.salesuserid,#{condition.salesuser})
+			</if>
+			<if test="condition.pcustomerid != null">
+				and (FIND_IN_SET(t.pcustomerid,#{condition.pcustomerid}) or FIND_IN_SET(t.customerid,#{condition.pcustomerid}))
+			</if>
+		</trim>
+		UNION ALL
+		SELECT t.customerid,t.pcustomerid,t.customersort,t.salesarea,t.salesdept,t.salesuser,t1.goodssort,t1.supplierid,
+		t1.brandid,t1.branduser,t1.supplieruser,t1.branddept,
+		0 AS initsalesamount, 0 as salesamount,0 as initwithdrawnamount, -t1.taxamount AS withdrawnamount,0 as surplusamount
+		FROM t_storage_salereject_enter t
+		RIGHT JOIN t_storage_salereject_enter_detail t1 ON t1.salerejectid = t.id
+		left join t_base_sales_customer c on t.customerid = c.id
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="condition.businessdate1 != null and condition.businessdate1 != '1900-01-01'">
+				and t1.writeoffdate >= #{condition.businessdate1}
+			</if>
+			<if test="condition.businessdate2 != null">
+				<![CDATA[and t1.writeoffdate <= #{condition.businessdate2}]]>
+			</if>
+			<if test="condition.customerid != null">
+				and t.customerid = #{condition.customerid}
+			</if>
+			<if test="condition.salesarea != null">
+				and FIND_IN_SET(t.salesarea,#{condition.salesarea})
+			</if>
+			<if test="condition.salesdept != null">
+				and FIND_IN_SET(t.salesdept,#{condition.salesdept})
+			</if>
+			<if test="1==1">
+				and t.ischeck='1' and t1.iswriteoff='1' and (t.STATUS = '3' or t.STATUS = '4')
+			</if>
+			<if test="condition.salesuser != null">
+				and FIND_IN_SET(c.salesuserid,#{condition.salesuser})
+			</if>
+			<if test="condition.pcustomerid != null">
+				and (FIND_IN_SET(t.pcustomerid,#{condition.pcustomerid}) or FIND_IN_SET(t.customerid,#{condition.pcustomerid}))
+			</if>
+		</trim>
+		UNION ALL
+		SELECT t.customerid,t.pcustomerid,t.customersort,t.salesarea,t.salesdept,t.salesuser,'' as
+		goodssort,t.supplierid,
+		t.brandid,t.branduser,t.supplieruser,t.branddept,
+		0 AS initsalesamount, 0 as salesamount,0 as initwithdrawnamount, t.amount AS withdrawnamount,0 as surplusamount
+		FROM t_account_customer_push_balance t
+		left join t_base_sales_customer c on t.customerid = c.id
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="condition.businessdate1 != null and condition.businessdate1 != '1900-01-01'">
+				and t.writeoffdate >= #{condition.businessdate1}
+			</if>
+			<if test="condition.businessdate2 != null">
+				<![CDATA[and t.writeoffdate <= #{condition.businessdate2}]]>
+			</if>
+			<if test="condition.customerid != null">
+				and t.customerid = #{condition.customerid}
+			</if>
+			<if test="condition.salesarea != null">
+				and FIND_IN_SET(t.salesarea,#{condition.salesarea})
+			</if>
+			<if test="condition.salesdept != null">
+				and FIND_IN_SET(t.salesdept,#{condition.salesdept})
+			</if>
+			<if test="1==1">
+				and t.iswriteoff='1' and (t.STATUS = '3' or t.STATUS = '4')
+			</if>
+			<if test="condition.salesuser != null">
+				and FIND_IN_SET(c.salesuserid,#{condition.salesuser})
+			</if>
+			<if test="condition.pcustomerid != null">
+				and (FIND_IN_SET(t.pcustomerid,#{condition.pcustomerid}) or FIND_IN_SET(t.customerid,#{condition.pcustomerid}))
+			</if>
+		</trim>
+		UNION ALL
+		SELECT t.customerid,t.pcustomerid,t.customersort,t.salesarea,t.salesdept,t.salesuser,'' as goodssort,'' as
+		supplierid,
+		'' as brandid,'' as branduser,'' as supplieruser,'' as branddept,
+		0 AS initsalesamount, 0 as salesamount,0 as initwithdrawnamount, t.amount AS withdrawnamount,0 as surplusamount
+		FROM t_account_begin_amount t
+		left join t_base_sales_customer c on t.customerid = c.id
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="condition.businessdate1 != null and condition.businessdate1 != '1900-01-01'">
+				and t.writeoffdate >= #{condition.businessdate1}
+			</if>
+			<if test="condition.businessdate2 != null">
+				<![CDATA[and t.writeoffdate <= #{condition.businessdate2}]]>
+			</if>
+			<if test="condition.customerid != null">
+				and t.customerid = #{condition.customerid}
+			</if>
+			<if test="condition.salesarea != null">
+				and FIND_IN_SET(t.salesarea,#{condition.salesarea})
+			</if>
+			<if test="condition.salesdept != null">
+				and FIND_IN_SET(t.salesdept,#{condition.salesdept})
+			</if>
+			<if test="1==1">
+				and t.iswriteoff='1' and t.STATUS = '4'
+			</if>
+			<if test="condition.salesuser != null">
+				and FIND_IN_SET(c.salesuserid,#{condition.salesuser})
+			</if>
+			<if test="condition.pcustomerid != null">
+				and (FIND_IN_SET(t.pcustomerid,#{condition.pcustomerid}) or FIND_IN_SET(t.customerid,#{condition.pcustomerid}))
+			</if>
+		</trim>
+		UNION ALL
+		SELECT t.customerid,t.pcustomerid,t.customersort,t.salesarea,t.salesdept,t.salesuser,t.goodssort,t.supplierid,t.brandid,t.branduser,t.supplieruser,t.branddept,
+		t.initsalesamount,t.salesamount,t.initwithdrawnamount,t.withdrawnamount,t.surplusamount from (
+		SELECT t.customerid,t1.pid as pcustomerid,t1.customersort,t1.salesarea,t1.salesdeptid as salesdept,t1.salesuserid as salesuser,'' AS goodssort,'' AS supplierid,
+		'' AS brandid,'' AS branduser,'' AS supplieruser,'' AS branddept,
+		0 AS initsalesamount,0 AS salesamount, 0 AS initwithdrawnamount, 0 AS withdrawnamount,t.balanceamount as surplusamount
+		from ( SELECT t.* FROM t_account_customer_capital_log t, (SELECT t.customerid, max(t.addtime) addtime,MAX(t.id) as id FROM t_account_customer_capital_log t
+		where <![CDATA[ t.addtime <= date_add(str_to_date('${condition.businessdate2}', '%Y-%m-%d'), interval '1' day) ]]>
+		GROUP BY t.customerid ) t1 WHERE t.id=t1.id and t.customerid = t1.customerid AND t.addtime = t1.addtime <![CDATA[ and t.balanceamount <> 0 ]]> ) t
+		LEFT JOIN t_base_sales_customer t1 ON t.customerid = t1.id ) t
+		left join t_base_sales_customer c on t.customerid = c.id
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="condition.customerid != null">
+				and t.customerid = #{condition.customerid}
+			</if>
+			<if test="condition.salesarea != null">
+				and FIND_IN_SET(t.salesarea,#{condition.salesarea})
+			</if>
+			<if test="condition.salesdept != null">
+				and FIND_IN_SET(t.salesdept,#{condition.salesdept})
+			</if>
+			<if test="condition.salesuser != null">
+				and FIND_IN_SET(c.salesuserid,#{condition.salesuser})
+			</if>
+			<if test="condition.pcustomerid != null">
+				and (FIND_IN_SET(t.pcustomerid,#{condition.pcustomerid}) or FIND_IN_SET(t.customerid,#{condition.pcustomerid}))
+			</if>
+		</trim>
+		)z GROUP BY ${condition.groupcols}
+		)z
+		LEFT JOIN t_account_customer_capital t on z.customerid = t.id <![CDATA[and t.amount <> 0]]>
+		)
+	</sql>
+	<select id="getReceiptAmountReportList" parameterType="com.hd.agent.common.util.PageMap" resultType="map">
+		SELECT z.* from <include refid="getReceiptAmountReportList_sql"/> z
+		<if test="condition.isflag == null">
+			<include refid="common.Page_limit"/>
+		</if>
+	</select>
+	<select id="getReceiptAmountReportCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+		select count(1) from(
+		SELECT z.* from <include refid="getReceiptAmountReportList_sql" /> z
+		)z
+	</select>
+	<select id="getReceiptAmountReportSum" parameterType="com.hd.agent.common.util.PageMap" resultType="map">
+		SELECT SUM(z.initunwithdrawnamount) as initunwithdrawnamount,SUM(z.salesamount) as salesamount,SUM(z.withdrawnamount) as withdrawnamount,SUM(z.balanceamount) as balanceamount,SUM(z.customeramount) as customeramount
+		from <include refid="getReceiptAmountReportList_sql" /> z
+	</select>
+
+	<sql id="getReceiptAmountDetailList_sql">
+		(
+		SELECT z.billtype,z.businessdate,z.id,z.customerid,z.pcustomerid,z.customersort,z.salesarea,z.salesdept,z.salesuser,z.goodssort,z.supplierid,
+		z.brandid,z.branduser,z.supplieruser,z.branddept,z.remark,
+		SUM(z.initunwithdrawnamount) as initunwithdrawnamount,SUM(z.salesamount) as salesamount,SUM(z.withdrawnamount) as withdrawnamount
+		from (
+		SELECT '1' as billtype,t.businessdate,t.id,t.customerid,t.pcustomerid,t.customersort,t.salesarea,t.salesdept,t.salesuser,t1.goodssort,t1.supplierid,
+		t1.brandid,t1.branduser,t1.supplieruser,t1.branddept,t.remark,
+		0 AS initunwithdrawnamount, t1.taxamount AS salesamount, 0 AS withdrawnamount
+		FROM t_storage_saleout t
+		RIGHT JOIN t_storage_saleout_detail t1 ON t1.saleoutid = t.id
+		left join t_base_sales_customer c on t.customerid = c.id
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="condition.businessdate1 != null and condition.businessdate1 != '1900-01-01'">
+				and t.businessdate >= #{condition.businessdate1}
+			</if>
+			<if test="condition.businessdate2 != null">
+				<![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+			</if>
+			<if test="condition.customerid != null">
+				and t.customerid = #{condition.customerid}
+			</if>
+			<if test="condition.salesarea != null">
+				and FIND_IN_SET(t.salesarea,#{condition.salesarea})
+			</if>
+			<if test="condition.salesdept != null">
+				and FIND_IN_SET(t.salesdept,#{condition.salesdept})
+			</if>
+			<if test="1==1">
+				and (t.STATUS = '3' or t.STATUS = '4')
+			</if>
+			<if test="condition.salesuser != null">
+				and FIND_IN_SET(c.salesuserid,#{condition.salesuser})
+			</if>
+			<if test="condition.pcustomerid != null">
+				and (FIND_IN_SET(t.pcustomerid,#{condition.pcustomerid}) or FIND_IN_SET(t.customerid,#{condition.pcustomerid}))
+			</if>
+		</trim>
+		UNION ALL
+		SELECT '2' as billtype,t.businessdate,t.id,t.customerid,t.pcustomerid,t.customersort,t.salesarea,t.salesdept,t.salesuser,t1.goodssort,t1.supplierid,
+		t1.brandid,t1.branduser,t1.supplieruser,t1.branddept,t.remark,
+		0 AS initunwithdrawnamount, -t1.taxamount AS salesamount, 0 AS withdrawnamount
+		FROM t_storage_salereject_enter t
+		RIGHT JOIN t_storage_salereject_enter_detail t1 ON t1.salerejectid = t.id
+		left join t_base_sales_customer c on t.customerid = c.id
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="condition.businessdate1 != null and condition.businessdate1 != '1900-01-01'">
+				and t.businessdate >= #{condition.businessdate1}
+			</if>
+			<if test="condition.businessdate2 != null">
+				<![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+			</if>
+			<if test="condition.customerid != null">
+				and t.customerid = #{condition.customerid}
+			</if>
+			<if test="condition.salesarea != null">
+				and FIND_IN_SET(t.salesarea,#{condition.salesarea})
+			</if>
+			<if test="condition.salesdept != null">
+				and FIND_IN_SET(t.salesdept,#{condition.salesdept})
+			</if>
+			<if test="1==1">
+				and ischeck='1' AND (t.STATUS = '3' or t.STATUS = '4')
+			</if>
+			<if test="condition.salesuser != null">
+				and FIND_IN_SET(c.salesuserid,#{condition.salesuser})
+			</if>
+			<if test="condition.pcustomerid != null">
+				and (FIND_IN_SET(t.pcustomerid,#{condition.pcustomerid}) or FIND_IN_SET(t.customerid,#{condition.pcustomerid}))
+			</if>
+		</trim>
+		UNION ALL
+		SELECT '3' as billtype,t.businessdate,t.id,t.customerid,t.pcustomerid,t.customersort,t.salesarea,t.salesdept,t.salesuser,'' as goodssort,t.supplierid,
+		t.brandid,t.branduser,t.supplieruser,t.branddept,t.remark,
+		0 AS initunwithdrawnamount, t.amount as salesamount, 0 AS withdrawnamount
+		FROM t_account_customer_push_balance t
+		left join t_base_sales_customer c on t.customerid = c.id
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="condition.businessdate1 != null and condition.businessdate1 != '1900-01-01'">
+				and t.businessdate >= #{condition.businessdate1}
+			</if>
+			<if test="condition.businessdate2 != null">
+				<![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+			</if>
+			<if test="condition.customerid != null">
+				and t.customerid = #{condition.customerid}
+			</if>
+			<if test="condition.salesarea != null">
+				and FIND_IN_SET(t.salesarea,#{condition.salesarea})
+			</if>
+			<if test="condition.salesdept != null">
+				and FIND_IN_SET(t.salesdept,#{condition.salesdept})
+			</if>
+			<if test="1==1">
+				and (t.STATUS = '3' or t.STATUS = '4')
+			</if>
+			<if test="condition.salesuser != null">
+				and FIND_IN_SET(c.salesuserid,#{condition.salesuser})
+			</if>
+			<if test="condition.pcustomerid != null">
+				and (FIND_IN_SET(t.pcustomerid,#{condition.pcustomerid}) or FIND_IN_SET(t.customerid,#{condition.pcustomerid}))
+			</if>
+		</trim>
+		UNION ALL
+		SELECT '4' as billtype,t.businessdate,t.id,t.customerid,t.pcustomerid,t.customersort,t.salesarea,t.salesdept,t.salesuser,'' as goodssort,'' as supplierid,
+		'' as brandid,'' as branduser,'' as supplieruser,'' as branddept,t.remark,
+		0 AS initunwithdrawnamount, t.amount as salesamount, 0 AS withdrawnamount
+		FROM t_account_begin_amount t
+		left join t_base_sales_customer c on t.customerid = c.id
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="condition.businessdate1 != null and condition.businessdate1 != '1900-01-01'">
+				and t.businessdate >= #{condition.businessdate1}
+			</if>
+			<if test="condition.businessdate2 != null">
+				<![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+			</if>
+			<if test="condition.customerid != null">
+				and t.customerid = #{condition.customerid}
+			</if>
+			<if test="condition.salesarea != null">
+				and FIND_IN_SET(t.salesarea,#{condition.salesarea})
+			</if>
+			<if test="condition.salesdept != null">
+				and FIND_IN_SET(t.salesdept,#{condition.salesdept})
+			</if>
+			<if test="1==1">
+				and (t.STATUS = '3' or t.STATUS = '4')
+			</if>
+			<if test="condition.salesuser != null">
+				and FIND_IN_SET(c.salesuserid,#{condition.salesuser})
+			</if>
+			<if test="condition.pcustomerid != null">
+				and (FIND_IN_SET(t.pcustomerid,#{condition.pcustomerid}) or FIND_IN_SET(t.customerid,#{condition.pcustomerid}))
+			</if>
+		</trim>
+		) z GROUP BY z.id
+		UNION ALL
+		SELECT
+		z.billtype,z.businessdate,z.id,z.customerid,z.pcustomerid,z.customersort,z.salesarea,z.salesdept,z.salesuser,z.goodssort,z.supplierid,
+		z.brandid,z.branduser,z.supplieruser,z.branddept,z.remark,
+		SUM(z.initunwithdrawnamount) as initunwithdrawnamount,SUM(z.salesamount) as salesamount,SUM(z.withdrawnamount)
+		as withdrawnamount
+		from (
+		select '1' as billtype,t1.writeoffdate as
+		businessdate,t.id,t.customerid,t.pcustomerid,t.customersort,t.salesarea,t.salesdept,t.salesuser,t1.goodssort,t1.supplierid,
+		t1.brandid,t1.branduser,t1.supplieruser,t1.branddept,t.remark,
+		0 AS initunwithdrawnamount, 0 as salesamount, t1.taxamount AS withdrawnamount
+		from t_storage_saleout t
+		RIGHT JOIN t_storage_saleout_detail t1 on t1.saleoutid=t.id
+		left join t_base_sales_customer c on t.customerid = c.id
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="condition.businessdate1 != null and condition.businessdate1 != '1900-01-01'">
+				and t1.writeoffdate >= #{condition.businessdate1}
+			</if>
+			<if test="condition.businessdate2 != null">
+				<![CDATA[and t1.writeoffdate <= #{condition.businessdate2}]]>
+			</if>
+			<if test="condition.customerid != null">
+				and t.customerid = #{condition.customerid}
+			</if>
+			<if test="condition.salesarea != null">
+				and FIND_IN_SET(t.salesarea,#{condition.salesarea})
+			</if>
+			<if test="condition.salesdept != null">
+				and FIND_IN_SET(t.salesdept,#{condition.salesdept})
+			</if>
+			<if test="1==1">
+				and t1.iswriteoff='1' and (t.STATUS = '3' or t.STATUS = '4')
+			</if>
+			<if test="condition.salesuser != null">
+				and FIND_IN_SET(c.salesuserid,#{condition.salesuser})
+			</if>
+			<if test="condition.pcustomerid != null">
+				and (FIND_IN_SET(t.pcustomerid,#{condition.pcustomerid}) or FIND_IN_SET(t.customerid,#{condition.pcustomerid}))
+			</if>
+		</trim>
+		UNION ALL
+		SELECT '2' as billtype,t1.writeoffdate as
+		businessdate,t.id,t.customerid,t.pcustomerid,t.customersort,t.salesarea,t.salesdept,t.salesuser,t1.goodssort,t1.supplierid,
+		t1.brandid,t1.branduser,t1.supplieruser,t1.branddept,t.remark,
+		0 AS initunwithdrawnamount, 0 as salesamount, -t1.taxamount AS withdrawnamount
+		FROM t_storage_salereject_enter t
+		RIGHT JOIN t_storage_salereject_enter_detail t1 ON t1.salerejectid = t.id
+		left join t_base_sales_customer c on t.customerid = c.id
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="condition.businessdate1 != null and condition.businessdate1 != '1900-01-01'">
+				and t1.writeoffdate >= #{condition.businessdate1}
+			</if>
+			<if test="condition.businessdate2 != null">
+				<![CDATA[and t1.writeoffdate <= #{condition.businessdate2}]]>
+			</if>
+			<if test="condition.customerid != null">
+				and t.customerid = #{condition.customerid}
+			</if>
+			<if test="condition.salesarea != null">
+				and FIND_IN_SET(t.salesarea,#{condition.salesarea})
+			</if>
+			<if test="condition.salesdept != null">
+				and FIND_IN_SET(t.salesdept,#{condition.salesdept})
+			</if>
+			<if test="1==1">
+				and t.ischeck='1' and t1.iswriteoff='1' and (t.STATUS = '3' or t.STATUS = '4')
+			</if>
+			<if test="condition.salesuser != null">
+				and FIND_IN_SET(c.salesuserid,#{condition.salesuser})
+			</if>
+			<if test="condition.pcustomerid != null">
+				and (FIND_IN_SET(t.pcustomerid,#{condition.pcustomerid}) or FIND_IN_SET(t.customerid,#{condition.pcustomerid}))
+			</if>
+		</trim>
+		UNION ALL
+		SELECT '3' as billtype,t.writeoffdate as
+		businessdate,t.id,t.customerid,t.pcustomerid,t.customersort,t.salesarea,t.salesdept,t.salesuser,'' as
+		goodssort,t.supplierid,
+		t.brandid,t.branduser,t.supplieruser,t.branddept,t.remark,
+		0 AS initunwithdrawnamount, 0 as salesamount, t.amount AS withdrawnamount
+		FROM t_account_customer_push_balance t
+		left join t_base_sales_customer c on t.customerid = c.id
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="condition.businessdate1 != null and condition.businessdate1 != '1900-01-01'">
+				and t.writeoffdate >= #{condition.businessdate1}
+			</if>
+			<if test="condition.businessdate2 != null">
+				<![CDATA[and t.writeoffdate <= #{condition.businessdate2}]]>
+			</if>
+			<if test="condition.customerid != null">
+				and t.customerid = #{condition.customerid}
+			</if>
+			<if test="condition.salesarea != null">
+				and FIND_IN_SET(t.salesarea,#{condition.salesarea})
+			</if>
+			<if test="condition.salesdept != null">
+				and FIND_IN_SET(t.salesdept,#{condition.salesdept})
+			</if>
+			<if test="1==1">
+				and t.iswriteoff='1' and (t.STATUS = '3' or t.STATUS = '4')
+			</if>
+			<if test="condition.salesuser != null">
+				and FIND_IN_SET(c.salesuserid,#{condition.salesuser})
+			</if>
+			<if test="condition.pcustomerid != null">
+				and (FIND_IN_SET(t.pcustomerid,#{condition.pcustomerid}) or FIND_IN_SET(t.customerid,#{condition.pcustomerid}))
+			</if>
+		</trim>
+		UNION ALL
+		SELECT '4' as billtype,t.writeoffdate as
+		businessdate,t.id,t.customerid,t.pcustomerid,t.customersort,t.salesarea,t.salesdept,t.salesuser,'' as goodssort,'' as supplierid,
+		'' as brandid,'' as branduser,'' as supplieruser,'' as branddept,t.remark,
+		0 AS initunwithdrawnamount, 0 as salesamount, t.amount AS withdrawnamount
+		FROM t_account_begin_amount t
+		left join t_base_sales_customer c on t.customerid = c.id
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="condition.businessdate1 != null and condition.businessdate1 != '1900-01-01'">
+				and t.writeoffdate >= #{condition.businessdate1}
+			</if>
+			<if test="condition.businessdate2 != null">
+				<![CDATA[and t.writeoffdate <= #{condition.businessdate2}]]>
+			</if>
+			<if test="condition.customerid != null">
+				and t.customerid = #{condition.customerid}
+			</if>
+			<if test="condition.salesarea != null">
+				and FIND_IN_SET(t.salesarea,#{condition.salesarea})
+			</if>
+			<if test="condition.salesdept != null">
+				and FIND_IN_SET(t.salesdept,#{condition.salesdept})
+			</if>
+			<if test="1==1">
+				and t.iswriteoff='1' and t.STATUS = '4'
+			</if>
+			<if test="condition.salesuser != null">
+				and FIND_IN_SET(c.salesuserid,#{condition.salesuser})
+			</if>
+			<if test="condition.pcustomerid != null">
+				and (FIND_IN_SET(t.pcustomerid,#{condition.pcustomerid}) or FIND_IN_SET(t.customerid,#{condition.pcustomerid}))
+			</if>
+		</trim>
+		) z GROUP BY z.id
+		)
+	</sql>
+	<select id="getReceiptAmountDetailList" parameterType="com.hd.agent.common.util.PageMap" resultType="map">
+		SELECT z.billtype,z.businessdate,z.id,z.customerid,z.pcustomerid,z.customersort,z.salesarea,z.salesdept,z.salesuser,z.goodssort,z.supplierid,
+		z.brandid,z.branduser,z.supplieruser,z.branddept,z.remark,
+		z.initunwithdrawnamount, z.salesamount, z.withdrawnamount
+		from <include refid="getReceiptAmountDetailList_sql"/> z
+		<trim prefix="where" prefixOverrides="and|or" >
+			<include refid="common.Page_dataSql"/>
+		</trim>
+		order by z.businessdate,z.id ASC
+	</select>
+
+	<select id="getReceiptAmountInitunwithdrawnamount" parameterType="com.hd.agent.common.util.PageMap" resultType="java.math.BigDecimal">
+		SELECT SUM(z.initsalesamount - z.initwithdrawnamount) as initunwithdrawnamount
+		from (
+		SELECT t.customerid,t.pcustomerid,t.customersort,t.salesarea,t.salesdept,t.salesuser,t1.goodssort,t1.supplierid,
+		t1.brandid,t1.branduser,t1.supplieruser,t1.branddept,
+		t1.taxamount AS initsalesamount, 0 AS salesamount, 0 as initwithdrawnamount,0 AS withdrawnamount
+		FROM t_storage_saleout t
+		RIGHT JOIN t_storage_saleout_detail t1 ON t1.saleoutid = t.id
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="condition.businessdate1 != null">
+				<![CDATA[and t.businessdate < #{condition.businessdate1}]]>
+			</if>
+			<if test="condition.customerid != null">
+				and t.customerid = #{condition.customerid}
+			</if>
+			<if test="condition.salesarea != null">
+				and FIND_IN_SET(t.salesarea,#{condition.salesarea})
+			</if>
+			<if test="condition.salesdept != null">
+				and FIND_IN_SET(t.salesdept,#{condition.salesdept})
+			</if>
+			<if test="1==1">
+				and (t.STATUS = '3' or t.STATUS = '4')
+			</if>
+		</trim>
+		UNION ALL
+		SELECT t.customerid,t.pcustomerid,t.customersort,t.salesarea,t.salesdept,t.salesuser,t1.goodssort,t1.supplierid,
+		t1.brandid,t1.branduser,t1.supplieruser,t1.branddept,
+		-t1.taxamount AS initsalesamount, 0 AS salesamount, 0 as initwithdrawnamount, 0 AS withdrawnamount
+		FROM t_storage_salereject_enter t
+		RIGHT JOIN t_storage_salereject_enter_detail t1 ON t1.salerejectid = t.id
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="condition.businessdate1 != null">
+				<![CDATA[and t.businessdate < #{condition.businessdate1}]]>
+			</if>
+			<if test="condition.customerid != null">
+				and t.customerid = #{condition.customerid}
+			</if>
+			<if test="condition.salesarea != null">
+				and FIND_IN_SET(t.salesarea,#{condition.salesarea})
+			</if>
+			<if test="condition.salesdept != null">
+				and FIND_IN_SET(t.salesdept,#{condition.salesdept})
+			</if>
+			<if test="1==1">
+				and ischeck='1' AND (t.STATUS = '3' or t.STATUS = '4')
+			</if>
+		</trim>
+		UNION ALL
+		SELECT t.customerid,t.pcustomerid,t.customersort,t.salesarea,t.salesdept,t.salesuser,'' as goodssort,t.supplierid,
+		t.brandid,t.branduser,t.supplieruser,t.branddept,
+		t.amount AS initsalesamount, 0 AS salesamount, 0 as initwithdrawnamount, 0 AS withdrawnamount
+		FROM t_account_customer_push_balance t
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="condition.businessdate1 != null">
+				<![CDATA[and t.businessdate < #{condition.businessdate1}]]>
+			</if>
+			<if test="condition.customerid != null">
+				and t.customerid = #{condition.customerid}
+			</if>
+			<if test="condition.salesarea != null">
+				and FIND_IN_SET(t.salesarea,#{condition.salesarea})
+			</if>
+			<if test="condition.salesdept != null">
+				and FIND_IN_SET(t.salesdept,#{condition.salesdept})
+			</if>
+			<if test="1==1">
+				and (t.STATUS = '3' or t.STATUS = '4')
+			</if>
+		</trim>
+		UNION ALL
+		SELECT t.customerid,t.pcustomerid,t.customersort,t.salesarea,t.salesdept,t.salesuser,'' as goodssort,'' as supplierid,
+		'' as brandid,'' as branduser,'' as supplieruser,'' as branddept,
+		t.amount AS initsalesamount, 0 AS salesamount, 0 as initwithdrawnamount, 0 AS withdrawnamount
+		FROM t_account_begin_amount t
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="condition.businessdate1 != null">
+				<![CDATA[and t.businessdate < #{condition.businessdate1}]]>
+			</if>
+			<if test="condition.customerid != null">
+				and t.customerid = #{condition.customerid}
+			</if>
+			<if test="condition.salesarea != null">
+				and FIND_IN_SET(t.salesarea,#{condition.salesarea})
+			</if>
+			<if test="condition.salesdept != null">
+				and FIND_IN_SET(t.salesdept,#{condition.salesdept})
+			</if>
+			<if test="1==1">
+				and (t.STATUS = '3' or t.STATUS = '4')
+			</if>
+		</trim>
+		UNION ALL
+		select t.customerid,t.pcustomerid,t.customersort,t.salesarea,t.salesdept,t.salesuser,t1.goodssort,t1.supplierid,
+		t1.brandid,t1.branduser,t1.supplieruser,t1.branddept,
+		0 AS initsalesamount, 0 as salesamount,t1.taxamount as initwithdrawnamount, 0 AS withdrawnamount
+		from t_storage_saleout t
+		RIGHT JOIN t_storage_saleout_detail t1 on t1.saleoutid=t.id
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="condition.businessdate1 != null">
+				<choose>
+					<when test="condition.businessdate1 != '1900-01-01'">
+						<![CDATA[and t1.writeoffdate < #{condition.businessdate1}]]>
+					</when>
+					<otherwise>
+						<![CDATA[and t1.writeoffdate < '']]>
+					</otherwise>
+				</choose>
+			</if>
+			<if test="condition.customerid != null">
+				and t.customerid = #{condition.customerid}
+			</if>
+			<if test="condition.salesarea != null">
+				and FIND_IN_SET(t.salesarea,#{condition.salesarea})
+			</if>
+			<if test="condition.salesdept != null">
+				and FIND_IN_SET(t.salesdept,#{condition.salesdept})
+			</if>
+			<if test="1==1">
+				and t1.iswriteoff='1' and (t.STATUS = '3' or t.STATUS = '4')
+			</if>
+		</trim>
+		UNION ALL
+		SELECT t.customerid,t.pcustomerid,t.customersort,t.salesarea,t.salesdept,t.salesuser,t1.goodssort,t1.supplierid,
+		t1.brandid,t1.branduser,t1.supplieruser,t1.branddept,
+		0 AS initsalesamount, 0 as salesamount,-t1.taxamount as initwithdrawnamount, 0 AS withdrawnamount
+		FROM t_storage_salereject_enter t
+		RIGHT JOIN t_storage_salereject_enter_detail t1 ON t1.salerejectid = t.id
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="condition.businessdate1 != null">
+				<choose>
+					<when test="condition.businessdate1 != '1900-01-01'">
+						<![CDATA[and t1.writeoffdate < #{condition.businessdate1}]]>
+					</when>
+					<otherwise>
+						<![CDATA[and t1.writeoffdate < '']]>
+					</otherwise>
+				</choose>
+			</if>
+			<if test="condition.customerid != null">
+				and t.customerid = #{condition.customerid}
+			</if>
+			<if test="condition.salesarea != null">
+				and FIND_IN_SET(t.salesarea,#{condition.salesarea})
+			</if>
+			<if test="condition.salesdept != null">
+				and FIND_IN_SET(t.salesdept,#{condition.salesdept})
+			</if>
+			<if test="1==1">
+				and t.ischeck='1' and t1.iswriteoff='1' and (t.STATUS = '3' or t.STATUS = '4')
+			</if>
+		</trim>
+		UNION ALL
+		SELECT t.customerid,t.pcustomerid,t.customersort,t.salesarea,t.salesdept,t.salesuser,'' as goodssort,t.supplierid,
+		t.brandid,t.branduser,t.supplieruser,t.branddept,
+		0 AS initsalesamount, 0 as salesamount,t.amount as initwithdrawnamount, 0 AS withdrawnamount
+		FROM t_account_customer_push_balance t
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="condition.businessdate1 != null">
+				<choose>
+					<when test="condition.businessdate1 != '1900-01-01'">
+						<![CDATA[and t.writeoffdate < #{condition.businessdate1}]]>
+					</when>
+					<otherwise>
+						<![CDATA[and t.writeoffdate < '']]>
+					</otherwise>
+				</choose>
+			</if>
+			<if test="condition.customerid != null">
+				and t.customerid = #{condition.customerid}
+			</if>
+			<if test="condition.salesarea != null">
+				and FIND_IN_SET(t.salesarea,#{condition.salesarea})
+			</if>
+			<if test="condition.salesdept != null">
+				and FIND_IN_SET(t.salesdept,#{condition.salesdept})
+			</if>
+			<if test="1==1">
+				and t.iswriteoff='1' and (t.STATUS = '3' or t.STATUS = '4')
+			</if>
+		</trim>
+		UNION ALL
+		SELECT t.customerid,t.pcustomerid,t.customersort,t.salesarea,t.salesdept,t.salesuser,'' as goodssort,'' as supplierid,
+		'' as brandid,'' as branduser,'' as supplieruser,'' as branddept,
+		0 AS initsalesamount, 0 as salesamount,t.amount as initwithdrawnamount, 0 AS withdrawnamount
+		FROM t_account_begin_amount t
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="condition.businessdate1 != null">
+				<choose>
+					<when test="condition.businessdate1 != '1900-01-01'">
+						<![CDATA[and t.writeoffdate < #{condition.businessdate1}]]>
+					</when>
+					<otherwise>
+						<![CDATA[and t.writeoffdate < '']]>
+					</otherwise>
+				</choose>
+			</if>
+			<if test="condition.customerid != null">
+				and t.customerid = #{condition.customerid}
+			</if>
+			<if test="condition.salesarea != null">
+				and FIND_IN_SET(t.salesarea,#{condition.salesarea})
+			</if>
+			<if test="condition.salesdept != null">
+				and FIND_IN_SET(t.salesdept,#{condition.salesdept})
+			</if>
+			<if test="1==1">
+				and t.iswriteoff='1' and t.status = '4'
+			</if>
+		</trim>
+		)z
+		<trim prefix="where" prefixOverrides="and|or" >
+			<include refid="common.Page_dataSql"/>
+		</trim>
+	</select>
+</mapper>

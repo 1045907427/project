@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.oa.dao.OaOffPriceMapper" >
+    <resultMap id="BaseResultMap" type="com.hd.agent.oa.model.OaOffPrice" >
+        <id column="id" property="id" jdbcType="VARCHAR" />
+        <result column="businessdate" property="businessdate" jdbcType="VARCHAR" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="adduserid" property="adduserid" jdbcType="VARCHAR" />
+        <result column="addusername" property="addusername" jdbcType="VARCHAR" />
+        <result column="adddeptid" property="adddeptid" jdbcType="VARCHAR" />
+        <result column="adddeptname" property="adddeptname" jdbcType="VARCHAR" />
+        <result column="addtime" property="addtime" jdbcType="TIMESTAMP" />
+        <result column="modifyuserid" property="modifyuserid" jdbcType="VARCHAR" />
+        <result column="modifyusername" property="modifyusername" jdbcType="VARCHAR" />
+        <result column="modifytime" property="modifytime" jdbcType="TIMESTAMP" />
+        <result column="printtimes" property="printtimes" jdbcType="INTEGER" />
+        <result column="oaid" property="oaid" jdbcType="VARCHAR" />
+        <result column="customerid" property="customerid" jdbcType="VARCHAR" />
+        <result column="salesarea" property="salesarea" jdbcType="VARCHAR" />
+        <result column="salesuserid" property="salesuserid" jdbcType="VARCHAR" />
+        <result column="indoorstaff" property="indoorstaff" jdbcType="VARCHAR" />
+        <result column="pricebegindate" property="pricebegindate" jdbcType="VARCHAR" />
+        <result column="priceenddate" property="priceenddate" jdbcType="VARCHAR" />
+        <result column="schedule" property="schedule" jdbcType="VARCHAR" />
+    </resultMap>
+    <resultMap id="BaseResultDetailMap" type="com.hd.agent.oa.model.OaOffPriceDetail" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="billid" property="billid" jdbcType="VARCHAR" />
+        <result column="goodsid" property="goodsid" jdbcType="VARCHAR" />
+        <result column="barcode" property="barcode" jdbcType="VARCHAR" />
+        <result column="buyprice" property="buyprice" jdbcType="DECIMAL" />
+        <result column="oldprice" property="oldprice" jdbcType="DECIMAL" />
+        <result column="offprice" property="offprice" jdbcType="DECIMAL" />
+        <result column="profitrate" property="profitrate" jdbcType="DECIMAL" />
+        <result column="ordernum" property="ordernum" jdbcType="VARCHAR" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+  <sql id="Base_Column_List" >
+    id, businessdate, remark, adduserid, addusername, adddeptid, adddeptname, addtime, 
+    modifyuserid, modifyusername, modifytime, printtimes, oaid, customerid, salesarea, indoorstaff,
+    salesuserid, pricebegindate, priceenddate, customername,schedule
+  </sql>
+    <sql id="Base_Column_List2" >
+        t1.id, t1.businessdate, t1.remark, t1.adduserid, t1.addusername, t1.adddeptid, t1.adddeptname, t1.addtime,
+        t1.modifyuserid, t1.modifyusername, t1.modifytime, t1.printtimes, t1.oaid, t1.customerid, t1.salesarea, t1.indoorstaff,
+        t1.salesuserid, t1.pricebegindate, t1.priceenddate, t1.schedule
+    </sql>
+    <sql id="Base_Detail_Column_List" >
+        id, billid, goodsid, buyprice, oldprice, offprice, profitrate, remark, ordernum, barcode
+    </sql>
+    <sql id="Base_Detail_Column_List2" >
+        a.id, a.billid, a.goodsid, a.buyprice, a.oldprice, a.offprice, a.profitrate, a.remark, a.ordernum, a.barcode
+    </sql>
+  <delete id="deleteOaOffPrice" parameterType="java.lang.String" >
+    delete from t_oa_offprice
+    where id = #{id }
+  </delete>
+  <insert id="insertOaOffPrice" parameterType="com.hd.agent.oa.model.OaOffPrice" >
+    insert into t_oa_offprice
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="businessdate != null" >
+        businessdate,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="adduserid != null" >
+        adduserid,
+      </if>
+      <if test="addusername != null" >
+        addusername,
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid,
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname,
+      </if>
+      addtime,
+      <if test="modifyuserid != null" >
+        modifyuserid,
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername,
+      </if>
+      <if test="modifytime != null" >
+        modifytime,
+      </if>
+      <if test="printtimes != null" >
+        printtimes,
+      </if>
+      <if test="oaid != null" >
+        oaid,
+      </if>
+      <if test="customerid != null" >
+        customerid,
+      </if>
+      <if test="salesarea != null" >
+        salesarea,
+      </if>
+      <if test="salesuserid != null" >
+        salesuserid,
+      </if>
+        <if test="indoorstaff != null" >
+            indoorstaff,
+        </if>
+      <if test="pricebegindate != null" >
+        pricebegindate,
+      </if>
+      <if test="priceenddate != null" >
+        priceenddate,
+      </if>
+        <if test="schedule != null" >
+            schedule,
+        </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="businessdate != null" >
+        #{businessdate},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+      <if test="adduserid != null" >
+        #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        #{adddeptname},
+      </if>
+      now(),
+      <if test="modifyuserid != null" >
+        #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        #{modifyusername},
+      </if>
+      <if test="modifytime != null" >
+        #{modifytime},
+      </if>
+      <if test="printtimes != null" >
+        #{printtimes},
+      </if>
+      <if test="oaid != null" >
+        #{oaid},
+      </if>
+      <if test="customerid != null" >
+        #{customerid},
+      </if>
+      <if test="salesarea != null" >
+        #{salesarea},
+      </if>
+      <if test="salesuserid != null" >
+        #{salesuserid},
+      </if>
+        <if test="indoorstaff != null" >
+            #{indoorstaff},
+        </if>
+      <if test="pricebegindate != null" >
+        #{pricebegindate},
+      </if>
+      <if test="priceenddate != null" >
+        #{priceenddate},
+      </if>
+        <if test="schedule != null" >
+            #{schedule},
+        </if>
+    </trim>
+  </insert>
+  <update id="updateOaOffPrice" parameterType="com.hd.agent.oa.model.OaOffPrice" >
+    update t_oa_offprice
+    set
+      businessdate = #{businessdate},
+      remark = #{remark},
+      modifyuserid = #{modifyuserid},
+      modifyusername = #{modifyusername},
+      modifytime = now(),
+      printtimes = #{printtimes},
+      oaid = #{oaid},
+      customerid = #{customerid},
+      salesarea = #{salesarea},
+      indoorstaff = #{indoorstaff},
+      salesuserid = #{salesuserid},
+      pricebegindate = #{pricebegindate},
+      priceenddate = #{priceenddate},
+      schedule = #{schedule }
+    where id = #{id}
+  </update>
+    <insert id="insertOaOffPriceDetail" parameterType="com.hd.agent.oa.model.OaOffPriceDetail" >
+        insert into t_oa_offprice_detail
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="billid != null" >
+                billid,
+            </if>
+            <if test="goodsid != null" >
+                goodsid,
+            </if>
+            <if test="buyprice != null" >
+                buyprice,
+            </if>
+            <if test="oldprice != null" >
+                oldprice,
+            </if>
+            <if test="offprice != null" >
+                offprice,
+            </if>
+            <if test="profitrate != null" >
+                profitrate,
+            </if>
+            <if test="remark != null" >
+                remark,
+            </if>
+            <if test="ordernum != null" >
+                ordernum,
+            </if>
+            <if test="barcode != null" >
+                barcode,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="billid != null" >
+                #{billid},
+            </if>
+            <if test="goodsid != null" >
+                #{goodsid},
+            </if>
+            <if test="buyprice != null" >
+                #{buyprice},
+            </if>
+            <if test="oldprice != null" >
+                #{oldprice},
+            </if>
+            <if test="offprice != null" >
+                #{offprice},
+            </if>
+            <if test="profitrate != null" >
+                #{profitrate},
+            </if>
+            <if test="remark != null" >
+                #{remark},
+            </if>
+            <if test="ordernum != null" >
+                #{ordernum},
+            </if>
+            <if test="barcode != null" >
+                #{barcode},
+            </if>
+        </trim>
+    </insert>
+    <select id="selectOaOffPrice" parameterType="java.lang.String" resultType="com.hd.agent.oa.model.OaOffPrice">
+        select
+        <include refid="Base_Column_List2"/>,
+        t2.name customername
+        from t_oa_offprice t1
+        left join t_base_sales_customer t2
+        on t1.customerid = t2.id
+        where t1.id = #{id }
+    </select>
+    <delete id="deleteOaOffPriceDetailByBillid" parameterType="java.lang.String">
+        delete from t_oa_offprice_detail
+        where billid = #{billid }
+    </delete>
+    <!--
+    <select id="selectOaOffPriceDetailByBillid" parameterType="java.lang.String">
+        select
+        <include refid="Base_Detail_Column_List"/>
+        from t_oa_offprice_detail
+        where billid = #{billid }
+    </select>
+    -->
+    <select id="selectOaOffPriceDetailList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.oa.model.OaOffPriceDetail">
+        select
+        <include refid="Base_Detail_Column_List2"/>,
+        b.name goodsname,
+        b.brand brand
+        from t_oa_offprice_detail a
+        left join t_base_goods_info b on a.goodsid = b.id
+        <trim prefix="where" prefixOverrides="and|or">
+            a.billid = #{condition.billid }
+            <include refid="common.Page_querySql"/>
+            <include refid="common.Page_dataSql"/>
+        </trim>
+        order by a.id
+        <include refid="common.Page_limit"/>
+    </select>
+    <select id="selectOaOffPriceDetailListCnt" parameterType="com.hd.agent.common.util.PageMap" resultType="java.lang.Integer">
+        select count(1)
+        from t_oa_offprice_detail a
+        <trim prefix="where" prefixOverrides="and|or">
+            a.billid = #{condition.billid }
+            <include refid="common.Page_querySql"/>
+            <include refid="common.Page_dataSql"/>
+        </trim>
+        order by a.id
+    </select>
+    <select id="selectOaOffPriceDetailListByBillid" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.oa.model.OaOffPriceDetail">
+        select
+        <include refid="Base_Detail_Column_List2"/>,
+        b.name goodsname,
+        b.brand brand
+        from t_oa_offprice_detail a
+        left join t_base_goods_info b on a.goodsid = b.id
+        where a.billid = #{billid }
+        order by a.id
+    </select>
+</mapper>

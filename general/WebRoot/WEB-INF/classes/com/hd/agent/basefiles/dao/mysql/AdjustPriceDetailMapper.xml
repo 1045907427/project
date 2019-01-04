@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.basefiles.dao.AdjustPriceDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.hd.agent.basefiles.model.AdjustPriceDetail" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="billid" property="billid" jdbcType="VARCHAR" />
+    <result column="goodsid" property="goodsid" jdbcType="VARCHAR" />
+    <result column="oldprice" property="oldprice" jdbcType="DECIMAL" />
+    <result column="nowprice" property="nowprice" jdbcType="DECIMAL" />
+    <result column="rate" property="rate" jdbcType="DECIMAL" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.billid != null" >
+         and billid = #{condition.billid}
+      </if>
+      <if test="condition.goodsid != null" >
+         and goodsid = #{condition.goodsid}
+      </if>
+      <if test="condition.oldprice != null" >
+         and oldprice = #{condition.oldprice}
+      </if>
+      <if test="condition.nowprice != null" >
+         and nowprice = #{condition.nowprice}
+      </if>
+      <if test="condition.rate != null" >
+         and rate = #{condition.rate}
+      </if>
+      <if test="condition.remark != null" >
+         and remark = #{condition.remark}
+      </if>
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, billid, goodsid, oldprice, nowprice, rate, remark
+  </sql>
+    <insert id="addAdjustPriceDetail" parameterType="com.hd.agent.basefiles.model.AdjustPriceDetail" >
+    insert into t_base_adjust_price_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="billid != null" >
+        billid,
+      </if>
+      <if test="goodsid != null" >
+        goodsid,
+      </if>
+      <if test="oldprice != null" >
+        oldprice,
+      </if>
+      <if test="nowprice != null" >
+        nowprice,
+      </if>
+      <if test="rate != null" >
+        rate,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="billid != null" >
+        #{billid},
+      </if>
+      <if test="goodsid != null" >
+        #{goodsid},
+      </if>
+      <if test="oldprice != null" >
+        #{oldprice},
+      </if>
+      <if test="nowprice != null" >
+        #{nowprice},
+      </if>
+      <if test="rate != null" >
+        #{rate},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+    </trim>
+  </insert>
+  	<delete id="deleteAdjustPriceDetail" parameterType="java.lang.String">
+		delete from t_base_adjust_price_detail where billid = #{billid}
+	</delete>
+	<select id="getAdjustPriceDetailList" parameterType="java.lang.String" resultType="com.hd.agent.basefiles.model.AdjustPriceDetail">
+  		select <include refid="Base_Column_List"/>
+  		from t_base_adjust_price_detail where billid=#{billid}
+  	</select>
+</mapper>

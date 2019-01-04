@@ -1,0 +1,729 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.oa.dao.OaAccessMapper" >
+  <resultMap id="BaseResultMap" type="com.hd.agent.oa.model.OaAccess" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="confirmid" property="confirmid" jdbcType="VARCHAR" />
+    <result column="oaid" property="oaid" jdbcType="VARCHAR" />
+    <result column="businessdate" property="businessdate" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="adduserid" property="adduserid" jdbcType="VARCHAR" />
+    <result column="addusername" property="addusername" jdbcType="VARCHAR" />
+    <result column="adddeptid" property="adddeptid" jdbcType="VARCHAR" />
+    <result column="adddeptname" property="adddeptname" jdbcType="VARCHAR" />
+    <result column="addtime" property="addtime" jdbcType="TIMESTAMP" />
+    <result column="modifyuserid" property="modifyuserid" jdbcType="VARCHAR" />
+    <result column="modifyusername" property="modifyusername" jdbcType="VARCHAR" />
+    <result column="modifytime" property="modifytime" jdbcType="TIMESTAMP" />
+    <result column="audituserid" property="audituserid" jdbcType="VARCHAR" />
+    <result column="auditusername" property="auditusername" jdbcType="VARCHAR" />
+    <result column="audittime" property="audittime" jdbcType="TIMESTAMP" />
+    <result column="stopuserid" property="stopuserid" jdbcType="VARCHAR" />
+    <result column="stopusername" property="stopusername" jdbcType="VARCHAR" />
+    <result column="stoptime" property="stoptime" jdbcType="TIMESTAMP" />
+    <result column="closetime" property="closetime" jdbcType="TIMESTAMP" />
+    <result column="printtimes" property="printtimes" jdbcType="INTEGER" />
+    <result column="supplierid" property="supplierid" jdbcType="VARCHAR" />
+    <result column="customerid" property="customerid" jdbcType="VARCHAR" />
+    <result column="theme" property="theme" jdbcType="VARCHAR" />
+    <result column="planbegindate" property="planbegindate" jdbcType="VARCHAR" />
+    <result column="planenddate" property="planenddate" jdbcType="VARCHAR" />
+    <result column="expensesort" property="expensesort" jdbcType="VARCHAR" />
+    <result column="pricetype" property="pricetype" jdbcType="VARCHAR" />
+    <result column="isaddstorage" property="isaddstorage" jdbcType="CHAR" />
+    <result column="salesarea" property="salesarea" jdbcType="VARCHAR" />
+    <result column="salesareaname" property="salesareaname" jdbcType="VARCHAR" />
+    <result column="executeaddr" property="executeaddr" jdbcType="VARCHAR" />
+    <result column="remark1" property="remark1" jdbcType="VARCHAR" />
+    <result column="reimbursetype" property="reimbursetype" jdbcType="VARCHAR" />
+    <result column="reimbursedate" property="reimbursedate" jdbcType="VARCHAR" />
+    <result column="paytype" property="paytype" jdbcType="VARCHAR" />
+    <result column="paydate" property="paydate" jdbcType="VARCHAR" />
+    <result column="totalnum" property="totalnum" jdbcType="VARCHAR" />
+    <result column="totalamount" property="totalamount" jdbcType="DECIMAL" />
+    <result column="conbegindate" property="conbegindate" jdbcType="VARCHAR" />
+    <result column="conenddate" property="conenddate" jdbcType="VARCHAR" />
+    <result column="combegindate" property="combegindate" jdbcType="VARCHAR" />
+    <result column="comenddate" property="comenddate" jdbcType="VARCHAR" />
+    <result column="remark2" property="remark2" jdbcType="VARCHAR" />
+    <result column="myamount" property="myamount" jdbcType="DECIMAL" />
+    <result column="factoryamount" property="factoryamount" jdbcType="DECIMAL" />
+    <result column="compdiscount" property="compdiscount" jdbcType="DECIMAL" />
+    <result column="comdownamount" property="comdownamount" jdbcType="DECIMAL" />
+    <result column="payamount" property="payamount" jdbcType="DECIMAL" />
+    <result column="branchaccount" property="branchaccount" jdbcType="DECIMAL" />
+    <result column="isbillpay" property="isbillpay" jdbcType="CHAR" />
+    <result column="isfile" property="isfile" jdbcType="CHAR" />
+    <result column="autoassign" property="autoassign" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, confirmid, oaid, businessdate, status, remark, adduserid, addusername, adddeptid, 
+    adddeptname, addtime, modifyuserid, modifyusername, modifytime, audituserid, auditusername, 
+    audittime, stopuserid, stopusername, stoptime, closetime, printtimes, supplierid, 
+    customerid, theme, planbegindate, planenddate, expensesort, pricetype, isaddstorage, 
+    salesarea, salesareaname, executeaddr, remark1, reimbursetype, reimbursedate, paytype, 
+    paydate, totalnum, totalamount, conbegindate, conenddate, combegindate, comenddate, 
+    remark2, myamount, factoryamount, compdiscount, comdownamount, payamount, branchaccount, 
+    isbillpay, isfile, autoassign
+  </sql>
+  
+  <!-- 
+  <insert id="insertOaAccess" parameterType="com.hd.agent.oa.model.OaAccess">
+  	insert into t_oa_access
+  	<trim prefix="(" suffix=")" suffixOverrides="," >
+		<if test="#{id != null}">
+			id,
+		</if>
+		<if test="#{confirmid != null}">
+			confirmid,
+		</if>
+		<if test="#{oaid != null}">
+			oaid,
+		</if>
+		<if test="#{businessdate != null}">
+			businessdate,
+		</if>
+		<if test="#{status != null}">
+			status,
+		</if>
+		<if test="#{remark != null}">
+			remark,
+		</if>
+		<if test="#{adduserid != null}">
+			adduserid,
+		</if>
+		<if test="#{addusername != null}">
+			addusername,
+		</if>
+		<if test="#{adddeptid != null}">
+			adddeptid,
+		</if>
+		<if test="#{adddeptname != null}">
+			adddeptname,
+		</if>
+		addtime,
+		<if test="#{modifyuserid != null}">
+			modifyuserid,
+		</if>
+		<if test="#{modifyusername != null}">
+			modifyusername,
+		</if>
+		<if test="#{modifytime != null}">
+			modifytime,
+		</if>
+		<if test="#{audituserid != null}">
+			audituserid,
+		</if>
+		<if test="#{auditusername != null}">
+			auditusername,
+		</if>
+		<if test="#{audittime != null}">
+			audittime,
+		</if>
+		<if test="#{stopuserid != null}">
+			stopuserid,
+		</if>
+		<if test="#{stopusername != null}">
+			stopusername,
+		</if>
+		<if test="#{stoptime != null}">
+			stoptime,
+		</if>
+		<if test="#{closetime != null}">
+			closetime,
+		</if>
+		<if test="#{printtimes != null}">
+			printtimes,
+		</if>
+		<if test="#{supplierid != null}">
+			supplierid,
+		</if>
+		<if test="#{customerid != null}">
+			customerid,
+		</if>
+		<if test="#{theme != null}">
+			theme,
+		</if>
+		<if test="#{planbegindate != null}">
+			planbegindate,
+		</if>
+		<if test="#{planenddate != null}">
+			planenddate,
+		</if>
+		<if test="#{expensesort != null}">
+			expensesort,
+		</if>
+		<if test="#{pricetype != null}">
+			pricetype,
+		</if>
+		<if test="#{isaddstorage != null}">
+			isaddstorage,
+		</if>
+		<if test="#{salesarea != null}">
+			salesarea,
+		</if>
+		<if test="#{salesareaname != null}">
+			salesareaname,
+		</if>
+		<if test="#{executeaddr != null}">
+			executeaddr,
+		</if>
+		<if test="#{remark1 != null}">
+			remark1,
+		</if>
+		<if test="#{reimbursetype != null}">
+			reimbursetype,
+		</if>
+		<if test="#{reimbursedate != null}">
+			reimbursedate,
+		</if>
+		<if test="#{paytype != null}">
+			paytype,
+		</if>
+		<if test="#{paydate != null}">
+			paydate,
+		</if>
+		<if test="#{totalnum != null}">
+			totalnum,
+		</if>
+		<if test="#{totalamount != null}">
+			totalamount,
+		</if>
+		<if test="#{conbegindate != null}">
+			conbegindate,
+		</if>
+		<if test="#{conenddate != null}">
+			conenddate,
+		</if>
+		<if test="#{combegindate != null}">
+			combegindate,
+		</if>
+		<if test="#{comenddate != null}">
+			comenddate,
+		</if>
+		<if test="#{remark2 != null}">
+			remark2,
+		</if>
+		<if test="#{myamount != null}">
+			myamount,
+		</if>
+		<if test="#{factoryamount != null}">
+			factoryamount,
+		</if>
+		<if test="#{compdiscount != null}">
+			compdiscount,
+		</if>
+		<if test="#{comdownamount != null}">
+			comdownamount,
+		</if>
+		<if test="#{payamount != null}">
+			payamount,
+		</if>
+		<if test="#{branchaccount != null}">
+			branchaccount,
+		</if>
+		<if test="#{isbillpay != null}">
+			isbillpay,
+		</if>
+		<if test="#{isfile != null}">
+			isfile,
+		</if>
+  	</trim>
+  	<trim prefix=" values (" suffix=")" suffixOverrides="," >
+		<if test="#{id != null}">
+			#{id },
+		</if>
+		<if test="#{confirmid != null}">
+			#{confirmid },
+		</if>
+		<if test="#{oaid != null}">
+			#{oaid },
+		</if>
+		<if test="#{businessdate != null}">
+			#{businessdate },
+		</if>
+		<if test="#{status != null}">
+			#{status },
+		</if>
+		<if test="#{remark != null}">
+			#{remark },
+		</if>
+		<if test="#{adduserid != null}">
+			#{adduserid },
+		</if>
+		<if test="#{addusername != null}">
+			#{addusername },
+		</if>
+		<if test="#{adddeptid != null}">
+			#{adddeptid },
+		</if>
+		<if test="#{adddeptname != null}">
+			#{adddeptname },
+		</if>
+		now(),
+		<if test="#{modifyuserid != null}">
+			#{modifyuserid },
+		</if>
+		<if test="#{modifyusername != null}">
+			#{modifyusername },
+		</if>
+		<if test="#{modifytime != null}">
+			#{modifytime },
+		</if>
+		<if test="#{audituserid != null}">
+			#{audituserid },
+		</if>
+		<if test="#{auditusername != null}">
+			#{auditusername },
+		</if>
+		<if test="#{audittime != null}">
+			#{audittime },
+		</if>
+		<if test="#{stopuserid != null}">
+			#{stopuserid },
+		</if>
+		<if test="#{stopusername != null}">
+			#{stopusername },
+		</if>
+		<if test="#{stoptime != null}">
+			#{stoptime },
+		</if>
+		<if test="#{closetime != null}">
+			#{closetime },
+		</if>
+		<if test="#{printtimes != null}">
+			#{printtimes },
+		</if>
+		<if test="#{supplierid != null}">
+			#{supplierid },
+		</if>
+		<if test="#{customerid != null}">
+			#{customerid },
+		</if>
+		<if test="#{theme != null}">
+			#{theme },
+		</if>
+		<if test="#{planbegindate != null}">
+			#{planbegindate },
+		</if>
+		<if test="#{planenddate != null}">
+			#{planenddate },
+		</if>
+		<if test="#{expensesort != null}">
+			#{expensesort },
+		</if>
+		<if test="#{pricetype != null}">
+			#{pricetype },
+		</if>
+		<if test="#{isaddstorage != null}">
+			#{isaddstorage },
+		</if>
+		<if test="#{salesarea != null}">
+			#{salesarea },
+		</if>
+		<if test="#{salesareaname != null}">
+			#{salesareaname },
+		</if>
+		<if test="#{executeaddr != null}">
+			#{executeaddr },
+		</if>
+		<if test="#{remark1 != null}">
+			#{remark1 },
+		</if>
+		<if test="#{reimbursetype != null}">
+			#{reimbursetype },
+		</if>
+		<if test="#{reimbursedate != null}">
+			#{reimbursedate },
+		</if>
+		<if test="#{paytype != null}">
+			#{paytype },
+		</if>
+		<if test="#{paydate != null}">
+			#{paydate },
+		</if>
+		<if test="#{totalnum != null}">
+			#{totalnum },
+		</if>
+		<if test="#{totalamount != null}">
+			#{totalamount },
+		</if>
+		<if test="#{conbegindate != null}">
+			#{conbegindate },
+		</if>
+		<if test="#{conenddate != null}">
+			#{conenddate },
+		</if>
+		<if test="#{combegindate != null}">
+			#{combegindate },
+		</if>
+		<if test="#{comenddate != null}">
+			#{comenddate },
+		</if>
+		<if test="#{remark2 != null}">
+			#{remark2 },
+		</if>
+		<if test="#{myamount != null}">
+			#{myamount },
+		</if>
+		<if test="#{factoryamount != null}">
+			#{factoryamount },
+		</if>
+		<if test="#{compdiscount != null}">
+			#{compdiscount },
+		</if>
+		<if test="#{comdownamount != null}">
+			#{comdownamount },
+		</if>
+		<if test="#{payamount != null}">
+			#{payamount },
+		</if>
+		<if test="#{branchaccount != null}">
+			#{branchaccount },
+		</if>
+		<if test="#{isbillpay != null}">
+			#{isbillpay },
+		</if>
+		<if test="#{isfile != null}">
+			#{isfile },
+		</if>
+  	</trim>
+  </insert>
+  -->
+  
+  <insert id="insertOaAccess" parameterType="com.hd.agent.oa.model.OaAccess">
+  	insert into t_oa_access
+  	<trim prefix="(" suffix=")" suffixOverrides="," >
+		<if test="#{id != null}">
+			id,
+		</if>
+		<if test="#{oaid != null}">
+			oaid,
+		</if>
+		<if test="#{businessdate != null}">
+			businessdate,
+		</if>
+		<if test="#{status != null}">
+			status,
+		</if>
+		<if test="#{remark != null}">
+			remark,
+		</if>
+		<if test="#{adduserid != null}">
+			adduserid,
+		</if>
+		<if test="#{addusername != null}">
+			addusername,
+		</if>
+		<if test="#{adddeptid != null}">
+			adddeptid,
+		</if>
+		<if test="#{adddeptname != null}">
+			adddeptname,
+		</if>
+		addtime,
+		<if test="#{supplierid != null }">
+			supplierid,
+		</if>
+		<if test="#{confirmid != null }">
+			confirmid,
+		</if>
+		<if test="#{theme != null }">
+			theme,
+		</if>
+		<if test="#{planbegindate != null }">
+			planbegindate,
+		</if>
+		<if test="#{planenddate != null }">
+			planenddate,
+		</if>
+		<if test="#{expensesort != null }">
+			expensesort,
+		</if>
+		<if test="#{pricetype != null }">
+			pricetype,
+		</if>
+		<if test="#{isaddstorage != null }">
+			isaddstorage,
+		</if>
+		<if test="#{customerid != null }">
+			customerid,
+		</if>
+		<if test="#{salesarea != null }">
+			salesarea,
+		</if>
+		<if test="#{executeaddr != null }">
+			executeaddr,
+		</if>
+		<if test="#{factoryamount != null }">
+			factoryamount,
+		</if>
+		<if test="#{myamount != null }">
+			myamount,
+		</if>
+		<if test="#{reimbursetype != null }">
+			reimbursetype,
+		</if>
+		<if test="#{reimbursedate != null }">
+			reimbursedate,
+		</if>
+		<if test="#{remark1 != null }">
+			remark1,
+		</if>
+		<if test="#{conbegindate != null }">
+			conbegindate,
+		</if>
+		<if test="#{conenddate != null }">
+			conenddate,
+		</if>
+		<if test="#{combegindate != null }">
+			combegindate,
+		</if>
+		<if test="#{comenddate != null }">
+			comenddate,
+		</if>
+		<if test="#{paytype != null }">
+			paytype,
+		</if>
+		<if test="#{paydate != null }">
+			paydate,
+		</if>
+		<if test="#{totalnum != null }">
+			totalnum,
+		</if>
+		<if test="#{totalamount != null }">
+			totalamount,
+		</if>
+		<if test="#{remark2 != null }">
+			remark2,
+		</if>
+		<if test="#{compdiscount != null }">
+			compdiscount,
+		</if>
+		<if test="#{comdownamount != null }">
+			comdownamount,
+		</if>
+		<if test="#{payamount != null }">
+			payamount,
+		</if>
+		<if test="#{branchaccount != null }">
+			branchaccount,
+		</if>
+		<if test="#{autoassign != null }">
+			autoassign,
+		</if>
+  	</trim>
+  	<trim prefix=" values (" suffix=")" suffixOverrides="," >
+		<if test="#{id != null}">
+			#{id },
+		</if>
+		<if test="#{oaid != null}">
+			#{oaid },
+		</if>
+		<if test="#{businessdate != null}">
+			#{businessdate },
+		</if>
+		'2',
+		<if test="#{remark != null}">
+			#{remark },
+		</if>
+		<if test="#{adduserid != null}">
+			#{adduserid },
+		</if>
+		<if test="#{addusername != null}">
+			#{addusername },
+		</if>
+		<if test="#{adddeptid != null}">
+			#{adddeptid },
+		</if>
+		<if test="#{adddeptname != null}">
+			#{adddeptname },
+		</if>
+		now(),
+		<if test="#{supplierid != null }">
+			#{supplierid },
+		</if>
+		<if test="#{confirmid != null }">
+			#{confirmid },
+		</if>
+		<if test="#{theme != null }">
+			#{theme },
+		</if>
+		<if test="#{planbegindate != null }">
+			#{planbegindate },
+		</if>
+		<if test="#{planenddate != null }">
+			#{planenddate },
+		</if>
+		<if test="#{expensesort != null }">
+			#{expensesort },
+		</if>
+		<if test="#{pricetype != null }">
+			#{pricetype },
+		</if>
+		<if test="#{isaddstorage != null }">
+			#{isaddstorage },
+		</if>
+		<if test="#{customerid != null }">
+			#{customerid },
+		</if>
+		<if test="#{salesarea != null }">
+			#{salesarea },
+		</if>
+		<if test="#{executeaddr != null }">
+			#{executeaddr },
+		</if>
+		<if test="#{factoryamount != null }">
+			#{factoryamount },
+		</if>
+		<if test="#{myamount != null }">
+			#{myamount },
+		</if>
+		<if test="#{reimbursetype != null }">
+			#{reimbursetype },
+		</if>
+		<if test="#{reimbursedate != null }">
+			#{reimbursedate },
+		</if>
+		<if test="#{remark1 != null }">
+			#{remark1 },
+		</if>
+		<if test="#{conbegindate != null }">
+			#{conbegindate },
+		</if>
+		<if test="#{conenddate != null }">
+			#{conenddate },
+		</if>
+		<if test="#{combegindate != null }">
+			#{combegindate },
+		</if>
+		<if test="#{comenddate != null }">
+			#{comenddate },
+		</if>
+		<if test="#{paytype != null }">
+			#{paytype },
+		</if>
+		<if test="#{paydate != null }">
+			#{paydate },
+		</if>
+		<if test="#{totalnum != null }">
+			#{totalnum },
+		</if>
+		<if test="#{totalamount != null }">
+			#{totalamount },
+		</if>
+		<if test="#{remark2 != null }">
+			#{remark2 },
+		</if>
+		<if test="#{compdiscount != null }">
+			#{compdiscount },
+		</if>
+		<if test="#{comdownamount != null }">
+			#{comdownamount },
+		</if>
+		<if test="#{payamount != null }">
+			#{payamount },
+		</if>
+		<if test="#{branchaccount != null }">
+			#{branchaccount },
+		</if>
+		<if test="#{autoassign != null }">
+			#{autoassign },
+		</if>
+  	</trim>
+  </insert>
+  
+  <update id="updateOaAccess" parameterType="com.hd.agent.oa.model.OaAccess">
+  	update t_oa_access
+  	<set>
+  		oaid = #{oaid },
+		modifyuserid = #{modifyuserid },
+		modifyusername = #{modifyusername },
+		modifytime = now(),
+		supplierid = #{supplierid },
+		confirmid = #{confirmid },
+		theme = #{theme },
+		planbegindate = #{planbegindate },
+		planenddate = #{planenddate },
+		expensesort = #{expensesort },
+		pricetype = #{pricetype },
+		isaddstorage = #{isaddstorage },
+		customerid = #{customerid },
+		salesarea = #{salesarea },
+		executeaddr = #{executeaddr },
+		factoryamount = #{factoryamount },
+		myamount = #{myamount },
+		reimbursetype = #{reimbursetype },
+		reimbursedate = #{reimbursedate },
+		remark1 = #{remark1 },
+		conbegindate = #{conbegindate },
+		conenddate = #{conenddate },
+		combegindate = #{combegindate },
+		comenddate = #{comenddate },
+		paytype = #{paytype },
+		paydate = #{paydate },
+		totalnum = #{totalnum },
+		totalamount = #{totalamount },
+		remark2 = #{remark2 },
+		compdiscount = #{compdiscount },
+		comdownamount = #{comdownamount },
+		payamount = #{payamount },
+		branchaccount = #{branchaccount },
+		autoassign = #{autoassign },
+	</set>
+	where id = #{id }
+  </update>
+  
+  <select id="selectOaAccessInfo" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select 
+  	<include refid="Base_Column_List"/>
+  	from t_oa_access
+  	where id=#{id }
+  </select>
+  
+  <select id="selectGoodsSalesOut" parameterType="java.util.Map" resultType="java.lang.Integer">
+  	select IF(sum(t2.unitnum) IS NULL, 0, sum(t2.unitnum)) unitnum
+  	from t_storage_saleout t1 left join t_storage_saleout_detail t2 on t1.id = t2.saleoutid
+  	<trim prefix="where" prefixOverrides="and">
+		<if test="pcustomerid != null ">
+			and t1.pcustomerid = #{pcustomerid }
+		</if>
+		<if test="customerid != null ">
+			and t1.customerid = #{customerid }
+		</if>
+		<if test="begindate != null ">
+			and t1.businessdate <![CDATA[ >= ]]> #{begindate }
+		</if>
+		<if test="enddate != null ">
+			and t1.businessdate <![CDATA[ <= ]]> #{enddate }
+		</if>
+		<if test="goodsid != null ">
+			and t2.goodsid = #{goodsid }
+		</if>
+		and t1.status in ('3', '4')
+  	</trim>
+  </select>
+  <select id="selectGoodsRejectEnter" parameterType="java.util.Map" resultType="java.lang.Integer">
+  	select IF(sum(t2.unitnum) IS NULL, 0, sum(t2.unitnum)) unitnum
+  	from t_storage_salereject_enter t1 left join t_storage_salereject_enter_detail t2 on t1.id = t2.salerejectid
+  	<trim prefix="where" prefixOverrides="and">
+		<if test="pcustomerid != null ">
+			and t1.pcustomerid = #{pcustomerid }
+		</if>
+		<if test="customerid != null ">
+			and t1.customerid = #{customerid }
+		</if>
+		<if test="begindate != null ">
+			and t1.businessdate <![CDATA[ >= ]]> #{begindate }
+		</if>
+		<if test="enddate != null ">
+			and t1.businessdate <![CDATA[ <= ]]> #{enddate }
+		</if>
+		<if test="goodsid != null ">
+			and t2.goodsid = #{goodsid }
+		</if>
+		and t1.status in ('3', '4')
+  	</trim>
+  </select>
+</mapper>

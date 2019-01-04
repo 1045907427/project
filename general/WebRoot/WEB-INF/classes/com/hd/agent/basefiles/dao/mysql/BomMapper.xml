@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.basefiles.dao.BomMapper" >
+    <resultMap id="BaseResultMap" type="com.hd.agent.basefiles.model.Bom" >
+        <id column="id" property="id" jdbcType="VARCHAR" />
+        <result column="businessdate" property="businessdate" jdbcType="VARCHAR" />
+        <result column="status" property="status" jdbcType="VARCHAR" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="adduserid" property="adduserid" jdbcType="VARCHAR" />
+        <result column="addusername" property="addusername" jdbcType="VARCHAR" />
+        <result column="adddeptid" property="adddeptid" jdbcType="VARCHAR" />
+        <result column="adddeptname" property="adddeptname" jdbcType="VARCHAR" />
+        <result column="addtime" property="addtime" jdbcType="TIMESTAMP" />
+        <result column="modifyuserid" property="modifyuserid" jdbcType="VARCHAR" />
+        <result column="modifyusername" property="modifyusername" jdbcType="VARCHAR" />
+        <result column="modifytime" property="modifytime" jdbcType="TIMESTAMP" />
+        <result column="audituserid" property="audituserid" jdbcType="VARCHAR" />
+        <result column="auditusername" property="auditusername" jdbcType="VARCHAR" />
+        <result column="audittime" property="audittime" jdbcType="TIMESTAMP" />
+        <result column="stopuserid" property="stopuserid" jdbcType="VARCHAR" />
+        <result column="stopusername" property="stopusername" jdbcType="VARCHAR" />
+        <result column="stoptime" property="stoptime" jdbcType="TIMESTAMP" />
+        <result column="closetime" property="closetime" jdbcType="TIMESTAMP" />
+        <result column="printtimes" property="printtimes" jdbcType="INTEGER" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+    </resultMap>
+    <resultMap id="DetailResultMap" type="com.hd.agent.basefiles.model.BomDetail" >
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="billid" property="billid" jdbcType="VARCHAR" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="goodsid" property="goodsid" jdbcType="VARCHAR" />
+        <result column="type" jdbcType="VARCHAR" property="type" />
+        <result column="unitnum" property="unitnum" jdbcType="DECIMAL" />
+        <result column="auxnum" property="auxnum" jdbcType="DECIMAL" />
+        <result column="auxremainder" property="auxremainder" jdbcType="DECIMAL" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+        id, businessdate, status, remark, adduserid, addusername, adddeptid, adddeptname,
+        addtime, modifyuserid, modifyusername, modifytime, audituserid, auditusername, audittime,
+        stopuserid, stopusername, stoptime, closetime, printtimes, name
+    </sql>
+    <sql id="Base_Column_List2" >
+        t1.id, t1.businessdate, t1.status, t1.remark, t1.adduserid, t1.addusername, t1.adddeptid, t1.adddeptname,
+        t1.addtime, t1.modifyuserid, t1.modifyusername, t1.modifytime, t1.audituserid, t1.auditusername, t1.audittime,
+        t1.stopuserid, t1.stopusername, t1.stoptime, t1.closetime, t1.printtimes, t1.name
+    </sql>
+    <sql id="Detail_Column_List" >
+        id, billid, remark, goodsid, type, unitnum, auxnum, auxremainder
+    </sql>
+    <sql id="Detail_Column_List2" >
+        t1.id, t1.billid, t1.remark, t1.goodsid, t1.type, t1.unitnum, t1.auxnum, t1.auxremainder
+    </sql>
+    <insert id="insertBom" parameterType="com.hd.agent.basefiles.model.Bom" >
+        insert into t_base_bom
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="businessdate != null" >
+                businessdate,
+            </if>
+            <if test="status != null" >
+                status,
+            </if>
+            <if test="remark != null" >
+                remark,
+            </if>
+            <if test="adduserid != null" >
+                adduserid,
+            </if>
+            <if test="addusername != null" >
+                addusername,
+            </if>
+            <if test="adddeptid != null" >
+                adddeptid,
+            </if>
+            <if test="adddeptname != null" >
+                adddeptname,
+            </if>
+            addtime,
+            <if test="modifyuserid != null" >
+                modifyuserid,
+            </if>
+            <if test="modifyusername != null" >
+                modifyusername,
+            </if>
+            <if test="modifytime != null" >
+                modifytime,
+            </if>
+            <if test="audituserid != null" >
+                audituserid,
+            </if>
+            <if test="auditusername != null" >
+                auditusername,
+            </if>
+            <if test="audittime != null" >
+                audittime,
+            </if>
+            <if test="stopuserid != null" >
+                stopuserid,
+            </if>
+            <if test="stopusername != null" >
+                stopusername,
+            </if>
+            <if test="stoptime != null" >
+                stoptime,
+            </if>
+            <if test="closetime != null" >
+                closetime,
+            </if>
+            <if test="printtimes != null" >
+                printtimes,
+            </if>
+            <if test="name != null" >
+                name,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id},
+            </if>
+            <if test="businessdate != null" >
+                #{businessdate},
+            </if>
+            <if test="status != null" >
+                #{status},
+            </if>
+            <if test="remark != null" >
+                #{remark},
+            </if>
+            <if test="adduserid != null" >
+                #{adduserid},
+            </if>
+            <if test="addusername != null" >
+                #{addusername},
+            </if>
+            <if test="adddeptid != null" >
+                #{adddeptid},
+            </if>
+            <if test="adddeptname != null" >
+                #{adddeptname},
+            </if>
+            now(),
+            <if test="modifyuserid != null" >
+                #{modifyuserid},
+            </if>
+            <if test="modifyusername != null" >
+                #{modifyusername},
+            </if>
+            <if test="modifytime != null" >
+                #{modifytime},
+            </if>
+            <if test="audituserid != null" >
+                #{audituserid},
+            </if>
+            <if test="auditusername != null" >
+                #{auditusername},
+            </if>
+            <if test="audittime != null" >
+                #{audittime},
+            </if>
+            <if test="stopuserid != null" >
+                #{stopuserid},
+            </if>
+            <if test="stopusername != null" >
+                #{stopusername},
+            </if>
+            <if test="stoptime != null" >
+                #{stoptime},
+            </if>
+            <if test="closetime != null" >
+                #{closetime},
+            </if>
+            <if test="printtimes != null" >
+                #{printtimes},
+            </if>
+            <if test="name != null" >
+                #{name},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateBom" parameterType="com.hd.agent.basefiles.model.Bom" >
+        update t_base_bom
+        <set >
+            <if test="businessdate != null" >
+                businessdate = #{businessdate},
+            </if>
+            <if test="status != null" >
+                status = #{status},
+            </if>
+            <if test="remark != null" >
+                remark = #{remark},
+            </if>
+            <if test="modifyuserid != null" >
+                modifyuserid = #{modifyuserid},
+            </if>
+            <if test="modifyusername != null" >
+                modifyusername = #{modifyusername},
+            </if>
+            modifytime = now(),
+            <if test="audituserid != null" >
+                audituserid = #{audituserid},
+            </if>
+            <if test="auditusername != null" >
+                auditusername = #{auditusername},
+            </if>
+            <if test="audittime != null" >
+                audittime = #{audittime},
+            </if>
+            <if test="stopuserid != null" >
+                stopuserid = #{stopuserid},
+            </if>
+            <if test="stopusername != null" >
+                stopusername = #{stopusername},
+            </if>
+            <if test="stoptime != null" >
+                stoptime = #{stoptime},
+            </if>
+            <if test="closetime != null" >
+                closetime = #{closetime},
+            </if>
+            <if test="printtimes != null" >
+                printtimes = #{printtimes},
+            </if>
+            <if test="name != null" >
+                name = #{name},
+            </if>
+        </set>
+        where id = #{id }
+    </update>
+    <delete id="deleteBom" parameterType="java.lang.String">
+        delete from t_base_bom
+         where id = #{id }
+    </delete>
+    <insert id="insertBomDetail" parameterType="com.hd.agent.basefiles.model.BomDetail">
+        insert into t_base_bom_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="billid != null">
+                billid,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="goodsid != null">
+                goodsid,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="unitnum != null">
+                unitnum,
+            </if>
+            <if test="auxnum != null">
+                auxnum,
+            </if>
+            <if test="auxremainder != null">
+                auxremainder,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="billid != null">
+                #{billid},
+            </if>
+            <if test="remark != null">
+                #{remark},
+            </if>
+            <if test="goodsid != null">
+                #{goodsid},
+            </if>
+            <if test="type != null">
+                #{type},
+            </if>
+            <if test="unitnum != null">
+                #{unitnum},
+            </if>
+            <if test="auxnum != null">
+                #{auxnum},
+            </if>
+            <if test="auxremainder != null">
+                #{auxremainder},
+            </if>
+        </trim>
+    </insert>
+    <delete id="deleteBomDetail" parameterType="java.lang.String">
+        delete from t_base_bom_detail
+         where billid = #{billid }
+    </delete>
+    <sql id="selectBomList_sql_condition">
+        <trim prefix="where" prefixOverrides="and|or">
+            and 1 = 1
+            and t2.type = 1
+            <if test="condition.id != null">
+                and t1.id = #{condition.id }
+            </if>
+            <if test="condition.status != null">
+                and t1.status = #{condition.status }
+            </if>
+            <if test="condition.startdate != null">
+                and t1.businessdate <![CDATA[ >= ]]> #{condition.startdate }
+            </if>
+            <if test="condition.enddate != null">
+                and t1.businessdate <![CDATA[ <= ]]> #{condition.enddate }
+            </if>
+            <if test="condition.goodsid != null">
+                and (
+                t2.goodsid = #{condition.goodsid }
+                or exists(select 1 from t_base_bom_detail t4 where t1.id = t4.billid and t4.type = 2 and t4.goodsid = #{condition.goodsid })
+                )
+            </if>
+            <include refid="common.Page_querySql"/>
+            <include refid="common.Page_dataSql"/>
+        </trim>
+    </sql>
+    <select id="selectBomList" resultType="com.hd.agent.basefiles.model.Bom" parameterType="com.hd.agent.common.util.PageMap">
+        select
+          <include refid="Base_Column_List2"/>,
+          t2.goodsid goodsid,
+          t3.name goodsname
+        from t_base_bom t1
+        left join t_base_bom_detail t2 on t1.id = t2.billid
+        left join t_base_goods_info t3 on t2.goodsid = t3.id
+        <include refid="selectBomList_sql_condition"/>
+        order by id
+        <include refid="common.Page_limit"/>
+    </select>
+    <select id="selectBomListCount" resultType="int" parameterType="com.hd.agent.common.util.PageMap">
+        select count(1)
+        from t_base_bom t1
+        left join t_base_bom_detail t2 on t1.id = t2.billid
+        <include refid="selectBomList_sql_condition"/>
+    </select>
+    <select id="selectBom" parameterType="java.lang.String" resultType="com.hd.agent.basefiles.model.Bom">
+        select
+          <include refid="Base_Column_List2"/>,
+          t2.goodsid goodsid,
+          t3.name goodsname,
+          t2.unitnum,
+          t2.auxnum,
+          t2.auxremainder,
+          t4.rate boxnum
+        from t_base_bom t1
+        left join t_base_bom_detail t2 on t1.id = t2.billid
+        left join t_base_goods_info t3 on t2.goodsid = t3.id
+        left join t_base_goods_info_meteringunit t4 on t3.id = t4.goodsid and t4.isdefault = '1'
+        where t2.type = '1' and t1.id = #{id }
+    </select>
+    <select id="selectBomDetailList" resultType="java.util.Map" parameterType="com.hd.agent.common.util.PageMap">
+        select
+            <include refid="Detail_Column_List2"/>,
+            t3.name goodsname,
+            <!-- 商品取价：先核算成本价，再最新采购价。通用版禁用核算成本价 -->
+            /*t3.costaccountprice*/ t3.newstorageprice price,
+            t3.isbatch isbatch/*,
+            t4.produceddate produceddate,
+            t4.deadline deadline,
+            t4.usablenum usablenum*/,
+            t3.barcode
+        from t_base_bom_detail t1
+        left join t_base_goods_info t3 on t1.goodsid = t3.id
+        /*left join t_storage_summary_batch t4 on t1.goodsid = t4.goodsid and t1.storageid = t4.storageid and t1.batchid = t4.batchno*/
+        <trim prefix="where" prefixOverrides="and|or">
+            and 1 = 1
+            <if test="condition.billid != null">
+                and t1.billid = #{condition.billid }
+            </if>
+            <if test="condition.type != null">
+                and t1.type = #{condition.type }
+            </if>
+            <include refid="common.Page_querySql"/>
+            <include refid="common.Page_dataSql"/>
+        </trim>
+        order by id
+        <include refid="common.Page_limit"/>
+    </select>
+    <select id="selectBomDetailListCount" resultType="int" parameterType="com.hd.agent.common.util.PageMap">
+        select count(1)
+        from t_base_bom_detail t1
+        <trim prefix="where" prefixOverrides="and|or">
+            and 1 = 1
+            <if test="condition.billid != null">
+                and t1.billid = #{condition.billid }
+            </if>
+            <if test="condition.type != null">
+                and t1.type = #{condition.type }
+            </if>
+            <include refid="common.Page_querySql"/>
+            <include refid="common.Page_dataSql"/>
+        </trim>
+    </select>
+</mapper>

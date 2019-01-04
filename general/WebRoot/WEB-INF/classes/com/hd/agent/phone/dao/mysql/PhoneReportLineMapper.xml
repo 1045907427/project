@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.phone.dao.PhoneReportLineMapper" >
+    <select id="getDepartmentIdByValue"  parameterType="java.lang.String" resultType="map">
+        select id from t_base_department where name=#{name}
+    </select>
+    <sql id="Base_Column_List" >
+        id, keyid,businessdate, status, remark, adduserid, addusername, adddeptid, adddeptname,
+        addtime, modifyuserid, modifyusername, modifytime, audituserid, auditusername, audittime,
+        stopuserid, stopusername, stoptime, closetime, printtimes, customerid,customersort, handlerid,
+        isgoodsseq, salesdept, salesuser, settletype, paytype, field01, field02, field03,
+        field04, field05, field06, field07, field08, seq,indooruserid
+    </sql>
+    <select id="getSalesDemandBillReportData" resultType="map" parameterType="com.hd.agent.common.util.PageMap">
+        select z.* from ( SELECT t1.id AS demandid,t1.orderid,
+        (SELECT sum(taxamount) FROM t_sales_demand_detail WHERE orderid=t1.id) as field01,
+        t1.businessdate,t1.addtime,t1.customerid
+        FROM t_sales_demand t1
+        <trim prefix="where" prefixOverrides="and|or">
+            <include refid="common.Page_querySql"/>
+            <include refid="common.Page_dataSql"/>
+            <if test="condition.sourceid != null">
+                and t1.id like concat('%',#{condition.sourceid},'%')
+            </if>
+            <if test="condition.orderid != null">
+                and t1.orderid like concat('%',#{condition.orderid},'%')
+            </if>
+            <if test="condition.businessdate1 != null">
+                <![CDATA[ and t1.businessdate>= #{condition.businessdate1} ]]>
+            </if>
+            <if test="condition.businessdate2 != null">
+                <![CDATA[ and t1.businessdate<= #{condition.businessdate2} ]]>
+            </if>
+            <if test="condition.customerid != null">
+                and find_in_set(t1.customerid,#{condition.customerid})
+            </if>
+            <if test="condition.brandid != null">
+                AND EXISTS (SELECT t2.id FROM t_sales_demand_detail t2 WHERE find_in_set(t2.brandid,#{condition.brandid}) AND t2.orderid=t1.id)
+            </if>
+            <if test="condition.branddept != null">
+                AND EXISTS (SELECT t2.id FROM t_sales_demand_detail t2 WHERE find_in_set(t2.branddept,#{condition.branddept}) AND t2.orderid=t1.id)
+            </if>
+            <if test="condition.branduser != null">
+                AND EXISTS (SELECT t2.id FROM t_sales_demand_detail t2 WHERE find_in_set(t2.branduser,#{condition.branduser}) AND t2.orderid=t1.id)
+            </if>
+            <if test="condition.goodsid != null">
+                AND EXISTS (SELECT t2.id FROM t_sales_demand_detail t2 WHERE find_in_set(t2.goodsid,#{condition.goodsid}) AND t2.orderid=t1.id)
+            </if>
+            <if test="condition.salesarea != null">
+                and find_in_set(t1.salesarea,#{condition.salesarea})
+            </if>
+            <if test="condition.salesdept != null">
+                and find_in_set(t1.salesdept,#{condition.salesdept})
+            </if>
+            <if test="condition.customersort != null">
+                and find_in_set(t1.customersort,#{condition.customersort})
+            </if>
+            <if test="1==1">
+                and find_in_set(t1.status,'0,1')
+            </if>
+        </trim>
+        <if test="condition.sourceid == null">
+            UNION ALL
+            SELECT '' AS demandid,t1.id,
+            (SELECT sum(taxamount) FROM t_sales_order_detail WHERE orderid=t1.id) as field01,
+            t1.businessdate,t1.addtime,t1.customerid
+            FROM t_sales_order t1
+            <trim prefix="where" prefixOverrides="and|or">
+                <include refid="common.Page_querySql"/>
+                <include refid="common.Page_dataSql"/>
+                <if test="condition.orderid != null">
+                    and t1.id like concat('%',#{condition.orderid},'%')
+                </if>
+                <if test="condition.businessdate1 != null">
+                    <![CDATA[ and t1.businessdate>= #{condition.businessdate1} ]]>
+                </if>
+                <if test="condition.businessdate2 != null">
+                    <![CDATA[ and t1.businessdate<= #{condition.businessdate2} ]]>
+                </if>
+                <if test="condition.customerid != null">
+                    and find_in_set(t1.customerid,#{condition.customerid})
+                </if>
+                <if test="condition.brandid != null">
+                    AND EXISTS (SELECT t2.id FROM t_sales_demand_detail t2 WHERE find_in_set(t2.brandid,#{condition.brandid}) AND t2.orderid=t1.id)
+                </if>
+                <if test="condition.branddept != null">
+                    AND EXISTS (SELECT t2.id FROM t_sales_demand_detail t2 WHERE find_in_set(t2.branddept,#{condition.branddept}) AND t2.orderid=t1.id)
+                </if>
+                <if test="condition.branduser != null">
+                    AND EXISTS (SELECT t2.id FROM t_sales_demand_detail t2 WHERE find_in_set(t2.branduser,#{condition.branduser}) AND t2.orderid=t1.id)
+                </if>
+                <if test="condition.goodsid != null">
+                    AND EXISTS (SELECT t2.id FROM t_sales_demand_detail t2 WHERE find_in_set(t2.goodsid,#{condition.goodsid}) AND t2.orderid=t1.id)
+                </if>
+                <if test="condition.salesarea != null">
+                    and find_in_set(t1.salesarea,#{condition.salesarea})
+                </if>
+                <if test="condition.salesdept != null">
+                    and find_in_set(t1.salesdept,#{condition.salesdept})
+                </if>
+                <if test="condition.customersort != null">
+                    and find_in_set(t1.customersort,#{condition.customersort})
+                </if>
+                <if test="1==1">
+                    and find_in_set(t1.status,'2,3') and find_in_set(t1.sourcetype,'0,2')
+                </if>
+            </trim> GROUP BY t1.id
+
+        </if>) z
+        <if test="condition.ispageflag==null">
+            <include refid="common.Page_limit" />
+        </if>
+    </select>
+    <select id="getOrderTrackByOrderid" parameterType="java.lang.String" resultType="map">
+        SELECT
+        b.id orderid,
+        min(b.businessdate) orderbusinessdate,
+        min(b.status) orderstatus,
+        min(b.addtime) orderaddtime,
+        b.auditusername orderauditusername,
+        b.audittime orderaudittime,
+        GROUP_CONCAT(DISTINCT c.id) dbillid,
+        c.businessdate dbillbusinessdate,
+        min(c.status) dbillstatus,
+        min(c.addtime) dbilladdtime,
+        c.auditusername dbillauditusername,
+        c.audittime dbillaudittime,
+        GROUP_CONCAT(DISTINCT d.id) outid,
+        d.businessdate outbusinessdate,
+        min(d.status) outstatus,
+        min(d.addtime) outaddtime,
+        d.auditusername outauditusername,
+        d.audittime outaudittime,
+        min(if(d.invoicedate is null or d.invoicedate='',0,1)) as isinvoice,
+        d.iswrite as iswriteoff,
+        d.invoicedate,
+        d.writeoffdate as writeoffdate,
+        GROUP_CONCAT(DISTINCT e.id) recid,
+        e.businessdate recbusinessdate,
+        min(e.status) recstatus,
+        min(e.addtime) recaddtime,
+        e.auditusername recauditusername,
+        e.audittime recaudittime
+        FROM  t_sales_order b
+        LEFT JOIN t_sales_dispatchbill c ON FIND_IN_SET(c.billno,b.id)
+        LEFT JOIN t_storage_saleout d ON FIND_IN_SET(d.saleorderid ,b.id)
+        LEFT JOIN t_sales_receipt e ON FIND_IN_SET(e.saleorderid ,b.id)
+        WHERE b.id = #{orderid}
+        GROUP BY b.id
+    </select>
+</mapper>

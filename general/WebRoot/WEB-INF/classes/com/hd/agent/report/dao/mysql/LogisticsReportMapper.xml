@@ -1,0 +1,1020 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.report.dao.LogisticsReportMapper" >
+  <resultMap id="BaseResultMap" type="com.hd.agent.report.model.LogisticsReport" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="deliveryid" property="deliveryid" jdbcType="VARCHAR" />
+    <result column="businessdate" property="businessdate" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="adduserid" property="adduserid" jdbcType="VARCHAR" />
+    <result column="addusername" property="addusername" jdbcType="VARCHAR" />
+    <result column="adddeptid" property="adddeptid" jdbcType="VARCHAR" />
+    <result column="adddeptname" property="adddeptname" jdbcType="VARCHAR" />
+    <result column="addtime" property="addtime" jdbcType="TIMESTAMP" />
+    <result column="modifyuserid" property="modifyuserid" jdbcType="VARCHAR" />
+    <result column="modifyusername" property="modifyusername" jdbcType="VARCHAR" />
+    <result column="modifytime" property="modifytime" jdbcType="TIMESTAMP" />
+    <result column="audituserid" property="audituserid" jdbcType="VARCHAR" />
+    <result column="auditusername" property="auditusername" jdbcType="VARCHAR" />
+    <result column="audittime" property="audittime" jdbcType="TIMESTAMP" />
+    <result column="stopuserid" property="stopuserid" jdbcType="VARCHAR" />
+    <result column="stopusername" property="stopusername" jdbcType="VARCHAR" />
+    <result column="stoptime" property="stoptime" jdbcType="TIMESTAMP" />
+    <result column="closetime" property="closetime" jdbcType="TIMESTAMP" />
+    <result column="printtimes" property="printtimes" jdbcType="INTEGER" />
+    <result column="lineid" property="lineid" jdbcType="VARCHAR" />
+    <result column="carid" property="carid" jdbcType="VARCHAR" />
+    <result column="cartype" property="cartype" jdbcType="CHAR" />
+    <result column="driverid" property="driverid" jdbcType="VARCHAR" />
+    <result column="isdriver" property="isdriver" jdbcType="CHAR" />
+    <result column="customernums" property="customernums" jdbcType="INTEGER" />
+    <result column="auxnum" property="auxnum" jdbcType="DECIMAL" />
+    <result column="auxremainder" property="auxremainder" jdbcType="DECIMAL" />
+    <result column="volume" property="volume" jdbcType="DECIMAL" />
+    <result column="weight" property="weight" jdbcType="DECIMAL" />
+    <result column="truck" property="truck" jdbcType="INTEGER" />
+    <result column="trucksubsidy" property="trucksubsidy" jdbcType="DECIMAL" />
+    <result column="carallowance" property="carallowance" jdbcType="DECIMAL" />
+    <result column="carsubsidy" property="carsubsidy" jdbcType="DECIMAL" />
+    <result column="customersubsidy" property="customersubsidy" jdbcType="DECIMAL" />
+    <result column="collectionamount" property="collectionamount" jdbcType="DECIMAL" />
+    <result column="collectionsubsidy" property="collectionsubsidy" jdbcType="DECIMAL" />
+    <result column="othersubsidy" property="othersubsidy" jdbcType="DECIMAL" />
+    <result column="safebonus" property="safebonus" jdbcType="DECIMAL" />
+    <result column="receiptbonus" property="receiptbonus" jdbcType="DECIMAL" />
+    <result column="nightbonus" property="nightbonus" jdbcType="DECIMAL" />
+    <result column="subamount" property="subamount" jdbcType="DECIMAL" />
+    <result column="totalamount" property="totalamount" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, deliveryid, businessdate, status, remark, adduserid, addusername, adddeptid, 
+    adddeptname, addtime, modifyuserid, modifyusername, modifytime, audituserid, auditusername, 
+    audittime, stopuserid, stopusername, stoptime, closetime, printtimes, lineid, carid, 
+    cartype, driverid, isdriver, customernums, auxnum, auxremainder, boxnum,volume, weight, salesamount,
+    truck, trucksubsidy, carallowance, carsubsidy, customersubsidy, collectionamount, 
+    salessubsidy,collectionsubsidy, othersubsidy, safebonus, receiptbonus, nightbonus, subamount,
+    totalamount
+  </sql>
+  <!-- 
+  <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.deliveryid != null" >
+         and deliveryid = #{condition.deliveryid}
+      </if>
+      <if test="condition.businessdate != null" >
+         and businessdate = #{condition.businessdate}
+      </if>
+      <if test="condition.status != null" >
+         and status = #{condition.status}
+      </if>
+      <if test="condition.remark != null" >
+         and remark = #{condition.remark}
+      </if>
+      <if test="condition.adduserid != null" >
+         and adduserid = #{condition.adduserid}
+      </if>
+      <if test="condition.addusername != null" >
+         and addusername = #{condition.addusername}
+      </if>
+      <if test="condition.adddeptid != null" >
+         and adddeptid = #{condition.adddeptid}
+      </if>
+      <if test="condition.adddeptname != null" >
+         and adddeptname = #{condition.adddeptname}
+      </if>
+      <if test="condition.addtime != null" >
+         and addtime = #{condition.addtime}
+      </if>
+      <if test="condition.modifyuserid != null" >
+         and modifyuserid = #{condition.modifyuserid}
+      </if>
+      <if test="condition.modifyusername != null" >
+         and modifyusername = #{condition.modifyusername}
+      </if>
+      <if test="condition.modifytime != null" >
+         and modifytime = #{condition.modifytime}
+      </if>
+      <if test="condition.audituserid != null" >
+         and audituserid = #{condition.audituserid}
+      </if>
+      <if test="condition.auditusername != null" >
+         and auditusername = #{condition.auditusername}
+      </if>
+      <if test="condition.audittime != null" >
+         and audittime = #{condition.audittime}
+      </if>
+      <if test="condition.stopuserid != null" >
+         and stopuserid = #{condition.stopuserid}
+      </if>
+      <if test="condition.stopusername != null" >
+         and stopusername = #{condition.stopusername}
+      </if>
+      <if test="condition.stoptime != null" >
+         and stoptime = #{condition.stoptime}
+      </if>
+      <if test="condition.closetime != null" >
+         and closetime = #{condition.closetime}
+      </if>
+      <if test="condition.printtimes != null" >
+         and printtimes = #{condition.printtimes}
+      </if>
+      <if test="condition.lineid != null" >
+         and lineid = #{condition.lineid}
+      </if>
+      <if test="condition.carid != null" >
+         and carid = #{condition.carid}
+      </if>
+      <if test="condition.cartype != null" >
+         and cartype = #{condition.cartype}
+      </if>
+      <if test="condition.driverid != null" >
+         and driverid = #{condition.driverid}
+      </if>
+      <if test="condition.isdriver != null" >
+         and isdriver = #{condition.isdriver}
+      </if>
+      <if test="condition.customernums != null" >
+         and customernums = #{condition.customernums}
+      </if>
+      <if test="condition.auxnum != null" >
+         and auxnum = #{condition.auxnum}
+      </if>
+      <if test="condition.auxremainder != null" >
+         and auxremainder = #{condition.auxremainder}
+      </if>
+      <if test="condition.volume != null" >
+         and volume = #{condition.volume}
+      </if>
+      <if test="condition.weight != null" >
+         and weight = #{condition.weight}
+      </if>
+      <if test="condition.truck != null" >
+         and truck = #{condition.truck}
+      </if>
+      <if test="condition.trucksubsidy != null" >
+         and trucksubsidy = #{condition.trucksubsidy}
+      </if>
+      <if test="condition.carallowance != null" >
+         and carallowance = #{condition.carallowance}
+      </if>
+      <if test="condition.carsubsidy != null" >
+         and carsubsidy = #{condition.carsubsidy}
+      </if>
+      <if test="condition.customersubsidy != null" >
+         and customersubsidy = #{condition.customersubsidy}
+      </if>
+      <if test="condition.collectionamount != null" >
+         and collectionamount = #{condition.collectionamount}
+      </if>
+      <if test="condition.collectionsubsidy != null" >
+         and collectionsubsidy = #{condition.collectionsubsidy}
+      </if>
+      <if test="condition.othersubsidy != null" >
+         and othersubsidy = #{condition.othersubsidy}
+      </if>
+      <if test="condition.safebonus != null" >
+         and safebonus = #{condition.safebonus}
+      </if>
+      <if test="condition.receiptbonus != null" >
+         and receiptbonus = #{condition.receiptbonus}
+      </if>
+      <if test="condition.nightbonus != null" >
+         and nightbonus = #{condition.nightbonus}
+      </if>
+      <if test="condition.subamount != null" >
+         and subamount = #{condition.subamount}
+      </if>
+      <if test="condition.totalamount != null" >
+         and totalamount = #{condition.totalamount}
+      </if>
+    </trim>
+  </sql>
+   
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.hd.agent.report.model.Criteria" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from t_report_storage_logistics
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <include refid="common.Mysql_Pagination_Limit" />
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_report_storage_logistics
+    where id = #{id}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_report_storage_logistics
+    where id = #{id}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.hd.agent.report.model.Criteria" >
+    delete from t_report_storage_logistics
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.hd.agent.report.model.LogisticsReport" >
+    insert into t_report_storage_logistics (id, deliveryid, businessdate, status, remark, adduserid, 
+      addusername, adddeptid, adddeptname, addtime, modifyuserid, modifyusername, 
+      modifytime, audituserid, auditusername, audittime, stopuserid, stopusername, 
+      stoptime, closetime, printtimes, lineid, carid, cartype, driverid, 
+      isdriver, customernums, auxnum, auxremainder, volume, weight, 
+      truck, trucksubsidy, carallowance, carsubsidy, customersubsidy, 
+      collectionamount, collectionsubsidy, othersubsidy, safebonus, receiptbonus, 
+      nightbonus, subamount, totalamount)
+    values (#{id}, #{deliveryid}, #{businessdate}, #{status}, #{remark}, #{adduserid}, 
+      #{addusername}, #{adddeptid}, #{adddeptname}, #{addtime}, #{modifyuserid}, #{modifyusername}, 
+      #{modifytime}, #{audituserid}, #{auditusername}, #{audittime}, #{stopuserid}, #{stopusername}, 
+      #{stoptime}, #{closetime}, #{printtimes}, #{lineid}, #{carid}, #{cartype}, #{driverid}, 
+      #{isdriver}, #{customernums}, #{auxnum}, #{auxremainder}, #{volume}, #{weight}, 
+      #{truck}, #{trucksubsidy}, #{carallowance}, #{carsubsidy}, #{customersubsidy}, 
+      #{collectionamount}, #{collectionsubsidy}, #{othersubsidy}, #{safebonus}, #{receiptbonus}, 
+      #{nightbonus}, #{subamount}, #{totalamount})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hd.agent.report.model.LogisticsReport" >
+    insert into t_report_storage_logistics
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="deliveryid != null" >
+        deliveryid,
+      </if>
+      <if test="businessdate != null" >
+        businessdate,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="adduserid != null" >
+        adduserid,
+      </if>
+      <if test="addusername != null" >
+        addusername,
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid,
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname,
+      </if>
+      <if test="addtime != null" >
+        addtime,
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid,
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername,
+      </if>
+      <if test="modifytime != null" >
+        modifytime,
+      </if>
+      <if test="audituserid != null" >
+        audituserid,
+      </if>
+      <if test="auditusername != null" >
+        auditusername,
+      </if>
+      <if test="audittime != null" >
+        audittime,
+      </if>
+      <if test="stopuserid != null" >
+        stopuserid,
+      </if>
+      <if test="stopusername != null" >
+        stopusername,
+      </if>
+      <if test="stoptime != null" >
+        stoptime,
+      </if>
+      <if test="closetime != null" >
+        closetime,
+      </if>
+      <if test="printtimes != null" >
+        printtimes,
+      </if>
+      <if test="lineid != null" >
+        lineid,
+      </if>
+      <if test="carid != null" >
+        carid,
+      </if>
+      <if test="cartype != null" >
+        cartype,
+      </if>
+      <if test="driverid != null" >
+        driverid,
+      </if>
+      <if test="isdriver != null" >
+        isdriver,
+      </if>
+      <if test="customernums != null" >
+        customernums,
+      </if>
+      <if test="auxnum != null" >
+        auxnum,
+      </if>
+      <if test="auxremainder != null" >
+        auxremainder,
+      </if>
+      <if test="volume != null" >
+        volume,
+      </if>
+      <if test="weight != null" >
+        weight,
+      </if>
+      <if test="truck != null" >
+        truck,
+      </if>
+      <if test="trucksubsidy != null" >
+        trucksubsidy,
+      </if>
+      <if test="carallowance != null" >
+        carallowance,
+      </if>
+      <if test="carsubsidy != null" >
+        carsubsidy,
+      </if>
+      <if test="customersubsidy != null" >
+        customersubsidy,
+      </if>
+      <if test="collectionamount != null" >
+        collectionamount,
+      </if>
+      <if test="collectionsubsidy != null" >
+        collectionsubsidy,
+      </if>
+      <if test="othersubsidy != null" >
+        othersubsidy,
+      </if>
+      <if test="safebonus != null" >
+        safebonus,
+      </if>
+      <if test="receiptbonus != null" >
+        receiptbonus,
+      </if>
+      <if test="nightbonus != null" >
+        nightbonus,
+      </if>
+      <if test="subamount != null" >
+        subamount,
+      </if>
+      <if test="totalamount != null" >
+        totalamount,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="deliveryid != null" >
+        #{deliveryid},
+      </if>
+      <if test="businessdate != null" >
+        #{businessdate},
+      </if>
+      <if test="status != null" >
+        #{status},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+      <if test="adduserid != null" >
+        #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        #{adddeptname},
+      </if>
+      <if test="addtime != null" >
+        #{addtime},
+      </if>
+      <if test="modifyuserid != null" >
+        #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        #{modifyusername},
+      </if>
+      <if test="modifytime != null" >
+        #{modifytime},
+      </if>
+      <if test="audituserid != null" >
+        #{audituserid},
+      </if>
+      <if test="auditusername != null" >
+        #{auditusername},
+      </if>
+      <if test="audittime != null" >
+        #{audittime},
+      </if>
+      <if test="stopuserid != null" >
+        #{stopuserid},
+      </if>
+      <if test="stopusername != null" >
+        #{stopusername},
+      </if>
+      <if test="stoptime != null" >
+        #{stoptime},
+      </if>
+      <if test="closetime != null" >
+        #{closetime},
+      </if>
+      <if test="printtimes != null" >
+        #{printtimes},
+      </if>
+      <if test="lineid != null" >
+        #{lineid},
+      </if>
+      <if test="carid != null" >
+        #{carid},
+      </if>
+      <if test="cartype != null" >
+        #{cartype},
+      </if>
+      <if test="driverid != null" >
+        #{driverid},
+      </if>
+      <if test="isdriver != null" >
+        #{isdriver},
+      </if>
+      <if test="customernums != null" >
+        #{customernums},
+      </if>
+      <if test="auxnum != null" >
+        #{auxnum},
+      </if>
+      <if test="auxremainder != null" >
+        #{auxremainder},
+      </if>
+      <if test="volume != null" >
+        #{volume},
+      </if>
+      <if test="weight != null" >
+        #{weight},
+      </if>
+      <if test="truck != null" >
+        #{truck},
+      </if>
+      <if test="trucksubsidy != null" >
+        #{trucksubsidy},
+      </if>
+      <if test="carallowance != null" >
+        #{carallowance},
+      </if>
+      <if test="carsubsidy != null" >
+        #{carsubsidy},
+      </if>
+      <if test="customersubsidy != null" >
+        #{customersubsidy},
+      </if>
+      <if test="collectionamount != null" >
+        #{collectionamount},
+      </if>
+      <if test="collectionsubsidy != null" >
+        #{collectionsubsidy},
+      </if>
+      <if test="othersubsidy != null" >
+        #{othersubsidy},
+      </if>
+      <if test="safebonus != null" >
+        #{safebonus},
+      </if>
+      <if test="receiptbonus != null" >
+        #{receiptbonus},
+      </if>
+      <if test="nightbonus != null" >
+        #{nightbonus},
+      </if>
+      <if test="subamount != null" >
+        #{subamount},
+      </if>
+      <if test="totalamount != null" >
+        #{totalamount},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.hd.agent.report.model.Criteria" resultType="java.lang.Integer" >
+    select count(*) from t_report_storage_logistics
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_report_storage_logistics
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id},
+      </if>
+      <if test="record.deliveryid != null" >
+        deliveryid = #{record.deliveryid},
+      </if>
+      <if test="record.businessdate != null" >
+        businessdate = #{record.businessdate},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark},
+      </if>
+      <if test="record.adduserid != null" >
+        adduserid = #{record.adduserid},
+      </if>
+      <if test="record.addusername != null" >
+        addusername = #{record.addusername},
+      </if>
+      <if test="record.adddeptid != null" >
+        adddeptid = #{record.adddeptid},
+      </if>
+      <if test="record.adddeptname != null" >
+        adddeptname = #{record.adddeptname},
+      </if>
+      <if test="record.addtime != null" >
+        addtime = #{record.addtime},
+      </if>
+      <if test="record.modifyuserid != null" >
+        modifyuserid = #{record.modifyuserid},
+      </if>
+      <if test="record.modifyusername != null" >
+        modifyusername = #{record.modifyusername},
+      </if>
+      <if test="record.modifytime != null" >
+        modifytime = #{record.modifytime},
+      </if>
+      <if test="record.audituserid != null" >
+        audituserid = #{record.audituserid},
+      </if>
+      <if test="record.auditusername != null" >
+        auditusername = #{record.auditusername},
+      </if>
+      <if test="record.audittime != null" >
+        audittime = #{record.audittime},
+      </if>
+      <if test="record.stopuserid != null" >
+        stopuserid = #{record.stopuserid},
+      </if>
+      <if test="record.stopusername != null" >
+        stopusername = #{record.stopusername},
+      </if>
+      <if test="record.stoptime != null" >
+        stoptime = #{record.stoptime},
+      </if>
+      <if test="record.closetime != null" >
+        closetime = #{record.closetime},
+      </if>
+      <if test="record.printtimes != null" >
+        printtimes = #{record.printtimes},
+      </if>
+      <if test="record.lineid != null" >
+        lineid = #{record.lineid},
+      </if>
+      <if test="record.carid != null" >
+        carid = #{record.carid},
+      </if>
+      <if test="record.cartype != null" >
+        cartype = #{record.cartype},
+      </if>
+      <if test="record.driverid != null" >
+        driverid = #{record.driverid},
+      </if>
+      <if test="record.isdriver != null" >
+        isdriver = #{record.isdriver},
+      </if>
+      <if test="record.customernums != null" >
+        customernums = #{record.customernums},
+      </if>
+      <if test="record.auxnum != null" >
+        auxnum = #{record.auxnum},
+      </if>
+      <if test="record.auxremainder != null" >
+        auxremainder = #{record.auxremainder},
+      </if>
+      <if test="record.volume != null" >
+        volume = #{record.volume},
+      </if>
+      <if test="record.weight != null" >
+        weight = #{record.weight},
+      </if>
+      <if test="record.truck != null" >
+        truck = #{record.truck},
+      </if>
+      <if test="record.trucksubsidy != null" >
+        trucksubsidy = #{record.trucksubsidy},
+      </if>
+      <if test="record.carallowance != null" >
+        carallowance = #{record.carallowance},
+      </if>
+      <if test="record.carsubsidy != null" >
+        carsubsidy = #{record.carsubsidy},
+      </if>
+      <if test="record.customersubsidy != null" >
+        customersubsidy = #{record.customersubsidy},
+      </if>
+      <if test="record.collectionamount != null" >
+        collectionamount = #{record.collectionamount},
+      </if>
+      <if test="record.collectionsubsidy != null" >
+        collectionsubsidy = #{record.collectionsubsidy},
+      </if>
+      <if test="record.othersubsidy != null" >
+        othersubsidy = #{record.othersubsidy},
+      </if>
+      <if test="record.safebonus != null" >
+        safebonus = #{record.safebonus},
+      </if>
+      <if test="record.receiptbonus != null" >
+        receiptbonus = #{record.receiptbonus},
+      </if>
+      <if test="record.nightbonus != null" >
+        nightbonus = #{record.nightbonus},
+      </if>
+      <if test="record.subamount != null" >
+        subamount = #{record.subamount},
+      </if>
+      <if test="record.totalamount != null" >
+        totalamount = #{record.totalamount},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_report_storage_logistics
+    set id = #{record.id},
+      deliveryid = #{record.deliveryid},
+      businessdate = #{record.businessdate},
+      status = #{record.status},
+      remark = #{record.remark},
+      adduserid = #{record.adduserid},
+      addusername = #{record.addusername},
+      adddeptid = #{record.adddeptid},
+      adddeptname = #{record.adddeptname},
+      addtime = #{record.addtime},
+      modifyuserid = #{record.modifyuserid},
+      modifyusername = #{record.modifyusername},
+      modifytime = #{record.modifytime},
+      audituserid = #{record.audituserid},
+      auditusername = #{record.auditusername},
+      audittime = #{record.audittime},
+      stopuserid = #{record.stopuserid},
+      stopusername = #{record.stopusername},
+      stoptime = #{record.stoptime},
+      closetime = #{record.closetime},
+      printtimes = #{record.printtimes},
+      lineid = #{record.lineid},
+      carid = #{record.carid},
+      cartype = #{record.cartype},
+      driverid = #{record.driverid},
+      isdriver = #{record.isdriver},
+      customernums = #{record.customernums},
+      auxnum = #{record.auxnum},
+      auxremainder = #{record.auxremainder},
+      volume = #{record.volume},
+      weight = #{record.weight},
+      truck = #{record.truck},
+      trucksubsidy = #{record.trucksubsidy},
+      carallowance = #{record.carallowance},
+      carsubsidy = #{record.carsubsidy},
+      customersubsidy = #{record.customersubsidy},
+      collectionamount = #{record.collectionamount},
+      collectionsubsidy = #{record.collectionsubsidy},
+      othersubsidy = #{record.othersubsidy},
+      safebonus = #{record.safebonus},
+      receiptbonus = #{record.receiptbonus},
+      nightbonus = #{record.nightbonus},
+      subamount = #{record.subamount},
+      totalamount = #{record.totalamount}
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hd.agent.report.model.LogisticsReport" >
+    update t_report_storage_logistics
+    <set >
+      <if test="deliveryid != null" >
+        deliveryid = #{deliveryid},
+      </if>
+      <if test="businessdate != null" >
+        businessdate = #{businessdate},
+      </if>
+      <if test="status != null" >
+        status = #{status},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark},
+      </if>
+      <if test="adduserid != null" >
+        adduserid = #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        addusername = #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid = #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname = #{adddeptname},
+      </if>
+      <if test="addtime != null" >
+        addtime = #{addtime},
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid = #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername = #{modifyusername},
+      </if>
+      <if test="modifytime != null" >
+        modifytime = #{modifytime},
+      </if>
+      <if test="audituserid != null" >
+        audituserid = #{audituserid},
+      </if>
+      <if test="auditusername != null" >
+        auditusername = #{auditusername},
+      </if>
+      <if test="audittime != null" >
+        audittime = #{audittime},
+      </if>
+      <if test="stopuserid != null" >
+        stopuserid = #{stopuserid},
+      </if>
+      <if test="stopusername != null" >
+        stopusername = #{stopusername},
+      </if>
+      <if test="stoptime != null" >
+        stoptime = #{stoptime},
+      </if>
+      <if test="closetime != null" >
+        closetime = #{closetime},
+      </if>
+      <if test="printtimes != null" >
+        printtimes = #{printtimes},
+      </if>
+      <if test="lineid != null" >
+        lineid = #{lineid},
+      </if>
+      <if test="carid != null" >
+        carid = #{carid},
+      </if>
+      <if test="cartype != null" >
+        cartype = #{cartype},
+      </if>
+      <if test="driverid != null" >
+        driverid = #{driverid},
+      </if>
+      <if test="isdriver != null" >
+        isdriver = #{isdriver},
+      </if>
+      <if test="customernums != null" >
+        customernums = #{customernums},
+      </if>
+      <if test="auxnum != null" >
+        auxnum = #{auxnum},
+      </if>
+      <if test="auxremainder != null" >
+        auxremainder = #{auxremainder},
+      </if>
+      <if test="volume != null" >
+        volume = #{volume},
+      </if>
+      <if test="weight != null" >
+        weight = #{weight},
+      </if>
+      <if test="truck != null" >
+        truck = #{truck},
+      </if>
+      <if test="trucksubsidy != null" >
+        trucksubsidy = #{trucksubsidy},
+      </if>
+      <if test="carallowance != null" >
+        carallowance = #{carallowance},
+      </if>
+      <if test="carsubsidy != null" >
+        carsubsidy = #{carsubsidy},
+      </if>
+      <if test="customersubsidy != null" >
+        customersubsidy = #{customersubsidy},
+      </if>
+      <if test="collectionamount != null" >
+        collectionamount = #{collectionamount},
+      </if>
+      <if test="collectionsubsidy != null" >
+        collectionsubsidy = #{collectionsubsidy},
+      </if>
+      <if test="othersubsidy != null" >
+        othersubsidy = #{othersubsidy},
+      </if>
+      <if test="safebonus != null" >
+        safebonus = #{safebonus},
+      </if>
+      <if test="receiptbonus != null" >
+        receiptbonus = #{receiptbonus},
+      </if>
+      <if test="nightbonus != null" >
+        nightbonus = #{nightbonus},
+      </if>
+      <if test="subamount != null" >
+        subamount = #{subamount},
+      </if>
+      <if test="totalamount != null" >
+        totalamount = #{totalamount},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hd.agent.report.model.LogisticsReport" >
+    update t_report_storage_logistics
+    set deliveryid = #{deliveryid},
+      businessdate = #{businessdate},
+      status = #{status},
+      remark = #{remark},
+      adduserid = #{adduserid},
+      addusername = #{addusername},
+      adddeptid = #{adddeptid},
+      adddeptname = #{adddeptname},
+      addtime = #{addtime},
+      modifyuserid = #{modifyuserid},
+      modifyusername = #{modifyusername},
+      modifytime = #{modifytime},
+      audituserid = #{audituserid},
+      auditusername = #{auditusername},
+      audittime = #{audittime},
+      stopuserid = #{stopuserid},
+      stopusername = #{stopusername},
+      stoptime = #{stoptime},
+      closetime = #{closetime},
+      printtimes = #{printtimes},
+      lineid = #{lineid},
+      carid = #{carid},
+      cartype = #{cartype},
+      driverid = #{driverid},
+      isdriver = #{isdriver},
+      customernums = #{customernums},
+      auxnum = #{auxnum},
+      auxremainder = #{auxremainder},
+      volume = #{volume},
+      weight = #{weight},
+      truck = #{truck},
+      trucksubsidy = #{trucksubsidy},
+      carallowance = #{carallowance},
+      carsubsidy = #{carsubsidy},
+      customersubsidy = #{customersubsidy},
+      collectionamount = #{collectionamount},
+      collectionsubsidy = #{collectionsubsidy},
+      othersubsidy = #{othersubsidy},
+      safebonus = #{safebonus},
+      receiptbonus = #{receiptbonus},
+      nightbonus = #{nightbonus},
+      subamount = #{subamount},
+      totalamount = #{totalamount}
+    where id = #{id}
+  </update>
+  -->
+  <select id="getLogisticsReportList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.report.model.LogisticsReport">
+    SELECT
+		id,
+		deliveryid,
+		businessdate,
+		printtimes,
+		driverid,
+		isdriver,
+		SUM(customernums) AS customernums,
+		SUM(boxnum) AS boxnum,
+		SUM(auxnum) AS auxnum,
+		SUM(auxremainder) AS auxremainder,
+		SUM(volume) AS volume,
+		SUM(weight) AS weight,
+        SUM(salesamount) AS salesamount,
+		SUM(truck) AS truck,
+		SUM(trucksubsidy) AS trucksubsidy,
+		SUM(carallowance) AS carallowance,
+		SUM(carsubsidy) AS carsubsidy,
+		SUM(customersubsidy) AS customersubsidy,
+		SUM(collectionamount) AS collectionamount,
+        SUM(salessubsidy) AS salessubsidy,
+		SUM(collectionsubsidy) AS collectionsubsidy,
+		SUM(othersubsidy) AS othersubsidy,
+		SUM(safebonus) AS safebonus,
+		SUM(receiptbonus) AS receiptbonus,
+		SUM(nightbonus) AS nightbonus,
+		SUM(subamount) AS subamount,
+		SUM(totalamount) AS totalamount
+	FROM
+      <if test="condition.type == 0 ">
+          t_report_storage_logistics t
+      </if>
+      <if test="condition.type == 1 ">
+          t_report_storage_logistics_follow t
+      </if>
+    <trim prefix="where" prefixOverrides="and|or">
+      	<if test="condition.driverid != null">
+			 and t.driverid like concat('%',#{condition.driverid},'%')
+		</if>
+      	<if test="condition.businessdate1 != null">
+			 and t.businessdate >= #{condition.businessdate1}
+		</if>
+		<if test="condition.businessdate2 != null">
+			 <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+		</if>
+		<include refid="common.Page_querySql"/>
+      	<include refid="common.Page_dataSql"/>
+	</trim>
+	GROUP BY t.driverid order by t.isdriver desc
+	<if test="condition.isflag == null">
+		<include refid="common.Page_limit"/>
+	</if>
+  </select>
+  <select id="getLogisticsReportListCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+    SELECT count(1) from(
+    SELECT
+		id,
+		deliveryid,
+		businessdate,
+		printtimes,
+		driverid,
+		isdriver,
+		SUM(customernums) AS customernums,
+		SUM(auxnum) AS auxnum,
+		SUM(auxremainder) AS auxremainder,
+		SUM(volume) AS volume,
+		SUM(weight) AS weight,
+        SUM(salesamount) AS salesamount,
+		SUM(truck) AS truck,
+		SUM(trucksubsidy) AS trucksubsidy,
+		SUM(carallowance) AS carallowance,
+		SUM(carsubsidy) AS carsubsidy,
+		SUM(customersubsidy) AS customersubsidy,
+		SUM(collectionamount) AS collectionamount,
+        SUM(salessubsidy) AS salessubsidy,
+		SUM(collectionsubsidy) AS collectionsubsidy,
+		SUM(othersubsidy) AS othersubsidy,
+		SUM(safebonus) AS safebonus,
+		SUM(receiptbonus) AS receiptbonus,
+		SUM(nightbonus) AS nightbonus,
+		SUM(subamount) AS subamount,
+		SUM(totalamount) AS totalamount
+	FROM
+      <if test="condition.type == 0 ">
+          t_report_storage_logistics t
+      </if>
+      <if test="condition.type == 1 ">
+          t_report_storage_logistics_follow t
+      </if>
+    <trim prefix="where" prefixOverrides="and|or">
+      	<if test="condition.driverid != null">
+			 and t.driverid =#{condition.driverid}
+		</if>
+      	<if test="condition.businessdate1 != null">
+			 and t.businessdate >= #{condition.businessdate1}
+		</if>
+		<if test="condition.businessdate2 != null">
+			 <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+		</if>
+		<include refid="common.Page_querySql"/>
+      	<include refid="common.Page_dataSql"/>
+	</trim>
+	GROUP BY
+	t.driverid)a
+  </select>
+  <select id="getLogisticsReportDetailList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.report.model.LogisticsReport">
+  	select 
+    <include refid="Base_Column_List" />
+    from t_report_storage_logistics t
+    <trim prefix="where" prefixOverrides="and|or">
+    	<choose>
+    		<when test="condition.driverid != null">
+    			and t.driverid =#{condition.driverid}
+    		</when>
+    		<otherwise>
+    			and t.driverid = ''
+    		</otherwise>
+    	</choose>
+      	<if test="condition.businessdate1 != null">
+			 and t.businessdate >= #{condition.businessdate1}
+		</if>
+		<if test="condition.businessdate2 != null">
+			 <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+		</if>
+	</trim>
+  </select>
+</mapper>

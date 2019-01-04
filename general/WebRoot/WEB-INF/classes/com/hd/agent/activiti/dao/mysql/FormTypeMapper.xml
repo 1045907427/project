@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.activiti.dao.FormTypeMapper" >
+  <resultMap id="BaseResultMap" type="com.hd.agent.activiti.model.FormType" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="pid" property="pid" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="unkey" property="unkey" jdbcType="VARCHAR" />
+    <result column="adduserid" property="adduserid" jdbcType="VARCHAR" />
+    <result column="addusername" property="addusername" jdbcType="VARCHAR" />
+    <result column="adddeptid" property="adddeptid" jdbcType="VARCHAR" />
+    <result column="adddeptname" property="adddeptname" jdbcType="VARCHAR" />
+    <result column="adddate" property="adddate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, pid, name, unkey, adduserid, addusername, adddeptid, adddeptname, adddate
+  </sql>
+  <select id="getFormType" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_act_form_type
+    where id = #{id}
+  </select>
+  <select id="getFormTypeByKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_act_form_type
+    where unkey = #{key}
+  </select>
+  <select id="getFormTypeList" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_act_form_type
+    order by name
+  </select>
+  <delete id="deleteFormType" parameterType="java.lang.String" >
+    delete from t_act_form_type
+    where id = #{id}
+  </delete>
+  <insert id="addFormType" parameterType="com.hd.agent.activiti.model.FormType" >
+  	<selectKey resultType="java.lang.String" order="AFTER" keyProperty="id">
+	  SELECT LAST_INSERT_ID() AS id
+	</selectKey>
+    insert into t_act_form_type
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        pid,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="unkey != null" >
+        unkey,
+      </if>
+      <if test="adduserid != null" >
+        adduserid,
+      </if>
+      <if test="addusername != null" >
+        addusername,
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid,
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname,
+      </if>
+        adddate,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        #{pid},
+      </if>
+      <if test="name != null" >
+        #{name},
+      </if>
+      <if test="unkey != null" >
+        #{unkey},
+      </if>
+      <if test="adduserid != null" >
+        #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        #{adddeptname},
+      </if>
+        now(),
+    </trim>
+  </insert>
+  <update id="updateFormType" parameterType="com.hd.agent.activiti.model.FormType" >
+    update t_act_form_type
+    <set >
+      <if test="name != null" >
+        name = #{name},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+</mapper>

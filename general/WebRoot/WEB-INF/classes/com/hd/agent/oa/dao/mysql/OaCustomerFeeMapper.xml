@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.oa.dao.OaCustomerFeeMapper" >
+  <resultMap id="BaseResultMap" type="com.hd.agent.oa.model.OaCustomerFee" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="businessdate" property="businessdate" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="adduserid" property="adduserid" jdbcType="VARCHAR" />
+    <result column="addusername" property="addusername" jdbcType="VARCHAR" />
+    <result column="adddeptid" property="adddeptid" jdbcType="VARCHAR" />
+    <result column="adddeptname" property="adddeptname" jdbcType="VARCHAR" />
+    <result column="addtime" property="addtime" jdbcType="TIMESTAMP" />
+    <result column="modifyuserid" property="modifyuserid" jdbcType="VARCHAR" />
+    <result column="modifyusername" property="modifyusername" jdbcType="VARCHAR" />
+    <result column="modifytime" property="modifytime" jdbcType="TIMESTAMP" />
+    <result column="printtimes" property="printtimes" jdbcType="INTEGER" />
+    <result column="oaid" property="oaid" jdbcType="VARCHAR" />
+    <result column="customerid" property="customerid" jdbcType="VARCHAR" />
+    <result column="expensesort" property="expensesort" jdbcType="VARCHAR" />
+    <result column="paybank" property="paybank" jdbcType="VARCHAR" />
+    <result column="paydate" property="paydate" jdbcType="VARCHAR" />
+    <result column="payamount" property="payamount" jdbcType="DECIMAL" />
+  </resultMap>
+  <resultMap id="DetailResultMap" type="com.hd.agent.oa.model.OaCustomerFeeDetail" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="billid" property="billid" jdbcType="VARCHAR" />
+    <result column="supplierid" property="supplierid" jdbcType="VARCHAR" />
+    <result column="deptid" property="deptid" jdbcType="VARCHAR" />
+    <result column="brandid" property="brandid" jdbcType="VARCHAR" />
+    <result column="reason" property="reason" jdbcType="VARCHAR" />
+    <result column="factoryamount" property="factoryamount" jdbcType="DECIMAL" />
+    <result column="selfamount" property="selfamount" jdbcType="DECIMAL" />
+    <result column="branduser" property="branduser" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, businessdate, remark, adduserid, addusername, adddeptid, adddeptname, addtime,
+    modifyuserid, modifyusername, modifytime, printtimes, oaid, customerid, expensesort,
+    paybank, paydate, payamount
+  </sql>
+  <sql id="Detail_Column_List" >
+    id, billid, supplierid, deptid, brandid, reason, factoryamount, selfamount, branduser,
+    remark
+  </sql>
+  <sql id="Detail_Column_List2" >
+    t1.id, t1.billid, t1.supplierid, t1.deptid, t1.brandid, t1.reason, t1.factoryamount, t1.selfamount, t1.branduser,
+    t1.remark
+  </sql>
+  <select id="selectOaCustomerFee" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from t_oa_customerfee
+    where id = #{id}
+  </select>
+  <delete id="deleteOaCustomerFee" parameterType="java.lang.String" >
+    delete from t_oa_customerfee
+    where id = #{id}
+  </delete>
+  <insert id="insertOaCustomerFee" parameterType="com.hd.agent.oa.model.OaCustomerFee" >
+    insert into t_oa_customerfee
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="businessdate != null" >
+        businessdate,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="adduserid != null" >
+        adduserid,
+      </if>
+      <if test="addusername != null" >
+        addusername,
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid,
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname,
+      </if>
+      addtime,
+      <if test="printtimes != null" >
+        printtimes,
+      </if>
+      <if test="oaid != null" >
+        oaid,
+      </if>
+      <if test="customerid != null" >
+        customerid,
+      </if>
+      <if test="expensesort != null" >
+        expensesort,
+      </if>
+      <if test="paybank != null" >
+        paybank,
+      </if>
+      <if test="paydate != null" >
+        paydate,
+      </if>
+      <if test="payamount != null" >
+        payamount,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="businessdate != null" >
+        #{businessdate},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+      <if test="adduserid != null" >
+        #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        #{adddeptname},
+      </if>
+      now(),
+      <if test="printtimes != null" >
+        #{printtimes},
+      </if>
+      <if test="oaid != null" >
+        #{oaid},
+      </if>
+      <if test="customerid != null" >
+        #{customerid},
+      </if>
+      <if test="expensesort != null" >
+        #{expensesort},
+      </if>
+      <if test="paybank != null" >
+        #{paybank},
+      </if>
+      <if test="paydate != null" >
+        #{paydate},
+      </if>
+      <if test="payamount != null" >
+        #{payamount},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateOaCustomerFee" parameterType="com.hd.agent.oa.model.OaCustomerFee" >
+    update t_oa_customerfee
+    <set >
+      <if test="businessdate != null" >
+        businessdate = #{businessdate},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark},
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid = #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername = #{modifyusername},
+      </if>
+      modifytime = now(),
+      <if test="printtimes != null" >
+        printtimes = #{printtimes},
+      </if>
+      <if test="oaid != null" >
+        oaid = #{oaid},
+      </if>
+      <if test="customerid != null" >
+        customerid = #{customerid},
+      </if>
+      <if test="expensesort != null" >
+        expensesort = #{expensesort},
+      </if>
+      <if test="paybank != null" >
+        paybank = #{paybank},
+      </if>
+      <if test="paydate != null" >
+        paydate = #{paydate},
+      </if>
+      <if test="payamount != null" >
+        payamount = #{payamount},
+      </if>
+    </set>
+    <trim prefix="where">
+      id = #{id }
+    </trim>
+  </update>
+  <insert id="insertOaCustomerFeeDetail" parameterType="com.hd.agent.oa.model.OaCustomerFeeDetail" >
+    insert into t_oa_customerfee_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="billid != null" >
+        billid,
+      </if>
+      <if test="supplierid != null" >
+        supplierid,
+      </if>
+      <if test="deptid != null" >
+        deptid,
+      </if>
+      <if test="brandid != null" >
+        brandid,
+      </if>
+      <if test="reason != null" >
+        reason,
+      </if>
+      <if test="factoryamount != null" >
+        factoryamount,
+      </if>
+      <if test="selfamount != null" >
+        selfamount,
+      </if>
+      <if test="branduser != null" >
+        branduser,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="billid != null" >
+        #{billid},
+      </if>
+      <if test="supplierid != null" >
+        #{supplierid},
+      </if>
+      <if test="deptid != null" >
+        #{deptid},
+      </if>
+      <if test="brandid != null" >
+        #{brandid},
+      </if>
+      <if test="reason != null" >
+        #{reason},
+      </if>
+      <if test="factoryamount != null" >
+        #{factoryamount},
+      </if>
+      <if test="selfamount != null" >
+        #{selfamount},
+      </if>
+      <if test="branduser != null" >
+        #{branduser},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+    </trim>
+  </insert>
+  <delete id="deleteOaCustomerFeeDetailByBillid" parameterType="java.lang.String">
+    delete from t_oa_customerfee_detail
+    where billid = #{billid }
+  </delete>
+  <select id="getCustomerFeeDetailList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.oa.model.OaCustomerFeeDetail">
+    select
+      <include refid="Detail_Column_List2"/>,
+      t2.name suppliername,
+      t3.name brandname,
+      t4.name deptname
+    from t_oa_customerfee_detail t1
+    LEFT JOIN t_base_buy_supplier t2 on t1.supplierid = t2.id
+    LEFT JOIN t_base_goods_brand t3 on t1.brandid = t3.id
+    LEFT JOIN t_base_department t4 on t1.deptid = t4.id
+    <trim prefix="where" prefixOverrides="and|or">
+      and t1.billid = #{condition.billid }
+    </trim>
+    order by id
+    <include refid="common.Page_LimitOnly" />
+  </select>
+  <select id="getCustomerFeeDetailListCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+    select count(1)
+    from t_oa_customerfee_detail t1
+    <trim prefix="where" prefixOverrides="and|or">
+      and t1.billid = #{condition.billid }
+    </trim>
+  </select>
+  <select id="getCustomerFeeDetailListByBillid" parameterType="java.lang.String" resultType="com.hd.agent.oa.model.OaCustomerFeeDetail">
+    select
+    <include refid="Detail_Column_List2"/>,
+    t2.name suppliername,
+    t3.name brandname,
+    t4.name deptname
+    from t_oa_customerfee_detail t1
+    LEFT JOIN t_base_buy_supplier t2 on t1.supplierid = t2.id
+    LEFT JOIN t_base_goods_brand t3 on t1.brandid = t3.id
+    LEFT JOIN t_base_department t4 on t1.deptid = t4.id
+    where t1.billid = #{billid }
+    order by id
+  </select>
+
+</mapper>

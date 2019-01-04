@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.report.dao.SalesRejectMapper" >
+    <sql id="getSalesRejectReportList_condition">
+        SELECT t1.customerid, t1.pcustomerid, t2.brandid, t2.goodsid, t2.goodssort, t1.salesarea, t1.customersort, t1.salesuser,
+        t2.branduser, t1.salesdept, t2.supplierid, t1.storageid, t1.driverid, t1.sourcetype, t2.rejectcategory,
+        t2.unitnum, t2.totalbox, t2.taxamount,t1.storager
+        FROM t_storage_salereject_enter t1
+        LEFT JOIN t_storage_salereject_enter_detail t2 ON t1.id = t2.salerejectid
+        <trim prefix="where" prefixOverrides="and|or">
+            and t1.status = '4'
+            <if test="condition.startdate != null">
+                and t1.businessdate <![CDATA[ >= ]]> #{condition.startdate }
+            </if>
+            <if test="condition.enddate != null">
+                and t1.businessdate <![CDATA[ <= ]]> #{condition.enddate }
+            </if>
+            <if test="condition.customerid != null">
+                and FIND_IN_SET(t1.customerid, #{condition.customerid })
+            </if>
+            <if test="condition.pcustomerid != null">
+                and FIND_IN_SET(t1.pcustomerid, #{condition.pcustomerid })
+            </if>
+            <if test="condition.brandid != null">
+                and FIND_IN_SET(t2.brandid, #{condition.brandid })
+            </if>
+            <if test="condition.goodsid != null">
+                and FIND_IN_SET(t2.goodsid, #{condition.goodsid })
+            </if>
+            <if test="condition.goodssort != null">
+                and FIND_IN_SET(t2.goodssort, #{condition.goodssort })
+            </if>
+            <if test="condition.salesarea != null">
+                and FIND_IN_SET(t1.salesarea, #{condition.salesarea })
+            </if>
+            <if test="condition.customersort != null">
+                and FIND_IN_SET(t1.customersort, #{condition.customersort })
+            </if>
+            <if test="condition.salesuser != null">
+                and FIND_IN_SET(t1.salesuser, #{condition.salesuser })
+            </if>
+            <if test="condition.branduser != null">
+                and FIND_IN_SET(t2.branduser, #{condition.branduser })
+            </if>
+            <if test="condition.salesdept != null">
+                and FIND_IN_SET(t1.salesdept, #{condition.salesdept })
+            </if>
+            <if test="condition.supplierid != null">
+                and FIND_IN_SET(t2.supplierid, #{condition.supplierid })
+            </if>
+            <if test="condition.storageid != null">
+                and FIND_IN_SET(t1.storageid, #{condition.storageid })
+            </if>
+            <if test="condition.driverid != null">
+                and t1.driverid = #{condition.driverid }
+            </if>
+            <if test="condition.sourcetype != null">
+                and t1.sourcetype = #{condition.sourcetype }
+            </if>
+            <if test="condition.storager != null">
+                and t1.storager = #{condition.storager }
+            </if>
+            <if test="condition.rejectcategory != null">
+                and t2.rejectcategory = #{condition.rejectcategory }
+            </if>
+            <include refid="common.Page_dataSql"/>
+        </trim>
+    </sql>
+    <select id="getSalesRejectReportList" parameterType="com.hd.agent.common.util.PageMap" resultType="java.util.Map">
+        SELECT t.customerid, t.pcustomerid, t.brandid, t.goodsid, t.goodssort, t.salesarea, t.customersort, t.salesuser,
+        t.branduser, t.salesdept, t.supplierid, t.storageid, t.driverid, t.sourcetype, t.rejectcategory,
+        sum(unitnum) unitnum, sum(totalbox) totalbox, sum(taxamount) taxamount,t.storager
+        FROM (<include refid="getSalesRejectReportList_condition"/>) t
+        GROUP BY ${condition.groupcols }
+        <include refid="common.Page_limit"/>
+    </select>
+    <select id="getSalesRejectReportListCount" parameterType="com.hd.agent.common.util.PageMap" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM (
+        SELECT t.customerid, t.pcustomerid, t.brandid, t.goodsid, t.goodssort, t.salesarea, t.customersort, t.salesuser,
+        t.branduser, t.salesdept, t.supplierid, t.storageid, t.driverid, t.sourcetype, t.rejectcategory,
+        sum(unitnum) unitnum, sum(totalbox) totalbox, sum(taxamount) taxamount
+        FROM (<include refid="getSalesRejectReportList_condition"/>) t
+        GROUP BY ${condition.groupcols }
+        ) t
+    </select>
+    <select id="getSalesRejectReportListSum" parameterType="com.hd.agent.common.util.PageMap" resultType="java.util.Map">
+        SELECT ifnull(sum(unitnum), 0) unitnum, ifnull(sum(totalbox), 0) totalbox, ifnull(sum(taxamount), 0) taxamount
+        FROM (<include refid="getSalesRejectReportList_condition"/>) t
+    </select>
+</mapper>

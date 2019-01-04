@@ -1,0 +1,1072 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.report.dao.PurchaseReportMapper" >
+	<sql id="temp_purchase_report">
+  		(
+		SELECT t.supplierid,t.buydeptid,t.buyuserid,t.goodsid,t.brandid,t.unitid,t.unitname,t.auxunitid,t.auxunitname,
+		t.enternum,t.auxenternum,t.auxenterremainder,t.entertaxamount,t.enternotaxamount,t.entertax,t.entertotalbox,
+		t.outnum,t.auxoutnum,t.auxoutremainder,t.outtaxamount,t.outnotaxamount,t.outtax,t.outtotalbox
+		from (
+		select t.supplierid,s.buydeptid,s.buyuserid,t1.goodsid,t1.brandid,t1.unitid,t1.unitname,t1.auxunitid,t1.auxunitname,
+		t1.unitnum as enternum,t1.auxnum as auxenternum,t1.auxremainder as auxenterremainder,t1.taxamount as entertaxamount,t1.notaxamount as enternotaxamount,t1.tax as entertax,t1.totalbox as entertotalbox,
+		0 as outnum,0 as auxoutnum,0 as auxoutremainder,0 as outtaxamount,0 as outnotaxamount,0 as outtax,0 as outtotalbox
+		from t_purchase_arrivalorder t
+		RIGHT JOIN t_purchase_arrivalorder_detail t1 on t.id=t1.orderid
+		LEFT JOIN t_base_buy_supplier s on t.supplierid = s.id
+		<if test="condition.goodssort != null">
+			left join t_base_goods_info g on g.id = t1.goodsid
+		</if>
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="condition.businessdate1 != null">
+				and t.businessdate >= #{condition.businessdate1}
+			</if>
+			<if test="condition.businessdate2 != null">
+				<![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+			</if>
+			<if test="condition.supplierid != null" >
+				and t.supplierid = #{condition.supplierid}
+			</if>
+			<if test="condition.storageid != null" >
+				and t.storageid = #{condition.storageid}
+			</if>
+			<if test="condition.buydeptid != null" >
+				and s.buydeptid like concat(#{condition.buydeptid},'%')
+			</if>
+			<if test="condition.buyuserid != null" >
+				and s.buyuserid = #{condition.buyuserid}
+			</if>
+			<if test="condition.goodsid != null" >
+				and t1.goodsid = #{condition.goodsid}
+			</if>
+            <if test="condition.exportids != null" >
+                and FIND_IN_SET(t1.goodsid,#{condition.exportids})
+            </if>
+            <if test="condition.supplierids != null" >
+                and FIND_IN_SET(t.supplierid,#{condition.supplierids})
+            </if>
+            <if test="condition.buyuserids != null" >
+                and FIND_IN_SET(s.buyuserid,#{condition.buyuserids})
+            </if>
+            <if test="condition.buydeptids != null" >
+                and FIND_IN_SET(s.buydeptid,#{condition.buydeptids})
+            </if>
+            <if test="condition.brandids != null" >
+                and FIND_IN_SET(t1.brandid,#{condition.brandids})
+            </if>
+
+			<if test="condition.brandid != null" >
+				and t1.brandid = #{condition.brandid}
+			</if>
+			<if test="condition.goodssort != null" >
+				and FIND_IN_SET(g.defaultsort,#{condition.goodssort})
+			</if>
+			<if test="1==1" >
+				and t.status in('3','4')
+			</if>
+		</trim>
+		UNION ALL
+		select t.supplierid,s.buydeptid,s.buyuserid,t1.goodsid,t1.brandid,t1.unitid,t1.unitname,t1.auxunitid,t1.auxunitname,
+		0 as enternum,0 as auxenternum,0 as auxenterremainder,0 as entertaxamount,0 as enternotaxamount,0 as entertax,0 as entertotalbox,
+		t1.unitnum as outnum,t1.auxnum as auxoutnum,t1.auxremainder as auxoutremainder, t1.taxamount as outtaxamount,t1.notaxamount as outnotaxamount,t1.tax as outtax,t1.totalbox as outtotalbox
+		from t_storage_purchasereject_out t
+		RIGHT JOIN t_storage_purchasereject_out_detail t1 on t.id=t1.orderid
+		LEFT JOIN t_base_buy_supplier s on t.supplierid=s.id
+		<if test="condition.goodssort != null" >
+			left join t_base_goods_info g on g.id = t1.goodsid
+		</if>
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="condition.businessdate1 != null">
+				and t.businessdate >= #{condition.businessdate1}
+			</if>
+			<if test="condition.businessdate2 != null">
+				<![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+			</if>
+			<if test="condition.supplierid != null" >
+				and t.supplierid = #{condition.supplierid}
+			</if>
+			<if test="condition.storageid != null" >
+				and t.storageid = #{condition.storageid}
+			</if>
+			<if test="condition.buydeptid != null" >
+				and s.buydeptid like concat(#{condition.buydeptid},'%')
+			</if>
+			<if test="condition.buyuserid != null" >
+				and s.buyuserid = #{condition.buyuserid}
+			</if>
+			<if test="condition.brandid != null" >
+				and t1.brandid = #{condition.brandid}
+			</if>
+			<if test="condition.goodsid != null" >
+				and t1.goodsid = #{condition.goodsid}
+			</if>
+            <if test="condition.exportids != null" >
+                and FIND_IN_SET(t1.goodsid,#{condition.exportids})
+            </if>
+            <if test="condition.supplierids != null" >
+                and FIND_IN_SET(t.supplierid,#{condition.supplierids})
+            </if>
+            <if test="condition.buyuserids != null" >
+                and FIND_IN_SET(s.buyuserid,#{condition.buyuserids})
+            </if>
+            <if test="condition.buydeptids != null" >
+                and FIND_IN_SET(s.buydeptid,#{condition.buydeptids})
+            </if>
+            <if test="condition.brandids != null" >
+                and FIND_IN_SET(t1.brandid,#{condition.brandids})
+            </if>
+			<if test="condition.goodssort != null" >
+				and FIND_IN_SET(g.defaultsort,#{condition.goodssort})
+			</if>
+			<if test="1==1" >
+				and t.status='4' <!-- 采购退货出库单验收后，关闭 -->
+			</if>
+		</trim>
+		)t
+		<!-- 数据权限要在最外层 ，不然在detail表中的相关字段会报错，例如brandid-->
+		<trim prefix="where" prefixOverrides="and|or">
+			<include refid="common.Page_querySql"/>
+			<include refid="common.Page_dataSql"/>
+		</trim>
+  		)
+	</sql>
+	<!-- 分商品采购情况统计报表 -->
+	<select id="getBuyGoodsReportDataList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.report.model.PurchaseDetailReport">
+		SELECT t.goodsid,t.unitid,t.unitname,t.auxunitid,t.auxunitname,
+	  		sum(t.enternum) as enternum, sum(t.auxenternum) as auxenternum, sum(t.auxenterremainder) as auxenterremainder,
+			sum(t.entertaxamount) as entertaxamount, sum(t.enternotaxamount) as enternotaxamount,sum(t.entertax) as entertax,sum(t.entertotalbox) as entertotalbox,
+			sum(t.outnum) as outnum, sum(t.auxoutnum) as auxoutnum,sum(t.auxoutremainder) as auxoutremainder,
+			sum(t.outtaxamount) as outtaxamount,sum(t.outnotaxamount) as outnotaxamount,sum(t.outtax) as outtax,sum(t.outtotalbox) as outtotalbox
+    	from <include refid="temp_purchase_report"/> t
+		group by t.goodsid
+        <choose>
+            <when test="condition.isflag == null">
+                <include refid="common.Page_limit"/>
+            </when>
+            <otherwise>
+                <include refid="common.Page_OrderOnly"/>
+            </otherwise>
+        </choose>
+	</select>
+	<select id="getBuyGoodsReportDataCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+		select count(1) from (
+			SELECT t.goodsid,t.unitid,t.unitname,t.auxunitid,t.auxunitname,
+				sum(t.enternum) as enternum, sum(t.auxenternum) as auxenternum, sum(t.auxenterremainder) as auxenterremainder,
+				sum(t.entertaxamount) as entertaxamount, sum(t.enternotaxamount) as enternotaxamount,sum(t.entertax) as entertax,sum(t.entertotalbox) as entertotalbox,
+				sum(t.outnum) as outnum, sum(t.auxoutnum) as auxoutnum,sum(t.auxoutremainder) as auxoutremainder,
+				sum(t.outtaxamount) as outtaxamount,sum(t.outnotaxamount) as outnotaxamount,sum(t.outtax) as outtax,sum(t.outtotalbox) as outtotalbox
+			from <include refid="temp_purchase_report"/> t
+			group by t.goodsid
+		)z
+	</select>
+	<select id="getBuyGoodsReportSumData" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.report.model.PurchaseDetailReport">
+		SELECT
+		sum(t.enternum) as enternum, sum(t.auxenternum) as auxenternum, sum(t.auxenterremainder) as auxenterremainder,
+		sum(t.entertaxamount) as entertaxamount, sum(t.enternotaxamount) as enternotaxamount,sum(t.entertax) as entertax,sum(t.entertotalbox) as entertotalbox,
+		sum(t.outnum) as outnum, sum(t.auxoutnum) as auxoutnum,sum(t.auxoutremainder) as auxoutremainder,
+		sum(t.outtaxamount) as outtaxamount,sum(t.outnotaxamount) as outnotaxamount,sum(t.outtax) as outtax,sum(t.outtotalbox) as outtotalbox
+		from <include refid="temp_purchase_report"/> t
+	</select>
+	
+	<select id="getBuyDeptReportDataList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.report.model.PurchaseDetailReport">
+  		SELECT t.buydeptid, t.unitid, t.unitname, t.auxunitid, t.auxunitname,
+		sum(t.enternum) as enternum, sum(t.auxenternum) as auxenternum, sum(t.auxenterremainder) as auxenterremainder,
+		sum(t.entertaxamount) as entertaxamount, sum(t.enternotaxamount) as enternotaxamount,sum(t.entertax) as entertax,sum(t.entertotalbox) as entertotalbox,
+		sum(t.outnum) as outnum, sum(t.auxoutnum) as auxoutnum,sum(t.auxoutremainder) as auxoutremainder,
+		sum(t.outtaxamount) as outtaxamount,sum(t.outnotaxamount) as outnotaxamount,sum(t.outtax) as outtax,sum(t.outtotalbox) as outtotalbox
+    	from <include refid="temp_purchase_report"/> t
+	    group by t.buydeptid
+        <choose>
+            <when test="condition.isflag == null">
+                <include refid="common.Page_limit"/>
+            </when>
+            <otherwise>
+                <include refid="common.Page_OrderOnly"/>
+            </otherwise>
+        </choose>
+	</select>
+	<select id="getBuyDeptReportDataCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+		select count(1) from (
+			SELECT t.buydeptid, t.unitid, t.unitname, t.auxunitid, t.auxunitname,
+			sum(t.enternum) as enternum, sum(t.auxenternum) as auxenternum, sum(t.auxenterremainder) as auxenterremainder,
+			sum(t.entertaxamount) as entertaxamount, sum(t.enternotaxamount) as enternotaxamount,sum(t.entertax) as entertax,sum(t.entertotalbox) as entertotalbox,
+			sum(t.outnum) as outnum, sum(t.auxoutnum) as auxoutnum,sum(t.auxoutremainder) as auxoutremainder,
+			sum(t.outtaxamount) as outtaxamount,sum(t.outnotaxamount) as outnotaxamount,sum(t.outtax) as outtax,sum(t.outtotalbox) as outtotalbox
+	    	from <include refid="temp_purchase_report"/> t
+		    group by t.buydeptid
+		)z
+	</select>
+	<select id="getBuyDeptReportSumData" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.report.model.PurchaseDetailReport">
+		SELECT sum(t.enternum) as enternum, sum(t.auxenternum) as auxenternum, sum(t.auxenterremainder) as auxenterremainder,
+		sum(t.entertaxamount) as entertaxamount, sum(t.enternotaxamount) as enternotaxamount,sum(t.entertax) as entertax,sum(t.entertotalbox) as entertotalbox,
+		sum(t.outnum) as outnum, sum(t.auxoutnum) as auxoutnum,sum(t.auxoutremainder) as auxoutremainder,
+		sum(t.outtaxamount) as outtaxamount,sum(t.outnotaxamount) as outnotaxamount,sum(t.outtax) as outtax,sum(t.outtotalbox) as outtotalbox
+    	from <include refid="temp_purchase_report"/> t
+	</select>
+	<select id="getBuyDeptReportDetailList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.report.model.PurchaseDetailReport">
+		SELECT t.buydeptid,t.goodsid,t.unitid,t.unitname,t.auxunitid,t.auxunitname,
+	  		t.enternum, t.auxenternum, t.auxenterremainder, t.entertaxamount, t.enternotaxamount, t.entertax,t.entertotalbox,
+			t.outnum, t.auxoutnum, t.auxoutremainder, t.outtaxamount, t.outnotaxamount, t.outtax,t.outtotalbox
+		from <include refid="temp_purchase_report"/> t
+		<if test="condition.isflag == null">
+	 		<include refid="common.Page_limit"/>
+	 	</if>
+	</select>
+	
+	<select id="getBuyBrandReportDataList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.report.model.PurchaseDetailReport">
+		SELECT t.brandid, t.unitid, t.unitname, t.auxunitid, t.auxunitname,
+		sum(t.enternum) as enternum, sum(t.auxenternum) as auxenternum, sum(t.auxenterremainder) as auxenterremainder,
+		sum(t.entertaxamount) as entertaxamount, sum(t.enternotaxamount) as enternotaxamount,sum(t.entertax) as entertax,sum(t.entertotalbox) as entertotalbox,
+		sum(t.outnum) as outnum, sum(t.auxoutnum) as auxoutnum,sum(t.auxoutremainder) as auxoutremainder,
+		sum(t.outtaxamount) as outtaxamount,sum(t.outnotaxamount) as outnotaxamount,sum(t.outtax) as outtax,sum(t.outtotalbox) as outtotalbox
+		FROM <include refid="temp_purchase_report"/> t
+		GROUP BY t.brandid
+        <choose>
+            <when test="condition.isflag == null">
+                <include refid="common.Page_limit"/>
+            </when>
+            <otherwise>
+                <include refid="common.Page_OrderOnly"/>
+            </otherwise>
+        </choose>
+	</select>
+	<select id="getBuyBrandReportDataCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+		select count(1) from (
+			SELECT t.brandid, t.unitid, t.unitname, t.auxunitid, t.auxunitname,
+			sum(t.enternum) as enternum, sum(t.auxenternum) as auxenternum, sum(t.auxenterremainder) as auxenterremainder,
+			sum(t.entertaxamount) as entertaxamount, sum(t.enternotaxamount) as enternotaxamount,sum(t.entertax) as entertax,sum(t.entertotalbox) as entertotalbox,
+			sum(t.outnum) as outnum, sum(t.auxoutnum) as auxoutnum,sum(t.auxoutremainder) as auxoutremainder,
+			sum(t.outtaxamount) as outtaxamount,sum(t.outnotaxamount) as outnotaxamount,sum(t.outtax) as outtax,sum(t.outtotalbox) as outtotalbox
+			FROM <include refid="temp_purchase_report"/> t
+			GROUP BY t.brandid
+		)z
+	</select>
+	<select id="getBuyBrandReportSumData" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.report.model.PurchaseDetailReport">
+		SELECT sum(t.enternum) as enternum, sum(t.auxenternum) as auxenternum, sum(t.auxenterremainder) as auxenterremainder,
+		sum(t.entertaxamount) as entertaxamount, sum(t.enternotaxamount) as enternotaxamount,sum(t.entertax) as entertax,sum(t.entertotalbox) as entertotalbox,
+		sum(t.outnum) as outnum, sum(t.auxoutnum) as auxoutnum,sum(t.auxoutremainder) as auxoutremainder,
+		sum(t.outtaxamount) as outtaxamount,sum(t.outnotaxamount) as outnotaxamount,sum(t.outtax) as outtax,sum(t.outtotalbox) as outtotalbox
+		FROM <include refid="temp_purchase_report"/> t
+	</select>
+	<select id="getBuyBrandReportDetailList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.report.model.PurchaseDetailReport">
+		SELECT t.brandid,t.goodsid,t.unitid,t.unitname,t.auxunitid,t.auxunitname,
+	  		t.enternum, t.auxenternum, t.auxenterremainder, t.entertaxamount, t.enternotaxamount, t.entertax,t.entertotalbox,
+			t.outnum, t.auxoutnum, t.auxoutremainder, t.outtaxamount, t.outnotaxamount, t.outtax,t.outtotalbox
+		from <include refid="temp_purchase_report"/> t
+		<if test="condition.isflag == null">
+	 		<include refid="common.Page_limit"/>
+	 	</if>
+	</select>
+	
+	<select id="getBuySupplierReportDataList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.report.model.PurchaseDetailReport">
+		SELECT t.supplierid,t.unitid,t.unitname,t.auxunitid,t.auxunitname,
+		sum(t.enternum) as enternum, sum(t.auxenternum) as auxenternum, sum(t.auxenterremainder) as auxenterremainder,
+		sum(t.entertaxamount) as entertaxamount, sum(t.enternotaxamount) as enternotaxamount,sum(t.entertax) as entertax,sum(t.entertotalbox) as entertotalbox,
+		sum(t.outnum) as outnum, sum(t.auxoutnum) as auxoutnum,sum(t.auxoutremainder) as auxoutremainder,
+		sum(t.outtaxamount) as outtaxamount,sum(t.outnotaxamount) as outnotaxamount,sum(t.outtax) as outtax,sum(t.outtotalbox) as outtotalbox
+    	from <include refid="temp_purchase_report"/> t
+	    group by supplierid
+        <choose>
+            <when test="condition.isflag == null">
+                <include refid="common.Page_limit"/>
+            </when>
+            <otherwise>
+                <include refid="common.Page_OrderOnly"/>
+            </otherwise>
+        </choose>
+	</select>
+	<select id="getBuySupplierReportDataCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+		select count(1) from (
+			SELECT t.supplierid,t.unitid,t.unitname,t.auxunitid,t.auxunitname,
+			sum(t.enternum) as enternum, sum(t.auxenternum) as auxenternum, sum(t.auxenterremainder) as auxenterremainder,
+			sum(t.entertaxamount) as entertaxamount, sum(t.enternotaxamount) as enternotaxamount,sum(t.entertax) as entertax,sum(t.entertotalbox) as entertotalbox,
+			sum(t.outnum) as outnum, sum(t.auxoutnum) as auxoutnum,sum(t.auxoutremainder) as auxoutremainder,
+			sum(t.outtaxamount) as outtaxamount,sum(t.outnotaxamount) as outnotaxamount,sum(t.outtax) as outtax,sum(t.outtotalbox) as outtotalbox
+			from <include refid="temp_purchase_report"/> t
+		    group by supplierid
+		)z
+	</select>
+	<select id="getBuySupplierReportSumData" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.report.model.PurchaseDetailReport">
+		SELECT sum(t.enternum) as enternum, sum(t.auxenternum) as auxenternum, sum(t.auxenterremainder) as auxenterremainder,
+		sum(t.entertaxamount) as entertaxamount, sum(t.enternotaxamount) as enternotaxamount,sum(t.entertax) as entertax,sum(t.entertotalbox) as entertotalbox,
+		sum(t.outnum) as outnum, sum(t.auxoutnum) as auxoutnum,sum(t.auxoutremainder) as auxoutremainder,
+		sum(t.outtaxamount) as outtaxamount,sum(t.outnotaxamount) as outnotaxamount,sum(t.outtax) as outtax,sum(t.outtotalbox) as outtotalbox
+    	from <include refid="temp_purchase_report"/> t
+	</select>
+	<select id="getBuySupplierReportDetailList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.report.model.PurchaseDetailReport">
+		SELECT t.supplierid,t.goodsid,t.unitid,t.unitname,t.auxunitid,t.auxunitname,
+	  		t.enternum, t.auxenternum, t.auxenterremainder, t.entertaxamount, t.enternotaxamount, t.entertax,t.entertotalbox,
+			t.outnum, t.auxoutnum, t.auxoutremainder, t.outtaxamount, t.outnotaxamount, t.outtax,t.outtotalbox
+		from <include refid="temp_purchase_report"/> t
+		<if test="condition.isflag == null">
+	 		<include refid="common.Page_limit"/>
+	 	</if>
+	</select>
+	<select id="getBuySupplierReportDetailCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+		select count(1) from (
+			SELECT t.supplierid,t.goodsid,t.unitid,t.unitname,t.auxunitid,t.auxunitname,
+		  		t.enternum, t.auxenternum, t.auxenterremainder, t.entertaxamount, t.enternotaxamount, t.entertax,t.entertotalbox,
+				t.outnum, t.auxoutnum, t.auxoutremainder, t.outtaxamount, t.outnotaxamount, t.outtax,t.outtotalbox
+			from <include refid="temp_purchase_report"/> t
+		)z
+	</select>
+	
+	<select id="getBuyUserReportDataList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.report.model.PurchaseDetailReport">
+  		SELECT t.buyuserid,t.unitid,t.unitname,t.auxunitid,t.auxunitname,
+		sum(t.enternum) as enternum, sum(t.auxenternum) as auxenternum, sum(t.auxenterremainder) as auxenterremainder,
+		sum(t.entertaxamount) as entertaxamount, sum(t.enternotaxamount) as enternotaxamount,sum(t.entertax) as entertax,sum(t.entertotalbox) as entertotalbox,
+		sum(t.outnum) as outnum, sum(t.auxoutnum) as auxoutnum,sum(t.auxoutremainder) as auxoutremainder,
+		sum(t.outtaxamount) as outtaxamount,sum(t.outnotaxamount) as outnotaxamount,sum(t.outtax) as outtax,sum(t.outtotalbox) as outtotalbox
+    	from <include refid="temp_purchase_report"/> t
+	    group by buyuserid
+		<if test="condition.isflag == null">
+	 		<include refid="common.Page_limit"/>
+	 	</if>
+	</select>
+	<select id="getBuyUserReportDataCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+		select count(1) from (
+			SELECT t.buyuserid,t.unitid,t.unitname,t.auxunitid,t.auxunitname,
+			sum(t.enternum) as enternum, sum(t.auxenternum) as auxenternum, sum(t.auxenterremainder) as auxenterremainder,
+			sum(t.entertaxamount) as entertaxamount, sum(t.enternotaxamount) as enternotaxamount,sum(t.entertax) as entertax,sum(t.entertotalbox) as entertotalbox,
+			sum(t.outnum) as outnum, sum(t.auxoutnum) as auxoutnum,sum(t.auxoutremainder) as auxoutremainder,
+			sum(t.outtaxamount) as outtaxamount,sum(t.outnotaxamount) as outnotaxamount,sum(t.outtax) as outtax,sum(t.outtotalbox) as outtotalbox
+	    	from <include refid="temp_purchase_report"/> t
+		    group by buyuserid
+		)z
+	</select>
+	<select id="getBuyUserReportSumData" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.report.model.PurchaseDetailReport">
+		SELECT sum(t.enternum) as enternum, sum(t.auxenternum) as auxenternum, sum(t.auxenterremainder) as auxenterremainder,
+		sum(t.entertaxamount) as entertaxamount, sum(t.enternotaxamount) as enternotaxamount,sum(t.entertax) as entertax,sum(t.entertotalbox) as entertotalbox,
+		sum(t.outnum) as outnum, sum(t.auxoutnum) as auxoutnum,sum(t.auxoutremainder) as auxoutremainder,
+		sum(t.outtaxamount) as outtaxamount,sum(t.outnotaxamount) as outnotaxamount,sum(t.outtax) as outtax,sum(t.outtotalbox) as outtotalbox
+    	from <include refid="temp_purchase_report"/> t
+	</select>
+	<select id="getBuyUserReportDetailList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.report.model.PurchaseDetailReport">
+		SELECT t.buyuserid,t.goodsid,t.unitid,t.unitname,t.auxunitid,t.auxunitname,
+	  		t.enternum, t.auxenternum, t.auxenterremainder, t.entertaxamount, t.enternotaxamount, t.entertax,t.entertotalbox,
+			t.outnum, t.auxoutnum, t.auxoutremainder, t.outtaxamount, t.outnotaxamount, t.outtax,t.outtotalbox
+		from <include refid="temp_purchase_report"/> t
+		<if test="condition.isflag == null">
+	 		<include refid="common.Page_limit"/>
+	 	</if>
+	</select>
+	<select id="getBuyUserReportDetailListCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+		select count(1) from (
+			SELECT t.buyuserid,t.goodsid,t.unitid,t.unitname,t.auxunitid,t.auxunitname,
+		  		t.enternum, t.auxenternum, t.auxenterremainder, t.entertaxamount, t.enternotaxamount, t.entertax,t.entertotalbox,
+				t.outnum, t.auxoutnum, t.auxoutremainder, t.outtaxamount, t.outnotaxamount, t.outtax,t.outtotalbox
+			from <include refid="temp_purchase_report"/> t
+		)z
+	</select>
+	
+	<!-- 采购计划分析表 -->
+  <sql id="plannedOrderAnalysis_sql">
+  	(
+  		SELECT t1.id as goodsid,t1.barcode,t1.brand as brandid,t.branddept,s.buydeptid,s.buyuserid,<choose><when test="condition.supplierid!=null">#{condition.supplierid}</when><otherwise>''</otherwise></choose> as supplierid,t.unitid,t.unitname,t.auxunitid,t.auxunitname,
+  			existingunitnum,transitunitnum,curstorageunitnum,tqsaleunitnum,qqsaleunitnum, canorderunitnum ,canorderamount,t.storageid 
+  			FROM   			
+		     t_base_goods_info t1 LEFT JOIN (
+			 SELECT t.goodsid,t.brandid,t.branddept,t.unitid,t.unitname,t.auxunitid,t.auxunitname,SUM(existingnum) AS existingunitnum,
+			 	SUM(transitnum) AS transitunitnum,SUM(curstorageunitnum) AS curstorageunitnum,SUM(tqsaleunitnum) tqsaleunitnum,SUM(qqsaleunitnum) AS qqsaleunitnum,
+				<choose>
+					<when test="condition.referDateBy == 1">
+						SUM(tqsaleunitnum)-SUM(curstorageunitnum) 
+					</when>
+					<otherwise>
+						SUM(qqsaleunitnum)-SUM(curstorageunitnum)
+					</otherwise>
+				</choose> AS canorderunitnum ,0 AS canorderamount,storageid FROM(
+				SELECT goodsid,brandid,branddept,unitid,unitname,auxunitid,auxunitname,
+					<choose>
+						<when test="condition.referStorageDataNumBy == 2">
+							SUM(usablenum) AS existingnum,
+						</when>
+						<otherwise>
+							SUM(existingnum) AS existingnum,
+						</otherwise>
+					</choose>
+					SUM(transitnum) AS transitnum,
+					<choose>
+						<when test="condition.referStorageDataNumBy == 2">
+							(SUM(usablenum) + SUM(transitnum) ) AS curstorageunitnum,
+						</when>
+						<otherwise>
+							(SUM(existingnum) + SUM(transitnum) ) AS curstorageunitnum,
+						</otherwise>
+					</choose>
+					0 AS tqsaleunitnum,0 AS qqsaleunitnum,storageid
+					FROM t_storage_summary 
+					<trim prefix="where" prefixOverrides="and|or" >
+						<if test="condition.goodsid != null">
+							and goodsid=#{condition.goodsid}
+						</if>
+						<if test="condition.goodsidarr != null">
+							and FIND_IN_SET(goodsid,#{condition.goodsidarr})
+						</if>
+						<if test="condition.brandid != null">
+							and brandid=#{condition.brandid}
+						</if>				
+						<if test="condition.isSendsStorage == 1">
+							and issendstorage='1'
+						</if>
+						<if test="condition.storageid != null">
+							and FIND_IN_SET(storageid,#{condition.storageid})
+						</if>
+					</trim>
+					GROUP BY goodsid
+	  				<if test="condition.salesdatatype == 0 or condition.salesdatatype == 2">
+						UNION ALL
+						SELECT t1.goodsid,t1.brandid,t1.branddept,t1.unitid,t1.unitname,t1.auxunitid,t1.auxunitname,0 AS existingnum,0 AS transitnum,0 as curstorageunitnum,t1.unitnum AS tqsaleunitnum,0 AS qqsaleunitnum,t.storageid
+						FROM t_storage_saleout t
+						RIGHT JOIN t_storage_saleout_detail t1 ON t.id=t1.saleoutid
+	  					<if test="condition.salesdatatype == 2">
+							left join t_sales_order t2 on t.saleorderid = t2.id
+						</if>
+						<trim prefix="where" prefixOverrides="and|or" >
+							<if test="condition.goodsid != null">
+								and t1.goodsid=#{condition.goodsid}
+							</if>
+							<if test="condition.goodsidarr != null">
+								and FIND_IN_SET(t1.goodsid,#{condition.goodsidarr})
+							</if>
+							<if test="condition.brandid != null">
+								and t1.brandid=#{condition.brandid}
+							</if>
+							<if test="condition.tqstartdate != null">
+								<![CDATA[  and  t.businessdate >= #{condition.tqstartdate} ]]>
+							</if>
+							<if test="condition.tqenddate != null">
+								<![CDATA[  and  t.businessdate<= #{condition.tqenddate} ]]>
+							</if>
+							<if test="1==1">
+								and (t.status='3' OR t.status='4')
+							</if>
+							<if test="condition.storageid != null">
+								and FIND_IN_SET(t.storageid,#{condition.storageid})
+							</if>
+							<if test="condition.salesdatatype == 2">
+								and t2.salestype = '1'
+							</if>
+						</trim>
+						UNION ALL
+						SELECT t1.goodsid,t1.brandid,t1.branddept,t1.unitid,t1.unitname,t1.auxunitid,t1.auxunitname,0 AS existingnum,0 AS transitnum,0 as curstorageunitnum,-t1.unitnum AS tqsaleunitnum,0 AS qqsaleunitnum,t.storageid
+						FROM t_storage_salereject_enter t
+						RIGHT JOIN t_storage_salereject_enter_detail t1
+						ON t.id=t1.salerejectid
+						<trim prefix="where" prefixOverrides="and|or" >
+							<if test="condition.goodsid != null">
+								and t1.goodsid=#{condition.goodsid}
+							</if>
+							<if test="condition.goodsidarr != null">
+								and FIND_IN_SET(t1.goodsid,#{condition.goodsidarr})
+							</if>
+							<if test="condition.brandid != null">
+								and t1.brandid=#{condition.brandid}
+							</if>
+							<if test="condition.tqstartdate != null">
+								<![CDATA[  and  t.businessdate >= #{condition.tqstartdate} ]]>
+							</if>
+							<if test="condition.tqenddate != null">
+								<![CDATA[  and  t.businessdate<= #{condition.tqenddate} ]]>
+							</if>
+							<if test="1==1">
+								and t.status='4'
+							</if>
+							<if test="condition.storageid != null">
+								and FIND_IN_SET(t.storageid,#{condition.storageid})
+							</if>
+						</trim>
+						UNION ALL
+						SELECT t1.goodsid,t1.brandid,t1.branddept,t1.unitid,t1.unitname,t1.auxunitid,t1.auxunitname,0 AS existingnum,0 AS transitnum,0 as curstorageunitnum,0 AS tqsaleunitnum,t1.unitnum AS qqsaleunitnum,t.storageid
+						FROM t_storage_saleout t
+						RIGHT JOIN t_storage_saleout_detail t1 ON t.id=t1.saleoutid
+						<if test="condition.salesdatatype == 2">
+							left join t_sales_order t2 on t.saleorderid = t2.id
+						</if>
+						<trim prefix="where" prefixOverrides="and|or" >
+							<if test="condition.goodsid != null">
+								and t1.goodsid=#{condition.goodsid}
+							</if>
+							<if test="condition.goodsidarr != null">
+								and FIND_IN_SET(t1.goodsid,#{condition.goodsidarr})
+							</if>
+							<if test="condition.brandid != null">
+								and t1.brandid=#{condition.brandid}
+							</if>
+							<if test="condition.qqstartdate != null">
+								<![CDATA[  and  t.businessdate >= #{condition.qqstartdate} ]]>
+							</if>
+							<if test="condition.qqenddate != null">
+								<![CDATA[  and  t.businessdate <= #{condition.qqenddate} ]]>
+							</if>
+							<if test="1==1">
+								and (t.status='3' OR t.status='4')
+							</if>
+							<if test="condition.storageid != null">
+								and FIND_IN_SET(t.storageid,#{condition.storageid})
+							</if>
+							<if test="condition.salesdatatype == 2">
+								and t2.salestype = '1'
+							</if>
+						</trim>
+						UNION ALL
+						SELECT t1.goodsid,t1.brandid,t1.branddept,t1.unitid,t1.unitname,t1.auxunitid,t1.auxunitname,0 AS existingnum,0 AS transitnum,0 as curstorageunitnum,0 AS tqsaleunitnum,-t1.unitnum AS qqsaleunitnum,t.storageid
+						FROM t_storage_salereject_enter t
+						RIGHT JOIN t_storage_salereject_enter_detail t1
+						ON t.id=t1.salerejectid
+						<trim prefix="where" prefixOverrides="and|or" >
+							<if test="condition.goodsid != null">
+								and t1.goodsid=#{condition.goodsid}
+							</if>
+							<if test="condition.goodsidarr != null">
+								and FIND_IN_SET(t1.goodsid,#{condition.goodsidarr})
+							</if>
+							<if test="condition.brandid != null">
+								and t1.brandid=#{condition.brandid}
+							</if>
+							<if test="condition.qqstartdate != null">
+								<![CDATA[  and  t.businessdate >= #{condition.qqstartdate} ]]>
+							</if>
+							<if test="condition.qqenddate != null">
+								<![CDATA[  and  t.businessdate <= #{condition.qqenddate} ]]>
+							</if>
+							<if test="1==1">
+								and t.status='4'
+							</if>
+							<if test="condition.storageid != null">
+								and FIND_IN_SET(t.storageid,#{condition.storageid})
+							</if>
+						</trim>
+					</if>
+	  				<if test="condition.salesdatatype == 1">
+					  UNION ALL
+					  SELECT t1.goodsid,t1.brandid,t1.branddept,t1.unitid,t1.unitname,t1.auxunitid,t1.auxunitname,0 AS existingnum,0 AS transitnum,0 as curstorageunitnum,
+						t1.unitnum AS tqsaleunitnum,0 AS qqsaleunitnum,g.storageid
+					  FROM t_crm_sales_order t
+					  RIGHT JOIN t_crm_sales_order_detail t1  ON t.id=t1.orderid
+					  inner JOIN t_base_goods_info g on g.id = t1.goodsid
+					  <trim prefix="where" prefixOverrides="and|or" >
+						  <if test="condition.goodsid != null">
+							  and t1.goodsid=#{condition.goodsid}
+						  </if>
+						  <if test="condition.goodsidarr != null">
+							  and FIND_IN_SET(t1.goodsid,#{condition.goodsidarr})
+						  </if>
+						  <if test="condition.brandid != null">
+							  and t1.brandid=#{condition.brandid}
+						  </if>
+						  <if test="condition.tqstartdate != null">
+							  <![CDATA[  and  t.businessdate >= #{condition.tqstartdate} ]]>
+						  </if>
+						  <if test="condition.tqenddate != null">
+							  <![CDATA[  and  t.businessdate<= #{condition.tqenddate} ]]>
+						  </if>
+						  <if test="condition.storageid != null">
+							  and FIND_IN_SET(g.storageid,#{condition.storageid})
+						  </if>
+					  </trim>
+	  				</if>
+
+				) t
+				GROUP BY goodsid
+		) t ON t.goodsid=t1.id
+		INNER JOIN t_base_buy_supplier s ON t1.defaultsupplier = s.id		   		
+		<!-- 项目中用到第二供应商的，此处需要供应商查询判断 -->
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="1==1">
+				and t1.state='1'
+			</if>
+			<if test="condition.goodsid != null">
+				and t1.id=#{condition.goodsid}
+			</if>
+			<if test="condition.goodsidarr != null">
+				and FIND_IN_SET(t1.id,#{condition.goodsidarr})
+			</if>
+			<if test="condition.brandid != null">
+				and t1.brand=#{condition.brandid}
+			</if>   		
+			<if test="condition.supplierid != null" >
+	         	and (t1.defaultsupplier = #{condition.supplierid} or FIND_IN_SET(#{condition.supplierid},t1.secondsupplier))
+	      	</if>	      	
+	      	<choose>
+	      		<when test="condition.canBuySale == 1">
+	         		and (t1.bstype='1' or t1.bstype='2')	<!-- 购销、可购 -->
+	      		</when>
+	      		<when test="condition.canBuySale == 2">
+	         		and (t1.bstype='1' or t1.bstype='3')	<!-- 购销、可销 -->
+	      		</when>
+	      		<when test="condition.canBuySale == 3">
+	         		and t1.bstype='2'	<!-- 只可采购 ，不包含销售-->
+	      		</when>
+	      		<when test="condition.canBuySale == 4">
+	         		and t1.bstype='3'	<!-- 只可销售，不包含采购-->
+	      		</when>
+	      	</choose>
+	      	<if test="condition.goodssort!=null">
+	      		and FIND_IN_SET(t1.defaultsort,#{condition.goodssort})
+	      	</if>
+		</trim>
+  	)
+  </sql>
+	
+  <select id="showPlannedOrderAnalysisPageList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.report.model.PlannedOrderAnalysis">
+  	select t.* from  <include refid="plannedOrderAnalysis_sql"/> t
+  	<if test="condition.canordernumFilter !=null">
+  		inner join t_base_goods_info_meteringunit m on t.goodsid=m.goodsid and m.isdefault='1'
+  	</if>
+   	<trim prefix="where" prefixOverrides="and|or">   		
+		<!-- 项目中用到第二供应商的，此处去掉供应商查询判断 -->
+		<if test="condition.canordernumFilter !=null">
+			<choose>
+				<when test="condition.canordernumFilter==1">
+					<![CDATA[ and m.rate>0 and t.canorderunitnum>0 and round(t.canorderunitnum/m.rate)>0 ]]>
+				</when>
+				<when test="condition.canordernumFilter==2">
+					<![CDATA[ and (canorderunitnum <=0  or  (m.rate>0 and t.canorderunitnum>0 and round(t.canorderunitnum/m.rate)=0) )]]>
+				</when>
+			</choose>
+		</if>
+		<include refid="common.Page_dataSql"/>
+   	</trim>
+	<if test="condition.isflag !='true'">
+		<include refid="common.Page_limit" /> 
+	</if>
+  </select>
+  <select id="showPlannedOrderAnalysisPageCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+	SELECT COUNT(t.goodsid) FROM (
+		select t.*  from <include refid="plannedOrderAnalysis_sql"/> t
+	  	<if test="condition.canordernumFilter !=null">
+	  		inner join t_base_goods_info_meteringunit m on t.goodsid=m.goodsid and m.isdefault='1'
+	  	</if>
+	   	<trim prefix="where" prefixOverrides="and|or">    		
+			<!-- 项目中用到第二供应商的，此处去掉供应商查询判断 -->
+			<if test="condition.canordernumFilter !=null">
+				<choose>
+					<when test="condition.canordernumFilter==1">
+						<![CDATA[ and m.rate>0 and t.canorderunitnum>0 and round(t.canorderunitnum/m.rate)>0 ]]>
+					</when>
+					<when test="condition.canordernumFilter==2">
+						<![CDATA[ and (canorderunitnum <=0  or  (m.rate>0 and t.canorderunitnum>0 and round(t.canorderunitnum/m.rate)=0) )]]>
+					</when>
+				</choose>
+			</if>
+			<include refid="common.Page_dataSql"/>
+	   	</trim>
+	)t
+  </select>
+  
+  <sql id="arrivalOrderCostAccount_sql">
+  	(
+  		SELECT
+			t1.goodsid,t.supplierid,t.buyuserid,t.buydeptid,t1.auxunitname AS buyunitname,
+			t1.unitnum AS buyunitnum,t1.taxamount AS buyamount,t1.notaxamount AS buynotaxamount,t1.tax AS buytax,
+			g.costaccountprice AS costaccountprice,g.brand AS brandid
+		FROM t_purchase_arrivalorder t
+		RIGHT JOIN t_purchase_arrivalorder_detail t1 ON t1.orderid = t.id
+		LEFT JOIN t_base_goods_info g ON t1.goodsid = g.id					
+		<trim prefix="WHERE" prefixOverrides="and|or" >
+			<if test="1==1">
+				AND t.STATUS IN ('3', '4')
+				AND NOT g.costaccountprice IS NULL AND g.costaccountprice !=0 					
+			</if>
+			<if test="condition.businessdate1 != null">
+			 	and t.businessdate >= #{condition.businessdate1}
+		    </if>
+			<if test="condition.businessdate2 != null">
+				 <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+			</if>
+			<if test="condition.goodsid != null">					
+				<choose>
+					<when test="condition.isgoodsidarr !=null and condition.isgoodsidarr == 1">
+						and FIND_IN_SET(t1.goodsid,#{condition.goodsid})
+					</when>
+					<otherwise>
+						and t1.goodsid=#{condition.goodsid}
+					</otherwise>
+				</choose>						
+			</if>	
+			<if test="condition.buyuserid != null">
+				<choose>
+					<when test="condition.isbuyuserarr != null and condition.isbuyuserarr == 1">
+						and FIND_IN_SET(t.buyuserid,#{condition.buyuserid})
+					</when>
+					<otherwise>								
+						and t.buyuserid=#{condition.buyuserid}
+					</otherwise>
+				</choose>
+			</if>
+			<if test="condition.buydeptid != null">
+				<choose>
+					<when test="condition.isbuydeptarr != null and condition.isbuydeptarr == 1">
+						and FIND_IN_SET(t.buydeptid,#{condition.buydeptid})
+					</when>
+					<otherwise>								
+						and t.buydeptid=#{condition.buydeptid}
+					</otherwise>
+				</choose>
+			</if>			
+			<if test="condition.brandid != null">					
+				<choose>
+					<when test="condition.isbrandarr !=null and condition.isbrandarr == 1">
+						and FIND_IN_SET(g.brand,#{condition.brandid})
+					</when>
+					<otherwise>
+						and g.brand=#{condition.brandid}
+					</otherwise>
+				</choose>						
+			</if>
+			<if test="condition.supplierid != null">
+				<choose>
+					<when test="condition.issupplieridarr != null and condition.issupplieridarr == 1">
+						and FIND_IN_SET(t.supplierid,#{condition.issupplieridarr})
+					</when>
+					<otherwise>								
+						and t.supplierid=#{condition.supplierid}
+					</otherwise>
+				</choose>
+			</if>	
+		</trim>
+  	)
+  </sql>
+  <select id="getArrivalOrderCostAccountReportData" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.report.model.ArrivalOrderCostAccountReport">
+    SELECT
+		t.goodsid AS id,t.goodsid,t.supplierid, t.brandid,t.buyuserid,t.buydeptid,t.buyunitname,t.buyunitnum,SUM(t.buyamount) AS buyamount,0 AS buynum,
+		SUM(t.buynotaxamount) AS buynotaxamount ,SUM(t.buytax) AS buytax,IFNULL(t.costaccountprice,0) AS costaccountprice,
+		IFNULL(SUM(t.costaccountprice * t.buyunitnum),0) AS costaccountamount,(SUM(t.buyamount)-IFNULL(SUM(t.costaccountprice * t.buyunitnum),0)) AS blanceamount
+	FROM <include refid="arrivalOrderCostAccount_sql"/> t
+	<trim prefix="WHERE" prefixOverrides="and|or" >
+		<include refid="common.Page_dataSql"/>
+	</trim>
+	<if test="condition.groupcols !=null and condition.groupcols !='' and condition.groupcols != 'all' ">
+		group by ${condition.groupcols}
+	</if>
+   	<if test="condition.ispageflag !='true' and condition.groupcols != 'all'">
+		<include refid="common.Page_limit" /> 
+	</if>
+  </select>
+  <select id="getArrivalOrderCostAccountReportCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+    SELECT count(1) FROM (
+	  	SELECT
+			t.goodsid AS id,t.goodsid,t.supplierid, t.brandid,t.buyuserid,t.buydeptid,t.buyunitname,t.buyunitnum,SUM(t.buyamount) AS buyamount,0 AS buynum,
+			SUM(t.buynotaxamount) AS buynotaxamount ,SUM(t.buytax) AS buytax,IFNULL(t.costaccountprice,0) AS costaccountprice,
+			IFNULL(SUM(t.costaccountprice * t.buyunitnum),0) AS costaccountamount,(SUM(t.buyamount)-IFNULL(SUM(t.costaccountprice * t.buyunitnum),0)) AS blanceamount
+		FROM <include refid="arrivalOrderCostAccount_sql"/> t
+		<trim prefix="WHERE" prefixOverrides="and|or" >
+			<include refid="common.Page_dataSql"/>
+		</trim>
+		<if test="condition.groupcols !=null and condition.groupcols !='' and condition.groupcols != 'all' ">
+			group by ${condition.groupcols}
+		</if>
+	) t
+  </select>
+  <sql id="BuyPaymentBalanceReport_Sql">
+  		SELECT t.id,t.brandid,t.buyuserid,t.buydeptid,t.supplierid,
+	  		SUM(t.arrivalamount) AS arrivalamount,SUM(t.paybalance) AS paybalance, SUM(t.arrivalamount)+SUM(t.paybalance) AS invoiceamount 
+	  	FROM (
+			SELECT g.brand AS id,g.brand AS brandid,t.buyuser AS buyuserid,t.buydept AS buydeptid,
+			t.supplierid,t1.taxamount AS arrivalamount,0 AS paybalance
+			FROM t_account_purchase_invoice t
+			RIGHT JOIN t_account_purchase_invoice_detail t1 ON t1.billid = t.id
+			INNER JOIN t_base_goods_info g ON t1.goodsid = g.id
+			<trim prefix="WHERE" prefixOverrides="and|or" >
+				<if test="1==1">
+					AND t.STATUS IN ('3', '4')
+				</if>
+				<if test="condition.businessdate1 != null">
+				 	and t.businessdate >= #{condition.businessdate1}
+			    </if>
+				<if test="condition.businessdate2 != null">
+					 <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+				</if>	
+				<if test="condition.buyuser != null">
+					<choose>
+						<when test="condition.isbuyuserarr != null and condition.isbuyuserarr == 1">
+							and FIND_IN_SET(t.buyuser,#{condition.buyuser})
+						</when>
+						<otherwise>								
+							and t.buyuser=#{condition.buyuser}
+						</otherwise>
+					</choose>
+				</if>
+				<if test="condition.buydept != null">
+					<choose>
+						<when test="condition.isbuydeptarr != null and condition.isbuydeptarr == 1">
+							and FIND_IN_SET(t.buydept,#{condition.buydept})
+						</when>
+						<otherwise>								
+							and t.buydept=#{condition.buydept}
+						</otherwise>
+					</choose>
+				</if>			
+				<if test="condition.brand != null">					
+					<choose>
+						<when test="condition.isbrandarr !=null and condition.isbrandarr == 1">
+							and FIND_IN_SET(g.brand,#{condition.brand})
+						</when>
+						<otherwise>
+							and g.brand=#{condition.brand}
+						</otherwise>
+					</choose>						
+				</if>		
+				<if test="condition.supplier != null">					
+					<choose>
+						<when test="condition.issupplierarr !=null and condition.issupplierarr == 1">
+							and FIND_IN_SET(t.supplierid,#{condition.supplier})
+						</when>
+						<otherwise>
+							and t.supplierid=#{condition.supplier}
+						</otherwise>
+					</choose>						
+				</if>
+			</trim>	
+			UNION ALL
+			SELECT t1.brand AS id,t1.brand AS brandid,t.buyuser AS buyuserid,t.buydept AS buydeptid,
+			t.supplierid,0 AS arrivalamount,t1.amount AS paybalance
+			FROM t_account_purchase_invoice t
+			RIGHT JOIN t_account_purchase_invoice_push t1 ON t1.invoiceid = t.id
+			<trim prefix="WHERE" prefixOverrides="and|or" >
+				<if test="1==1">
+					AND t.STATUS IN ('3', '4')
+				</if>
+				<if test="condition.businessdate1 != null">
+				 	and t.businessdate >= #{condition.businessdate1}
+			    </if>
+				<if test="condition.businessdate2 != null">
+					 <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+				</if>	
+				<if test="condition.buyuser != null">
+					<choose>
+						<when test="condition.isbuyuserarr != null and condition.isbuyuserarr == 1">
+							and FIND_IN_SET(t.buyuser,#{condition.buyuser})
+						</when>
+						<otherwise>								
+							and t.buyuser=#{condition.buyuser}
+						</otherwise>
+					</choose>
+				</if>
+				<if test="condition.buydept != null">
+					<choose>
+						<when test="condition.isbuydeptarr != null and condition.isbuydeptarr == 1">
+							and FIND_IN_SET(t.buydept,#{condition.buydept})
+						</when>
+						<otherwise>								
+							and t.buydept=#{condition.buydept}
+						</otherwise>
+					</choose>
+				</if>			
+				<if test="condition.brand != null">					
+					<choose>
+						<when test="condition.isbrandarr !=null and condition.isbrandarr == 1">
+							and FIND_IN_SET(t1.brand,#{condition.brand})
+						</when>
+						<otherwise>
+							and t1.brand=#{condition.brand}
+						</otherwise>
+					</choose>						
+				</if>		
+				<if test="condition.supplier != null">					
+					<choose>
+						<when test="condition.issupplierarr !=null and condition.issupplierarr == 1">
+							and FIND_IN_SET(t.supplierid,#{condition.supplier})
+						</when>
+						<otherwise>
+							and t.supplierid=#{condition.supplier}
+						</otherwise>
+					</choose>						
+				</if>
+			</trim>	
+			) t
+			<trim prefix="WHERE" prefixOverrides="and|or" >
+				<include refid="common.Page_dataSql"/>
+			</trim>
+			<if test="condition.groupcols !=null and condition.groupcols !='' and condition.groupcols != 'all' ">
+				group by ${condition.groupcols}
+			</if>
+  </sql>  
+  <select id="getBuyPaymentBalanceReportData" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.report.model.BuyPaymentBalanceReport">
+  	SELECT t.id,t.brandid,t.buyuserid,t.buydeptid,t.supplierid,t.arrivalamount,t.paybalance, t.invoiceamount FROM (
+	  		<include refid="BuyPaymentBalanceReport_Sql"></include>
+		)t
+		<if test="condition.ispageflag !='true' and condition.groupcols != 'all'">
+			<include refid="common.Page_limit" /> 
+		</if>
+  </select>  
+  <select id="getBuyPaymentBalanceReportCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  	SELECT COUNT(*) FROM (
+  		<include refid="BuyPaymentBalanceReport_Sql"></include>
+  	) t
+  </select>
+  <select id="getPurchaseQuantityReport" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.report.model.PurchaseQuantityReport">
+  	SELECT brandid,enterunitname,SUM(enternum) AS enternum,
+  		SUM(enterremainder) AS enterremainder,SUM(totalweight) AS totalweight FROM (
+		SELECT ed.brandid,auxunitname AS enterunitname,SUM(unitnum)/m.rate AS enternum, 
+		MOD(SUM(ed.auxremainder),m.rate) AS enterremainder,SUM(unitnum)/m.rate * g.totalweight AS totalweight
+		FROM t_storage_purchase_enter e 
+		RIGHT JOIN t_storage_purchase_enter_detail ed ON  e.id = ed.purchaseenterid
+		LEFT JOIN t_base_goods_info g ON ed.goodsid=g.id
+		LEFT JOIN t_base_goods_info_meteringunit m ON ed.goodsid=m.goodsid AND m.isdefault='1'
+		<trim prefix="WHERE" prefixOverrides="and|or" >
+			<if test="1==1">
+				AND e.STATUS IN ('3', '4')
+			</if>
+			<if test="condition.brandid !=null">
+				AND ed.brandid = #{condition.brandid}
+			</if>
+			<if test="condition.businessdate1 != null">
+			 	and e.businessdate >= #{condition.businessdate1}
+		    </if>
+			<if test="condition.businessdate2 != null">
+				 <![CDATA[and e.businessdate <= #{condition.businessdate2}]]>
+			</if>
+			<if test="condition.supplierid !=null">
+				AND e.supplierid=#{condition.supplierid}
+			</if>
+			<if test="condition.supplieridarr !=null">
+				AND FIND_IN_SET(e.supplierid,#{condition.supplieridarr})
+			</if>
+		</trim>
+		GROUP BY ed.goodsid
+	) t
+	<if test="condition.isShowSumTotal != 'true'">
+		GROUP BY brandid
+	</if>
+	<if test="condition.ispageflag !='true'">
+		<include refid="common.Page_limit" /> 
+	</if>
+  </select>  
+  <select id="getPurchaseQuantityReportCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  	SELECT count(brandid) FROM (
+	  	SELECT brandid FROM (
+			SELECT ed.brandid
+			FROM t_storage_purchase_enter e 
+			RIGHT JOIN t_storage_purchase_enter_detail ed ON  e.id = ed.purchaseenterid
+			LEFT JOIN t_base_goods_info g ON ed.goodsid=g.id
+			LEFT JOIN t_base_goods_info_meteringunit m ON ed.goodsid=m.goodsid AND m.isdefault='1'
+			<trim prefix="WHERE" prefixOverrides="and|or" >
+				<if test="1==1">
+					AND e.STATUS IN ('3', '4')
+				</if>
+				<if test="condition.brandid !=null">
+					AND ed.brandid = #{condition.brandid}
+				</if>
+				<if test="condition.businessdate1 != null">
+				 	and e.businessdate >= #{condition.businessdate1}
+			    </if>
+				<if test="condition.businessdate2 != null">
+					 <![CDATA[and e.businessdate <= #{condition.businessdate2}]]>
+				</if>
+				<if test="condition.supplierid !=null">
+					AND e.supplierid=#{condition.supplierid}
+				</if>
+				<if test="condition.supplieridarr !=null">
+					AND FIND_IN_SET(e.supplierid,#{condition.supplieridarr})
+				</if>
+			</trim>
+			GROUP BY ed.goodsid
+		) t	
+		GROUP BY brandid
+	) t
+  </select>
+
+
+
+  <sql id="buyOrderTrackReportData_sql">
+		(
+		SELECT t.id as orderid,t.businessdate,t.supplierid,
+		t1.goodsid as goodsid1,t5.goodsid as goodsid2,t1.unitid,t1.unitname,t1.taxprice,t1.unitnum as ordernum,t1.auxunitid,t1.auxunitname,t1.auxnum ,t1.auxnumdetail,t1.totalbox as ordertotalbox,t1.taxamount as orderamount,
+		max(t3.taxprice) as enterprice,sum(t3.unitnum) as enternum,sum(t3.totalbox) as entertotalbox,sum(t3.taxamount) as enteramount,
+		max(t5.taxprice) as arrivalorderprice,sum(t5.unitnum) as arrivalordernum,sum(t5.totalbox) as arrivalordertotalbox,sum(t5.taxamount) as arrivalorderamount
+		
+		FROM t_purchase_buyorder t
+		RIGHT JOIN t_purchase_buyorder_detail t1 ON t.id = t1.orderid
+		LEFT JOIN t_storage_purchase_enter t2 on t2.sourceid=t.id 
+		LEFT JOIN t_storage_purchase_enter_detail t3 on  t3.purchaseenterid=t2.id and t3.buyorderdetailid=t1.id  and (t2.STATUS='3' or t2.status='4')
+		LEFT JOIN t_purchase_arrivalorder t4 on t4.billno=t2.id 
+		LEFT JOIN t_purchase_arrivalorder_detail t5 on t5.orderid=t4.id and t5.billdetailno=t3.id and (t4.STATUS='3' or t4.status='4')
+		LEFT JOIN t_base_goods_info t6 on t6.id=t1.goodsid
+		<trim prefix="WHERE" prefixOverrides="and|or" >                                                                                                                                                                                   
+			<include refid="common.Page_dataSql"/>
+			<if test="condition.businessdate1 != null">
+				and t.businessdate >= #{condition.businessdate1}
+			</if>
+			<if test="condition.businessdate2 != null">
+				<![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+			</if>
+			<if test="condition.purchasedate1 != null">
+				and t4.businessdate >= #{condition.purchasedate1}
+			</if>
+			<if test="condition.purchasedate2 != null">
+				<![CDATA[and t4.businessdate <= #{condition.purchasedate2}]]>
+			</if>
+			<if test="1==1">
+				and (t.STATUS='3' or t.status='4')
+			</if>
+			<if test="condition.supplierid != null">
+				and t.supplierid = #{condition.supplierid}
+			</if>
+			<if test="condition.goodsid != null">
+				and t1.goodsid = #{condition.goodsid}
+			</if>
+			<if test="condition.brandid != null">
+				and FIND_IN_SET(t6.brand,#{condition.brandid})
+			</if>
+			<if test="condition.id != null">
+				and t.id like CONCAT('%',#{condition.id},'%')
+			</if>
+			
+		</trim>
+		GROUP BY t.id,t1.id
+		)
+	</sql>
+	  <select id="showBuyOrderTrackReportData" parameterType="com.hd.agent.common.util.PageMap" resultType="java.util.Map">
+	  	SELECT z.* from <include refid="buyOrderTrackReportData_sql"/> z
+	  	<trim prefix="WHERE" prefixOverrides="and|or" > 
+		  	<if test="condition.numdifference != 0">					
+				<choose>
+					<when test="condition.numdifference == 1">
+					    and	z.ordernum =z.enternum
+					</when>
+					<otherwise>
+						<![CDATA[ and ((z.ordernum <> z.enternum) or ( z.enternum is null))]]>
+					</otherwise>
+				</choose>						
+			</if>
+		</trim>
+		<if test="condition.ispageflag==null">
+			<include refid="common.Page_limit" />
+		</if>
+	  </select>
+	  
+	    <select id="showBuyOrderTrackReportCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+          SELECT count(1) FROM <include refid="buyOrderTrackReportData_sql"/> z
+          <trim prefix="WHERE" prefixOverrides="and|or" > 
+		  	<if test="condition.numdifference != 0">					
+				<choose>
+					<when test="condition.numdifference == 1">
+					    and	z.ordernum =z.enternum
+					</when>
+					<otherwise>
+						<![CDATA[ and ((z.ordernum <> z.enternum) or ( z.enternum is null))]]>
+					</otherwise>
+				</choose>						
+			</if>
+		</trim>
+	  </select>
+	  <select id="showBuyOrderTrackReportDataSum" parameterType="com.hd.agent.common.util.PageMap" resultType="java.util.Map">
+        SELECT  sum(z.ordernum) AS ordernum, sum(z.ordertotalbox) AS ordertotalbox,sum(z.orderamount) AS orderamount,
+         sum(z.enternum) AS enternum,  sum(z.entertotalbox) AS entertotalbox,  sum(z.enteramount) AS enteramount, 
+        sum(z.arrivalordernum) AS arrivalordernum,  sum(z.arrivalordertotalbox) AS arrivalordertotalbox,  sum(z.arrivalorderamount) AS arrivalorderamount
+		  FROM <include refid="buyOrderTrackReportData_sql"/> z
+		  <trim prefix="WHERE" prefixOverrides="and|or" > 
+		  	<if test="condition.numdifference != 0">					
+				<choose>
+					<when test="condition.numdifference == 1">
+					    and	z.ordernum = z.enternum
+					</when>
+					<otherwise>
+						<![CDATA[ and ((z.ordernum <> z.enternum) or ( z.enternum is null))]]>
+					</otherwise>
+				</choose>						
+			</if>
+		</trim>
+	  </select>
+</mapper>

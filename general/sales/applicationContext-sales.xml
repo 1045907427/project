@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd 
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+	
+	<import resource="classpath:applicationContext-sales-ext.xml"/>
+	<!-- mapper -->
+	<bean id="salesOffpriceMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.sales.dao.OffpriceMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+	<bean id="salesOrderMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.sales.dao.OrderMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+	<bean id="salesOrderDetailMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.sales.dao.OrderDetailMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+	<bean id="orderGoodsMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.hd.agent.sales.dao.OrderGoodsMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+	</bean>
+	<bean id="salesOrderCarMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.sales.dao.OrderCarMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+	<bean id="salesDispatchBillMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.sales.dao.DispatchBillMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+	<bean id="salesReceiptMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.sales.dao.ReceiptMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+	<bean id="salesRejectBillMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.sales.dao.RejectBillMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+	<bean id="salesDemandMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.sales.dao.DemandMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    
+    <bean id="salesPromotionMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.sales.dao.PromotionPackageMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    
+    <bean id="salesOweOrderMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.sales.dao.OweOrderMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+
+    <bean id="importSetMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.hd.agent.sales.dao.ImportSetMapper" />
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+	<!-- service -->
+	<bean id="salesBaseServiceImpl" class="com.hd.agent.sales.service.impl.BaseSalesServiceImpl" parent="baseFilesServiceImpl">
+		<property name="salesOffpriceMapper" ref="salesOffpriceMapper"></property>
+		<property name="salesOrderMapper" ref="salesOrderMapper"></property>
+		<property name="orderGoodsMapper" ref="orderGoodsMapper"></property>
+		<property name="salesOrderDetailMapper" ref="salesOrderDetailMapper"></property>
+		<property name="salesDispatchBillMapper" ref="salesDispatchBillMapper"></property>
+		<property name="salesReceiptMapper" ref="salesReceiptMapper"></property>
+		<property name="salesRejectBillMapper" ref="salesRejectBillMapper"></property>
+		<property name="salesOrderCarMapper" ref="salesOrderCarMapper"></property>
+		<property name="salesDemandMapper" ref="salesDemandMapper"></property>
+		<property name="salesFreeOrderMapper" ref="salesFreeOrderMapper"></property>
+		<property name="customerCapitalMapper" ref="customerCapitalMapper"></property>
+		<property name="salesPromotionMapper" ref="salesPromotionMapper"></property>
+		<property name="salesOweOrderMapper" ref="salesOweOrderMapper"></property>
+        <property name="importSetMapper" ref="importSetMapper"></property>
+	</bean>
+	<bean id="salesOffpriceService" parent="baseTransactionProxy">
+		<property name="target" ref="salesOffpriceServiceImpl"></property>
+	</bean>
+	<bean id="salesOffpriceServiceImpl" class="com.hd.agent.sales.service.impl.OffpriceServiceImpl" parent="salesBaseServiceImpl">
+	</bean>
+	<bean id="salesOrderService" parent="baseTransactionProxy">
+		<property name="target" ref="salesOrderServiceImpl"></property>
+	</bean>
+	<bean id="salesOrderServiceImpl" class="com.hd.agent.sales.service.impl.OrderServiceImpl" parent="salesBaseServiceImpl">
+		<property name="salesDispatchBillExtService" ref="salesDispatchBillExtService"></property>
+		<property name="customerMapper" ref="customerMapper"></property>
+        <property name="storageForSalesService" ref="storageForSalesService"></property>
+        <property name="distributionRuleMapper" ref="distributionRuleMapper"/>
+	</bean>
+	<bean id="orderGoodsService" parent="baseTransactionProxy">
+		<property name="target" ref="orderGoodsServiceImpl"></property>
+	</bean>
+	<bean id="orderGoodsServiceImpl" class="com.hd.agent.sales.service.impl.OrderGoodsServiceImpl" parent="salesBaseServiceImpl">
+		<property name="storageForSalesService" ref="storageForSalesService"></property>
+		<property name="salesOrderService" ref="salesOrderService"></property>
+	</bean>
+	<bean id="salesOrderCarService" parent="baseTransactionProxy">
+		<property name="target" ref="salesOrderCarServiceImpl"></property>
+	</bean>
+	<bean id="salesOrderCarServiceImpl" class="com.hd.agent.sales.service.impl.OrderCarServiceImpl" parent="salesBaseServiceImpl">
+		<property name="dispatchBillExtService" ref="salesDispatchBillExtService"></property>
+		<property name="storageForSalesService" ref="storageForSalesService"></property>
+		<property name="receiptService" ref="salesReceiptService"></property>
+		<property name="orderService" ref="salesOrderService"></property>
+	</bean>
+	<bean id="salesDispatchBillService" parent="baseTransactionProxy">
+		<property name="target" ref="salesDispatchBillServiceImpl"></property>
+	</bean>
+	<bean id="salesDispatchBillServiceImpl" class="com.hd.agent.sales.service.impl.DispatchBillServiceImpl" parent="salesBaseServiceImpl">
+		<property name="storageForSalesService" ref="storageForSalesService"></property>
+		<property name="salesOrderExtService" ref="salesOrderExtService"></property>
+	</bean>
+	<bean id="salesReceiptService" parent="baseTransactionProxy">
+		<property name="target" ref="salesReceiptServiceImpl"></property>
+	</bean>
+	<bean id="salesReceiptServiceImpl" class="com.hd.agent.sales.service.impl.ReceiptServiceImpl" parent="salesBaseServiceImpl">
+		<property name="storageForSalesService" ref="storageForSalesService"></property>
+		<property name="salesRejectBillExtService" ref="salesRejectBillExtService"></property>
+        <property name="salesInvoiceService" ref="salesInvoiceService"></property>
+        <property name="salesStatementService" ref="salesStatementService"></property>
+		<property name="customerPushBanlanceService" ref="customerPushBanlanceService"></property>
+		<property name="beginAmountService" ref="beginAmountService"></property>
+        <property name="collectionOrderService" ref="collectionOrderService"></property>
+	</bean>
+	<bean id="salesRejectBillService" parent="baseTransactionProxy">
+		<property name="target" ref="salesRejectBillServiceImpl"></property>
+	</bean>
+	<bean id="salesRejectBillServiceImpl" class="com.hd.agent.sales.service.impl.RejectBillServiceImpl" parent="salesBaseServiceImpl">
+		<property name="salesReceiptExtService" ref="salesReceiptExtService"></property>
+		<property name="storageForSalesService" ref="storageForSalesService"></property>
+		<property name="salesOrderService" ref="salesOrderService"></property>
+	</bean>
+	<bean id="salesOutService" parent="baseTransactionProxy">
+		<property name="target" ref="salesOutServiceImpl"></property>
+	</bean>
+	<bean id="salesOutServiceImpl" class="com.hd.agent.sales.service.impl.SalesOutServiceImpl" parent="salesBaseServiceImpl">
+		<property name="storageSaleService" ref="storageSaleService"></property>
+		<property name="customerPushBalanceMapper" ref="customerPushBalanceMapper"></property>
+		<property name="beginAmountMapper" ref="beginAmountMapper"></property>
+	</bean>
+
+	<bean id="salesDemandService" parent="baseTransactionProxy">
+		<property name="target" ref="salesDemandServiceImpl"></property>
+	</bean>
+	<bean id="salesDemandServiceImpl" class="com.hd.agent.sales.service.impl.DemandServiceImpl" parent="salesBaseServiceImpl">
+		<property name="salesOrderExtService" ref="salesOrderExtService"></property>
+	</bean>
+		<bean id="salesPromotionService" parent="baseTransactionProxy">
+		<property name="target" ref="salesPromotionServiceImpl"></property>
+	</bean>
+	<bean id="salesPromotionServiceImpl" class="com.hd.agent.sales.service.impl.PromotionServiceImpl" parent="salesBaseServiceImpl">
+	</bean>
+	
+	
+	<bean id="salesOweOrderService" parent="baseTransactionProxy">
+		<property name="target" ref="salesOweOrderServiceImpl"></property>
+	</bean>
+	<bean id="salesOweOrderServiceImpl" class="com.hd.agent.sales.service.impl.OweOrderServiceImpl" parent="salesBaseServiceImpl">
+	    <property name="salesOrderDetailMapper" ref="salesOrderDetailMapper"></property>
+	    <property name="salesOrderMapper" ref="salesOrderMapper"></property>
+	    <property name="storageSummaryMapper" ref="storageSummaryMapper"></property>
+	    <property name="sysUserMapper" ref="sysUserMapper"></property>
+	</bean>
+    <bean id="importService" parent="baseTransactionProxy">
+        <property name="target" ref="importServiceImpl"></property>
+    </bean>
+    <bean id="salesOrderExtService" parent="baseTransactionProxy">
+        <property name="target" ref="salesOrderExtServiceImpl"></property>
+    </bean>
+    <bean id="salesOrderExtServiceImpl" class="com.hd.agent.sales.service.impl.ext.OrderExtServiceImpl" parent="salesBaseServiceImpl"></bean>
+
+    <bean id="importServiceImpl" class="com.hd.agent.sales.service.impl.ImportServiceImpl" parent="salesBaseServiceImpl">
+    </bean>
+	<!-- action -->
+	<bean id="baseSalesAction" class="com.hd.agent.sales.action.BaseSalesAction" scope="prototype" parent="baseFilesAction">
+		<property name="salesOffpriceService" ref="salesOffpriceService"></property>
+		<property name="salesOrderService" ref="salesOrderService"></property>
+		<property name="orderGoodsService" ref="orderGoodsService"></property>
+		<property name="salesDispatchBillService" ref="salesDispatchBillService"></property>
+		<property name="salesReceiptService" ref="salesReceiptService"></property>
+		<property name="salesRejectBillService" ref="salesRejectBillService"></property>
+		<property name="salesOrderCarService" ref="salesOrderCarService"></property>
+		<property name="salesDemandService" ref="salesDemandService"></property>
+		<property name="excelService" ref="excelService"></property>
+		<property name="salesPromotionService" ref="salesPromotionService"></property>
+
+	    <property name="salesOweOrderService" ref="salesOweOrderService"></property>
+        <property name="importService" ref="importService"></property>
+        <property name="purchaseForSalesService" ref="purchaseForSalesService"></property>
+		<property name="attachFileService" ref="attachFileService"></property>
+
+	</bean>
+	<bean id="offpriceAction" class="com.hd.agent.sales.action.OffpriceAction" scope="prototype" parent="baseSalesAction"></bean>
+	<bean id="orderAction" class="com.hd.agent.sales.action.OrderAction" scope="prototype" parent="baseSalesAction"></bean>
+	<bean id="orderGoodsAction" class="com.hd.agent.sales.action.OrderGoodsAction" scope="prototype" parent="baseSalesAction">
+		<property name="salesDemandService" ref="salesDemandService"></property>
+	</bean>
+	<bean id="orderCarAction" class="com.hd.agent.sales.action.OrderCarAction" scope="prototype" parent="baseSalesAction"></bean>
+	<bean id="dispatchBillAction" class="com.hd.agent.sales.action.DispatchBillAction" scope="prototype" parent="baseSalesAction"></bean>
+	<bean id="receiptAction" class="com.hd.agent.sales.action.ReceiptAction" scope="prototype" parent="baseSalesAction">
+		<property name="storageSaleOutService" ref="storageSaleOutService"></property>
+		<property name="salesOutService" ref="salesOutService"></property>
+        <property name="salesStatementService" ref="salesStatementService"></property>
+        <property name="salesInvoiceService" ref="salesInvoiceService"></property>
+	</bean>
+	<bean id="rejectBillAction" class="com.hd.agent.sales.action.RejectBillAction" scope="prototype" parent="baseSalesAction"></bean>
+	<bean id="salesPhoneAction" class="com.hd.agent.sales.action.PhoneAction" scope="prototype" parent="baseSalesAction">
+		<property name="phoneService" ref="phoneService"></property>
+		<property name="mapService" ref="mapService"></property>
+	</bean>
+	<bean id="demandAction" class="com.hd.agent.sales.action.DemandAction" scope="prototype" parent="baseSalesAction"></bean>
+	<bean id="promotionAction" class="com.hd.agent.sales.action.PromotionAction" scope="prototype" parent="baseSalesAction"></bean>
+	<bean id="oweOrderAction" class="com.hd.agent.sales.action.OweOrderAction" scope="prototype" parent="baseSalesAction">
+	</bean>
+    <bean id="modelAction" class="com.hd.agent.sales.action.ModelAction" scope="prototype" parent="baseSalesAction">
+        <property name="salesOrderExtService" ref="salesOrderExtServiceImpl"></property>
+    </bean>
+
+    <bean id="importAction" class="com.hd.agent.sales.action.ImportAction" scope="prototype" parent="baseSalesAction">
+        <property name="attachFileService" ref="attachFileService"></property>
+    </bean>
+
+</beans>

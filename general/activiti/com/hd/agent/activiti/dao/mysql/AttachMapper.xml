@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.activiti.dao.AttachMapper" >
+
+  <sql id="Base_Column_List" >
+    a.id, a.processid, a.commentid, a.attachid, a.adduserid, a.addtime
+  </sql>
+  <insert id="addAttach" parameterType="java.lang.String">
+  	insert into t_act_attach
+  	<trim prefix="(" suffix=")" suffixOverrides=",">
+	  	<if test="processid != null and processid != ''">
+	  		processid,
+	  	</if>
+	  	<if test="commentid != null and commentid != ''">
+	  		commentid,
+	  	</if>
+	  	<if test="attachid != null and attachid != ''">
+	  		attachid,
+	  	</if>
+	  	<if test="adduserid != null and adduserid != ''">
+	  		adduserid,
+	  	</if>
+	  	addtime,
+  	</trim>
+  	<trim prefix="values (" suffix=")" suffixOverrides=",">
+	  	<if test="processid != null and processid != ''">
+	  		#{processid },
+	  	</if>
+	  	<if test="commentid != null and commentid != ''">
+	  		#{commentid },
+	  	</if>
+	  	<if test="attachid != null and attachid != ''">
+	  		#{attachid },
+	  	</if>
+	  	<if test="adduserid != null and adduserid != ''">
+	  		#{adduserid },
+	  	</if>
+	  	CONCAT(CURDATE(), ' ', CURTIME()),
+  	</trim>
+  </insert>
+  <select id="selectAttachList" parameterType="java.lang.String" resultType="java.util.Map">
+  	select <include refid="Base_Column_List"/>,
+  		b.oldfilename,
+        case when a.adduserid = #{userid } then 1 else 0 end candelete
+  	from t_act_attach a
+  	left join t_ge_file b on a.attachid = b.id
+  	<trim prefix="where" prefixOverrides="and|or">
+	  	<if test="processid != null ">
+	  		and a.processid = #{processid }
+	  	</if>
+	  	<if test="processid == null ">
+	  		and a.processid is null
+	  	</if>
+	  	<if test="commentid != null ">
+	  		and a.commentid = #{commentid }
+	  	</if>
+	  	<if test="commentid == null ">
+	  		and a.commentid is null
+	  	</if>
+  	</trim> 
+  </select>
+  <delete id="deleteAttach" parameterType="java.lang.String">
+  	delete from t_act_attach
+  	where attachid =#{attachid }
+  </delete>
+
+</mapper>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.system.dao.AccountingMapper" >
+  <resultMap id="AccountingResultMap" type="com.hd.agent.system.model.Accounting" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="begindate" property="begindate" jdbcType="VARCHAR" />
+    <result column="enddate" property="enddate" jdbcType="VARCHAR" />
+    <result column="year" property="year" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="CHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="adduserid" property="adduserid" jdbcType="VARCHAR" />
+    <result column="addusername" property="addusername" jdbcType="VARCHAR" />
+    <result column="adddeptid" property="adddeptid" jdbcType="VARCHAR" />
+    <result column="adddeptname" property="adddeptname" jdbcType="VARCHAR" />
+    <result column="addtime" property="addtime" jdbcType="TIMESTAMP" />
+    <result column="modifyuserid" property="modifyuserid" jdbcType="VARCHAR" />
+    <result column="modifyusername" property="modifyusername" jdbcType="VARCHAR" />
+    <result column="modifytime" property="modifytime" jdbcType="TIMESTAMP" />
+    <result column="openuserid" property="openuserid" jdbcType="VARCHAR" />
+    <result column="openusername" property="openusername" jdbcType="VARCHAR" />
+    <result column="opentime" property="opentime" jdbcType="TIMESTAMP" />
+    <result column="closeuserid" property="closeuserid" jdbcType="VARCHAR" />
+    <result column="closeusername" property="closeusername" jdbcType="VARCHAR" />
+    <result column="closetime" property="closetime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Accounting_Column_List" >
+    id, begindate, enddate, year, state, remark, adduserid, addusername, adddeptid, adddeptname, 
+    addtime, modifyuserid, modifyusername, modifytime, openuserid, openusername, opentime, 
+    closeuserid, closeusername, closetime
+  </sql>
+  <!-- 获取会计年度列表-自小到大排序 -->
+  <select id="getAccountingYearsListOrder" resultMap="AccountingResultMap">
+  	select distinct year from t_base_finance_accounting order by year asc
+  </select>
+  <select id="getOpenAccountting" resultMap="AccountingResultMap">
+      select * from t_base_finance_accounting where state = '1' limit 1
+  </select>
+  <!-- 根据会计年度获取对应会计期间列表 -->
+  <select id="getAccountingListByYear" parameterType="java.lang.String" resultMap="AccountingResultMap">
+  	select
+  	<include refid="Accounting_Column_List"/>
+  	from t_base_finance_accounting
+  	where year = #{year} order by begindate
+  </select>
+  <!-- 新增会计期间 -->
+  <insert id="addAccounting">
+    insert into t_base_finance_accounting 
+    (id,begindate, enddate, year, state, remark, adduserid, addusername, adddeptid, adddeptname, addtime)
+	values
+    <foreach collection="list" item="item" index="index" separator=",">
+    	(uuid_short(),#{item.begindate},#{item.enddate},#{item.year},#{item.state},#{item.remark},#{item.adduserid},
+    	#{item.addusername},#{item.adddeptid},#{item.adddeptname},now())
+    </foreach>
+  </insert>
+  <!-- 修改会计期间 -->
+  <update id="editAccounting" parameterType="com.hd.agent.system.model.Accounting">
+    update t_base_finance_accounting
+    <set >
+      <if test="begindate != null" >
+        begindate = #{begindate},
+      </if>
+      <if test="enddate != null" >
+        enddate = #{enddate},
+      </if>
+      <if test="year != null" >
+        year = #{year},
+      </if>
+      <if test="state != null" >
+        state = #{state},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark},
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid = #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername = #{modifyusername},
+      </if>
+      <if test="1 == 1" >
+        modifytime = now(),
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  <!-- 删除会计期间 -->
+  <delete id="deleteAccouting" parameterType="java.lang.String">
+  	delete from t_base_finance_accounting
+    where year = #{year}
+  </delete>
+  <select id="getAccountingInfo" parameterType="java.lang.String" resultMap="AccountingResultMap">
+      select * from t_base_finance_accounting where id = #{id}
+  </select>
+</mapper>

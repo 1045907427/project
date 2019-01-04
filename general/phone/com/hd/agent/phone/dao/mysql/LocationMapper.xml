@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.phone.dao.LocationMapper" >
+  <resultMap id="BaseResultMap" type="com.hd.agent.phone.model.Location" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="userid" property="userid" jdbcType="VARCHAR" />
+    <result column="personnelid" property="personnelid" jdbcType="VARCHAR" />
+    <result column="employetype" property="employetype" jdbcType="VARCHAR" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="x" property="x" jdbcType="VARCHAR" />
+    <result column="y" property="y" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="updatetime" property="updatetime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, userid, personnelid, username, name, x, y, remark, updatetime
+  </sql>
+  <select id="getLocation" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_phone_location
+    where username = #{username}
+  </select>
+  <select id="getLocationByUserId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  	select 
+    <include refid="Base_Column_List" />
+    from t_phone_location
+    where userid = #{userid} order by updatetime desc limit 1
+  </select>
+  <!--<select id="getLocationList" resultMap="BaseResultMap" >-->
+    <!--select -->
+    <!--name, x, y, updatetime-->
+    <!--from t_phone_location where date_format(updatetime, '%Y-%m-%d')=#{date}  order by updatetime-->
+  <!--</select>-->
+  <select id="getLocationList" resultMap="BaseResultMap" >
+    select t.x, t.y, t.updatetime,p.*
+    from t_phone_location t
+    left join t_base_personnel p on p.name = t.name
+    where date_format(t.updatetime, '%Y-%m-%d')=#{date}
+      <if test="sql != null" >
+        and ${sql}
+      </if>
+    order by t.updatetime
+  </select>
+  <delete id="deleteLocation" parameterType="java.lang.String" >
+    delete from t_phone_location
+    where username = #{username}
+  </delete>
+  <insert id="addLocation" parameterType="com.hd.agent.phone.model.Location" >
+    insert into t_phone_location
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userid != null" >
+        userid,
+      </if>
+      <if test="personnelid != null" >
+        personnelid,
+      </if>
+      <if test="username != null" >
+        username,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="x != null" >
+        x,
+      </if>
+      <if test="y != null" >
+        y,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="updatetime != null" >
+        updatetime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userid != null" >
+        #{userid},
+      </if>
+      <if test="personnelid != null" >
+        #{personnelid},
+      </if>
+      <if test="username != null" >
+        #{username},
+      </if>
+      <if test="name != null" >
+        #{name},
+      </if>
+      <if test="x != null" >
+        #{x},
+      </if>
+      <if test="y != null" >
+        #{y},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+      <if test="updatetime != null" >
+        #{updatetime},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateLocation" parameterType="com.hd.agent.phone.model.Location" >
+    update t_phone_location
+    <set >
+      <if test="x != null" >
+          x = #{x},
+      </if>
+      <if test="y != null" >
+          y = #{y},
+      </if>
+      <if test="username != null" >
+          username = #{username},
+      </if>
+      <if test="name != null" >
+          name = #{name},
+      </if>
+      <if test="remark != null" >
+          remark = #{remark},
+      </if>
+      <if test="updatetime != null" >
+          updatetime = #{updatetime},
+      </if>
+    </set>
+    where userid=#{userid}
+  </update>
+  <insert id="addLocationHistory" parameterType="com.hd.agent.phone.model.Location" >
+    insert into t_phone_location_history
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userid != null" >
+        userid,
+      </if>
+      <if test="personnelid != null" >
+        personnelid,
+      </if>
+      <if test="username != null" >
+        username,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="x != null" >
+        x,
+      </if>
+      <if test="y != null" >
+        y,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="updatetime != null" >
+        updatetime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userid != null" >
+        #{userid},
+      </if>
+      <if test="personnelid != null" >
+        #{personnelid},
+      </if>
+      <if test="username != null" >
+        #{username},
+      </if>
+      <if test="name != null" >
+        #{name},
+      </if>
+      <if test="x != null" >
+        #{x},
+      </if>
+      <if test="y != null" >
+        #{y},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+      <if test="updatetime != null" >
+        #{updatetime},
+      </if>
+    </trim>
+  </insert>
+  <select id="getLocationHistoryList" parameterType="map" resultMap="BaseResultMap" >
+    select 
+    name, x, y, updatetime
+    from t_phone_location_history
+    <trim prefix="where" prefixOverrides="and|or">
+    	<if test="userid != null and userid != ''">
+    		and userid = #{userid}
+    	</if>
+	    <choose>
+	    <when test="time != null and time != ''">
+	    	<![CDATA[ and updatetime >= date_sub(str_to_date(#{time},'%Y-%m-%d %H:%i:%s'), interval '30' MINUTE) ]]>
+	    	<![CDATA[ and updatetime <= date_add(str_to_date(#{time},'%Y-%m-%d %H:%i:%s'), interval '30' MINUTE) ]]>
+	    </when>
+	    <when test="(time == null or time == '') and date != null and date != ''">
+	    	and date_format(updatetime, '%Y-%m-%d') = str_to_date(#{date}, '%Y-%m-%d')
+	    </when>
+	    <otherwise>
+	    	and date_format(now(), '%Y-%m-%d') = str_to_date(#{date}, '%Y-%m-%d')
+	    </otherwise>
+	    </choose>
+    </trim>
+    order by updatetime
+  </select>
+    <select id="getLocationHistoryListByInfo" parameterType="map" resultMap="BaseResultMap" >
+        select t.id,t.name, t.x, t.y, t.updatetime
+        from t_phone_location_history t
+        LEFT JOIN t_sys_user s on s.userid = t.userid
+        LEFT JOIN  t_base_personnel p on p.id = s.personnelid
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="deptid != null">
+                and p.belongdeptid = #{deptid}
+            </if>
+            <if test="employetype != null">
+                and p.employetype like CONCAT('%',#{employetype},'%')
+            </if>
+            <if test="leadid != null">
+                and p.leadid = #{leadid}
+            </if>
+            <choose>
+                <when test="date != null">
+                    and date_format(t.updatetime, '%Y-%m-%d') = str_to_date(#{date}, '%Y-%m-%d')
+                </when>
+                <otherwise>
+                    and date_format(now(), '%Y-%m-%d') = str_to_date(#{date}, '%Y-%m-%d')
+                </otherwise>
+            </choose>
+        </trim>
+        order by t.id DESC
+    </select>
+  <select id="checkLocationByUseridAndTime" parameterType="java.lang.String" resultType="int">
+  	select count(1) from t_phone_location_history t where t.userid=#{userid} and t.updatetime = #{time}
+  </select>
+  
+  <select id="getLocationListByDateAndUserId" parameterType="map" resultType="com.hd.agent.phone.model.Location" >
+  	    select 
+    	userid,name,x,y,updatetime
+<!--     	t_phone_location -->
+  		from t_phone_location_history  where 
+ 		<if test="userid != null">
+ 			 userid = #{userid} and 
+ 		</if>
+  		<![CDATA[
+  			   substring(updatetime,1,10)>=#{begindate} 
+  			   and substring(updatetime,1,10)<=#{enddate}
+  		]]>
+  		<if test="ifgroup != null">
+  			group by userid 
+  		</if>
+  		order by updatetime
+  </select>
+  
+  <select id="getLocationsByexactDateAndUserId" parameterType="java.lang.String" resultType="com.hd.agent.phone.model.Location">
+  		select 
+    	userid,name,x,y,updatetime
+  		from t_phone_location_history where userid =  #{userid} and substring(updatetime,1,10) = #{date} 
+  		order by updatetime
+  </select>
+  
+  <select id="getRouteDistanceCount"  parameterType="java.lang.String"  resultType="int">
+  	select count(1) from t_phone_route_distance where userid = #{userid} and adddate = #{date}
+  </select>
+  
+    <delete id="deleteRouteDistance">
+        delete from t_phone_route_distance where adddate = #{date}
+      <if test="userid != null">
+        and userid = #{userid}
+      </if>
+    </delete>
+</mapper>

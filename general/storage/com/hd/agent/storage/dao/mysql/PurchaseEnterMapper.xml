@@ -1,0 +1,1128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.storage.dao.PurchaseEnterMapper" >
+	<sql id="purchaseEnter_Column_List">
+	    id, businessdate, status, remark, adduserid, addusername, adddeptid, adddeptname, 
+	    addtime, modifyuserid, modifyusername, modifytime, audituserid, auditusername, audittime, 
+	    stopuserid, stopusername, stoptime, closetime, printtimes, storageid, supplierid, 
+	    handlerid, buydeptid, buyuserid, settletype, paytype, sourcetype, sourceid, isrefer, 
+	    field01, field02, field03, field04, field05, field06, field07, field08
+	</sql>
+    <sql id="purchaseEnter_Column_List_t">
+        t.id, t.businessdate, t.status, t.remark, t.adduserid, t.addusername, t.adddeptid, t.adddeptname,
+        t.addtime, t.modifyuserid, t.modifyusername, t.modifytime, t.audituserid, t.auditusername, t.audittime,
+        t.stopuserid, t.stopusername, t.stoptime, t.closetime, t.printtimes, t.storageid, t.supplierid,
+        t.handlerid, t.buydeptid, t.buyuserid, t.settletype, t.paytype, t.sourcetype, t.sourceid, t.isrefer,
+        t.field01, t.field02, t.field03, t.field04, t.field05, t.field06, t.field07, t.field08
+    </sql>
+	<sql id="purchaseEnter_detail_Column_List">
+	    id, purchaseenterid, buyorderid, buyorderdetailid, goodsid,brandid, storageid, storagelocationid, 
+	    unitid, unitname, unitnum, auxunitid, auxunitname, auxnum,auxremainder, auxnumdetail,totalbox,initnum, taxprice,
+	    taxamount, taxtype, notaxprice, notaxamount, tax,addcostprice,initprice, remark, barcode,batchno, produceddate,
+	    deadline, seq, arrivedate, field01, field02, field03, field04, field05, field06, 
+	    field07, field08,isinvoice,iswriteoff,goodstype
+	</sql>
+  	<insert id="addPurchaseEnterDetail" parameterType="com.hd.agent.storage.model.PurchaseEnterDetail">
+  		insert into t_storage_purchase_enter_detail
+	    <trim prefix="(" suffix=")" suffixOverrides=",">
+	      <if test="id != null">
+	        id,
+	      </if>
+	      <if test="purchaseenterid != null">
+	        purchaseenterid,
+	      </if>
+	      <if test="buyorderid != null">
+	        buyorderid,
+	      </if>
+	      <if test="buyorderdetailid != null">
+	        buyorderdetailid,
+	      </if>
+	      <if test="goodsid != null">
+	        goodsid,
+	      </if>
+	      <if test="brandid != null">
+	        brandid,
+	      </if>
+	      <if test="storageid != null">
+	        storageid,
+	      </if>
+	      <if test="storagelocationid != null">
+	        storagelocationid,
+	      </if>
+	      <if test="unitid != null">
+	        unitid,
+	      </if>
+	      <if test="unitname != null">
+	        unitname,
+	      </if>
+	      <if test="unitnum != null">
+	        unitnum,
+	      </if>
+	      <if test="auxunitid != null">
+	        auxunitid,
+	      </if>
+	      <if test="auxunitname != null">
+	        auxunitname,
+	      </if>
+	      <if test="auxnum != null">
+	        auxnum,
+	      </if>
+	      <if test="auxremainder != null">
+	        auxremainder,
+	      </if>
+	      <if test="auxnumdetail != null">
+	        auxnumdetail,
+	      </if>
+	      <if test="totalbox != null">
+            totalbox,
+          </if>
+          <if test="initnum != null">
+              initnum,
+          </if>
+	      <if test="taxprice != null">
+	        taxprice,
+	      </if>
+	      <if test="taxamount != null">
+	        taxamount,
+	      </if>
+	      <if test="taxtype != null">
+	        taxtype,
+	      </if>
+	      <if test="notaxprice != null">
+	        notaxprice,
+	      </if>
+	      <if test="notaxamount != null">
+	        notaxamount,
+	      </if>
+	      <if test="tax != null">
+	        tax,
+	      </if>
+            <if test="addcostprice != null">
+                addcostprice,
+            </if>
+	      <if test="initprice != null">
+	        initprice,
+	      </if>
+	      <if test="remark != null">
+	        remark,
+	      </if>
+	      <if test="barcode != null">
+	        barcode,
+	      </if>
+	      <if test="batchno != null">
+	        batchno,
+	      </if>
+	      <if test="produceddate != null">
+	        produceddate,
+	      </if>
+	      <if test="deadline != null">
+	        deadline,
+	      </if>
+	      <if test="seq != null">
+	        seq,
+	      </if>
+	      <if test="arrivedate != null">
+	        arrivedate,
+	      </if>
+	      <if test="field01 != null">
+	        field01,
+	      </if>
+	      <if test="field02 != null">
+	        field02,
+	      </if>
+	      <if test="field03 != null">
+	        field03,
+	      </if>
+	      <if test="field04 != null">
+	        field04,
+	      </if>
+	      <if test="field05 != null">
+	        field05,
+	      </if>
+	      <if test="field06 != null">
+	        field06,
+	      </if>
+	      <if test="field07 != null">
+	        field07,
+	      </if>
+	      <if test="field08 != null">
+	        field08,
+	      </if>
+		<if test="goodstype != null">
+			goodstype,
+		</if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides=",">
+	      <if test="id != null">
+	        #{id},
+	      </if>
+	      <if test="purchaseenterid != null">
+	        #{purchaseenterid},
+	      </if>
+	      <if test="buyorderid != null">
+	        #{buyorderid},
+	      </if>
+	      <if test="buyorderdetailid != null">
+	        #{buyorderdetailid},
+	      </if>
+	      <if test="goodsid != null">
+	        #{goodsid},
+	      </if>
+	      <if test="brandid != null">
+	        #{brandid},
+	      </if>
+	      <if test="storageid != null">
+	        #{storageid},
+	      </if>
+	      <if test="storagelocationid != null">
+	        #{storagelocationid},
+	      </if>
+	      <if test="unitid != null">
+	        #{unitid},
+	      </if>
+	      <if test="unitname != null">
+	        #{unitname},
+	      </if>
+	      <if test="unitnum != null">
+	        #{unitnum},
+	      </if>
+	      <if test="auxunitid != null">
+	        #{auxunitid},
+	      </if>
+	      <if test="auxunitname != null">
+	        #{auxunitname},
+	      </if>
+	      <if test="auxnum != null">
+	        #{auxnum},
+	      </if>
+	      <if test="auxremainder != null">
+	        #{auxremainder},
+	      </if>
+	      <if test="auxnumdetail != null">
+	        #{auxnumdetail},
+	      </if>
+	      <if test="totalbox != null">
+	        #{totalbox},
+	      </if>
+          <if test="initnum != null">
+            #{initnum},
+          </if>
+	      <if test="taxprice != null">
+	        #{taxprice},
+	      </if>
+	      <if test="taxamount != null">
+	        #{taxamount},
+	      </if>
+	      <if test="taxtype != null">
+	        #{taxtype},
+	      </if>
+	      <if test="notaxprice != null">
+	        #{notaxprice},
+	      </if>
+	      <if test="notaxamount != null">
+	        #{notaxamount},
+	      </if>
+	      <if test="tax != null">
+	        #{tax},
+	      </if>
+            <if test="addcostprice != null">
+                #{addcostprice},
+            </if>
+	      <if test="initprice != null">
+	        #{initprice},
+	      </if>
+	      <if test="remark != null">
+	        #{remark},
+	      </if>
+	      <if test="barcode != null">
+	        #{barcode},
+	      </if>
+	      <if test="batchno != null">
+	        #{batchno},
+	      </if>
+	      <if test="produceddate != null">
+	        #{produceddate},
+	      </if>
+	      <if test="deadline != null">
+	        #{deadline},
+	      </if>
+	      <if test="seq != null">
+	        #{seq},
+	      </if>
+	      <if test="arrivedate != null">
+	        #{arrivedate},
+	      </if>
+	      <if test="field01 != null">
+	        #{field01},
+	      </if>
+	      <if test="field02 != null">
+	        #{field02},
+	      </if>
+	      <if test="field03 != null">
+	        #{field03},
+	      </if>
+	      <if test="field04 != null">
+	        #{field04},
+	      </if>
+	      <if test="field05 != null">
+	        #{field05},
+	      </if>
+	      <if test="field06 != null">
+	        #{field06},
+	      </if>
+	      <if test="field07 != null">
+	        #{field07},
+	      </if>
+	      <if test="field08 != null">
+	        #{field08},
+	      </if>
+			<if test="goodstype != null">
+				#{goodstype},
+			</if>
+	    </trim>
+  	</insert>
+  	<insert id="addPurchaseEnter" parameterType="com.hd.agent.storage.model.PurchaseEnter">
+  		insert into t_storage_purchase_enter
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="id != null" >
+	        id,
+	      </if>
+	      <if test="businessdate != null" >
+	        businessdate,
+	      </if>
+	      <if test="status != null" >
+	        status,
+	      </if>
+	      <if test="remark != null" >
+	        remark,
+	      </if>
+	      <if test="adduserid != null" >
+	        adduserid,
+	      </if>
+	      <if test="addusername != null" >
+	        addusername,
+	      </if>
+	      <if test="adddeptid != null" >
+	        adddeptid,
+	      </if>
+	      <if test="adddeptname != null" >
+	        adddeptname,
+	      </if>
+	      <if test="1==1" >
+	        addtime,
+	      </if>
+	      <if test="storageid != null" >
+	        storageid,
+	      </if>
+	      <if test="supplierid != null" >
+	        supplierid,
+	      </if>
+	      <if test="handlerid != null" >
+	        handlerid,
+	      </if>
+	      <if test="buydeptid != null" >
+	        buydeptid,
+	      </if>
+	      <if test="buyuserid != null" >
+	        buyuserid,
+	      </if>
+	      <if test="settletype != null" >
+	        settletype,
+	      </if>
+	      <if test="paytype != null" >
+	        paytype,
+	      </if>
+	      <if test="sourcetype != null" >
+	        sourcetype,
+	      </if>
+	      <if test="sourceid != null" >
+	        sourceid,
+	      </if>
+	      <if test="isrefer != null" >
+	        isrefer,
+	      </if>
+	      <if test="field01 != null" >
+	        field01,
+	      </if>
+	      <if test="field02 != null" >
+	        field02,
+	      </if>
+	      <if test="field03 != null" >
+	        field03,
+	      </if>
+	      <if test="field04 != null" >
+	        field04,
+	      </if>
+	      <if test="field05 != null" >
+	        field05,
+	      </if>
+	      <if test="field06 != null" >
+	        field06,
+	      </if>
+	      <if test="field07 != null" >
+	        field07,
+	      </if>
+	      <if test="field08 != null" >
+	        field08,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="id != null" >
+	        #{id},
+	      </if>
+	      <if test="businessdate != null" >
+	        #{businessdate},
+	      </if>
+	      <if test="status != null" >
+	        #{status},
+	      </if>
+	      <if test="remark != null" >
+	        #{remark},
+	      </if>
+	      <if test="adduserid != null" >
+	        #{adduserid},
+	      </if>
+	      <if test="addusername != null" >
+	        #{addusername},
+	      </if>
+	      <if test="adddeptid != null" >
+	        #{adddeptid},
+	      </if>
+	      <if test="adddeptname != null" >
+	        #{adddeptname},
+	      </if>
+	      <if test="1==1" >
+	        now(),
+	      </if>
+	      <if test="storageid != null" >
+	        #{storageid},
+	      </if>
+	      <if test="supplierid != null" >
+	        #{supplierid},
+	      </if>
+	      <if test="handlerid != null" >
+	        #{handlerid},
+	      </if>
+	      <if test="buydeptid != null" >
+	        #{buydeptid},
+	      </if>
+	      <if test="buyuserid != null" >
+	        #{buyuserid},
+	      </if>
+	      <if test="settletype != null" >
+	        #{settletype},
+	      </if>
+	      <if test="paytype != null" >
+	        #{paytype},
+	      </if>
+	      <if test="sourcetype != null" >
+	        #{sourcetype},
+	      </if>
+	      <if test="sourceid != null" >
+	        #{sourceid},
+	      </if>
+	      <if test="isrefer != null" >
+	        #{isrefer},
+	      </if>
+	      <if test="field01 != null" >
+	        #{field01},
+	      </if>
+	      <if test="field02 != null" >
+	        #{field02},
+	      </if>
+	      <if test="field03 != null" >
+	        #{field03},
+	      </if>
+	      <if test="field04 != null" >
+	        #{field04},
+	      </if>
+	      <if test="field05 != null" >
+	        #{field05},
+	      </if>
+	      <if test="field06 != null" >
+	        #{field06},
+	      </if>
+	      <if test="field07 != null" >
+	        #{field07},
+	      </if>
+	      <if test="field08 != null" >
+	        #{field08},
+	      </if>
+	    </trim>
+  	</insert>
+  	
+  	<select id="getPurchaseEnterInfo" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.PurchaseEnter">
+  		  select <include refid="purchaseEnter_Column_List"/>
+  		  from t_storage_purchase_enter where id=#{id}
+  	</select>
+  	<select id="getPurchaseEnterDetail" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.PurchaseEnterDetail">
+  		select <include refid="purchaseEnter_detail_Column_List"/>
+  		from t_storage_purchase_enter_detail where id=#{id}
+  	</select>
+  	<select id="getPurchaseEnterDetailList" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.PurchaseEnterDetail">
+  		select <include refid="purchaseEnter_detail_Column_List"/>
+  		from t_storage_purchase_enter_detail where purchaseenterid=#{purchaseEnterid}
+  	</select>
+  	<select id="getPurchaseEnterDetailSumGoodsidList" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.PurchaseEnterDetail">
+  		select id, purchaseenterid, buyorderid, buyorderdetailid, goodsid, sum(unitnum) as unitnum,sum(auxnum) as auxnum,
+	    sum(taxamount) as taxamount, sum(notaxamount) as notaxamount
+	    from t_storage_purchase_enter_detail
+	    where buyorderid=#{buyorderid}
+	    group by buyorderid,buyorderdetailid
+  	</select>
+  	<select id="getPurchaseEnterDetailSumAuditList" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.PurchaseEnterDetail">
+  		select id, purchaseenterid, buyorderid, buyorderdetailid, goodsid, sum(unitnum) as unitnum,sum(auxnum) as auxnum,
+	    sum(taxamount) as taxamount, sum(notaxamount) as notaxamount
+	    from t_storage_purchase_enter_detail
+	    where purchaseenterid in(select id from t_storage_purchase_enter where sourceid=#{buyorderid} and (status='3' or status='4') ) and goodstype = '0'
+	    group by buyorderid,buyorderdetailid
+  	</select>
+    <select id="showPurchaseEnterList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.storage.model.PurchaseEnter">
+        select <include refid="purchaseEnter_Column_List_t"/>
+        from t_storage_purchase_enter t
+        <trim prefix="where" prefixOverrides="and|or" >
+            <include refid="common.Page_querySql"/>
+            <include refid="common.Page_dataSql"/>
+            <if test="condition.businessdate1 != null">
+                and t.businessdate >= #{condition.businessdate1}
+            </if>
+            <if test="condition.businessdate2 != null">
+                <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+            </if>
+            <if test="condition.id != null" >
+                and t.id like CONCAT('%',#{condition.id},'%')
+            </if>
+            <if test="condition.idarrs != null" >
+                and FIND_IN_SET(t.id,#{condition.idarrs})
+            </if>
+            <if test="condition.supplierid != null" >
+                and t.supplierid = #{condition.supplierid}
+            </if>
+            <if test="condition.storageid != null" >
+                and FIND_IN_SET(t.storageid,#{condition.storageid})
+            </if>
+            <if test="condition.buydeptid != null" >
+                and t.buydeptid like CONCAT(#{condition.buydeptid},'%')
+            </if>
+            <if test="condition.buyuserid != null" >
+                and t.buyuserid = #{condition.buyuserid}
+            </if>
+            <if test="condition.sourcetype != null" >
+                and t.sourcetype = #{condition.sourcetype}
+            </if>
+            <if test="condition.sourceid != null" >
+                and t.sourceid = #{condition.sourceid}
+            </if>
+            <if test="condition.status != null" >
+                and t.status = #{condition.status}
+            </if>
+            <if test="condition.isrefer != null" >
+                and t.isrefer = #{condition.isrefer}
+            </if>
+            <if test="condition.field04 != null" >
+                and t.field04 like CONCAT('%',#{condition.field04},'%')
+            </if>
+            <choose>
+                <when test="condition.isClose ==0 ">
+                    and t.status in("1","2")
+                </when>
+                <when test="condition.isClose ==1 ">
+                    and t.status in("3","4")
+                </when>
+            </choose>
+            
+      		<if test="condition.printsign != null and condition.queryprinttimes != null">
+	      		<choose>
+	      			<when test="condition.printsign == 1">
+	      				<![CDATA[and t.printtimes = #{condition.queryprinttimes} ]]>
+	      			</when>
+	      			<when test="condition.printsign == 2">
+	      				<![CDATA[and t.printtimes < #{condition.queryprinttimes} ]]>
+	      			</when>
+	      			<when test="condition.printsign == 3">
+	      				<![CDATA[and t.printtimes <= #{condition.queryprinttimes} ]]>
+	      			</when>
+	      			<when test="condition.printsign == 4">
+	      				<![CDATA[and t.printtimes > #{condition.queryprinttimes} ]]>
+	      			</when>
+	      			<when test="condition.printsign == 5">
+	      				<![CDATA[and t.printtimes >= #{condition.queryprinttimes} ]]>
+	      			</when>
+	      		</choose>
+	      	</if>	  
+	        <if test="condition.goodsid != null">
+			  and EXISTS (select t1.goodsid from t_storage_purchase_enter_detail t1 where t.id=t1.purchaseenterid and t1.goodsid = #{condition.goodsid})
+		    </if>
+        </trim>
+		<if test="condition.isflag == null">
+			<include refid="common.Page_limit" />
+		</if>
+    </select>
+  	<select id="showPurchaseEnterCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  		select count(1) from t_storage_purchase_enter t
+  		 <trim prefix="where" prefixOverrides="and|or" >
+  		  <include refid="common.Page_querySql"/>
+	      <include refid="common.Page_dataSql"/>
+	      <if test="condition.businessdate1 != null">
+			 and t.businessdate >= #{condition.businessdate1}
+		  </if>
+		  <if test="condition.businessdate2 != null">
+			 <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+		  </if>
+		  <if test="condition.id != null" >
+	         and t.id like CONCAT('%',#{condition.id},'%')
+	      </if>
+		  <if test="condition.idarrs != null" >
+	         and FIND_IN_SET(t.id,#{condition.idarrs})
+	      </if>
+	      <if test="condition.supplierid != null" >
+	         and t.supplierid = #{condition.supplierid}
+	      </if>
+          <if test="condition.storageid != null" >
+             and FIND_IN_SET(t.storageid,#{condition.storageid})
+          </if>
+	      <if test="condition.buydeptid != null" >
+         	and t.buydeptid like CONCAT(#{condition.buydeptid},'%')
+	      </if>
+	      <if test="condition.buyuserid != null" >
+	         and t.buyuserid = #{condition.buyuserid}
+	      </if>
+	      <if test="condition.sourcetype != null" >
+	         and t.sourcetype = #{condition.sourcetype}
+	      </if>
+	      <if test="condition.sourceid != null" >
+	         and t.sourceid = #{condition.sourceid}
+	      </if>
+	      <if test="condition.status != null" >
+	         and t.status = #{condition.status}
+	      </if>
+	      <if test="condition.isrefer != null" >
+	         and t.isrefer = #{condition.isrefer}
+	      </if>
+	      <choose>
+	      	<when test="condition.isClose ==0 ">
+	      		and t.status in("1","2")
+	      	</when>
+	      	<when test="condition.isClose ==1 ">
+	      		and t.status in("3","4")
+	      	</when>
+	      </choose>	  
+	      <if test="condition.goodsid != null">
+			and EXISTS (select t1.goodsid from t_storage_purchase_enter_detail t1 where t.id=t1.purchaseenterid and t1.goodsid = #{condition.goodsid})
+		  </if>
+	    </trim>
+  	</select>
+  	<delete id="deletePurchaseEnterDetail" parameterType="java.lang.String">
+  		delete from t_storage_purchase_enter_detail 
+  		where purchaseenterid=#{purchaseEnterid}
+  	</delete>
+  	<update id="updatePurchaseEnter" parameterType="com.hd.agent.storage.model.PurchaseEnter">
+  		update t_storage_purchase_enter
+	    <set>
+	      <if test="businessdate != null">
+	        businessdate = #{businessdate},
+	      </if>
+	      <if test="status != null">
+	        status = #{status},
+	      </if>
+	      <if test="remark != null">
+	        remark = #{remark},
+	      </if>
+	      <if test="modifyuserid != null">
+	        modifyuserid = #{modifyuserid},
+	      </if>
+	      <if test="modifyusername != null">
+	        modifyusername = #{modifyusername},
+	      </if>
+	      <if test="1==1">
+	        modifytime = now(),
+	      </if>
+	      <if test="storageid != null">
+	        storageid = #{storageid},
+	      </if>
+	      <if test="supplierid != null">
+	        supplierid = #{supplierid},
+	      </if>
+	      <if test="handlerid != null">
+	        handlerid = #{handlerid},
+	      </if>
+	      <if test="buydeptid != null">
+	        buydeptid = #{buydeptid},
+	      </if>
+	      <if test="buyuserid != null">
+	        buyuserid = #{buyuserid},
+	      </if>
+	      <if test="settletype != null">
+	        settletype = #{settletype},
+	      </if>
+	      <if test="paytype != null">
+	        paytype = #{paytype},
+	      </if>
+	      <if test="sourcetype != null">
+	        sourcetype = #{sourcetype},
+	      </if>
+	      <if test="sourceid != null">
+	        sourceid = #{sourceid},
+	      </if>
+	      <if test="isrefer != null">
+	        isrefer = #{isrefer},
+	      </if>
+	      <if test="field01 != null">
+	        field01 = #{field01},
+	      </if>
+	      <if test="field02 != null">
+	        field02 = #{field02},
+	      </if>
+	      <if test="field03 != null">
+	        field03 = #{field03},
+	      </if>
+	      <if test="field04 != null">
+	        field04 = #{field04},
+	      </if>
+	      <if test="field05 != null">
+	        field05 = #{field05},
+	      </if>
+	      <if test="field06 != null">
+	        field06 = #{field06},
+	      </if>
+	      <if test="field07 != null">
+	        field07 = #{field07},
+	      </if>
+	      <if test="field08 != null">
+	        field08 = #{field08},
+	      </if>
+	    </set>
+	    where id = #{id}
+  	</update>
+  	<delete id="deletePurchaseEnter" parameterType="java.lang.String">
+  		delete from t_storage_purchase_enter where id=#{id} and (status='1' or status='2')
+  	</delete>
+  	<update id="auditPurchaseEnter" parameterType="java.lang.String">
+  		update t_storage_purchase_enter set
+		businessdate = #{businessdate},
+  		status='3',audituserid=#{userid},auditusername=#{username},audittime=now()
+  		where id=#{id} and (status='2' or status='6')
+  	</update>
+  	<update id="oppauditPurchaseEnter" parameterType="java.lang.String">
+  		update t_storage_purchase_enter set status='2',audituserid=#{userid},auditusername=#{username},audittime=now() 
+  		where id=#{id} and status='3'
+  	</update>
+  	<update id="updatePurchaseEnterRefer" parameterType="java.lang.String">
+  		update t_storage_purchase_enter set isrefer=#{isrefer}
+  		where id=#{id} and status='3'
+  	</update>
+  	<update id="closePurchaseEnter" parameterType="java.lang.String">
+  		update t_storage_purchase_enter set status='4'
+  		where id=#{id} and status='3'
+  	</update>
+  	<update id="openPurchaseEnter" parameterType="java.lang.String">
+  		update t_storage_purchase_enter set status='3'
+  		where id=#{id} and status='4'
+  	</update>
+  	<select id="getPurchaseEnterListBySourceid" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.PurchaseEnter">
+  		select <include refid="purchaseEnter_Column_List"/>
+  		from t_storage_purchase_enter where sourceid=#{sourceid}
+  	</select>
+  	<update id="updatePurchaseEnterDetailIsinvoice" parameterType="java.lang.String">
+  		update t_storage_purchase_enter_detail
+  		set isinvoice=#{isinvoice} where purchaseenterid=#{billid} and id=#{detailid}
+  	</update>
+  	<update id="updatePurchaseEnterDetailIswriteoff" parameterType="java.lang.String">
+  		update t_storage_purchase_enter_detail
+  		set iswriteoff=#{iswriteoff} where purchaseenterid=#{billid} and id=#{detailid}
+  	</update>
+    <update id="updatePurchaseEnterDetailUncancel" parameterType="java.lang.String">
+        update t_storage_purchase_enter_detail s1,t_purchase_arrivalorder_detail r1,t_account_purchase_invoice_detail t1
+        set s1.iswriteoff='0'
+        where s1.id=r1.billdetailno and s1.purchaseenterid=r1.billno  and r1.orderid=t1.sourceid and r1.id=t1.sourcedetailid and t1.sourcetype='1' and t1.billid=#{invoiceid};
+    </update>
+  	<update id="updatePurchaseEnterDetail" parameterType="com.hd.agent.storage.model.PurchaseEnterDetail">
+  		update t_storage_purchase_enter_detail
+	    <set>
+	      <if test="taxprice != null">
+	        taxprice = #{taxprice},
+	      </if>
+	      <if test="taxamount != null">
+	        taxamount = #{taxamount},
+	      </if>
+	      <if test="taxtype != null">
+	        taxtype = #{taxtype},
+	      </if>
+	      <if test="notaxprice != null">
+	        notaxprice = #{notaxprice},
+	      </if>
+	      <if test="notaxamount != null">
+	        notaxamount = #{notaxamount},
+	      </if>
+	      <if test="tax != null">
+	        tax = #{tax},
+	      </if>
+	      <if test="remark != null">
+	        remark = #{remark},
+	      </if>
+	      <if test="barcode != null">
+	        barcode = #{barcode},
+	      </if>
+	      <if test="batchno != null">
+	        batchno = #{batchno},
+	      </if>
+	      <if test="produceddate != null">
+	        produceddate = #{produceddate},
+	      </if>
+	      <if test="deadline != null">
+	        deadline = #{deadline},
+	      </if>
+	      <if test="seq != null">
+	        seq = #{seq},
+	      </if>
+	      <if test="arrivedate != null">
+	        arrivedate = #{arrivedate},
+	      </if>
+	      <if test="field01 != null">
+	        field01 = #{field01},
+	      </if>
+	      <if test="field02 != null">
+	        field02 = #{field02},
+	      </if>
+	      <if test="field03 != null">
+	        field03 = #{field03},
+	      </if>
+	      <if test="field04 != null">
+	        field04 = #{field04},
+	      </if>
+	      <if test="field05 != null">
+	        field05 = #{field05},
+	      </if>
+	      <if test="field06 != null">
+	        field06 = #{field06},
+	      </if>
+	      <if test="field07 != null">
+	        field07 = #{field07},
+	      </if>
+	      <if test="field08 != null">
+	        field08 = #{field08},
+	      </if>
+	    </set>
+	    where id = #{id}
+  	</update>
+  	<select id="showPurchaseEnterIdListBySourceid" parameterType="java.lang.String" resultType="java.lang.String">
+  		 select id
+  		 from t_storage_purchase_enter
+  		 where sourceid=#{sourceid}
+  	</select>
+  	
+  	<select id="showPurchaseEnterListBy" parameterType="java.util.Map" resultType="com.hd.agent.storage.model.PurchaseEnter">
+  		select 
+	    <include refid="purchaseEnter_Column_List" />
+	    from t_storage_purchase_enter
+  		<trim prefix="where" prefixOverrides="and|or">
+		  	<if test="dataSql != null">
+		  		and ${dataSql}
+		  	</if>
+  			<if test="idarrs!=null">
+  				and find_in_set(id,#{idarrs})
+  			</if>
+  			<if test="status!=null">
+  				and status=#{status}
+  			</if>
+  			<if test="statusarr!=null">
+			   and FIND_IN_SET(status,#{statusarr})
+  			</if>
+			<if test="notprint != null and notprint == 1">
+	  			 and (printtimes is null or printtimes=0)
+			</if>
+  		</trim>
+  	</select>
+  	
+	<update id="updateOrderPrinttimes" parameterType="com.hd.agent.storage.model.PurchaseEnter">
+		update t_storage_purchase_enter
+	    <set>
+	      <if test="printtimes != null">
+	        printtimes = IFNULL(printtimes,0)+1,
+	      </if>
+	    </set>
+	    where id = #{id}
+	</update>
+  	<select id="getPuchaseEnterUnAuditIDList" parameterType="java.lang.String" resultType="java.lang.String">
+  		 select id
+  		 from t_storage_purchase_enter
+  		 where sourceid=#{buyorderid}
+  		 and (status ='' or status='1' or status='2')
+  	</select>
+  	
+  	
+  	
+  	
+ <insert id="addPurchaseEnterForDeliveyJob" parameterType="com.hd.agent.storage.model.PurchaseEnter" >
+    insert into t_storage_purchase_enter
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="businessdate != null" >
+        businessdate,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="adduserid != null" >
+        adduserid,
+      </if>
+      <if test="addusername != null" >
+        addusername,
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid,
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname,
+      </if>
+      <if test="addtime != null" >
+        addtime,
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid,
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername,
+      </if>
+      <if test="modifytime != null" >
+        modifytime,
+      </if>
+      <if test="audituserid != null" >
+        audituserid,
+      </if>
+      <if test="auditusername != null" >
+        auditusername,
+      </if>
+      <if test="audittime != null" >
+        audittime,
+      </if>
+      <if test="stopuserid != null" >
+        stopuserid,
+      </if>
+      <if test="stopusername != null" >
+        stopusername,
+      </if>
+      <if test="stoptime != null" >
+        stoptime,
+      </if>
+      <if test="closetime != null" >
+        closetime,
+      </if>
+      <if test="printtimes != null" >
+        printtimes,
+      </if>
+      <if test="storageid != null" >
+        storageid,
+      </if>
+      <if test="supplierid != null" >
+        supplierid,
+      </if>
+      <if test="handlerid != null" >
+        handlerid,
+      </if>
+      <if test="buydeptid != null" >
+        buydeptid,
+      </if>
+      <if test="buyuserid != null" >
+        buyuserid,
+      </if>
+      <if test="settletype != null" >
+        settletype,
+      </if>
+      <if test="paytype != null" >
+        paytype,
+      </if>
+      <if test="sourcetype != null" >
+        sourcetype,
+      </if>
+      <if test="sourceid != null" >
+        sourceid,
+      </if>
+      <if test="isrefer != null" >
+        isrefer,
+      </if>
+      <if test="field01 != null" >
+        field01,
+      </if>
+      <if test="field02 != null" >
+        field02,
+      </if>
+      <if test="field03 != null" >
+        field03,
+      </if>
+      <if test="field04 != null" >
+        field04,
+      </if>
+      <if test="field05 != null" >
+        field05,
+      </if>
+      <if test="field06 != null" >
+        field06,
+      </if>
+      <if test="field07 != null" >
+        field07,
+      </if>
+      <if test="field08 != null" >
+        field08,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="businessdate != null" >
+        #{businessdate},
+      </if>
+      <if test="status != null" >
+        #{status},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+      <if test="adduserid != null" >
+        #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        #{adddeptname},
+      </if>
+      <if test="addtime != null" >
+        #{addtime},
+      </if>
+      <if test="modifyuserid != null" >
+        #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        #{modifyusername},
+      </if>
+      <if test="modifytime != null" >
+        #{modifytime},
+      </if>
+      <if test="audituserid != null" >
+        #{audituserid},
+      </if>
+      <if test="auditusername != null" >
+        #{auditusername},
+      </if>
+      <if test="audittime != null" >
+        #{audittime},
+      </if>
+      <if test="stopuserid != null" >
+        #{stopuserid},
+      </if>
+      <if test="stopusername != null" >
+        #{stopusername},
+      </if>
+      <if test="stoptime != null" >
+        #{stoptime},
+      </if>
+      <if test="closetime != null" >
+        #{closetime},
+      </if>
+      <if test="printtimes != null" >
+        #{printtimes},
+      </if>
+      <if test="storageid != null" >
+        #{storageid},
+      </if>
+      <if test="supplierid != null" >
+        #{supplierid},
+      </if>
+      <if test="handlerid != null" >
+        #{handlerid},
+      </if>
+      <if test="buydeptid != null" >
+        #{buydeptid},
+      </if>
+      <if test="buyuserid != null" >
+        #{buyuserid},
+      </if>
+      <if test="settletype != null" >
+        #{settletype},
+      </if>
+      <if test="paytype != null" >
+        #{paytype},
+      </if>
+      <if test="sourcetype != null" >
+        #{sourcetype},
+      </if>
+      <if test="sourceid != null" >
+        #{sourceid},
+      </if>
+      <if test="isrefer != null" >
+        #{isrefer},
+      </if>
+      <if test="field01 != null" >
+        #{field01},
+      </if>
+      <if test="field02 != null" >
+        #{field02},
+      </if>
+      <if test="field03 != null" >
+        #{field03},
+      </if>
+      <if test="field04 != null" >
+        #{field04},
+      </if>
+      <if test="field05 != null" >
+        #{field05},
+      </if>
+      <if test="field06 != null" >
+        #{field06},
+      </if>
+      <if test="field07 != null" >
+        #{field07},
+      </if>
+      <if test="field08 != null" >
+        #{field08},
+      </if>
+    </trim>
+  </insert>
+  	
+  	<update id="updatePurchaseEnterDetailAddcostprice">
+        update t_storage_purchase_enter_detail t
+        set t.addcostprice = #{addcostprice}
+        where t.id=#{id} and t.goodsid=#{goodsid}
+    </update>
+    <select id="getPurchaseEnterForScanList" resultType="com.hd.agent.storage.model.PurchaseEnter">
+        select
+		DISTINCT(t.id), t.businessdate, t.status, t.remark, t.adduserid, t.addusername, t.adddeptid, t.adddeptname,
+		t.addtime, t.modifyuserid, t.modifyusername, t.modifytime, t.audituserid, t.auditusername, t.audittime,
+		t.stopuserid, t.stopusername, t.stoptime, t.closetime, t.printtimes, t.storageid, t.supplierid,
+		t.handlerid, t.buydeptid, t.buyuserid, t.settletype, t.paytype, t.sourcetype, t.sourceid, t.isrefer,
+		t.field01, t.field02, t.field03, t.field04, t.field05, t.field06, t.field07, t.field08
+        from t_storage_purchase_enter t
+        <if test="con != null">
+            left join t_base_buy_supplier s on t.supplierid=s.id
+			left join t_storage_purchase_enter_detail t1 on t1.purchaseenterid=t.id
+			left join t_base_goods_info g on g.id=t1.goodsid
+        </if>
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="dataSql != null">
+                and ${dataSql}
+            </if>
+            <if test="1==1">
+                and status='2'
+            </if>
+            <if test="con != null">
+                and ( t.id like concat('%',#{con},'%')
+                or t.sourceid like CONCAT('%',#{con},'%')
+                or s.name like CONCAT('%',#{con},'%')
+                or t.supplierid like  CONCAT('%',#{con},'%')
+				or t1.goodsid like  CONCAT('%',#{con},'%')
+				or g.name like  CONCAT('%',#{con},'%')
+				)
+            </if>
+        </trim>
+    </select>
+</mapper>

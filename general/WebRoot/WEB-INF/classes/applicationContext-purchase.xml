@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+	<!-- dao配置 -->
+	<bean id="plannedOrderMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.purchase.dao.PlannedOrderMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>    
+	<bean id="buyOrderMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.purchase.dao.BuyOrderMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+	<bean id="arrivalOrderMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.purchase.dao.ArrivalOrderMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+	<bean id="returnOrderMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.purchase.dao.ReturnOrderMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+	<bean id="limitPriceOrderMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.purchase.dao.LimitPirceOrderMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="purchaseQueryMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.purchase.dao.PurchaseQueryMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="arrivalOrderChangeMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.hd.agent.purchase.dao.ArrivalOrderChangeMapper" />
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+
+    <!-- service配置 -->    
+    <bean id="basePurchaseService" parent="baseTransactionProxy">
+    	<property name="target" ref="basePurchaseServiceImpl"></property>  
+    </bean>
+    <bean id="basePurchaseServiceImpl" class="com.hd.agent.purchase.service.impl.BasePurchaseServiceImpl" parent="baseFilesServiceImpl">
+        <property name="plannedOrderMapper" ref="plannedOrderMapper"></property>
+    	<property name="buyOrderMapper" ref="buyOrderMapper"></property>
+    	<property name="arrivalOrderMapper" ref="arrivalOrderMapper"></property>
+    	<property name="returnOrderMapper" ref="returnOrderMapper"></property>
+		<property name="beginDueMapper" ref="beginDueMapper"></property>
+    	<property name="goodsMapper" ref="goodsMapper"></property>
+	</bean>
+	<bean id="plannedOrderService" parent="baseTransactionProxy">
+    	<property name="target" ref="plannedOrderServiceImpl"></property>   
+    </bean>
+    <bean id="plannedOrderServiceImpl" class="com.hd.agent.purchase.service.impl.PlannedOrderServiceImpl" parent="basePurchaseServiceImpl">
+		<property name="plannedOrderMapper" ref="plannedOrderMapper"></property>
+    	<property name="purchaseSelfExtService" ref="purchaseSelfExtService"></property>
+    </bean>    
+	<bean id="buyOrderService" parent="baseTransactionProxy">
+    	<property name="target" ref="buyOrderServiceImpl"></property>   
+    </bean>
+    <bean id="buyOrderServiceImpl" class="com.hd.agent.purchase.service.impl.BuyOrderServiceImpl" parent="basePurchaseServiceImpl">
+    	<property name="purchaseSelfExtService" ref="purchaseSelfExtService"></property>    	
+    	<property name="storageForPurchaseService" ref="storageForPurchaseService"></property>
+    </bean>	 
+    <bean id="arrivalOrderService" parent="baseTransactionProxy">
+    	<property name="target" ref="arrivalOrderServiceImpl"></property>   
+    </bean>
+    <bean id="arrivalOrderServiceImpl" class="com.hd.agent.purchase.service.impl.ArrivalOrderServiceImpl" parent="basePurchaseServiceImpl">
+    	<property name="arrivalOrderMapper" ref="arrivalOrderMapper"></property>
+        <property name="arrivalOrderChangeMapper" ref="arrivalOrderChangeMapper"></property>
+    	<property name="storageForPurchaseService" ref="storageForPurchaseService"></property>
+    </bean>    
+    <bean id="returnOrderService" parent="baseTransactionProxy">
+    	<property name="target" ref="returnOrderServiceImpl"></property>   
+    </bean>
+    <bean id="returnOrderServiceImpl" class="com.hd.agent.purchase.service.impl.ReturnOrderServiceImpl" parent="basePurchaseServiceImpl">
+    	<property name="storageForPurchaseService" ref="storageForPurchaseService"></property>
+    </bean>
+    <bean id="limitPriceOrderService" parent="baseTransactionProxy">
+    	<property name="target" ref="limitPriceOrderServiceImpl"></property>   
+    </bean>
+    <bean id="limitPriceOrderServiceImpl" class="com.hd.agent.purchase.service.impl.LimitPriceOrderServiceImpl" parent="basePurchaseServiceImpl">
+    	<property name="limitPriceOrderMapper" ref="limitPriceOrderMapper"></property>
+    </bean>
+    <bean id="purchaseForStorageService" parent="baseTransactionProxy">
+    	<property name="target" ref="purchaseForStorageServiceImpl"></property>   
+    </bean>
+    <bean id="purchaseForStorageServiceImpl" class="com.hd.agent.purchase.service.impl.ext.PurchaseForStorageServiceImpl" parent="basePurchaseServiceImpl">
+    </bean>
+    <bean id="purchaseSelfExtService" parent="baseTransactionProxy">
+    	<property name="target" ref="purchaseSelfExtServiceImpl"></property>   
+    </bean>
+    <bean id="purchaseSelfExtServiceImpl" class="com.hd.agent.purchase.service.impl.ext.PurchaseSelfExtServiceImpl" parent="basePurchaseServiceImpl">
+    </bean>
+    <bean id="purchaseForAccountService" parent="baseTransactionProxy">
+    	<property name="target" ref="purchaseForAccountServiceImpl"></property>
+    </bean>
+    <bean id="purchaseForAccountServiceImpl" class="com.hd.agent.purchase.service.impl.ext.PurchaseForAccountServiceImpl" parent="basePurchaseServiceImpl">    	
+    	<property name="storageForPurchaseService" ref="storageForPurchaseService"></property>
+    </bean>
+    <bean id="purchaseQueryService" parent="baseTransactionProxy">
+    	<property name="target" ref="purchaseQueryServiceImpl"></property>   
+    </bean>
+    <bean id="purchaseQueryServiceImpl" class="com.hd.agent.purchase.service.impl.PurchaseQueryServiceImpl" parent="basePurchaseServiceImpl">
+    	<property name="purchaseQueryMapper" ref="purchaseQueryMapper"></property>
+    </bean>
+    <bean id="purchaseForSalesService" parent="baseTransactionProxy">
+        <property name="target" ref="purchaseForSalesServiceImpl"></property>
+    </bean>
+    <bean id="purchaseForSalesServiceImpl" class="com.hd.agent.purchase.service.impl.ext.PurchaseForSalesServiceImpl" parent="baseFilesServiceImpl">
+        <property name="arrivalOrderMapper" ref="arrivalOrderMapper"></property>
+    </bean>
+    <!-- action配置 -->
+	<bean id="purchaseAction" class="com.hd.agent.purchase.action.PurchaseAction" scope="prototype" parent="baseFilesAction">
+		<property name="limitPriceOrderService" ref="limitPriceOrderService"></property>
+    </bean>
+	<bean id="plannedOrderAction" class="com.hd.agent.purchase.action.PlannedOrderAction" scope="prototype" parent="baseFilesAction">
+		<property name="plannedOrderService" ref="plannedOrderService"></property>
+    </bean>
+    <bean id="buyOrderAction" class="com.hd.agent.purchase.action.BuyOrderAction" scope="prototype" parent="baseFilesAction">
+		<property name="buyOrderService" ref="buyOrderService"></property>
+		<property name="buyService" ref="buyService"></property>
+        <property name="purchaseEnterService" ref="purchaseEnterService"></property>
+        <property name="purchaseForStorageService" ref="purchaseForStorageService"></property>
+    </bean>
+    <bean id="arrivalOrderAction" class="com.hd.agent.purchase.action.ArrivalOrderAction" scope="prototype" parent="baseFilesAction">
+		<property name="arrivalOrderService" ref="arrivalOrderService"></property>
+    </bean>
+    <bean id="returnOrderAction" class="com.hd.agent.purchase.action.ReturnOrderAction" scope="prototype" parent="baseFilesAction">
+		<property name="returnOrderService" ref="returnOrderService"></property>
+    </bean>
+	<bean id="limitPriceOrderAction" class="com.hd.agent.purchase.action.LimitPriceOrderAction" scope="prototype" parent="baseFilesAction">
+		<property name="limitPriceOrderService" ref="limitPriceOrderService"></property>
+    </bean>
+    <bean id="purchaseQueryAction" class="com.hd.agent.purchase.action.PurchaseQueryAction" scope="prototype" parent="baseFilesAction">
+    	<property name="purchaseQueryService" ref="purchaseQueryService"></property>
+    </bean>
+    <bean id="purchaseQueryPrintAction" class="com.hd.agent.purchase.action.PurchaseQueryPrintAction" scope="prototype" parent="baseFilesAction">
+    	<property name="purchaseQueryService" ref="purchaseQueryService"></property>
+		<property name="printTempletService" ref="printTempletService"></property>
+    </bean>
+</beans>

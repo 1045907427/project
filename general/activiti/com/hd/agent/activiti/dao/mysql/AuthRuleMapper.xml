@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.activiti.dao.AuthRuleMapper" >
+  <resultMap id="BaseResultMap" type="com.hd.agent.activiti.model.AuthRule" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="definitionkey" property="definitionkey" jdbcType="VARCHAR" />
+    <result column="definitionid" property="definitionid" jdbcType="VARCHAR" />
+    <result column="taskkey" property="taskkey" jdbcType="VARCHAR" />
+    <result column="rule" property="rule" jdbcType="VARCHAR" />
+    <result column="userid" property="userid" jdbcType="VARCHAR" />
+    <result column="roleid" property="roleid" jdbcType="VARCHAR" />
+    <result column="deptid" property="deptid" jdbcType="VARCHAR" />
+    <result column="postid" property="postid" jdbcType="VARCHAR" />
+    <result column="canassign" property="canassign" jdbcType="VARCHAR" />
+    <result column="adduserid" property="adduserid" jdbcType="VARCHAR" />
+    <result column="addtime" property="addtime" jdbcType="TIMESTAMP" />
+    <result column="modifyuserid" property="modifyuserid" jdbcType="VARCHAR" />
+    <result column="modifytime" property="modifytime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, type, definitionkey, taskkey, rule, userid, roleid, deptid, postid, canassign, adduserid, 
+    addtime, modifyuserid, modifytime, definitionid
+  </sql>
+	<sql id="Base_Column_List2" >
+		t1.id, t1.type, t1.definitionkey, t1.taskkey, t1.rule, t1.userid, t1.roleid, t1.deptid, t1.postid, t1.canassign, t1.adduserid,
+		t1.addtime, t1.modifyuserid, t1.modifytime, t1.definitionid
+	</sql>
+  <insert id="addAuthRule" parameterType="com.hd.agent.activiti.model.AuthRule" >
+    insert into t_act_auth_rule 
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+    	<if test="type != null">
+    		type,
+    	</if>
+    	<if test="definitionkey != null">
+    		definitionkey,
+    	</if>
+        <if test="definitionid != null">
+            definitionid,
+        </if>
+    	<if test="taskkey != null">
+    		taskkey,
+    	</if>
+    	<if test="rule != null">
+    		rule,
+    	</if>
+    	<if test="userid != null">
+    		userid,
+    	</if>
+    	<if test="roleid != null">
+    		roleid,
+    	</if>
+    	<if test="deptid != null">
+    		deptid,
+    	</if>
+    	<if test="postid != null">
+    		postid,
+    	</if>
+    	<if test="canassign != null">
+    		canassign,
+    	</if>
+    	<if test="adduserid != null">
+    		adduserid,
+    	</if>
+    	addtime,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+    	<if test="type != null">
+    		#{type },
+    	</if>
+    	<if test="definitionkey != null">
+    		#{definitionkey },
+    	</if>
+        <if test="definitionid != null">
+            #{definitionid },
+        </if>
+    	<if test="taskkey != null">
+    		#{taskkey },
+    	</if>
+    	<if test="rule != null">
+    		#{rule },
+    	</if>
+    	<if test="userid != null">
+    		#{userid },
+    	</if>
+    	<if test="roleid != null">
+    		#{roleid },
+    	</if>
+    	<if test="deptid != null">
+    		#{deptid },
+    	</if>
+    	<if test="postid != null">
+    		#{postid },
+    	</if>
+    	<if test="canassign != null">
+    		#{canassign },
+    	</if>
+    	<if test="adduserid != null">
+    		#{adduserid },
+    	</if>
+    	now(),
+    </trim>
+  </insert>
+  <delete id="deleteAuthRuleByType" parameterType="java.lang.String">
+  	delete from t_act_auth_rule
+  	where definitionkey = #{definitionkey }
+  	  and type = #{type }
+  </delete>
+  <delete id="deleteAuthRule" parameterType="java.lang.String">
+  	delete from t_act_auth_rule
+  	where definitionkey = #{definitionkey }
+  	  <choose>
+  	  	<when test="taskkey != null">
+  	  		and taskkey = #{taskkey }
+  	  	</when>
+  	  	<otherwise>
+  	  		and (taskkey is null or taskkey = '')
+  	  	</otherwise>
+  	  </choose>
+  	  and type = #{type }
+  	  and (canassign is null or canassign = '')
+  </delete>
+  <select id="getRuleByType" parameterType="java.lang.String" resultType="java.lang.String">
+  	select rule from t_act_auth_rule
+  	where definitionkey = #{definitionkey }
+  	  and type = #{type }
+  	  and (canassign is null or canassign = '')
+  	group by rule
+  </select>
+  <select id="getRuleByUserTaskType" parameterType="java.lang.String" resultType="java.lang.String">
+  	select rule from t_act_auth_rule
+  	where definitionkey = #{definitionkey }
+  	  and taskkey = #{taskkey }
+  	  and type = #{type }
+  	  and (canassign is null or canassign = '')
+  	group by rule
+  </select>
+  <select id="getRuleDetail" parameterType="java.lang.String" resultType="java.util.Map">
+  	select userid, deptid, roleid, postid from t_act_auth_rule
+  	<trim prefix="where" prefixOverrides="and">
+  		<if test="definitionkey != null">
+  			and definitionkey = #{definitionkey }
+  		</if>
+  		<if test="taskkey != null">
+  			and taskkey = #{taskkey }
+  		</if>
+  		<if test="type != null">
+  			and type = #{type }
+  		</if>
+  		<if test="rule != null">
+  			and rule = #{rule }
+  		</if>
+  		 and (canassign is null or canassign = '')
+  	  	/*and canassign is not null
+  	  	and canassign <![CDATA[<>]]> ''*/
+  	</trim>
+  	group by userid, deptid, roleid,postid
+  </select>
+  <delete id="deleteAuthRuleForUserTask" parameterType="java.util.Map">
+  	delete from t_act_auth_rule
+  	where definitionkey = #{definitionkey }
+  	  and definitionid = #{definitionid }
+  	  and type = #{type }
+  	  and taskkey = #{taskkey }
+  	  and (canassign is null or canassign = '')
+  </delete>
+  <delete id="deleteAuthRuleForCanassign" parameterType="java.util.Map">
+  	delete from t_act_auth_rule
+  	where definitionkey = #{definitionkey }
+  	  and type = #{type }
+  	  and taskkey = #{taskkey }
+  	  and canassign is not null
+  	  and canassign <![CDATA[<>]]> ''
+  </delete>
+  <select id="selectAuthRuleForUserTask" parameterType="java.util.Map" resultMap="BaseResultMap">
+  	select
+	  <include refid="Base_Column_List2"/>,t2.authorityname rolename
+  	  from t_act_auth_rule t1
+	left join t_ac_authority t2 on t1.roleid = t2.authorityid
+  	where t1.definitionkey = #{definitionkey }
+      <choose>
+          <when test="definitionid != null">
+              and t1.definitionid = #{definitionid }
+          </when>
+          <otherwise>
+              and (t1.definitionid is null or t1.definitionid = '')
+          </otherwise>
+      </choose>
+      and t1.type = #{type }
+  	  and t1.taskkey = #{taskkey }
+  	  and (t1.canassign is null or t1.canassign = '')
+  </select>
+  <select id="selectAuthRule" parameterType="java.util.Map" resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List"/>
+  	  from t_act_auth_rule
+  	where definitionkey = #{definitionkey }
+  	  and type = #{type }
+  	  <trim prefix="">
+		  <choose>
+			  <when test="definitionid != null">
+				  and definitionid = #{definitionid }
+			  </when>
+			  <otherwise>
+				  and (definitionid is null or definitionid = '')
+			  </otherwise>
+		  </choose>
+  	  	<choose>
+  	  		<when test="taskkey != null">
+  	  			and taskkey = #{taskkey }
+  	  		</when>
+  	  		<otherwise>
+  	  			and (taskkey is null or taskkey = '')
+  	  		</otherwise>
+  	  	</choose>
+  	  	<choose>
+  	  		<when test="canassign != null">
+  	  			and (canassign is not null and canassign <![CDATA[<>]]> '')
+  	  		</when>
+  	  		<otherwise>
+  	  			and (canassign is null or canassign = '')
+  	  		</otherwise>
+  	  	</choose>
+  	  </trim>
+  	  order by definitionkey, taskkey, rule
+  </select>
+  <delete id="clearAuthRule" parameterType="java.lang.String">
+  	delete from t_act_auth_rule
+  	<trim prefix="where" prefixOverrides="and">
+  		<if test="definitionkey != null">
+  			and definitionkey = #{definitionkey }
+  		</if>
+  		<choose>
+	  		<when test="taskkey != null">
+	  			and taskkey = #{taskkey }
+	  		</when>
+	  		<otherwise>
+	  			and (taskkey is null or taskkey = '')
+	  		</otherwise>
+  		</choose>
+  		<if test="type != null">
+  			and type = #{type }
+  		</if>
+  		and (canassign is null or canassign = '')
+  	</trim>
+  </delete>
+    <delete id="deleteAuthRuleForDefinitionTask" parameterType="java.lang.String">
+        delete from t_act_auth_rule
+        <trim prefix="where" prefixOverrides="and">
+            <if test="definitionkey != null">
+                and definitionkey = #{definitionkey }
+            </if>
+            <choose>
+                <when test="definitionid != null">
+                    and definitionid = #{definitionid }
+                </when>
+                <otherwise>
+                    and (definitionid is null or definitionid = '')
+                </otherwise>
+            </choose>
+            <choose>
+                <when test="taskkey != null">
+                    and taskkey = #{taskkey }
+                </when>
+                <otherwise>
+                    and (taskkey is null or taskkey = '')
+                </otherwise>
+            </choose>
+            <if test="type != null">
+                and type = #{type }
+            </if>
+            and (canassign is null or canassign = '')
+        </trim>
+    </delete>
+    <insert id="doCloneOldVerson2NewVersion" parameterType="java.util.Map">
+        delete from t_act_auth_rule where definitionid = #{newdefinitionid };
+
+        insert into t_act_auth_rule (type, definitionkey, taskkey, rule, userid, roleid, deptid, postid, canassign, definitionid)
+        (select type, definitionkey, taskkey, rule, userid, roleid, deptid, postid, canassign, #{newdefinitionid } from t_act_auth_rule where definitionid = #{olddefinitionid});
+
+        update t_act_auth_rule
+        set
+        adduserid = #{adduserid },
+        addtime = now()
+        where definitionid = #{newdefinitionid }
+    </insert>
+</mapper>

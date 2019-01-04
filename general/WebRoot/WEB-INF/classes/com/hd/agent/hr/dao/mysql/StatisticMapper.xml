@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hd.agent.hr.dao.StatisticMapper">
+    <sql id="Rest_Column_List" >
+        id, businessdate, status, remark, val01, val02, val03, val04, val05, val06, val07, val08, val09, val10, processid, applydate, dept, workjob, delegateuser, delegatephone, resttype, begindate, enddate, day, reason, applyuser
+    </sql>
+    <sql id="Overtime_Column_List" >
+        id, businessdate, status, remark, val01, val02, val03, val04, val05, val06, val07,
+        val08, val09, val10, val11, val12, val13, val14, val15, val16, val17, val18, val19,
+        val20
+    </sql>
+    <delete id="deleteRestStatisticByDate">
+        delete from t_hr_rest_statistic where businessdate = #{businessdate }
+    </delete>
+    <delete id="deleteRestStatisticById">
+        delete from t_hr_rest_statistic where id = #{id }
+    </delete>
+    <insert id="insertRestStatistic" parameterType="java.util.Map" >
+        insert into t_hr_rest_statistic (id, businessdate, status, remark, val01, val02, val03,
+        val04, val05, val06, val07, val08, val09, val10, processid, applydate, dept, workjob, delegateuser, delegatephone, resttype, begindate, enddate, day, reason, applyuser)
+        values (#{id}, #{businessdate}, #{status}, #{remark}, #{val01}, #{val02}, #{val03},
+        #{val04}, #{val05}, #{val06}, #{val07}, #{val08}, #{val09}, #{val10},
+        #{processid}, #{applydate}, #{dept}, #{workjob}, #{delegateuser}, #{delegatephone}, #{resttype}, #{begindate}, #{enddate}, #{day}, #{reason}, #{applyuser})
+    </insert>
+    <insert id="insertRestStatisticList" parameterType="java.util.Map" >
+        insert into t_hr_rest_statistic (id, businessdate, status, remark, val01, val02, val03,
+        val04, val05, val06, val07, val08, val09, val10, processid, applydate, dept, workjob, delegateuser, delegatephone, resttype, begindate, enddate, day, reason, applyuser)
+        values
+        <foreach collection="list" item="item" open="" close="" separator=",">
+            (#{item.id}, #{item.businessdate}, #{item.status}, #{item.remark}, #{item.val01}, #{item.val02}, #{item.val03},
+            #{item.val04}, #{item.val05}, #{item.val06}, #{item.val07}, #{item.val08}, #{item.val09}, #{item.val10},
+            #{item.processid}, #{item.applydate}, #{item.dept}, #{item.workjob}, #{item.delegateuser}, #{item.delegatephone}, #{item.resttype}, #{item.begindate}, #{item.enddate}, #{item.day}, #{item.reason}, #{item.applyuser})
+        </foreach>
+    </insert>
+    <select id="selectRestStatisticByProcessid" parameterType="java.lang.String" resultType="java.util.Map">
+        select <include refid="Rest_Column_List"/>
+        from t_hr_rest_statistic
+        where processid = #{processid } and businessdate = #{businessdate}
+    </select>
+    <select id="selectRestList" parameterType="com.hd.agent.common.util.PageMap" resultType="java.util.Map">
+        select
+          <include refid="Rest_Column_List"/>
+        from t_hr_rest_statistic
+        <trim prefix="where" prefixOverrides="and|or">
+            and processid is not null
+            and businessdate = (select max(businessdate) from t_hr_rest_statistic)
+            <if test="condition.begindate != null and condition.enddate == null ">
+                and (
+                1 = 2
+                or (enddate <![CDATA[ <> ]]> '' and enddate <![CDATA[ >= ]]> #{condition.begindate })
+                )
+            </if>
+            <if test="condition.begindate == null and condition.enddate != null ">
+                and (
+                1 = 2
+                or (begindate <![CDATA[ <> ]]> '' and begindate <![CDATA[ <= ]]> #{condition.enddate })
+                )
+            </if>
+            <if test="condition.begindate != null and condition.enddate != null ">
+                and (
+                1 = 1
+                and not (enddate <![CDATA[ < ]]> #{condition.begindate })
+                and not (begindate <![CDATA[ > ]]> #{condition.enddate })
+                and begindate <![CDATA[ <> ]]> ''
+                and enddate <![CDATA[ <> ]]> ''
+                )
+            </if>
+            <if test="condition.val07 != null">
+                and val07 in
+                <foreach collection="condition.val07" item="item" open="(" close=")" separator=",">
+                    #{item }
+                </foreach>
+            </if>
+            <if test="condition.status != null">
+                and status in
+                <foreach collection="condition.status" item="item" open="(" close=")" separator=",">
+                    #{item }
+                </foreach>
+            </if>
+            and status in (1, 9)
+            <include refid="common.Page_querySql"/>
+            <include refid="common.Page_dataSql"/>
+        </trim>
+        order by id
+        <include refid="common.Page_limit"/>
+    </select>
+    <select id="selectRestListCnt" parameterType="com.hd.agent.common.util.PageMap" resultType="java.lang.Integer">
+        select count(1)
+        from t_hr_rest_statistic
+        <trim prefix="where" prefixOverrides="and|or">
+            and processid is not null
+            and businessdate = (select max(businessdate) from t_hr_rest_statistic)
+            <if test="condition.begindate != null and condition.enddate == null ">
+                and (
+                1 = 2
+                or (enddate <![CDATA[ <> ]]> '' and enddate <![CDATA[ >= ]]> #{condition.begindate })
+                )
+            </if>
+            <if test="condition.begindate == null and condition.enddate != null ">
+                and (
+                1 = 2
+                or (begindate <![CDATA[ <> ]]> '' and begindate <![CDATA[ <= ]]> #{condition.enddate })
+                )
+            </if>
+            <if test="condition.begindate != null and condition.enddate != null ">
+                and (
+                1 = 1
+                and not (enddate <![CDATA[ < ]]> #{condition.begindate })
+                and not (begindate <![CDATA[ > ]]> #{condition.enddate })
+                and begindate <![CDATA[ <> ]]> ''
+                and enddate <![CDATA[ <> ]]> ''
+                )
+            </if>
+            <if test="condition.val07 != null">
+                and val07 in
+                <foreach collection="condition.val07" item="item" open="(" close=")" separator=",">
+                    #{item }
+                </foreach>
+            </if>
+            <if test="condition.status != null">
+                and status in
+                <foreach collection="condition.status" item="item" open="(" close=")" separator=",">
+                    #{item }
+                </foreach>
+            </if>
+            and status in (1, 9)
+            <include refid="common.Page_querySql"/>
+            <include refid="common.Page_dataSql"/>
+        </trim>
+    </select>
+    <delete id="deleteOvertimeStatisticByDate">
+        delete from t_hr_overtime_statistic where businessdate = #{businessdate }
+    </delete>
+    <insert id="insertOvertimeStatistic" parameterType="java.util.Map" >
+        insert into t_hr_overtime_statistic (id, businessdate, status, remark, val01, val02, val03,
+        val04, val05, val06, val07, val08, val09, val10, val11,
+        val12, val13, val14, val15, val16, val17, val18, val19,
+        val20)
+        values (#{id}, #{businessdate}, #{status}, #{remark}, #{val01}, #{val02}, #{val03},
+        #{val04}, #{val05}, #{val06}, #{val07}, #{val08}, #{val09}, #{val10}, #{val11},
+        #{val12}, #{val13}, #{val14}, #{val15}, #{val16}, #{val17}, #{val18}, #{val19},
+        #{val20})
+    </insert>
+    <select id="selectOvertimeList" parameterType="com.hd.agent.common.util.PageMap" resultType="java.util.Map">
+        select
+        <include refid="Overtime_Column_List"/>
+        from t_hr_overtime_statistic
+        <trim prefix="where" prefixOverrides="and|or">
+            businessdate = (select max(businessdate) from t_hr_overtime_statistic)
+            <if test="condition.val04 != null and condition.val05 == null ">
+                and (
+                1 = 2
+                or (val05 <![CDATA[ <> ]]> '' and val05 <![CDATA[ >= ]]> #{condition.val04 })
+                )
+            </if>
+            <if test="condition.val04 == null and condition.val05 != null ">
+                and (
+                1 = 2
+                or (val04 <![CDATA[ <> ]]> '' and val04 <![CDATA[ <= ]]> #{condition.val05 })
+                )
+            </if>
+            <if test="condition.val04 != null and condition.val05 != null ">
+                and (
+                1=1
+                and not (val05 <![CDATA[ < ]]> #{condition.val04 })
+                and not (val04 <![CDATA[ > ]]> #{condition.val05 })
+                and val04 <![CDATA[ <> ]]> ''
+                and val05 <![CDATA[ <> ]]> ''
+                )
+            </if>
+            <if test="condition.status != null">
+                and status in
+                <foreach collection="condition.status" item="item" open="(" close=")" separator=",">
+                    #{item }
+                </foreach>
+            </if>
+            and status in (1, 9)
+            <include refid="common.Page_querySql"/>
+            <include refid="common.Page_dataSql"/>
+        </trim>
+        order by id
+        <include refid="common.Page_limit"/>
+    </select>
+    <select id="selectOvertimeListCnt" parameterType="com.hd.agent.common.util.PageMap" resultType="java.lang.Integer">
+        select count(1)
+        from t_hr_overtime_statistic
+        <trim prefix="where" prefixOverrides="and|or">
+            businessdate = (select max(businessdate) from t_hr_overtime_statistic)
+            <if test="condition.val04 != null and condition.val05 == null ">
+                and (
+                1 = 2
+                or (val05 <![CDATA[ <> ]]> '' and val05 <![CDATA[ >= ]]> #{condition.val04 })
+                )
+            </if>
+            <if test="condition.val04 == null and condition.val05 != null ">
+                and (
+                1 = 2
+                or (val04 <![CDATA[ <> ]]> '' and val04 <![CDATA[ <= ]]> #{condition.val05 })
+                )
+            </if>
+            <if test="condition.val04 != null and condition.val05 != null ">
+                and (
+                1 = 1
+                and not (val05 <![CDATA[ < ]]> #{condition.val04 })
+                and not (val04 <![CDATA[ > ]]> #{condition.val05 })
+                and val04 <![CDATA[ <> ]]> ''
+                and val05 <![CDATA[ <> ]]> ''
+                )
+            </if>
+            <if test="condition.status != null">
+                and status in
+                <foreach collection="condition.status" item="item" open="(" close=")" separator=",">
+                    #{item }
+                </foreach>
+            </if>
+            and status in (1, 9)
+            <include refid="common.Page_querySql"/>
+            <include refid="common.Page_dataSql"/>
+        </trim>
+    </select>
+
+</mapper>

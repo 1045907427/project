@@ -1,0 +1,440 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.crm.dao.CustomerStorageOrderMapper" >
+  <resultMap id="BaseResultMap" type="com.hd.agent.crm.model.CustomerStorageOrderDetail" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="orderid" property="orderid" jdbcType="VARCHAR" />
+    <result column="goodsid" property="goodsid" jdbcType="VARCHAR" />
+    <result column="goodssort" property="goodssort" jdbcType="VARCHAR" />
+    <result column="brandid" property="brandid" jdbcType="VARCHAR" />
+    <result column="branduser" property="branduser" jdbcType="VARCHAR" />
+    <result column="branddept" property="branddept" jdbcType="VARCHAR" />
+    <result column="supplierid" property="supplierid" jdbcType="VARCHAR" />
+    <result column="supplieruser" property="supplieruser" jdbcType="VARCHAR" />
+    <result column="unitid" property="unitid" jdbcType="VARCHAR" />
+    <result column="unitname" property="unitname" jdbcType="VARCHAR" />
+    <result column="fixnum" property="fixnum" jdbcType="DECIMAL" />
+    <result column="unitnum" property="unitnum" jdbcType="DECIMAL" />
+    <result column="auxunitid" property="auxunitid" jdbcType="VARCHAR" />
+    <result column="auxunitname" property="auxunitname" jdbcType="VARCHAR" />
+    <result column="auxnum" property="auxnum" jdbcType="DECIMAL" />
+    <result column="overnum" property="overnum" jdbcType="DECIMAL" />
+    <result column="auxnumdetail" property="auxnumdetail" jdbcType="VARCHAR" />
+    <result column="totalbox" property="totalbox" jdbcType="DECIMAL" />
+    <result column="fixprice" property="fixprice" jdbcType="DECIMAL" />
+    <result column="oldprice" property="oldprice" jdbcType="DECIMAL" />
+    <result column="taxprice" property="taxprice" jdbcType="DECIMAL" />
+    <result column="taxamount" property="taxamount" jdbcType="DECIMAL" />
+    <result column="notaxprice" property="notaxprice" jdbcType="DECIMAL" />
+    <result column="notaxamount" property="notaxamount" jdbcType="DECIMAL" />
+    <result column="costprice" property="costprice" jdbcType="DECIMAL" />
+    <result column="costtaxamount" property="costtaxamount" jdbcType="DECIMAL" />
+    <result column="costnotaxamount" property="costnotaxamount" jdbcType="DECIMAL" />
+    <result column="taxtype" property="taxtype" jdbcType="VARCHAR" />
+    <result column="tax" property="tax" jdbcType="DECIMAL" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="seq" property="seq" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.orderid != null" >
+         and orderid = #{condition.orderid}
+      </if>
+      <if test="condition.goodsid != null" >
+         and goodsid = #{condition.goodsid}
+      </if>
+      <if test="condition.goodssort != null" >
+         and goodssort = #{condition.goodssort}
+      </if>
+      <if test="condition.brandid != null" >
+         and brandid = #{condition.brandid}
+      </if>
+      <if test="condition.branduser != null" >
+         and branduser = #{condition.branduser}
+      </if>
+      <if test="condition.branddept != null" >
+         and branddept = #{condition.branddept}
+      </if>
+      <if test="condition.supplierid != null" >
+         and supplierid = #{condition.supplierid}
+      </if>
+      <if test="condition.supplieruser != null" >
+         and supplieruser = #{condition.supplieruser}
+      </if>
+      <if test="condition.unitid != null" >
+         and unitid = #{condition.unitid}
+      </if>
+      <if test="condition.unitname != null" >
+         and unitname = #{condition.unitname}
+      </if>
+      <if test="condition.fixnum != null" >
+         and fixnum = #{condition.fixnum}
+      </if>
+      <if test="condition.unitnum != null" >
+         and unitnum = #{condition.unitnum}
+      </if>
+      <if test="condition.auxunitid != null" >
+         and auxunitid = #{condition.auxunitid}
+      </if>
+      <if test="condition.auxunitname != null" >
+         and auxunitname = #{condition.auxunitname}
+      </if>
+      <if test="condition.auxnum != null" >
+         and auxnum = #{condition.auxnum}
+      </if>
+      <if test="condition.overnum != null" >
+         and overnum = #{condition.overnum}
+      </if>
+      <if test="condition.auxnumdetail != null" >
+         and auxnumdetail = #{condition.auxnumdetail}
+      </if>
+      <if test="condition.totalbox != null" >
+         and totalbox = #{condition.totalbox}
+      </if>
+      <if test="condition.fixprice != null" >
+         and fixprice = #{condition.fixprice}
+      </if>
+      <if test="condition.oldprice != null" >
+         and oldprice = #{condition.oldprice}
+      </if>
+      <if test="condition.taxprice != null" >
+         and taxprice = #{condition.taxprice}
+      </if>
+      <if test="condition.taxamount != null" >
+         and taxamount = #{condition.taxamount}
+      </if>
+      <if test="condition.notaxprice != null" >
+         and notaxprice = #{condition.notaxprice}
+      </if>
+      <if test="condition.notaxamount != null" >
+         and notaxamount = #{condition.notaxamount}
+      </if>
+      <if test="condition.costprice != null" >
+         and costprice = #{condition.costprice}
+      </if>
+      <if test="condition.taxtype != null" >
+         and taxtype = #{condition.taxtype}
+      </if>
+      <if test="condition.tax != null" >
+         and tax = #{condition.tax}
+      </if>
+      <if test="condition.remark != null" >
+         and remark = #{condition.remark}
+      </if>
+      <if test="condition.seq != null" >
+         and seq = #{condition.seq}
+      </if>
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, orderid, goodsid, goodssort, brandid, branduser, branddept, supplierid, supplieruser, 
+    unitid, unitname, fixnum, unitnum, auxunitid, auxunitname, auxnum, overnum, auxnumdetail, 
+    totalbox, fixprice, oldprice, taxprice, taxamount, notaxprice, notaxamount, costprice,costtaxamount,costnotaxamount,
+    taxtype, tax, remark, seq
+  </sql>
+  <select id="getCustomerStorageOrderDetailByOrderid" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_crm_customer_storage_detail
+    where orderid = #{id}
+  </select>
+  <delete id="deleteByOrderid" parameterType="java.lang.String" >
+    delete from t_crm_customer_storage_detail
+    where orderid = #{id}
+  </delete>
+  <select id="getCustomerStorageOrderDetailTotal" parameterType="java.lang.String" resultType="map">
+    select sum(taxamount) taxamount, sum(notaxamount) notaxamount, sum(tax) tax from t_crm_customer_storage_detail where orderid = #{id}
+  </select>
+  <insert id="addCustomerStorageOrderDetail" parameterType="com.hd.agent.crm.model.CustomerStorageOrderDetail" >
+    insert into t_crm_customer_storage_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="orderid != null" >
+        orderid,
+      </if>
+      <if test="goodsid != null" >
+        goodsid,
+      </if>
+      <if test="goodssort != null" >
+        goodssort,
+      </if>
+      <if test="brandid != null" >
+        brandid,
+      </if>
+      <if test="branduser != null" >
+        branduser,
+      </if>
+      <if test="branddept != null" >
+        branddept,
+      </if>
+      <if test="supplierid != null" >
+        supplierid,
+      </if>
+      <if test="supplieruser != null" >
+        supplieruser,
+      </if>
+      <if test="unitid != null" >
+        unitid,
+      </if>
+      <if test="unitname != null" >
+        unitname,
+      </if>
+      <if test="fixnum != null" >
+        fixnum,
+      </if>
+      <if test="unitnum != null" >
+        unitnum,
+      </if>
+      <if test="auxunitid != null" >
+        auxunitid,
+      </if>
+      <if test="auxunitname != null" >
+        auxunitname,
+      </if>
+      <if test="auxnum != null" >
+        auxnum,
+      </if>
+      <if test="overnum != null" >
+        overnum,
+      </if>
+      <if test="auxnumdetail != null" >
+        auxnumdetail,
+      </if>
+      <if test="totalbox != null" >
+        totalbox,
+      </if>
+      <if test="fixprice != null" >
+        fixprice,
+      </if>
+      <if test="oldprice != null" >
+        oldprice,
+      </if>
+      <if test="taxprice != null" >
+        taxprice,
+      </if>
+      <if test="taxamount != null" >
+        taxamount,
+      </if>
+      <if test="notaxprice != null" >
+        notaxprice,
+      </if>
+      <if test="notaxamount != null" >
+        notaxamount,
+      </if>
+      <if test="costprice != null" >
+        costprice,
+      </if>
+      <if test="costtaxamount != null" >
+        costtaxamount,
+      </if>
+      <if test="costnotaxamount != null" >
+        costnotaxamount,
+      </if>
+      <if test="taxtype != null" >
+        taxtype,
+      </if>
+      <if test="tax != null" >
+        tax,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="seq != null" >
+        seq,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="orderid != null" >
+        #{orderid},
+      </if>
+      <if test="goodsid != null" >
+        #{goodsid},
+      </if>
+      <if test="goodssort != null" >
+        #{goodssort},
+      </if>
+      <if test="brandid != null" >
+        #{brandid},
+      </if>
+      <if test="branduser != null" >
+        #{branduser},
+      </if>
+      <if test="branddept != null" >
+        #{branddept},
+      </if>
+      <if test="supplierid != null" >
+        #{supplierid},
+      </if>
+      <if test="supplieruser != null" >
+        #{supplieruser},
+      </if>
+      <if test="unitid != null" >
+        #{unitid},
+      </if>
+      <if test="unitname != null" >
+        #{unitname},
+      </if>
+      <if test="fixnum != null" >
+        #{fixnum},
+      </if>
+      <if test="unitnum != null" >
+        #{unitnum},
+      </if>
+      <if test="auxunitid != null" >
+        #{auxunitid},
+      </if>
+      <if test="auxunitname != null" >
+        #{auxunitname},
+      </if>
+      <if test="auxnum != null" >
+        #{auxnum},
+      </if>
+      <if test="overnum != null" >
+        #{overnum},
+      </if>
+      <if test="auxnumdetail != null" >
+        #{auxnumdetail},
+      </if>
+      <if test="totalbox != null" >
+        #{totalbox},
+      </if>
+      <if test="fixprice != null" >
+        #{fixprice},
+      </if>
+      <if test="oldprice != null" >
+        #{oldprice},
+      </if>
+      <if test="taxprice != null" >
+        #{taxprice},
+      </if>
+      <if test="taxamount != null" >
+        #{taxamount},
+      </if>
+      <if test="notaxprice != null" >
+        #{notaxprice},
+      </if>
+      <if test="notaxamount != null" >
+        #{notaxamount},
+      </if>
+      <if test="costprice != null" >
+        #{costprice},
+      </if>
+      <if test="costtaxamount != null" >
+        #{costtaxamount},
+      </if>
+      <if test="costnotaxamount != null" >
+        #{costnotaxamount},
+      </if>
+      <if test="taxtype != null" >
+        #{taxtype},
+      </if>
+      <if test="tax != null" >
+        #{tax},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+      <if test="seq != null" >
+        #{seq},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByOrderid" parameterType="com.hd.agent.crm.model.CustomerStorageOrderDetail" >
+    update t_crm_customer_storage_detail
+    <set >
+      <if test="orderid != null" >
+        orderid = #{orderid},
+      </if>
+      <if test="goodsid != null" >
+        goodsid = #{goodsid},
+      </if>
+      <if test="goodssort != null" >
+        goodssort = #{goodssort},
+      </if>
+      <if test="brandid != null" >
+        brandid = #{brandid},
+      </if>
+      <if test="branduser != null" >
+        branduser = #{branduser},
+      </if>
+      <if test="branddept != null" >
+        branddept = #{branddept},
+      </if>
+      <if test="supplierid != null" >
+        supplierid = #{supplierid},
+      </if>
+      <if test="supplieruser != null" >
+        supplieruser = #{supplieruser},
+      </if>
+      <if test="unitid != null" >
+        unitid = #{unitid},
+      </if>
+      <if test="unitname != null" >
+        unitname = #{unitname},
+      </if>
+      <if test="fixnum != null" >
+        fixnum = #{fixnum},
+      </if>
+      <if test="unitnum != null" >
+        unitnum = #{unitnum},
+      </if>
+      <if test="auxunitid != null" >
+        auxunitid = #{auxunitid},
+      </if>
+      <if test="auxunitname != null" >
+        auxunitname = #{auxunitname},
+      </if>
+      <if test="auxnum != null" >
+        auxnum = #{auxnum},
+      </if>
+      <if test="overnum != null" >
+        overnum = #{overnum},
+      </if>
+      <if test="auxnumdetail != null" >
+        auxnumdetail = #{auxnumdetail},
+      </if>
+      <if test="totalbox != null" >
+        totalbox = #{totalbox},
+      </if>
+      <if test="fixprice != null" >
+        fixprice = #{fixprice},
+      </if>
+      <if test="oldprice != null" >
+        oldprice = #{oldprice},
+      </if>
+      <if test="taxprice != null" >
+        taxprice = #{taxprice},
+      </if>
+      <if test="taxamount != null" >
+        taxamount = #{taxamount},
+      </if>
+      <if test="notaxprice != null" >
+        notaxprice = #{notaxprice},
+      </if>
+      <if test="notaxamount != null" >
+        notaxamount = #{notaxamount},
+      </if>
+      <if test="costprice != null" >
+        costprice = #{costprice},
+      </if>
+      <if test="taxtype != null" >
+        taxtype = #{taxtype},
+      </if>
+      <if test="tax != null" >
+        tax = #{tax},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark},
+      </if>
+      <if test="seq != null" >
+        seq = #{seq},
+      </if>
+    </set>
+    where orderid = #{id}
+  </update>
+</mapper>

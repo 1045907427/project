@@ -1,0 +1,808 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.crm.dao.CrmVisitPlanMapper" >
+    <resultMap id="BaseResultMap" type="com.hd.agent.crm.model.CrmVisitPlan" >
+        <id column="id" property="id" jdbcType="VARCHAR" />
+        <result column="personid" property="personid" jdbcType="VARCHAR" />
+        <result column="leadid" property="leadid" jdbcType="VARCHAR" />
+        <result column="wayname" property="wayname" jdbcType="VARCHAR" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="month" property="month" jdbcType="INTEGER" />
+        <result column="week" property="week" jdbcType="INTEGER" />
+        <result column="state" property="state" jdbcType="CHAR" />
+        <result column="adduserid" property="adduserid" jdbcType="VARCHAR" />
+        <result column="addusername" property="addusername" jdbcType="VARCHAR" />
+        <result column="adddeptid" property="adddeptid" jdbcType="VARCHAR" />
+        <result column="adddeptname" property="adddeptname" jdbcType="VARCHAR" />
+        <result column="addtime" property="addtime" jdbcType="TIMESTAMP" />
+        <result column="modifyuserid" property="modifyuserid" jdbcType="VARCHAR" />
+        <result column="modifyusername" property="modifyusername" jdbcType="VARCHAR" />
+        <result column="modifytime" property="modifytime" jdbcType="TIMESTAMP" />
+        <result column="openuserid" property="openuserid" jdbcType="VARCHAR" />
+        <result column="openusername" property="openusername" jdbcType="VARCHAR" />
+        <result column="opentime" property="opentime" jdbcType="TIMESTAMP" />
+        <result column="closeuserid" property="closeuserid" jdbcType="VARCHAR" />
+        <result column="closeusername" property="closeusername" jdbcType="VARCHAR" />
+        <result column="closetime" property="closetime" jdbcType="TIMESTAMP" />
+    </resultMap>
+    <update id="auditCrmPlan" parameterType="com.hd.agent.crm.model.CrmVisitPlan" >
+    update t_crm_visit_plan
+    <set>
+    <if test="state != null" >
+        state = #{state},
+    </if>
+    <if test="openuserid != null" >
+        openuserid = #{openuserid},
+    </if>
+    <if test="openusername != null" >
+        openusername = #{openusername},
+    </if>
+    <if test="opentime != null" >
+        opentime = #{opentime},
+    </if>
+    <if test="closeuserid != null" >
+        closeuserid = #{closeuserid},
+    </if>
+    <if test="closeusername != null" >
+        closeusername = #{closeusername},
+    </if>
+    <if test="closetime != null" >
+        closetime = #{closetime},
+    </if>
+    </set>
+        where id = #{id}
+    </update>
+
+    <sql id="Base_Column_List" >
+    id, personid, leadid, wayname, remark, month, week, state, adduserid, addusername,
+    adddeptid, adddeptname, addtime, modifyuserid, modifyusername, modifytime, openuserid,
+    openusername, opentime, closeuserid, closeusername, closetime
+</sql>
+    <sql id="Blob_Column_List" >
+        brands
+    </sql>
+    <sql id="Base_Column_List1" >
+        a.id, a.personid, a.leadid, a.wayname, a.remark, a.month, a.week, a.state, a.adduserid, a.addusername, a.
+    adddeptid, a.adddeptname, a.addtime, a.modifyuserid, a.modifyusername, a.modifytime, a.openuserid, a.
+    openusername, a.opentime, a.closeuserid, a.closeusername, a.closetime
+    </sql>
+    <sql id="Blob_Column_List1" >
+        a.brands
+    </sql>
+
+    <select id="getCrmPlan" resultMap="BaseResultMap" >
+        select * from t_crm_visit_plan
+    </select>
+    <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+        select *
+        from t_crm_visit_plan
+        where id = #{id}
+    </select>
+
+    <select id="getCrmDataCount" resultType="java.lang.Integer" parameterType="com.hd.agent.common.util.PageMap" >
+        select count(1) from t_crm_visit_plan a
+        inner join t_base_personnel a1 on a1.id = a.personid
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="condition.id != null" >
+                and a.id = #{condition.id}
+            </if>
+            <if test="condition.state != null" >
+                and a.state = #{condition.state}
+            </if>
+            <if test="condition.personid != null" >
+                and a.personid = #{condition.personid}
+            </if>
+            <if test="condition.employetype != null" >
+                and a1.employetype = #{condition.employetype}
+            </if>
+            <if test="condition.name != null" >
+                and a1.name  like CONCAT('%', CONCAT(#{condition.name}, '%'))
+            </if>
+            <if test="condition.leadid != null" >
+                and a.leadid like CONCAT('%', CONCAT(#{condition.leadid}, '%'))
+            </if>
+            <include refid="common.Page_querySql"/>
+            <include refid="common.Page_dataSql"/>
+        </trim>
+    </select>
+
+    <select id="getCrmData" resultMap="BaseResultMap" parameterType="com.hd.agent.common.util.PageMap" >
+    select
+    <include refid="Base_Column_List1" />,<include refid="Blob_Column_List1" />, a1.employetype employetype ,a1.name name
+    from t_crm_visit_plan a
+    left join t_base_personnel a1 on a1.id = a.personid
+    <trim prefix="where" prefixOverrides="and|or">
+        <if test="condition.id != null" >
+            and a.id like CONCAT('%', CONCAT(#{condition.id}, '%'))
+        </if>
+        <if test="condition.exportids != null" >
+            and a.id like CONCAT('%', CONCAT(#{condition.exportids}, '%'))
+        </if>
+        <if test="condition.state != null" >
+            and a.state = #{condition.state}
+        </if>
+        <if test="condition.personid != null" >
+            and a.personid = #{condition.personid}
+        </if>
+        <if test="condition.employetype != null" >
+            and a1.employetype = #{condition.employetype}
+        </if>
+        <if test="condition.name != null" >
+            and a1.name  like CONCAT('%', CONCAT(#{condition.name}, '%'))
+        </if>
+        <if test="condition.leadid != null" >
+            and a.leadid like CONCAT('%', CONCAT(#{condition.leadid}, '%'))
+        </if>
+        <include refid="common.Page_querySql"/>
+        <include refid="common.Page_dataSql"/>
+    </trim>
+    order by a.id desc
+    <include refid="common.Page_limit"/>
+</select>
+
+    <select id="getCrmCount" resultType="java.lang.Integer" parameterType="com.hd.agent.common.util.PageMap" >
+        select count(1) from t_base_goods_brand
+    </select>
+
+    <select id="getCrmByPid" resultType="com.hd.agent.crm.model.CrmVisitPlan" parameterType="java.lang.String" >
+        select * from t_crm_visit_plan
+        where personid = #{personid}
+    </select>
+
+    <delete id="deletePlanByPersonid" parameterType="java.lang.String" >
+        delete from t_crm_visit_plan
+        where personid = #{personid}
+    </delete>
+    <delete id="deleteByPlanId" parameterType="java.lang.String"  >
+        delete from t_crm_visit_plan
+        where id = #{id} and state != 1
+    </delete>
+    <insert id="insertVisitPlan" parameterType="com.hd.agent.crm.model.CrmVisitPlan" >
+        insert into t_crm_visit_plan (id, personid, leadid, wayname, remark, month, week,
+        state, adduserid, addusername, adddeptid, adddeptname, addtime,
+        modifyuserid, modifyusername, modifytime, openuserid, openusername,
+        opentime, closeuserid, closeusername, closetime, brands)
+        values (#{id}, #{personid}, #{leadid}, #{wayname}, #{remark}, #{month}, #{week},
+        #{state}, #{adduserid}, #{addusername}, #{adddeptid}, #{adddeptname}, #{addtime},
+        #{modifyuserid}, #{modifyusername}, #{modifytime}, #{openuserid}, #{openusername},
+        #{opentime}, #{closeuserid}, #{closeusername}, #{closetime}, #{brands})
+    </insert>
+    <insert id="insertPlan" parameterType="com.hd.agent.crm.model.CrmVisitPlan" >
+        insert into t_crm_visit_plan
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="personid != null" >
+                personid,
+            </if>
+            <if test="leadid != null" >
+                leadid,
+            </if>
+            <if test="wayname != null" >
+                wayname,
+            </if>
+            <if test="remark != null" >
+                remark,
+            </if>
+            <if test="month != null" >
+                month,
+            </if>
+            <if test="week != null" >
+                week,
+            </if>
+            <if test="state != null" >
+                state,
+            </if>
+            <if test="adduserid != null" >
+                adduserid,
+            </if>
+            <if test="addusername != null" >
+                addusername,
+            </if>
+            <if test="adddeptid != null" >
+                adddeptid,
+            </if>
+            <if test="adddeptname != null" >
+                adddeptname,
+            </if>
+            <if test="addtime != null" >
+                addtime,
+            </if>
+            <if test="modifyuserid != null" >
+                modifyuserid,
+            </if>
+            <if test="modifyusername != null" >
+                modifyusername,
+            </if>
+            <if test="modifytime != null" >
+                modifytime,
+            </if>
+            <if test="openuserid != null" >
+                openuserid,
+            </if>
+            <if test="openusername != null" >
+                openusername,
+            </if>
+            <if test="opentime != null" >
+                opentime,
+            </if>
+            <if test="closeuserid != null" >
+                closeuserid,
+            </if>
+            <if test="closeusername != null" >
+                closeusername,
+            </if>
+            <if test="closetime != null" >
+                closetime,
+            </if>
+            <if test="brands != null" >
+                brands,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id},
+            </if>
+            <if test="personid != null" >
+                #{personid},
+            </if>
+            <if test="leadid != null" >
+                #{leadid},
+            </if>
+            <if test="wayname != null" >
+                #{wayname},
+            </if>
+            <if test="remark != null" >
+                #{remark},
+            </if>
+            <if test="month != null" >
+                #{month},
+            </if>
+            <if test="week != null" >
+                #{week},
+            </if>
+            <if test="state != null" >
+                #{state},
+            </if>
+            <if test="adduserid != null" >
+                #{adduserid},
+            </if>
+            <if test="addusername != null" >
+                #{addusername},
+            </if>
+            <if test="adddeptid != null" >
+                #{adddeptid},
+            </if>
+            <if test="adddeptname != null" >
+                #{adddeptname},
+            </if>
+            <if test="addtime != null" >
+                #{addtime},
+            </if>
+            <if test="modifyuserid != null" >
+                #{modifyuserid},
+            </if>
+            <if test="modifyusername != null" >
+                #{modifyusername},
+            </if>
+            <if test="modifytime != null" >
+                #{modifytime},
+            </if>
+            <if test="openuserid != null" >
+                #{openuserid},
+            </if>
+            <if test="openusername != null" >
+                #{openusername},
+            </if>
+            <if test="opentime != null" >
+                #{opentime},
+            </if>
+            <if test="closeuserid != null" >
+                #{closeuserid},
+            </if>
+            <if test="closeusername != null" >
+                #{closeusername},
+            </if>
+            <if test="closetime != null" >
+                #{closetime},
+            </if>
+            <if test="brands != null" >
+                #{brands},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateBySelectedMap" parameterType="map" >
+        update t_crm_visit_plan
+        <set >
+            <if test="record.id != null" >
+                id = #{record.id},
+            </if>
+            <if test="record.personid != null" >
+                personid = #{record.personid},
+            </if>
+            <if test="record.leadid != null" >
+                leadid = #{record.leadid},
+            </if>
+            <if test="record.wayname != null" >
+                wayname = #{record.wayname},
+            </if>
+            <if test="record.remark != null" >
+                remark = #{record.remark},
+            </if>
+            <if test="record.month != null" >
+                month = #{record.month},
+            </if>
+            <if test="record.week != null" >
+                week = #{record.week},
+            </if>
+            <if test="record.state != null" >
+                state = #{record.state},
+            </if>
+            <if test="record.adduserid != null" >
+                adduserid = #{record.adduserid},
+            </if>
+            <if test="record.addusername != null" >
+                addusername = #{record.addusername},
+            </if>
+            <if test="record.adddeptid != null" >
+                adddeptid = #{record.adddeptid},
+            </if>
+            <if test="record.adddeptname != null" >
+                adddeptname = #{record.adddeptname},
+            </if>
+            <if test="record.addtime != null" >
+                addtime = #{record.addtime},
+            </if>
+            <if test="record.modifyuserid != null" >
+                modifyuserid = #{record.modifyuserid},
+            </if>
+            <if test="record.modifyusername != null" >
+                modifyusername = #{record.modifyusername},
+            </if>
+            <if test="record.modifytime != null" >
+                modifytime = #{record.modifytime},
+            </if>
+            <if test="record.openuserid != null" >
+                openuserid = #{record.openuserid},
+            </if>
+            <if test="record.openusername != null" >
+                openusername = #{record.openusername},
+            </if>
+            <if test="record.opentime != null" >
+                opentime = #{record.opentime},
+            </if>
+            <if test="record.closeuserid != null" >
+                closeuserid = #{record.closeuserid},
+            </if>
+            <if test="record.closeusername != null" >
+                closeusername = #{record.closeusername},
+            </if>
+            <if test="record.closetime != null" >
+                closetime = #{record.closetime},
+            </if>
+            <if test="record.brands != null" >
+                brands = #{record.brands},
+            </if>
+        </set>
+        <!--<if test="_parameter != null" >-->
+        <!--<include refid="Example_Where_Clause" />-->
+        <!--</if>-->
+    </update>
+    <update id="updateByMap" parameterType="map" >
+        update t_crm_visit_plan
+        set id = #{record.id},
+        personid = #{record.personid},
+        leadid = #{record.leadid},
+        wayname = #{record.wayname},
+        remark = #{record.remark},
+        month = #{record.month},
+        week = #{record.week},
+        state = #{record.state},
+        adduserid = #{record.adduserid},
+        addusername = #{record.addusername},
+        adddeptid = #{record.adddeptid},
+        adddeptname = #{record.adddeptname},
+        addtime = #{record.addtime},
+        modifyuserid = #{record.modifyuserid},
+        modifyusername = #{record.modifyusername},
+        modifytime = #{record.modifytime},
+        openuserid = #{record.openuserid},
+        openusername = #{record.openusername},
+        opentime = #{record.opentime},
+        closeuserid = #{record.closeuserid},
+        closeusername = #{record.closeusername},
+        closetime = #{record.closetime},
+        brands = #{record.brands}
+        <!--<if test="_parameter != null" >-->
+        <!--<include refid="Example_Where_Clause" />-->
+        <!--</if>-->
+    </update>
+
+    <update id="updateBySelectdId" parameterType="com.hd.agent.crm.model.CrmVisitPlan" >
+        update t_crm_visit_plan
+        <set >
+            <if test="personid != null" >
+                personid = #{personid},
+            </if>
+            <if test="leadid != null" >
+                leadid = #{leadid},
+            </if>
+            <if test="wayname != null" >
+                wayname = #{wayname},
+            </if>
+            <if test="remark != null" >
+                remark = #{remark},
+            </if>
+            <if test="month != null" >
+                month = #{month},
+            </if>
+            <if test="week != null" >
+                week = #{week},
+            </if>
+            <if test="state != null" >
+                state = #{state},
+            </if>
+            <if test="adduserid != null" >
+                adduserid = #{adduserid},
+            </if>
+            <if test="addusername != null" >
+                addusername = #{addusername},
+            </if>
+            <if test="adddeptid != null" >
+                adddeptid = #{adddeptid},
+            </if>
+            <if test="adddeptname != null" >
+                adddeptname = #{adddeptname},
+            </if>
+            <if test="addtime != null" >
+                addtime = #{addtime},
+            </if>
+            <if test="modifyuserid != null" >
+                modifyuserid = #{modifyuserid},
+            </if>
+            <if test="modifyusername != null" >
+                modifyusername = #{modifyusername},
+            </if>
+            <if test="modifytime != null" >
+                modifytime = #{modifytime},
+            </if>
+            <if test="openuserid != null" >
+                openuserid = #{openuserid},
+            </if>
+            <if test="openusername != null" >
+                openusername = #{openusername},
+            </if>
+            <if test="opentime != null" >
+                opentime = #{opentime},
+            </if>
+            <if test="closeuserid != null" >
+                closeuserid = #{closeuserid},
+            </if>
+            <if test="closeusername != null" >
+                closeusername = #{closeusername},
+            </if>
+            <if test="closetime != null" >
+                closetime = #{closetime},
+            </if>
+            <if test="brands != null" >
+                brands = #{brands},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <update id="updateById" parameterType="com.hd.agent.crm.model.CrmVisitPlan" >
+        update t_crm_visit_plan
+        set personid = #{personid},
+        leadid = #{leadid},
+        wayname = #{wayname},
+        remark = #{remark},
+        month = #{month},
+        week = #{week},
+        state = #{state},
+        adduserid = #{adduserid},
+        addusername = #{addusername},
+        adddeptid = #{adddeptid},
+        adddeptname = #{adddeptname},
+        addtime = #{addtime},
+        modifyuserid = #{modifyuserid},
+        modifyusername = #{modifyusername},
+        modifytime = #{modifytime},
+        openuserid = #{openuserid},
+        openusername = #{openusername},
+        opentime = #{opentime},
+        closeuserid = #{closeuserid},
+        closeusername = #{closeusername},
+        closetime = #{closetime},
+        brands = #{brands}
+        where id = #{id}
+    </update>
+    <update id="updateByPlanId" parameterType="com.hd.agent.crm.model.CrmVisitPlan" >
+        update t_crm_visit_plan
+        set personid = #{personid},
+        leadid = #{leadid},
+        wayname = #{wayname},
+        remark = #{remark},
+        month = #{month},
+        week = #{week},
+        state = #{state},
+        adduserid = #{adduserid},
+        addusername = #{addusername},
+        adddeptid = #{adddeptid},
+        adddeptname = #{adddeptname},
+        addtime = #{addtime},
+        modifyuserid = #{modifyuserid},
+        modifyusername = #{modifyusername},
+        modifytime = #{modifytime},
+        openuserid = #{openuserid},
+        openusername = #{openusername},
+        opentime = #{opentime},
+        closeuserid = #{closeuserid},
+        closeusername = #{closeusername},
+        closetime = #{closetime}
+        where id = #{id}
+    </update>
+    <!--detail表信息-->
+    <resultMap id="DetailResultMap" type="com.hd.agent.crm.model.CrmVisitPlanDetail" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="billid" property="billid" jdbcType="VARCHAR" />
+        <result column="personid" property="personid" jdbcType="VARCHAR" />
+        <result column="day1" property="day1" jdbcType="VARCHAR" />
+        <result column="day2" property="day2" jdbcType="VARCHAR" />
+        <result column="day3" property="day3" jdbcType="VARCHAR" />
+        <result column="day4" property="day4" jdbcType="VARCHAR" />
+        <result column="day5" property="day5" jdbcType="VARCHAR" />
+        <result column="day6" property="day6" jdbcType="VARCHAR" />
+        <result column="day7" property="day7" jdbcType="VARCHAR" />
+    </resultMap>
+    <sql id="Example_Where_Clause" >
+        <trim prefix="where" prefixOverrides="and|or" >
+            <if test="condition.billid != null" >
+                and billid = #{condition.billid}
+            </if>
+            <if test="condition.personid != null" >
+                and personid = #{condition.personid}
+            </if>
+            <if test="condition.day1 != null" >
+                and day1 = #{condition.day1}
+            </if>
+            <if test="condition.day2 != null" >
+                and day2 = #{condition.day2}
+            </if>
+            <if test="condition.day3 != null" >
+                and day3 = #{condition.day3}
+            </if>
+            <if test="condition.day4 != null" >
+                and day4 = #{condition.day4}
+            </if>
+            <if test="condition.day5 != null" >
+                and day5 = #{condition.day5}
+            </if>
+            <if test="condition.day6 != null" >
+                and day6 = #{condition.day6}
+            </if>
+            <if test="condition.day7 != null" >
+                and day7 = #{condition.day7}
+            </if>
+        </trim>
+    </sql>
+    <sql id="Base_Detail_List" >
+        id, billid, personid, day1, day2, day3, day4, day5, day6, day7
+    </sql>
+
+    <delete id="deleteDetailByPersonid" parameterType="java.lang.String" >
+        delete from t_crm_visit_plan_detail
+        where billid = #{personid}
+    </delete>
+    <delete id="deleteDetailByBillid" parameterType="java.lang.String" >
+        delete from t_crm_visit_plan_detail
+        where billid = #{billid}
+    </delete>
+
+    <select id="selectByPlanId" resultMap="DetailResultMap" parameterType="java.lang.String" >
+        select
+        <include refid="Base_Detail_List" />
+        from t_crm_visit_plan_detail
+        where id = #{id}
+    </select>
+    <select id="selectByPersonId" resultMap="DetailResultMap" parameterType="java.lang.Integer" >
+        select
+        <include refid="Base_Detail_List" />
+        from t_crm_visit_plan_detail
+        where personid = #{pid}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+        delete from t_crm_visit_plan_detail
+        where id = #{id}
+    </delete>
+
+    <insert id="insertPlanDetail" parameterType="com.hd.agent.crm.model.CrmVisitPlanDetail" >
+        insert into t_crm_visit_plan_detail (id, billid, personid, day1, day2, day3, day4, day5,
+        day6, day7)
+        values (#{id}, #{billid}, #{personid}, #{day1}, #{day2}, #{day3}, #{day4}, #{day5},
+        #{day6}, #{day7})
+    </insert>
+    <insert id="insertDetail" parameterType="com.hd.agent.crm.model.CrmVisitPlanDetail" >
+        insert into t_crm_visit_plan_detail
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="billid != null" >
+                billid,
+            </if>
+            <if test="personid != null" >
+                personid,
+            </if>
+            <if test="day1 != null" >
+                day1,
+            </if>
+            <if test="day2 != null" >
+                day2,
+            </if>
+            <if test="day3 != null" >
+                day3,
+            </if>
+            <if test="day4 != null" >
+                day4,
+            </if>
+            <if test="day5 != null" >
+                day5,
+            </if>
+            <if test="day6 != null" >
+                day6,
+            </if>
+            <if test="day7 != null" >
+                day7,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id},
+            </if>
+            <if test="billid != null" >
+                #{billid},
+            </if>
+            <if test="personid != null" >
+                #{personid},
+            </if>
+            <if test="day1 != null" >
+                #{day1},
+            </if>
+            <if test="day2 != null" >
+                #{day2},
+            </if>
+            <if test="day3 != null" >
+                #{day3},
+            </if>
+            <if test="day4 != null" >
+                #{day4},
+            </if>
+            <if test="day5 != null" >
+                #{day5},
+            </if>
+            <if test="day6 != null" >
+                #{day6},
+            </if>
+            <if test="day7 != null" >
+                #{day7},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByDetail" parameterType="map" >
+        update t_crm_visit_plan_detail
+        <set >
+            <if test="record.id != null" >
+                id = #{record.id},
+            </if>
+            <if test="record.billid != null" >
+                billid = #{record.billid},
+            </if>
+            <if test="record.personid != null" >
+                personid = #{record.personid},
+            </if>
+            <if test="record.day1 != null" >
+                day1 = #{record.day1},
+            </if>
+            <if test="record.day2 != null" >
+                day2 = #{record.day2},
+            </if>
+            <if test="record.day3 != null" >
+                day3 = #{record.day3},
+            </if>
+            <if test="record.day4 != null" >
+                day4 = #{record.day4},
+            </if>
+            <if test="record.day5 != null" >
+                day5 = #{record.day5},
+            </if>
+            <if test="record.day6 != null" >
+                day6 = #{record.day6},
+            </if>
+            <if test="record.day7 != null" >
+                day7 = #{record.day7},
+            </if>
+        </set>
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map" >
+        update t_crm_visit_plan_detail
+        set id = #{record.id},
+        billid = #{record.billid},
+        personid = #{record.personid},
+        day1 = #{record.day1},
+        day2 = #{record.day2},
+        day3 = #{record.day3},
+        day4 = #{record.day4},
+        day5 = #{record.day5},
+        day6 = #{record.day6},
+        day7 = #{record.day7}
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </update>
+    <update id="updateBySelectdDetailId" parameterType="com.hd.agent.crm.model.CrmVisitPlanDetail" >
+        update t_crm_visit_plan_detail
+        <set >
+            <if test="billid != null" >
+                billid = #{billid},
+            </if>
+            <if test="personid != null" >
+                personid = #{personid},
+            </if>
+            <if test="day1 != null" >
+                day1 = #{day1},
+            </if>
+            <if test="day2 != null" >
+                day2 = #{day2},
+            </if>
+            <if test="day3 != null" >
+                day3 = #{day3},
+            </if>
+            <if test="day4 != null" >
+                day4 = #{day4},
+            </if>
+            <if test="day5 != null" >
+                day5 = #{day5},
+            </if>
+            <if test="day6 != null" >
+                day6 = #{day6},
+            </if>
+            <if test="day7 != null" >
+                day7 = #{day7},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.hd.agent.crm.model.CrmVisitPlanDetail" >
+        update t_crm_visit_plan_detail
+        set billid = #{billid},
+        personid = #{personid},
+        day1 = #{day1},
+        day2 = #{day2},
+        day3 = #{day3},
+        day4 = #{day4},
+        day5 = #{day5},
+        day6 = #{day6},
+        day7 = #{day7}
+        where id = #{id}
+    </update>
+    <select id="getCrmPlanByID" parameterType="java.lang.String" resultMap="DetailResultMap" >
+        select * from t_crm_visit_plan_detail  where billid = #{id}
+    </select>
+    <select id="getCrmVisitPlanByPersonid" parameterType="java.lang.String" resultType="com.hd.agent.crm.model.CrmVisitPlan">
+        select id, personid, leadid, wayname,brands, remark, month, week
+        from t_crm_visit_plan where personid=#{personid} and state='1'
+    </select>
+    <select id="getCrmVisitPlanDetailByBillid" parameterType="java.lang.String" resultType="com.hd.agent.crm.model.CrmVisitPlanDetail">
+        select id, billid, personid, day1, day2, day3, day4, day5, day6, day7
+        from t_crm_visit_plan_detail where billid = #{billid}
+    </select>
+    <select id="getCrmVisitPlanChangeCountBySyncdate" parameterType="java.lang.String" resultType="int">
+        select count(1) from t_crm_visit_plan
+        where personid=#{personid} and state='1'
+        and (addtime>=#{syncdate} or modifytime>=#{syncdate} or opentime>=#{syncdate})
+    </select>
+</mapper>

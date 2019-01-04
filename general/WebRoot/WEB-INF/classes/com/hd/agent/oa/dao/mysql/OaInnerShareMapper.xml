@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hd.agent.oa.dao.OaInnerShareMapper">
+  <resultMap id="BaseResultMap" type="com.hd.agent.oa.model.OaInnerShare">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="businessdate" jdbcType="VARCHAR" property="businessdate" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="adduserid" jdbcType="VARCHAR" property="adduserid" />
+    <result column="addusername" jdbcType="VARCHAR" property="addusername" />
+    <result column="adddeptid" jdbcType="VARCHAR" property="adddeptid" />
+    <result column="adddeptname" jdbcType="VARCHAR" property="adddeptname" />
+    <result column="addtime" jdbcType="TIMESTAMP" property="addtime" />
+    <result column="modifyuserid" jdbcType="VARCHAR" property="modifyuserid" />
+    <result column="modifyusername" jdbcType="VARCHAR" property="modifyusername" />
+    <result column="modifytime" jdbcType="TIMESTAMP" property="modifytime" />
+    <result column="printtimes" jdbcType="INTEGER" property="printtimes" />
+    <result column="billtype" jdbcType="VARCHAR" property="billtype" />
+    <result column="oaid" jdbcType="VARCHAR" property="oaid" />
+    <result column="relateoaid" jdbcType="VARCHAR" property="relateoaid" />
+    <result column="costsort" jdbcType="VARCHAR" property="costsort" />
+    <result column="paydeptid" jdbcType="VARCHAR" property="paydeptid" />
+    <result column="paybank" jdbcType="VARCHAR" property="paybank" />
+    <result column="amount" jdbcType="DECIMAL" property="amount" />
+    <result column="upamount" jdbcType="VARCHAR" property="upamount" />
+    <result column="collectdeptid" jdbcType="VARCHAR" property="collectdeptid" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, businessdate, remark, adduserid, addusername, adddeptid, adddeptname, addtime, 
+    modifyuserid, modifyusername, modifytime, printtimes, oaid, relateoaid, costsort, 
+    paydeptid, paybank, amount, upamount, collectdeptid, billtype
+  </sql>
+  <select id="selectOaInnerShare" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_oa_inner_share
+    where id = #{id}
+  </select>
+  <delete id="deleteOaInnerShare" parameterType="java.lang.String">
+    delete from t_oa_inner_share
+    where id = #{id}
+  </delete>
+  <insert id="insertOaInnerShare" parameterType="com.hd.agent.oa.model.OaInnerShare">
+    insert into t_oa_inner_share
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="businessdate != null">
+        businessdate,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="adduserid != null">
+        adduserid,
+      </if>
+      <if test="addusername != null">
+        addusername,
+      </if>
+      <if test="adddeptid != null">
+        adddeptid,
+      </if>
+      <if test="adddeptname != null">
+        adddeptname,
+      </if>
+      addtime,
+      <if test="modifyuserid != null">
+        modifyuserid,
+      </if>
+      <if test="modifyusername != null">
+        modifyusername,
+      </if>
+      <if test="modifytime != null">
+        modifytime,
+      </if>
+      <if test="printtimes != null">
+        printtimes,
+      </if>
+      <if test="billtype != null">
+        billtype,
+      </if>
+      <if test="oaid != null">
+        oaid,
+      </if>
+      <if test="relateoaid != null">
+        relateoaid,
+      </if>
+      <if test="costsort != null">
+        costsort,
+      </if>
+      <if test="paydeptid != null">
+        paydeptid,
+      </if>
+      <if test="paybank != null">
+        paybank,
+      </if>
+      <if test="amount != null">
+        amount,
+      </if>
+      <if test="upamount != null">
+        upamount,
+      </if>
+      <if test="collectdeptid != null">
+        collectdeptid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id},
+      </if>
+      <if test="businessdate != null">
+        #{businessdate},
+      </if>
+      <if test="remark != null">
+        #{remark},
+      </if>
+      <if test="adduserid != null">
+        #{adduserid},
+      </if>
+      <if test="addusername != null">
+        #{addusername},
+      </if>
+      <if test="adddeptid != null">
+        #{adddeptid},
+      </if>
+      <if test="adddeptname != null">
+        #{adddeptname},
+      </if>
+      now(),
+      <if test="modifyuserid != null">
+        #{modifyuserid},
+      </if>
+      <if test="modifyusername != null">
+        #{modifyusername},
+      </if>
+      <if test="modifytime != null">
+        #{modifytime},
+      </if>
+      <if test="printtimes != null">
+        #{printtimes},
+      </if>
+      <if test="billtype != null">
+        #{billtype},
+      </if>
+      <if test="oaid != null">
+        #{oaid},
+      </if>
+      <if test="relateoaid != null">
+        #{relateoaid},
+      </if>
+      <if test="costsort != null">
+        #{costsort},
+      </if>
+      <if test="paydeptid != null">
+        #{paydeptid},
+      </if>
+      <if test="paybank != null">
+        #{paybank},
+      </if>
+      <if test="amount != null">
+        #{amount},
+      </if>
+      <if test="upamount != null">
+        #{upamount},
+      </if>
+      <if test="collectdeptid != null">
+        #{collectdeptid},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateOaInnerShare" parameterType="com.hd.agent.oa.model.OaInnerShare">
+    update t_oa_inner_share
+    <trim prefix="set" suffixOverrides=",">
+      businessdate = #{businessdate},
+      remark = #{remark},
+      modifyuserid = #{modifyuserid},
+      modifyusername = #{modifyusername},
+      modifytime = now(),
+      printtimes = #{printtimes},
+      billtype = #{billtype},
+      oaid = #{oaid},
+      relateoaid = #{relateoaid},
+      costsort = #{costsort},
+      paydeptid = #{paydeptid},
+      paybank = #{paybank},
+      amount = #{amount},
+      upamount = #{upamount},
+      collectdeptid = #{collectdeptid},
+    </trim>
+	where id = #{id }
+  </update>
+</mapper>

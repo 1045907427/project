@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<include file="struts-plugin.xml"></include>
+	<include file="struts-default.xml"></include>
+	<constant name="struts.action.extension" value="do"/> 
+	<constant name="struts.locale" value="zh_CN"></constant>
+	<constant name="struts.i18n.encoding" value="UTF-8" /> 
+	<constant name="struts.objectFactory" value="spring" />
+	<constant name="struts.multipart.maxSize" value="10485760000"/>
+	<!-- 
+	<constant name="struts.multipart.paeser" value="jakarta" />
+	<constant name="struts.multipart.saveDir" value="/tmp" />  -->
+	<!-- 导入其他struts配置文件 -->
+    <include file="struts-*.xml"></include>
+	<!--<include file="struts-accesscontrol.xml"></include>-->
+	<!--<include file="struts-system.xml"></include>-->
+	<!--<include file="struts-common.xml"></include>-->
+	<!--<include file="struts-workflow.xml"></include>-->
+	<!--<include file="struts-activiti.xml"></include>-->
+	<!--<include file="struts-hr.xml"></include>-->
+	<!--<include file="struts-basefiles.xml"></include>-->
+	<!--<include file="struts-message.xml"></include>-->
+	<!--<include file="struts-purchase.xml"></include>-->
+	<!--<include file="struts-sales.xml"></include>-->
+	<!--<include file="struts-crm.xml"></include>-->
+	<!--<include file="struts-storage.xml"></include>-->
+	<!--<include file="struts-journalsheet.xml"></include>-->
+	<!--<include file="struts-account.xml"></include>-->
+	<!--<include file="struts-phone.xml"></include>-->
+	<!--<include file="struts-report.xml"></include>-->
+	<!--<include file="struts-oa.xml"></include>-->
+	<!--<include file="struts-agprint.xml"></include>-->
+	<!--<include file="struts-crm.xml"></include>-->
+    <!--<include file="struts-ebshop.xml"></include>-->
+	<!--<include file="struts-delivery.xml"></include>-->
+    <!--<include file="struts-erpConnect.xml"></include>-->
+	<!--<include file="struts-client.xml"></include>-->
+
+	<package name="parent" extends="struts-default,json-default">
+		<result-types>
+			<result-type name="jasper" class="org.apache.struts2.views.jasperreports.JasperReportsResult" />
+	    	<result-type name="json" class="org.apache.struts2.json.JSONResult"/>
+	    </result-types>
+		<!-- 拦截器处理异常和错误 -->
+		<interceptors>  
+            <interceptor name="json" class="org.apache.struts2.json.JSONInterceptor"/>
+			<interceptor-stack name="exceptionStack">
+                <interceptor-ref name="defaultStack">  
+                    <param name="exception.logEnabled">true</param>  
+                    <param name="exception.logLevel">error</param>  
+                </interceptor-ref>
+                <interceptor-ref name="json"/> 
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="exceptionStack"/>
+		<global-results>
+			<result name="error">/common/error.jsp</result>
+			<result name="input">/common/error.jsp</result>
+			<!-- 表单提交时验证不通过，统一返回json数据 -->
+			<result name="validateFalse" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</global-results>
+		<global-exception-mappings>
+			<exception-mapping result="error" exception="java.lang.Exception"></exception-mapping>
+		</global-exception-mappings>
+	</package>
+	<package name="phoneoaparent" extends="struts-default,json-default">
+		<result-types>
+			<result-type name="jasper" class="org.apache.struts2.views.jasperreports.JasperReportsResult" />
+	    	<result-type name="json" class="org.apache.struts2.json.JSONResult"/>
+	    </result-types>
+		<!-- 拦截器处理异常和错误 -->
+		<interceptors>  
+            <interceptor name="json" class="org.apache.struts2.json.JSONInterceptor"/>
+            <interceptor name="oalogin" class="com.hd.agent.phone.interceptor.LoginInterceptor"></interceptor>
+			<interceptor-stack name="exceptionStack">
+                <interceptor-ref name="defaultStack">  
+                    <param name="exception.logEnabled">true</param>  
+                    <param name="exception.logLevel">error</param>  
+                </interceptor-ref>
+                <interceptor-ref name="json"/> 
+                <interceptor-ref name="oalogin"/> 
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="exceptionStack"/>
+		<global-results>
+			<result name="error">/common/error.jsp</result>
+			<result name="input">/common/error.jsp</result>
+			<result name="login" type="redirect">/phone/oa/login.jsp</result>
+			<!-- 表单提交时验证不通过，统一返回json数据 -->
+			<result name="validateFalse" type="json">
+				<param name="root">jsonResult</param>
+				<param name="contentType">text/html</param>
+			</result>
+		</global-results>
+		<global-exception-mappings>
+			<exception-mapping result="error" exception="java.lang.Exception"></exception-mapping>
+		</global-exception-mappings>
+	</package>
+</struts>    

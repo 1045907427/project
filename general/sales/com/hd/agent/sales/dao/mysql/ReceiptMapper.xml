@@ -1,0 +1,3252 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.sales.dao.ReceiptMapper" >
+  <resultMap id="BaseResultMap" type="com.hd.agent.sales.model.Receipt" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="businessdate" property="businessdate" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="adduserid" property="adduserid" jdbcType="VARCHAR" />
+    <result column="addusername" property="addusername" jdbcType="VARCHAR" />
+    <result column="adddeptid" property="adddeptid" jdbcType="VARCHAR" />
+    <result column="adddeptname" property="adddeptname" jdbcType="VARCHAR" />
+    <result column="addtime" property="addtime" jdbcType="TIMESTAMP" />
+    <result column="modifyuserid" property="modifyuserid" jdbcType="VARCHAR" />
+    <result column="modifyusername" property="modifyusername" jdbcType="VARCHAR" />
+    <result column="modifytime" property="modifytime" jdbcType="TIMESTAMP" />
+    <result column="audituserid" property="audituserid" jdbcType="VARCHAR" />
+    <result column="auditusername" property="auditusername" jdbcType="VARCHAR" />
+    <result column="audittime" property="audittime" jdbcType="TIMESTAMP" />
+    <result column="stopuserid" property="stopuserid" jdbcType="VARCHAR" />
+    <result column="stopusername" property="stopusername" jdbcType="VARCHAR" />
+    <result column="stoptime" property="stoptime" jdbcType="TIMESTAMP" />
+    <result column="closetime" property="closetime" jdbcType="TIMESTAMP" />
+    <result column="printtimes" property="printtimes" jdbcType="INTEGER" />
+    <result column="customerid" property="customerid" jdbcType="VARCHAR" />
+    <result column="pcustomerid" property="pcustomerid" jdbcType="VARCHAR" />
+    <result column="customersort" property="customersort" jdbcType="VARCHAR" />
+    <result column="handlerid" property="handlerid" jdbcType="VARCHAR" />
+    <result column="salesarea" property="salesarea" jdbcType="VARCHAR" />
+    <result column="salesdept" property="salesdept" jdbcType="VARCHAR" />
+    <result column="salesuser" property="salesuser" jdbcType="VARCHAR" />
+    <result column="settletype" property="settletype" jdbcType="VARCHAR" />
+    <result column="paytype" property="paytype" jdbcType="VARCHAR" />
+    <result column="source" property="source" jdbcType="VARCHAR" />
+    <result column="storageid" property="storageid" jdbcType="VARCHAR" />
+    <result column="field01" property="field01" jdbcType="VARCHAR" />
+    <result column="field02" property="field02" jdbcType="VARCHAR" />
+    <result column="field03" property="field03" jdbcType="VARCHAR" />
+    <result column="field04" property="field04" jdbcType="VARCHAR" />
+    <result column="field05" property="field05" jdbcType="VARCHAR" />
+    <result column="field06" property="field06" jdbcType="VARCHAR" />
+    <result column="field07" property="field07" jdbcType="VARCHAR" />
+    <result column="field08" property="field08" jdbcType="VARCHAR" />
+    <result column="isrefer" property="isrefer" jdbcType="VARCHAR" />
+    <result column="billno" property="billno" jdbcType="VARCHAR" />
+    <result column="isinvoice" property="isinvoice" jdbcType="VARCHAR" />
+    <result column="canceldate" property="canceldate" jdbcType="VARCHAR" />
+    <result column="duefromdate" property="duefromdate" jdbcType="VARCHAR" />
+    <result column="saleorderid" property="saleorderid" jdbcType="VARCHAR" />
+    <result column="indooruserid" property="indooruserid" jdbcType="VARCHAR" />
+    <result column="ishand" property="ishand" jdbcType="CHAR" />
+    <result column="isdelivery" property="isdelivery" jdbcType="CHAR" />
+    <result column="isinvoicebill" property="isinvoicebill" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    <choose>
+      <when test="cols!=null">
+        <include refid="common.Page_Column"/>
+      </when>
+      <when test="cols==null">
+        id, businessdate, status, remark, adduserid, addusername, adddeptid, adddeptname,
+        addtime, modifyuserid, modifyusername, modifytime, audituserid, auditusername, audittime,
+        stopuserid, stopusername, stoptime, closetime, printtimes, customerid,pcustomerid,customersort, handlerid, salesarea,salesdept,
+        salesuser, settletype, paytype, source, storageid, field01, field02, field03, field04, field05,
+        field06, field07, field08, isrefer, billno, isinvoice, canceldate, duefromdate,saleorderid,indooruserid,ishand,isdelivery,isinvoicebill,ishand
+      </when>
+    </choose>
+  </sql>
+
+  <sql id="getReceiptList_sql">
+    (
+    select x.*,GROUP_CONCAT(distinct d.deliveryid) as deliveryid,s.sourceid as sourceid
+    from (
+    select t.*,sum(t1.taxamount) as totaltaxamount,sum(t1.notaxamount) as totalnotaxamount,sum(t1.tax) as totaltax,sum(t1.receipttaxamount) as totalreceipttaxamount
+    from t_sales_receipt t
+    LEFT JOIN  t_sales_receipt_detail t1 on t.id = t1.billid
+    <choose>
+      <when test="condition.accounttype==1">
+        INNER JOIN t_base_sales_customer c on t.customerid=c.id and c.islongterm='1'
+      </when>
+      <when test="condition.accounttype==2">
+        INNER JOIN t_base_sales_customer c on t.customerid=c.id and c.iscash='1'
+      </when>
+    </choose>
+    <trim prefix="where" prefixOverrides="and|or">
+      <include refid="common.Page_dataSql"/>
+      <if test="condition.exportids != null" >
+        and FIND_IN_SET(t.id , #{condition.exportids})
+      </if>
+      <if test="condition.id != null" >
+        and (t.id like CONCAT('%',#{condition.id},'%') or
+        t.saleorderid like CONCAT('%',#{condition.id},'%') )
+      </if>
+      <if test="condition.batchno != null">
+        and t1.batchno like CONCAT('%',#{condition.batchno},'%')
+      </if>
+      <if test="condition.deliveryid != null" >
+        and exists(select 1 from t_storage_logistics_delivery_saleout d where d.orderid=t.saleorderid and d.deliveryid like CONCAT('%',#{condition.deliveryid},'%'))
+      </if>
+      <if test="condition.ispassdue == 1" >
+        <![CDATA[ and t.duefromdate < #{condition.today} and t.status in('2','3')]]>
+      </if>
+      <if test="condition.ispassdue == 0" >
+        <![CDATA[ and t.duefromdate >= #{condition.today} and t.status in('2','3')]]>
+      </if>
+      <if test="condition.uncheckday != null" >
+        <![CDATA[ and t.businessdate <= str_to_date(DATE_ADD(now(),INTERVAL - #{condition.uncheckday} DAY), '%Y-%m-%d') ]]>
+      </if>
+      <if test="condition.businessdate != null" >
+        <![CDATA[ and t.businessdate >= #{condition.businessdate} ]]>
+      </if>
+      <if test="condition.businessdate1 != null" >
+        <![CDATA[ and t.businessdate <= #{condition.businessdate1} ]]>
+      </if>
+      <if test="condition.customerid != null" >
+        and (t.customerid = #{condition.customerid} OR t.pcustomerid = #{condition.customerid})
+      </if>
+      <if test="condition.pcustomerid != null" >
+        and t.pcustomerid = #{condition.pcustomerid}
+      </if>
+      <if test="condition.adduserid != null" >
+        and t.adduserid = #{condition.adduserid}
+      </if>
+      <if test="condition.isdelivery != null" >
+        and t.isdelivery = #{condition.isdelivery}
+      </if>
+      <if test="condition.salesdept != null" >
+        and t.salesdept = #{condition.salesdept}
+      </if>
+      <if test="condition.salesarea != null" >
+        and FIND_IN_SET(t.salesarea,#{condition.salesarea})
+      </if>
+      <if test="condition.customersort != null" >
+        and FIND_IN_SET(t.customersort,#{condition.customersort})
+      </if>
+      <if test="condition.salesuser != null" >
+        and t.salesuser = #{condition.salesuser}
+      </if>
+      <if test="condition.indooruserid != null" >
+        and t.indooruserid = #{condition.indooruserid}
+      </if>
+      <if test="condition.addtime != null" >
+        <![CDATA[ and t.addtime > #{condition.addtime} ]]>
+      </if>
+      <if test="condition.addtime1 != null" >
+        <![CDATA[ and t.addtime <= date_add(str_to_date(#{condition.addtime1}, '%Y-%m-%d'), interval '1' day) ]]>
+      </if>
+      <if test="condition.status != null and condition.status !='00'" >
+        and t.status = #{condition.status}
+      </if>
+      <if test="condition.status != null and condition.status =='00'" >
+        and t.status !='4'
+      </if>
+      <if test="condition.isrefer != null" >
+        and t.isrefer = #{condition.isrefer}
+      </if>
+      <if test="condition.isinvoice != null" >
+        and t.isinvoice = #{condition.isinvoice}
+      </if>
+      <choose>
+        <when test="condition.isClose ==0 ">
+          and t.status in('1','2')
+        </when>
+        <when test="condition.isClose ==1 ">
+          and t.status in('3','4')
+        </when>
+      </choose>
+    </trim>
+    GROUP BY t.id
+    ) x
+    LEFT JOIN t_storage_logistics_delivery_saleout d on d.orderid=x.saleorderid
+    LEFT JOIN  t_sales_order s on s.id = x.saleorderid
+    <if test="condition.sourceid != null" >
+      where s.sourceid like CONCAT('%',#{condition.sourceid},'%')
+    </if>
+    GROUP BY x.id
+    )
+  </sql>
+  <select id="getReceiptList" resultMap="BaseResultMap" parameterType="com.hd.agent.common.util.PageMap">
+    SELECT z.* from <include refid="getReceiptList_sql"/> z
+    <trim prefix="where" prefixOverrides="and|or">
+      <include refid="common.Page_querySql"/>
+    </trim>
+    <if test="condition.isPageLimit == null" >
+      <include refid="common.Page_limit"/>
+    </if>
+  </select>
+  <select id="getReceiptCount" resultType="java.lang.Integer" parameterType="com.hd.agent.common.util.PageMap">
+    select count(1) from <include refid="getReceiptList_sql"/> z
+    <trim prefix="where" prefixOverrides="and|or">
+      <include refid="common.Page_querySql"/>
+    </trim>
+  </select>
+  <select id="getReceiptBySaleout" resultMap="BaseResultMap" parameterType="map" >
+    select
+    <include refid="Base_Column_List" />
+    from t_sales_receipt
+    where billno = #{id}
+  </select>
+  <select id="getReceipt" resultMap="BaseResultMap" parameterType="map" >
+    select t.*,s.sourceid as sourceid
+    from t_sales_receipt t
+    LEFT JOIN  t_sales_order s on s.id = t.saleorderid
+    where t.id = #{id}
+  </select>
+  <delete id="deleteReceipt" parameterType="java.lang.String" >
+    delete from t_sales_receipt
+    where id = #{id}
+  </delete>
+  <insert id="addReceipt" parameterType="com.hd.agent.sales.model.Receipt" >
+    insert into t_sales_receipt
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="businessdate != null" >
+        businessdate,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="adduserid != null" >
+        adduserid,
+      </if>
+      <if test="addusername != null" >
+        addusername,
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid,
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname,
+      </if>
+      addtime,
+      <if test="printtimes != null" >
+        printtimes,
+      </if>
+      <if test="customerid != null" >
+        customerid,
+      </if>
+      <if test="pcustomerid != null" >
+        pcustomerid,
+      </if>
+      <if test="customersort != null" >
+        customersort,
+      </if>
+      <if test="handlerid != null" >
+        handlerid,
+      </if>
+      <if test="salesarea != null" >
+        salesarea,
+      </if>
+      <if test="salesdept != null" >
+        salesdept,
+      </if>
+      <if test="salesuser != null" >
+        salesuser,
+      </if>
+      <if test="settletype != null" >
+        settletype,
+      </if>
+      <if test="paytype != null" >
+        paytype,
+      </if>
+      <if test="source != null" >
+        source,
+      </if>
+      <if test="storageid != null" >
+        storageid,
+      </if>
+      <if test="field01 != null" >
+        field01,
+      </if>
+      <if test="field02 != null" >
+        field02,
+      </if>
+      <if test="field03 != null" >
+        field03,
+      </if>
+      <if test="field04 != null" >
+        field04,
+      </if>
+      <if test="field05 != null" >
+        field05,
+      </if>
+      <if test="field06 != null" >
+        field06,
+      </if>
+      <if test="field07 != null" >
+        field07,
+      </if>
+      <if test="field08 != null" >
+        field08,
+      </if>
+      <if test="isrefer != null" >
+        isrefer,
+      </if>
+      <if test="billno != null" >
+        billno,
+      </if>
+      <if test="duefromdate != null" >
+        duefromdate,
+      </if>
+      <if test="saleorderid != null" >
+        saleorderid,
+      </if>
+      <if test="indooruserid != null" >
+        indooruserid,
+      </if>
+      <if test="isdelivery != null" >
+        isdelivery,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="businessdate != null" >
+        #{businessdate},
+      </if>
+      <if test="status != null" >
+        #{status},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+      <if test="adduserid != null" >
+        #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        #{adddeptname},
+      </if>
+      now(),
+      <if test="printtimes != null" >
+        #{printtimes},
+      </if>
+      <if test="customerid != null" >
+        #{customerid},
+      </if>
+      <if test="pcustomerid != null" >
+        #{pcustomerid},
+      </if>
+      <if test="customersort != null" >
+        #{customersort},
+      </if>
+      <if test="handlerid != null" >
+        #{handlerid},
+      </if>
+      <if test="salesarea != null" >
+        #{salesarea},
+      </if>
+      <if test="salesdept != null" >
+        #{salesdept},
+      </if>
+      <if test="salesuser != null" >
+        #{salesuser},
+      </if>
+      <if test="settletype != null" >
+        #{settletype},
+      </if>
+      <if test="paytype != null" >
+        #{paytype},
+      </if>
+      <if test="source != null" >
+        #{source},
+      </if>
+      <if test="storageid != null" >
+        #{storageid},
+      </if>
+      <if test="field01 != null" >
+        #{field01},
+      </if>
+      <if test="field02 != null" >
+        #{field02},
+      </if>
+      <if test="field03 != null" >
+        #{field03},
+      </if>
+      <if test="field04 != null" >
+        #{field04},
+      </if>
+      <if test="field05 != null" >
+        #{field05},
+      </if>
+      <if test="field06 != null" >
+        #{field06},
+      </if>
+      <if test="field07 != null" >
+        #{field07},
+      </if>
+      <if test="field08 != null" >
+        #{field08},
+      </if>
+      <if test="isrefer != null" >
+        #{isrefer},
+      </if>
+      <if test="billno != null" >
+        #{billno},
+      </if>
+      <if test="duefromdate != null" >
+        #{duefromdate},
+      </if>
+      <if test="saleorderid != null" >
+        #{saleorderid},
+      </if>
+      <if test="indooruserid != null" >
+        #{indooruserid},
+      </if>
+      <if test="isdelivery != null" >
+        #{isdelivery},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateReceipt" parameterType="com.hd.agent.sales.model.Receipt" >
+    update t_sales_receipt
+    <set >
+      <if test="businessdate != null" >
+        businessdate = #{businessdate},
+      </if>
+      <if test="status != null" >
+        status = #{status},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark},
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid = #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername = #{modifyusername},
+      </if>
+      modifytime = now(),
+      <if test="audituserid != null" >
+        audituserid = #{audituserid},
+      </if>
+      <if test="auditusername != null" >
+        auditusername = #{auditusername},
+      </if>
+      <if test="audittime != null" >
+        audittime = #{audittime},
+      </if>
+      <if test="stopuserid != null" >
+        stopuserid = #{stopuserid},
+      </if>
+      <if test="stopusername != null" >
+        stopusername = #{stopusername},
+      </if>
+      <if test="stoptime != null" >
+        stoptime = #{stoptime},
+      </if>
+      <if test="closetime != null" >
+        closetime = #{closetime},
+      </if>
+      <if test="printtimes != null" >
+        printtimes = #{printtimes},
+      </if>
+      <if test="customerid != null" >
+        customerid = #{customerid},
+      </if>
+      <if test="pcustomerid != null" >
+        pcustomerid = #{pcustomerid},
+      </if>
+      <if test="customersort != null" >
+        customersort = #{customersort},
+      </if>
+      <if test="handlerid != null" >
+        handlerid = #{handlerid},
+      </if>
+      <if test="salesdept != null" >
+        salesdept = #{salesdept},
+      </if>
+      <if test="salesuser != null" >
+        salesuser = #{salesuser},
+      </if>
+      <if test="settletype != null" >
+        settletype = #{settletype},
+      </if>
+      <if test="paytype != null" >
+        paytype = #{paytype},
+      </if>
+      <if test="source != null" >
+        source = #{source},
+      </if>
+      <if test="storageid != null" >
+        storageid = #{storageid},
+      </if>
+      <if test="field01 != null" >
+        field01 = #{field01},
+      </if>
+      <if test="field02 != null" >
+        field02 = #{field02},
+      </if>
+      <if test="field03 != null" >
+        field03 = #{field03},
+      </if>
+      <if test="field04 != null" >
+        field04 = #{field04},
+      </if>
+      <if test="field05 != null" >
+        field05 = #{field05},
+      </if>
+      <if test="field06 != null" >
+        field06 = #{field06},
+      </if>
+      <if test="field07 != null" >
+        field07 = #{field07},
+      </if>
+      <if test="field08 != null" >
+        field08 = #{field08},
+      </if>
+      <if test="billno != null" >
+        billno = #{billno},
+      </if>
+      <if test="isrefer != null" >
+        isrefer = #{isrefer},
+      </if>
+      <if test="duefromdate != null" >
+        duefromdate = #{duefromdate},
+      </if>
+      <if test="saleorderid != null" >
+        saleorderid = #{saleorderid},
+      </if>
+      <if test="indooruserid != null" >
+        indooruserid = #{indooruserid},
+      </if>
+      <if test="isdelivery != null" >
+        isdelivery = #{isdelivery},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  <update id="updateReceiptStatus" parameterType="com.hd.agent.sales.model.Receipt">
+    update t_sales_receipt
+    <set>
+      <if test="businessdate != null" >
+        businessdate = #{businessdate},
+      </if>
+      <if test="status != null" >
+        status = #{status},
+      </if>
+      <if test="audituserid != null" >
+        audituserid = #{audituserid},
+      </if>
+      <if test="auditusername != null" >
+        auditusername = #{auditusername},
+      </if>
+      <if test="audittime != null" >
+        audittime = now(),
+      </if>
+      <if test="stopuserid != null" >
+        stopuserid = #{stopuserid},
+      </if>
+      <if test="stopusername != null" >
+        stopusername = #{stopusername},
+      </if>
+      <if test="stoptime != null" >
+        stoptime = now(),
+      </if>
+      <choose>
+        <when test="closetime != null">
+          closetime = now(),
+        </when>
+        <otherwise>
+          closetime = NULL,
+        </otherwise>
+      </choose>
+      <if test="duefromdate != null" >
+        duefromdate = #{duefromdate},
+      </if>
+      <if test="isrefer != null" >
+        isrefer = #{isrefer},
+      </if>
+      <if test="isinvoice != null" >
+        isinvoice = #{isinvoice},
+      </if>
+      <if test="isinvoicebill != null" >
+        isinvoicebill = #{isinvoicebill},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  <update id="updateReceiptRefer" parameterType="java.lang.String">
+  	update t_sales_receipt set isrefer = #{0} where id = #{1}
+  </update>
+  <update id="updateReceiptInvoice" parameterType="java.lang.String">
+  	update t_sales_receipt set isinvoice = #{0}, canceldate = #{1} where id = #{2}
+  </update>
+  <update id="updateReceiptInvoicebill" parameterType="java.lang.String">
+  	update t_sales_receipt set isinvoicebill = #{0}, canceldate = #{1} where id = #{2}
+  </update>
+  <select id="getReceiptidListFromInvoicebillBySaleoutid" parameterType="java.lang.String" resultType="java.lang.String">
+      SELECT DISTINCT r1.billid from t_sales_receipt_detail r1,t_account_sales_invoicebill_detail t1
+      where t1.sourceid = r1.billno and t1.sourcedetailid = r1.billdetailno and t1.sourcetype = '4' and t1.sourceid = #{saleoutid}
+  </select>
+  <!-- 销售发货回单明细 -->
+  <resultMap id="BaseDetailResultMap" type="com.hd.agent.sales.model.ReceiptDetail" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="billid" property="billid" jdbcType="VARCHAR" />
+    <result column="goodsid" property="goodsid" jdbcType="VARCHAR" />
+    <result column="groupid" property="groupid" jdbcType="VARCHAR" />
+    <result column="goodssort" property="goodssort" jdbcType="VARCHAR" />
+    <result column="brandid" property="brandid" jdbcType="VARCHAR" />
+    <result column="branduser" property="branduser" jdbcType="VARCHAR" />
+    <result column="branddept" property="branddept" jdbcType="VARCHAR" />
+    <result column="supplierid" property="supplierid" jdbcType="VARCHAR" />
+    <result column="supplieruser" property="supplieruser" jdbcType="VARCHAR" />
+    <result column="isdiscount" property="isdiscount" jdbcType="VARCHAR" />
+    <result column="isbranddiscount" property="isbranddiscount" jdbcType="VARCHAR" />
+    <result column="unitid" property="unitid" jdbcType="VARCHAR" />
+    <result column="unitname" property="unitname" jdbcType="VARCHAR" />
+    <result column="unitnum" property="unitnum" jdbcType="DECIMAL" />
+    <result column="receiptnum" property="receiptnum" jdbcType="DECIMAL" />
+    <result column="receipttaxamount" property="receipttaxamount" jdbcType="DECIMAL" />
+    <result column="receiptnotaxamount" property="receiptnotaxamount" jdbcType="DECIMAL" />
+    <result column="auxunitid" property="auxunitid" jdbcType="VARCHAR" />
+    <result column="auxunitname" property="auxunitname" jdbcType="VARCHAR" />
+    <result column="auxnum" property="auxnum" jdbcType="DECIMAL" />
+    <result column="auxremainder" property="auxremainder" jdbcType="DECIMAL" />
+    <result column="auxnumdetail" property="auxnumdetail" jdbcType="VARCHAR" />
+    <result column="totalbox" property="totalbox" jdbcType="DECIMAL" />
+    <result column="receiptbox" property="receiptbox" jdbcType="DECIMAL" />
+    <result column="taxprice" property="taxprice" jdbcType="DECIMAL" />
+    <result column="taxamount" property="taxamount" jdbcType="DECIMAL" />
+    <result column="notaxprice" property="notaxprice" jdbcType="DECIMAL" />
+    <result column="notaxamount" property="notaxamount" jdbcType="DECIMAL" />
+    <result column="discountamount" property="discountamount" jdbcType="DECIMAL" />
+    <result column="inittaxprice" property="inittaxprice" jdbcType="DECIMAL" />
+    <result column="receiptnotaxprice" property="receiptnotaxprice" jdbcType="DECIMAL" />
+    <result column="costprice" property="costprice" jdbcType="DECIMAL" />
+    <result column="taxtype" property="taxtype" jdbcType="VARCHAR" />
+    <result column="tax" property="tax" jdbcType="DECIMAL" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="deliverytype" property="deliverytype" jdbcType="VARCHAR" />
+    <result column="deliverydate" property="deliverydate" jdbcType="VARCHAR" />
+    <result column="expirationdate" property="expirationdate" jdbcType="DATE" />
+    <result column="billno" property="billno" jdbcType="VARCHAR" />
+    <result column="billdetailno" property="billdetailno" jdbcType="VARCHAR" />
+    <result column="field01" property="field01" jdbcType="VARCHAR" />
+    <result column="field02" property="field02" jdbcType="VARCHAR" />
+    <result column="field03" property="field03" jdbcType="VARCHAR" />
+    <result column="field04" property="field04" jdbcType="VARCHAR" />
+    <result column="field05" property="field05" jdbcType="VARCHAR" />
+    <result column="field06" property="field06" jdbcType="VARCHAR" />
+    <result column="field07" property="field07" jdbcType="VARCHAR" />
+    <result column="field08" property="field08" jdbcType="VARCHAR" />
+    <result column="rejectnummain" property="rejectnummain" jdbcType="DECIMAL" />
+    <result column="rejectnumaux" property="rejectnumaux" jdbcType="DECIMAL" />
+    <result column="norejectnummain" property="norejectnummain" jdbcType="DECIMAL" />
+    <result column="norejectnumaux" property="norejectnumaux" jdbcType="DECIMAL" />
+    <result column="rejectamountnotax" property="rejectamountnotax" jdbcType="DECIMAL" />
+    <result column="rejectamounttax" property="rejectamounttax" jdbcType="DECIMAL" />
+    <result column="norejectamountnotax" property="norejectamountnotax" jdbcType="DECIMAL" />
+    <result column="norejectamounttax" property="norejectamounttax" jdbcType="DECIMAL" />
+    <result column="seq" property="seq" jdbcType="INTEGER" />
+    <result column="isinvoice" property="isinvoice" jdbcType="VARCHAR" />
+    <result column="iswriteoff" property="iswriteoff" jdbcType="VARCHAR" />
+    <result column="canceldate" property="canceldate" jdbcType="VARCHAR" />
+    <result column="rejectbillid" property="rejectbillid" jdbcType="VARCHAR" />
+    <result column="rejectdetailid" property="rejectdetailid" jdbcType="VARCHAR" />
+    <result column="isinvoicebill" property="isinvoicebill" jdbcType="VARCHAR" />
+    <result column="summarybatchid" property="summarybatchid" jdbcType="VARCHAR" />
+    <result column="storagelocationid" property="storagelocationid" jdbcType="VARCHAR" />
+    <result column="batchno" property="batchno" jdbcType="VARCHAR" />
+    <result column="produceddate" property="produceddate" jdbcType="VARCHAR" />
+    <result column="deadline" property="deadline" jdbcType="VARCHAR" />
+    <result column="duefromdate" property="duefromdate" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Detail_Column_List" >
+    id, billid, goodsid,groupid,goodssort,brandid,branduser,branddept,supplierid,supplieruser,isdiscount,isbranddiscount, unitid, unitname, unitnum, receiptnum, receipttaxamount, receiptnotaxamount, auxunitid, auxunitname, 
+    auxnum,auxremainder, auxnumdetail,totalbox,receiptbox, taxprice, taxamount, notaxprice, notaxamount,discountamount,inittaxprice,receiptnotaxprice, costprice,taxtype, tax,
+    remark, deliverytype,deliverydate, summarybatchid,storagelocationid,batchno,produceddate,deadline, expirationdate, billno, billdetailno, 
+    field01, field02, field03, field04, field05, field06, field07, field08, rejectnummain, 
+    rejectnumaux, norejectnummain, norejectnumaux, rejectamountnotax, rejectamounttax, 
+    norejectamountnotax, norejectamounttax, seq,isinvoice,iswriteoff,canceldate,rejectbillid,rejectdetailid,isinvoicebill,duefromdate
+  </sql>
+  <insert id="addReceiptDetail" parameterType="com.hd.agent.sales.model.ReceiptDetail" >
+    insert into t_sales_receipt_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="billid != null" >
+        billid,
+      </if>
+      <if test="goodsid != null" >
+        goodsid,
+      </if>
+      <if test="groupid != null" >
+        groupid,
+      </if>
+      <if test="goodssort != null" >
+        goodssort,
+      </if>
+      <if test="brandid != null" >
+        brandid,
+      </if>
+      <if test="branduser != null" >
+        branduser,
+      </if>
+      <if test="branddept != null" >
+        branddept,
+      </if>
+      <if test="supplierid != null" >
+        supplierid,
+      </if>
+      <if test="supplieruser != null" >
+        supplieruser,
+      </if>
+      <if test="isdiscount != null" >
+        isdiscount,
+      </if>
+      <if test="isbranddiscount != null" >
+        isbranddiscount,
+      </if>
+      <if test="unitid != null" >
+        unitid,
+      </if>
+      <if test="unitname != null" >
+        unitname,
+      </if>
+      <if test="unitnum != null" >
+        unitnum,
+      </if>
+      <if test="receiptnum != null" >
+        receiptnum,
+      </if>
+      <if test="receipttaxamount != null" >
+        receipttaxamount,
+      </if>
+      <if test="receiptnotaxamount != null" >
+        receiptnotaxamount,
+      </if>
+      <if test="auxunitid != null" >
+        auxunitid,
+      </if>
+      <if test="auxunitname != null" >
+        auxunitname,
+      </if>
+      <if test="auxnum != null" >
+        auxnum,
+      </if>
+      <if test="auxremainder != null" >
+        auxremainder,
+      </if>
+      <if test="auxnumdetail != null" >
+        auxnumdetail,
+      </if>
+      <if test="totalbox != null" >
+        totalbox,
+      </if>
+      <if test="receiptbox != null" >
+        receiptbox,
+      </if>
+      <if test="taxprice != null" >
+        taxprice,
+      </if>
+      <if test="taxamount != null" >
+        taxamount,
+      </if>
+      <if test="notaxprice != null" >
+        notaxprice,
+      </if>
+      <if test="notaxamount != null" >
+        notaxamount,
+      </if>
+      <if test="discountamount != null" >
+        discountamount,
+      </if>
+      <if test="inittaxprice != null" >
+        inittaxprice,
+      </if>
+      <if test="receiptnotaxprice != null" >
+        receiptnotaxprice,
+      </if>
+      <if test="costprice != null" >
+        costprice,
+      </if>
+      <if test="taxtype != null" >
+        taxtype,
+      </if>
+      <if test="tax != null" >
+        tax,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="deliverytype != null" >
+        deliverytype,
+      </if>
+      <if test="deliverydate != null" >
+        deliverydate,
+      </if>
+      <if test="summarybatchid != null" >
+        summarybatchid,
+      </if>
+      <if test="storagelocationid != null" >
+        storagelocationid,
+      </if>
+      <if test="batchno != null" >
+        batchno,
+      </if>
+      <if test="produceddate != null" >
+        produceddate,
+      </if>
+      <if test="deadline != null" >
+        deadline,
+      </if>
+      <if test="expirationdate != null" >
+        expirationdate,
+      </if>
+      <if test="billno != null" >
+        billno,
+      </if>
+      <if test="billdetailno != null" >
+        billdetailno,
+      </if>
+      <if test="field01 != null" >
+        field01,
+      </if>
+      <if test="field02 != null" >
+        field02,
+      </if>
+      <if test="field03 != null" >
+        field03,
+      </if>
+      <if test="field04 != null" >
+        field04,
+      </if>
+      <if test="field05 != null" >
+        field05,
+      </if>
+      <if test="field06 != null" >
+        field06,
+      </if>
+      <if test="field07 != null" >
+        field07,
+      </if>
+      <if test="field08 != null" >
+        field08,
+      </if>
+      <if test="seq != null" >
+        seq,
+      </if>
+      <if test="isinvoice != null" >
+        isinvoice,
+      </if>
+      <if test="iswriteoff != null" >
+        iswriteoff,
+      </if>
+      <if test="canceldate != null" >
+        canceldate,
+      </if>
+      <if test="rejectbillid != null" >
+        rejectbillid,
+      </if>
+      <if test="rejectdetailid != null" >
+        rejectdetailid,
+      </if>
+      <if test="rejectdetailid != null" >
+        duefromdate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="billid != null" >
+        #{billid},
+      </if>
+      <if test="goodsid != null" >
+        #{goodsid},
+      </if>
+      <if test="groupid != null" >
+        #{groupid},
+      </if>
+      <if test="goodssort != null" >
+        #{goodssort},
+      </if>
+      <if test="brandid != null" >
+        #{brandid},
+      </if>
+      <if test="branduser != null" >
+        #{branduser},
+      </if>
+      <if test="branddept != null" >
+        #{branddept},
+      </if>
+      <if test="supplierid != null" >
+        #{supplierid},
+      </if>
+      <if test="supplieruser != null" >
+        #{supplieruser},
+      </if>
+      <if test="isdiscount != null" >
+        #{isdiscount},
+      </if>
+      <if test="isbranddiscount != null" >
+        #{isbranddiscount},
+      </if>
+      <if test="unitid != null" >
+        #{unitid},
+      </if>
+      <if test="unitname != null" >
+        #{unitname},
+      </if>
+      <if test="unitnum != null" >
+        #{unitnum},
+      </if>
+      <if test="receiptnum != null" >
+        #{receiptnum},
+      </if>
+      <if test="receipttaxamount != null" >
+        #{receipttaxamount},
+      </if>
+      <if test="receiptnotaxamount != null" >
+        #{receiptnotaxamount},
+      </if>
+      <if test="auxunitid != null" >
+        #{auxunitid},
+      </if>
+      <if test="auxunitname != null" >
+        #{auxunitname},
+      </if>
+      <if test="auxnum != null" >
+        #{auxnum},
+      </if>
+      <if test="auxremainder != null" >
+        #{auxremainder},
+      </if>
+      <if test="auxnumdetail != null" >
+        #{auxnumdetail},
+      </if>
+      <if test="totalbox != null" >
+        #{totalbox},
+      </if>
+      <if test="receiptbox != null" >
+        #{receiptbox},
+      </if>
+      <if test="taxprice != null" >
+        #{taxprice},
+      </if>
+      <if test="taxamount != null" >
+        #{taxamount},
+      </if>
+      <if test="notaxprice != null" >
+        #{notaxprice},
+      </if>
+      <if test="notaxamount != null" >
+        #{notaxamount},
+      </if>
+      <if test="discountamount != null" >
+        #{discountamount},
+      </if>
+      <if test="inittaxprice != null" >
+        #{inittaxprice},
+      </if>
+      <if test="receiptnotaxprice != null" >
+        #{receiptnotaxprice},
+      </if>
+      <if test="costprice != null" >
+        #{costprice},
+      </if>
+      <if test="taxtype != null" >
+        #{taxtype},
+      </if>
+      <if test="tax != null" >
+        #{tax},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+      <if test="deliverytype != null" >
+        #{deliverytype},
+      </if>
+      <if test="deliverydate != null" >
+        #{deliverydate},
+      </if>
+      <if test="summarybatchid != null" >
+        #{summarybatchid},
+      </if>
+      <if test="storagelocationid != null" >
+        #{storagelocationid},
+      </if>
+      <if test="batchno != null" >
+        #{batchno},
+      </if>
+      <if test="produceddate != null" >
+        #{produceddate},
+      </if>
+      <if test="deadline != null" >
+        #{deadline},
+      </if>
+      <if test="expirationdate != null" >
+        #{expirationdate},
+      </if>
+      <if test="billno != null" >
+        #{billno},
+      </if>
+      <if test="billdetailno != null" >
+        #{billdetailno},
+      </if>
+      <if test="field01 != null" >
+        #{field01},
+      </if>
+      <if test="field02 != null" >
+        #{field02},
+      </if>
+      <if test="field03 != null" >
+        #{field03},
+      </if>
+      <if test="field04 != null" >
+        #{field04},
+      </if>
+      <if test="field05 != null" >
+        #{field05},
+      </if>
+      <if test="field06 != null" >
+        #{field06},
+      </if>
+      <if test="field07 != null" >
+        #{field07},
+      </if>
+      <if test="field08 != null" >
+        #{field08},
+      </if>
+      <if test="seq != null" >
+        #{seq},
+      </if>
+      <if test="isinvoice != null" >
+        #{isinvoice},
+      </if>
+      <if test="iswriteoff != null" >
+        #{iswriteoff},
+      </if>
+      <if test="canceldate != null" >
+        #{canceldate},
+      </if>
+      <if test="rejectbillid != null" >
+        #{rejectbillid},
+      </if>
+      <if test="rejectdetailid != null" >
+        #{rejectdetailid},
+      </if>
+      <if test="duefromdate != null" >
+        #{duefromdate},
+      </if>
+    </trim>
+  </insert>
+  <insert id="addReceiptDetailList">
+    insert into t_sales_receipt_detail
+    (billid,goodsid,groupid,goodssort,brandid,branduser,branddept,supplierid,supplieruser,isdiscount,isbranddiscount,
+    unitid,unitname,unitnum,receiptnum,receipttaxamount,receiptnotaxamount,
+    auxunitid,auxunitname,auxnum,auxremainder,auxnumdetail,totalbox,receiptbox,
+    taxprice,taxamount,notaxprice,notaxamount,discountamount,
+    inittaxprice,receiptnotaxprice,costprice,taxtype,tax,remark,deliverytype,deliverydate,
+    summarybatchid,storagelocationid,batchno,produceddate,deadline,expirationdate,billno, billdetailno,
+    field01,field02,field03,field04,field05,field06,
+    field07,field08,seq,isinvoice,iswriteoff,canceldate,rejectbillid,rejectdetailid,duefromdate)
+    values
+    <foreach collection="list" item="item" separator="," >
+      (#{item.billid},
+      <choose>
+        <when test="item.goodsid != null">#{item.goodsid},</when>
+        <otherwise>'',</otherwise>
+      </choose>
+      <choose>
+        <when test="item.groupid != null">#{item.groupid},</when>
+        <otherwise>'',</otherwise>
+      </choose>
+      <choose>
+        <when test="item.goodssort != null">#{item.goodssort},</when>
+        <otherwise>'',</otherwise>
+      </choose>
+      <choose>
+        <when test="item.brandid != null">#{item.brandid},</when>
+        <otherwise>'',</otherwise>
+      </choose>
+      <choose>
+        <when test="item.branduser != null">#{item.branduser},</when>
+        <otherwise>'',</otherwise>
+      </choose>
+      <choose>
+        <when test="item.branddept != null">#{item.branddept},</when>
+        <otherwise>'',</otherwise>
+      </choose>
+      <choose>
+        <when test="item.supplierid != null">#{item.supplierid},</when>
+        <otherwise>'',</otherwise>
+      </choose>
+      <choose>
+        <when test="item.supplieruser != null">#{item.supplieruser},</when>
+        <otherwise>'',</otherwise>
+      </choose>
+      <choose>
+        <when test="item.isdiscount != null">#{item.isdiscount},</when>
+        <otherwise>'0',</otherwise>
+      </choose>
+      <choose>
+        <when test="item.isbranddiscount != null">#{item.isbranddiscount},</when>
+        <otherwise>'0',</otherwise>
+      </choose>
+      #{item.unitid},
+      #{item.unitname},
+      <choose>
+        <when test="item.unitnum != null">#{item.unitnum},</when>
+        <otherwise>0,</otherwise>
+      </choose>
+      <choose>
+        <when test="item.receiptnum != null">#{item.receiptnum},</when>
+        <otherwise>0,</otherwise>
+      </choose>
+      <choose>
+        <when test="item.receipttaxamount != null">#{item.receipttaxamount},</when>
+        <otherwise>0,</otherwise>
+      </choose>
+      <choose>
+        <when test="item.receiptnotaxamount != null">#{item.receiptnotaxamount},</when>
+        <otherwise>0,</otherwise>
+      </choose>
+      #{item.auxunitid},
+      #{item.auxunitname},
+      <choose>
+        <when test="item.auxnum != null">#{item.auxnum},</when>
+        <otherwise>0,</otherwise>
+      </choose>
+      <choose>
+        <when test="item.auxremainder != null">#{item.auxremainder},</when>
+        <otherwise>0,</otherwise>
+      </choose>
+      #{item.auxnumdetail},
+      <choose>
+        <when test="item.totalbox != null">#{item.totalbox},</when>
+        <otherwise>0,</otherwise>
+      </choose>
+      <choose>
+        <when test="item.receiptbox != null">#{item.receiptbox},</when>
+        <otherwise>0,</otherwise>
+      </choose>
+      <choose>
+        <when test="item.taxprice != null">#{item.taxprice},</when>
+        <otherwise>0,</otherwise>
+      </choose>
+      <choose>
+        <when test="item.taxamount != null">#{item.taxamount},</when>
+        <otherwise>0,</otherwise>
+      </choose>
+      <choose>
+        <when test="item.notaxprice != null">#{item.notaxprice},</when>
+        <otherwise>0,</otherwise>
+      </choose>
+      <choose>
+        <when test="item.notaxamount != null">#{item.notaxamount},</when>
+        <otherwise>0,</otherwise>
+      </choose>
+      <choose>
+        <when test="item.discountamount != null">#{item.discountamount},</when>
+        <otherwise>0,</otherwise>
+      </choose>
+      <choose>
+        <when test="item.inittaxprice != null">#{item.inittaxprice},</when>
+        <otherwise>0,</otherwise>
+      </choose>
+      <choose>
+        <when test="item.receiptnotaxprice != null">#{item.receiptnotaxprice},</when>
+        <otherwise>0,</otherwise>
+      </choose>
+      <choose>
+        <when test="item.costprice != null">#{item.costprice},</when>
+        <otherwise>0,</otherwise>
+      </choose>
+      #{item.taxtype},
+      <choose>
+        <when test="item.tax != null">#{item.tax},</when>
+        <otherwise>0,</otherwise>
+      </choose>
+      #{item.remark},
+      <choose>
+        <when test="item.deliverytype != null">#{item.deliverytype},</when>
+        <otherwise>'0',</otherwise>
+      </choose>
+      #{item.deliverydate},
+      #{item.summarybatchid},
+      #{item.storagelocationid},
+      #{item.batchno},
+      #{item.produceddate},
+      #{item.deadline},
+      #{item.expirationdate},
+      #{item.billno},
+      #{item.billdetailno},
+      #{item.field01},
+      #{item.field02},
+      #{item.field03},
+      #{item.field04},
+      #{item.field05},
+      #{item.field06},
+      #{item.field07},
+      #{item.field08},
+      #{item.seq},
+      <choose>
+        <when test="item.isinvoice != null">#{item.isinvoice},</when>
+        <otherwise>'0',</otherwise>
+      </choose>
+      <choose>
+        <when test="item.iswriteoff != null">#{item.iswriteoff},</when>
+        <otherwise>'0',</otherwise>
+      </choose>
+      <choose>
+        <when test="item.canceldate != null">#{item.canceldate},</when>
+        <otherwise>'',</otherwise>
+      </choose>
+      #{item.rejectbillid},
+      #{item.rejectdetailid},
+      <choose>
+        <when test="item.duefromdate != null">#{item.duefromdate}</when>
+        <otherwise>''</otherwise>
+      </choose>
+      )
+    </foreach>
+  </insert>
+  <update id="updateReceiptDetail" parameterType="com.hd.agent.sales.model.ReceiptDetail" >
+    update t_sales_receipt_detail
+    <set >
+      <if test="billid != null" >
+        billid = #{billid},
+      </if>
+      <if test="goodsid != null" >
+        goodsid = #{goodsid},
+      </if>
+      <if test="groupid != null" >
+        groupid = #{groupid},
+      </if>
+      <if test="goodssort != null" >
+        goodssort = #{goodssort},
+      </if>
+      <if test="brandid != null" >
+        brandid = #{brandid},
+      </if>
+      <if test="branduser != null" >
+        branduser = #{branduser},
+      </if>
+      <if test="branddept != null" >
+        branddept = #{branddept},
+      </if>
+      <if test="supplierid != null" >
+        supplierid = #{supplierid},
+      </if>
+      <if test="supplieruser != null" >
+        supplieruser = #{supplieruser},
+      </if>
+      <if test="isdiscount != null" >
+        isdiscount = #{isdiscount},
+      </if>
+      <if test="isbranddiscount != null" >
+        isbranddiscount = #{isbranddiscount},
+      </if>
+      <if test="unitid != null" >
+        unitid = #{unitid},
+      </if>
+      <if test="unitname != null" >
+        unitname = #{unitname},
+      </if>
+      <if test="unitnum != null" >
+        unitnum = #{unitnum},
+      </if>
+      <if test="receiptnum != null" >
+        receiptnum = #{receiptnum},
+      </if>
+      <if test="receipttaxamount != null" >
+        receipttaxamount = #{receipttaxamount},
+      </if>
+      <if test="receiptnotaxamount != null" >
+        receiptnotaxamount = #{receiptnotaxamount},
+      </if>
+      <if test="auxunitid != null" >
+        auxunitid = #{auxunitid},
+      </if>
+      <if test="auxunitname != null" >
+        auxunitname = #{auxunitname},
+      </if>
+      <if test="auxnum != null" >
+        auxnum = #{auxnum},
+      </if>
+      <if test="auxremainder != null" >
+        auxremainder = #{auxremainder},
+      </if>
+      <if test="auxnumdetail != null" >
+        auxnumdetail = #{auxnumdetail},
+      </if>
+      <if test="totalbox != null" >
+        totalbox = #{totalbox},
+      </if>
+      <if test="receiptbox != null" >
+        receiptbox = #{receiptbox},
+      </if>
+      <if test="taxprice != null" >
+        taxprice = #{taxprice},
+      </if>
+      <if test="taxamount != null" >
+        taxamount = #{taxamount},
+      </if>
+      <if test="notaxprice != null" >
+        notaxprice = #{notaxprice},
+      </if>
+      <if test="notaxamount != null" >
+        notaxamount = #{notaxamount},
+      </if>
+      <if test="discountamount != null" >
+        discountamount = #{discountamount},
+      </if>
+      <if test="inittaxprice != null" >
+        inittaxprice = #{inittaxprice},
+      </if>
+      <if test="receiptnotaxprice != null" >
+        receiptnotaxprice = #{receiptnotaxprice},
+      </if>
+      <if test="costprice != null" >
+        costprice = #{costprice},
+      </if>
+      <if test="taxtype != null" >
+        taxtype = #{taxtype},
+      </if>
+      <if test="tax != null" >
+        tax = #{tax},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark},
+      </if>
+      <if test="deliverytype != null" >
+        deliverytype = #{deliverytype},
+      </if>
+      <if test="deliverydate != null" >
+        deliverydate = #{deliverydate},
+      </if>
+      <if test="summarybatchid != null" >
+        summarybatchid = #{summarybatchid},
+      </if>
+      <if test="storagelocationid != null" >
+        storagelocationid = #{storagelocationid},
+      </if>
+      <if test="batchno != null" >
+        batchno = #{batchno},
+      </if>
+      <if test="produceddate != null" >
+        produceddate = #{produceddate},
+      </if>
+      <if test="deadline != null" >
+        deadline = #{deadline},
+      </if>
+      <if test="expirationdate != null" >
+        expirationdate = #{expirationdate},
+      </if>
+      <if test="billno != null" >
+        billno = #{billno},
+      </if>
+      <if test="billdetailno != null" >
+        billdetailno = #{billdetailno},
+      </if>
+      <if test="field01 != null" >
+        field01 = #{field01},
+      </if>
+      <if test="field02 != null" >
+        field02 = #{field02},
+      </if>
+      <if test="field03 != null" >
+        field03 = #{field03},
+      </if>
+      <if test="field04 != null" >
+        field04 = #{field04},
+      </if>
+      <if test="field05 != null" >
+        field05 = #{field05},
+      </if>
+      <if test="field06 != null" >
+        field06 = #{field06},
+      </if>
+      <if test="field07 != null" >
+        field07 = #{field07},
+      </if>
+      <if test="field08 != null" >
+        field08 = #{field08},
+      </if>
+      <if test="rejectnummain != null" >
+        rejectnummain = #{rejectnummain},
+      </if>
+      <if test="rejectnumaux != null" >
+        rejectnumaux = #{rejectnumaux},
+      </if>
+      <if test="norejectnummain != null" >
+        norejectnummain = #{norejectnummain},
+      </if>
+      <if test="norejectnumaux != null" >
+        norejectnumaux = #{norejectnumaux},
+      </if>
+      <if test="rejectamountnotax != null" >
+        rejectamountnotax = #{rejectamountnotax},
+      </if>
+      <if test="rejectamounttax != null" >
+        rejectamounttax = #{rejectamounttax},
+      </if>
+      <if test="norejectamountnotax != null" >
+        norejectamountnotax = #{norejectamountnotax},
+      </if>
+      <if test="norejectamounttax != null" >
+        norejectamounttax = #{norejectamounttax},
+      </if>
+      <if test="seq != null" >
+        seq = #{seq},
+      </if>
+      <if test="isinvoice != null" >
+        isinvoice = #{isinvoice},
+      </if>
+      <if test="iswriteoff != null" >
+        iswriteoff = #{iswriteoff},
+      </if>
+      <if test="canceldate != null" >
+        canceldate = #{canceldate},
+      </if>
+      <if test="rejectbillid != null" >
+        rejectbillid = #{rejectbillid},
+      </if>
+      <if test="rejectdetailid != null" >
+        rejectdetailid = #{rejectdetailid},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  <update id="updateReceiptDetailBack" parameterType="com.hd.agent.sales.model.ReceiptDetail">
+    update t_sales_receipt_detail
+    <set>
+      <if test="rejectdetailid != null">
+        rejectdetailid = #{rejectdetailid},
+      </if>
+      <if test="rejectbillid != null">
+        rejectbillid = #{rejectbillid},
+      </if>
+      <if test="receiptnum != null">
+        receiptnum = #{receiptnum},
+      </if>
+      <if test="receipttaxamount != null">
+        receipttaxamount = #{receipttaxamount},
+      </if>
+      <if test="receiptnotaxamount != null">
+        receiptnotaxamount = #{receiptnotaxamount},
+      </if>
+      <if test="receiptbox != null">
+        receiptbox = #{receiptbox},
+      </if>
+      <if test="rejectnummain != null">
+        rejectnummain = #{rejectnummain},
+      </if>
+      <if test="rejectnumaux != null">
+        rejectnumaux = #{rejectnumaux},
+      </if>
+      <if test="norejectnummain != null">
+        norejectnummain = #{norejectnummain},
+      </if>
+      <if test="norejectnumaux != null">
+        norejectnumaux = #{norejectnumaux},
+      </if>
+      <if test="rejectamountnotax != null">
+        rejectamountnotax = #{rejectamountnotax},
+      </if>
+      <if test="rejectamounttax != null">
+        rejectamounttax = #{rejectamounttax},
+      </if>
+      <if test="norejectamountnotax != null">
+        norejectamountnotax = #{norejectamountnotax},
+      </if>
+      <if test="norejectamounttax != null">
+        norejectamounttax = #{norejectamounttax},
+      </if>
+      <if test="remark != null">
+        remark = #{remark},
+      </if>
+    </set>
+    where billid = #{billid} and id = #{id}
+  </update>
+  <update id="updateReceiptDetailCostprice">
+        update t_sales_receipt_detail t1,t_storage_saleout_detail t
+        set t1.costprice=t.costprice
+        where t.saleoutid=t1.billno and t.id= t1.billdetailno and t1.billid=#{id}
+    </update>
+  <delete id="deleteReceiptDetailByReceiptId" parameterType="java.lang.String">
+  	delete from t_sales_receipt_detail
+  	where billid = #{id}
+  </delete>
+  <delete id="deleteReceiptDetailWithoutDiscountByReceiptId" parameterType="java.lang.String">
+  	delete from t_sales_receipt_detail
+  	where isdiscount='0' and billid = #{id}
+  </delete>
+  <select id="getReceiptDetailListByReceipt" resultMap="BaseDetailResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Detail_Column_List" />
+    from t_sales_receipt_detail
+    where billid = #{id}
+  </select>
+  <select id="getReceiptDetailListByReceiptForRel" resultMap="BaseDetailResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Detail_Column_List" />
+    from t_sales_receipt_detail
+    where billid = #{id}
+    order by goodsid asc ,unitnum asc
+  </select>
+  <select id="getReceiptDetailListNoInvoiceByReceipt" resultMap="BaseDetailResultMap" parameterType="java.lang.String">
+    select
+    <include refid="Base_Detail_Column_List" />
+    from t_sales_receipt_detail
+    where isinvoice='0' and billid = #{id}
+  </select>
+  <select id="getReceiptDetailListByReceiptGroupGoods" resultMap="BaseDetailResultMap" parameterType="java.lang.String" >
+    select 
+    	goodsid,brandid,branduser,branddept, unitid, unitname, SUM(unitnum) as unitnum, SUM(receiptnum) as receiptnum, SUM(receipttaxamount)as receipttaxamount, 
+		SUM(receiptnotaxamount) as receiptnotaxamount, auxunitid, auxunitname, SUM(auxnum) as auxnum,SUM(auxremainder) as auxremainder, MAX(taxprice) as taxprice, 
+		SUM(taxamount) as taxamount, MAX(notaxprice) as notaxprice, SUM(notaxamount) as notaxamount,SUM(discountamount) as discountamount,MAX(inittaxprice) AS inittaxprice,
+		MAX(costprice) as costprice,taxtype, SUM(tax) as tax, SUM(rejectnummain) as rejectnummain, SUM(rejectnumaux) as rejectnumaux, SUM(norejectnummain) as norejectnummain,
+		SUM(norejectnumaux) as norejectnumaux, SUM(rejectamountnotax) as rejectamountnotax, SUM(rejectamounttax) as rejectamounttax, 
+	    SUM(norejectamountnotax) as norejectamountnotax, SUM(norejectamounttax) as norejectamounttax
+    from t_sales_receipt_detail
+    where billid = #{id} and isdiscount = '0'
+    group by goodsid
+  </select>
+  <select id="getReceiptDetailListSumDiscount" resultMap="BaseDetailResultMap" parameterType="java.lang.String">
+  	select * from(
+  	select id, billid, goodsid,groupid,brandid,branduser,branddept,isdiscount,isbranddiscount, unitid, unitname, unitnum, receiptnum, receipttaxamount, receiptnotaxamount, auxunitid, auxunitname, 
+    auxnum,auxremainder, auxnumdetail,totalbox, taxprice, taxamount, notaxprice, notaxamount,discountamount,inittaxprice,receiptnotaxprice, costprice,taxtype, tax,
+    remark, deliverytype,deliverydate, summarybatchid,storagelocationid,batchno,produceddate,deadline, expirationdate, billno, billdetailno, 
+    field01, field02, field03, field04, field05, field06, field07, field08, rejectnummain, 
+    rejectnumaux, norejectnummain, norejectnumaux, rejectamountnotax, rejectamounttax, 
+    norejectamountnotax, norejectamounttax, seq,isinvoice,iswriteoff,canceldate,rejectbillid,rejectdetailid,isinvoicebill
+    from t_sales_receipt_detail
+    where isbranddiscount='0' and billid = #{id}
+    union all
+    select id, billid, goodsid,groupid,brandid,branduser,branddept,isdiscount,isbranddiscount, unitid, unitname, unitnum, receiptnum, sum(receipttaxamount) as receipttaxamount, sum(receiptnotaxamount) as receiptnotaxamount, auxunitid, auxunitname, 
+    auxnum,auxremainder, auxnumdetail,totalbox, taxprice, sum(taxamount) as taxamount, notaxprice, sum(notaxamount) as notaxamount,sum(discountamount) as discountamount,inittaxprice,receiptnotaxprice, costprice,taxtype, tax,
+    remark, deliverytype,deliverydate, summarybatchid,storagelocationid,batchno,produceddate,deadline, expirationdate, billno, billdetailno, 
+    field01, field02, field03, field04, field05, field06, field07, field08, rejectnummain, 
+    rejectnumaux, norejectnummain, norejectnumaux, rejectamountnotax, rejectamounttax, 
+    norejectamountnotax, norejectamounttax, seq,isinvoice,iswriteoff,canceldate,rejectbillid,rejectdetailid,isinvoicebill
+    from t_sales_receipt_detail
+    where isbranddiscount='1' and billid = #{id}
+    group by brandid
+    ) z order by z.seq
+  </select>
+
+  <select id="getReceiptDetailListSumDiscountByMap" resultMap="BaseDetailResultMap" parameterType="map">
+    select * from(
+    select id, billid, goodsid,groupid,brandid,branduser,branddept,isdiscount,isbranddiscount, unitid, unitname, unitnum, receiptnum, receipttaxamount, receiptnotaxamount, auxunitid, auxunitname,
+    auxnum,auxremainder, auxnumdetail,totalbox, taxprice, taxamount, notaxprice, notaxamount,discountamount,inittaxprice,receiptnotaxprice, costprice,taxtype, tax,
+    remark, deliverytype,deliverydate, summarybatchid,storagelocationid,batchno,produceddate,deadline, expirationdate, billno, billdetailno,
+    field01, field02, field03, field04, field05, field06, field07, field08, rejectnummain,
+    rejectnumaux, norejectnummain, norejectnumaux, rejectamountnotax, rejectamounttax,
+    norejectamountnotax, norejectamounttax, seq,isinvoice,iswriteoff,canceldate,rejectbillid,rejectdetailid,isinvoicebill
+    from t_sales_receipt_detail
+    where
+    <trim prefixOverrides="and|or">
+      <if test="1==1">
+        isbranddiscount='0'
+      </if>
+      <if test="billid != null" >
+        and billid=#{billid}
+      </if>
+      <if test="billidarrs != null" >
+        and find_in_set(billid,#{billidarrs})
+      </if>
+      <if test="taxtype != null" >
+        and taxtype=#{taxtype}
+      </if>
+    </trim>
+    union all
+    select id, billid, goodsid,groupid,brandid,branduser,branddept,isdiscount,isbranddiscount, unitid, unitname, unitnum, receiptnum, sum(receipttaxamount) as receipttaxamount, sum(receiptnotaxamount) as receiptnotaxamount, auxunitid, auxunitname,
+    auxnum,auxremainder, auxnumdetail,totalbox, taxprice, sum(taxamount) as taxamount, notaxprice, sum(notaxamount) as notaxamount,sum(discountamount) as discountamount,inittaxprice,receiptnotaxprice, costprice,taxtype, tax,
+    remark, deliverytype,deliverydate, summarybatchid,storagelocationid,batchno,produceddate,deadline, expirationdate, billno, billdetailno,
+    field01, field02, field03, field04, field05, field06, field07, field08, rejectnummain,
+    rejectnumaux, norejectnummain, norejectnumaux, rejectamountnotax, rejectamounttax,
+    norejectamountnotax, norejectamounttax, seq,isinvoice,iswriteoff,canceldate,rejectbillid,rejectdetailid,isinvoicebill
+    from t_sales_receipt_detail
+    where
+    <trim prefixOverrides="and|or">
+      <if test="1==1">
+        isbranddiscount='1'
+      </if>
+      <if test="billid != null" >
+        and billid=#{billid}
+      </if>
+      <if test="billidarrs != null" >
+        and find_in_set(billid,#{billidarrs})
+      </if>
+      <if test="taxtype != null" >
+        and taxtype=#{taxtype}
+      </if>
+    </trim>
+    group by brandid
+    ) z order by z.seq
+  </select>
+  <select id="getReceiptDetailListSumDiscountNoInvoice" resultMap="BaseDetailResultMap" parameterType="java.lang.String">
+        select * from(
+        select id, billid, goodsid,groupid,brandid,branduser,branddept,isdiscount,isbranddiscount, unitid, unitname, unitnum, receiptnum, receipttaxamount, receiptnotaxamount, auxunitid, auxunitname,
+        auxnum,auxremainder, auxnumdetail,totalbox, taxprice, taxamount, notaxprice, notaxamount,discountamount,inittaxprice,receiptnotaxprice, costprice,taxtype, tax,
+        remark, deliverytype,deliverydate, summarybatchid,storagelocationid,batchno,produceddate,deadline, expirationdate, billno, billdetailno,
+        field01, field02, field03, field04, field05, field06, field07, field08, rejectnummain,
+        rejectnumaux, norejectnummain, norejectnumaux, rejectamountnotax, rejectamounttax,
+        norejectamountnotax, norejectamounttax, seq,isinvoice,iswriteoff,canceldate,rejectbillid,rejectdetailid,isinvoicebill
+        from t_sales_receipt_detail
+        where isbranddiscount='0' and billid = #{id} and isinvoice='0'
+        union all
+        select id, billid, goodsid,groupid,brandid,branduser,branddept,isdiscount,isbranddiscount, unitid, unitname, unitnum, receiptnum, sum(receipttaxamount) as receipttaxamount, sum(receiptnotaxamount) as receiptnotaxamount, auxunitid, auxunitname,
+        auxnum,auxremainder, auxnumdetail,totalbox, taxprice, sum(taxamount) as taxamount, notaxprice, sum(notaxamount) as notaxamount,sum(discountamount) as discountamount,inittaxprice,receiptnotaxprice, costprice,taxtype, tax,
+        remark, deliverytype,deliverydate, summarybatchid,storagelocationid,batchno,produceddate,deadline, expirationdate, billno, billdetailno,
+        field01, field02, field03, field04, field05, field06, field07, field08, rejectnummain,
+        rejectnumaux, norejectnummain, norejectnumaux, rejectamountnotax, rejectamounttax,
+        norejectamountnotax, norejectamounttax, seq,isinvoice,iswriteoff,canceldate,rejectbillid,rejectdetailid,isinvoicebill
+        from t_sales_receipt_detail
+        where isbranddiscount='1' and billid = #{id} and isinvoice='0'
+        group by brandid
+        ) z order by z.seq
+    </select>
+  <select id="getReceiptDetailListSumDiscountNoInvoicebill" resultMap="BaseDetailResultMap" parameterType="java.lang.String">
+        select * from(
+        select id, billid, goodsid,groupid,brandid,branduser,branddept,isdiscount,isbranddiscount, unitid, unitname, unitnum, receiptnum, receipttaxamount, receiptnotaxamount, auxunitid, auxunitname,
+        auxnum,auxremainder, auxnumdetail,totalbox, taxprice, taxamount, notaxprice, notaxamount,discountamount,inittaxprice,receiptnotaxprice, costprice,taxtype, tax,
+        remark, deliverytype,deliverydate, summarybatchid,storagelocationid,batchno,produceddate,deadline, expirationdate, billno, billdetailno,
+        field01, field02, field03, field04, field05, field06, field07, field08, rejectnummain,
+        rejectnumaux, norejectnummain, norejectnumaux, rejectamountnotax, rejectamounttax,
+        norejectamountnotax, norejectamounttax, seq,isinvoice,iswriteoff,canceldate,rejectbillid,rejectdetailid,isinvoicebill
+        from t_sales_receipt_detail
+        where isbranddiscount='0' and billid = #{id} and isinvoicebill='0'
+        union all
+        select id, billid, goodsid,groupid,brandid,branduser,branddept,isdiscount,isbranddiscount, unitid, unitname, unitnum, receiptnum, sum(receipttaxamount) as receipttaxamount, sum(receiptnotaxamount) as receiptnotaxamount, auxunitid, auxunitname,
+        auxnum,auxremainder, auxnumdetail,totalbox, taxprice, sum(taxamount) as taxamount, notaxprice, sum(notaxamount) as notaxamount,sum(discountamount) as discountamount,inittaxprice,receiptnotaxprice, costprice,taxtype, tax,
+        remark, deliverytype,deliverydate, summarybatchid,storagelocationid,batchno,produceddate,deadline, expirationdate, billno, billdetailno,
+        field01, field02, field03, field04, field05, field06, field07, field08, rejectnummain,
+        rejectnumaux, norejectnummain, norejectnumaux, rejectamountnotax, rejectamounttax,
+        norejectamountnotax, norejectamounttax, seq,isinvoice,iswriteoff,canceldate,rejectbillid,rejectdetailid,isinvoicebill
+        from t_sales_receipt_detail
+        where isbranddiscount='1' and billid = #{id} and isinvoicebill='0'
+        group by brandid
+        ) z order by z.seq
+    </select>
+  <select id="getReceiptDetailTotal" parameterType="java.lang.String" resultType="map">
+  	select sum(taxamount) taxamount, sum(notaxamount) notaxamount, sum(tax) tax,
+  	sum(receipttaxamount) receipttaxamount,sum(receiptnotaxamount) receiptnotaxamount
+  	from t_sales_receipt_detail where billid = #{id}
+  </select>
+  <select id="getReceiptUnInvoiceAmount" parameterType="java.lang.String" resultType="java.math.BigDecimal">
+  	select sum(receipttaxamount) as taxamount 
+  	from t_sales_receipt_detail where isinvoice='0' and billid = #{id}
+  </select>
+  <select id="getReceiptDetail" parameterType="java.lang.String" resultMap="BaseDetailResultMap">
+    select
+    <include refid="Base_Detail_Column_List" />
+    from t_sales_receipt_detail
+    where id = #{id}
+  </select>
+  <select id="getReceiptDetailByBillidAndId" parameterType="java.lang.String" resultMap="BaseDetailResultMap">
+    select
+    <include refid="Base_Detail_Column_List" />
+    from t_sales_receipt_detail
+    where billid=#{billid} and id = #{id}
+  </select>
+  <select id="getReceiptDetailBrandDiscountList" parameterType="java.lang.String" resultMap="BaseDetailResultMap">
+    select
+    <include refid="Base_Detail_Column_List" />
+    from t_sales_receipt_detail
+    where isdiscount='1' and isbranddiscount='1' and brandid=#{brandid} and billid = #{billid}
+  </select>
+  <select id="getReceiptDetailNoDiscountList" parameterType="java.lang.String" resultMap="BaseDetailResultMap">
+    select <include refid="Base_Detail_Column_List" />
+    from t_sales_receipt_detail
+    where isdiscount='0' and brandid=#{brandid} and billid = #{receiptid}
+  </select>
+  <select id="getNoDiscountReceiptDetailListGroupBrand" parameterType="java.lang.String" resultMap="BaseDetailResultMap">
+    SELECT  t.brandid,sum(t.taxamount) as taxamount
+    from t_sales_receipt_detail t
+    where t.isdiscount='0' and billid = #{receiptid}
+    GROUP BY t.brandid
+  </select>
+  <select id="getReceiptDetailRejectCount" parameterType="java.lang.String" resultType="int">
+  	select count(1) from t_sales_receipt_detail where billid = #{billid} and (rejectbillid is not null and rejectbillid!='')
+  </select>
+  <sql id="getReceiptAndRejectBillList_sql">
+    (
+    select z.billtype,z.id,z.businessdate,z.orderid,z.orderdate,z.remark,z.adduserid,z.addusername,z.adddeptid,z.adddeptname,
+    z.addtime,z.audituserid,z.auditusername,z.audittime,z.customerid,z.pcustomerid,z.salesdept,z.salesuser,z.salesarea,z.branddept,z.branduser,z.supplierid,z.supplieruser,z.payeeid,
+    z.source,z.isrefer, z.billno, z.isinvoice, z.canceldate, z.duefromdate,sum(z.billamount) as billamount,
+    sum(z.totaltaxamount) as totaltaxamount,sum(z.uninvoiceamount) as uninvoiceamount,z.sourceid,
+    sum(z.billcount) as billcount
+    from(
+    select '1' as billtype, t.id,t.businessdate,t.saleorderid as orderid,o.businessdate as orderdate,t.remark, t.adduserid, t.addusername, t.adddeptid, t.adddeptname,
+    t.addtime, t.audituserid, t.auditusername, t.audittime,IF(t1.isinvoice='0',1,0) as billcount,
+    t.customerid,t.pcustomerid, t.salesdept,t.salesuser,t.salesarea,t1.branddept,t1.branduser,t1.supplierid,t1.supplieruser,c.payeeid,
+    t.source,t.isrefer, t.billno, t.isinvoice, t.canceldate, t1.duefromdate,t1.taxamount as billamount,
+    t1.receipttaxamount as totaltaxamount,IF(t1.isinvoice='0',t1.receipttaxamount,0) as uninvoiceamount,o.sourceid
+    from t_sales_receipt t
+    RIGHT JOIN t_sales_receipt_detail t1 on t.id =t1.billid
+    INNER JOIN t_sales_order o on t.saleorderid= o.id
+    INNER JOIN t_base_sales_customer c on t.customerid=c.id
+    <if test="condition.isBrandUser != null" >
+      INNER JOIN t_base_personnel_customer pc on t.customerid=pc.customerid
+    </if>
+    <trim prefix="where" prefixOverrides="and|or">
+      <choose>
+        <when test="condition.isBrandUser != null">
+          <if test="dataSql != null" >
+            and (${dataSql} or pc.personid=#{condition.personnelid})
+          </if>
+          <if test="dataSql == null" >
+            and  pc.personid=#{condition.personnelid}
+          </if>
+        </when>
+        <otherwise>
+          <if test="dataSql != null" >
+            and ${dataSql}
+          </if>
+        </otherwise>
+      </choose>
+      <if test="condition.id != null" >
+        and t.id like concat('%',#{condition.id},'%')
+      </if>
+      <if test="condition.businessdate1 != null" >
+        <![CDATA[and t.businessdate >= #{condition.businessdate1} ]]>
+      </if>
+      <if test="condition.businessdate2 != null" >
+        <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+      </if>
+      <if test="condition.duefromdate1 != null" >
+        <![CDATA[and t1.duefromdate >= #{condition.duefromdate1} ]]>
+      </if>
+      <if test="condition.duefromdate2 != null" >
+        <![CDATA[and t1.duefromdate <=#{condition.duefromdate2} ]]>
+      </if>
+      <if test="condition.orderdate1 != null" >
+        <![CDATA[and o.businessdate >= #{condition.orderdate1}]]>
+      </if>
+      <if test="condition.orderdate2 != null" >
+        <![CDATA[and o.businessdate <= #{condition.orderdate2} ]]>
+      </if>
+      <if test="condition.saleorderid != null" >
+        and t.saleorderid like CONCAT('%',#{condition.saleorderid},'%')
+      </if>
+      <if test="condition.customerid != null" >
+        and t.customerid = #{condition.customerid}
+      </if>
+      <if test="condition.pcustomerid != null" >
+        and (t.customerid = #{condition.pcustomerid} or t.pcustomerid=#{condition.pcustomerid})
+      </if>
+      <if test="condition.brandid != null" >
+        and FIND_IN_SET(t1.brandid,#{condition.brandid})
+      </if>
+      <if test="condition.adduserid != null" >
+        and t.adduserid = #{condition.adduserid}
+      </if>
+      <if test="condition.salesdept != null" >
+        and t.salesdept = #{condition.salesdept}
+      </if>
+      <if test="condition.salesuser != null" >
+        and t.salesuser = #{condition.salesuser}
+      </if>
+      <if test="condition.addtime != null" >
+        <![CDATA[ and t.addtime > #{condition.addtime} ]]>
+      </if>
+      <if test="condition.addtime1 != null" >
+        <![CDATA[ and t.addtime <= date_add(str_to_date(#{condition.addtime1}, '%Y-%m-%d'), interval '1' day) ]]>
+      </if>
+      <if test="condition.status != null" >
+        and t.status = #{condition.status}
+      </if>
+      <if test="condition.isrefer != null" >
+        and t.isrefer = #{condition.isrefer}
+      </if>
+      <if test="1==1" >
+        and t.isinvoice in('3','4','5')
+      </if>
+      <if test="condition.sourcetype!= null and condition.sourcetype!=1" >
+        and 1!=1
+      </if>
+      <if test="condition.sourceid != null">
+        and o.sourceid like CONCAT('%', #{condition.sourceid} ,'%')
+      </if>
+    </trim>
+    GROUP BY t1.id
+    UNION ALL
+    select '2' as billtype,t.id,t.businessdate,GROUP_CONCAT(DISTINCT t2.id) as orderid,t.businessdate as orderdate,t.remark, t.adduserid, t.addusername, t.adddeptid, t.adddeptname,
+    t.addtime, t.audituserid, t.auditusername, t.audittime,IF(t1.isinvoice='0',1,0) as billcount,
+    t.customerid,t.pcustomerid, t.salesdept,t.salesuser,t.salesarea,t1.branddept,t1.branduser,t1.supplierid,t1.supplieruser,c.payeeid,
+    t.source,t.isrefer, t.billno, t.isinvoice, t.canceldate,t1.duefromdate,-t1.taxamount as billamount,
+    -t1.taxamount as totaltaxamount,IF(t1.isinvoice='0',-t1.taxamount,0) as uninvoiceamount,'' as sourceid
+    from t_sales_rejectbill t
+    RIGHT JOIN t_sales_rejectbill_detail t1 on t.id=t1.billid
+    LEFT JOIN t_storage_salereject_enter t2 on t.id=t2.sourceid
+    INNER JOIN t_base_sales_customer c on t.customerid=c.id
+    <if test="condition.isBrandUser != null" >
+      INNER JOIN t_base_personnel_customer pc on t.customerid=pc.customerid
+    </if>
+    <trim prefix="where" prefixOverrides="and|or">
+      <choose>
+        <when test="condition.isBrandUser != null">
+          <if test="dataSql != null" >
+            and (${dataSql} or pc.personid=#{condition.personnelid})
+          </if>
+          <if test="dataSql == null" >
+            and  pc.personid=#{condition.personnelid}
+          </if>
+        </when>
+        <otherwise>
+          <if test="dataSql != null" >
+            and ${dataSql}
+          </if>
+        </otherwise>
+      </choose>
+      <if test="condition.id != null" >
+        and t.id like concat('%',#{condition.id},'%')
+      </if>
+      <if test="condition.businessdate1 != null" >
+        <![CDATA[ and t.businessdate >= #{condition.businessdate1} ]]>
+      </if>
+      <if test="condition.businessdate2 != null" >
+        <![CDATA[ and t.businessdate <= #{condition.businessdate2} ]]>
+      </if>
+      <if test="condition.orderdate1 != null" >
+        <![CDATA[and t.businessdate >= #{condition.orderdate1} ]]>
+      </if>
+      <if test="condition.orderdate2 != null" >
+        <![CDATA[and t.businessdate <= #{condition.orderdate2} ]]>
+      </if>
+      <if test="condition.customerid != null" >
+        and t.customerid = #{condition.customerid}
+      </if>
+      <if test="condition.pcustomerid != null" >
+        and (t.customerid = #{condition.pcustomerid} or t.pcustomerid=#{condition.pcustomerid})
+      </if>
+      <if test="condition.brandid != null" >
+        and FIND_IN_SET(t1.brandid,#{condition.brandid})
+      </if>
+      <if test="condition.adduserid != null" >
+        and t.adduserid = #{condition.adduserid}
+      </if>
+      <if test="condition.salesdept != null" >
+        and t.salesdept = #{condition.salesdept}
+      </if>
+      <if test="condition.salesuser != null" >
+        and t.salesuser = #{condition.salesuser}
+      </if>
+      <if test="condition.addtime != null" >
+        <![CDATA[ and t.addtime > #{condition.addtime} ]]>
+      </if>
+      <if test="condition.addtime1 != null" >
+        <![CDATA[ and t.addtime <= date_add(str_to_date(#{condition.addtime1}, '%Y-%m-%d'), interval '1' day) ]]>
+      </if>
+      <if test="condition.status != null" >
+        and t.status = #{condition.status}
+      </if>
+      <if test="condition.isrefer != null" >
+        and t.isrefer = #{condition.isrefer}
+      </if>
+      <if test="1==1" >
+        and t.billtype='2' and t.isinvoice in('3','4','5')
+      </if>
+      <if test="condition.sourcetype!= null and condition.sourcetype!=2" >
+        and 1!=1
+      </if>
+      <if test="condition.sourceid != null ">
+        and 1!=1
+      </if>
+      <if test="condition.saleorderid != null" >
+        and t2.id like CONCAT('%',#{condition.saleorderid},'%')
+      </if>
+    </trim>
+    GROUP BY t1.id
+    UNION ALL
+    select '3' as billtype,t.id,t.businessdate,t.id as orderid,t.businessdate as orderdate,t.remark, t.adduserid, t.addusername, t.adddeptid, t.adddeptname,
+    t.addtime, t.audituserid, t.auditusername, t.audittime,1 as billcount,
+    t.customerid,t.pcustomerid, t.salesdept,t.salesuser,t.salesarea,t.branddept,t.branduser,t.supplierid,t.supplieruser,c.payeeid,
+    '' as source,'' as isrefer,'' as billno,'' as isinvoice,t.writeoffdate as canceldate,'' as duefromdate,t.amount as billamount,
+    t.amount as totaltaxamount,t.amount as uninvoiceamount,'' as sourceid
+    from t_account_customer_push_balance t
+    INNER JOIN t_base_sales_customer c on t.customerid=c.id
+    <if test="condition.isBrandUser != null" >
+      INNER JOIN t_base_personnel_customer pc on t.customerid=pc.customerid
+    </if>
+    <trim prefix="where" prefixOverrides="and|or">
+      <choose>
+        <when test="condition.isBrandUser != null">
+          <if test="dataSql != null" >
+            and (${dataSql} or pc.personid=#{condition.personnelid})
+          </if>
+          <if test="dataSql == null" >
+            and  pc.personid=#{condition.personnelid}
+          </if>
+        </when>
+        <otherwise>
+          <if test="dataSql != null" >
+            and ${dataSql}
+          </if>
+        </otherwise>
+      </choose>
+      <if test="condition.id != null" >
+        and t.id like concat('%',#{condition.id},'%')
+      </if>
+      <if test="condition.businessdate1 != null" >
+        <![CDATA[ and t.businessdate >= #{condition.businessdate1} ]]>
+      </if>
+      <if test="condition.businessdate2 != null" >
+        <![CDATA[ and t.businessdate <= #{condition.businessdate2} ]]>
+      </if>
+      <if test="condition.orderdate1 != null" >
+        <![CDATA[and t.businessdate >= #{condition.orderdate1} ]]>
+      </if>
+      <if test="condition.orderdate2 != null" >
+        <![CDATA[and t.businessdate <= #{condition.orderdate2} ]]>
+      </if>
+      <if test="condition.customerid != null" >
+        and t.customerid = #{condition.customerid}
+      </if>
+      <if test="condition.pcustomerid != null" >
+        and (t.customerid = #{condition.pcustomerid} or t.pcustomerid=#{condition.pcustomerid})
+      </if>
+      <if test="condition.brandid != null" >
+        and FIND_IN_SET(t.brandid,#{condition.brandid})
+      </if>
+      <if test="condition.adduserid != null" >
+        and t.adduserid = #{condition.adduserid}
+      </if>
+      <if test="condition.salesdept != null" >
+        and t.salesdept = #{condition.salesdept}
+      </if>
+      <if test="condition.salesuser != null" >
+        and t.salesuser = #{condition.salesuser}
+      </if>
+      <if test="condition.addtime != null" >
+        <![CDATA[ and t.addtime > #{condition.addtime} ]]>
+      </if>
+      <if test="condition.addtime1 != null" >
+        <![CDATA[ and t.addtime <= date_add(str_to_date(#{condition.addtime1}, '%Y-%m-%d'), interval '1' day) ]]>
+      </if>
+      <if test="1==1" >
+        and t.isrefer='0' and t.status='3' and t.isinvoice='0'
+      </if>
+      <if test="condition.sourcetype!= null and condition.sourcetype!=3" >
+        and 1!=1
+      </if>
+      <if test="condition.sourceid != null or condition.saleorderid != null">
+        and 1!=1
+      </if>
+    </trim>
+    group by t.id
+    UNION ALL
+    select '4' as billtype,t.id,t.businessdate,t.id as orderid,t.businessdate as orderdate,t.remark, t.adduserid, t.addusername, t.adddeptid, t.adddeptname,
+    t.addtime, t.audituserid, t.auditusername, t.audittime,1 as billcount,
+    t.customerid,t.pcustomerid, t.salesdept,t.salesuser,t.salesarea,'' as branddept,'' as branduser,'' as supplierid,'' as supplieruser,c.payeeid,
+    '' as source,'' as isrefer,'' as billno,'' as isinvoice,t.writeoffdate as canceldate,t.duefromdate as duefromdate,t.amount as billamount,
+    t.amount as totaltaxamount,t.amount as uninvoiceamount,'' as sourceid
+    from t_account_begin_amount t
+    INNER JOIN t_base_sales_customer c on t.customerid=c.id
+    <if test="condition.isBrandUser != null" >
+      INNER JOIN t_base_personnel_customer pc on t.customerid=pc.customerid
+    </if>
+    <trim prefix="where" prefixOverrides="and|or">
+      <choose>
+        <when test="condition.isBrandUser != null">
+          <if test="dataSql != null" >
+            and (${dataSql} or pc.personid=#{condition.personnelid})
+          </if>
+          <if test="dataSql == null" >
+            and  pc.personid=#{condition.personnelid}
+          </if>
+        </when>
+        <otherwise>
+          <if test="dataSql != null" >
+            and ${dataSql}
+          </if>
+        </otherwise>
+      </choose>
+      <if test="condition.id != null" >
+        and t.id like concat('%',#{condition.id},'%')
+      </if>
+      <if test="condition.businessdate1 != null" >
+        <![CDATA[ and t.businessdate >= #{condition.businessdate1}]]>
+      </if>
+      <if test="condition.businessdate2 != null" >
+        <![CDATA[ and t.businessdate <= #{condition.businessdate2} ]]>
+      </if>
+      <if test="condition.orderdate1 != null" >
+        <![CDATA[and t.businessdate >= #{condition.orderdate1} ]]>
+      </if>
+      <if test="condition.orderdate2 != null" >
+        <![CDATA[and t.businessdate <= #{condition.orderdate2} ]]>
+      </if>
+      <if test="condition.customerid != null" >
+        and t.customerid = #{condition.customerid}
+      </if>
+      <if test="condition.pcustomerid != null" >
+        and (t.customerid = #{condition.pcustomerid} or t.pcustomerid=#{condition.pcustomerid})
+      </if>
+      <if test="condition.brandid != null" >
+        and 1 != 1
+      </if>
+      <if test="condition.adduserid != null" >
+        and t.adduserid = #{condition.adduserid}
+      </if>
+      <if test="condition.salesdept != null" >
+        and t.salesdept = #{condition.salesdept}
+      </if>
+      <if test="condition.salesuser != null" >
+        and t.salesuser = #{condition.salesuser}
+      </if>
+      <if test="condition.addtime != null" >
+        <![CDATA[ and t.addtime > #{condition.addtime} ]]>
+      </if>
+      <if test="condition.addtime1 != null" >
+        <![CDATA[ and t.addtime <= date_add(str_to_date(#{condition.addtime1}, '%Y-%m-%d'), interval '1' day) ]]>
+      </if>
+      <if test="1==1" >
+        and t.isinvoice='0' and t.status='3'
+      </if>
+      <if test="condition.sourcetype!= null and condition.sourcetype!=4" >
+        and 1!=1
+      </if>
+      <if test="condition.sourceid != null or condition.saleorderid != null">
+        and 1!=1
+      </if>
+    </trim>
+    group by t.id
+    ) z
+    <trim prefix="where" prefixOverrides="and|or">
+      <if test="condition.exportids != null" >
+        and FIND_IN_SET(z.id,#{condition.exportids})
+      </if>
+    </trim>
+    group by z.billtype,z.id
+    <![CDATA[HAVING sum(z.billcount) <> 0]]>
+    )
+  </sql>
+  <select id="getReceiptAndRejectBillList" parameterType="com.hd.agent.common.util.PageMap" resultType="java.util.Map">
+    select * from <include refid="getReceiptAndRejectBillList_sql"/> z
+    <choose>
+      <when test="condition.exportflag == 'true'">
+        <include refid="common.Page_OrderOnly" />
+      </when>
+      <otherwise>
+        <include refid="common.Page_limit"/>
+      </otherwise>
+    </choose>
+  </select>
+  <select id="getReceiptAndRejectBillCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+    select count(1) from <include refid="getReceiptAndRejectBillList_sql"/> z
+  </select>
+  <select id="getReceiptAndRejectBillSumData" parameterType="com.hd.agent.common.util.PageMap" resultType="java.util.Map">
+    select sum(totaltaxamount) as totaltaxamount,sum(uninvoiceamount) as uninvoiceamount
+    from <include refid="getReceiptAndRejectBillList_sql"/> z
+  </select>
+  <sql id="getReceiptAndRejectBillListForInvoiceBill_sql">
+    (
+    select z.billtype, z.id,z.businessdate,z.orderid,z.orderdate,z.remark, z.adduserid, z.addusername, z.adddeptid, z.adddeptname,
+    z.addtime,z.audituserid,z.auditusername, z.audittime,
+    z.customerid,z.salesdept,z.salesuser,z.salesarea,z.branddept,z.branduser,z.supplierid,z.supplieruser,z.payeeid,
+    z.source, z.storageid,z.isrefer, z.billno, z.isinvoice, z.canceldate, z.duefromdate,
+    sum(z.totaltaxamount) as totaltaxamount,sum(z.uninvoiceamount) as uninvoiceamount,
+    sum(z.billcount) as billcount,z.sourceid
+    from (
+    select '1' as billtype, t.id,t.businessdate,t.saleorderid as orderid,o.businessdate as orderdate,t.remark, t.adduserid, t.addusername, t.adddeptid, t.adddeptname,
+    t.addtime, t.audituserid, t.auditusername, t.audittime, IF(t1.isinvoicebill ='0',1,0) as billcount,
+    t.customerid, t.salesdept, t.salesuser,t.salesarea,t1.branddept,t1.branduser,t1.supplierid,t1.supplieruser,c.payeeid,
+    t.source, t.storageid,t.isrefer, t.billno, t.isinvoice, t.canceldate, t1.duefromdate,
+    t1.receipttaxamount as totaltaxamount,IF(t1.isinvoicebill='0',t1.receipttaxamount,0) as uninvoiceamount,o.sourceid
+    from t_sales_receipt t
+    RIGHT JOIN t_sales_receipt_detail t1 on t.id =t1.billid
+    INNER JOIN t_sales_order o on t.saleorderid= o.id
+    INNER JOIN t_base_sales_customer c on t.customerid=c.id
+    <if test="condition.isBrandUser != null" >
+      INNER JOIN t_base_personnel_customer pc on t.customerid=pc.customerid
+    </if>
+    <trim prefix="where" prefixOverrides="and|or">
+      <choose>
+        <when test="condition.isBrandUser != null">
+          <if test="dataSql != null" >
+            and (${dataSql} or pc.personid=#{condition.personnelid})
+          </if>
+          <if test="dataSql == null" >
+            and  pc.personid=#{condition.personnelid}
+          </if>
+        </when>
+        <otherwise>
+          <if test="dataSql != null" >
+            and ${dataSql}
+          </if>
+        </otherwise>
+      </choose>
+      <if test="condition.id != null" >
+        and t.id like concat('%',#{condition.id},'%')
+      </if>
+      <if test="condition.saleorderid != null" >
+        and t.saleorderid like CONCAT('%',#{condition.saleorderid},'%')
+      </if>
+      <if test="condition.businessdate1 != null" >
+        <![CDATA[and t.businessdate >= #{condition.businessdate1} ]]>
+      </if>
+      <if test="condition.businessdate2 != null" >
+        <![CDATA[and t.businessdate <= #{condition.businessdate2} ]]>
+      </if>
+      <if test="condition.duefromdate1 != null" >
+        <![CDATA[and t1.duefromdate >= #{condition.duefromdate1} ]]>
+      </if>
+      <if test="condition.duefromdate2 != null" >
+        <![CDATA[and t1.duefromdate <= #{condition.duefromdate2} ]]>
+      </if>
+      <if test="condition.orderdate1 != null" >
+        <![CDATA[and o.businessdate >= #{condition.orderdate1} ]]>
+      </if>
+      <if test="condition.orderdate2 != null" >
+        <![CDATA[and o.businessdate <= #{condition.orderdate2} ]]>
+      </if>
+      <if test="condition.saleorderid != null" >
+        and t.saleorderid like CONCAT('%',#{condition.saleorderid},'%')
+      </if>
+      <if test="condition.customerid != null" >
+        and t.customerid = #{condition.customerid}
+      </if>
+      <if test="condition.pcustomerid != null" >
+        and t.pcustomerid=#{condition.pcustomerid}
+      </if>
+      <if test="condition.brandid != null" >
+        and FIND_IN_SET(t1.brandid,#{condition.brandid})
+      </if>
+      <if test="condition.adduserid != null" >
+        and t.adduserid = #{condition.adduserid}
+      </if>
+      <if test="condition.salesdept != null" >
+        and t.salesdept = #{condition.salesdept}
+      </if>
+      <if test="condition.salesuser != null" >
+        and t.salesuser = #{condition.salesuser}
+      </if>
+      <if test="condition.addtime != null" >
+        <![CDATA[ and t.addtime > #{condition.addtime} ]]>
+      </if>
+      <if test="condition.addtime1 != null" >
+        <![CDATA[ and t.addtime <= date_add(str_to_date(#{condition.addtime1}, '%Y-%m-%d'), interval '1' day) ]]>
+      </if>
+      <if test="condition.isrefer != null" >
+        and t.isrefer = #{condition.isrefer}
+      </if>
+      <if test="condition.iswriteoff != null">
+        and t1.iswriteoff = #{condition.iswriteoff}
+      </if>
+      <if test="1==1" >
+        and (t.status = '3' or t.status = '4') and t.isinvoicebill in('3','4','5')
+      </if>
+      <if test="condition.sourcetype!= null and condition.sourcetype!=1" >
+        and 1!=1
+      </if>
+      <if test="condition.sourceid != null">
+        and o.sourceid like CONCAT ('%',#{condition.sourceid} ,'%')
+      </if>
+      <if test="condition.taxtype != null">
+        and t1.taxtype = #{condition.taxtype}
+      </if>
+    </trim>
+    GROUP BY t1.id
+    UNION ALL
+    select '2' as billtype,t.id,t.businessdate,GROUP_CONCAT(DISTINCT t2.id) as orderid,t.businessdate as orderdate,t.remark, t.adduserid, t.addusername, t.adddeptid, t.adddeptname,
+    t.addtime, t.audituserid, t.auditusername, t.audittime, IF(t1.isinvoicebill='0',1,0) as billcount,
+    t.customerid, t.salesdept,t.salesuser,t.salesarea,t1.branddept,t1.branduser,t1.supplierid,t1.supplieruser,c.payeeid,
+    t.source, t.storageid, t.isrefer, t.billno, t.isinvoice, t.canceldate,t1.duefromdate,
+    -t1.taxamount as totaltaxamount,IF(t1.isinvoicebill='0',-t1.taxamount,0) as uninvoiceamount, '' as sourceid
+    from t_sales_rejectbill t
+    RIGHT JOIN t_sales_rejectbill_detail t1 on t.id=t1.billid
+    LEFT JOIN t_storage_salereject_enter t2 on t.id=t2.sourceid
+    INNER JOIN t_base_sales_customer c on t.customerid=c.id
+    <if test="condition.isBrandUser != null" >
+      INNER JOIN t_base_personnel_customer pc on t.customerid=pc.customerid
+    </if>
+    <trim prefix="where" prefixOverrides="and|or">
+      <choose>
+        <when test="condition.isBrandUser != null">
+          <if test="dataSql != null" >
+            and (${dataSql} or pc.personid=#{condition.personnelid})
+          </if>
+          <if test="dataSql == null" >
+            and  pc.personid=#{condition.personnelid}
+          </if>
+        </when>
+        <otherwise>
+          <if test="dataSql != null" >
+            and ${dataSql}
+          </if>
+        </otherwise>
+      </choose>
+      <if test="condition.id != null" >
+        and t.id like concat('%',#{condition.id},'%')
+      </if>
+      <if test="condition.saleorderid != null" >
+        and t2.id like CONCAT('%',#{condition.saleorderid},'%')
+      </if>
+      <if test="condition.businessdate1 != null" >
+        <![CDATA[ and t.businessdate >= #{condition.businessdate1} ]]>
+      </if>
+      <if test="condition.businessdate2 != null" >
+        <![CDATA[ and t.businessdate <= #{condition.businessdate2} ]]>
+      </if>
+      <if test="condition.orderdate1 != null" >
+        <![CDATA[and t.businessdate >= #{condition.orderdate1} ]]>
+      </if>
+      <if test="condition.orderdate2 != null" >
+        <![CDATA[and t.businessdate <= #{condition.orderdate2}]]>
+      </if>
+      <if test="condition.customerid != null" >
+        and t.customerid = #{condition.customerid}
+      </if>
+      <if test="condition.pcustomerid != null" >
+        and t.pcustomerid=#{condition.pcustomerid}
+      </if>
+      <if test="condition.brandid != null" >
+        and FIND_IN_SET(t1.brandid,#{condition.brandid})
+      </if>
+      <if test="condition.adduserid != null" >
+        and t.adduserid = #{condition.adduserid}
+      </if>
+      <if test="condition.salesdept != null" >
+        and t.salesdept = #{condition.salesdept}
+      </if>
+      <if test="condition.salesuser != null" >
+        and t.salesuser = #{condition.salesuser}
+      </if>
+      <if test="condition.addtime != null" >
+        <![CDATA[ and t.addtime > #{condition.addtime} ]]>
+      </if>
+      <if test="condition.addtime1 != null" >
+        <![CDATA[ and t.addtime <= date_add(str_to_date(#{condition.addtime1}, '%Y-%m-%d'), interval '1' day) ]]>
+      </if>
+      <if test="condition.isrefer != null" >
+        and t.isrefer = #{condition.isrefer}
+      </if>
+      <if test="condition.iswriteoff != null">
+        and t1.iswriteoff = #{condition.iswriteoff}
+      </if>
+      <if test="condition.taxtype != null">
+        and t1.taxtype = #{condition.taxtype}
+      </if>
+      <if test="1==1" >
+        and t.billtype='2' and (t.status = '3' or t.status = '4') and t.isinvoicebill in('3','4','5')
+      </if>
+      <if test="condition.sourcetype!= null and condition.sourcetype!=2" >
+        and 1!=1
+      </if>
+      <if test="condition.sourceid != null">
+        and 1!=1
+      </if>
+    </trim>
+    GROUP BY t1.id
+    UNION ALL
+    select '3' as billtype,t.id,t.businessdate,t.id as orderid,t.businessdate as orderdate,t.remark, t.adduserid, t.addusername, t.adddeptid, t.adddeptname,
+    t.addtime, t.audituserid, t.auditusername, t.audittime, 1 as billcount,
+    t.customerid,t.salesdept, t.salesuser,t.salesarea,t.branddept,t.branduser,t.supplierid,t.supplieruser,c.payeeid,
+    '' as source,'' as storageid, '' as isrefer,'' as billno,'' as isinvoice,t.writeoffdate as canceldate,'' as duefromdate,
+    t.amount as totaltaxamount,t.amount as uninvoiceamount,'' as sourceid
+    from t_account_customer_push_balance t
+    INNER JOIN t_base_sales_customer c on t.customerid=c.id
+    <if test="condition.isBrandUser != null" >
+      INNER JOIN t_base_personnel_customer pc on t.customerid=pc.customerid
+    </if>
+    <trim prefix="where" prefixOverrides="and|or">
+      <choose>
+        <when test="condition.isBrandUser != null">
+          <if test="dataSql != null" >
+            and (${dataSql} or pc.personid=#{condition.personnelid})
+          </if>
+          <if test="dataSql == null" >
+            and  pc.personid=#{condition.personnelid}
+          </if>
+        </when>
+        <otherwise>
+          <if test="dataSql != null" >
+            and ${dataSql}
+          </if>
+        </otherwise>
+      </choose>
+      <if test="condition.id != null" >
+        and t.id like concat('%',#{condition.id},'%')
+      </if>
+      <if test="condition.businessdate1 != null" >
+        <![CDATA[ and t.businessdate >= #{condition.businessdate1} ]]>
+      </if>
+      <if test="condition.businessdate2 != null" >
+        <![CDATA[ and t.businessdate <= #{condition.businessdate2} ]]>
+      </if>
+      <if test="condition.orderdate1 != null" >
+        <![CDATA[and t.businessdate >= #{condition.orderdate1} ]]>
+      </if>
+      <if test="condition.orderdate2 != null" >
+        <![CDATA[and t.businessdate <= #{condition.orderdate2} ]]>
+      </if>
+      <if test="condition.customerid != null" >
+        and t.customerid = #{condition.customerid}
+      </if>
+      <if test="condition.pcustomerid != null" >
+        and t.pcustomerid=#{condition.pcustomerid}
+      </if>
+      <if test="condition.brandid != null" >
+        and FIND_IN_SET(t.brandid,#{condition.brandid})
+      </if>
+      <if test="condition.adduserid != null" >
+        and t.adduserid = #{condition.adduserid}
+      </if>
+      <if test="condition.salesdept != null" >
+        and t.salesdept = #{condition.salesdept}
+      </if>
+      <if test="condition.salesuser != null" >
+        and t.salesuser = #{condition.salesuser}
+      </if>
+      <if test="condition.addtime != null" >
+        <![CDATA[ and t.addtime > #{condition.addtime} ]]>
+      </if>
+      <if test="condition.addtime1 != null" >
+        <![CDATA[ and t.addtime <= date_add(str_to_date(#{condition.addtime1}, '%Y-%m-%d'), interval '1' day) ]]>
+      </if>
+      <if test="condition.iswriteoff != null">
+        and t.iswriteoff = #{condition.iswriteoff}
+      </if>
+      <if test="condition.taxtype != null">
+        and t.defaulttaxtype = #{condition.taxtype}
+      </if>
+      <if test="1==1" >
+        and isinvoice = '0' and t.isinvoicebill='0' and (t.status='3' or t.status = '4')
+      </if>
+      <if test="condition.sourcetype!= null and condition.sourcetype!=3" >
+        and 1!=1
+      </if>
+      <if test="condition.sourceid != null or condition.saleorderid != null">
+        and 1!=1
+      </if>
+    </trim>
+    group by t.id
+    )z
+    <trim prefix="where" prefixOverrides="and|or">
+      <if test="condition.exportids != null" >
+        and FIND_IN_SET(z.id,#{condition.exportids})
+      </if>
+    </trim>
+    group by z.billtype,z.id
+    <![CDATA[HAVING sum(z.billcount) <> 0]]>
+    )
+  </sql>
+  <select id="getReceiptAndRejectBillListForInvoiceBill" parameterType="com.hd.agent.common.util.PageMap" resultType="java.util.Map">
+    select * from <include refid="getReceiptAndRejectBillListForInvoiceBill_sql"/> z
+    <choose>
+      <when test="condition.exportflag == 'true'">
+        <include refid="common.Page_OrderOnly" />
+      </when>
+      <otherwise>
+        <include refid="common.Page_limit"/>
+      </otherwise>
+    </choose>
+  </select>
+  <select id="getReceiptAndRejectBillCountForInvoiceBill" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+    select count(1) from <include refid="getReceiptAndRejectBillListForInvoiceBill_sql"/> z
+  </select>
+  <select id="getReceiptAndRejectBillSumDataForInvoiceBill" parameterType="com.hd.agent.common.util.PageMap" resultType="java.util.Map">
+    select sum(z.totaltaxamount) as totaltaxamount,sum(z.uninvoiceamount) as uninvoiceamount
+    from <include refid="getReceiptAndRejectBillListForInvoiceBill_sql"/> z
+  </select>
+
+  <select id="getCustomerInvoiceSumData" parameterType="com.hd.agent.common.util.PageMap" resultType="map">
+    select z.customerid,sum(z.taxamount) as receivableamount,ca.amount as banlanceamount,
+    sum(z.checkamount)-sum(z.invoiceamount) as uninvoiceamount,sum(z.invoiceamount) invoiceamount,sum(z.checkamount) as checkamount
+    from (
+    select t1.id,t.customerid,t1.taxamount,IF(t1.isinvoice='0',t1.taxamount,0) as uninvoiceamount,IF(t1.isinvoice='1',t1.taxamount,0) as invoiceamount,
+    0 as checkamount,c.payeeid
+    from t_storage_saleout t
+    RIGHT JOIN t_storage_saleout_detail t1 on t.id =t1.saleoutid
+    INNER JOIN t_base_sales_customer c on t.customerid=c.id
+    <trim prefix="where" prefixOverrides="and|or">
+      <choose>
+        <when test="condition.isBrandUser != null">
+          <if test="dataSql != null" >
+            and (${dataSql} OR EXISTS (select pc.customerid from t_base_personnel_customer pc where t.customerid = pc.customerid  and pc.personid =#{condition.personnelid}))
+          </if>
+          <if test="dataSql == null" >
+            and  EXISTS (select pc.customerid from t_base_personnel_customer pc where t.customerid = pc.customerid  and pc.personid =#{condition.personnelid})
+          </if>
+        </when>
+        <otherwise>
+          <if test="dataSql != null" >
+            and ${dataSql}
+          </if>
+        </otherwise>
+      </choose>
+      <if test="condition.salesuser != null" >
+        and t.salesuser =#{condition.salesuser}
+      </if>
+      <if test="condition.customerid != null" >
+        and (c.name like concat('%',#{condition.customerid},'%') or t.customerid like concat(#{condition.customerid},'%'))
+      </if>
+      <if test="1==1">
+        and t1.iswriteoff = '0' AND (t.STATUS = '3' OR t.STATUS = '4')
+      </if>
+    </trim>
+    UNION ALL
+    select t1.id,t.customerid,-t1.taxamount,IF(t1.isinvoice='0',-t1.taxamount,0) uninvoiceamount,IF(t1.isinvoice='1',-t1.taxamount,0) invoiceamount,-t1.taxamount as checkamount,
+    c.payeeid
+    FROM t_storage_salereject_enter t
+    RIGHT JOIN t_storage_salereject_enter_detail t1 ON t1.salerejectid = t.id
+    INNER JOIN t_base_sales_customer c on t.customerid=c.id
+    <trim prefix="where" prefixOverrides="and|or">
+      <choose>
+        <when test="condition.isBrandUser != null">
+          <if test="dataSql != null" >
+            and (${dataSql} OR EXISTS (select pc.customerid from t_base_personnel_customer pc where t.customerid = pc.customerid  and pc.personid =#{condition.personnelid}))
+          </if>
+          <if test="dataSql == null" >
+            and  EXISTS (select pc.customerid from t_base_personnel_customer pc where t.customerid = pc.customerid  and pc.personid =#{condition.personnelid})
+          </if>
+        </when>
+        <otherwise>
+          <if test="dataSql != null" >
+            and ${dataSql}
+          </if>
+        </otherwise>
+      </choose>
+      <if test="condition.salesuser != null" >
+        and t.salesuser =#{condition.salesuser}
+      </if>
+      <if test="condition.customerid != null" >
+        and (c.name like concat('%',#{condition.customerid},'%') or t.customerid like concat(#{condition.customerid},'%'))
+      </if>
+      <if test="1==1">
+        and t.ischeck='1' AND (t.STATUS = '3' OR t.STATUS = '4') AND t1.iswriteoff = '0'
+      </if>
+    </trim>
+    group by t1.id
+    UNION ALL
+    select t.id,t.customerid,t.amount as taxamount,IF(t.isinvoice='0',t.amount,0) uninvoiceamount,IF(t.isinvoice='1',t.amount,0) invoiceamount,t.amount as checkamount,
+    c.payeeid
+    from t_account_begin_amount t
+    INNER JOIN t_base_sales_customer c on t.customerid=c.id
+    <if test="condition.isBrandUser != null" >
+      INNER JOIN t_base_personnel_customer pc on t.customerid=pc.customerid
+    </if>
+    <trim prefix="where" prefixOverrides="and|or">
+      <choose>
+        <when test="condition.isBrandUser != null">
+          <if test="dataSql != null" >
+            and (${dataSql} OR EXISTS (select pc.customerid from t_base_personnel_customer pc where t.customerid = pc.customerid  and pc.personid =#{condition.personnelid}))
+          </if>
+          <if test="dataSql == null" >
+            and  EXISTS (select pc.customerid from t_base_personnel_customer pc where t.customerid = pc.customerid  and pc.personid =#{condition.personnelid})
+          </if>
+        </when>
+        <otherwise>
+          <if test="dataSql != null" >
+            and ${dataSql}
+          </if>
+        </otherwise>
+      </choose>
+      <if test="condition.salesuser != null" >
+        and t.salesuser =#{condition.salesuser}
+      </if>
+      <if test="condition.customerid != null" >
+        and (c.name like concat('%',#{condition.customerid},'%') or t.customerid like concat(#{condition.customerid},'%'))
+      </if>
+      <if test="1==1">
+        AND (t.STATUS = '3' OR t.STATUS = '4') AND t.iswriteoff = '0'
+      </if>
+    </trim>
+    UNION ALL
+    select t.id,t.customerid,t.amount as taxamount,IF(t.isrefer='0',t.amount,0) uninvoiceamount,IF(t.isrefer='1',t.amount,0) invoiceamount,t.amount as checkamount,
+    c.payeeid
+    from t_account_customer_push_balance t
+    INNER JOIN t_base_sales_customer c on t.customerid=c.id
+    <trim prefix="where" prefixOverrides="and|or">
+      <choose>
+        <when test="condition.isBrandUser != null">
+          <if test="dataSql != null" >
+            and (${dataSql} OR EXISTS (select pc.customerid from t_base_personnel_customer pc where t.customerid = pc.customerid  and pc.personid =#{condition.personnelid}))
+          </if>
+          <if test="dataSql == null" >
+            and  EXISTS (select pc.customerid from t_base_personnel_customer pc where t.customerid = pc.customerid  and pc.personid =#{condition.personnelid})
+          </if>
+        </when>
+        <otherwise>
+          <if test="dataSql != null" >
+            and ${dataSql}
+          </if>
+        </otherwise>
+      </choose>
+      <if test="condition.salesuser != null" >
+        and t.salesuser =#{condition.salesuser}
+      </if>
+      <if test="condition.customerid != null" >
+        and (c.name like concat('%',#{condition.customerid},'%') or t.customerid like concat(#{condition.customerid},'%'))
+      </if>
+      <if test="1==1">
+        and t.iswriteoff='0' and (t.status='3' or t.status='4')
+      </if>
+    </trim>
+    UNION ALL
+    select t1.id,t.customerid,0 as taxamount,0 as uninvoiceamount,0 as invoiceamount,t1.taxamount as checkamount,
+    c.payeeid
+    FROM t_sales_receipt t
+    RIGHT JOIN t_sales_receipt_detail t1 ON t1.billid = t.id
+    INNER JOIN t_base_sales_customer c on t.customerid=c.id
+    <trim prefix="where" prefixOverrides="and|or">
+      <choose>
+        <when test="condition.isBrandUser != null">
+          <if test="dataSql != null" >
+            and (${dataSql} OR EXISTS (select pc.customerid from t_base_personnel_customer pc where t.customerid = pc.customerid  and pc.personid =#{condition.personnelid}))
+          </if>
+          <if test="dataSql == null" >
+            and  EXISTS (select pc.customerid from t_base_personnel_customer pc where t.customerid = pc.customerid  and pc.personid =#{condition.personnelid})
+          </if>
+        </when>
+        <otherwise>
+          <if test="dataSql != null" >
+            and ${dataSql}
+          </if>
+        </otherwise>
+      </choose>
+      <if test="condition.salesuser != null" >
+        and t.salesuser =#{condition.salesuser}
+      </if>
+      <if test="condition.customerid != null" >
+        and (c.name like concat('%',#{condition.customerid},'%') or t.customerid like concat(#{condition.customerid},'%'))
+      </if>
+      <if test="1==1">
+        and t1.iswriteoff='0' and (t.status='3' or t.status='4')
+      </if>
+    </trim>
+    ) z
+    LEFT JOIN t_account_customer_capital ca on z.customerid=ca.id
+    group by z.customerid
+    order by ca.amount desc
+  </select>
+  <select id="getCustomerInvoiceBillInfoSumData" parameterType="com.hd.agent.common.util.PageMap" resultType="map">
+    select x.customerid,x.customername,count(1) as billnums,sum(x.totaltaxamount) as totaltaxamount,sum(x.uninvoiceamount) as uninvoiceamount
+    from (
+    select z.customerid,z.customername,z.billtype,z.id,sum(z.totaltaxamount) as totaltaxamount,sum(z.uninvoiceamount) as uninvoiceamount
+    from (
+    select '1' as billtype, t.id,t.businessdate,t.customerid,c.name as customername,t1.receipttaxamount as totaltaxamount,IF(t1.isinvoicebill='0',t1.receipttaxamount,0) as uninvoiceamount
+    from t_sales_receipt t
+    RIGHT JOIN t_sales_receipt_detail t1 on t.id =t1.billid
+    INNER JOIN t_sales_order o on t.saleorderid= o.id
+    INNER JOIN t_base_sales_customer c on t.customerid=c.id
+    <trim prefix="where" prefixOverrides="and|or">
+      <choose>
+        <when test="condition.isBrandUser != null">
+          <if test="dataSql != null" >
+            and (${dataSql} OR EXISTS (select pc.customerid from t_base_personnel_customer pc where t.customerid = pc.customerid  and pc.personid =#{condition.personnelid}))
+          </if>
+          <if test="dataSql == null" >
+            and  EXISTS (select pc.customerid from t_base_personnel_customer pc where t.customerid = pc.customerid  and pc.personid =#{condition.personnelid})
+          </if>
+        </when>
+        <otherwise>
+          <if test="dataSql != null" >
+            and ${dataSql}
+          </if>
+        </otherwise>
+      </choose>
+      <if test="condition.salesuser != null" >
+        and t.salesuser =#{condition.salesuser}
+      </if>
+      <if test="condition.customerid != null" >
+        and (c.name like concat('%',#{condition.customerid},'%') or t.customerid like concat(#{condition.customerid},'%'))
+      </if>
+      <if test="condition.iswriteoff != null" >
+        AND t1.iswriteoff = '0'
+      </if>
+      <if test="1==1">
+        and (t.status = '3' or t.status = '4') and t.isinvoicebill in('3','4','5')
+      </if>
+    </trim>
+    UNION ALL
+    select '2' as billtype,t.id,t.businessdate,t.customerid,c.name as customername,-t1.taxamount as totaltaxamount,IF(t1.isinvoicebill='0',-t1.taxamount,0) as uninvoiceamount
+    from t_sales_rejectbill t
+    RIGHT JOIN t_sales_rejectbill_detail t1 on t.id=t1.billid
+    LEFT JOIN t_storage_salereject_enter t2 on t.id=t2.sourceid
+    INNER JOIN t_base_sales_customer c on t.customerid=c.id
+    <trim prefix="where" prefixOverrides="and|or">
+      <choose>
+        <when test="condition.isBrandUser != null">
+          <if test="dataSql != null" >
+            and (${dataSql} OR EXISTS (select pc.customerid from t_base_personnel_customer pc where t.customerid = pc.customerid  and pc.personid =#{condition.personnelid}))
+          </if>
+          <if test="dataSql == null" >
+            and  EXISTS (select pc.customerid from t_base_personnel_customer pc where t.customerid = pc.customerid  and pc.personid =#{condition.personnelid})
+          </if>
+        </when>
+        <otherwise>
+          <if test="dataSql != null" >
+            and ${dataSql}
+          </if>
+        </otherwise>
+      </choose>
+      <if test="condition.salesuser != null" >
+        and t.salesuser =#{condition.salesuser}
+      </if>
+      <if test="condition.customerid != null" >
+        and (c.name like concat('%',#{condition.customerid},'%') or t.customerid like concat(#{condition.customerid},'%'))
+      </if>
+      <if test="condition.iswriteoff != null" >
+        AND t1.iswriteoff = '0'
+      </if>
+      <if test="1==1">
+        and t.billtype='2' and (t.status = '3' or t.status = '4') and t.isinvoicebill in('3','4','5')
+      </if>
+    </trim>
+    UNION ALL
+    select '3' as billtype,t.id,t.businessdate,t.customerid, c.name as customername,t.amount as totaltaxamount,t.amount as uninvoiceamount
+    from t_account_customer_push_balance t
+    INNER JOIN t_base_sales_customer c on t.customerid=c.id
+    <trim prefix="where" prefixOverrides="and|or">
+      <choose>
+        <when test="condition.isBrandUser != null">
+          <if test="dataSql != null" >
+            and (${dataSql} OR EXISTS (select pc.customerid from t_base_personnel_customer pc where t.customerid = pc.customerid  and pc.personid =#{condition.personnelid}))
+          </if>
+          <if test="dataSql == null" >
+            and  EXISTS (select pc.customerid from t_base_personnel_customer pc where t.customerid = pc.customerid  and pc.personid =#{condition.personnelid})
+          </if>
+        </when>
+        <otherwise>
+          <if test="dataSql != null" >
+            and ${dataSql}
+          </if>
+        </otherwise>
+      </choose>
+      <if test="condition.salesuser != null" >
+        and t.salesuser =#{condition.salesuser}
+      </if>
+      <if test="condition.customerid != null" >
+        and (c.name like concat('%',#{condition.customerid},'%') or t.customerid like concat(#{condition.customerid},'%'))
+      </if>
+      <if test="condition.iswriteoff != null" >
+        AND t.iswriteoff = '0'
+      </if>
+      <if test="1==1">
+        and isinvoice = '0' and t.isinvoicebill='0' and (t.status='3' or t.status = '4')
+      </if>
+    </trim>
+    )z
+    where z.id is not null
+    group by z.billtype,z.id
+    ) x
+    GROUP BY x.customerid
+    order by x.customerid asc
+  </select>
+
+  <select id="getCustomerInvoiceInfoData" parameterType="java.lang.String" resultType="map">
+  	select z.customerid,sum(z.taxamount) as receivableamount,ca.amount as banlanceamount,
+  	sum(z.checkamount)-sum(z.invoiceamount) as uninvoiceamount,sum(z.invoiceamount) invoiceamount,sum(z.checkamount) as checkamount
+	from (
+  	select t.customerid,t1.taxamount,IF(t1.isinvoice='0',t1.taxamount,0) as uninvoiceamount,IF(t1.isinvoice='1',t1.taxamount,0) as invoiceamount,0 as checkamount
+	from t_storage_saleout t
+	RIGHT JOIN t_storage_saleout_detail t1 on t.id =t1.saleoutid
+	where t.customerid=#{customerid} and t1.iswriteoff = '0' AND (t.STATUS = '3' OR t.STATUS = '4')
+	UNION ALL
+	select t.customerid,-t1.taxamount,IF(t1.isinvoice='0',-t1.taxamount,0) uninvoiceamount,IF(t1.isinvoice='1',-t1.taxamount,0) invoiceamount,-t1.taxamount as checkamount
+	FROM t_storage_salereject_enter t 
+	RIGHT JOIN t_storage_salereject_enter_detail t1 ON t1.salerejectid = t.id 
+	where t.customerid =#{customerid} and t.ischeck='1' AND (t.STATUS = '3' OR t.STATUS = '4') AND t1.iswriteoff = '0'
+	UNION ALL
+	select t.customerid,t.amount as taxamount,IF(t.isrefer='0',t.amount,0) uninvoiceamount,IF(t.isrefer='1',t.amount,0) invoiceamount,t.amount as checkamount
+	from t_account_customer_push_balance t where t.customerid=#{customerid} and t.iswriteoff='0' and (t.status='3' or t.status='4')
+	UNION ALL
+	select t.customerid,t.amount as taxamount,IF(t.isinvoice='0',t.amount,0) uninvoiceamount,IF(t.isinvoice='1',t.amount,0) invoiceamount,t.amount as checkamount
+    from t_account_begin_amount t where t.customerid=#{customerid} and t.iswriteoff='0' and (t.status='3' or t.status='4')
+	UNION ALL
+	select t.customerid,0 as taxamount,0 as uninvoiceamount,0 as invoiceamount,t1.taxamount as checkamount
+	FROM t_sales_receipt t 
+	RIGHT JOIN t_sales_receipt_detail t1 ON t1.billid = t.id 
+	where t.customerid=#{customerid} and t1.iswriteoff='0' and (t.status='3' or t.status='4')
+	) z
+	LEFT JOIN t_account_customer_capital ca on z.customerid=ca.id
+  </select>
+  <select id="getReceiptAndRejectBillDetailList" parameterType="com.hd.agent.common.util.PageMap" resultType="java.util.Map">
+    select * from (
+    select t.id as billid,t1.id,'1' as billtype,t.customerid,t.pcustomerid,t1.goodsid,t1.brandid,t1.isdiscount,t1.unitname,t1.taxprice,t1.receiptnum as unitnum,t1.receipttaxamount as taxamount
+    from t_sales_receipt t
+    RIGHT JOIN t_sales_receipt_detail t1 on t.id=t1.billid
+    <trim prefix="where" prefixOverrides="and|or">
+      <if test="condition.datasql1 != null" >
+        and ${condition.datasql1}
+      </if>
+      <if test="condition.id != null" >
+        and t.id like concat('%',#{condition.id},'%')
+      </if>
+      <if test="condition.businessdate1 != null" >
+        <![CDATA[and t.businessdate >= #{condition.businessdate1} ]]>
+      </if>
+      <if test="condition.businessdate2 != null" >
+        <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+      </if>
+      <if test="condition.duefromdate1 != null" >
+        <![CDATA[and t1.duefromdate >= #{condition.duefromdate1} ]]>
+      </if>
+      <if test="condition.duefromdate2 != null" >
+        <![CDATA[and t1.duefromdate <= #{condition.duefromdate2} ]]>
+      </if>
+      <if test="condition.saleorderid != null" >
+        and t.saleorderid like CONCAT('%',#{condition.saleorderid},'%')
+      </if>
+      <if test="condition.customerid != null" >
+        and t.customerid = #{condition.customerid}
+      </if>
+      <if test="condition.pcustomerid != null" >
+        and t.pcustomerid = #{condition.pcustomerid}
+      </if>
+      <if test="condition.addtime != null" >
+        <![CDATA[ and t.addtime > str_to_date(#{condition.addtime}, '%Y-%m-%d') ]]>
+      </if>
+      <if test="condition.addtime1 != null" >
+        <![CDATA[ and t.addtime <= date_add(str_to_date(#{condition.addtime1}, '%Y-%m-%d'), interval '1' day) ]]>
+      </if>
+      <if test="1==1" >
+        and t1.isbranddiscount='0' and t1.isinvoice='0' and t.status in("3","4")
+      </if>
+      <if test="condition.sourcetype!= null and condition.sourcetype!=1" >
+        and 1!=1
+      </if>
+    </trim>
+    UNION ALL
+    select t.id as billid,t1.id,'1' as billtype,t.customerid,t.pcustomerid,t1.goodsid,t1.brandid,'2' as isdiscount,t1.unitname,t1.taxprice,sum(t1.receiptnum) as unitnum,sum(t1.receipttaxamount) as taxamount
+    from t_sales_receipt t
+    RIGHT JOIN t_sales_receipt_detail t1 on t.id=t1.billid
+    <trim prefix="where" prefixOverrides="and|or">
+      <if test="condition.datasql1 != null" >
+        and ${condition.datasql1}
+      </if>
+      <if test="condition.id != null" >
+        and t.id like concat('%',#{condition.id},'%')
+      </if>
+      <if test="condition.businessdate1 != null" >
+        <![CDATA[and t.businessdate >= #{condition.businessdate1} ]]>
+      </if>
+      <if test="condition.businessdate2 != null" >
+        <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+      </if>
+      <if test="condition.duefromdate1 != null" >
+        <![CDATA[and t1.duefromdate >= #{condition.duefromdate1} ]]>
+      </if>
+      <if test="condition.duefromdate2 != null" >
+        <![CDATA[and t1.duefromdate <= #{condition.duefromdate2} ]]>
+      </if>
+      <if test="condition.saleorderid != null" >
+        and t.saleorderid like CONCAT('%',#{condition.saleorderid},'%')
+      </if>
+      <if test="condition.customerid != null" >
+        and t.customerid = #{condition.customerid}
+      </if>
+      <if test="condition.pcustomerid != null" >
+        and t.pcustomerid = #{condition.pcustomerid}
+      </if>
+      <if test="condition.addtime != null" >
+        <![CDATA[ and t.addtime > #{condition.addtime} ]]>
+      </if>
+      <if test="condition.addtime1 != null" >
+        <![CDATA[ and t.addtime <= date_add(str_to_date(#{condition.addtime1}, '%Y-%m-%d'), interval '1' day) ]]>
+      </if>
+      <if test="1==1" >
+        and t1.isbranddiscount='1' and t1.isinvoice='0'  and t.status in("3","4")
+      </if>
+      <if test="condition.sourcetype!= null and condition.sourcetype!=1" >
+        and 1!=1
+      </if>
+    </trim>
+    GROUP BY t.id,t1.brandid
+    UNION ALL
+    select t.id as billid,t1.id,'2' as billtype,t.customerid,t.pcustomerid,t1.goodsid,t1.brandid,'0' as isdiscount,t1.unitname,t1.taxprice,-t1.unitnum,-t1.taxamount
+    from t_sales_rejectbill t
+    RIGHT JOIN t_sales_rejectbill_detail t1 on t.id=t1.billid
+    <trim prefix="where" prefixOverrides="and|or">
+      <if test="condition.datasql2 != null" >
+        and ${condition.datasql2}
+      </if>
+      <if test="condition.id != null" >
+        and t.id like concat('%',#{condition.id},'%')
+      </if>
+      <if test="condition.businessdate1 != null" >
+        <![CDATA[ and t.businessdate >= #{condition.businessdate1} ]]>
+      </if>
+      <if test="condition.businessdate2 != null" >
+        <![CDATA[ and t.businessdate <= #{condition.businessdate2} ]]>
+      </if>
+      <if test="condition.customerid != null" >
+        and t.customerid = #{condition.customerid}
+      </if>
+      <if test="condition.pcustomerid != null" >
+        and t.pcustomerid = #{condition.pcustomerid}
+      </if>
+      <if test="condition.addtime != null" >
+        <![CDATA[ and addtime > #{condition.addtime} ]]>
+      </if>
+      <if test="condition.addtime1 != null" >
+        <![CDATA[ and addtime <= date_add(str_to_date(#{condition.addtime1}, '%Y-%m-%d'), interval '1' day) ]]>
+      </if>
+      <if test="1==1" >
+        and t.billtype='2' and t1.isinvoice='0' and t.status in("3","4")
+      </if>
+      <if test="condition.sourcetype!= null and condition.sourcetype!=2" >
+        and 1!=1
+      </if>
+    </trim>) z order by z.billid,z.id
+  </select>
+  <update id="updateReceiptDetailIsinvoice" parameterType="java.lang.String">
+  	update t_sales_receipt_detail r1,t_account_sales_invoice_detail t1
+	set r1.isinvoice=#{isinvoice}
+	where r1.billid=t1.sourceid and r1.id=t1.sourcedetailid and t1.sourcetype='1' and t1.billid=#{id}
+  </update>
+  <update id="updateReceiptDetailIsinvoicebill" parameterType="java.lang.String">
+  	update t_sales_receipt_detail r1,t_account_sales_invoicebill_detail t1
+	set r1.isinvoicebill=#{isinvoicebill}
+	where r1.billid=t1.sourceid and r1.id=t1.sourcedetailid and t1.sourcetype='1' and t1.billid=#{id}
+  </update>
+  <update id="updateReceiptDetailIsinvoiceWriteoff">
+  	update t_sales_receipt_detail r1,t_account_sales_invoice_detail t1
+	set r1.iswriteoff='1',canceldate=#{writeoffdate}
+	where r1.billid=t1.sourceid and r1.id=t1.sourcedetailid and t1.sourcetype='1' and t1.billid=#{id}
+  </update>
+  <update id="updateReceiptDetailIsinvoicebillWriteoff" parameterType="java.lang.String">
+  	update t_sales_receipt_detail r1,t_account_sales_invoicebill_detail t1
+	set r1.iswriteoff='1',canceldate=DATE_FORMAT(now(),'%Y-%m-%d')
+	where r1.billid=t1.sourceid and r1.id=t1.sourcedetailid and t1.sourcetype='1' and t1.billid=#{id}
+  </update>
+  <!-- 反核销 -->
+  <update id="updateReceiptDetailBackInvoiceWriteoff" parameterType="java.lang.String">
+  	update t_sales_receipt_detail r1,t_account_sales_invoice_detail t1
+	set r1.iswriteoff='0',canceldate=''
+	where r1.billid=t1.sourceid and r1.id=t1.sourcedetailid and t1.sourcetype='1' and t1.billid=#{id}
+  </update>
+  <select id="getReceivablePassDateAmountByCustomerid" parameterType="java.lang.String" resultType="java.math.BigDecimal">
+    select sum(z.taxamount) from(
+    select  t.customerid,t1.taxamount
+    from t_storage_saleout t
+    right join t_storage_saleout_detail t1 on t1.saleoutid=t.id
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="date != null" >
+        <![CDATA[and t1.duefromdate<#{date}]]>
+      </if>
+      <if test="1==1">
+        and t1.iswriteoff='0' and (t.status='3' or t.status='4')
+      </if>
+      <if test="customerid != null" >
+        and t.customerid=#{customerid}
+      </if>
+      <if test="brandList !=null">
+        and t1.brandid in
+        <foreach item="brand" index="index" collection="brandList" open="(" separator="," close=")">
+          #{brand}
+        </foreach>
+      </if>
+    </trim>
+    UNION ALL
+    select t.customerid,-t1.taxamount
+    from t_storage_salereject_enter t
+    right join t_storage_salereject_enter_detail t1 on t1.salerejectid=t.id
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="date != null" >
+        <![CDATA[and t1.duefromdate<#{date}]]>
+      </if>
+      <if test="1==1">
+        and (t.status='3' or t.status='4') and t.ischeck='1'  and t1.iswriteoff='0'
+      </if>
+      <if test="customerid != null" >
+        and t.customerid=#{customerid}
+      </if>
+      <if test="brandList !=null">
+        and t1.brandid in
+        <foreach item="brand" index="index" collection="brandList" open="(" separator="," close=")">
+          #{brand}
+        </foreach>
+      </if>
+    </trim>
+    )z
+    group by z.customerid
+  </select>
+  <select id="getReceivablePassDateBrandListByCustomerid" resultType="map">
+    select z.brandid,sum(z.taxamount) as amount from(
+    select  t1.brandid,t1.taxamount
+    from t_storage_saleout t
+    right join t_storage_saleout_detail t1 on t1.saleoutid=t.id
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="date != null" >
+        <![CDATA[and t1.duefromdate<#{date}]]>
+      </if>
+      <if test="1==1">
+        and t1.iswriteoff='0' and (t.status='3' or t.status='4')
+      </if>
+      <if test="customerid != null" >
+        and t.customerid=#{customerid}
+      </if>
+      <if test="brandList !=null">
+        and t1.brandid in
+        <foreach item="brand" index="index" collection="brandList" open="(" separator="," close=")">
+          #{brand}
+        </foreach>
+      </if>
+    </trim>
+    UNION ALL
+    select t1.brandid,-t1.taxamount
+    from t_storage_salereject_enter t
+    right join t_storage_salereject_enter_detail t1 on t1.salerejectid=t.id
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="date != null" >
+        <![CDATA[and t1.duefromdate<#{date}]]>
+      </if>
+      <if test="1==1">
+        and (t.status='3' or t.status='4') and t.ischeck='1'  and t1.iswriteoff='0'
+      </if>
+      <if test="customerid != null" >
+        and t.customerid=#{customerid}
+      </if>
+      <if test="brandList !=null">
+        and t1.brandid in
+        <foreach item="brand" index="index" collection="brandList" open="(" separator="," close=")">
+          #{brand}
+        </foreach>
+      </if>
+    </trim>
+    )z
+    group by z.brandid
+  </select>
+  <select id="getReceivableAmountByCustomerid" parameterType="java.lang.String" resultType="java.math.BigDecimal">
+  	select sum(z.taxamount) from(
+	  	select  t.customerid,t1.taxamount 
+		from t_storage_saleout t
+		right join t_storage_saleout_detail t1 on t1.saleoutid=t.id
+		where (t.status='3' or t.status='4')  and t1.iswriteoff='0' and t.customerid=#{customerid}
+		UNION ALL
+		select t.customerid,-t1.taxamount 
+		from t_storage_salereject_enter t
+		right join t_storage_salereject_enter_detail t1 on t1.salerejectid=t.id
+		where (t.status='3' or t.status='4') and t.ischeck='1'  and t1.iswriteoff='0' and t.customerid=#{customerid}
+		UNION ALL
+		select t.customerid,t.amount as taxamount
+		from t_account_customer_push_balance  t
+		where t.customerid=#{customerid} and t.iswriteoff='0' and (t.status='3' or t.status='4')
+	)z
+	group by z.customerid
+  </select>
+  <select id="getReceivableAmountByPCustomerid" parameterType="java.lang.String" resultType="java.math.BigDecimal">
+        select sum(z.taxamount) from(
+        select  t.pcustomerid,t1.taxamount
+        from t_storage_saleout t
+        right join t_storage_saleout_detail t1 on t1.saleoutid=t.id
+        where (t.status='3' or t.status='4')  and t1.iswriteoff='0' and t.pcustomerid=#{pcustomerid}
+        UNION ALL
+        select t.pcustomerid,-t1.taxamount
+        from t_storage_salereject_enter t
+        right join t_storage_salereject_enter_detail t1 on t1.salerejectid=t.id
+        where (t.status='3' or t.status='4') and t.ischeck='1'  and t1.iswriteoff='0' and t.pcustomerid=#{pcustomerid}
+        UNION ALL
+        select t.pcustomerid,t.amount as taxamount
+        from t_account_customer_push_balance  t
+        where t.pcustomerid=#{pcustomerid} and t.iswriteoff='0' and (t.status='3' or t.status='4')
+        )z
+        group by z.pcustomerid
+    </select>
+
+  <select id="getReceiptBySaleorderid" parameterType="java.lang.String" resultType="com.hd.agent.sales.model.Receipt">
+  	select id, businessdate, status, remark, adduserid, addusername, adddeptid, adddeptname, 
+		    addtime, modifyuserid, modifyusername, modifytime, audituserid, auditusername, audittime, 
+		    stopuserid, stopusername, stoptime, closetime, printtimes, customerid, handlerid, salesdept, 
+		    salesuser, settletype, paytype, source, storageid, field01, field02, field03, field04, field05, 
+		    field06, field07, field08, isrefer, billno, isinvoice, canceldate, duefromdate,saleorderid
+	from t_sales_receipt where saleorderid=#{saleorderid}
+	limit 1
+  </select>
+  <delete id="deleteReceiptDetailByBillno" parameterType="java.lang.String">
+  	delete from t_sales_receipt_detail
+  	where billno = #{billno}
+  </delete>
+  <select id="getReceiptUnWriteoffListByCustomerid" parameterType="java.lang.String" resultType="com.hd.agent.sales.model.Receipt">
+  	select id, businessdate, status, remark, adduserid, addusername, adddeptid, adddeptname, 
+		    addtime, modifyuserid, modifyusername, modifytime, audituserid, auditusername, audittime, 
+		    stopuserid, stopusername, stoptime, closetime, printtimes, customerid,pcustomerid, handlerid, salesdept, 
+		    salesuser, settletype, paytype, source, storageid, field01, field02, field03, field04, field05, 
+		    field06, field07, field08, isrefer, billno, isinvoice, canceldate, duefromdate,saleorderid,indooruserid,isinvoicebill
+	from t_sales_receipt where status='3' and (pcustomerid=#{customerid} or customerid=#{customerid})
+	order by id
+  </select>
+  <select id="getReceiptNoWriteoffListByCustomerid" parameterType="java.lang.String" resultType="com.hd.agent.sales.model.Receipt">
+  	select id, businessdate, status, remark, adduserid, addusername, adddeptid, adddeptname, 
+		    addtime, modifyuserid, modifyusername, modifytime, audituserid, auditusername, audittime, 
+		    stopuserid, stopusername, stoptime, closetime, printtimes, customerid,pcustomerid, handlerid, salesdept, 
+		    salesuser, settletype, paytype, source, storageid, field01, field02, field03, field04, field05, 
+		    field06, field07, field08, isrefer, billno, isinvoice, canceldate, duefromdate,saleorderid,indooruserid
+	from t_sales_receipt where isinvoice!='2' and customerid=#{customerid}
+  </select>
+  <delete id="deleteReceiptByOrderid" parameterType="java.lang.String">
+  	delete from t_sales_receipt
+  	where saleorderid = #{orderid}
+  </delete>
+  <delete id="deleteReceiptDetailByOrderid" parameterType="java.lang.String">
+  	delete from t_sales_receipt_detail
+	where billid in (select t.id from t_sales_receipt t where t.saleorderid=#{orderid})
+  </delete>
+  <select id="getReceiptDetailByBillidAndGoods" parameterType="java.lang.String" resultType="com.hd.agent.sales.model.ReceiptDetail">
+  	select * from t_sales_receipt_detail
+  	where billid = #{billid} and goodsid = #{goodsid} limit 1
+  </select>
+  <update id="updateReceiptIsHand" parameterType="java.lang.String">
+  	update t_sales_receipt
+  		set ishand = #{ishand}
+  	where id = #{id}
+  </update>
+  <update id="updateReceiptDetailIsinvoicebillCaseSaleout" parameterType="java.lang.String">
+      update t_sales_receipt_detail r1,t_account_sales_invoicebill_detail t1
+        set r1.isinvoicebill = #{isinvoicebill}
+      where r1.billno = t1.sourceid and r1.billdetailno = t1.sourcedetailid
+        and t1.sourceid = #{saleoutid} and t1.sourcetype = '4'
+  </update>
+  <select id="getReceiptDetailListIsinvoicebillCount" parameterType="java.lang.String" resultType="int">
+      select  count(1) from t_sales_receipt_detail
+      where billid = #{receiptid} and isinvoicebill = #{isinvoicebill}
+  </select>
+  <select id="getReceiptidListBySaleoutid" parameterType="java.lang.String" resultType="java.lang.String">
+      SELECT DISTINCT t.id from t_sales_receipt t
+      LEFT JOIN t_sales_receipt_detail t1 on t.id = t1.billid
+      where t1.billno = #{saleoutid}
+  </select>
+  <select id="getTotalReceiptAmount" parameterType="java.util.Arrays" resultType="com.hd.agent.sales.model.Receipt">
+    select  sum(t1.receipttaxamount) as totaltaxamount from t_sales_receipt_detail t1
+    where t1.isinvoice ='0' and t1.billid in
+    <foreach collection="idArr" index="index" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </select>
+  <select id="getReceiptDetailListByReceiptids" parameterType="java.util.Arrays" resultType="com.hd.agent.sales.model.ReceiptDetail">
+    select t.* from t_sales_receipt_detail t
+    where t.isinvoice ='0' and t.billid in
+    <foreach collection="idArr" index="index" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </select>
+  <select id="getReceiptidsList" parameterType="java.util.Map" resultType="java.lang.String">
+    SELECT DISTINCT t.billid from t_sales_receipt_detail t,t_storage_logistics_delivery_saleout t1
+    where t.billno = t1.saleoutid and t1.deliveryid in
+    <foreach collection="idsArr" item="item" index="index" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </select>
+  <select id="getReceiptBillnosListByReceiptid" parameterType="java.lang.String" resultType="java.lang.String">
+      SELECT DISTINCT t.billno from t_sales_receipt_detail t WHERE t.billid = #{billid}
+  </select>
+  <select id="getReceiptListExport" parameterType="com.hd.agent.common.util.PageMap" resultType="map">
+    select t.id, t.businessdate, t.status,t.customerid,t.salesdept,t.salesuser, t.storageid,t.saleorderid ,
+    t1.taxprice, t1.inittaxprice,t1.goodsid,t1.unitnum,t1.unitname,t1.auxnumdetail,t1.taxamount,t1.isdiscount,t1.isbranddiscount,t1.receipttaxamount,t1.receiptnum,t1.remark
+    from t_sales_receipt t
+    RIGHT JOIN t_sales_receipt_detail t1 on t.id=t1.billid
+    <trim prefix="where" prefixOverrides="and|or">
+      <if test="condition.id != null" >
+        and t.id = #{condition.id}
+      </if>
+    </trim>
+  </select>
+  <select id="getReceiptListForHDCXByMap" parameterType="map" resultType="map">
+    select t.id as billid, t.businessdate,t.status,t.customerid,t.salesdept,t.salesuser, t.storageid,t.saleorderid ,
+    t1.goodsid,t1.goodssort,t1.brandid,t1.branduser,t1.branddept,t1.supplierid,t1.supplieruser,t1.isdiscount,t1.isbranddiscount,t1.unitid,t1.unitname,t1.unitnum,t1.receiptnum,t1.receipttaxamount,t1.receiptnotaxamount,t1.auxunitid,t1.auxunitname,
+    t1.auxnum,t1.auxremainder,t1.auxnumdetail,t1.taxprice,t1.taxamount,t1.notaxprice,t1.notaxamount,t1.discountamount,t1.inittaxprice,t1.costprice,t1.taxtype,t1.tax,
+    t1.remark,t1.deliverydate,t1.storagelocation,t1.batchno,t1.expirationdate,t1.billno,t1.billdetailno,
+    t1.rejectnummain,t1.rejectnumaux,t1.norejectnummain,t1.norejectnumaux,t1.rejectamountnotax,t1.rejectamounttax,
+    t1.norejectamountnotax,t1.norejectamounttax,t1.seq,t1.isinvoice,t1.iswriteoff,t1.canceldate,t1.rejectbillid,t1.rejectdetailid,
+    t1.taxamount-t1.receipttaxamount as costamount,t2.id as cxid
+    from t_sales_receipt t
+    RIGHT JOIN t_sales_receipt_detail t1 on t.id=t1.billid
+    INNER JOIN t_account_customer_push_balance t2 on t2.invoiceid = t.id and t2.brandid =t1.brandid
+    <trim prefix="where" prefixOverrides="and|or">
+      <if test="1==1">
+        and t2.isinvoice='2' and  t1.taxprice != t1.inittaxprice
+      </if>
+      <if test="cxid != null" >
+        and t2.id = #{cxid}
+      </if>
+      <if test="cxidarr != null" >
+        and find_in_set(t2.id,#{cxidarr})
+      </if>
+      <if test="cxstatusarr != null" >
+        and find_in_set(t2.status,#{cxstatusarr})
+      </if>
+    </trim>
+    order by t.id,t1.seq
+  </select>
+  <update id="updateReceiptInvoicedate" parameterType="java.util.Map">
+    UPDATE t_sales_receipt
+    <set>
+      <choose>
+        <when test="hasinvoicedate == 1">
+          invoicebilldate=#{invoicebilldate}
+        </when>
+        <when test="hasinvoicedate == 0">
+          invoicebilldate=''
+        </when>
+      </choose>
+    </set>
+    WHERE id = #{id}
+  </update>
+  <update id="updateSalesReceiptInvoicedate" parameterType="java.lang.String">
+    UPDATE t_sales_receipt
+    <set>
+      <choose>
+        <when test="isinvoice == 1">
+          invoicedate=#{invoicedate}
+        </when>
+        <when test="isinvoice == 0">
+          invoicedate=''
+        </when>
+      </choose>
+    </set>
+    WHERE id = #{id}
+  </update>
+  <select id="getReceiptBrandListById" resultType="java.lang.String">
+      select DISTINCT t.brandid from t_sales_receipt_detail t where t.billid=#{id}
+  </select>
+  <update id="updateReceiptDetailDuefromdateByBrandidAndBillid">
+    update t_sales_receipt_detail t
+    set t.duefromdate=#{duefromdate}
+    where t.billid=#{billid}
+    <if test="brandid != null">
+      and t.brandid=#{brandid}
+    </if>
+  </update>
+  <update id="updateReceiptIsvoiceByBillid" parameterType="java.lang.String">
+    UPDATE t_sales_receipt t,(
+    SELECT t.billid,t.count ,t.num, case WHEN t.count = t.num THEN '3'
+    WHEN t.num > 0 and <![CDATA[t.num < t.count]]>  then '4'
+    WHEN t.num = 0 THEN '1' END  as isinvoice
+    from (
+    SELECT t.billid, COUNT(t.billid) AS COUNT,
+    SUM(case when t.isinvoice = '0' then 1 else 0 end) AS num
+    from t_sales_receipt_detail t
+    LEFT JOIN t_sales_receipt t1 ON t.billid = t1.id
+    where t1.id = #{billid}
+    GROUP BY t.billid
+    ) t ) t1
+    SET t.isinvoice = t1.isinvoice
+    where t.id = t1.billid and t.id = #{billid}
+  </update>
+  <update id="updateReceiptIsvoicebillByBillid" parameterType="java.lang.String">
+    UPDATE t_sales_receipt t,(
+    SELECT t.billid,t.count ,t.num, case WHEN t.count = t.num THEN '3'
+    WHEN t.num > 0 and <![CDATA[t.num < t.count]]>  then '4'
+    WHEN t.num = 0 THEN '1' END  as isinvoicebill
+    from (
+    SELECT t.billid, COUNT(t.billid) AS COUNT,
+    SUM(case when t.isinvoicebill = '0' then 1 else 0 end) AS num
+    from t_sales_receipt_detail t
+    LEFT JOIN t_sales_receipt t1 ON t.billid = t1.id
+    where t1.id = #{billid}
+    GROUP BY t.billid
+    ) t ) t1
+    SET t.isinvoicebill = t1.isinvoicebill
+    where t.id = t1.billid and t.id = #{billid}
+  </update>
+
+  <select id="getReceiptDetailListByMap" parameterType="map" resultType="com.hd.agent.sales.model.ReceiptDetail">
+    select
+    <include refid="Base_Detail_Column_List" />
+    from t_sales_receipt_detail
+    WHERE
+    <trim prefixOverrides="and|or">
+      <if test="billid != null" >
+        and billid=#{billid}
+      </if>
+      <if test="billidarrs != null" >
+        and find_in_set(billid,#{billidarrs})
+      </if>
+      <if test="goodsid != null" >
+        and goodsid=#{goodsid}
+      </if>
+      <if test="taxtype != null" >
+        and taxtype=#{taxtype}
+      </if>
+    </trim>
+  </select>
+  <select id="getrejectBillIdListByreject" parameterType="java.lang.String" resultType="map" >
+   select DISTINCT(rejectbillid)
+   from t_sales_receipt_detail
+   where billid=#{id}
+  </select>
+  <select id="getReceiptListBy" resultType="com.hd.agent.sales.model.Receipt" parameterType="java.util.Map" >
+    select
+    <include refid="Base_Column_List" />
+    from t_sales_receipt
+    where
+    <trim prefixOverrides="and|or" >
+      <if test="dataSql != null">
+        and ${dataSql}
+      </if>
+      <if test="idarrs != null" >
+        and FIND_IN_SET(id,#{idarrs})
+      </if>
+      <if test="status!=null">
+        and status=#{status}
+      </if>
+      <if test="statusarr!=null">
+        and FIND_IN_SET(status,#{statusarr})
+      </if>
+      <if test="notprint != null and notprint == 1">
+        and (printtimes is null or printtimes=0)
+      </if>
+      <if test="notphprint != null and notphprint == 1">
+        and (phprinttimes is null or phprinttimes=0)
+      </if>
+    </trim>
+  </select>
+  <update id="updateOrderPrinttimes" parameterType="com.hd.agent.sales.model.Receipt">
+    update t_sales_receipt
+    <set>
+      <if test="printtimes != null">
+        printtimes = IFNULL(printtimes,0)+1,
+        printdatetime = now(),
+      </if>
+      <if test="phprinttimes != null">
+        phprinttimes = IFNULL(phprinttimes,0)+1,
+        phprintdatetime = now(),
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  <select id="getReceiptBillHistoryGoodsPriceList" parameterType="java.util.Map" resultType="java.util.Map">
+    select t.businessdate,t1.unitname,t1.unitnum,t1.taxamount,t1.notaxamount,t1.tax,t1.taxprice,t1.notaxprice,
+    t1.inittaxprice,t1.costprice,t1.costprice realcostprice, t1.auxnumdetail,t1.remark
+    from t_sales_receipt t
+    RIGHT JOIN t_sales_receipt_detail t1 ON t.id = t1.billid
+    <trim prefix="where" prefixOverrides="and|or">
+      <if test="1==1" >
+        and (t.status = '3' or t.status = '4')
+      </if>
+      <if test="goodsid != null">
+        and t1.goodsid = #{goodsid}
+      </if>
+      <if test="customerid != null">
+        and t.customerid = #{customerid}
+      </if>
+      <if test="businessdate != null">
+        <![CDATA[and t.businessdate <= #{businessdate} ]]>
+      </if>
+    </trim>
+    ORDER BY t.businessdate DESC
+  </select>
+
+
+  <select id="getCustomerHisGoodsSalesList" parameterType="java.lang.String" resultType="map">
+    select t.businessdate,t1.goodsid,t1.taxprice,t1.unitnum,t1.auxnumdetail,t1.taxamount,t1.remark
+    from t_sales_receipt t
+    LEFT JOIN t_sales_receipt_detail t1 on t.id=t1.billid
+    where t.businessdate>DATE_SUB(now(), INTERVAL 1 YEAR) and t.customerid=#{customerid} and t1.goodsid=#{goodsid} and t1.isdiscount='0'
+    order by t.businessdate desc
+  </select>
+</mapper>

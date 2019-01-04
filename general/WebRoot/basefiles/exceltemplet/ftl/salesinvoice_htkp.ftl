@@ -1,0 +1,5 @@
+SJJK0101~~销售发票传入~~中山大厦商场
+${billOrderData.id!}~~${billOrderData.detailcount!}~~${cutStringFunc(customerInfo.name,100)}~~${customerInfo.taxno!}~~${cutStringFunc(billOrderData.customeradrrphone,80)}~~${customerInfo.bank!}${customerInfo.cardno!}~~${cutStringFunc(billOrderData.remark,160)}~~${billchecker!}~~${billreceipter!}~~${billgoodsname!}~~${billOrderData.businessdate!}~~${cutStringFunc(billOrderData.salesbank,80)} ${cutStringFunc(billOrderData.salesaddrphone,80)}
+<#list detailList as detailItem>
+${cutStringFunc(detailItem.goodsname,80)}~~${cutStringFunc(detailItem.unitname,16)}~~${detailItem.goodsInfo.model!}~~${detailItem.unitnum!}~~${detailItem.taxamount}~~${detailItem.taxrate!}~~${detailItem.taxtype!}~~${detailItem.discountamount!}~~${detailItem.tax!}~~${detailItem.discounttax!}~~0.00000000~~${detailItem.taxprice!}~~1
+</#list>

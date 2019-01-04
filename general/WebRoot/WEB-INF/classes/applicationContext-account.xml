@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+	
+	<!-- dao -->
+	<bean id="salesInvoiceMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.account.dao.SalesInvoiceMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="salesInvoiceBillMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.account.dao.SalesInvoiceBillMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="collectionOrderMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.account.dao.CollectionOrderMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="salesBillCheckMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.account.dao.SalesBillCheckMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="customerCapitalMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.account.dao.CustomerCapitalMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="purchaseInvoiceMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.account.dao.PurchaseInvoiceMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="payorderMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.account.dao.PayorderMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="salesStatementMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.account.dao.SalesStatementMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="customerPushBalanceMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.account.dao.CustomerPushBalanceMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="purchaseStatementMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.account.dao.PurchaseStatementMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="purchaseInvoicePushMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.account.dao.PurchaseInvoicePushMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="supplierCapitalMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.account.dao.SupplierCapitalMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="salesFreeOrderMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.account.dao.SalesFreeOrderMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="beginAmountMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	<property name="mapperInterface" value="com.hd.agent.account.dao.BeginAmountMapper" />
+	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+</bean>
+    <bean id="bankAmountMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.account.dao.BankAmountMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+	<bean id="beginDueMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.hd.agent.account.dao.BeginDueMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+	</bean>
+    <bean id="receiptHandMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.account.dao.ReceiptHandMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="paymentVoucherMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.account.dao.PaymentVoucherMapper" />
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+	<bean id="financeMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.hd.agent.basefiles.dao.FinanceMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+	</bean>
+	<bean id="goldTaxCustomerInvoiceMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.hd.agent.account.dao.GoldTaxCustomerInvoiceMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+	</bean>
+
+    <!-- service -->
+    <bean id="baseAccountServiceImpl" class="com.hd.agent.account.service.impl.BaseAccountServiceImpl" parent="baseFilesServiceImpl">
+    	<property name="bankAmountMapper" ref="bankAmountMapper"></property>
+		<property name="salesInvoiceMapper" ref="salesInvoiceMapper"></property>
+		<property name="salesInvoiceBillMapper" ref="salesInvoiceBillMapper"></property>
+    </bean>
+    
+    <bean id="salesInvoiceService" parent="baseTransactionProxy">
+    	<property name="target" ref="salesInvoiceServiceImpl"></property>  
+    </bean>
+    <bean id="salesInvoiceServiceImpl" class="com.hd.agent.account.service.impl.SalesInvoiceServiceImpl" parent="baseAccountServiceImpl">
+    	<property name="salesInvoiceMapper" ref="salesInvoiceMapper"></property>
+        <property name="salesInvoiceBillMapper" ref="salesInvoiceBillMapper"></property>
+    	<property name="salesOutService" ref="salesOutService"></property>
+    	<property name="salesExtService" ref="salesExtService"></property>
+    	<property name="customerPushBalanceMapper" ref="customerPushBalanceMapper"></property>
+    	<property name="salesStatementMapper" ref="salesStatementMapper"></property>
+    	<property name="customerCapitalMapper" ref="customerCapitalMapper"></property>
+    	<property name="salesStatementService" ref="salesStatementService"></property>
+    	<property name="beginAmountMapper" ref="beginAmountMapper"></property>
+    	<property name="storageSaleService" ref="storageSaleService"></property>
+        <property name="receiptMapper" ref="receiptMapper"></property>
+		<property name="financeMapper" ref="financeMapper"></property>
+    </bean>
+    
+    <bean id="salesInvoiceBillService" parent="baseTransactionProxy">
+    	<property name="target" ref="salesInvoiceBillServiceImpl"></property>  
+    </bean>
+    <bean id="salesInvoiceBillServiceImpl" class="com.hd.agent.account.service.impl.SalesInvoiceBillServiceImpl" parent="baseAccountServiceImpl">
+    	<property name="salesInvoiceBillMapper" ref="salesInvoiceBillMapper"></property>
+        <property name="salesInvoiceMapper" ref="salesInvoiceMapper"></property>
+    	<property name="customerPushBalanceMapper" ref="customerPushBalanceMapper"></property>
+    	<property name="customerCapitalMapper" ref="customerCapitalMapper"></property>
+    	<property name="salesOutService" ref="salesOutService"></property>
+    	<property name="storageSaleService" ref="storageSaleService"></property>
+    	<property name="salesExtService" ref="salesExtService"></property>
+        <property name="receiptMapper" ref="receiptMapper"></property>
+    	<property name="salesStatementService" ref="salesStatementService"></property>
+    	<property name="salesStatementMapper" ref="salesStatementMapper"></property>
+        <property name="storageSaleOutService" ref="storageSaleOutService"></property>
+		<property name="financeMapper" ref="financeMapper"></property>
+    </bean>
+    
+    <bean id="collectionOrderService" parent="baseTransactionProxy">
+    	<property name="target" ref="collectionOrderServiceImpl"></property>  
+    </bean>
+    <bean id="collectionOrderServiceImpl" class="com.hd.agent.account.service.impl.CollectionOrderServiceImpl" parent="baseAccountServiceImpl">
+    	<property name="collectionOrderMapper" ref="collectionOrderMapper"></property>
+    	<property name="customerCapitalMapper" ref="customerCapitalMapper"></property>
+    	<property name="salesStatementMapper" ref="salesStatementMapper"></property>
+    	<property name="salesInvoiceMapper" ref="salesInvoiceMapper"></property>
+    	<property name="customerPushBalanceMapper" ref="customerPushBalanceMapper"></property>
+    </bean>
+
+	<bean id="collectionOrderForOaService" parent="baseTransactionProxy">
+		<property name="target" ref="collectionOrderForOaServiceImpl"></property>
+	</bean>
+	<bean id="collectionOrderForOaServiceImpl" class="com.hd.agent.account.service.impl.ext.CollectionOrderForOaServiceImpl" parent="baseAccountServiceImpl">
+		<property name="collectionOrderMapper" ref="collectionOrderMapper"></property>
+		<property name="customerCapitalMapper" ref="customerCapitalMapper"></property>
+		<property name="salesStatementMapper" ref="salesStatementMapper"></property>
+		<property name="salesInvoiceMapper" ref="salesInvoiceMapper"></property>
+	</bean>
+    
+    <bean id="salesBillCheckService" parent="baseTransactionProxy">
+    	<property name="target" ref="salesBillCheckServiceImpl"></property>  
+    </bean>
+    <bean id="salesBillCheckServiceImpl" class="com.hd.agent.account.service.impl.SalesBillCheckServiceImpl" parent="baseAccountServiceImpl">
+    	<property name="salesBillCheckMapper" ref="salesBillCheckMapper"></property>
+    </bean>
+    
+    <bean id="purchaseInvoiceService" parent="baseTransactionProxy">
+    	<property name="target" ref="purchaseInvoiceServiceImpl"></property>  
+    </bean>
+    <bean id="purchaseInvoiceServiceImpl" class="com.hd.agent.account.service.impl.PurchaseInvoiceServiceImpl" parent="baseAccountServiceImpl">
+    	<property name="purchaseInvoiceMapper" ref="purchaseInvoiceMapper"></property>
+    	<property name="purchaseForAccountService" ref="purchaseForAccountService"></property>
+    	<property name="arrivalOrderService" ref="arrivalOrderService"></property>
+    	<property name="returnOrderService" ref="returnOrderService"></property>
+		<property name="beginDueService" ref="beginDueService"></property>
+    	<property name="purchaseInvoicePushMapper" ref="purchaseInvoicePushMapper"></property>
+        <property name="supplierCapitalMapper" ref="supplierCapitalMapper"></property>
+    </bean>
+    <bean id="payorderService" parent="baseTransactionProxy">
+    	<property name="target" ref="payorderServiceImpl"></property>  
+    </bean>
+    <bean id="payorderServiceImpl" class="com.hd.agent.account.service.impl.PayorderServiceImpl" parent="baseAccountServiceImpl">
+    	<property name="payorderMapper" ref="payorderMapper"></property>
+    	<property name="purchaseStatementMapper" ref="purchaseStatementMapper"></property>
+    	<property name="supplierCapitalMapper" ref="supplierCapitalMapper"></property>
+    </bean>
+    <bean id="salesStatementService" parent="baseTransactionProxy">
+    	<property name="target" ref="salesStatementServiceImpl"></property>  
+    </bean>
+    <bean id="salesStatementServiceImpl" class="com.hd.agent.account.service.impl.SalesStatementServiceImpl" parent="baseAccountServiceImpl">
+    	<property name="collectionOrderMapper" ref="collectionOrderMapper"></property>
+    	<property name="salesInvoiceMapper" ref="salesInvoiceMapper"></property>
+    	<property name="salesInvoiceBillMapper" ref="salesInvoiceBillMapper"></property>
+    	<property name="salesStatementMapper" ref="salesStatementMapper"></property>
+    	<property name="customerCapitalMapper" ref="customerCapitalMapper"></property>
+    	<property name="salesOutService" ref="salesOutService"></property>
+    	<property name="customerPushBalanceMapper" ref="customerPushBalanceMapper"></property>
+    	<property name="saleoutMapper" ref="saleoutMapper"></property>
+    	<property name="saleRejectEnterMapper" ref="saleRejectEnterMapper"></property>
+    </bean>
+     <bean id="customerPushBanlanceService" parent="baseTransactionProxy">
+    	<property name="target" ref="customerPushBanlanceServiceImpl"></property>  
+    </bean>
+    <bean id="customerPushBanlanceServiceImpl" class="com.hd.agent.account.service.impl.CustomerPushBanlanceServiceImpl" parent="baseAccountServiceImpl">
+    	<property name="customerPushBalanceMapper" ref="customerPushBalanceMapper"></property>
+    	<property name="salesExtService" ref="salesExtService"></property>
+    </bean>
+    <bean id="purchaseStatementService" parent="baseTransactionProxy">
+    	<property name="target" ref="purchaseStatementServiceImpl"></property>  
+    </bean>
+    <bean id="purchaseStatementServiceImpl" class="com.hd.agent.account.service.impl.PurchaseStatementServiceImpl" parent="baseAccountServiceImpl">
+    	<property name="purchaseStatementMapper" ref="purchaseStatementMapper"></property>
+    	<property name="payorderMapper" ref="payorderMapper"></property>
+    	<property name="purchaseInvoiceMapper" ref="purchaseInvoiceMapper"></property>
+    	<property name="purchaseForAccountService" ref="purchaseForAccountService"></property>
+    	<property name="arrivalOrderMapper" ref="arrivalOrderMapper"></property>
+    	<property name="returnOrderMapper" ref="returnOrderMapper"></property>
+    	<property name="purchaseInvoicePushMapper" ref="purchaseInvoicePushMapper"></property>
+    	<property name="supplierCapitalMapper" ref="supplierCapitalMapper"></property>
+        <property name="arrivalOrderService" ref="arrivalOrderService"></property>
+    </bean>
+    <bean id="salesFreeOrderService" parent="baseTransactionProxy">
+    	<property name="target" ref="salesFreeOrderServiceImpl"></property>  
+    </bean>
+    <bean id="salesFreeOrderServiceImpl" class="com.hd.agent.account.service.impl.SalesFreeOrderServiceImpl" parent="baseAccountServiceImpl">
+    	<property name="salesFreeOrderMapper" ref="salesFreeOrderMapper"></property>
+    	<property name="collectionOrderMapper" ref="collectionOrderMapper"></property>
+    	<property name="customerCapitalMapper" ref="customerCapitalMapper"></property>
+    	<property name="financeFundsReturnMapper" ref="financeFundsReturnMapper"></property>
+    </bean>
+    
+    <bean id="beginAmountService" parent="baseTransactionProxy">
+    	<property name="target" ref="beginAmountServiceImpl"></property>  
+    </bean>
+    <bean id="beginAmountServiceImpl" class="com.hd.agent.account.service.impl.BeginAmountServiceImpl" parent="baseAccountServiceImpl">
+    	<property name="beginAmountMapper" ref="beginAmountMapper"></property>
+    </bean>
+	<bean id="beginDueService" parent="baseTransactionProxy">
+		<property name="target" ref="beginDueServiceImpl"></property>
+	</bean>
+	<bean id="beginDueServiceImpl" class="com.hd.agent.account.service.impl.BeginDueServiceImpl" parent="baseAccountServiceImpl">
+		<property name="beginDueMapper" ref="beginDueMapper"></property>
+	</bean>
+    <bean id="receiptHandService" parent="baseTransactionProxy">
+    	<property name="target" ref="receiptHandServiceImpl"></property>  
+    </bean>
+    <bean id="receiptHandServiceImpl" class="com.hd.agent.account.service.impl.ReceiptHandServiceImpl" parent="baseFilesServiceImpl">
+    	<property name="receiptHandMapper" ref="receiptHandMapper"></property>
+    	<property name="receiptMapper" ref="receiptMapper"></property>
+    	<property name="rejectBillMapper" ref="salesRejectBillMapper"></property>
+    	<property name="customerPushBalanceMapper" ref="customerPushBalanceMapper"></property>
+    </bean>
+    
+    <bean id="bankAmountService" parent="baseTransactionProxy">
+    	<property name="target" ref="bankAmountServiceImpl"></property>  
+    </bean>
+    <bean id="bankAmountServiceImpl" class="com.hd.agent.account.service.impl.BankAmountServiceImpl" parent="baseAccountServiceImpl">
+    </bean>
+    
+    <bean id="accountForOAService" parent="baseTransactionProxy">
+    	<property name="target" ref="accountForOAServiceImpl"></property>  
+    </bean>
+    <bean id="accountForOAServiceImpl" class="com.hd.agent.account.service.impl.AccountForOAServiceImpl" parent="baseAccountServiceImpl">
+    	<property name="payorderService" ref="payorderService"></property>
+    </bean>
+	<bean id="paymentVoucherService" parent="baseTransactionProxy">
+		<property name="target" ref="paymentVoucherServiceImpl"></property>
+	</bean>
+	<bean id="paymentVoucherServiceImpl" class="com.hd.agent.account.service.impl.PaymentVoucherServiceImpl" parent="baseFilesServiceImpl">
+		<property name="paymentVoucherMapper" ref="paymentVoucherMapper"></property>
+		<property name="collectionOrderMapper" ref="collectionOrderMapper"></property>
+	</bean>
+	<bean id="goldTaxCustomerInvoiceService" parent="baseTransactionProxy">
+		<property name="target" ref="goldTaxCustomerInvoiceServiceImpl"></property>
+	</bean>
+	<bean id="goldTaxCustomerInvoiceServiceImpl" class="com.hd.agent.account.service.impl.GoldTaxCustomerInvoiceServiceImpl" parent="baseFilesServiceImpl">
+		<property name="goldTaxCustomerInvoiceMapper" ref="goldTaxCustomerInvoiceMapper"></property>
+	</bean>
+    <!-- action -->
+    <bean id="salesInvoiceAction" class="com.hd.agent.account.action.SalesInvoiceAction" scope="prototype" parent="baseFilesAction">
+    	<property name="salesInvoiceService" ref="salesInvoiceService"></property>
+    </bean>
+    <bean id="salesInvoiceBillAction" class="com.hd.agent.account.action.SalesInvoiceBillAction" scope="prototype" parent="baseFilesAction">
+    	<property name="salesInvoiceBillService" ref="salesInvoiceBillService"></property>
+    	<property name="salesOutService" ref="salesOutService"></property>
+        <property name="storageSaleOutService" ref="storageSaleOutService"></property>
+    </bean>
+    <bean id="collectionOrderAction" class="com.hd.agent.account.action.CollectionOrderAction" scope="prototype" parent="baseFilesAction">
+    	<property name="collectionOrderService" ref="collectionOrderService"></property>
+        <property name="salesReceiptService" ref="salesReceiptService"></property>
+		<property name="salesInvoiceService" ref="salesInvoiceService"></property>
+    </bean>
+    <bean id="salesBillCheckAction" class="com.hd.agent.account.action.SalesBillCheckAction" scope="prototype" parent="baseFilesAction">
+    	<property name="salesBillCheckService" ref="salesBillCheckService"></property>
+    	<property name="excelService" ref="excelService"></property>
+    </bean>
+    
+    <bean id="purchaseInvoiceAction" class="com.hd.agent.account.action.PurchaseInvoiceAction" scope="prototype" parent="baseFilesAction">
+    	<property name="purchaseInvoiceService" ref="purchaseInvoiceService"></property>
+    	<property name="arrivalOrderService" ref="arrivalOrderService"></property>
+    	<property name="returnOrderService" ref="returnOrderService"></property>
+		<property name="beginDueService" ref="beginDueService"></property>
+    </bean>
+    <bean id="payorderAction" class="com.hd.agent.account.action.PayorderAction" scope="prototype" parent="baseFilesAction">
+    	<property name="payorderService" ref="payorderService"></property>
+    </bean>
+    <bean id="salesStatementAction" class="com.hd.agent.account.action.SalesStatementAction" scope="prototype" parent="baseFilesAction">
+    	<property name="salesStatementService" ref="salesStatementService"></property>
+    	<property name="collectionOrderService" ref="collectionOrderService"></property>
+    	<property name="salesInvoiceService" ref="salesInvoiceService"></property>
+    	<property name="customerPushBanlanceService" ref="customerPushBanlanceService"></property>
+    	<property name="salesInvoiceBillService" ref="salesInvoiceBillService"></property>
+    </bean>
+    <bean id="customerPushBanlanceAction" class="com.hd.agent.account.action.CustomerPushBanlanceAction" scope="prototype" parent="baseFilesAction">
+    	<property name="customerPushBanlanceService" ref="customerPushBanlanceService"></property>
+    </bean>
+    <bean id="purchaseStatementAction" class="com.hd.agent.account.action.PurchaseStatementAction" scope="prototype" parent="baseFilesAction">
+    	<property name="purchaseStatementService" ref="purchaseStatementService"></property>
+    	<property name="payorderService" ref="payorderService"></property>
+    	<property name="purchaseInvoiceService" ref="purchaseInvoiceService"></property>
+    	<property name="buyService" ref="buyService"></property>
+    </bean>
+    <bean id="salesFreeOrderAction" class="com.hd.agent.account.action.SalesFreeOrderAction" scope="prototype" parent="baseFilesAction">
+    	<property name="salesFreeOrderService" ref="salesFreeOrderService"></property>
+    	<property name="paymentdaysSetService" ref="paymentdaysSetService"></property>
+    </bean>
+    <bean id="beginAmountAction" class="com.hd.agent.account.action.BeginAmountAction" scope="prototype" parent="baseFilesAction">
+    	<property name="beginAmountService" ref="beginAmountService"></property>
+    </bean>
+	<bean id="beginDueAction" class="com.hd.agent.account.action.BeginDueAction" scope="prototype" parent="baseFilesAction">
+		<property name="beginDueService" ref="beginDueService"></property>
+	</bean>
+
+    <bean id="bankAmountAction" class="com.hd.agent.account.action.BankAmountAction" scope="prototype" parent="baseFilesAction">
+    	<property name="bankAmountService" ref="bankAmountService"></property>
+        <property name="payorderService" ref="payorderService"></property>
+        <property name="collectionOrderService" ref="collectionOrderService"></property>
+        <property name="journalSheetService" ref="journalSheetService"></property>
+        <property name="costsFeeService" ref="costsFeeService"></property>
+        <property name="deptDailyCostService" ref="deptDailyCostService"></property>
+    </bean>
+    <bean id="receiptHandAction" class="com.hd.agent.account.action.ReceiptHandAction" scope="prototype" parent="baseFilesAction">
+    	<property name="receiptHandService" ref="receiptHandService"></property>
+    </bean>
+	<bean id="paymentVoucherAction" class="com.hd.agent.account.action.PaymentVoucherAction" scope="prototype" parent="baseFilesAction">
+		<property name="paymentVoucherService" ref="paymentVoucherService"></property>
+	</bean>
+	<bean id="goldTaxCustomerInvoiceAction" class="com.hd.agent.account.action.GoldTaxCustomerInvoiceAction" scope="prototype" parent="baseFilesAction">
+		<property name="goldTaxCustomerInvoiceService" ref="goldTaxCustomerInvoiceService"></property>
+	</bean>
+
+</beans>

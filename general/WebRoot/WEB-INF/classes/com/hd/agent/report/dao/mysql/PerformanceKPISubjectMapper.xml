@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.report.dao.PerformanceKPISubjectMapper" >
+	<!-- 缓存 -->
+	<cache type="org.mybatis.caches.ehcache.EhcacheCache"></cache>
+	<!-- 业绩考核表指标 -->	
+	<sql id="performanceKPISubject_Column_List">
+    id, code, name, seq, state, addtime, adduserid, addusername, remark, deptid, score, 
+    svalue
+	</sql>
+  	<select id="getPerformanceKPISubjectList" resultType="com.hd.agent.report.model.PerformanceKPISubject">
+		select
+		<include refid="performanceKPISubject_Column_List"/>
+		from t_report_performance_kpisubject
+	</select>
+	<select id="showPerformanceKPISubjectEnableList" resultType="com.hd.agent.report.model.PerformanceKPISubject">
+		select
+		<include refid="performanceKPISubject_Column_List"/>
+		from t_report_performance_kpisubject
+		where state='1'
+		order by seq asc
+	</select>	
+	<select id="getPerformanceKPISubjectListByMap" resultType="com.hd.agent.report.model.PerformanceKPISubject" parameterType="map">
+		select
+		<include refid="performanceKPISubject_Column_List"/>
+		from t_report_performance_kpisubject		
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="state != null">
+				and state = #{state}
+			</if>
+			<if test="deptid != null">
+				and deptid = #{deptid}
+			</if>
+		</trim>		
+	  	<if test="isQueryByOrder != null">  		
+		  	<choose>
+		  		<when test="orderBySql !=null and orderBySql !=''">
+		  			order by ${condition.orderBySql}
+		  		</when>
+		  		<otherwise>
+		  			<if test="orderSort !=null and orderBy !=null">
+				      	order by ${condition.orderSort} ${condition.orderBy}
+				     </if>
+		  		</otherwise>
+		  		
+		  	</choose>
+	  	</if>
+	</select>
+	<sql id="PerformanceKPISubjectPageList_Where_case">		
+		<if test="condition.code != null">
+			and code like CONCAT('%',#{condition.code},'%')
+		</if>
+		<if test="condition.name != null">
+			and name like CONCAT('%',#{condition.name},'%')
+		</if>
+		<if test="condition.state != null">
+			and state = #{condition.state}
+		</if>
+		<if test="condition.deptid != null">
+			and deptid = #{condition.deptid}
+		</if>
+	</sql>
+	<select id="getPerformanceKPISubjectPageList" resultType="com.hd.agent.report.model.PerformanceKPISubject" parameterType="com.hd.agent.common.util.PageMap" useCache="false">
+		select
+		<include refid="performanceKPISubject_Column_List"/>
+		from t_report_performance_kpisubject
+		<trim prefix="where" prefixOverrides="and|or">
+			<include refid="PerformanceKPISubjectPageList_Where_case" />
+		</trim>
+		<include refid="common.Page_limit"/>
+	</select>
+	<select id="getPerformanceKPISubjectCount" resultType="int" parameterType="com.hd.agent.common.util.PageMap" useCache="false">
+		select count(1) from t_report_performance_kpisubject
+		<trim prefix="where" prefixOverrides="and|or">
+			<include refid="PerformanceKPISubjectPageList_Where_case" />
+		</trim>
+	</select>
+
+	<select id="getPerformanceKPISubjectByCode" parameterType="java.lang.String" resultType="com.hd.agent.report.model.PerformanceKPISubject">
+		select 
+		<include refid="performanceKPISubject_Column_List"/>
+		from t_report_performance_kpisubject
+		where code = #{code}
+	</select>
+	<select id="getPerformanceKPISubjectById" parameterType="java.lang.String" resultType="com.hd.agent.report.model.PerformanceKPISubject">
+		select 
+		<include refid="performanceKPISubject_Column_List"/>
+		from t_report_performance_kpisubject
+		where id = #{id}
+	</select>
+	<insert id="addPerformanceKPISubject" parameterType="com.hd.agent.report.model.PerformanceKPISubject" >
+		insert into t_report_performance_kpisubject
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="code != null" >
+	        code,
+	      </if>
+	      <if test="name != null" >
+	        name,
+	      </if>
+	      <if test="seq != null" >
+	        seq,
+	      </if>
+	      <if test="state != null" >
+	        state,
+	      </if>
+	      <if test="addtime != null" >
+	        addtime,
+	      </if>
+	      <if test="adduserid != null" >
+	        adduserid,
+	      </if>
+	      <if test="addusername != null" >
+	        addusername,
+	      </if>
+	      <if test="remark != null" >
+	        remark,
+	      </if>
+	      <if test="deptid != null" >
+	        deptid,
+	      </if>
+	      <if test="score != null" >
+	        score,
+	      </if>
+	      <if test="svalue != null" >
+	        svalue,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="code != null" >
+	        #{code},
+	      </if>
+	      <if test="name != null" >
+	        #{name},
+	      </if>
+	      <if test="seq != null" >
+	        #{seq},
+	      </if>
+	      <if test="state != null" >
+	        #{state},
+	      </if>
+	      <if test="addtime != null" >
+	        #{addtime},
+	      </if>
+	      <if test="adduserid != null" >
+	        #{adduserid},
+	      </if>
+	      <if test="addusername != null" >
+	        #{addusername},
+	      </if>
+	      <if test="remark != null" >
+	        #{remark},
+	      </if>
+	      <if test="deptid != null" >
+	        #{deptid},
+	      </if>
+	      <if test="score != null" >
+	        #{score},
+	      </if>
+	      <if test="svalue != null" >
+	        #{svalue},
+	      </if>
+	    </trim>
+		<selectKey resultType="int" keyProperty="id"
+			order="AFTER">
+			select LAST_INSERT_ID() as id
+	    </selectKey>
+	</insert>
+	<update id="updatePerformanceKPISubject" parameterType="com.hd.agent.report.model.PerformanceKPISubject">
+		update t_report_performance_kpisubject
+	    <set >
+	      <if test="code != null" >
+	        code = #{code},
+	      </if>
+	      <if test="name != null" >
+	        name = #{name},
+	      </if>
+	      <if test="seq != null" >
+	        seq = #{seq},
+	      </if>
+	      <if test="state != null" >
+	        state = #{state},
+	      </if>
+	      <if test="addtime != null" >
+	        addtime = #{addtime},
+	      </if>
+	      <if test="adduserid != null" >
+	        adduserid = #{adduserid},
+	      </if>
+	      <if test="addusername != null" >
+	        addusername = #{addusername},
+	      </if>
+	      <if test="remark != null" >
+	        remark = #{remark},
+	      </if>
+	      <if test="deptid != null" >
+	        deptid = #{deptid},
+	      </if>
+	      <if test="score != null" >
+	        score = #{score},
+	      </if>
+	      <if test="svalue != null" >
+	        svalue = #{svalue},
+	      </if>
+	    </set>
+	    where id = #{id}
+	</update>
+	<update id="disablePerformanceKPISubject" parameterType="java.lang.String">
+		update t_report_performance_kpisubject set state='0' where id=#{id} and state ='1' 
+	</update>
+	<update id="enablePerformanceKPISubject" parameterType="java.lang.String">
+		update t_report_performance_kpisubject set state='1' where id = #{id} and (state !='1' or state is null)
+	</update>
+	<delete id="deletePerformanceKPISubjectById" parameterType="java.lang.String">
+		delete from t_report_performance_kpisubject
+		where id=#{id} and state !='1'
+	</delete>
+	<delete id="deletePerformanceKPISubjectByCode" parameterType="java.lang.String">
+		delete from t_report_performance_kpisubject
+		where code=#{code} and state !='1'
+	</delete>
+	<select id="getPerformanceKPISubjectCountByMap" resultType="int" parameterType="map" useCache="false">
+		select count(1) from t_report_performance_kpisubject
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="code != null">
+				and code = #{code}
+			</if>
+			<if test="deptid != null">
+				and deptid = #{deptid}
+			</if>
+			<if test="notCurId != null">
+				and id != #{notCurId}
+			</if>
+		</trim>
+	</select>	
+	<select id="getPerformanceKPISubjectByMap" resultType="com.hd.agent.report.model.PerformanceKPISubject" parameterType="map" >
+		select count(1) from t_report_performance_kpisubject
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="code != null">
+				and code = #{code}
+			</if>
+			<if test="state != null">
+				and state = #{state}
+			</if>
+			<if test="deptid != null">
+				and deptid = #{deptid}
+			</if>
+		</trim>
+	</select>
+</mapper>

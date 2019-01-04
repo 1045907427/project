@@ -1,0 +1,2765 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hd.agent.storage.dao.SaleoutMapper">
+	<sql id="SaleOut_Column_List">
+	    id, businessdate, status, remark, adduserid, addusername, adddeptid, adddeptname, 
+	    addtime, modifyuserid, modifyusername, modifytime, audituserid, auditusername, audittime, 
+	    stopuserid, stopusername, stoptime, closetime, printtimes, customerid,pcustomerid,customersort, salesarea,salesdept, 
+	    salesuser, storageid, saleorderid,sourcetype, sourceid,handlerid,settletype,paytype, field01, field02, field03, field04, field05, 
+	    field06, field07, field08, isrefer,iswrite,phprinttimes,checkdate,invoicedate,writeoffdate,receiptid,invoiceid,initsendamount,initsendcostamount,
+	    sendamount,sendnotaxamount,sendcostamount,checkamount,checknotaxamount,invoiceamount,invoicenotaxamount,writeoffamount,writeoffnotaxamount,indooruserid,duefromdate,
+	    isdelivery,ischeck,checktime,checkuserid,checkusername,isbigsaleout,isinvoicebill,storager,printdatetime,phprintdatetime,vouchertimes
+	</sql>
+	<sql id="SaleOut_Column_List_prefix_t">
+		t.id, t.businessdate, t.status, t.remark, t.adduserid, t.addusername, t.adddeptid, t.adddeptname,
+		t.addtime, t.modifyuserid, t.modifyusername, t.modifytime, t.audituserid, t.auditusername, t.audittime,
+		t.stopuserid, t.stopusername, t.stoptime, t.closetime, t.printtimes, t.customerid,t.pcustomerid, t.salesarea,t.salesdept,
+		t.salesuser, t.storageid, t.saleorderid,t.sourcetype, t.sourceid,t.handlerid,t.settletype,t.paytype, t.field01, t.field02, t.field03, t.field04, t.field05,
+		t.field06, t.field07, t.field08, t.isrefer,t.iswrite,t.phprinttimes,t.checkdate,t.invoicedate,t.writeoffdate,t.receiptid,t.invoiceid,t.initsendamount,t.initsendcostamount,
+		t.sendamount,t.sendnotaxamount,t.sendcostamount,t.checkamount,t.checknotaxamount,t.invoiceamount,t.invoicenotaxamount,t.writeoffamount,t.writeoffnotaxamount,t.indooruserid,t.duefromdate,
+		t.isdelivery,t.ischeck,t.checktime,t.checkuserid,t.checkusername,t.isbigsaleout,t.isinvoicebill,t.storager,t.printdatetime,t.phprintdatetime,t.vouchertimes
+	</sql>
+	<sql id="SaleOutDetail_Column_List">
+	    id, saleoutid,dispatchbillid, dispatchbilldetailid, summarybatchid,isdiscount,isbranddiscount, goodsid,groupid,goodssort,brandid,branduser,branddept,supplierid,supplieruser, storageid, storagelocationid, 
+	    batchno, unitid, unitname,initnum, unitnum, realsendnum, returnnum, auxunitid, auxunitname, 
+	    auxinitnum,auxnum,auxremainder, auxnumdetail,totalbox, auxrealsendnum, auxrealsendnumdetail, auxreturnnum, auxreturnnumdetail, 
+	    taxprice,inittaxamount, taxamount, realtaxamount,returntaxamount, notaxprice,initnotaxamount, notaxamount, realnotaxamount,returnnotaxamount,inittaxprice,costprice,realcostprice, taxtype, 
+	    tax, remark, produceddate, deadline, seq,isinvoice,iswriteoff,invoicedate,writeoffdate,field01, field02, field03, field04, field05, field06, field07, field08,deliverytype,isinvoicebill,duefromdate
+	</sql>
+	<insert id="addSaleOutDetail" parameterType="com.hd.agent.storage.model.SaleoutDetail">
+		insert into t_storage_saleout_detail
+	    <trim prefix="(" suffix=")" suffixOverrides=",">
+	      <if test="id != null">
+	        id,
+	      </if>
+	      <if test="saleoutid != null">
+	        saleoutid,
+	      </if>
+	      <if test="summarybatchid != null">
+	        summarybatchid,
+	      </if>
+	      <if test="isdiscount != null">
+	        isdiscount,
+	      </if>
+	      <if test="isbranddiscount != null">
+	        isbranddiscount,
+	      </if>
+	      <if test="dispatchbillid != null">
+	        dispatchbillid,
+	      </if>
+	      <if test="dispatchbilldetailid != null">
+	        dispatchbilldetailid,
+	      </if>
+	      <if test="goodsid != null">
+	        goodsid,
+	      </if>
+	      <if test="groupid != null">
+	        groupid,
+	      </if>
+	      <if test="goodssort != null">
+	        goodssort,
+	      </if>
+	      <if test="brandid != null">
+	        brandid,
+	      </if>
+	      <if test="branduser != null">
+	        branduser,
+	      </if>
+	      <if test="branddept != null">
+	        branddept,
+	      </if>
+	      <if test="supplierid != null">
+	        supplierid,
+	      </if>
+	      <if test="supplieruser != null">
+	        supplieruser,
+	      </if>
+	      <if test="storageid != null">
+	        storageid,
+	      </if>
+	      <if test="storagelocationid != null">
+	        storagelocationid,
+	      </if>
+	      <if test="batchno != null">
+	        batchno,
+	      </if>
+	      <if test="unitid != null">
+	        unitid,
+	      </if>
+	      <if test="unitname != null">
+	        unitname,
+	      </if>
+	      <if test="initnum != null">
+	        initnum,
+	      </if>
+	      <if test="unitnum != null">
+	        unitnum,
+	      </if>
+	      <if test="realsendnum != null">
+	        realsendnum,
+	      </if>
+	      <if test="returnnum != null">
+	        returnnum,
+	      </if>
+	      <if test="auxunitid != null">
+	        auxunitid,
+	      </if>
+	      <if test="auxunitname != null">
+	        auxunitname,
+	      </if>
+	      <if test="auxinitnum != null">
+	        auxinitnum,
+	      </if>
+	      <if test="auxnum != null">
+	        auxnum,
+	      </if>
+	      <if test="auxremainder != null">
+	        auxremainder,
+	      </if>
+	      <if test="auxnumdetail != null">
+	        auxnumdetail,
+	      </if>
+	      <if test="totalbox != null">
+	        totalbox,
+	      </if>
+	      <if test="auxrealsendnum != null">
+	        auxrealsendnum,
+	      </if>
+	      <if test="auxrealsendnumdetail != null">
+	        auxrealsendnumdetail,
+	      </if>
+	      <if test="auxreturnnum != null">
+	        auxreturnnum,
+	      </if>
+	      <if test="auxreturnnumdetail != null">
+	        auxreturnnumdetail,
+	      </if>
+	      <if test="taxprice != null">
+	        taxprice,
+	      </if>
+	      <if test="inittaxamount != null">
+	        inittaxamount,
+	      </if>
+	      <if test="taxamount != null">
+	        taxamount,
+	      </if>
+	      <if test="realtaxamount != null">
+	        realtaxamount,
+	      </if>
+	      <if test="returntaxamount != null">
+	        returntaxamount,
+	      </if>
+	      <if test="notaxprice != null">
+	        notaxprice,
+	      </if>
+	      <if test="initnotaxamount != null">
+	        initnotaxamount,
+	      </if>
+	      <if test="notaxamount != null">
+	        notaxamount,
+	      </if>
+	      <if test="realnotaxamount != null">
+	        realnotaxamount,
+	      </if>
+	      <if test="returnnotaxamount != null">
+	        returnnotaxamount,
+	      </if>
+	      <if test="inittaxprice != null">
+	        inittaxprice,
+	      </if>
+	      <if test="costprice != null">
+	        costprice,
+	      </if>
+	      <if test="realcostprice != null">
+	        realcostprice,
+	      </if>
+	      <if test="taxtype != null">
+	        taxtype,
+	      </if>
+	      <if test="tax != null">
+	        tax,
+	      </if>
+	      <if test="remark != null">
+	        remark,
+	      </if>
+	      <if test="produceddate != null">
+	        produceddate,
+	      </if>
+	      <if test="deadline != null">
+	        deadline,
+	      </if>
+	      <if test="seq != null">
+	        seq,
+	      </if>
+	      <if test="isinvoice != null">
+	        isinvoice,
+	      </if>
+	      <if test="iswriteoff != null">
+	        iswriteoff,
+	      </if>
+	      <if test="field01 != null" >
+	        field01,
+	      </if>
+	      <if test="field02 != null" >
+	        field02,
+	      </if>
+	      <if test="field03 != null" >
+	        field03,
+	      </if>
+	      <if test="field04 != null" >
+	        field04,
+	      </if>
+	      <if test="field05 != null" >
+	        field05,
+	      </if>
+	      <if test="field06 != null" >
+	        field06,
+	      </if>
+	      <if test="field07 != null" >
+	        field07,
+	      </if>
+	      <if test="field08 != null" >
+	        field08,
+	      </if>
+	      <if test="deliverytype != null" >
+	        deliverytype,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides=",">
+	      <if test="id != null">
+	        #{id},
+	      </if>
+	      <if test="saleoutid != null">
+	        #{saleoutid},
+	      </if>
+	      <if test="summarybatchid != null">
+	        #{summarybatchid},
+	      </if>
+	      <if test="isdiscount != null">
+	        #{isdiscount},
+	      </if>
+	      <if test="isbranddiscount != null">
+	        #{isbranddiscount},
+	      </if>
+	      <if test="dispatchbillid != null">
+	        #{dispatchbillid},
+	      </if>
+	      <if test="dispatchbilldetailid != null">
+	        #{dispatchbilldetailid},
+	      </if>
+	      <if test="goodsid != null">
+	        #{goodsid},
+	      </if>
+	      <if test="groupid != null">
+	        #{groupid},
+	      </if>
+	      <if test="goodssort != null">
+	        #{goodssort},
+	      </if>
+	      <if test="brandid != null">
+	        #{brandid},
+	      </if>
+	      <if test="branduser != null">
+	        #{branduser},
+	      </if>
+	      <if test="branddept != null">
+	        #{branddept},
+	      </if>
+	      <if test="supplierid != null">
+	        #{supplierid},
+	      </if>
+	      <if test="supplieruser != null">
+	        #{supplieruser},
+	      </if>
+	      <if test="storageid != null">
+	        #{storageid},
+	      </if>
+	      <if test="storagelocationid != null">
+	        #{storagelocationid},
+	      </if>
+	      <if test="batchno != null">
+	        #{batchno},
+	      </if>
+	      <if test="unitid != null">
+	        #{unitid},
+	      </if>
+	      <if test="unitname != null">
+	        #{unitname},
+	      </if>
+	      <if test="initnum != null">
+	        #{initnum},
+	      </if>
+	      <if test="unitnum != null">
+	        #{unitnum},
+	      </if>
+	      <if test="realsendnum != null">
+	        #{realsendnum},
+	      </if>
+	      <if test="returnnum != null">
+	        #{returnnum},
+	      </if>
+	      <if test="auxunitid != null">
+	        #{auxunitid},
+	      </if>
+	      <if test="auxunitname != null">
+	        #{auxunitname},
+	      </if>
+	      <if test="auxinitnum != null">
+	        #{auxinitnum},
+	      </if>
+	      <if test="auxnum != null">
+	        #{auxnum},
+	      </if>
+	      <if test="auxremainder != null">
+	       #{auxremainder},
+	      </if>
+	      <if test="auxnumdetail != null">
+	        #{auxnumdetail},
+	      </if>
+	      <if test="totalbox != null">
+	        #{totalbox},
+	      </if>
+	      <if test="auxrealsendnum != null">
+	        #{auxrealsendnum},
+	      </if>
+	      <if test="auxrealsendnumdetail != null">
+	        #{auxrealsendnumdetail},
+	      </if>
+	      <if test="auxreturnnum != null">
+	        #{auxreturnnum},
+	      </if>
+	      <if test="auxreturnnumdetail != null">
+	        #{auxreturnnumdetail},
+	      </if>
+	      <if test="taxprice != null">
+	        #{taxprice},
+	      </if>
+	      <if test="inittaxamount != null">
+	        #{inittaxamount},
+	      </if>
+	      <if test="taxamount != null">
+	        #{taxamount},
+	      </if>
+	      <if test="realtaxamount != null">
+	        #{realtaxamount},
+	      </if>
+	      <if test="returntaxamount != null">
+	        #{returntaxamount},
+	      </if>
+	      <if test="notaxprice != null">
+	        #{notaxprice},
+	      </if>
+	      <if test="initnotaxamount != null">
+	        #{initnotaxamount},
+	      </if>
+	      <if test="notaxamount != null">
+	        #{notaxamount},
+	      </if>
+	      <if test="realnotaxamount != null">
+	        #{realnotaxamount},
+	      </if>
+	      <if test="returnnotaxamount != null">
+	        #{returnnotaxamount},
+	      </if>
+	      <if test="inittaxprice != null">
+	        #{inittaxprice},
+	      </if>
+	      <if test="costprice != null">
+	        #{costprice},
+	      </if>
+	      <if test="realcostprice != null">
+	        #{realcostprice},
+	      </if>
+	      <if test="taxtype != null">
+	        #{taxtype},
+	      </if>
+	      <if test="tax != null">
+	        #{tax},
+	      </if>
+	      <if test="remark != null">
+	        #{remark},
+	      </if>
+	      <if test="produceddate != null">
+	        #{produceddate},
+	      </if>
+	      <if test="deadline != null">
+	        #{deadline},
+	      </if>
+	      <if test="seq != null">
+	        #{seq},
+	      </if>
+	      <if test="isinvoice != null">
+	        #{isinvoice},
+	      </if>
+	      <if test="iswriteoff != null">
+	        #{iswriteoff},
+	      </if>
+	      <if test="field01 != null" >
+	        #{field01},
+	      </if>
+	      <if test="field02 != null" >
+	        #{field02},
+	      </if>
+	      <if test="field03 != null" >
+	        #{field03},
+	      </if>
+	      <if test="field04 != null" >
+	        #{field04},
+	      </if>
+	      <if test="field05 != null" >
+	        #{field05},
+	      </if>
+	      <if test="field06 != null" >
+	        #{field06},
+	      </if>
+	      <if test="field07 != null" >
+	        #{field07},
+	      </if>
+	      <if test="field08 != null" >
+	        #{field08},
+	      </if>
+	      <if test="deliverytype != null" >
+	        #{deliverytype},
+	      </if>
+	    </trim>
+	</insert>
+	<insert id="addSaleOutDetailList">
+		insert into t_storage_saleout_detail 
+	        (saleoutid,summarybatchid,isdiscount,isbranddiscount,dispatchbillid,dispatchbilldetailid,goodsid,groupid,goodssort,
+	        brandid,branduser,branddept,supplierid,supplieruser,storageid,storagelocationid,
+	        batchno,unitid,unitname,initnum,unitnum,realsendnum,returnnum,auxunitid,
+	        auxunitname,auxinitnum,auxnum,auxremainder,auxnumdetail,totalbox,auxrealsendnum,
+	        auxrealsendnumdetail,auxreturnnum,auxreturnnumdetail,
+	        taxprice,inittaxamount,taxamount,realtaxamount,returntaxamount,
+	        notaxprice,initnotaxamount,notaxamount,realnotaxamount,returnnotaxamount,
+	        inittaxprice,costprice,realcostprice,taxtype,tax,remark,produceddate,deadline,seq,
+	        isinvoice,iswriteoff,field01,field02,field03,field04,field05,field06,
+	        field07,field08,deliverytype)
+		values
+	    <foreach collection="list" item="item" separator="," >
+		(#{item.saleoutid},#{item.summarybatchid}, 
+		<choose>
+	      	<when test="item.isdiscount != null">#{item.isdiscount},</when>
+	      	<otherwise>'0',</otherwise>
+	      </choose>
+	      <choose>
+	      	<when test="item.isbranddiscount != null">#{item.isbranddiscount},</when>
+	      	<otherwise>'0',</otherwise>
+	      </choose>
+		#{item.dispatchbillid},#{item.dispatchbilldetailid},
+	      <choose>
+	      	<when test="item.goodsid != null">#{item.goodsid},</when>
+	      	<otherwise>'',</otherwise>
+	      </choose>
+	      <choose>
+	      	<when test="item.groupid != null">#{item.groupid},</when>
+	      	<otherwise>'',</otherwise>
+	      </choose>
+	      <choose>
+	      	<when test="item.goodssort != null">#{item.goodssort},</when>
+	      	<otherwise>'',</otherwise>
+	      </choose>
+	      <choose>
+	      	<when test="item.brandid != null"> #{item.brandid},</when>
+	      	<otherwise>'',</otherwise>
+	      </choose>
+	      <choose>
+	      	<when test="item.branduser != null"> #{item.branduser},</when>
+	      	<otherwise>'',</otherwise>
+	      </choose>
+	      <choose>
+	      	<when test="item.branddept != null"> #{item.branddept},</when>
+	      	<otherwise>'',</otherwise>
+	      </choose>
+	      <choose>
+	      	<when test="item.supplierid != null"> #{item.supplierid},</when>
+	      	<otherwise>'',</otherwise>
+	      </choose>
+	      <choose>
+	      	<when test="item.supplieruser != null"> #{item.supplieruser},</when>
+	      	<otherwise>'',</otherwise>
+	      </choose>
+	      <choose>
+	      	<when test="item.storageid != null"> #{item.storageid},</when>
+	      	<otherwise>'',</otherwise>
+	      </choose>
+	     #{item.storagelocationid},#{item.batchno},#{item.unitid},#{item.unitname},
+	     <choose>
+	      	<when test="item.initnum != null"> #{item.initnum},</when>
+	      	<otherwise>0,</otherwise>
+	      </choose>
+	      <choose>
+	      	<when test="item.unitnum != null"> #{item.unitnum},</when>
+	      	<otherwise>0,</otherwise>
+	      </choose>
+	      <choose>
+	      	<when test="item.realsendnum != null"> #{item.realsendnum},</when>
+	      	<otherwise>0,</otherwise>
+	      </choose>
+	      <choose>
+	      	<when test="item.returnnum != null"> #{item.returnnum},</when>
+	      	<otherwise>0,</otherwise>
+	      </choose>
+	      #{item.auxunitid},#{item.auxunitname},
+	      <choose>
+	      	<when test="item.auxinitnum != null"> #{item.auxinitnum},</when>
+	      	<otherwise>0,</otherwise>
+	      </choose>
+	      <choose>
+	      	<when test="item.auxnum != null"> #{item.auxnum},</when>
+	      	<otherwise>0,</otherwise>
+	      </choose>
+	      <choose>
+	      	<when test="item.auxremainder != null"> #{item.auxremainder},</when>
+	      	<otherwise>0,</otherwise>
+	      </choose>
+		 #{item.auxnumdetail},
+		 <choose>
+	      	<when test="item.totalbox != null"> #{item.totalbox},</when>
+	      	<otherwise>0,</otherwise>
+	      </choose>
+		 <choose>
+	      	<when test="item.auxrealsendnum != null"> #{item.auxrealsendnum},</when>
+	      	<otherwise>0,</otherwise>
+	      </choose>
+		 #{item.auxrealsendnumdetail},
+		 <choose>
+	      	<when test="item.auxreturnnum != null"> #{item.auxreturnnum},</when>
+	      	<otherwise>0,</otherwise>
+	      </choose>
+		 #{item.auxreturnnumdetail},
+		 <choose>
+	      	<when test="item.taxprice != null"> #{item.taxprice},</when>
+	      	<otherwise>0,</otherwise>
+	      </choose>
+	      <choose>
+	      	<when test="item.inittaxamount != null"> #{item.inittaxamount},</when>
+	      	<otherwise>0,</otherwise>
+	      </choose>
+	      <choose>
+	      	<when test="item.taxamount != null"> #{item.taxamount},</when>
+	      	<otherwise>0,</otherwise>
+	      </choose>
+	      <choose>
+	      	<when test="item.realtaxamount != null"> #{item.realtaxamount},</when>
+	      	<otherwise>0,</otherwise>
+	      </choose>
+	      <choose>
+	      	<when test="item.returntaxamount != null"> #{item.returntaxamount},</when>
+	      	<otherwise>0,</otherwise>
+	      </choose>
+	      <choose>
+	      	<when test="item.notaxprice != null"> #{item.notaxprice},</when>
+	      	<otherwise>0,</otherwise>
+	      </choose>
+	      <choose>
+	      	<when test="item.initnotaxamount != null"> #{item.initnotaxamount},</when>
+	      	<otherwise>0,</otherwise>
+	      </choose>
+	      <choose>
+	      	<when test="item.notaxamount != null"> #{item.notaxamount},</when>
+	      	<otherwise>0,</otherwise>
+	      </choose>
+	      <choose>
+	      	<when test="item.realnotaxamount != null"> #{item.realnotaxamount},</when>
+	      	<otherwise>0,</otherwise>
+	      </choose>
+	      <choose>
+	      	<when test="item.returnnotaxamount != null"> #{item.returnnotaxamount},</when>
+	      	<otherwise>0,</otherwise>
+	      </choose>
+	      <choose>
+	      	<when test="item.inittaxprice != null"> #{item.inittaxprice},</when>
+	      	<otherwise>0,</otherwise>
+	      </choose>
+	      <choose>
+	      	<when test="item.costprice != null"> #{item.costprice},</when>
+	      	<otherwise>0,</otherwise>
+	      </choose>
+	      <choose>
+	      	<when test="item.costprice != null"> #{item.realcostprice},</when>
+	      	<otherwise>0,</otherwise>
+	      </choose>
+		 #{item.taxtype},
+		  <choose>
+	      	<when test="item.tax != null"> #{item.tax},</when>
+	      	<otherwise>0,</otherwise>
+	      </choose>
+		 #{item.remark},#{item.produceddate},#{item.deadline},#{item.seq},
+		 <choose>
+	      	<when test="item.isinvoice != null"> #{item.isinvoice},</when>
+	      	<otherwise>'0',</otherwise>
+	      </choose>
+	      <choose>
+	      	<when test="item.iswriteoff != null"> #{item.iswriteoff},</when>
+	      	<otherwise>'0',</otherwise>
+	      </choose>
+		 #{item.field01}, #{item.field02}, #{item.field03}, 
+		 #{item.field04}, #{item.field05}, #{item.field06}, #{item.field07}, #{item.field08},
+		 <choose>
+	      	<when test="item.deliverytype != null"> #{item.deliverytype}</when>
+	      	<otherwise>'0'</otherwise>
+	      </choose>
+		 )
+		</foreach>
+	</insert>
+	<insert id="addSaleOut" parameterType="com.hd.agent.storage.model.Saleout">
+		insert into t_storage_saleout
+	    <trim prefix="(" suffix=")" suffixOverrides=",">
+	      <if test="id != null">
+	        id,
+	      </if>
+	      <if test="businessdate != null">
+	        businessdate,
+	      </if>
+	      <if test="status != null">
+	        status,
+	      </if>
+	      <if test="remark != null">
+	        remark,
+	      </if>
+	      <if test="adduserid != null">
+	        adduserid,
+	      </if>
+	      <if test="addusername != null">
+	        addusername,
+	      </if>
+	      <if test="adddeptid != null">
+	        adddeptid,
+	      </if>
+	      <if test="adddeptname != null">
+	        adddeptname,
+	      </if>
+	      <if test="1==1">
+	        addtime,
+	      </if>
+	      <if test="customerid != null">
+	        customerid,
+	      </if>
+	      <if test="pcustomerid != null">
+	        pcustomerid,
+	      </if>
+	      <if test="customersort != null">
+	        customersort,
+	      </if>
+	      <if test="salesarea != null">
+	        salesarea,
+	      </if>
+	      <if test="salesdept != null">
+	        salesdept,
+	      </if>
+	      <if test="salesuser != null">
+	        salesuser,
+	      </if>
+	      <if test="storageid != null">
+	        storageid,
+	      </if>
+	      <if test="saleorderid != null">
+	        saleorderid,
+	      </if>
+	      <if test="sourcetype != null">
+	        sourcetype,
+	      </if>
+	      <if test="sourceid != null">
+	        sourceid,
+	      </if>
+	      <if test="settletype != null">
+	        settletype,
+	      </if>
+	      <if test="paytype != null">
+	        paytype,
+	      </if>
+	      <if test="handlerid != null">
+	        handlerid,
+	      </if>
+	      <if test="field01 != null">
+	        field01,
+	      </if>
+	      <if test="field02 != null">
+	        field02,
+	      </if>
+	      <if test="field03 != null">
+	        field03,
+	      </if>
+	      <if test="field04 != null">
+	        field04,
+	      </if>
+	      <if test="field05 != null">
+	        field05,
+	      </if>
+	      <if test="field06 != null">
+	        field06,
+	      </if>
+	      <if test="field07 != null">
+	        field07,
+	      </if>
+	      <if test="field08 != null">
+	        field08,
+	      </if>
+	      <if test="checkdate != null">
+	        checkdate,
+	      </if>
+	      <if test="invoicedate != null">
+	        invoicedate,
+	      </if>
+	      <if test="writeoffdate != null">
+	        writeoffdate,
+	      </if>
+	      <if test="receiptid != null">
+	        receiptid,
+	      </if>
+	      <if test="invoiceid != null">
+	        invoiceid,
+	      </if>
+	      <if test="initsendamount != null">
+	        initsendamount,
+	      </if>
+	      <if test="initsendcostamount != null">
+	        initsendcostamount,
+	      </if>
+	      <if test="sendamount != null">
+	        sendamount,
+	      </if>
+	      <if test="sendnotaxamount != null">
+	        sendnotaxamount,
+	      </if>
+	      <if test="sendcostamount != null">
+	        sendcostamount,
+	      </if>
+	      <if test="checkamount != null">
+	        checkamount,
+	      </if>
+	      <if test="checknotaxamount != null">
+	        checknotaxamount,
+	      </if>
+	      <if test="invoiceamount != null">
+	        invoiceamount,
+	      </if>
+	      <if test="invoicenotaxamount != null">
+	        invoicenotaxamount,
+	      </if>
+	      <if test="writeoffamount != null">
+	        writeoffamount,
+	      </if>
+	      <if test="writeoffnotaxamount != null">
+	        writeoffnotaxamount,
+	      </if>
+	      <if test="indooruserid != null">
+	        indooruserid,
+	      </if>
+	      <if test="duefromdate != null">
+	        duefromdate,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides=",">
+	      <if test="id != null">
+	        #{id},
+	      </if>
+	      <if test="businessdate != null">
+	        #{businessdate},
+	      </if>
+	      <if test="status != null">
+	        #{status},
+	      </if>
+	      <if test="remark != null">
+	        #{remark},
+	      </if>
+	      <if test="adduserid != null">
+	        #{adduserid},
+	      </if>
+	      <if test="addusername != null">
+	        #{addusername},
+	      </if>
+	      <if test="adddeptid != null">
+	        #{adddeptid},
+	      </if>
+	      <if test="adddeptname != null">
+	        #{adddeptname},
+	      </if>
+	      <if test="1==1">
+	        now(),
+	      </if>
+	      <if test="customerid != null">
+	        #{customerid},
+	      </if>
+	      <if test="pcustomerid != null">
+	        #{pcustomerid},
+	      </if>
+	      <if test="customersort != null">
+	        #{customersort},
+	      </if>
+	      <if test="salesarea != null">
+	        #{salesarea},
+	      </if>
+	      <if test="salesdept != null">
+	        #{salesdept},
+	      </if>
+	      <if test="salesuser != null">
+	        #{salesuser},
+	      </if>
+	      <if test="storageid != null">
+	        #{storageid},
+	      </if>
+	      <if test="saleorderid != null">
+	       #{saleorderid},
+	      </if>
+	      <if test="sourcetype != null">
+	        #{sourcetype},
+	      </if>
+	      <if test="sourceid != null">
+	        #{sourceid},
+	      </if>
+	      <if test="settletype != null">
+	        #{settletype},
+	      </if>
+	      <if test="paytype != null">
+	        #{paytype},
+	      </if>
+	      <if test="handlerid != null">
+	        #{handlerid},
+	      </if>
+	      <if test="field01 != null">
+	        #{field01},
+	      </if>
+	      <if test="field02 != null">
+	        #{field02},
+	      </if>
+	      <if test="field03 != null">
+	        #{field03},
+	      </if>
+	      <if test="field04 != null">
+	        #{field04},
+	      </if>
+	      <if test="field05 != null">
+	        #{field05},
+	      </if>
+	      <if test="field06 != null">
+	        #{field06},
+	      </if>
+	      <if test="field07 != null">
+	        #{field07},
+	      </if>
+	      <if test="field08 != null">
+	        #{field08},
+	      </if>
+	      <if test="checkdate != null">
+	        #{checkdate},
+	      </if>
+	      <if test="invoicedate != null">
+	        #{invoicedate},
+	      </if>
+	      <if test="writeoffdate != null">
+	        #{writeoffdate},
+	      </if>
+	      <if test="receiptid != null">
+	        #{receiptid},
+	      </if>
+	      <if test="invoiceid != null">
+	        #{invoiceid},
+	      </if>
+	      <if test="initsendamount != null">
+	        #{initsendamount},
+	      </if>
+	      <if test="initsendcostamount != null">
+	        #{initsendcostamount},
+	      </if>
+	      <if test="sendamount != null">
+	        #{sendamount},
+	      </if>
+	      <if test="sendnotaxamount != null">
+	        #{sendnotaxamount},
+	      </if>
+	      <if test="sendcostamount != null">
+	        #{sendcostamount},
+	      </if>
+	      <if test="checkamount != null">
+	        #{checkamount},
+	      </if>
+	      <if test="checknotaxamount != null">
+	        #{checknotaxamount},
+	      </if>
+	      <if test="invoiceamount != null">
+	        #{invoiceamount},
+	      </if>
+	      <if test="invoicenotaxamount != null">
+	        #{invoicenotaxamount},
+	      </if>
+	      <if test="writeoffamount != null">
+	        #{writeoffamount},
+	      </if>
+	      <if test="writeoffnotaxamount != null">
+	        #{writeoffnotaxamount},
+	      </if>
+	      <if test="indooruserid != null">
+	        #{indooruserid},
+	      </if>
+	      <if test="duefromdate != null">
+	        #{duefromdate},
+	      </if>
+	    </trim>
+	</insert>
+	<select id="showSaleOutList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.storage.model.Saleout">
+		select
+		<include refid="SaleOut_Column_List_prefix_t" />
+		from t_storage_saleout t
+		<trim prefix="where" prefixOverrides="and|or" >
+		  <include refid="common.Page_querySql"/>
+	      <include refid="common.Page_dataSql"/>
+	      <if test="condition.goodsid != null">
+			and EXISTS (select t1.goodsid from t_storage_saleout_detail t1 where t.id=t1.saleoutid and t1.goodsid = #{condition.goodsid})
+		  </if>
+		  <if test="condition.businessdate1 != null">
+			 and t.businessdate >= #{condition.businessdate1}
+		  </if>
+		  <if test="condition.businessdate2 != null">
+			 <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+		  </if>
+		  <if test="condition.id != null" >
+	         and (t.id like CONCAT('%',#{condition.id},'%') or
+              t.saleorderid like CONCAT('%',#{condition.id},'%')
+              )
+	      </if>
+	      <if test="condition.isbigsaleout != null" >
+	         and t.isbigsaleout = #{condition.isbigsaleout}
+	      </if>
+            <if test="condition.isdelivery != null" >
+                and t.isdelivery = #{condition.isdelivery}
+            </if>
+	      <if test="condition.customerid != null" >
+	         and t.customerid = #{condition.customerid}
+	      </if>
+	      <if test="condition.storageid != null" >
+	         and t.storageid = #{condition.storageid}
+	      </if>
+	      <if test="condition.salesdept != null" >
+	         and t.salesdept like CONCAT(#{condition.salesdept},'%')
+	      </if>
+	      <if test="condition.salesuser != null" >
+	         and t.salesuser = #{condition.salesuser}
+	      </if>
+	      <if test="condition.sourcetype != null" >
+	         and t.sourcetype = #{condition.sourcetype}
+	      </if>
+	      <if test="condition.sourceid != null" >
+	         and t.sourceid = #{condition.sourceid}
+	      </if>
+            <if test="condition.saleorderid != null" >
+                and t.saleorderid like CONCAT('%',#{condition.saleorderid},'%')
+            </if>
+	      <if test="condition.status != null" >
+	         and t.status = #{condition.status}
+	      </if>
+	      <if test="condition.isrefer != null" >
+	         and t.isrefer = #{condition.isrefer}
+	      </if>
+			<if test="condition.selectids != null" >
+				AND find_in_set(t.id,#{condition.selectids})
+			</if>
+
+	      <choose>
+	      	<when test="condition.isClose ==0 ">
+	      		and t.status in("1","2")
+	      	</when>
+	      	<when test="condition.isClose ==1 ">
+	      		and t.status in("3","4")
+	      	</when>
+	      	<when test="condition.isClose ==2 ">
+	      		and t.status ='2'
+	      	</when>
+	      	<when test="condition.isClose ==3 ">
+	      		and t.status ='3'
+	      	</when>
+	      </choose>
+      	<if test="condition.doprintopt != null">      		
+	      	and FIND_IN_SET(t.status,"2,3")
+	      	<choose>
+	      		<when test="condition.printstatus == null ">
+	      			and 1 != 1
+	      		</when>
+	      		<when test="condition.printstatus ==0 ">
+	      			and (t.printtimes is null or printtimes=0)
+	      		</when>      		
+	      		<when test="condition.printstatus ==1 ">
+	      		 	<![CDATA[and (t.printtimes > 0) ]]>
+	      		</when>
+	      		<when test="condition.printstatus == 2 ">
+	      			and 1 = 1 
+	      		</when>
+	      	</choose>
+      	</if>
+      	<if test="condition.phprintsign != null and condition.queryphprinttimes != null">
+      		<choose>
+      			<when test="condition.phprintsign == 1">
+      				<![CDATA[and t.phprinttimes = #{condition.queryphprinttimes} ]]>
+      			</when>
+      			<when test="condition.phprintsign == 2">
+      				<![CDATA[and t.phprinttimes < #{condition.queryphprinttimes} ]]>
+      			</when>
+      			<when test="condition.phprintsign == 3">
+      				<![CDATA[and t.phprinttimes <= #{condition.queryphprinttimes} ]]>
+      			</when>
+      			<when test="condition.phprintsign == 4">
+      				<![CDATA[and t.phprinttimes > #{condition.queryphprinttimes} ]]>
+      			</when>
+      			<when test="condition.phprintsign == 5">
+      				<![CDATA[and t.phprinttimes >= #{condition.queryphprinttimes} ]]>
+      			</when>
+      		</choose>
+      	</if>
+      	<if test="condition.printsign != null and condition.queryprinttimes != null">
+      		<choose>
+      			<when test="condition.printsign == 1">
+      				<![CDATA[and t.printtimes = #{condition.queryprinttimes} ]]>
+      			</when>
+      			<when test="condition.printsign == 2">
+      				<![CDATA[and t.printtimes < #{condition.queryprinttimes} ]]>
+      			</when>
+      			<when test="condition.printsign == 3">
+      				<![CDATA[and t.printtimes <= #{condition.queryprinttimes} ]]>
+      			</when>
+      			<when test="condition.printsign == 4">
+      				<![CDATA[and t.printtimes > #{condition.queryprinttimes} ]]>
+      			</when>
+      			<when test="condition.printsign == 5">
+      				<![CDATA[and t.printtimes >= #{condition.queryprinttimes} ]]>
+      			</when>
+      		</choose>
+      	</if>
+      	<if test="condition.printtimes != null" >
+			<choose>
+				<when test="condition.printtimes==0">
+					and (t.printtimes is null or printtimes=0)				
+				</when>
+				<otherwise>
+					and t.printtimes=#{condition.printtimes}
+				</otherwise>
+			</choose>
+      	</if>
+		<if test="condition.phprinttimes != null" >
+			<choose>
+				<when test="condition.phprinttimes==0">
+					and (t.phprinttimes is null or phprinttimes=0)				
+				</when>
+				<otherwise>
+					and t.phprinttimes=#{condition.phprinttimes}
+				</otherwise>
+			</choose>
+      	</if>
+	    </trim>
+	    <if test="condition.isflag == null">
+			<include refid="common.Page_limit" />
+		</if>
+	</select>
+	<select id="showSaleOutCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+		select count(1) from t_storage_saleout t
+		<trim prefix="where" prefixOverrides="and|or" >
+		  <include refid="common.Page_querySql"/>
+	      <include refid="common.Page_dataSql"/>
+	      <if test="condition.goodsid != null">
+			and EXISTS (select t1.goodsid from t_storage_saleout_detail t1 where t.id=t1.saleoutid and t1.goodsid = #{condition.goodsid})
+		  </if>
+		  <if test="condition.businessdate1 != null">
+			 and t.businessdate >= #{condition.businessdate1}
+		  </if>
+		  <if test="condition.businessdate2 != null">
+			 <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+		  </if>
+		  <if test="condition.id != null" >
+	         and (t.id like CONCAT('%',#{condition.id},'%') or
+              t.saleorderid like CONCAT('%',#{condition.id},'%')
+              )
+	      </if>
+	      <if test="condition.isbigsaleout != null" >
+	         and t.isbigsaleout = #{condition.isbigsaleout}
+	      </if>
+            <if test="condition.isdelivery != null" >
+                and t.isdelivery = #{condition.isdelivery}
+            </if>
+	      <if test="condition.customerid != null" >
+			  and t.customerid = #{condition.customerid}
+	      </if>
+	      <if test="condition.storageid != null" >
+	         and t.storageid = #{condition.storageid}
+	      </if>
+	      <if test="condition.salesdept != null" >
+	         and t.salesdept like CONCAT(#{condition.salesdept},'%')
+	      </if>
+	      <if test="condition.salesuser != null" >
+	         and t.salesuser = #{condition.salesuser}
+	      </if>
+	      <if test="condition.sourcetype != null" >
+	         and t.sourcetype = #{condition.sourcetype}
+	      </if>
+	      <if test="condition.sourceid != null" >
+	         and t.sourceid = #{condition.sourceid}
+	      </if>
+            <if test="condition.saleorderid != null" >
+                and t.saleorderid like CONCAT('%',#{condition.saleorderid},'%')
+            </if>
+	      <if test="condition.status != null" >
+	         and t.status = #{condition.status}
+	      </if>
+	      <if test="condition.isrefer != null" >
+	         and t.isrefer = #{condition.isrefer}
+	      </if>
+			<if test="condition.selectids != null" >
+				AND find_in_set(t.id,#{condition.selectids})
+			</if>
+	      <choose>
+	      	<when test="condition.isClose ==0 ">
+	      		and t.status in("1","2")
+	      	</when>
+	      	<when test="condition.isClose ==1 ">
+	      		and t.status in("3","4")
+	      	</when>
+	      	<when test="condition.isClose ==2 ">
+	      		and t.status ='2'
+	      	</when>
+	      	<when test="condition.isClose ==3 ">
+	      		and t.status ='3'
+	      	</when>
+	      </choose>
+      	<if test="condition.doprintopt != null">      		
+	      	and FIND_IN_SET(t.status,"2,3")
+	      	<choose>
+	      		<when test="condition.printstatus == null ">
+	      			and 1 != 1
+	      		</when>
+	      		<when test="condition.printstatus ==0 ">
+	      			and (t.printtimes is null or printtimes=0)
+	      		</when>      		
+	      		<when test="condition.printstatus ==1 ">
+	      		 	<![CDATA[and (t.printtimes > 0) ]]>
+	      		</when>
+	      		<when test="condition.printstatus == 2 ">
+	      			and 1 = 1 
+	      		</when>
+	      	</choose>
+      	</if>
+      	<if test="condition.phprintsign != null and condition.queryphprinttimes != null">
+      		<choose>
+      			<when test="condition.phprintsign == 1">
+      				<![CDATA[and t.phprinttimes = #{condition.queryphprinttimes} ]]>
+      			</when>
+      			<when test="condition.phprintsign == 2">
+      				<![CDATA[and t.phprinttimes < #{condition.queryphprinttimes} ]]>
+      			</when>
+      			<when test="condition.phprintsign == 3">
+      				<![CDATA[and t.phprinttimes <= #{condition.queryphprinttimes} ]]>
+      			</when>
+      			<when test="condition.phprintsign == 4">
+      				<![CDATA[and t.phprinttimes > #{condition.queryphprinttimes} ]]>
+      			</when>
+      			<when test="condition.phprintsign == 5">
+      				<![CDATA[and t.phprinttimes >= #{condition.queryphprinttimes} ]]>
+      			</when>
+      		</choose>
+      	</if>
+      	<if test="condition.printsign != null and condition.queryprinttimes != null">
+      		<choose>
+      			<when test="condition.printsign == 1">
+      				<![CDATA[and t.printtimes = #{condition.queryprinttimes} ]]>
+      			</when>
+      			<when test="condition.printsign == 2">
+      				<![CDATA[and t.printtimes < #{condition.queryprinttimes} ]]>
+      			</when>
+      			<when test="condition.printsign == 3">
+      				<![CDATA[and t.printtimes <= #{condition.queryprinttimes} ]]>
+      			</when>
+      			<when test="condition.printsign == 4">
+      				<![CDATA[and t.printtimes > #{condition.queryprinttimes} ]]>
+      			</when>
+      			<when test="condition.printsign == 5">
+      				<![CDATA[and t.printtimes >= #{condition.queryprinttimes} ]]>
+      			</when>
+      		</choose>
+      	</if>
+      	<if test="condition.printtimes != null" >
+			<choose>
+				<when test="condition.printtimes==0">
+					and (t.printtimes is null or printtimes=0)				
+				</when>
+				<otherwise>
+					and t.printtimes=#{condition.printtimes}
+				</otherwise>
+			</choose>
+      	</if>
+		<if test="condition.phprinttimes != null" >
+			<choose>
+				<when test="condition.phprinttimes==0">
+					and (t.phprinttimes is null or phprinttimes=0)				
+				</when>
+				<otherwise>
+					and t.phprinttimes=#{condition.phprinttimes}
+				</otherwise>
+			</choose>
+      	</if>
+	    </trim>
+	</select>
+
+	<sql id="getSaleOutListForBigSaleOut_sql">
+		(
+		select t.id, t.businessdate, t.status, t.remark, t.adduserid, t.addusername, t.adddeptid, t.adddeptname,
+		t.addtime, t.modifyuserid, t.modifyusername, t.modifytime, t.audituserid, t.auditusername, t.audittime,
+		t.stopuserid, t.stopusername, t.stoptime, t.closetime, t.printtimes, t.customerid,t.pcustomerid, t.salesarea,t.salesdept,
+		t.salesuser, t.storageid, t.saleorderid,t.sourcetype, t.sourceid,t.handlerid,t.settletype,t.paytype, t.field01, t.field02, t.field03, t.field04, t.field05,
+		t.field06, t.field07, t.field08, t.isrefer,t.iswrite,t.phprinttimes,t.checkdate,t.invoicedate,t.writeoffdate,t.receiptid,t.invoiceid,t.initsendamount,t.initsendcostamount,
+		t.sendamount,t.sendnotaxamount,t.sendcostamount,t.checkamount,t.checknotaxamount,t.invoiceamount,t.invoicenotaxamount,t.writeoffamount,t.writeoffnotaxamount,t.indooruserid,t.duefromdate,
+		t.isdelivery,t.ischeck,t.checktime,t.checkuserid,t.checkusername,t.isbigsaleout,t.printdatetime,t.phprintdatetime
+		from t_storage_saleout t
+		<choose>
+			<when test="condition.lineid != null">
+				LEFT JOIN t_base_logistics_line_customer lc ON t.customerid = lc.customerid
+			</when>
+			<otherwise>
+				LEFT JOIN (SELECT MIN(lc.seq) as seq,lc.customerid,lc.lineid from t_base_logistics_line_customer lc GROUP BY lc.customerid) lc ON t.customerid = lc.customerid
+			</otherwise>
+		</choose>
+		<trim prefix="where" prefixOverrides="and|or" >
+			<include refid="common.Page_querySql"/>
+			<include refid="common.Page_dataSql"/>
+			<if test="condition.lineid != null">
+				and lc.lineid=#{condition.lineid}
+			</if>
+			<if test="condition.goodsid != null">
+				and EXISTS (select t1.goodsid from t_storage_saleout_detail t1 where t.id=t1.saleoutid and t1.goodsid = #{condition.goodsid})
+			</if>
+			<if test="condition.brandid != null">
+				and EXISTS (select t1.brandid from t_storage_saleout_detail t1 where t.id=t1.saleoutid and FIND_IN_SET(t1.brandid,#{condition.brandid}))
+			</if>
+			<if test="condition.businessdate1 != null">
+				and t.businessdate >= #{condition.businessdate1}
+			</if>
+			<if test="condition.businessdate2 != null">
+				<![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+			</if>
+			<if test="condition.id != null" >
+				and t.id like CONCAT('%',#{condition.id},'%')
+			</if>
+			<if test="condition.array != null" >
+				and t.id not in
+				<foreach collection="condition.array" index="index" item="item" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test="condition.saleorderid != null" >
+				and t.saleorderid like CONCAT('%',#{condition.saleorderid},'%')
+			</if>
+			<if test="condition.customerid != null" >
+				and t.customerid like CONCAT(#{condition.customerid},'%')
+			</if>
+			<if test="condition.salesuser != null" >
+				and FIND_IN_SET(t.salesuser,#{condition.salesuser})
+			</if>
+			<if test="condition.storageid != null" >
+				and t.storageid = #{condition.storageid}
+			</if>
+			<if test="condition.status != null" >
+				and t.status = #{condition.status}
+			</if>
+			<if test="1 == 1" >
+				and t.isbigsaleout = '0'
+			</if>
+		</trim>
+		)
+	</sql>
+	<select id="getSaleOutListForBigSaleOut" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.storage.model.Saleout">
+		SELECT z.* from <include refid="getSaleOutListForBigSaleOut_sql"/> z
+	    <include refid="common.Page_limit" />
+	</select>
+	<select id="getSaleOutCountForBigSaleOut" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+		select count(1) from <include refid="getSaleOutListForBigSaleOut_sql"/> z
+	</select>
+	<update id="updateIsBigSaleOut" parameterType="java.lang.String">
+		update t_storage_saleout set
+			isbigsaleout = #{isbigsaleout}
+		where id = #{id}
+	</update>
+	
+	<select id="getSaleOutInfo" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.Saleout">
+		select <include refid="SaleOut_Column_List"/>
+		from t_storage_saleout where id=#{id}
+	</select>
+	<select id="getSaleOutSumData"  resultType="map">
+		select t.id,t.customerid,t1.taxamount,t1.notaxamount,t1.tax,t1.goodsid,t1.brandid
+		from t_storage_saleout t
+		LEFT JOIN t_storage_saleout_detail t1 ON t.id=t1.saleoutid
+		where 1=1
+		<if test="list != null">
+			and t.id in
+			<foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		<if test="list == null">
+			1>2
+		</if>
+		GROUP BY t.id,t1.goodsid
+	</select>
+    <select id="getSaleOutInfoWithDataSql" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.Saleout">
+        select <include refid="SaleOut_Column_List"/>
+        from t_storage_saleout where id=#{id} and ${dataSql}
+    </select>
+	<select id="getSaleOutInfoByStorageidAndSourceid" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.Saleout">
+		select <include refid="SaleOut_Column_List"/>
+		from t_storage_saleout where storageid=#{storageid} and sourceid=#{sourceid}
+	</select>
+	<select id="getSaleOutInfoBySourceid" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.Saleout">
+		select <include refid="SaleOut_Column_List"/>
+		from t_storage_saleout where sourceid=#{sourceid} and sourcetype='1'
+	</select>
+	<select id="getSaleOutInfoBySaleorderid" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.Saleout">
+		select <include refid="SaleOut_Column_List"/>
+		from t_storage_saleout where saleorderid=#{saleorderid}
+	</select>
+	<select id="getSaleOutDetailList" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.SaleoutDetail">
+		select <include refid="SaleOutDetail_Column_List"/>
+		from t_storage_saleout_detail where saleoutid = #{saleoutid}
+	    order by seq
+	</select>
+	<select id="getSaleOutDetailGoodsSumList" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.SaleoutDetail">
+		select id,summarybatchid,  goodsid, min(isdiscount) as isdiscount,storageid,unitid, unitname,sum(initnum) as initnum, sum(unitnum) as unitnum
+		from t_storage_saleout_detail where saleoutid = #{saleoutid}
+		group by summarybatchid,goodsid
+	</select>
+	<select id="getSaleOutDetailListSumDiscount" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.SaleoutDetail">
+		select * from (
+		select id, saleoutid,dispatchbillid, dispatchbilldetailid, summarybatchid,isdiscount,isbranddiscount, goodsid,groupid,brandid,branduser,branddept, storageid, storagelocationid, 
+	    batchno, unitid, unitname,initnum, unitnum, realsendnum, returnnum, auxunitid, auxunitname, 
+	    auxinitnum,auxnum,auxremainder, auxnumdetail,totalbox, auxrealsendnum, auxrealsendnumdetail, auxreturnnum, auxreturnnumdetail, 
+	    taxprice,inittaxamount, taxamount, realtaxamount,returntaxamount, notaxprice,initnotaxamount, notaxamount, realnotaxamount,returnnotaxamount,inittaxprice,costprice, taxtype, 
+	    tax, remark, produceddate, deadline, seq,isinvoice,iswriteoff,invoicedate,writeoffdate,field01, field02, field03, field04, field05, field06, field07, field08,deliverytype,isinvoicebill
+	    from t_storage_saleout_detail where isbranddiscount='0' and  saleoutid = #{saleoutid}
+	    union all
+	    select id, saleoutid,dispatchbillid, dispatchbilldetailid, summarybatchid,isdiscount,isbranddiscount, goodsid,groupid,brandid,branduser,branddept, storageid, storagelocationid, 
+	    batchno, unitid, unitname,initnum, unitnum, realsendnum, returnnum, auxunitid, auxunitname, 
+	    auxinitnum,auxnum,auxremainder, auxnumdetail,totalbox, auxrealsendnum, auxrealsendnumdetail, auxreturnnum, auxreturnnumdetail, 
+	    taxprice,sum(inittaxamount) as inittaxamount, sum(taxamount) as taxamount, realtaxamount,returntaxamount, notaxprice,sum(initnotaxamount) as initnotaxamount, sum(notaxamount) as notaxamount, realnotaxamount,returnnotaxamount,inittaxprice,costprice, taxtype, 
+	    tax, remark, produceddate, deadline, seq,isinvoice,iswriteoff,invoicedate,writeoffdate,field01, field02, field03, field04, field05, field06, field07, field08,deliverytype,isinvoicebill
+	    from t_storage_saleout_detail where isbranddiscount='1' and  saleoutid = #{saleoutid}
+	    group by brandid
+	    )z 
+	    <![CDATA[ORDER BY z.isdiscount,(CASE WHEN z.deliverytype<>'' and z.groupid <>'' then z.groupid else z.goodsid end) asc,z.deliverytype asc,z.id ]]>
+	</select>
+
+	<select id="getSaleOutDetailListSumDiscountByMap" parameterType="map" resultType="com.hd.agent.storage.model.SaleoutDetail">
+		select * from (
+		select id, saleoutid,dispatchbillid, dispatchbilldetailid, summarybatchid,isdiscount,isbranddiscount, goodsid,groupid,brandid,branduser,branddept, storageid, storagelocationid,
+		batchno, unitid, unitname,initnum, unitnum, realsendnum, returnnum, auxunitid, auxunitname,
+		auxinitnum,auxnum,auxremainder, auxnumdetail,totalbox, auxrealsendnum, auxrealsendnumdetail, auxreturnnum, auxreturnnumdetail,
+		taxprice,inittaxamount, taxamount, realtaxamount,returntaxamount, notaxprice,initnotaxamount, notaxamount, realnotaxamount,returnnotaxamount,inittaxprice,costprice, taxtype,
+		tax, remark, produceddate, deadline, seq,isinvoice,iswriteoff,invoicedate,writeoffdate,field01, field02, field03, field04, field05, field06, field07, field08,deliverytype,isinvoicebill
+		from t_storage_saleout_detail
+		where
+		<trim prefixOverrides="and|or">
+			<if test="1==1">
+				isbranddiscount='0'
+			</if>
+			<if test="saleoutid != null" >
+				and saleoutid=#{saleoutid}
+			</if>
+			<if test="saleoutidarrs != null" >
+				and find_in_set(saleoutid,#{saleoutidarrs})
+			</if>
+			<if test="taxtype != null" >
+				and taxtype=#{taxtype}
+			</if>
+		</trim>
+		union all
+		select id, saleoutid,dispatchbillid, dispatchbilldetailid, summarybatchid,isdiscount,isbranddiscount, goodsid,groupid,brandid,branduser,branddept, storageid, storagelocationid,
+		batchno, unitid, unitname,initnum, unitnum, realsendnum, returnnum, auxunitid, auxunitname,
+		auxinitnum,auxnum,auxremainder, auxnumdetail,totalbox, auxrealsendnum, auxrealsendnumdetail, auxreturnnum, auxreturnnumdetail,
+		taxprice,sum(inittaxamount) as inittaxamount, sum(taxamount) as taxamount, realtaxamount,returntaxamount, notaxprice,sum(initnotaxamount) as initnotaxamount, sum(notaxamount) as notaxamount, realnotaxamount,returnnotaxamount,inittaxprice,costprice, taxtype,
+		tax, remark, produceddate, deadline, seq,isinvoice,iswriteoff,invoicedate,writeoffdate,field01, field02, field03, field04, field05, field06, field07, field08,deliverytype,isinvoicebill
+		from t_storage_saleout_detail where
+		<trim prefixOverrides="and|or">
+			<if test="1==1">
+				isbranddiscount='1'
+			</if>
+			<if test="saleoutid != null" >
+				and saleoutid=#{saleoutid}
+			</if>
+			<if test="saleoutidarrs != null" >
+				and find_in_set(saleoutid,#{saleoutidarrs})
+			</if>
+			<if test="taxtype != null" >
+				and taxtype=#{taxtype}
+			</if>
+		</trim>
+		group by brandid
+		)z
+		<![CDATA[ORDER BY z.isdiscount,(CASE WHEN z.deliverytype<>'' and z.groupid <>'' then z.groupid else z.goodsid end) asc,z.deliverytype asc,z.id ]]>
+	</select>
+	<sql id="getSaleOutDetailListByOrder_Normal">
+		<!-- 如果修改此查询方式，记住修改 /sales/OrderCarMapper.xml 中的 getOrderCarPrintDetailListData -->
+		<!-- getSaleOutDetailPrintListBy -->
+			select z.* from (
+				select id, saleoutid,dispatchbillid, dispatchbilldetailid, summarybatchid,isdiscount,isbranddiscount, goodsid,groupid,goodssort,brandid,branduser,branddept,supplierid,supplieruser, storageid, storagelocationid, 
+					    batchno, unitid, unitname,initnum, unitnum, realsendnum, returnnum, auxunitid, auxunitname, 
+				    	auxinitnum,auxnum,auxremainder, auxnumdetail,totalbox, auxrealsendnum, auxrealsendnumdetail, auxreturnnum, auxreturnnumdetail, 
+					    taxprice,inittaxamount, taxamount, realtaxamount,returntaxamount, notaxprice,initnotaxamount, notaxamount, realnotaxamount,returnnotaxamount,inittaxprice,costprice, taxtype, 
+					    tax, remark, produceddate, deadline, seq,isinvoice,iswriteoff,invoicedate,writeoffdate,field01, field02, field03, field04, field05, field06, field07, field08,deliverytype,isinvoicebill
+				    from t_storage_saleout_detail where
+				    <trim prefixOverrides="and|or" >
+			    		<if test="1==1">
+			    			and isbranddiscount='0' and  saleoutid = #{saleoutid}
+			    		</if>
+			    	</trim>
+				    union all
+				    select id, saleoutid,dispatchbillid, dispatchbilldetailid, summarybatchid,isdiscount,isbranddiscount, goodsid,groupid,goodssort,brandid,branduser,branddept,supplierid,supplieruser, storageid, storagelocationid,  
+					    batchno, unitid, unitname,initnum, unitnum, realsendnum, returnnum, auxunitid, auxunitname, 
+				    	auxinitnum,auxnum,auxremainder, auxnumdetail,totalbox, auxrealsendnum, auxrealsendnumdetail, auxreturnnum, auxreturnnumdetail, 
+					    taxprice,sum(inittaxamount) as inittaxamount, sum(taxamount) as taxamount, realtaxamount,returntaxamount, notaxprice,sum(initnotaxamount) as initnotaxamount, sum(notaxamount) as notaxamount, realnotaxamount,returnnotaxamount,inittaxprice,costprice, taxtype, 
+					    tax, remark, produceddate, deadline, seq,isinvoice,iswriteoff,invoicedate,writeoffdate,field01, field02, field03, field04, field05, field06, field07, field08,deliverytype,isinvoicebill
+				    from t_storage_saleout_detail where
+				    <trim prefixOverrides="and|or" >
+			    		<if test="1==1">
+			    			and isbranddiscount='1' and  saleoutid = #{saleoutid}
+			    		</if>
+			    	</trim>
+				    group by brandid 
+	    	)z
+	    <choose>
+	    	<when test="order != null">
+	    		order by z.isdiscount,z.${order} ASC
+	    	</when>
+	    	<otherwise>
+	    		order by z.isdiscount, z.goodsid ASC,z.deliverytype asc,z.id 
+	    	</otherwise>
+	    </choose>
+	</sql>
+	<select id="getSaleOutDetailListByOrder" parameterType="java.util.Map" resultType="com.hd.agent.storage.model.SaleoutDetail">
+		<include refid="getSaleOutDetailListByOrder_Normal"></include>
+	</select>
+	<select id="getSaleOutDetailListBySaleorder" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.SaleoutDetail">
+		select <include refid="SaleOutDetail_Column_List"/>
+		from (select * from t_storage_saleout_detail sd where  EXISTS (SELECT * FROM t_storage_saleout so INNER JOIN t_sales_dispatchbill d ON so.sourceid = d.id WHERE d.billno=#{saleorderid} AND d.status='4' AND so.id=sd.saleoutid) ) t
+		order by t.seq
+	</select>
+	<select id="getSaleOutDetailSumList" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.SaleoutDetail">
+		select saleoutid,summarybatchid,dispatchbillid, dispatchbilldetailid,  goodsid,groupid, storageid, storagelocationid,isdiscount,isdiscount,isbranddiscount,
+	    batchno, unitid, unitname, sum(unitnum) as unitnum, realsendnum, returnnum, auxunitid, auxunitname, 
+	    sum(auxnum) as auxnum, taxprice, sum(taxamount) taxamount, notaxprice, sum(notaxamount) as notaxamount
+	    from t_storage_saleout_detail where saleoutid = #{saleoutid}
+	    group by dispatchbillid,dispatchbilldetailid
+	</select>
+	<delete id="deleteSaleOutDetail" parameterType="java.lang.String">
+		delete from t_storage_saleout_detail where id=#{id} and saleoutid=#{saleoutid}
+	</delete>
+	<delete id="deleteSaleOutDetailBySaleoutid" parameterType="java.lang.String">
+		delete from t_storage_saleout_detail where  saleoutid=#{saleoutid}
+	</delete>
+	<delete id="deleteSaleOutDetailZeroBySaleoutid" parameterType="java.lang.String">
+		delete from t_storage_saleout_detail where isdiscount='0' and unitnum=0 and saleoutid=#{saleoutid}
+	</delete>
+	<delete id="deleteSaleOut" parameterType="java.lang.String">
+		delete from t_storage_saleout where id=#{id} and (status='1' or status='2')
+	</delete>
+	<update id="editSaleOut" parameterType="com.hd.agent.storage.model.Saleout">
+		update t_storage_saleout
+		<set>
+			<if test="businessdate != null">
+				businessdate = #{businessdate},
+			</if>
+			<if test="status != null">
+				status = #{status},
+			</if>
+			<if test="remark != null">
+				remark = #{remark},
+			</if>
+			<if test="modifyuserid != null">
+				modifyuserid = #{modifyuserid},
+			</if>
+			<if test="modifyusername != null">
+				modifyusername = #{modifyusername},
+			</if>
+			<if test="1==1">
+				modifytime = now(),
+			</if>
+			<if test="customerid != null">
+				customerid = #{customerid},
+			</if>
+			<if test="pcustomerid != null">
+				pcustomerid = #{pcustomerid},
+			</if>
+			<if test="customersort != null">
+				customersort = #{customersort},
+			</if>
+			<if test="salesdept != null">
+				salesdept = #{salesdept},
+			</if>
+			<if test="salesuser != null">
+				salesuser = #{salesuser},
+			</if>
+            <if test="storager != null">
+                storager = #{storager},
+            </if>
+			<if test="storageid != null">
+				storageid = #{storageid},
+			</if>
+			<if test="saleorderid != null">
+				saleorderid = #{saleorderid},
+			</if>
+			<if test="sourcetype != null">
+				sourcetype = #{sourcetype},
+			</if>
+			<if test="sourceid != null">
+				sourceid = #{sourceid},
+			</if>
+			<if test="handlerid != null">
+				handlerid = #{handlerid},
+			</if>
+			<if test="settletype != null">
+				settletype = #{settletype},
+			</if>
+			<if test="paytype != null">
+				paytype = #{paytype},
+			</if>
+			<if test="field01 != null">
+				field01 = #{field01},
+			</if>
+			<if test="field02 != null">
+				field02 = #{field02},
+			</if>
+			<if test="field03 != null">
+				field03 = #{field03},
+			</if>
+			<if test="field04 != null">
+				field04 = #{field04},
+			</if>
+			<if test="field05 != null">
+				field05 = #{field05},
+			</if>
+			<if test="field06 != null">
+				field06 = #{field06},
+			</if>
+			<if test="field07 != null">
+				field07 = #{field07},
+			</if>
+			<if test="field08 != null">
+				field08 = #{field08},
+			</if>
+			<if test="iswrite != null">
+				iswrite = #{iswrite},
+			</if>
+			<if test="checkdate != null">
+				checkdate = #{checkdate},
+			</if>
+			<if test="invoicedate != null">
+				invoicedate = #{invoicedate},
+			</if>
+			<if test="writeoffdate != null">
+				writeoffdate = #{writeoffdate},
+			</if>
+			<if test="invoicebilldate != null">
+				invoicebilldate = #{invoicebilldate},
+			</if>
+			<if test="receiptid != null">
+				receiptid = #{receiptid},
+			</if>
+			<if test="invoiceid != null">
+				invoiceid = #{invoiceid},
+			</if>
+			<if test="initsendamount != null">
+				initsendamount = #{initsendamount},
+			</if>
+			<if test="initsendcostamount != null">
+				initsendcostamount = #{initsendcostamount},
+			</if>
+			<if test="sendamount != null">
+				sendamount = #{sendamount},
+			</if>
+			<if test="sendnotaxamount != null">
+				sendnotaxamount = #{sendnotaxamount},
+			</if>
+			<if test="sendcostamount != null">
+				sendcostamount = #{sendcostamount},
+			</if>
+			<if test="checkamount != null">
+				checkamount = #{checkamount},
+			</if>
+			<if test="checknotaxamount != null">
+				checknotaxamount = #{checknotaxamount},
+			</if>
+			<if test="invoiceamount != null">
+				invoiceamount = #{invoiceamount},
+			</if>
+			<if test="invoicenotaxamount != null">
+				invoicenotaxamount = #{invoicenotaxamount},
+			</if>
+			<if test="invoicebillamount != null">
+				invoicebillamount = #{invoicebillamount},
+			</if>
+			<if test="invoicebillnotaxamount != null">
+				invoicebillnotaxamount = #{invoicebillnotaxamount},
+			</if>
+			<if test="writeoffamount != null">
+				writeoffamount = #{writeoffamount},
+			</if>
+			<if test="writeoffnotaxamount != null">
+				writeoffnotaxamount = #{writeoffnotaxamount},
+			</if>
+			<if test="indooruserid != null">
+				indooruserid = #{indooruserid},
+			</if>
+			<if test="duefromdate != null">
+				duefromdate = #{duefromdate},
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	<select id="getSaleoutDetailById" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.SaleoutDetail">
+		select <include refid="SaleOutDetail_Column_List"/>
+		from t_storage_saleout_detail where id = #{id}
+	</select>
+	<select id="getSaleOutNumByDispatchBillDetailID" parameterType="java.lang.String" resultType="java.math.BigDecimal">
+		select sum(unitnum) from t_storage_saleout_detail where dispatchbilldetailid=#{dispatchbilldetailid} and dispatchbillid=#{dispatchbillid}
+	</select>
+	<update id="auditSaleOutClose" parameterType="java.lang.String">
+		update t_storage_saleout
+		set duefromdate=#{duefromdate},
+        <if test="businessdate != null">
+            businessdate = #{businessdate},
+        </if>
+		status ='4',
+		isrefer=#{isrefer},audituserid=#{userid},auditusername=#{username},audittime=now(),closetime=now()
+  		where id=#{id} and (status='2' or status='6')
+	</update>
+	<update id="auditSaleOut" parameterType="java.lang.String">
+		update t_storage_saleout
+		set duefromdate=#{duefromdate},
+        <if test="businessdate != null">
+            businessdate = #{businessdate},
+        </if>
+		status ='3',isrefer=#{isrefer},audituserid=#{userid},auditusername=#{username},audittime=now()
+  		where id=#{id} and (status='2' or status='6')
+	</update>
+	<update id="oppauditSaleOut" parameterType="java.lang.String">
+		update t_storage_saleout set status ='2',isrefer='0',audituserid=#{userid},auditusername=#{username},audittime=now() 
+  		where id=#{id} and status='3'
+	</update>
+	<update id="updateSaleoutRefer" parameterType="java.lang.String">
+		update t_storage_saleout set isrefer=#{isrefer}
+  		where saleorderid=#{saleorderid}
+	</update>
+	<update id="updateSaleoutReferByid" parameterType="java.lang.String">
+		update t_storage_saleout set isrefer=#{isrefer}
+  		where id=#{id}
+	</update>
+	<update id="updateSaleOutClose" parameterType="java.lang.String">
+		update t_storage_saleout set status ='4',closetime=now()
+  		where id=#{id} and status='3'
+	</update>
+	<update id="updateSaleOutWriteByReceipt" parameterType="java.lang.String">
+		update t_storage_saleout t,t_sales_receipt t1 set t.iswrite ='1'
+  		where t.id=t1.billno and t1.id=#{id}
+	</update>
+	<update id="updateSaleOutOpen" parameterType="java.lang.String">
+		update t_storage_saleout set status ='3'
+  		where id=#{id} and status='4'
+	</update>
+    <update id="updateSaleoutDetailNumAndAmount" parameterType="com.hd.agent.storage.model.SaleoutDetail">
+        update t_storage_saleout_detail
+        <set>
+            <if test="taxprice != null">
+                taxprice = #{taxprice},
+            </if>
+            <if test="taxamount != null">
+                taxamount = #{taxamount},
+            </if>
+            <if test="notaxprice != null">
+                notaxprice = #{notaxprice},
+            </if>
+            <if test="notaxamount != null">
+                notaxamount = #{notaxamount},
+            </if>
+            <if test="tax != null">
+                tax = #{tax},
+            </if>
+            <if test="unitnum != null">
+                unitnum = #{unitnum},
+            </if>
+            <if test="auxnum != null">
+                auxnum = #{auxnum},
+            </if>
+            <if test="auxremainder != null">
+                auxremainder = #{auxremainder},
+            </if>
+            <if test="auxnumdetail != null">
+                auxnumdetail = #{auxnumdetail},
+            </if>
+            <if test="totalbox != null">
+                totalbox = #{totalbox},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+	<update id="updateSaleoutDetailBack" parameterType="com.hd.agent.storage.model.SaleoutDetail">
+		update t_storage_saleout_detail
+	    <set>
+	      <if test="taxprice != null">
+	        taxprice = #{taxprice},
+	      </if>
+	      <if test="taxamount != null">
+	        taxamount = #{taxamount},
+	      </if>
+	      <if test="notaxprice != null">
+	        notaxprice = #{notaxprice},
+	      </if>
+	      <if test="notaxamount != null">
+	        notaxamount = #{notaxamount},
+	      </if>
+	      <if test="tax != null">
+	        tax = #{tax},
+	      </if>
+	      <if test="realsendnum != null">
+	        realsendnum = #{realsendnum},
+	      </if>
+	      <if test="returnnum != null">
+	        returnnum = #{returnnum},
+	      </if>
+	      <if test="auxrealsendnum != null">
+	        auxrealsendnum = #{auxrealsendnum},
+	      </if>
+	      <if test="auxrealsendnumdetail != null">
+	        auxrealsendnumdetail = #{auxrealsendnumdetail},
+	      </if>
+	      <if test="auxreturnnum != null">
+	        auxreturnnum = #{auxreturnnum},
+	      </if>
+	      <if test="auxreturnnumdetail != null">
+	        auxreturnnumdetail = #{auxreturnnumdetail},
+	      </if>
+	      <if test="realtaxamount != null">
+	        realtaxamount = #{realtaxamount},
+	      </if>
+	      <if test="returntaxamount != null">
+	        returntaxamount = #{returntaxamount},
+	      </if>
+	      <if test="realnotaxamount != null">
+	        realnotaxamount = #{realnotaxamount},
+	      </if>
+	      <if test="returnnotaxamount != null">
+	        returnnotaxamount = #{returnnotaxamount},
+	      </if>
+	    </set>
+	    where id = #{id}
+	</update>
+	<update id="updateClearSaleoutDetailBack" parameterType="java.lang.String">
+		update t_storage_saleout_detail 
+		set realsendnum = 0, returnnum = 0,auxrealsendnum = 0,auxrealsendnumdetail = null,
+		auxreturnnum = 0,auxreturnnumdetail =null,realtaxamount = 0,returntaxamount = 0,
+		realnotaxamount = 0,returnnotaxamount = 0
+		where id = #{id}
+	</update>
+	<update id="updateSaleOutDetailIswriteoff">
+		update t_storage_saleout_detail s1,t_sales_receipt_detail r1,t_account_sales_invoice_detail t1
+		set s1.iswriteoff='1',s1.writeoffdate = #{writeoffdate}
+		where s1.id=r1.billdetailno and s1.saleoutid=r1.billno  and r1.billid=t1.sourceid and r1.id=t1.sourcedetailid and t1.sourcetype='1' and t1.billid=#{id};
+	</update>
+	<update id="updateSaleOutDetailIswriteoffInvoiceBill" parameterType="java.lang.String">
+		update t_storage_saleout_detail s1,t_sales_receipt_detail r1,t_account_sales_invoicebill_detail t1
+		set s1.iswriteoff='1',s1.writeoffdate = date_format(now(), '%Y-%m-%d')
+		where s1.id=r1.billdetailno and s1.saleoutid=r1.billno  and r1.billid=t1.sourceid and r1.id=t1.sourcedetailid and t1.sourcetype='1' and t1.billid=#{id};
+	</update>
+	<!-- 反核销 -->
+	<update id="updateSaleOutDetailBackWriteoff" parameterType="java.lang.String">
+		update t_storage_saleout_detail s1,t_sales_receipt_detail r1,t_account_sales_invoice_detail t1
+		set s1.iswriteoff='0',s1.writeoffdate = ''
+		where s1.id=r1.billdetailno and s1.saleoutid=r1.billno  and r1.billid=t1.sourceid and r1.id=t1.sourcedetailid and t1.sourcetype='1' and t1.billid=#{id};
+	</update>
+	<update id="updateSaleOutDetailBackWriteoffInvoiceBill" parameterType="java.lang.String">
+		update t_storage_saleout_detail s1,t_sales_receipt_detail r1,t_account_sales_invoicebill_detail t1
+		set s1.iswriteoff='0',s1.writeoffdate = ''
+		where s1.id=r1.billdetailno and s1.saleoutid=r1.billno  and r1.billid=t1.sourceid and r1.id=t1.sourcedetailid and t1.sourcetype='1' and t1.billid=#{id};
+	</update>
+	<update id="updateSaleOutDetailIsinvoice" parameterType="java.lang.String">
+		update t_storage_saleout_detail s1,t_sales_receipt_detail r1,t_account_sales_invoice_detail t1
+		set s1.isinvoice=#{isinvoice} 
+		<if test="isinvoice == 1">
+	       ,s1.invoicedate = #{invoicedate}
+	    </if>
+	    <if test="isinvoice == 0">
+	       ,s1.invoicedate = ''
+	    </if>
+		where s1.id=r1.billdetailno and s1.saleoutid=r1.billno  and r1.billid=t1.sourceid and r1.id=t1.sourcedetailid and t1.sourcetype='1' and t1.billid=#{id};
+	</update>
+	<update id="updateSaleOutDetailIsinvoicebill" parameterType="java.lang.String">
+		update t_storage_saleout_detail s1,t_sales_receipt_detail r1,t_account_sales_invoicebill_detail t1
+		set s1.isinvoicebill=#{isinvoicebill}
+		<if test="isinvoicebill == 1">
+			,s1.invoicebilldate = #{invoicebilldate}
+		</if>
+	    <if test="isinvoicebill == 0">
+	       ,s1.invoicebilldate = ''
+	    </if>
+		where s1.id=r1.billdetailno and s1.saleoutid=r1.billno  and r1.billid=t1.sourceid and r1.id=t1.sourcedetailid and t1.sourcetype='1' and t1.billid=#{id};
+	</update>
+	<update id="updateSaleoutPrinttimes" parameterType="com.hd.agent.storage.model.Saleout">
+		update t_storage_saleout
+	    <set>
+			<if test="printtimes != null">
+				printtimes = IFNULL(printtimes,0)+1,
+				printdatetime = now(),
+			</if>
+			<if test="phprinttimes != null">
+				phprinttimes = IFNULL(phprinttimes,0)+1,
+				phprintdatetime = now(),
+			</if>
+	    </set>
+	    where id = #{id}
+	</update>
+	<select id="showSaleOutListBy" parameterType="java.util.Map" resultType="com.hd.agent.storage.model.Saleout">
+		select <include refid="SaleOut_Column_List"/>
+		from t_storage_saleout
+		where
+		<trim prefixOverrides="and|or" >		  
+		  <if test="dataSql != null">
+			 and ${dataSql}
+		  </if>		  
+		  <if test="idarrs != null" >
+	         and FIND_IN_SET(id,#{idarrs})
+	      </if>
+		  <if test="phprintstatus !=null">
+			 and status='2'
+		  </if>
+		  <if test="ckprintstatus !=null">
+			and status='3'
+		  </if>
+		  <if test="status!=null">
+			and status=#{status}
+		  </if>	 
+		  <if test="statusarr!=null">
+	         and FIND_IN_SET(status,#{statusarr})
+		  </if>	 		  
+		  <if test="saleidarrs != null" >
+	         and FIND_IN_SET(saleorderid,#{saleidarrs})
+	      </if> 	 		  
+		  <if test="saleorderid != null" >
+	         and saleorderid = #{saleorderid}
+	      </if> 			  
+		  <if test="sourceidarrs != null" >
+	         and FIND_IN_SET(sourceid,#{sourceidarrs})
+	      </if> 			  
+		  <if test="sourceid != null" >
+	         and sourceid = #{sourceid}
+	      </if>
+		  <if test="notprint != null and notprint == 1">
+	  			 and (printtimes is null or printtimes=0)	
+		  </if>
+		  <if test="notphprint != null and notphprint == 1">
+	  			 and (phprinttimes is null or phprinttimes=0)	
+		  </if>
+	    </trim>
+	</select>
+	<select id="getUnauditSaleOutCountBySaleorderid" parameterType="java.lang.String" resultType="int">
+		select count(1) from t_storage_saleout
+		where saleorderid=#{saleorderid} and status='2'
+	</select>
+	<select id="getSaleOutListBySaleorderid" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.Saleout">
+		select <include refid="SaleOut_Column_List"/>
+		from t_storage_saleout
+		<trim prefix="where" prefixOverrides="and|or" >		  
+		  <if test="saleorderid != null">
+			 and saleorderid=#{saleorderid}
+		  </if>		  
+		  <if test="status!=null">
+			and status=#{status}
+		  </if>	  		  
+	    </trim>
+	</select>
+	<update id="clearSaleoutInvoiceidByReceiptid" parameterType="java.lang.String">
+		update t_storage_saleout set
+			invoiceid = ""
+		where receiptid = #{receiptid}
+	</update>
+	<select id="getSaleOutSumAmountBySaleoutid" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.SaleoutDetail">
+		select t.saleoutid,sum(t.inittaxamount) as inittaxamount,sum(t.initnum*t.costprice) as initcostamount,
+		sum(t.taxamount) as taxamount,sum(t.notaxamount) as notaxamount,sum(t.unitnum*t.costprice) as costamount,
+		sum(t.realtaxamount) as realtaxamount,sum(t.realnotaxamount) as realnotaxamount
+		from t_storage_saleout_detail t
+		where saleoutid=#{saleoutid}
+	</select>
+	<select id="getSaleOutSumInvoiceAmountBySaleoutid" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.SaleoutDetail">
+		select t.saleoutid,sum(t.taxamount) as taxamount,sum(t.notaxamount) as notaxamount,sum(t.realtaxamount) as realtaxamount,sum(t.realnotaxamount) as realnotaxamount
+		from t_storage_saleout_detail t
+		where saleoutid=#{saleoutid} and t.isinvoice='1'
+	</select>
+	<select id="getSaleOutSumInvoicebillAmountBySaleoutid" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.SaleoutDetail">
+		select t.saleoutid,sum(t.taxamount) as taxamount,sum(t.notaxamount) as notaxamount,sum(t.realtaxamount) as realtaxamount,sum(t.realnotaxamount) as realnotaxamount
+		from t_storage_saleout_detail t
+		where saleoutid=#{saleoutid} and t.isinvoicebill='1'
+	</select>
+	<select id="getSaleOutSumWriteoffAmountBySaleoutid" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.SaleoutDetail">
+		select t.saleoutid,sum(t.taxamount) as taxamount,sum(t.notaxamount) as notaxamount,sum(t.realtaxamount) as realtaxamount,sum(t.realnotaxamount) as realnotaxamount
+		from t_storage_saleout_detail t
+		where saleoutid=#{saleoutid} and t.iswriteoff='1'
+	</select>
+	<select id="getSaleOutSumUNWriteoffAmountBySaleoutid" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.SaleoutDetail">
+		select t.saleoutid,sum(t.taxamount) as taxamount,sum(t.notaxamount) as notaxamount,sum(t.realtaxamount) as realtaxamount,sum(t.realnotaxamount) as realnotaxamount
+		from t_storage_saleout_detail t
+		where saleoutid=#{saleoutid} and t.iswriteoff='0'
+	</select>
+	<select id="getSaleOutListByReceiptid" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.Saleout">
+		select t.* from t_storage_saleout t,t_sales_receipt t1
+		where t.saleorderid=t1.saleorderid and t1.id=#{receiptid}
+	</select>
+	<select id="getSaleInvoiceListByReceiptid" parameterType="java.lang.String" resultType="java.util.Map">
+		select DISTINCT t.id,t.invoiceno from t_account_sales_invoice t,t_account_sales_invoice_detail t1
+		where t.id=t1.billid and t1.sourceid=#{receiptid}
+	</select>
+	<select id="getSaleInvoiceBillListByReceiptid" parameterType="java.lang.String" resultType="java.util.Map">
+		select DISTINCT t.id,t.invoiceno from t_account_sales_invoicebill t,t_account_sales_invoicebill_detail t1
+		where t.id=t1.billid and t1.sourceid=#{receiptid}
+	</select>
+	
+	<sql id="getSaleOutDetailPrintList_Normal">
+		select z.* from (
+			select d.id,d.saleoutid,d.dispatchbillid,d.dispatchbilldetailid,d.summarybatchid,d.isdiscount,d.isbranddiscount,d.goodsid,d.groupid,d.goodssort,d.brandid,d.branduser,d.branddept,d.supplierid,d.supplieruser,d.storageid,d.storagelocationid,
+			d.batchno,d.unitid,d.unitname,d.initnum,d.unitnum,d.realsendnum,d.returnnum,d.auxunitid,d.auxunitname,
+			d.auxinitnum,d.auxnum,d.auxremainder,d.auxnumdetail,d.totalbox,d.auxrealsendnum,d.auxrealsendnumdetail,d.auxreturnnum,d.auxreturnnumdetail,
+			d.taxprice,d.inittaxamount,d.taxamount,d.realtaxamount,d.returntaxamount,d.notaxprice,d.initnotaxamount,d.notaxamount,d.realnotaxamount,d.returnnotaxamount,d.inittaxprice,d.costprice,d.taxtype,
+			d.tax,d.remark,d.produceddate,d.deadline,d.seq,d.isinvoice,d.iswriteoff,d.invoicedate,d.writeoffdate,d.field01,d.field02,d.field03,d.field04,d.field05,d.field06,d.field07,d.field08,d.deliverytype,d.isinvoicebill
+		    from t_storage_saleout_detail d inner join t_storage_saleout s on d.saleoutid=s.id
+		    <trim prefix="where" prefixOverrides="and|or" >
+	    		<if test="1==1">
+	    			and d.isbranddiscount='0'
+	    		</if>
+	    		<if test="saleoutid!=null">
+	    			and d.saleoutid = #{saleoutid}
+	    		</if>
+	    		<if test="status != null">
+					and s.status=#{status}
+				</if>
+				<if test="statusarr != null">
+					and FIND_IN_SET(s.status,#{statusarr})
+				</if>
+				<if test="dispatchbillid != null">
+					and s.sourceid = #{dispatchbillid}
+				</if>
+				<if test="saleorderid != null">
+					and s.saleorderid = #{saleorderid}
+				</if>
+	    	</trim>
+		    union all
+		    select d.id,d.saleoutid,d.dispatchbillid,d.dispatchbilldetailid,d.summarybatchid,d.isdiscount,d.isbranddiscount,d.goodsid,d.groupid,d.goodssort,d.brandid,d.branduser,d.branddept,d.supplierid,d.supplieruser,d.storageid,d.storagelocationid, 
+			d.batchno,d.unitid,d.unitname,d.initnum,d.unitnum,d.realsendnum,d.returnnum,d.auxunitid,d.auxunitname,
+			d.auxinitnum,d.auxnum,d.auxremainder,d.auxnumdetail,d.totalbox,d.auxrealsendnum,d.auxrealsendnumdetail,d.auxreturnnum,d.auxreturnnumdetail,
+			d.taxprice,sum(d.inittaxamount) as inittaxamount,sum(d.taxamount) as taxamount,d.realtaxamount,d.returntaxamount,d.notaxprice,sum(d.initnotaxamount) as initnotaxamount,sum(d.notaxamount) as notaxamount,d.realnotaxamount,d.returnnotaxamount,d.inittaxprice,d.costprice,d.taxtype,
+			d.tax,d.remark,d.produceddate,d.deadline,d.seq,d.isinvoice,d.iswriteoff,d.invoicedate,d.writeoffdate,d.field01,d.field02,d.field03,d.field04,d.field05,d.field06,d.field07,d.field08,d.deliverytype,d.isinvoicebill
+		    from t_storage_saleout_detail d inner join t_storage_saleout s on d.saleoutid=s.id
+		    <trim prefix="where" prefixOverrides="and|or" >
+	    		<if test="1==1">
+	    			and d.isbranddiscount='1'
+	    		</if>
+	    		<if test="saleoutid!=null">
+	    			and d.saleoutid = #{saleoutid}
+	    		</if>
+	    		<if test="status != null">
+					and s.status=#{status}
+				</if>
+				<if test="statusarr != null">
+					and FIND_IN_SET(s.status,#{statusarr})
+				</if>
+				<if test="dispatchbillid != null">
+					and s.sourceid = #{dispatchbillid}
+				</if>
+				<if test="saleorderid != null">
+					and s.saleorderid = #{saleorderid}
+				</if>
+	    	</trim>
+		    group by brandid
+	    )z
+	    order by z.isdiscount, z.seq ASC
+	</sql>
+	
+	<select id="getSaleOutDetailPrintListBy" parameterType="java.util.Map" resultType="com.hd.agent.storage.model.SaleoutDetail">
+		<include refid="getSaleOutDetailPrintList_Normal"></include>
+	</select>
+	<select id="getSaleOutPrintCountInfoBy" parameterType="java.util.Map" resultType="java.util.Map">
+		select count(1) as unprint from t_storage_saleout 
+		where
+		<trim prefixOverrides="and|or" >
+			<choose>
+				<when test="printtype == 1">
+					and (phprinttimes is null or phprinttimes=0)						
+				</when>
+				<otherwise>
+					and (printtimes is null or printtimes=0)
+				</otherwise>
+			</choose>
+			<if test="saleorderid != null">
+				and saleorderid = #{saleorderid}
+			</if>
+			<if test="sourceid != null">
+				and sourceid = #{sourceid}
+			</if>
+		</trim> 
+	</select>
+	<select id="getDispatchBillPrintCountInfoBy" parameterType="java.util.Map" resultType="java.util.Map">
+		select IFNULL(phprinttimes,0) as phprinttimes,IFNULL(printtimes,0) as printtimes from t_sales_dispatchbill 
+		where
+		<trim prefixOverrides="and|or" >
+			<if test="sourceid != null">
+				and billno = #{sourceid}
+			</if>
+			<if test="id != null">
+				and id = #{id}
+			</if>
+		</trim> 
+	</select>
+	<update id="updateSyncDispatchBillPrinttimes" parameterType="java.util.Map">
+		update t_sales_dispatchbill
+	   <set>
+	   		<choose>
+				<when test="printtype == 1">
+	   				phprinttimes=IFNULL(phprinttimes,0)+1,
+					phprintdatetime = now(),
+				</when>
+				<when test="printtype == 2">
+	   				printtimes=IFNULL(printtimes,0)+1,
+					printdatetime = now(),
+				</when>
+				<when test="printtype == 3">
+	   				phprinttimes=IFNULL(phprinttimes,0)+1,	   				
+	   				printtimes=IFNULL(printtimes,0)+1,
+					phprintdatetime = now(),
+					printdatetime = now(),
+				</when>
+				<when test="printtype == 4">
+	   				phprinttimes=IFNULL(phprinttimes,0)+1,
+					phprintdatetime = now(),
+				</when>
+				<when test="printtype == 5">
+	   				printtimes=IFNULL(printtimes,0)+1,
+					printdatetime = now(),
+				</when>
+				<when test="printtype == 6">
+	   				phprinttimes=IFNULL(phprinttimes,0)+1,	   				
+	   				printtimes=IFNULL(printtimes,0)+1,
+					phprintdatetime = now(),
+					printdatetime = now(),
+				</when>
+			</choose>   		
+	   </set>
+	   where
+	   <trim prefixOverrides="and|or" >
+	   		<choose>
+				<when test="printtype == 1">
+					and (phprinttimes is null or phprinttimes=0)
+				</when>
+				<when test="printtype == 2">
+					and (printtimes is null or printtimes=0)
+				</when>
+				<when test="printtype == 3">					
+					and ( (phprinttimes is null or phprinttimes=0) or (printtimes is null or printtimes=0) )
+				</when>
+			</choose>
+			<if test="sourceid != null">
+				and billno = #{sourceid}
+			</if>
+			<if test="id != null">
+				and id = #{id}
+			</if>
+			<if test="phprinttimes != null">
+				and (phprinttimes = #{phprinttimes} or phprinttimes =0 or phprinttimes is null)
+			</if>
+			<if test="printtimes != null">
+				and (printtimes = #{printtimes} or printtimes=0 or printtimes is null)
+			</if>
+			<if test="statusarr != null">
+				and FIND_IN_SET(status,#{statusarr})
+			</if>
+	  </trim>
+	</update>
+	<select id="getSalesOrderPrintCountInfoBy" parameterType="java.util.Map" resultType="java.util.Map">
+		select IFNULL(phprinttimes,0) as phprinttimes,IFNULL(printtimes,0) as printtimes from t_sales_order 
+		where
+		<trim prefixOverrides="and|or" >
+			<if test="sourceid != null">
+				and billno = #{sourceid} <!-- 这是错误的 -->
+			</if>
+			<if test="id != null">
+				and id = #{id}
+			</if>
+		</trim> 
+	</select>
+	<update id="updateSyncSalesOrderPrinttimes" parameterType="java.util.Map">
+		update t_sales_order
+	   <set>
+	   		<choose>
+				<when test="printtype == 1">
+	   				phprinttimes=IFNULL(phprinttimes,0)+1,
+					phprintdatetime = now(),
+				</when>
+				<when test="printtype == 2">
+	   				printtimes=IFNULL(printtimes,0)+1,
+					printdatetime = now(),
+				</when>
+				<when test="printtype == 3">
+	   				phprinttimes=IFNULL(phprinttimes,0)+1,	   				
+	   				printtimes=IFNULL(printtimes,0)+1,
+					phprintdatetime = now(),
+					printdatetime = now(),
+				</when>
+				<when test="printtype == 4">
+	   				phprinttimes=IFNULL(phprinttimes,0)+1,
+					phprintdatetime = now(),
+				</when>
+				<when test="printtype == 5">
+	   				printtimes=IFNULL(printtimes,0)+1,
+					printdatetime = now(),
+				</when>
+				<when test="printtype == 6">
+	   				phprinttimes=IFNULL(phprinttimes,0)+1,	   				
+	   				printtimes=IFNULL(printtimes,0)+1,
+					phprintdatetime = now(),
+					printdatetime = now(),
+				</when>
+			</choose>   		
+	   </set>
+	   where
+	   <trim prefixOverrides="and|or" >
+	   		<choose>
+				<when test="printtype == 1">
+					and (phprinttimes is null or phprinttimes=0)
+				</when>
+				<when test="printtype == 2">
+					and (printtimes is null or printtimes=0)
+				</when>
+				<when test="printtype == 3">					
+					and ( (phprinttimes is null or phprinttimes=0) or (printtimes is null or printtimes=0) )
+				</when>
+			</choose>
+			<if test="id != null">
+				and id = #{id}
+			</if>
+			<if test="phprinttimes != null">
+				and (phprinttimes = #{phprinttimes} or phprinttimes =0 or phprinttimes is null)
+			</if>
+			<if test="printtimes != null">
+				and (printtimes = #{printtimes} or printtimes=0 or printtimes is null)
+			</if>
+			<if test="statusarr != null">
+				and FIND_IN_SET(status,#{statusarr})
+			</if>
+	  </trim>
+	</update>
+	<update id="updateSaleoutPrinttimesBy" parameterType="map">
+		update t_storage_saleout
+		<set>
+			<if test="phprinttimes != null ">
+	       		phprinttimes = IFNULL(phprinttimes,0)+1,
+				phprintdatetime = now(),
+			</if>
+			<if test="printtimes != null ">			
+	        	printtimes = IFNULL(printtimes,0)+1,
+				printdatetime = now(),
+			</if>
+		</set>
+		where
+		 <trim prefixOverrides="and|or" >
+			 <if test="id != null" >
+			  	and id = #{id}
+			 </if>
+			 <if test="idarrs != null" >
+	         	and FIND_IN_SET(id,#{idarrs})
+	      	 </if>		  	 		  
+			 <if test="saleorderid != null" >
+		         and saleorderid = #{saleorderid}
+		     </if>		  
+			 <if test="sourceid != null" >
+		         and sourceid = #{sourceid}
+		     </if>
+			<if test="statusarr != null">
+				and FIND_IN_SET(status,#{statusarr})
+			</if>
+		</trim>
+	</update>
+	<select id="showGoodsWaitSaleListData" parameterType="java.lang.String" resultType="java.util.Map">
+		select t.id,t.businessdate,t1.goodsid,t1.unitid,t1.unitname,t1.unitnum,t1.taxprice,t1.taxamount,t1.auxnumdetail,t1.remark ,
+		t.customerid,t.saleorderid as orderid
+		from t_storage_saleout t,t_storage_saleout_detail t1
+		where t.id=t1.saleoutid and t1.goodsid=#{goodsid}
+        <if test="storageid != null" >
+            and t.storageid=#{storageid}
+        </if>
+        <if test="summarybatchid != null" >
+            and t1.summarybatchid=#{summarybatchid}
+        </if>
+         and t.status='2'
+		union all
+		select t.id,t.businessdate,t1.goodsid,t1.unitid,t1.unitname,t1.unitnum,t1.taxprice,t1.taxamount,t1.auxnumdetail,t1.remark,
+		'' as customerid,'' as orderid
+		from t_storage_other_out t,t_storage_other_out_detail t1
+		where t.id=t1.billid and t1.goodsid=#{goodsid}
+        <if test="storageid != null" >
+            and t.storageid=#{storageid}
+        </if>
+        <if test="summarybatchid != null" >
+            and t1.summarybatchid=#{summarybatchid}
+        </if>
+        and t.status='2'
+		union all
+		select t.id,t.businessdate,t1.goodsid,t1.unitid,t1.unitname,t1.unitnum,t1.taxprice,t1.taxamount,t1.auxnumdetail,t1.remark,
+		'' as customerid,'' as orderid
+		from t_storage_purchasereject_out t,t_storage_purchasereject_out_detail t1
+		where t.id=t1.orderid and t1.goodsid=#{goodsid}
+        <if test="storageid != null" >
+            and t.storageid=#{storageid}
+        </if>
+        <if test="summarybatchid != null" >
+            and t1.summarybatchid=#{summarybatchid}
+        </if>
+        and t.status='2'
+	</select>
+	<select id="getSaleOutNoWriteoffListByCustomerid" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.Saleout">
+		select <include refid="SaleOut_Column_List"/> from t_storage_saleout 
+		where iswrite='0' and (status='3' or status='4') and customerid=#{customerid}
+	</select>
+	<update id="updateSaleOutDuefromdate" parameterType="java.lang.String">
+		update t_storage_saleout t
+		set t.duefromdate=#{duefromdate} where t.id=#{id}
+	</update>
+	<update id="updateSaleOutDuefromdateByOrderid" parameterType="java.lang.String">
+		update t_storage_saleout t,t_storage_saleout_detail t1
+		set t.duefromdate=#{duefromdate}
+		where t.saleorderid=#{orderid} and t1.saleoutid=t.id
+        <if test="brandid != null">
+            and t1.brandid=#{brandid}
+        </if>
+	</update>
+	<update id="updateReceiptDuefromdateByOrderid" parameterType="java.lang.String">
+		update t_sales_receipt t
+		set t.duefromdate=#{duefromdate} where t.saleorderid=#{orderid}
+	</update>
+	<delete id="deleteSaleOutByOrderid" parameterType="java.lang.String">
+		delete from t_storage_saleout where saleorderid=#{orderid}
+	</delete>
+	<delete id="deleteSaleOutDetailByOrderid" parameterType="java.lang.String">
+		delete from t_storage_saleout_detail
+		where saleoutid in (select t.id from t_storage_saleout t where t.saleorderid=#{orderid})
+	</delete>
+	<select id="getSaleoutUnCheckList" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.Saleout">
+		select <include refid="SaleOut_Column_List"/>
+		from t_storage_saleout
+		where ischeck='0' and status=#{status} and storageid=#{storageid} and businessdate=#{date}
+	</select>
+    <select id="getSaleoutForScanList" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.Saleout">
+        select t.id, t.businessdate, t.status, t.remark, t.adduserid, t.addusername, t.adddeptid, t.adddeptname,
+        t.addtime, t.modifyuserid, t.modifyusername, t.modifytime, t.audituserid, t.auditusername, t.audittime,
+        t.stopuserid, t.stopusername, t.stoptime, t.closetime, t.printtimes, t.customerid,t.pcustomerid, t.salesarea,t.salesdept,
+        t.salesuser, t.storageid, t.saleorderid,t.sourcetype, t.sourceid,t.handlerid,t.settletype,t.paytype, t.field01, t.field02, t.field03, t.field04, t.field05,
+        t.field06, t.field07, t.field08, t.isrefer,t.iswrite,t.phprinttimes,t.checkdate,t.invoicedate,t.writeoffdate,t.receiptid,t.invoiceid,t.initsendamount,t.initsendcostamount,
+        t.sendamount,t.sendnotaxamount,t.sendcostamount,t.checkamount,t.checknotaxamount,t.invoiceamount,t.invoicenotaxamount,t.writeoffamount,t.writeoffnotaxamount,t.indooruserid,t.duefromdate,
+        t.isdelivery,t.ischeck,t.checktime,t.checkuserid,t.checkusername,t.isbigsaleout,t.isinvoicebill,t.storager,t.printdatetime,t.phprintdatetime
+        from t_storage_saleout t
+        <if test="con != null">
+        left join t_base_sales_customer c on t.customerid=c.id
+        </if>
+        where t.status=#{status} and (t.ischeck='0' or t.checkuserid=#{checkuserid})
+        <if test="dataSql != null">
+            and ${dataSql}
+        </if>
+        <if test="con != null">
+            and ( t.id like concat('%',#{con},'%')
+            or t.saleorderid like CONCAT('%',#{con},'%')
+            or c.name like CONCAT('%',#{con},'%')
+            or t.customerid like  CONCAT('%',#{con},'%') )
+        </if>
+    </select>
+	<select id="getSaleoutDetailWithoutDiscount" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.SaleoutDetail">
+		select <include refid="SaleOutDetail_Column_List"/>
+		from t_storage_saleout_detail where saleoutid = #{billid}
+	    order by goodsid
+	</select>
+	<update id="updateSaleoutCheckFlag" parameterType="java.lang.String">
+		update t_storage_saleout
+		set ischeck='1',checktime=now(),checkuserid=#{checkuserid},checkusername=#{checkusername}
+		where id=#{id}
+	</update>
+    <update id="updateSaleoutCheckClearFlag" parameterType="java.lang.String">
+        update t_storage_saleout
+        set ischeck='0',checktime=null,checkuserid='',checkusername=''
+        where id=#{id}
+    </update>
+	<select id="getCustomerHisGoodsSalesList" parameterType="java.lang.String" resultType="map">
+		select t.businessdate,t1.goodsid,t1.taxprice,t1.unitnum,t1.auxnumdetail,t1.taxamount,t1.remark
+		from t_storage_saleout t
+		LEFT JOIN t_storage_saleout_detail t1 on t.id=t1.saleoutid
+		where t.businessdate>DATE_SUB(now(), INTERVAL 1 YEAR) and t.customerid=#{customerid} and t1.goodsid=#{goodsid} and t1.isdiscount='0'
+		order by t.businessdate desc
+	</select>
+
+    <!-- 获取预开票所需的审核通过的发货单数据 -->
+    <sql id="getSaleoutListForAdvanceBill_sql">
+        (
+          select z.id,z.businessdate,z.orderid,z.orderdate,z.adduserid, z.addusername, z.adddeptid, z.adddeptname,z.addtime, z.audituserid, z.auditusername, z.audittime,
+            z.customerid, z.salesdept,z.salesuser,z.storageid,z.isrefer, z.duefromdate,
+            sum(z.totaltaxamount) as totaltaxamount,sum(z.uninvoiceamount) as uninvoiceamount
+          from (
+            select t.id,t.businessdate,t.saleorderid as orderid,o.businessdate as orderdate,t.adduserid, t.addusername, t.adddeptid, t.adddeptname,
+            t.addtime, t.audituserid, t.auditusername, t.audittime,
+            t.customerid, t.salesdept,t.salesuser,t.storageid,
+            t.isrefer, t1.duefromdate,
+            t1.taxamount as totaltaxamount,IF(t1.isinvoicebill='0',t1.taxamount,0) as uninvoiceamount
+            from t_storage_saleout t
+            RIGHT JOIN t_storage_saleout_detail t1 on t.id =t1.saleoutid
+            INNER JOIN t_sales_order o on t.saleorderid= o.id
+            <if test="condition.isBrandUser != null" >
+                INNER JOIN t_base_personnel_customer pc on t.customerid=pc.customerid
+            </if>
+            <trim prefix="where" prefixOverrides="and|or">
+                <choose>
+                    <when test="condition.isBrandUser != null">
+                        <if test="condition.datasql != null" >
+                            and (${condition.datasql} or pc.personid=#{condition.personnelid})
+                        </if>
+                        <if test="condition.datasql == null" >
+                            and  pc.personid=#{condition.personnelid}
+                        </if>
+                    </when>
+                    <otherwise>
+                        <if test="condition.datasql != null" >
+                            and ${condition.datasql}
+                        </if>
+                    </otherwise>
+                </choose>
+                <if test="condition.id != null" >
+                    and ( t.id like concat('%',#{condition.id},'%') or
+                    t.saleorderid like CONCAT('%',#{condition.id},'%') )
+                </if>
+                <if test="condition.businessdate1 != null" >
+                    <![CDATA[and t.businessdate >= #{condition.businessdate1} ]]>
+                </if>
+                <if test="condition.businessdate2 != null" >
+                    <![CDATA[and t.businessdate <= #{condition.businessdate2} ]]>
+                </if>
+                <if test="condition.orderdate1 != null" >
+                    <![CDATA[and o.businessdate >= #{condition.orderdate1}]]>
+                </if>
+                <if test="condition.orderdate2 != null" >
+                    <![CDATA[and o.businessdate <= #{condition.orderdate2} ]]>
+                </if>
+                <if test="condition.customerid != null" >
+                    and t.customerid = #{condition.customerid}
+                </if>
+                <if test="condition.pcustomerid != null" >
+                    and t.pcustomerid=#{condition.pcustomerid}
+                </if>
+				<if test="condition.brandid != null" >
+					and t1.brandid = #{condition.brandid}
+				</if>
+				<if test="condition.taxtype != null" >
+					and t1.taxtype = #{condition.taxtype}
+				</if>
+                <if test="1==1" >
+                    and (t.status = '3') and t.isinvoicebill in('0','4')
+                </if>
+            </trim>
+            GROUP BY t1.id
+        )z
+        group by z.id
+        )
+    </sql>
+    <select id="getSaleoutListForAdvanceBill" parameterType="com.hd.agent.common.util.PageMap" resultType="java.util.Map">
+        select * from <include refid="getSaleoutListForAdvanceBill_sql"/> z
+        <if test="condition.exportflag == null" >
+            <include refid="common.Page_limit"/>
+        </if>
+    </select>
+    <select id="getSaleoutListForAdvanceBillCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+        select count(1) from <include refid="getSaleoutListForAdvanceBill_sql"/> z
+    </select>
+    <select id="getSaleoutListForAdvanceBillSum" parameterType="com.hd.agent.common.util.PageMap" resultType="java.util.Map">
+        select sum(z.totaltaxamount) as totaltaxamount,sum(z.uninvoiceamount) as uninvoiceamount
+        from <include refid="getSaleoutListForAdvanceBill_sql"/> z
+    </select>
+    <select id="getSaleoutDetailByBillidAndId" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.SaleoutDetail">
+        select <include refid="SaleOutDetail_Column_List" />
+        from t_storage_saleout_detail
+        where saleoutid = #{saleoutid} and id = #{id}
+    </select>
+    <select id="getSaleoutDetailBrandDiscountList" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.SaleoutDetail">
+        select <include refid="SaleOutDetail_Column_List" />
+        from t_storage_saleout_detail
+        where isdiscount='1' and isbranddiscount='1' and brandid=#{brandid} and saleoutid = #{saleoutid}
+    </select>
+    <update id="updateSaleoutDetailIsinvoicebillAdvance" parameterType="java.lang.String">
+        update t_storage_saleout_detail r1,t_account_sales_invoicebill_detail t1
+        set r1.isinvoicebill=#{isinvoicebill}
+		<if test="isinvoicebill == 1">
+			,r1.invoicebilldate = #{invoicebilldate}
+		</if>
+        <if test="isinvoicebill == 0">
+            ,r1.invoicebilldate = ''
+        </if>
+        where r1.saleoutid=t1.sourceid and r1.id=t1.sourcedetailid and t1.sourcetype='4' and t1.billid=#{id}
+    </update>
+    <update id="updateSaleoutInvoicebill" parameterType="java.lang.String">
+        update t_storage_saleout set isinvoicebill = #{isinvoicebill} where id = #{id}
+    </update>
+    <select id="getSaleoutDetailTotal" parameterType="java.lang.String" resultType="map">
+        select sum(taxamount) taxamount,sum(notaxamount) notaxamount,sum(tax) tax
+        from t_storage_saleout_detail where saleoutid = #{id}
+    </select>
+    <select id="getIsDeliveryByReceiptSourceids" parameterType="java.util.Map" resultType="java.lang.String">
+        SELECT MIN(t.isdelivery) as isdelivery from t_storage_saleout t
+        where t.id in
+        <foreach collection="idsArr" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+    <select id="getRejectBillHistoryGoodsPriceList" parameterType="java.util.Map" resultType="java.util.Map">
+        select t.businessdate,t1.unitname,t1.unitnum,t1.taxamount,t1.notaxamount,t1.tax,t1.taxprice,t1.notaxprice,
+        t1.inittaxprice,t1.costprice,t1.realcostprice,t1.auxnumdetail,t1.remark
+        from t_storage_saleout t
+        RIGHT JOIN t_storage_saleout_detail t1 ON t.id = t1.saleoutid
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="1==1" >
+                and (t.status = '3' or t.status = '4')
+            </if>
+            <if test="goodsid != null">
+                and t1.goodsid = #{goodsid}
+            </if>
+            <if test="customerid != null">
+                and t.customerid = #{customerid}
+            </if>
+            <if test="businessdate != null">
+                <![CDATA[and t.businessdate <= #{businessdate} ]]>
+            </if>
+        </trim>
+        ORDER BY t.businessdate DESC
+    </select>
+    <select id="getSaloutPrinttimesById" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.Saleout">
+    	select 
+    	id,printtimes, phprinttimes,storageid, saleorderid,sourcetype, sourceid,printdatetime,phprintdatetime
+    	from t_storage_saleout
+    	where id=#{id}
+    </select>	
+	<select id="getSaleOutRightJoinDetailCountBy" parameterType="java.util.Map" resultType="int">
+		<if test="groupby !=null">
+			select count(*) from (
+		</if>
+			select count(t1.*) from t_storage_saleout t right join t_storage_saleout_detail t1
+			on t.id=t1.saleoutid
+			where 
+			<trim prefixOverrides="and|or" >
+				<if test="brandarrs != null">
+					and find_in_set(t1.brandid,#{brandarrs}) 
+				</if>
+				<if test="saleoutid != null">
+					and t1.saleoutid = #{saleoutid}
+				</if>			
+				<if test="saleorderid != null">
+				 	and t.saleorderid=#{saleorderid} 
+				</if>			
+				<if test="dispatchbillid != null">
+				 	and t1.dispatchbillid=#{dispatchbillid} 
+				</if>  
+			</trim>		
+		<if test="groupby !=null">
+			group by t1.brandid
+		) t
+		</if>
+	</select>
+	<select id="getSaleOutDetailCountBy" parameterType="java.util.Map" resultType="int">
+		<if test="groupby !=null">
+			select count(*) from (
+		</if>
+		select count(*) from t_storage_saleout_detail
+		where 
+		<trim prefixOverrides="and|or" >
+			<if test="brandarrs != null">
+				and find_in_set(brandid,#{brandarrs}) 
+			</if>
+			<if test="saleoutid != null">
+				and saleoutid = #{saleoutid}
+			</if>
+		</trim>
+		<if test="groupby !=null">
+			group by brandid
+		) t
+		</if>
+	</select>
+    <select id="getSaleOutRightJoinDetailListGroupBy" parameterType="java.util.Map" resultType="java.lang.String">		
+			select ${groupby} from t_storage_saleout t right join t_storage_saleout_detail t1
+			on t.id=t1.saleoutid
+			where 
+			<trim prefixOverrides="and|or" >
+				<if test="brandarrs != null">
+					and find_in_set(t1.brandid,#{brandarrs}) 
+				</if>
+				<if test="saleoutid != null">
+					and t1.saleoutid = #{saleoutid}
+				</if>			
+				<if test="saleorderid != null">
+				 	and t.saleorderid=#{saleorderid} 
+				</if>			
+				<if test="dispatchbillid != null">
+				 	and t1.dispatchbillid=#{dispatchbillid} 
+				</if>  
+			</trim>		
+			group by ${groupby}
+	</select>
+	<select id="getSaleOutDetailListGroupBy" parameterType="java.util.Map" resultType="java.lang.String">
+		select ${groupby} from t_storage_saleout_detail
+		where 
+		<trim prefixOverrides="and|or" >
+			<if test="brandarrs != null">
+				and find_in_set(brandid,#{brandarrs}) 
+			</if>
+			<if test="saleoutid != null">
+				and saleoutid = #{saleoutid}
+			</if>
+		</trim>		
+		group by ${groupby}
+	</select>
+
+    <select id="getSaleOutLowestPrice" parameterType="java.lang.String" resultType="java.math.BigDecimal">
+        select min(t1.taxprice) as taxprice
+        from t_storage_saleout t,t_storage_saleout_detail t1
+        where t.id=t1.saleoutid and (t.status='3' or t.status='4') and t1.goodsid=#{goodsid} and t.customerid=#{customerid}
+        and t.businessdate>=#{lowestdate} and t1.taxprice>0
+    </select>
+    <select id="getSaleOutLastPrice" parameterType="java.lang.String" resultType="java.math.BigDecimal">
+        select t1.taxprice
+        from t_storage_saleout t,t_storage_saleout_detail t1
+        where t.id=t1.saleoutid and (t.status='3' or t.status='4') and t1.goodsid=#{goodsid} and t.customerid=#{customerid}
+        and t1.taxprice>0
+        ORDER BY t.businessdate DESC
+        limit 1
+    </select>
+    <select id="getSaleOutBrandListById" resultType="java.lang.String">
+        select DISTINCT t.brandid from t_storage_saleout_detail t where t.saleoutid=#{id}
+    </select>
+    <update id="updateSaleOutDetailDuefromdate">
+        update t_storage_saleout_detail t
+        set t.duefromdate = #{duefromdate}
+        where t.saleoutid=#{id}
+        <if test="brandid != null">
+            and t.brandid=#{brandid}
+        </if>
+    </update>
+    <update id="updateReceiptDetailDuefromdateByOrderid">
+        update t_sales_receipt_detail t,t_sales_receipt t1
+		set t.duefromdate=#{duefromdate} where t1.saleorderid=#{orderid} and t1.id=t.billid
+        <if test="brandid != null">
+            and t.brandid=#{brandid}
+        </if>
+    </update>
+    <update id="updateSaleOutDetailDuefromdateByOrderid">
+        update t_storage_saleout_detail t,t_storage_saleout t1
+        set t.duefromdate = #{duefromdate}
+        where t1.saleorderid=#{orderid} and t1.id =t.saleoutid
+        <if test="brandid != null">
+            and t.brandid=#{brandid}
+        </if>
+
+    </update>
+    <update id="updateSaleOutDetailCostprice">
+      <choose>
+          <when test="isStorageAccount==1">
+              update t_storage_saleout_detail t,t_storage_summary t1
+              set t.costprice=t1.costprice,t.realcostprice=t1.costprice
+              where t.saleoutid=#{id} and t.goodsid=t1.goodsid and t.storageid=t1.storageid;
+          </when>
+          <otherwise>
+              update t_storage_saleout_detail t,t_base_goods_info g
+              set t.costprice=g.newstorageprice,t.realcostprice=g.newstorageprice
+              where t.saleoutid=#{id} and t.goodsid=g.id;
+          </otherwise>
+      </choose>
+        update t_storage_saleout_detail t,t_base_goods_info g
+        set t.realcostprice=g.costaccountprice
+        where t.saleoutid=#{id} and t.goodsid=g.id and g.costaccountprice!=0
+    </update>
+
+    <update id="editDispatchUser" parameterType="int">
+		update t_storage_saleout 
+        set storager=#{storager}
+        where id=#{id}
+	</update>
+	<update id="updateSaleoutIsvoicebillByBillid" parameterType="java.lang.String">
+		UPDATE t_storage_saleout t,(
+		SELECT t.saleoutid,t.count ,t.num, case WHEN t.count = t.num THEN '0'
+		WHEN t.num > 0 and <![CDATA[t.num < t.count]]> then '4'
+		WHEN t.num = 0 THEN '1' END  as isinvoicebill
+		from (
+		SELECT t.saleoutid, COUNT(t.saleoutid) AS COUNT,
+		SUM(case when t.isinvoicebill = '0' then 1 else 0 end) AS num
+		from t_storage_saleout_detail t
+		LEFT JOIN t_storage_saleout t1 ON t.saleoutid = t1.id
+		where t1.id = #{billid}
+		GROUP BY t.saleoutid
+		) t ) t1
+		SET t.isinvoicebill = t1.isinvoicebill
+		where t.id = t1.saleoutid and t.id = #{billid}
+	</update>
+	<select id="doCheckSaleoutIsbigsaleout" parameterType="java.lang.String" resultType="int">
+		SELECT count(1) from t_storage_saleout t
+		where t.sourcetype = '1' and t.sourceid = #{dispatchbillid} and t.isbigsaleout = '1'
+	</select>
+	<select id="doCheckSaleoutIsbigsaleoutByOrderid" parameterType="java.lang.String" resultType="int">
+		SELECT count(1) from t_storage_saleout t
+		where t.saleorderid = #{orderid} and t.isbigsaleout = '1'
+	</select>
+	<select id="getSaleOutSumAmountBySaleorderid" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.SaleoutDetail">
+		select t.saleoutid,sum(t.inittaxamount) as inittaxamount,sum(t.initnum*t.costprice) as initcostamount,
+		sum(t.taxamount) as taxamount,sum(t.notaxamount) as notaxamount,sum(t.unitnum*t.costprice) as costamount,
+		sum(t.realtaxamount) as realtaxamount,sum(t.realnotaxamount) as realnotaxamount
+		from t_storage_saleout_detail t INNER JOIN t_storage_saleout s on s.id=t.saleoutid
+		where s.saleorderid=#{saleorderid}
+	</select>
+	<select id="getSaleoutDetailExportData" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.storage.model.SaleoutExport">
+		select
+		<include refid="SaleOut_Column_List_prefix_t" />,
+		t1.goodsid,t1.unitnum,t1.auxnumdetail,t1.taxprice,t1.taxamount,t1.remark as dremark,t1.costprice,t1.isdiscount
+		from t_storage_saleout t
+		LEFT JOIN t_storage_saleout_detail t1 ON t.id=t1.saleoutid
+		<trim prefix="where" prefixOverrides="and|or" >
+			<include refid="common.Page_querySql"/>
+			<include refid="common.Page_dataSql"/>
+			<if test="condition.goodsid != null">
+				and EXISTS (select t1.goodsid from t_storage_saleout_detail t1 where t.id=t1.saleoutid and t1.goodsid = #{condition.goodsid})
+			</if>
+			<if test="condition.businessdate1 != null">
+				and t.businessdate >= #{condition.businessdate1}
+			</if>
+			<if test="condition.businessdate2 != null">
+				<![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+			</if>
+			<if test="condition.id != null" >
+				and (t.id like CONCAT('%',#{condition.id},'%') or
+				t.saleorderid like CONCAT('%',#{condition.id},'%')
+				)
+			</if>
+			<if test="condition.isbigsaleout != null" >
+				and t.isbigsaleout = #{condition.isbigsaleout}
+			</if>
+			<if test="condition.isdelivery != null" >
+				and t.isdelivery = #{condition.isdelivery}
+			</if>
+			<if test="condition.customerid != null" >
+				and t.customerid = #{condition.customerid}
+			</if>
+			<if test="condition.storageid != null" >
+				and t.storageid = #{condition.storageid}
+			</if>
+			<if test="condition.salesdept != null" >
+				and t.salesdept like CONCAT(#{condition.salesdept},'%')
+			</if>
+			<if test="condition.salesuser != null" >
+				and t.salesuser = #{condition.salesuser}
+			</if>
+			<if test="condition.sourcetype != null" >
+				and t.sourcetype = #{condition.sourcetype}
+			</if>
+			<if test="condition.sourceid != null" >
+				and t.sourceid = #{condition.sourceid}
+			</if>
+			<if test="condition.saleorderid != null" >
+				and t.saleorderid like CONCAT('%',#{condition.saleorderid},'%')
+			</if>
+			<if test="condition.status != null" >
+				and t.status = #{condition.status}
+			</if>
+			<if test="condition.isrefer != null" >
+				and t.isrefer = #{condition.isrefer}
+			</if>
+			<if test="condition.selectids != null" >
+				AND find_in_set(t.id,#{condition.selectids})
+			</if>
+
+			<choose>
+				<when test="condition.isClose ==0 ">
+					and t.status in("1","2")
+				</when>
+				<when test="condition.isClose ==1 ">
+					and t.status in("3","4")
+				</when>
+				<when test="condition.isClose ==2 ">
+					and t.status ='2'
+				</when>
+				<when test="condition.isClose ==3 ">
+					and t.status ='3'
+				</when>
+			</choose>
+			<if test="condition.doprintopt != null">
+				and FIND_IN_SET(t.status,"2,3")
+				<choose>
+					<when test="condition.printstatus == null ">
+						and 1 != 1
+					</when>
+					<when test="condition.printstatus ==0 ">
+						and (t.printtimes is null or printtimes=0)
+					</when>
+					<when test="condition.printstatus ==1 ">
+						<![CDATA[and (t.printtimes > 0) ]]>
+					</when>
+					<when test="condition.printstatus == 2 ">
+						and 1 = 1
+					</when>
+				</choose>
+			</if>
+			<if test="condition.phprintsign != null and condition.queryphprinttimes != null">
+				<choose>
+					<when test="condition.phprintsign == 1">
+						<![CDATA[and t.phprinttimes = #{condition.queryphprinttimes} ]]>
+					</when>
+					<when test="condition.phprintsign == 2">
+						<![CDATA[and t.phprinttimes < #{condition.queryphprinttimes} ]]>
+					</when>
+					<when test="condition.phprintsign == 3">
+						<![CDATA[and t.phprinttimes <= #{condition.queryphprinttimes} ]]>
+					</when>
+					<when test="condition.phprintsign == 4">
+						<![CDATA[and t.phprinttimes > #{condition.queryphprinttimes} ]]>
+					</when>
+					<when test="condition.phprintsign == 5">
+						<![CDATA[and t.phprinttimes >= #{condition.queryphprinttimes} ]]>
+					</when>
+				</choose>
+			</if>
+			<if test="condition.printsign != null and condition.queryprinttimes != null">
+				<choose>
+					<when test="condition.printsign == 1">
+						<![CDATA[and t.printtimes = #{condition.queryprinttimes} ]]>
+					</when>
+					<when test="condition.printsign == 2">
+						<![CDATA[and t.printtimes < #{condition.queryprinttimes} ]]>
+					</when>
+					<when test="condition.printsign == 3">
+						<![CDATA[and t.printtimes <= #{condition.queryprinttimes} ]]>
+					</when>
+					<when test="condition.printsign == 4">
+						<![CDATA[and t.printtimes > #{condition.queryprinttimes} ]]>
+					</when>
+					<when test="condition.printsign == 5">
+						<![CDATA[and t.printtimes >= #{condition.queryprinttimes} ]]>
+					</when>
+				</choose>
+			</if>
+			<if test="condition.printtimes != null" >
+				<choose>
+					<when test="condition.printtimes==0">
+						and (t.printtimes is null or printtimes=0)
+					</when>
+					<otherwise>
+						and t.printtimes=#{condition.printtimes}
+					</otherwise>
+				</choose>
+			</if>
+			<if test="condition.phprinttimes != null" >
+				<choose>
+					<when test="condition.phprinttimes==0">
+						and (t.phprinttimes is null or phprinttimes=0)
+					</when>
+					<otherwise>
+						and t.phprinttimes=#{condition.phprinttimes}
+					</otherwise>
+				</choose>
+			</if>
+		</trim>
+	</select>
+</mapper>

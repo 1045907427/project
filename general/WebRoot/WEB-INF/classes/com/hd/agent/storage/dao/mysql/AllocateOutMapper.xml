@@ -1,0 +1,1074 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.storage.dao.AllocateOutMapper" >
+	<sql id="allocateOut_Column_List">
+	    id, outstorageid, enterstorageid, businessdate, status, remark, adduserid, addusername, 
+	    adddeptid, adddeptname, addtime, modifyuserid, modifyusername, modifytime, audituserid, 
+	    auditusername, audittime, stopuserid, stopusername, stoptime, closetime, printtimes, 
+	    field01, field02, field03, field04, field05, field06, field07, field08, sourcetype, 
+	    sourceid, isrefer,isdelivery,outdeptid,enterdeptid,billtype,outstatus,enterstatus
+	</sql>
+	<sql id="allocateOut_detail_Column_List">
+	    id, billno, sourceid, sourcedetailid, summarybatchid, goodsid, storageid, storagelocationid, enterstoragelocationid,
+	    batchno, unitid, unitname, unitnum, auxunitid, auxunitname, auxnum,auxremainder, auxnumdetail, totalbox,
+	    taxprice, taxamount, notaxprice, notaxamount, taxtype, tax, remark, produceddate, 
+	    deadline,enterbatchno,enterproduceddate,enterdeadline, seq, field01, field02, field03, field04, field05, field06, field07, field08,costprice
+	</sql>
+  	<insert id="addAllocateOut" parameterType="com.hd.agent.storage.model.AllocateOut">
+	    insert into t_storage_allocate_out
+	    <trim prefix="(" suffix=")" suffixOverrides=",">
+	      <if test="id != null">
+	        id,
+	      </if>
+	      <if test="outstorageid != null">
+	        outstorageid,
+	      </if>
+	      <if test="enterstorageid != null">
+	        enterstorageid,
+	      </if>
+	      <if test="businessdate != null">
+	        businessdate,
+	      </if>
+	      <if test="status != null">
+	        status,
+	      </if>
+	      <if test="remark != null">
+	        remark,
+	      </if>
+	      <if test="adduserid != null">
+	        adduserid,
+	      </if>
+	      <if test="addusername != null">
+	        addusername,
+	      </if>
+	      <if test="adddeptid != null">
+	        adddeptid,
+	      </if>
+	      <if test="adddeptname != null">
+	        adddeptname,
+	      </if>
+	      <if test="1==1">
+	        addtime,
+	      </if>
+	      <if test="field01 != null">
+	        field01,
+	      </if>
+	      <if test="field02 != null">
+	        field02,
+	      </if>
+	      <if test="field03 != null">
+	        field03,
+	      </if>
+	      <if test="field04 != null">
+	        field04,
+	      </if>
+	      <if test="field05 != null">
+	        field05,
+	      </if>
+	      <if test="field06 != null">
+	        field06,
+	      </if>
+	      <if test="field07 != null">
+	        field07,
+	      </if>
+	      <if test="field08 != null">
+	        field08,
+	      </if>
+	      <if test="sourcetype != null">
+	        sourcetype,
+	      </if>
+	      <if test="sourceid != null">
+	        sourceid,
+	      </if>
+	      <if test="isrefer != null">
+	        isrefer,
+	      </if>
+			<if test="outdeptid != null">
+				outdeptid,
+			</if>
+			<if test="enterdeptid != null">
+				enterdeptid,
+			</if>
+			<if test="billtype != null">
+				billtype,
+			</if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides=",">
+	      <if test="id != null">
+	        #{id},
+	      </if>
+	      <if test="outstorageid != null">
+	        #{outstorageid},
+	      </if>
+	      <if test="enterstorageid != null">
+	        #{enterstorageid},
+	      </if>
+	      <if test="businessdate != null">
+	        #{businessdate},
+	      </if>
+	      <if test="status != null">
+	        #{status},
+	      </if>
+	      <if test="remark != null">
+	        #{remark},
+	      </if>
+	      <if test="adduserid != null">
+	        #{adduserid},
+	      </if>
+	      <if test="addusername != null">
+	        #{addusername},
+	      </if>
+	      <if test="adddeptid != null">
+	        #{adddeptid},
+	      </if>
+	      <if test="adddeptname != null">
+	        #{adddeptname},
+	      </if>
+	      <if test="1==1">
+	        now(),
+	      </if>
+	      <if test="field01 != null">
+	        #{field01},
+	      </if>
+	      <if test="field02 != null">
+	        #{field02},
+	      </if>
+	      <if test="field03 != null">
+	        #{field03},
+	      </if>
+	      <if test="field04 != null">
+	        #{field04},
+	      </if>
+	      <if test="field05 != null">
+	        #{field05},
+	      </if>
+	      <if test="field06 != null">
+	        #{field06},
+	      </if>
+	      <if test="field07 != null">
+	        #{field07},
+	      </if>
+	      <if test="field08 != null">
+	        #{field08},
+	      </if>
+	      <if test="sourcetype != null">
+	        #{sourcetype},
+	      </if>
+	      <if test="sourceid != null">
+	        #{sourceid},
+	      </if>
+	      <if test="isrefer != null">
+	        #{isrefer},
+	      </if>
+			<if test="outdeptid != null">
+				#{outdeptid},
+			</if>
+			<if test="enterdeptid != null">
+				#{enterdeptid},
+			</if>
+			<if test="billtype != null">
+				#{billtype},
+			</if>
+	    </trim>
+  	</insert>
+  	<insert id="addAllocateOutDetail" parameterType="com.hd.agent.storage.model.AllocateOutDetail">
+	    insert into t_storage_allocate_out_detail
+	    <trim prefix="(" suffix=")" suffixOverrides=",">
+	      <if test="id != null">
+	        id,
+	      </if>
+	      <if test="billno != null">
+	        billno,
+	      </if>
+	      <if test="sourceid != null">
+	        sourceid,
+	      </if>
+	      <if test="sourcedetailid != null">
+	        sourcedetailid,
+	      </if>
+	      <if test="summarybatchid != null">
+	        summarybatchid,
+	      </if>
+	      <if test="goodsid != null">
+	        goodsid,
+	      </if>
+	      <if test="storageid != null">
+	        storageid,
+	      </if>
+	      <if test="storagelocationid != null">
+	        storagelocationid,
+	      </if>
+	      <if test="enterstoragelocationid != null">
+	        enterstoragelocationid,
+	      </if>
+	      <if test="batchno != null">
+	        batchno,
+	      </if>
+	      <if test="unitid != null">
+	        unitid,
+	      </if>
+	      <if test="unitname != null">
+	        unitname,
+	      </if>
+	      <if test="unitnum != null">
+	        unitnum,
+	      </if>
+	      <if test="auxunitid != null">
+	        auxunitid,
+	      </if>
+	      <if test="auxunitname != null">
+	        auxunitname,
+	      </if>
+	      <if test="auxnum != null">
+	        auxnum,
+	      </if>
+	      <if test="auxremainder != null">
+	        auxremainder,
+	      </if>
+	      <if test="auxnumdetail != null">
+	        auxnumdetail,
+	      </if>
+	      <if test="totalbox != null">
+	        totalbox,
+	      </if>
+	      <if test="taxprice != null">
+	        taxprice,
+	      </if>
+	      <if test="taxamount != null">
+	        taxamount,
+	      </if>
+	      <if test="notaxprice != null">
+	        notaxprice,
+	      </if>
+	      <if test="notaxamount != null">
+	        notaxamount,
+	      </if>
+	      <if test="taxtype != null">
+	        taxtype,
+	      </if>
+	      <if test="tax != null">
+	        tax,
+	      </if>
+	      <if test="remark != null">
+	        remark,
+	      </if>
+	      <if test="produceddate != null">
+	        produceddate,
+	      </if>
+	      <if test="deadline != null">
+	        deadline,
+	      </if>
+            <if test="enterbatchno != null">
+                enterbatchno,
+            </if>
+            <if test="enterproduceddate != null">
+                enterproduceddate,
+            </if>
+            <if test="enterdeadline != null">
+                enterdeadline,
+            </if>
+	      <if test="seq != null">
+	        seq,
+	      </if>
+	      <if test="field01 != null">
+	        field01,
+	      </if>
+	      <if test="field02 != null">
+	        field02,
+	      </if>
+	      <if test="field03 != null">
+	        field03,
+	      </if>
+	      <if test="field04 != null">
+	        field04,
+	      </if>
+	      <if test="field05 != null">
+	        field05,
+	      </if>
+	      <if test="field06 != null">
+	        field06,
+	      </if>
+	      <if test="field07 != null">
+	        field07,
+	      </if>
+	      <if test="field08 != null">
+	        field08,
+	      </if>
+			<if test="costprice != null">
+				costprice,
+			</if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides=",">
+	      <if test="id != null">
+	        #{id},
+	      </if>
+	      <if test="billno != null">
+	        #{billno},
+	      </if>
+	      <if test="sourceid != null">
+	        #{sourceid},
+	      </if>
+	      <if test="sourcedetailid != null">
+	        #{sourcedetailid},
+	      </if>
+	      <if test="summarybatchid != null">
+	        #{summarybatchid},
+	      </if>
+	      <if test="goodsid != null">
+	        #{goodsid},
+	      </if>
+	      <if test="storageid != null">
+	        #{storageid},
+	      </if>
+	      <if test="storagelocationid != null">
+	        #{storagelocationid},
+	      </if>
+	      <if test="enterstoragelocationid != null">
+	        #{enterstoragelocationid},
+	      </if>
+	      <if test="batchno != null">
+	        #{batchno},
+	      </if>
+	      <if test="unitid != null">
+	        #{unitid},
+	      </if>
+	      <if test="unitname != null">
+	        #{unitname},
+	      </if>
+	      <if test="unitnum != null">
+	        #{unitnum},
+	      </if>
+	      <if test="auxunitid != null">
+	        #{auxunitid},
+	      </if>
+	      <if test="auxunitname != null">
+	        #{auxunitname},
+	      </if>
+	      <if test="auxnum != null">
+	        #{auxnum},
+	      </if>
+	      <if test="auxremainder != null">
+	        #{auxremainder},
+	      </if>
+	      <if test="auxnumdetail != null">
+	        #{auxnumdetail},
+	      </if>
+	      <if test="totalbox != null">
+	        #{totalbox},
+	      </if>
+	      <if test="taxprice != null">
+	        #{taxprice},
+	      </if>
+	      <if test="taxamount != null">
+	        #{taxamount},
+	      </if>
+	      <if test="notaxprice != null">
+	        #{notaxprice},
+	      </if>
+	      <if test="notaxamount != null">
+	        #{notaxamount},
+	      </if>
+	      <if test="taxtype != null">
+	        #{taxtype},
+	      </if>
+	      <if test="tax != null">
+	        #{tax},
+	      </if>
+	      <if test="remark != null">
+	        #{remark},
+	      </if>
+	      <if test="produceddate != null">
+	        #{produceddate},
+	      </if>
+	      <if test="deadline != null">
+	        #{deadline},
+	      </if>
+            <if test="enterbatchno != null">
+                #{enterbatchno},
+            </if>
+            <if test="enterproduceddate != null">
+                #{enterproduceddate},
+            </if>
+            <if test="enterdeadline != null">
+                #{enterdeadline},
+            </if>
+	      <if test="seq != null">
+	        #{seq},
+	      </if>
+	      <if test="field01 != null">
+	        #{field01},
+	      </if>
+	      <if test="field02 != null">
+	        #{field02},
+	      </if>
+	      <if test="field03 != null">
+	        #{field03},
+	      </if>
+	      <if test="field04 != null">
+	        #{field04},
+	      </if>
+	      <if test="field05 != null">
+	        #{field05},
+	      </if>
+	      <if test="field06 != null">
+	        #{field06},
+	      </if>
+	      <if test="field07 != null">
+	        #{field07},
+	      </if>
+	      <if test="field08 != null">
+	        #{field08},
+	      </if>
+			<if test="costprice != null">
+				#{costprice},
+			</if>
+	    </trim>
+  	</insert>
+  	<select id="getAllocateOutByID" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.AllocateOut">
+  		select <include refid="allocateOut_Column_List"/>
+  		from t_storage_allocate_out where id=#{id}
+  	</select>
+  	<select id="getAllocateOutBySourceid" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.AllocateOut">
+  		select <include refid="allocateOut_Column_List"/>
+  		from t_storage_allocate_out where sourceid=#{sourceid}
+  	</select>
+  	<delete id="deleteAllocateOut" parameterType="java.lang.String">
+  		delete from t_storage_allocate_out where id=#{id}
+  	</delete>
+  	<delete id="deleteAllocateOutDetail" parameterType="java.lang.String">
+  		delete from t_storage_allocate_out_detail where billno=#{billno}
+  	</delete>
+  	<select id="showAllocateOutList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.storage.model.AllocateOut">
+  		select <include refid="allocateOut_Column_List"/>
+  		from t_storage_allocate_out
+  		<trim prefix="where" prefixOverrides="and|or">
+  		  <include refid="common.Page_querySql"/>
+	      <include refid="common.Page_dataSql"/>
+		  <if test="condition.businessdate1 != null">
+			 and businessdate >= #{condition.businessdate1}
+		  </if>
+		  <if test="condition.businessdate2 != null">
+			 <![CDATA[and businessdate <= #{condition.businessdate2}]]>
+		  </if>
+		  <if test="condition.id != null" >
+	         and id like CONCAT('%',#{condition.id},'%')
+	      </if>
+	      <if test="condition.outstorageid != null">
+	         and outstorageid = #{condition.outstorageid}
+	      </if>
+	      <if test="condition.enterstorageid != null">
+	         and enterstorageid = #{condition.enterstorageid}
+	      </if>
+	      <if test="condition.status != null">
+	         and status = #{condition.status}
+	      </if>
+	      <if test="condition.isrefer != null">
+	         and isrefer = #{condition.isrefer}
+	      </if>
+			<if test="condition.isdelivery != null">
+				and isdelivery = #{condition.isdelivery}
+			</if>
+			<if test="condition.goodsid != null">
+				and id IN (SELECT billno FROM t_storage_allocate_out_detail  WHERE goodsid=#{condition.goodsid})
+			</if>
+	      <choose>
+	      	<when test="condition.isClose ==0 ">
+	      		and status in("1","2")
+	      	</when>
+	      	<when test="condition.isClose ==1 ">
+	      		and status in("3","4")
+	      	</when>
+	      	<when test="condition.isClose ==2 ">
+	      		and status='3'
+	      	</when>
+	      </choose>
+	      <if test="condition.printsign != null and condition.queryprinttimes != null">
+      		<choose>
+      			<when test="condition.printsign == 1">
+      				<![CDATA[and printtimes = #{condition.queryprinttimes} ]]>
+      			</when>
+      			<when test="condition.printsign == 2">
+      				<![CDATA[and printtimes < #{condition.queryprinttimes} ]]>
+      			</when>
+      			<when test="condition.printsign == 3">
+      				<![CDATA[and printtimes <= #{condition.queryprinttimes} ]]>
+      			</when>
+      			<when test="condition.printsign == 4">
+      				<![CDATA[and printtimes > #{condition.queryprinttimes} ]]>
+      			</when>
+      			<when test="condition.printsign == 5">
+      				<![CDATA[and printtimes >= #{condition.queryprinttimes} ]]>
+      			</when>
+      		</choose>
+	      </if>
+	    </trim>
+	    <include refid="common.Page_limit" />
+  	</select>
+  	<select id="showAllocateOutCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  		select count(1) from t_storage_allocate_out
+  		<trim prefix="where" prefixOverrides="and|or">
+  		  <include refid="common.Page_querySql"/>
+	      <include refid="common.Page_dataSql"/>
+		  <if test="condition.businessdate1 != null">
+			 and businessdate >= #{condition.businessdate1}
+		  </if>
+		  <if test="condition.businessdate2 != null">
+			 <![CDATA[and businessdate <= #{condition.businessdate2}]]>
+		  </if>
+		  <if test="condition.id != null" >
+	         and id like CONCAT('%',#{condition.id},'%')
+	      </if>
+	      <if test="condition.outstorageid != null">
+	         and outstorageid = #{condition.outstorageid}
+	      </if>
+	      <if test="condition.enterstorageid != null">
+	         and enterstorageid = #{condition.enterstorageid}
+	      </if>
+	      <if test="condition.status != null">
+	         and status = #{condition.status}
+	      </if>
+	      <if test="condition.isrefer != null">
+	         and isrefer = #{condition.isrefer}
+	      </if>
+			<if test="condition.isdelivery != null">
+				and isdelivery = #{condition.isdelivery}
+			</if>
+			<if test="condition.goodsid != null">
+				and id IN (SELECT billno FROM t_storage_allocate_out_detail  WHERE goodsid=#{condition.goodsid})
+			</if>
+	      <choose>
+	      	<when test="condition.isClose ==0 ">
+	      		and status in("1","2")
+	      	</when>
+	      	<when test="condition.isClose ==1 ">
+	      		and status in("3","4")
+	      	</when>
+	      	<when test="condition.isClose ==2 ">
+	      		and status='3'
+	      	</when>
+	      </choose>	      
+      	  <if test="condition.printsign != null and condition.queryprinttimes != null">
+      		<choose>
+      			<when test="condition.printsign == 1">
+      				<![CDATA[and printtimes = #{condition.queryprinttimes} ]]>
+      			</when>
+      			<when test="condition.printsign == 2">
+      				<![CDATA[and printtimes < #{condition.queryprinttimes} ]]>
+      			</when>
+      			<when test="condition.printsign == 3">
+      				<![CDATA[and printtimes <= #{condition.queryprinttimes} ]]>
+      			</when>
+      			<when test="condition.printsign == 4">
+      				<![CDATA[and printtimes > #{condition.queryprinttimes} ]]>
+      			</when>
+      			<when test="condition.printsign == 5">
+      				<![CDATA[and printtimes >= #{condition.queryprinttimes} ]]>
+      			</when>
+      		</choose>
+      	 </if>
+	    </trim>
+  	</select>
+  	<select id="getAllocateOutDetailList" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.AllocateOutDetail">
+  		select <include refid="allocateOut_detail_Column_List"/>
+  		from t_storage_allocate_out_detail where billno=#{billno}
+  	</select>
+  	<update id="editAllocateOut" parameterType="com.hd.agent.storage.model.AllocateOut">
+	    update t_storage_allocate_out
+	    <set>
+	      <if test="outstorageid != null">
+	        outstorageid = #{outstorageid},
+	      </if>
+	      <if test="enterstorageid != null">
+	        enterstorageid = #{enterstorageid},
+	      </if>
+	      <if test="businessdate != null">
+	        businessdate = #{businessdate},
+	      </if>
+	      <if test="status != null">
+	        status = #{status},
+	      </if>
+	      <if test="remark != null">
+	        remark = #{remark},
+	      </if>
+	      <if test="modifyuserid != null">
+	        modifyuserid = #{modifyuserid},
+	      </if>
+	      <if test="modifyusername != null">
+	        modifyusername = #{modifyusername},
+	      </if>
+	      <if test="1==1">
+	        modifytime = now(),
+	      </if>
+	      <if test="field01 != null">
+	        field01 = #{field01},
+	      </if>
+	      <if test="field02 != null">
+	        field02 = #{field02},
+	      </if>
+	      <if test="field03 != null">
+	        field03 = #{field03},
+	      </if>
+	      <if test="field04 != null">
+	        field04 = #{field04},
+	      </if>
+	      <if test="field05 != null">
+	        field05 = #{field05},
+	      </if>
+	      <if test="field06 != null">
+	        field06 = #{field06},
+	      </if>
+	      <if test="field07 != null">
+	        field07 = #{field07},
+	      </if>
+	      <if test="field08 != null">
+	        field08 = #{field08},
+	      </if>
+	      <if test="sourcetype != null">
+	        sourcetype = #{sourcetype},
+	      </if>
+	      <if test="sourceid != null">
+	        sourceid = #{sourceid},
+	      </if>
+	      <if test="isrefer != null">
+	        isrefer = #{isrefer},
+	      </if>
+			<if test="outdeptid != null">
+				outdeptid = #{outdeptid},
+			</if>
+			<if test="enterdeptid != null">
+				enterdeptid = #{enterdeptid},
+			</if>
+			<if test="billtype != null">
+				billtype = #{billtype},
+			</if>
+	    </set>
+	    where id = #{id}
+  	</update>
+  	<update id="auditAllocateOut" parameterType="java.lang.String">
+  		update t_storage_allocate_out
+  		set businessdate = #{businessdate},
+  		status='4',isrefer='0',audituserid=#{userid},auditusername=#{username},audittime=now()
+  		where id=#{id} and (status='2' or status='6')
+  	</update>
+  	<update id="oppauditAllocateOut" parameterType="java.lang.String">
+  		update t_storage_allocate_out set status='2',isrefer='0',audituserid=#{userid},auditusername=#{username},audittime=now() 
+  		where id=#{id} and status='3'
+  	</update>
+  	<select id="getAllocateOutDetailInfo" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.AllocateOutDetail">
+  		select <include refid="allocateOut_detail_Column_List"/>
+  		from t_storage_allocate_out_detail where billno=#{billno} and id=#{id}
+  	</select>
+  	<update id="updateAllocateOutRefer" parameterType="java.lang.String">
+  		update t_storage_allocate_out set isrefer=#{isrefer} where id=#{id}
+  	</update>
+  	<update id="closeAllocateOut" parameterType="java.lang.String">
+  		update t_storage_allocate_out set status='4',closetime=now()
+	 	where id=#{id} and status='3'
+  	</update>
+  	<select id="showAllocateOutDetailListQuery" parameterType="com.hd.agent.common.util.PageMap" resultType="java.util.Map">
+  		select * from (
+  		select 0 as billtype, t.id,t.businessdate,t.outstorageid,t.enterstorageid,
+		t1.goodsid,t1.unitid,t1.unitname,t1.auxunitid,t1.auxunitname,t1.unitnum,t1.auxnum,t1.auxremainder,t1.taxprice,t1.taxamount,t1.notaxprice,t1.notaxamount,t1.costprice
+		from t_storage_allocate_out t
+		RIGHT JOIN t_storage_allocate_out_detail t1 on t.id=t1.billno
+		LEFT JOIN t_base_goods_info g ON g.id=t1.goodsid
+		<trim prefix="where" prefixOverrides="and|or">
+  		  <include refid="common.Page_querySql"/>
+	      <include refid="common.Page_dataSql"/>
+		  <if test="condition.businessdate1 != null">
+			 and t.businessdate >= #{condition.businessdate1}
+		  </if>
+		  <if test="condition.businessdate2 != null">
+			 <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+		  </if>
+		  <if test="condition.id != null" >
+	         and t.id like CONCAT('%',#{condition.id},'%')
+	      </if>
+	      <if test="condition.outstorageid != null">
+	         and t.outstorageid = #{condition.outstorageid}
+	      </if>
+	      <if test="condition.enterstorageid != null">
+	         and t.enterstorageid = #{condition.enterstorageid}
+	      </if>
+	      <if test="condition.goodsid != null">
+	         and t1.goodsid = #{condition.goodsid}
+	      </if>
+			<if test="condition.brandid != null">
+				and find_in_set(g.brand,#{condition.brandid})
+			</if>
+			<if test="condition.billtype != null">
+				and t.billtype = #{condition.billtype}
+			</if>
+	      <if test="1==1">
+	         and (t.status = '3' or t.status = '4')
+	      </if>
+	    </trim>
+		UNION ALL
+		select 9 as billtype, t.businessdate as id,t.businessdate,'' as outstorageid,'' as enterstorageid,
+		'' as goodsid,t1.unitid,t1.unitname,t1.auxunitid,t1.auxunitname,
+		sum(t1.unitnum) as unitnum,sum(t1.auxnum) as auxnum,sum(t1.auxremainder) as auxremainder,
+		t1.taxprice,sum(t1.taxamount) as taxamount,t1.notaxprice,sum(t1.notaxamount) as notaxamount,t1.costprice
+		from t_storage_allocate_out t
+		RIGHT JOIN t_storage_allocate_out_detail t1 on t.id=t1.billno
+		LEFT JOIN t_base_goods_info g ON g.id=t1.goodsid
+		<trim prefix="where" prefixOverrides="and|or">
+  		  <include refid="common.Page_querySql"/>
+	      <include refid="common.Page_dataSql"/>
+		  <if test="condition.businessdate1 != null">
+			 and t.businessdate >= #{condition.businessdate1}
+		  </if>
+		  <if test="condition.businessdate2 != null">
+			 <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+		  </if>
+		  <if test="condition.id != null" >
+	         and t.id like CONCAT('%',#{condition.id},'%')
+	      </if>
+	      <if test="condition.outstorageid != null">
+	         and t.outstorageid = #{condition.outstorageid}
+	      </if>
+	      <if test="condition.enterstorageid != null">
+	         and t.enterstorageid = #{condition.enterstorageid}
+	      </if>
+	      <if test="condition.goodsid != null">
+	         and t1.goodsid = #{condition.goodsid}
+	      </if>
+			<if test="condition.brandid != null">
+				and find_in_set(g.brand,#{condition.brandid})
+			</if>
+			<if test="condition.billtype != null">
+				and t.billtype = #{condition.billtype}
+			</if>
+	      <if test="1==1">
+	         and (t.status = '3' or t.status = '4')
+	      </if>
+	    </trim>
+		GROUP BY t.businessdate
+		) z
+		order by z.businessdate desc,z.billtype
+		<if test="condition.isflag == null">
+	 		<include refid="common.Page_limit"/>
+	 	</if>
+  	</select>
+  	<select id="showAllocateOutDetailCountQuery" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  		select count(1) from (
+  			select t.id,t.businessdate,t.outstorageid,t.enterstorageid,
+			t1.goodsid,t1.unitid,t1.unitname,t1.auxunitid,t1.auxunitname,t1.unitnum,t1.auxnum,t1.auxremainder,t1.taxprice,t1.taxamount,t1.notaxprice,t1.notaxamount
+			from t_storage_allocate_out t
+			RIGHT JOIN t_storage_allocate_out_detail t1 on t.id=t1.billno
+		    LEFT JOIN t_base_goods_info g ON g.id=t1.goodsid
+			<trim prefix="where" prefixOverrides="and|or">
+		      <include refid="common.Page_dataSql"/>
+			  <if test="condition.businessdate1 != null">
+				 and t.businessdate >= #{condition.businessdate1}
+			  </if>
+			  <if test="condition.businessdate2 != null">
+				 <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+			  </if>
+			  <if test="condition.id != null" >
+		         and t.id like CONCAT('%',#{condition.id},'%')
+		      </if>
+		      <if test="condition.outstorageid != null">
+		         and t.outstorageid = #{condition.outstorageid}
+		      </if>
+		      <if test="condition.enterstorageid != null">
+		         and t.enterstorageid = #{condition.enterstorageid}
+		      </if>
+		      <if test="condition.goodsid != null">
+		         and t1.goodsid = #{condition.goodsid}
+		      </if>
+				<if test="condition.brandid != null">
+					and find_in_set(g.brand,#{condition.brandid})
+				</if>
+		      <if test="1==1">
+		         and (t.status = '3' or t.status = '4')
+		      </if>
+		    </trim>
+			UNION ALL
+			select t.businessdate as id,t.businessdate,'' as outstorageid,'' as enterstorageid,
+			'' as goodsid,t1.unitid,t1.unitname,t1.auxunitid,t1.auxunitname,
+			sum(t1.unitnum) as unitnum,sum(t1.auxnum) as auxnum,sum(t1.auxremainder) as auxremainder,
+			t1.taxprice,sum(t1.taxamount) as taxamount,t1.notaxprice,sum(t1.notaxamount) as notaxamount
+			from t_storage_allocate_out t
+			RIGHT JOIN t_storage_allocate_out_detail t1 on t.id=t1.billno
+		    LEFT JOIN t_base_goods_info g ON g.id=t1.goodsid
+			<trim prefix="where" prefixOverrides="and|or">
+		      <include refid="common.Page_dataSql"/>
+			  <if test="condition.businessdate1 != null">
+				 and t.businessdate >= #{condition.businessdate1}
+			  </if>
+			  <if test="condition.businessdate2 != null">
+				 <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+			  </if>
+			  <if test="condition.id != null" >
+		         and t.id like CONCAT('%',#{condition.id},'%')
+		      </if>
+		      <if test="condition.outstorageid != null">
+		         and t.outstorageid = #{condition.outstorageid}
+		      </if>
+		      <if test="condition.enterstorageid != null">
+		         and t.enterstorageid = #{condition.enterstorageid}
+		      </if>
+		      <if test="condition.goodsid != null">
+		         and t1.goodsid = #{condition.goodsid}
+		      </if>
+				<if test="condition.brandid != null">
+					and find_in_set(g.brand,#{condition.brandid})
+				</if>
+		      <if test="1==1">
+		         and (t.status = '3' or t.status = '4')
+		      </if>
+		    </trim>
+			GROUP BY t.businessdate
+  		)z
+  	</select>
+  	<select id="showAllocateOutListBy" parameterType="java.util.Map" resultType="com.hd.agent.storage.model.AllocateOut">
+  		select <include refid="allocateOut_Column_List"/>
+  		from t_storage_allocate_out
+  		<trim prefix="where" prefixOverrides="and|or">
+		  	<if test="dataSql != null">
+		  		and ${dataSql}
+		  	</if>
+  			<if test="idarrs!=null">
+  				and find_in_set(id,#{idarrs})
+  			</if>
+  			<if test="printstatus!=null">
+  				and (status='3' or status='4')
+  			</if>
+  		</trim>
+  	</select>  	
+  	<update id="updateAllocateOutPrinttimes" parameterType="com.hd.agent.storage.model.AllocateOut">
+		update t_storage_allocate_out
+	    <set>
+	      <if test="printtimes != null">
+	        printtimes = IFNULL(printtimes,0)+1,
+	      </if>
+	    </set>
+	    where id = #{id}
+  </update>
+    <select id="getAllocateOutListExport" parameterType="com.hd.agent.common.util.PageMap" resultType="map">
+        select t.id,t.businessdate,t.outstorageid,t.enterstorageid,t1.batchno,t1.produceddate,
+        t1.goodsid,t1.unitid,t1.unitname,t1.auxunitid,t1.auxunitname,t1.unitnum,t1.auxnum,t1.auxremainder,t1.taxprice,t1.taxamount,t1.notaxprice,t1.notaxamount,
+		t.billtype,t1.costprice
+        from t_storage_allocate_out t
+        RIGHT JOIN t_storage_allocate_out_detail t1 on t.id=t1.billno
+        <trim prefix="where" prefixOverrides="and|or">
+        <include refid="common.Page_dataSql"/>
+            <choose>
+            <when test="condition.exportids == null">
+        <if test="condition.businessdate1 != null">
+            and t.businessdate >= #{condition.businessdate1}
+        </if>
+        <if test="condition.businessdate2 != null">
+            <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+        </if>
+        <if test="condition.id != null" >
+            and t.id like CONCAT('%',#{condition.id},'%')
+        </if>
+        <if test="condition.outstorageid != null">
+            and t.outstorageid = #{condition.outstorageid}
+        </if>
+        <if test="condition.enterstorageid != null">
+            and t.enterstorageid = #{condition.enterstorageid}
+        </if>
+        <if test="condition.goodsid != null">
+            and t1.goodsid = #{condition.goodsid}
+        </if>
+            </when>
+                <otherwise>
+                    <if test="condition.exportids != null" >
+                        and FIND_IN_SET(t.id,#{condition.exportids})
+                    </if>
+                </otherwise>
+            </choose>
+        </trim>
+  </select>
+  <select id="showAllocateOutJournalList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.storage.model.AllocateOutJournal">
+  		select * from (
+  		select 0 as billtype, t.id,t.businessdate,t.outstorageid,t.enterstorageid,
+		t1.goodsid,t1.unitid,t1.unitname,t1.auxunitid,t1.auxunitname,t1.unitnum,t1.auxnum,t1.auxremainder,t1.taxprice,t1.taxamount,t1.notaxprice,t1.notaxamount
+		from t_storage_allocate_out t
+		RIGHT JOIN t_storage_allocate_out_detail t1 on t.id=t1.billno
+		<trim prefix="where" prefixOverrides="and|or">
+  		  <include refid="common.Page_querySql"/>
+	      <include refid="common.Page_dataSql"/>
+		  <if test="condition.businessdate1 != null">
+			 and t.businessdate >= #{condition.businessdate1}
+		  </if>
+		  <if test="condition.businessdate2 != null">
+			 <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+		  </if>
+		  <if test="condition.id != null" >
+	         and t.id like CONCAT('%',#{condition.id},'%')
+	      </if>
+	      <if test="condition.outstorageid != null">
+	         and t.outstorageid = #{condition.outstorageid}
+	      </if>
+	      <if test="condition.enterstorageid != null">
+	         and t.enterstorageid = #{condition.enterstorageid}
+	      </if>
+	      <if test="condition.goodsid != null">
+	         and t1.goodsid = #{condition.goodsid}
+	      </if>
+	      <if test="1==1">
+	         and (t.status = '3' or t.status = '4')
+	      </if>
+	    </trim>
+		UNION ALL
+		select 9 as billtype, t.businessdate as id,t.businessdate,'' as outstorageid,'' as enterstorageid,
+		'' as goodsid,t1.unitid,t1.unitname,t1.auxunitid,t1.auxunitname,
+		sum(t1.unitnum) as unitnum,sum(t1.auxnum) as auxnum,sum(t1.auxremainder) as auxremainder,
+		t1.taxprice,sum(t1.taxamount) as taxamount,t1.notaxprice,sum(t1.notaxamount) as notaxamount
+		from t_storage_allocate_out t
+		RIGHT JOIN t_storage_allocate_out_detail t1 on t.id=t1.billno
+		<trim prefix="where" prefixOverrides="and|or">
+  		  <include refid="common.Page_querySql"/>
+	      <include refid="common.Page_dataSql"/>
+		  <if test="condition.businessdate1 != null">
+			 and t.businessdate >= #{condition.businessdate1}
+		  </if>
+		  <if test="condition.businessdate2 != null">
+			 <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+		  </if>
+		  <if test="condition.id != null" >
+	         and t.id like CONCAT('%',#{condition.id},'%')
+	      </if>
+	      <if test="condition.outstorageid != null">
+	         and t.outstorageid = #{condition.outstorageid}
+	      </if>
+	      <if test="condition.enterstorageid != null">
+	         and t.enterstorageid = #{condition.enterstorageid}
+	      </if>
+	      <if test="condition.goodsid != null">
+	         and t1.goodsid = #{condition.goodsid}
+	      </if>
+	      <if test="1==1">
+	         and (t.status = '3' or t.status = '4')
+	      </if>
+	    </trim>
+		GROUP BY t.businessdate
+		) z
+		order by z.businessdate desc,z.billtype
+	 </select>
+	<update id="auditAllocateStorageOut" parameterType="com.hd.agent.storage.model.AllocateOut">
+		update t_storage_allocate_out set
+		businessdate = #{businessdate},
+		status='7',isrefer='0',audituserid=#{userid},auditusername=#{username},audittime=now()
+		where id=#{id} and (status='2' or status='6')
+	</update>
+	<select id="getAllocateOutDetailByGoodsAndBill" parameterType="java.lang.String" resultType="com.hd.agent.storage.model.AllocateOutDetail">
+		SELECT <include refid="allocateOut_detail_Column_List"/>
+		FROM t_storage_allocate_out_detail where billno=#{billno} and goodsid=#{goodsid}
+	</select>
+	<update id="auditAllocateStorageEnter">
+		update t_storage_allocate_out set
+		status='4'
+		where id=#{id} and (status='7' or status='6')
+	</update>
+	<update id="oppauditAllocateStorageOut">
+		update t_storage_allocate_out set
+		status='2',audituserid=NULL,auditusername=NULL,audittime=NULL
+		where id=#{id} and (status='7' or status='6')
+	</update>
+	<sql id="allocateDiffAmount_sql">
+		SELECT t1.goodsid,t1.storageid,t.outdeptid as deptid,sum(taxamount) as taxamount,sum(notaxamount) as notaxamount,sum(t1.unitnum*t1.costprice) as costamount
+		FROM t_storage_allocate_out t LEFT JOIN t_storage_allocate_out_detail t1 ON t.id=t1.billno
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="condition.businessdate1 != null">
+				and t.businessdate >= #{condition.businessdate1}
+			</if>
+			<if test="condition.businessdate2 != null">
+				<![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+			</if>
+			<if test="condition.storageid != null">
+				and t.outstorageid = #{condition.storageid}
+			</if>
+			<if test="condition.deptid != null">
+				and t.outdeptid = #{condition.deptid}
+			</if>
+			<if test="condition.goodsid != null">
+				and t1.goodsid = #{condition.goodsid}
+			</if>
+			<if test="1==1">
+				and (t.status = '3' or t.status = '4') AND t.billtype='2'
+			</if>
+		</trim>
+		GROUP BY ${condition.groupcols}
+	</sql>
+	<select id="getAllocateDiffAmountList" parameterType="com.hd.agent.common.util.PageMap" resultType="map">
+		SELECT z.* FROM (<include refid="allocateDiffAmount_sql"/>)z
+		<if test="condition.isflag == null">
+			<include refid="common.Page_limit"/>
+		</if>
+	</select>
+	<select id="getAllocateDiffAmountCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+		SELECT count(1) FROM (<include refid="allocateDiffAmount_sql"/>)z
+	</select>
+	<select id="getSumAllocateDiffAmount" parameterType="com.hd.agent.common.util.PageMap" resultType="map">
+		SELECT sum(z.taxamount) as taxamount,sum(z.notaxamount) as notaxamount,sum(z.costamount) as costamount,sum(z.taxamount-z.costamount) as diffamount FROM (<include refid="allocateDiffAmount_sql"/>)z
+	</select>
+	<select id="showGoodsAllocateOutWaitListData" parameterType="java.lang.String" resultType="map">
+		select t.id,t.businessdate,t1.goodsid,t1.unitid,t1.unitname,t1.unitnum,t1.taxprice,t1.taxamount,t1.auxnumdetail,t1.remark ,
+		t.outstorageid,t.enterstorageid
+		from t_storage_allocate_out t,t_storage_allocate_out_detail t1
+		where t.id=t1.billno and t1.goodsid=#{goodsid}
+		<if test="storageid != null" >
+			and t.outstorageid=#{storageid}
+		</if>
+		<if test="summarybatchid != null" >
+			and t1.summarybatchid=#{summarybatchid}
+		</if>
+		and t.status='2'
+	</select>
+	<select id="hasPhoneBillByAllocateOut" resultType="int">
+		select count(1) from t_storage_allocate_out where field01=#{billid}
+	</select>
+	<select id="getAllocateOutBillIDByPhoneBillid" resultType="java.lang.String">
+		select id from t_storage_allocate_out where field01=#{billid} limit 1
+	</select>
+	<select id="showAllocateOutListForPhone" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.storage.model.AllocateOut">
+		select t.*
+		from t_storage_allocate_out t
+		LEFT JOIN t_base_storage_info t1 on t1.id = t.outstorageid
+		LEFT JOIN t_base_storage_info t2 on t2.id = t.enterstorageid
+		<trim prefix="where" prefixOverrides="and|or">
+			<include refid="common.Page_querySql"/>
+			<include refid="common.Page_dataSql"/>
+			<if test="condition.businessdate1 != null">
+				and t.businessdate >= #{condition.businessdate1}
+			</if>
+			<if test="condition.businessdate2 != null">
+				<![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+			</if>
+			<if test="condition.id != null" >
+				and t.id like CONCAT('%',#{condition.id},'%')
+			</if>
+			<if test="condition.outstorage != null" >
+				and (t.outstorageid like CONCAT('%',#{condition.outstorage},'%') or  t1.name like CONCAT('%',#{condition.outstorage},'%')  )
+			</if>
+			<if test="condition.enterstorage != null" >
+				and (t.enterstorageid like CONCAT('%',#{condition.enterstorage},'%')  or  t2.name like CONCAT('%',#{condition.enterstorage},'%')  )
+			</if>
+			<if test="condition.outstorageid != null">
+				and t.outstorageid = #{condition.outstorageid}
+			</if>
+			<if test="condition.enterstorageid != null">
+				and t.enterstorageid = #{condition.enterstorageid}
+			</if>
+			<if test="condition.status != null">
+				and t.status = #{condition.status}
+			</if>
+			<if test="condition.isrefer != null">
+				and t.isrefer = #{condition.isrefer}
+			</if>
+			<choose>
+				<when test="condition.isClose ==0 ">
+					and t.status in("1","2")
+				</when>
+				<when test="condition.isClose ==1 ">
+					and t.status in("3","4")
+				</when>
+			</choose>
+		</trim>
+	</select>
+
+</mapper>

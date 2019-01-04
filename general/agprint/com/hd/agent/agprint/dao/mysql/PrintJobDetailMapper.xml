@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.agprint.dao.PrintJobDetailMapper" >
+
+  <sql id="PrintJobDetailBase_Column" >
+    id, jobid,printorderid, addtime, currentpage, totalpage,content,readflag, contenttype
+  </sql>
+  <sql id="PrintJobDetailBase_Column_PageList" >
+    id, jobid,printorderid, addtime, currentpage, totalpage,readflag, contenttype
+  </sql>
+  <sql id="PrintJobDetailBase_Where_Clause">
+    <if test="condition.jobid != null" >
+      and jobid = #{condition.jobid}
+    </if>
+    <if test="condition.printorderid != null" >
+      and printorderid  like CONCAT('%', #{condition.printorderid} ,'%')
+    </if>
+    <if test="condition.addtime != null" >
+      and addtime = #{condition.addtime}
+    </if>
+    <if test="condition.readflag != null" >
+      and readflag = #{condition.readflag}
+    </if>
+    <if test="condition.contenttype != null" >
+      and contenttype = #{condition.contenttype}
+    </if>
+    <if test="condition.remark != null" >
+      and remark  like CONCAT('%', #{condition.remark} ,'%')
+    </if>
+  </sql>
+  <select id="getPrintJobDetailPageList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.agprint.model.PrintJobDetail"  useCache="false">
+    select
+    <include refid="PrintJobDetailBase_Column_PageList"/>
+    from t_print_job_detail
+    <trim prefix="where" prefixOverrides="and|or">
+      <include refid="PrintJobDetailBase_Where_Clause" />
+    </trim>
+    <include refid="common.Page_limit"/>
+  </select>
+  <select id="getPrintJobDetailPageCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int"  useCache="false">
+    select
+    count(*)
+    from t_print_job_detail
+    <trim prefix="where" prefixOverrides="and|or">
+      <include refid="PrintJobDetailBase_Where_Clause" />
+    </trim>
+  </select>
+  <select id="getPrintJobDetail" resultType="com.hd.agent.agprint.model.PrintJobDetail"  parameterType="java.lang.String" >
+    select
+    <include refid="PrintJobDetailBase_Column" />
+    from t_print_job_detail
+    where id = #{id}
+  </select>
+  <insert id="insertPrintJobDetail" parameterType="com.hd.agent.agprint.model.PrintJobDetail" >
+    <selectKey resultType="java.lang.String" keyProperty="id" order="BEFORE" >
+      select uuid_short()
+    </selectKey>
+    insert into t_print_job_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="jobid != null" >
+        jobid,
+      </if>
+      <if test="printorderid != null" >
+        printorderid,
+      </if>
+      <if test="addtime != null" >
+        addtime,
+      </if>
+      <if test="currentpage != null" >
+        currentpage,
+      </if>
+      <if test="totalpage != null" >
+        totalpage,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="contenttype != null" >
+        contenttype,
+      </if>
+      <if test="readflag != null" >
+        readflag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="jobid != null" >
+        #{jobid},
+      </if>
+      <if test="printorderid != null" >
+        #{printorderid},
+      </if>
+      <if test="addtime != null" >
+        #{addtime},
+      </if>
+      <if test="currentpage != null" >
+        #{currentpage},
+      </if>
+      <if test="totalpage != null" >
+        #{totalpage},
+      </if>
+      <if test="content != null" >
+        #{content},
+      </if>
+      <if test="contenttype != null" >
+        #{contenttype},
+      </if>
+      <if test="readflag != null" >
+        #{readflag},
+      </if>
+    </trim>
+  </insert>
+  <update id="updatePrintJobDetailReadflag" parameterType="java.lang.String">
+    update t_print_job_detail
+    set readflag='1'
+    where id = #{id}
+  </update>
+  <delete id="deletePrintJobDetail" parameterType="java.lang.String">
+    delete from t_print_job_detail
+    where id = #{id}
+  </delete>
+  <delete id="deletePrintJobDetailBeforeDate" parameterType="java.util.Date">
+    DELETE FROM t_print_job_detail
+    WHERE
+    <![CDATA[ addtime <= #{date}  ]]>
+  </delete>
+</mapper>

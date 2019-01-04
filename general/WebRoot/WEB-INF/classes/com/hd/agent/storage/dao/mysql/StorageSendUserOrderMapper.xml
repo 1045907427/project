@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.storage.dao.StorageSendUserOrderMapper" >
+  <resultMap id="BaseResultMap" type="com.hd.agent.storage.model.StorageSendUserOrder" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="businessdate" property="businessdate" jdbcType="VARCHAR" />
+    <result column="billtype" property="billtype" jdbcType="VARCHAR" />
+    <result column="sourceid" property="sourceid" jdbcType="VARCHAR" />
+    <result column="saleorderid" property="saleorderid" jdbcType="VARCHAR" />
+    <result column="senduserid" property="senduserid" jdbcType="VARCHAR" />
+    <result column="sendtime" property="sendtime" jdbcType="TIMESTAMP" />
+    <result column="storageid" property="storageid" jdbcType="VARCHAR" />
+    <result column="totalamount" property="totalamount" jdbcType="DECIMAL" />
+    <result column="totalvolume" property="totalvolume" jdbcType="DECIMAL" />
+    <result column="totalweight" property="totalweight" jdbcType="DECIMAL" />
+    <result column="totalbox" property="totalbox" jdbcType="DECIMAL" />
+    <result column="num" property="num" jdbcType="DECIMAL" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, sourceid,saleorderid,  businessdate,billtype, senduserid, sendtime, storageid, totalamount, totalvolume, totalweight,
+    totalbox, num, remark
+  </sql>
+
+  <select id="getSendUserOrderList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.storage.model.StorageSendUserOrder">
+    select  <include refid="Base_Column_List"/>
+    from t_storage_senduser_order
+    <trim prefix="where" prefixOverrides="and|or">
+      <include refid="common.Page_querySql"/>
+      <include refid="common.Page_dataSql"/>
+      <if test="condition.businessdate1 != null">
+        and businessdate >= #{condition.businessdate1}
+      </if>
+      <if test="condition.businessdate2 != null">
+        <![CDATA[and businessdate <= #{condition.businessdate2}]]>
+      </if>
+      <if test="condition.billtype != null">
+        and billtype = #{condition.billtype}
+      </if>
+      <if test="condition.storageid != null">
+        and storageid = #{condition.storageid}
+      </if>
+      <if test="condition.sourceid != null">
+        and sourceid like CONCAT('%',#{condition.sourceid},'%')
+      </if>
+      <if test="condition.saleorderid != null">
+        and saleorderid like CONCAT('%',#{condition.saleorderid},'%')
+      </if>
+    </trim>
+    <if test="condition.isAll == null">
+      <include refid="common.Page_limit" />
+    </if>
+  </select>
+
+  <select id="getSendUserOrderListCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+    select count(1) FROM(
+        select  <include refid="Base_Column_List"/>
+        from t_storage_senduser_order
+        <trim prefix="where" prefixOverrides="and|or">
+          <include refid="common.Page_querySql"/>
+          <include refid="common.Page_dataSql"/>
+          <if test="condition.businessdate1 != null">
+            and businessdate >= #{condition.businessdate1}
+          </if>
+          <if test="condition.businessdate2 != null">
+            <![CDATA[and businessdate <= #{condition.businessdate2}]]>
+          </if>
+          <if test="condition.storageid != null">
+            and storageid = #{condition.storageid}
+          </if>
+          <if test="condition.billtype != null">
+            and billtype = #{condition.billtype}
+          </if>
+          <if test="condition.sourceid != null">
+            and sourceid like CONCAT('%',#{condition.sourceid},'%')
+          </if>
+          <if test="condition.saleorderid != null">
+            and saleorderid like CONCAT('%',#{condition.saleorderid},'%')
+          </if>
+        </trim>
+    )z
+  </select>
+
+  <insert id="addSendUserOrder" parameterType="com.hd.agent.storage.model.StorageSendUserOrder" >
+    insert into t_storage_senduser_order
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="sourceid != null" >
+        sourceid,
+      </if>
+      <if test="saleorderid != null" >
+        saleorderid,
+      </if>
+      <if test="businessdate != null">
+        businessdate,
+      </if>
+      <if test="billtype != null" >
+        billtype,
+      </if>
+      <if test="senduserid != null" >
+        senduserid,
+      </if>
+      <if test="1==1" >
+        sendtime,
+      </if>
+      <if test="storageid != null" >
+        storageid,
+      </if>
+      <if test="totalamount != null" >
+        totalamount,
+      </if>
+      <if test="totalvolume != null" >
+        totalvolume,
+      </if>
+      <if test="totalweight != null" >
+        totalweight,
+      </if>
+      <if test="totalbox != null" >
+        totalbox,
+      </if>
+      <if test="num != null" >
+        num,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="sourceid != null">
+        #{sourceid,jdbcType=VARCHAR},
+      </if>
+      <if test="saleorderid != null">
+        #{saleorderid,jdbcType=VARCHAR},
+      </if>
+      <if test="businessdate != null">
+        #{businessdate,jdbcType=VARCHAR},
+      </if>
+      <if test="billtype != null" >
+        #{billtype,jdbcType=VARCHAR},
+      </if>
+      <if test="senduserid != null" >
+        #{senduserid,jdbcType=VARCHAR},
+      </if>
+      <if test="1==1" >
+        now(),
+      </if>
+      <if test="storageid != null" >
+        #{storageid,jdbcType=VARCHAR},
+      </if>
+      <if test="totalamount != null" >
+        #{totalamount,jdbcType=DECIMAL},
+      </if>
+      <if test="totalvolume != null" >
+        #{totalvolume,jdbcType=DECIMAL},
+      </if>
+      <if test="totalweight != null" >
+        #{totalweight,jdbcType=DECIMAL},
+      </if>
+      <if test="totalbox != null" >
+        #{totalbox,jdbcType=DECIMAL},
+      </if>
+      <if test="num != null" >
+        #{num,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <delete id="deleteSendUserOrder">
+    delete from t_storage_senduser_order
+    where sourceid=#{sourceid} and billtype=#{billtype}
+  </delete>
+
+  <select id="getCheckOrderList" parameterType="com.hd.agent.common.util.PageMap" resultType="java.util.Map">
+    select
+        t.id as sourceid,t.saleorderid,  t.businessdate,t.storageid,t.remark,sum(t1.unitnum) as num,sum(t1.totalbox) as totalbox,sum(t1.taxamount) as totalamount, sum(t1.unitnum*t2.singlevolume) as totalvolume,sum(t1.unitnum*t2.grossweight) as totalweight
+    from t_storage_saleout t
+    LEFT JOIN  t_storage_saleout_detail t1 on t.id=t1.saleoutid
+    LEFT  JOIN  t_base_goods_info t2 on t1.goodsid=t2.id
+    <trim prefix="where" prefixOverrides="and|or">
+          <if test="condition.businessdate1 != null">
+            and t.businessdate >= #{condition.businessdate1}
+          </if>
+          <if test="condition.businessdate2 != null">
+            <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+          </if>
+          <if test="condition.storageid != null">
+            and t.storageid = #{condition.storageid}
+          </if>
+          <if test="condition.sourceid != null">
+            and t.id like CONCAT('%',#{condition.sourceid},'%')
+          </if>
+          <if test="condition.saleorderid != null">
+            and t.saleorderid like CONCAT('%',#{condition.saleorderid},'%')
+          </if>
+          <if test="1==1">
+            and t.status in ('3','4')  and not EXISTS (select * from t_storage_senduser_order where t.id=t_storage_senduser_order.sourceid and t_storage_senduser_order.billtype='1')
+          </if>
+    </trim>
+    GROUP BY t.id
+    <include refid="common.Page_limit" />
+  </select>
+  <select id="getCheckOrderListCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+    select count(1) from(
+        select *
+        from t_storage_saleout
+        <trim prefix="where" prefixOverrides="and|or">
+          <if test="condition.businessdate1 != null">
+            and businessdate >= #{condition.businessdate1}
+          </if>
+          <if test="condition.businessdate2 != null">
+            <![CDATA[and businessdate <= #{condition.businessdate2}]]>
+          </if>
+          <if test="condition.storageid != null">
+            and storageid = #{condition.storageid}
+          </if>
+          <if test="condition.sourceid != null">
+            and id like CONCAT('%',#{condition.sourceid},'%')
+          </if>
+          <if test="condition.saleorderid != null">
+            and saleorderid like CONCAT('%',#{condition.saleorderid},'%')
+          </if>
+          <if test="1==1">
+            and status in ('3','4')  and not EXISTS (select * from t_storage_senduser_order where t_storage_saleout.id=t_storage_senduser_order.sourceid and t_storage_senduser_order.billtype='1')
+          </if>
+        </trim>
+    )x
+
+  </select>
+
+  <select id="getLoadedOrderList" parameterType="com.hd.agent.common.util.PageMap" resultType="java.util.Map">
+      select
+      t.id as sourceid,t.saleorderid,t.businessdate,t.storageid,t.remark,sum(t1.unitnum) as num,sum(t1.totalbox) as totalbox,sum(t1.taxamount) as totalamount, sum(t1.unitnum*t2.singlevolume) as totalvolume,sum(t1.unitnum*t2.grossweight) as totalweight
+      from t_storage_saleout t
+      LEFT JOIN  t_storage_saleout_detail t1 on t.id=t1.saleoutid
+      LEFT  JOIN  t_base_goods_info t2 on t1.goodsid=t2.id
+      <trim prefix="where" prefixOverrides="and|or">
+        <if test="condition.businessdate1 != null">
+          and t.businessdate >= #{condition.businessdate1}
+        </if>
+        <if test="condition.businessdate2 != null">
+          <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+        </if>
+        <if test="condition.storageid != null">
+          and t.storageid = #{condition.storageid}
+        </if>
+        <if test="condition.sourceid != null">
+          and t.id like CONCAT('%',#{condition.sourceid},'%')
+        </if>
+        <if test="condition.saleorderid != null">
+          and t.saleorderid like CONCAT('%',#{condition.saleorderid},'%')
+        </if>
+        <if test="1==1">
+          and t.status in ('3','4')  and not EXISTS (select * from t_storage_senduser_order where t.id=t_storage_senduser_order.sourceid and t_storage_senduser_order.billtype='2')
+        </if>
+      </trim>
+      GROUP BY t.id
+    <include refid="common.Page_limit" />
+  </select>
+
+  <select id="getLoadedOrderListCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+      select count(1) from(
+      select
+         *
+      from t_storage_saleout
+      <trim prefix="where" prefixOverrides="and|or">
+        <if test="condition.businessdate1 != null">
+          and businessdate >= #{condition.businessdate1}
+        </if>
+        <if test="condition.businessdate2 != null">
+          <![CDATA[and businessdate <= #{condition.businessdate2}]]>
+        </if>
+        <if test="condition.storageid != null">
+          and storageid = #{condition.storageid}
+        </if>
+        <if test="condition.sourceid != null">
+          and id like CONCAT('%',#{condition.sourceid},'%')
+        </if>
+        <if test="condition.saleorderid != null">
+          and saleorderid like CONCAT('%',#{condition.saleorderid},'%')
+        </if>
+        <if test="1==1">
+          and status in ('3','4')  and not EXISTS (select * from t_storage_senduser_order where t_storage_saleout.id=t_storage_senduser_order.sourceid and t_storage_senduser_order.billtype='2')
+        </if>
+      </trim>
+      )x
+  </select>
+
+  <select id="getUnloadedOrderList" parameterType="com.hd.agent.common.util.PageMap" resultType="java.util.Map">
+      select
+        t.id as sourceid,  t.businessdate,t.storageid,t.remark,sum(t1.unitnum) as num,sum(t1.totalbox) as totalbox,sum(t1.taxamount) as totalamount, sum(t1.unitnum*t2.singlevolume) as totalvolume,sum(t1.unitnum*t2.grossweight) as totalweight
+      from t_storage_purchase_enter t
+      LEFT JOIN  t_storage_purchase_enter_detail t1 on t.id=t1.purchaseenterid
+      LEFT  JOIN  t_base_goods_info t2 on t1.goodsid=t2.id
+      <trim prefix="where" prefixOverrides="and|or">
+        <if test="condition.businessdate1 != null">
+          and t.businessdate >= #{condition.businessdate1}
+        </if>
+        <if test="condition.businessdate2 != null">
+          <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+        </if>
+        <if test="condition.storageid != null">
+          and t.storageid = #{condition.storageid}
+        </if>
+        <if test="condition.sourceid != null">
+          and t.id like CONCAT('%',#{condition.sourceid},'%')
+        </if>
+        <if test="1==1">
+          and t.status in ('3','4')  and not  EXISTS  (select * from t_storage_senduser_order  where t.id=t_storage_senduser_order.sourceid and t_storage_senduser_order.billtype='3')
+        </if>
+      </trim>
+     GROUP BY t.id
+    <include refid="common.Page_limit" />
+  </select>
+
+  <select id="getUnloadedOrderListCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+    select count(1) from(
+      select
+          *
+      from t_storage_purchase_enter
+      <trim prefix="where" prefixOverrides="and|or">
+        <if test="condition.businessdate1 != null">
+          and businessdate >= #{condition.businessdate1}
+        </if>
+        <if test="condition.businessdate2 != null">
+          <![CDATA[and businessdate <= #{condition.businessdate2}]]>
+        </if>
+        <if test="condition.storageid != null">
+          and storageid = #{condition.storageid}
+        </if>
+        <if test="condition.sourceid != null">
+          and id like CONCAT('%',#{condition.sourceid},'%')
+        </if>
+        <if test="1==1">
+          and status in ('3','4')  and not  EXISTS  (select * from t_storage_senduser_order  where t_storage_purchase_enter.id=t_storage_senduser_order.sourceid and t_storage_senduser_order.billtype='3')
+        </if>
+      </trim>
+    )x
+  </select>
+
+  <select id="getStorageSendUserOrderBySourceidAndBilltype" resultType="com.hd.agent.storage.model.StorageSendUserOrder">
+    select * from t_storage_senduser_order where sourceid =#{sourceid} and billtype =#{billtype}
+  </select>
+</mapper>

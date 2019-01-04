@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+	
+	<!-- dao配置 -->
+	<bean id="innerMessageMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.message.dao.InnerMessageMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+	<bean id="noticeMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.message.dao.NoticeMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+	<bean id="emailMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.message.dao.EmailMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+	</bean>
+	<bean id="mobileSmsMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.message.dao.MobileSmsMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>		
+	</bean>	
+	<bean id="fileDistribMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.message.dao.FileDistribMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>		
+	</bean>
+    
+    <!-- service配置 -->
+    <bean id="innerMessageService" parent="baseTransactionProxy" >
+    	<property name="target" ref="innerMessageServiceImpl"></property>   
+    </bean>
+    <bean id="innerMessageServiceImpl" class="com.hd.agent.message.service.impl.InnerMessageService" parent="baseServiceImpl">
+    	<property name="innerMessageMapper" ref="innerMessageMapper"></property>
+    </bean>    
+    
+    <bean id="noticeService" parent="baseTransactionProxy" >
+    	<property name="target" ref="noticeServiceImpl"></property>   
+    </bean>
+    <bean id="noticeServiceImpl" class="com.hd.agent.message.service.impl.NoticeServiceImpl" parent="baseServiceImpl">
+    	<property name="noticeMapper" ref="noticeMapper"></property>
+    	<property name="attachFileService" ref="attachFileService"></property>
+    </bean>
+        
+    <bean id="emailService" parent="baseTransactionProxy" >
+    	<property name="target" ref="emailServiceImpl"></property>   
+    </bean>
+    <bean id="emailServiceImpl" class="com.hd.agent.message.service.impl.EmailServiceImpl" parent="baseServiceImpl">
+    	<property name="emailMapper" ref="emailMapper"></property>
+    	<property name="attachFileService" ref="attachFileService"></property>
+    </bean>    
+    <bean id="mobileSmsService" parent="baseTransactionProxy" >
+    	<property name="target" ref="mobileSmsServiceImpl"></property>   
+    </bean>
+    <bean id="mobileSmsServiceImpl" class="com.hd.agent.message.service.impl.MobileSmsServiceImpl" parent="baseServiceImpl">
+    	<property name="mobileSmsMapper" ref="mobileSmsMapper"></property>
+    </bean>   
+    <bean id="fileDistribService" parent="baseTransactionProxy" >
+    	<property name="target" ref="fileDistribServiceImpl"></property>   
+    </bean>
+    <bean id="fileDistribServiceImpl" class="com.hd.agent.message.service.impl.FileDistribServiceImpl" parent="baseServiceImpl">
+    	<property name="fileDistribMapper" ref="fileDistribMapper"></property>
+    	<property name="attachFileService" ref="attachFileService"></property>
+    </bean>
+	<bean id="wechateTemplateService" parent="baseTransactionProxy" >
+		<property name="target" ref="wechatTemplateServiceImpl"></property>
+	</bean>
+	<bean id="wechatTemplateServiceImpl" class="com.hd.agent.message.service.impl.WechatTemplateServiceImpl" parent="baseServiceImpl">
+	</bean>
+    
+     <!-- spring管理structs2 Action; action中注入service -->    
+	<bean id="innerMessageAction" class="com.hd.agent.message.action.InnerMessageAction" scope="prototype" parent="baseAction">
+		<property name="innerMessageService" ref="innerMessageService"></property>
+		<property name="taskScheduleService" ref="taskScheduleService"></property>
+	</bean>
+	<bean id="noticeAction" class="com.hd.agent.message.action.NoticeAction" scope="prototype" parent="baseAction">
+		<property name="noticeService" ref="noticeService"></property>
+	</bean>
+	<bean id="emailAction" class="com.hd.agent.message.action.EmailAction" scope="prototype" parent="baseAction">
+		<property name="emailService" ref="emailService"></property>
+	</bean>	
+	<bean id="mobileSmsAction" class="com.hd.agent.message.action.MobileSmsAction" scope="prototype" parent="baseAction">
+		<property name="mobileSmsService" ref="mobileSmsService"></property>
+		<property name="taskScheduleService" ref="taskScheduleService"></property>
+	</bean>	
+	<bean id="messageUnionAction" class="com.hd.agent.message.action.MessageUnionAction" scope="prototype" parent="baseAction">
+		<property name="innerMessageService" ref="innerMessageService"></property>
+		<property name="emailService" ref="emailService"></property>
+		<property name="noticeService" ref="noticeService"></property>		
+	</bean>
+	<bean id="fileDistribAction" class="com.hd.agent.message.action.FileDistribAction" scope="prototype" parent="baseAction">
+		<property name="fileDistribService" ref="fileDistribService"></property>
+	</bean>
+	<bean id="wechatTemplateAction" class="com.hd.agent.message.action.WechatTemplateAction" scope="prototype" parent="baseAction">
+		<property name="wechateTemplateService" ref="wechateTemplateService"></property>
+	</bean>
+</beans>

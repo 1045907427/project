@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.system.dao.SysParamMapper">
+	<cache type="org.mybatis.caches.ehcache.EhcacheCache"></cache>
+	<sql id="sys_param_Column_List">
+		paramid, pname, description, pvalue, pvdescription, puser, state, moduleid, addtime, 
+    	adduserid, modifytime, modifyuserid
+	</sql>
+	<!-- 查询系统参数列表 -->
+	<select id="getSysParamList" resultType="com.hd.agent.system.model.SysParam" useCache="false">
+		select
+		<include refid="sys_param_Column_List"/>
+		from t_sys_param
+	</select>
+	<!-- 根据条件查询系统参数列表 -->
+	<select id="getSysParamPageList" resultType="com.hd.agent.system.model.SysParam" parameterType="com.hd.agent.common.util.PageMap" useCache="false">
+		select p.paramid, p.pname, p.description, p.pvalue, p.pvdescription, p.puser, p.state, p.moduleid,c.codename modulename, p.addtime, 
+		p.adduserid, p.modifytime, p.modifyuserid
+		FROM t_sys_param p 
+		LEFT JOIN t_sys_code c ON c.code=p.moduleid and c.type = 'sysParamModule'
+		<trim prefix="where" prefixOverrides="and|or" >
+	      <if test="condition.pname != null" >
+	         and p.pname like CONCAT('%',#{condition.pname},'%')
+	      </if>
+          <if test="condition.description != null" >
+             and p.description like CONCAT('%',#{condition.description},'%')
+          </if>
+	      <if test="condition.state != null">
+				and p.state = #{condition.state}
+		  </if>
+		  <if test="condition.moduleid != null">
+				and p.moduleid = #{condition.moduleid}
+		  </if>
+	    </trim>
+	</select>
+	<select id="getSysParamCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int" useCache="false">
+		select count(1) from (
+			select p.paramid, p.pname, p.description, p.pvalue, p.pvdescription, p.puser, p.state, p.moduleid,c.codename modulename, p.addtime, 
+				p.adduserid, p.modifytime, p.modifyuserid
+			FROM t_sys_param p 
+			LEFT JOIN t_sys_code c ON c.code=p.moduleid and c.type = 'sysParamModule'
+			<trim prefix="where" prefixOverrides="and|or" >
+		      <if test="condition.pname != null" >
+		         and p.pname like CONCAT('%',#{condition.pname},'%')
+		      </if>
+              <if test="condition.description != null" >
+                 and p.description like CONCAT('%',#{condition.description},'%')
+              </if>
+		      <if test="condition.state != null">
+					and p.state = #{condition.state}
+			  </if>
+			  <if test="condition.moduleid != null">
+					and p.moduleid = #{condition.moduleid}
+			  </if>
+		    </trim>
+		)z
+	</select>
+	<!-- 搜索系统参数名称 -->
+	<select id="searchPname" resultType="java.lang.String" parameterType="java.lang.String" useCache="false">
+		select pname from t_sys_param
+		where pname=#{pname}
+	</select>
+	<!-- 查询系统参数详情 -->
+	<select id="getSysParamInfo" parameterType="java.lang.String" resultType="com.hd.agent.system.model.SysParam" useCache="false">
+		select
+		<include refid="sys_param_Column_List"/>
+		from t_sys_param
+		where paramid=#{paramid}
+	</select>
+	
+	<!-- 添加参数 -->
+	<insert id="insertSysParam" parameterType="com.hd.agent.system.model.SysParam">
+		<selectKey resultType="java.lang.String" keyProperty="paramid" order="BEFORE" >
+	      select uuid_short()
+	    </selectKey>
+		insert into t_sys_param
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	        paramid,
+	      <if test="pname != null" >
+	        pname,
+	      </if>
+	      <if test="description != null" >
+	        description,
+	      </if>
+	      <if test="pvalue != null" >
+	        pvalue,
+	      </if>
+	      <if test="pvdescription != null" >
+	        pvdescription,
+	      </if>
+	      <if test="puser != null" >
+	        puser,
+	      </if>
+	      <if test="state != null" >
+	        state,
+	      </if>
+	      <if test="moduleid != null" >
+	        moduleid,
+	      </if>
+	      <if test="1==1" >
+	        addtime,
+	      </if>
+	      <if test="adduserid != null" >
+	        adduserid,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	        #{paramid},
+	      <if test="pname != null" >
+	        #{pname},
+	      </if>
+	      <if test="description != null" >
+	        #{description},
+	      </if>
+	      <if test="pvalue != null" >
+	        #{pvalue},
+	      </if>
+	      <if test="pvdescription != null" >
+	        #{pvdescription},
+	      </if>
+	      <if test="puser != null" >
+	        #{puser},
+	      </if>
+	      <if test="state != null" >
+	        #{state},
+	      </if>
+	      <if test="moduleid != null" >
+	        #{moduleid},
+	      </if>
+	      <if test="1==1" >
+	        now(),
+	      </if>
+	      <if test="adduserid != null" >
+	        #{adduserid},
+	      </if>
+	    </trim>
+	</insert>
+	<!-- 修改系统参数 -->
+	<update id="updateSysParam" parameterType="com.hd.agent.system.model.SysParam">
+		update t_sys_param
+	    <set >
+	      <if test="pname != null" >
+	        pname = #{pname},
+	      </if>
+	      <if test="description != null" >
+	        description = #{description},
+	      </if>
+	      <if test="pvalue != null" >
+	        pvalue = #{pvalue},
+	      </if>
+	      <if test="pvdescription != null" >
+	        pvdescription = #{pvdescription},
+	      </if>
+	      <if test="puser != null" >
+	        puser = #{puser},
+	      </if>
+	      <if test="state != null" >
+	        state = #{state},
+	      </if>
+	      <if test="moduleid != null" >
+	        moduleid = #{moduleid},
+	      </if>
+	      <if test="1==1" >
+	        modifytime = now(),
+	      </if>
+	      <if test="modifyuserid != null" >
+	        modifyuserid = #{modifyuserid},
+	      </if>
+	    </set>
+	    where paramid = #{paramid}
+	</update>
+	<!-- 停用系统参数 -->
+	<update id="disableSysParam" parameterType="java.lang.String">
+		update t_sys_param set state='0' where paramid = #{paramid}
+	</update>
+	<!-- 启用系统参数 -->
+	<update id="enableSysParam" parameterType="java.lang.String">
+		update t_sys_param set state='1' where paramid = #{paramid}
+	</update>
+	<select id="getSysParam" parameterType="java.lang.String" resultType="com.hd.agent.system.model.SysParam">
+		select
+		<include refid="sys_param_Column_List"/>
+		from t_sys_param
+		where pname=#{name} and state = '1'
+	</select>
+	
+	<select id="showSysParamListByModualId" parameterType="java.lang.String" resultType="com.hd.agent.system.model.SysParam">
+		SELECT
+		p.paramid,
+		p.pname,
+		p.description,
+		p.pvalue,
+		p.pvdescription,
+		p.puser,
+		p.state,
+		p.moduleid,
+		c.codename modulename,
+		p.addtime,
+		p.adduserid,
+		p.modifytime,
+		p.modifyuserid
+	FROM
+		t_sys_param p
+	LEFT JOIN t_sys_code c ON c. CODE = p.moduleid
+	AND c.type = 'sysParamModule'
+	WHERE
+		p.moduleid = #{id}
+	
+	</select>
+	
+	
+	<update id="updateSysParamBypName">
+		update t_sys_param set pvalue = #{val} where pname = #{name}
+	</update>
+</mapper>

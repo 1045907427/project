@@ -1,0 +1,448 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.crm.dao.CrmSalesOrderMapper" >
+  <resultMap id="ResultMap" type="com.hd.agent.crm.model.CrmSalesOrder" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="businessdate" property="businessdate" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="adduserid" property="adduserid" jdbcType="VARCHAR" />
+    <result column="addusername" property="addusername" jdbcType="VARCHAR" />
+    <result column="adddeptid" property="adddeptid" jdbcType="VARCHAR" />
+    <result column="adddeptname" property="adddeptname" jdbcType="VARCHAR" />
+    <result column="addtime" property="addtime" jdbcType="TIMESTAMP" />
+    <result column="modifyuserid" property="modifyuserid" jdbcType="VARCHAR" />
+    <result column="modifyusername" property="modifyusername" jdbcType="VARCHAR" />
+    <result column="modifytime" property="modifytime" jdbcType="TIMESTAMP" />
+    <result column="audituserid" property="audituserid" jdbcType="VARCHAR" />
+    <result column="auditusername" property="auditusername" jdbcType="VARCHAR" />
+    <result column="audittime" property="audittime" jdbcType="TIMESTAMP" />
+    <result column="customerid" property="customerid" jdbcType="VARCHAR" />
+    <result column="pcustomerid" property="pcustomerid" jdbcType="VARCHAR" />
+    <result column="customersort" property="customersort" jdbcType="VARCHAR" />
+    <result column="handlerid" property="handlerid" jdbcType="VARCHAR" />
+    <result column="sourceid" property="sourceid" jdbcType="VARCHAR" />
+    <result column="sourcetype" property="sourcetype" jdbcType="CHAR" />
+    <result column="salesarea" property="salesarea" jdbcType="VARCHAR" />
+    <result column="salesdept" property="salesdept" jdbcType="VARCHAR" />
+    <result column="salesuser" property="salesuser" jdbcType="VARCHAR" />
+    <result column="indooruserid" property="indooruserid" jdbcType="VARCHAR" />
+    <result column="keyid" property="keyid" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="teminalOrder_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.businessdate != null" >
+        <if test="condition.id != null" >
+          and t.id  like CONCAT('%', CONCAT(#{condition.id}, '%'))
+        </if>
+        <![CDATA[ and businessdate >=#{condition.businessdate} ]]>
+      </if>
+      <if test="condition.businessdate1 != null" >
+        <![CDATA[ and businessdate <= #{condition.businessdate1}]]>
+      </if>
+      <if test="condition.goodsid != null" >
+        and t1.goodsid = #{condition.goodsid}
+      </if>
+      <if test="condition.goodssort != null" >
+        and t1.goodssort = #{condition.goodssort}
+      </if>
+      <if test="condition.supplierid != null" >
+        and t1.supplierid = #{condition.supplierid}
+      </if>
+      <if test="condition.brandid != null" >
+        and t1.brandid = #{condition.brandid}
+      </if>
+      <if test="condition.id != null" >
+        and id like concat ('%',#{condition.id} ,'%')
+      </if>
+      <if test="condition.status != null" >
+         and status = #{condition.status}
+      </if>
+      <if test="condition.customerid != null" >
+         and customerid = #{condition.customerid}
+      </if>
+      <if test="condition.sourceid != null" >
+         and sourceid = #{condition.sourceid}
+      </if>
+      <if test="condition.sourcetype != null" >
+         and sourcetype = #{condition.sourcetype}
+      </if>
+      <if test="condition.salesarea != null" >
+         and salesarea = #{condition.salesarea}
+      </if>
+      <if test="condition.salesdept != null" >
+         and salesdept = #{condition.salesdept}
+      </if>
+      <if test="condition.salesuser != null" >
+         and salesuser = #{condition.salesuser}
+      </if>
+      <if test="condition.indooruserid != null" >
+         and indooruserid = #{condition.indooruserid}
+      </if>
+    </trim>
+  </sql>
+  <sql id="Terminal_Column_Order" >
+    id, businessdate, status, remark, adduserid, addusername, adddeptid, adddeptname, addtime, modifyuserid, modifyusername, modifytime,
+    audituserid, auditusername, audittime, customerid, pcustomerid, customersort, handlerid, sourceid, sourcetype, salesarea, salesdept,
+    salesuser, indooruserid
+  </sql>
+  <select id="getCrmSalesOrderById" resultMap="ResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Terminal_Column_Order" /> from t_crm_sales_order where id = #{id}
+  </select>
+  <select id="getTerminalOrderData" resultMap="ResultMap" parameterType="com.hd.agent.common.util.PageMap" >
+    select <include refid="Terminal_Column_Order" /> from t_crm_sales_order
+    <include refid="teminalOrder_Where_Clause" />
+    <include refid="common.Page_limit"/>
+  </select>
+  <select id="getTerminalOrderDataCount" resultType="java.lang.Integer"  parameterType="com.hd.agent.common.util.PageMap" >
+    select count(*) from (
+    select <include refid="Terminal_Column_Order" /> from t_crm_sales_order <include refid="teminalOrder_Where_Clause" />
+    ) z
+  </select>
+
+  <delete id="deleteCrmSalesOrderById" parameterType="java.lang.String" >
+    delete from t_crm_sales_order
+    where id = #{id}
+  </delete>
+  <insert id="addCrmSalesOrder" parameterType="com.hd.agent.crm.model.CrmSalesOrder" >
+    insert into t_crm_sales_order
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="businessdate != null" >
+        businessdate,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="adduserid != null" >
+        adduserid,
+      </if>
+      <if test="addusername != null" >
+        addusername,
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid,
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname,
+      </if>
+      <if test="addtime != null" >
+        addtime,
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid,
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername,
+      </if>
+      <if test="modifytime != null" >
+        modifytime,
+      </if>
+      <if test="audituserid != null" >
+        audituserid,
+      </if>
+      <if test="auditusername != null" >
+        auditusername,
+      </if>
+      <if test="audittime != null" >
+        audittime,
+      </if>
+      <if test="customerid != null" >
+        customerid,
+      </if>
+      <if test="pcustomerid != null" >
+        pcustomerid,
+      </if>
+      <if test="customersort != null" >
+        customersort,
+      </if>
+      <if test="handlerid != null" >
+        handlerid,
+      </if>
+      <if test="sourceid != null" >
+        sourceid,
+      </if>
+      <if test="sourcetype != null" >
+        sourcetype,
+      </if>
+      <if test="salesarea != null" >
+        salesarea,
+      </if>
+      <if test="salesdept != null" >
+        salesdept,
+      </if>
+      <if test="salesuser != null" >
+        salesuser,
+      </if>
+      <if test="indooruserid != null" >
+        indooruserid,
+      </if>
+      <if test="keyid != null" >
+         keyid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="businessdate != null" >
+        #{businessdate},
+      </if>
+      <if test="status != null" >
+        #{status},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+      <if test="adduserid != null" >
+        #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        #{adddeptname},
+      </if>
+      <if test="addtime != null" >
+        #{addtime},
+      </if>
+      <if test="modifyuserid != null" >
+        #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        #{modifyusername},
+      </if>
+      <if test="modifytime != null" >
+        #{modifytime},
+      </if>
+      <if test="audituserid != null" >
+        #{audituserid},
+      </if>
+      <if test="auditusername != null" >
+        #{auditusername},
+      </if>
+      <if test="audittime != null" >
+        #{audittime},
+      </if>
+      <if test="customerid != null" >
+        #{customerid},
+      </if>
+      <if test="pcustomerid != null" >
+        #{pcustomerid},
+      </if>
+      <if test="customersort != null" >
+        #{customersort},
+      </if>
+      <if test="handlerid != null" >
+        #{handlerid},
+      </if>
+      <if test="sourceid != null" >
+        #{sourceid},
+      </if>
+      <if test="sourcetype != null" >
+        #{sourcetype},
+      </if>
+      <if test="salesarea != null" >
+        #{salesarea},
+      </if>
+      <if test="salesdept != null" >
+        #{salesdept},
+      </if>
+      <if test="salesuser != null" >
+        #{salesuser},
+      </if>
+      <if test="indooruserid != null" >
+        #{indooruserid},
+      </if>
+       <if test="keyid != null" >
+            #{keyid},
+       </if>
+    </trim>
+  </insert>
+  <update id="updateCrmSalseOrder" parameterType="com.hd.agent.crm.model.CrmSalesOrder" >
+    update t_crm_sales_order
+    <set >
+      <if test="businessdate != null" >
+        businessdate = #{businessdate},
+      </if>
+      <if test="status != null" >
+        status = #{status},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark},
+      </if>
+      <if test="adduserid != null" >
+        adduserid = #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        addusername = #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid = #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname = #{adddeptname},
+      </if>
+      <if test="addtime != null" >
+        addtime = #{addtime},
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid = #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername = #{modifyusername},
+      </if>
+      <if test="modifytime != null" >
+        modifytime = #{modifytime},
+      </if>
+      <if test="audituserid != null" >
+        audituserid = #{audituserid},
+      </if>
+      <if test="auditusername != null" >
+        auditusername = #{auditusername},
+      </if>
+      <if test="audittime != null" >
+        audittime = #{audittime},
+      </if>
+      <if test="customerid != null" >
+        customerid = #{customerid},
+      </if>
+      <if test="pcustomerid != null" >
+        pcustomerid = #{pcustomerid},
+      </if>
+      <if test="customersort != null" >
+        customersort = #{customersort},
+      </if>
+      <if test="handlerid != null" >
+        handlerid = #{handlerid},
+      </if>
+      <if test="sourceid != null" >
+        sourceid = #{sourceid},
+      </if>
+      <if test="sourcetype != null" >
+        sourcetype = #{sourcetype},
+      </if>
+      <if test="salesarea != null" >
+        salesarea = #{salesarea},
+      </if>
+      <if test="salesdept != null" >
+        salesdept = #{salesdept},
+      </if>
+      <if test="salesuser != null" >
+        salesuser = #{salesuser},
+      </if>
+      <if test="indooruserid != null" >
+        indooruserid = #{indooruserid},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+<!--客户销量 报表-->
+  <sql id="Report_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.businessdate != null" >
+        <![CDATA[ and t.businessdate >= #{condition.businessdate} ]]>
+      </if>
+      <if test="condition.businessdate1 != null" >
+        <![CDATA[ and t.businessdate <= #{condition.businessdate1} ]]>
+      </if>
+      <if test="condition.id != null" >
+        and t.id  like CONCAT('%', CONCAT(#{condition.id}, '%'))
+      </if>
+      <if test="condition.customerid != null" >
+        and t.customerid = #{condition.customerid}
+      </if>
+      <if test="condition.salesuser != null" >
+        and t.salesuser = #{condition.salesuser}
+      </if><if test="condition.salesdept != null" >
+      and t.salesdept = #{condition.salesdept}
+    </if>
+      <if test="condition.goodsid != null" >
+        and t1.goodsid = #{condition.goodsid}
+      </if>
+      <if test="condition.brandid != null" >
+        and t1.brandid = #{condition.brandid}
+      </if>
+      <if test="condition.supplierid != null" >
+        and t1.supplierid = #{condition.supplierid}
+      </if>
+    </trim>
+  </sql>
+  <select id="getTerminalSalesOrderReportData"  resultType="java.util.Map" parameterType="com.hd.agent.common.util.PageMap" >
+    select
+    t.id,t.businessdate,t.customerid,t.customersort,t.salesuser,t.sourceid,t.salesdept,t.indooruserid,g.barcode,
+    t1.goodsid,t1.brandid,t1.supplierid,t1.unitnum,t1.auxnumdetail,t1.totalbox,t1.taxprice,t1.taxamount,t1.notaxamount,t1.tax
+    from t_crm_sales_order t
+    LEFT JOIN  t_crm_sales_order_detail t1 on t.id = t1.orderid
+    LEFT JOIN t_base_goods_info g on g.id = t1.goodsid
+    <include refid="Report_Where_Clause" />
+    <include refid="common.Page_limit"/>
+  </select>
+  <select id="getTerminalSalesOrderReportDataCount"  resultType="int" parameterType="com.hd.agent.common.util.PageMap" >
+    select count(*) from (
+    select
+    t.id,t.businessdate,t.customerid,t.customersort,t.salesuser,
+    t1.goodsid,t1.brandid,t1.supplierid,t1.unitnum,t1.auxnumdetail,t1.totalbox,t1.taxprice,t1.taxamount
+    from t_crm_sales_order t
+    LEFT JOIN  t_crm_sales_order_detail t1 on t.id = t1.orderid
+    <include refid="Report_Where_Clause" />
+    ) z
+  </select>
+  <select id="getCrmSalesOrderByKeyid" resultMap="ResultMap" parameterType="java.lang.String">
+    select <include refid="Terminal_Column_Order" /> from t_crm_sales_order where keyid=#{keyid}
+  </select>
+  <sql id="getCustomerTerminalSalesData_sql">
+    select t.businessdate,t.customerid,t.salesdept,sum(t1.taxamount) as taxamount
+    from t_crm_sales_order t
+    LEFT JOIN  t_crm_sales_order_detail t1 on t.id = t1.orderid
+    <trim prefix="where" prefixOverrides="and|or" >
+      <choose>
+        <when test="condition.sourcetype == 0">
+          <if test="condition.businessdate != null and condition.businessdate1 != null" >
+            customerid not in ( select customerid from t_crm_sales_order where <![CDATA[ businessdate < #{condition.businessdate} ]]> )
+            and customerid in ( select customerid from t_crm_sales_order where <![CDATA[ businessdate >= #{condition.businessdate} and businessdate <= #{condition.businessdate1} ]]> )
+          </if>
+        </when>
+        <when test="condition.sourcetype == 1">
+          customerid in ( select customerid from t_crm_sales_order where <![CDATA[ businessdate < #{condition.businessdate} ]]> )
+          and customerid in ( select customerid from t_crm_sales_order where <![CDATA[ businessdate >= #{condition.businessdate} and businessdate <= #{condition.businessdate1} ]]> )
+        </when>
+        <when test="condition.sourcetype == 2">
+          customerid in ( select customerid from t_crm_sales_order where <![CDATA[ businessdate < #{condition.businessdate} ]]> )
+          and customerid not in ( select customerid from t_crm_sales_order where <![CDATA[ businessdate >= #{condition.businessdate} and businessdate <= #{condition.businessdate1} ]]> )
+        </when>
+      </choose>
+      <if test="condition.customerid != null" >
+        and t.customerid = #{condition.customerid}
+      </if>
+      <if test="condition.salesdept != null" >
+        and t.salesdept = #{condition.salesdept}
+      </if>
+      <if test="condition.goodsid != null" >
+        and t1.goodsid = #{condition.goodsid}
+      </if>
+      <if test="condition.brandid != null" >
+        and t1.brandid = #{condition.brandid}
+      </if>
+    </trim>
+    group by customerid,salesdept
+  </sql>
+  <select id="getCustomerTerminalSalesData" resultType="java.util.Map" parameterType="com.hd.agent.common.util.PageMap" >
+     <include refid="getCustomerTerminalSalesData_sql"/>
+     <include refid="common.Page_limit"/>
+  </select>
+  <select id="getCustomerTerminalSalesDataCount" resultType="int" parameterType="com.hd.agent.common.util.PageMap">
+    SELECT count(*) from (
+    <include refid="getCustomerTerminalSalesData_sql"/>
+    ) z
+  </select>
+</mapper>

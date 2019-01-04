@@ -1,0 +1,599 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.account.dao.CollectionOrderMapper" >
+	<sql id="collectionOrder_Column_List" >
+	    id, businessdate, status, remark, adduserid, addusername, adddeptid, adddeptname, 
+	    addtime, modifyuserid, modifyusername, modifytime, audituserid, auditusername, audittime, 
+	    stopuserid, stopusername, stoptime, closetime, printtimes, field01, field02, field03, 
+	    field04, field05, field06, field07, field08, collectiontype, collectiondept, collectionuser, 
+	    customerid, handlerid, paytype,bank,bankdeptid, invoiceno, initamount,amount, writeoffamount, remainderamount,iswriteoff,iscustomer,
+	    source,sourceno,oaid,version,vouchertimes
+	</sql>
+  	<insert id="addCollectionOrder" parameterType="com.hd.agent.account.model.CollectionOrder" >
+	    insert into t_account_collection_order
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="id != null" >
+	        id,
+	      </if>
+	      <if test="businessdate != null" >
+	        businessdate,
+	      </if>
+	      <if test="status != null" >
+	        status,
+	      </if>
+	      <if test="remark != null" >
+	        remark,
+	      </if>
+	      <if test="adduserid != null" >
+	        adduserid,
+	      </if>
+	      <if test="addusername != null" >
+	        addusername,
+	      </if>
+	      <if test="adddeptid != null" >
+	        adddeptid,
+	      </if>
+	      <if test="adddeptname != null" >
+	        adddeptname,
+	      </if>
+	      <if test="1==1" >
+	        addtime,
+	      </if>
+	      <if test="audituserid != null" >
+	        audituserid,
+	      </if>
+	      <if test="auditusername != null" >
+	        auditusername,
+	      </if>
+	      <if test="audittime != null" >
+	        audittime,
+	      </if>
+	      <if test="field01 != null" >
+	        field01,
+	      </if>
+	      <if test="field02 != null" >
+	        field02,
+	      </if>
+	      <if test="field03 != null" >
+	        field03,
+	      </if>
+	      <if test="field04 != null" >
+	        field04,
+	      </if>
+	      <if test="field05 != null" >
+	        field05,
+	      </if>
+	      <if test="field06 != null" >
+	        field06,
+	      </if>
+	      <if test="field07 != null" >
+	        field07,
+	      </if>
+	      <if test="field08 != null" >
+	        field08,
+	      </if>
+	      <if test="collectiontype != null" >
+	        collectiontype,
+	      </if>
+	      <if test="collectiondept != null" >
+	        collectiondept,
+	      </if>
+	      <if test="collectionuser != null" >
+	        collectionuser,
+	      </if>
+	      <if test="customerid != null" >
+	        customerid,
+	      </if>
+	      <if test="handlerid != null" >
+	        handlerid,
+	      </if>
+	      <if test="paytype != null" >
+	        paytype,
+	      </if>
+	      <if test="bank != null" >
+	        bank,
+	      </if>
+	      <if test="bankdeptid != null" >
+	        bankdeptid,
+	      </if>
+	      <if test="invoiceno != null" >
+	        invoiceno,
+	      </if>
+	      <if test="initamount != null" >
+	        initamount,
+	      </if>
+	      <if test="amount != null" >
+	        amount,
+	      </if>
+	      <if test="writeoffamount != null" >
+	        writeoffamount,
+	      </if>
+	      <if test="remainderamount != null" >
+	        remainderamount,
+	      </if>
+	      <if test="iscustomer != null" >
+	        iscustomer,
+	      </if>
+	      <if test="source != null" >
+	        source,
+	      </if>
+	      <if test="sourceno != null" >
+	        sourceno,
+	      </if>
+			<if test="oaid != null" >
+				oaid,
+			</if>
+			<if test="version != null" >
+				version,
+			</if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="id != null" >
+	        #{id},
+	      </if>
+	      <if test="businessdate != null" >
+	        #{businessdate},
+	      </if>
+	      <if test="status != null" >
+	        #{status},
+	      </if>
+	      <if test="remark != null" >
+	        #{remark},
+	      </if>
+	      <if test="adduserid != null" >
+	        #{adduserid},
+	      </if>
+	      <if test="addusername != null" >
+	        #{addusername},
+	      </if>
+	      <if test="adddeptid != null" >
+	        #{adddeptid},
+	      </if>
+	      <if test="adddeptname != null" >
+	        #{adddeptname},
+	      </if>
+	      <if test="1==1" >
+	        now(),
+	      </if>
+	      <if test="audituserid != null" >
+	        #{audituserid},
+	      </if>
+	      <if test="auditusername != null" >
+	        #{auditusername},
+	      </if>
+	      <if test="audittime != null" >
+	        now(),
+	      </if>
+	      <if test="field01 != null" >
+	        #{field01},
+	      </if>
+	      <if test="field02 != null" >
+	        #{field02},
+	      </if>
+	      <if test="field03 != null" >
+	        #{field03},
+	      </if>
+	      <if test="field04 != null" >
+	        #{field04},
+	      </if>
+	      <if test="field05 != null" >
+	        #{field05},
+	      </if>
+	      <if test="field06 != null" >
+	        #{field06},
+	      </if>
+	      <if test="field07 != null" >
+	        #{field07},
+	      </if>
+	      <if test="field08 != null" >
+	        #{field08},
+	      </if>
+	      <if test="collectiontype != null" >
+	        #{collectiontype},
+	      </if>
+	      <if test="collectiondept != null" >
+	        #{collectiondept},
+	      </if>
+	      <if test="collectionuser != null" >
+	        #{collectionuser},
+	      </if>
+	      <if test="customerid != null" >
+	        #{customerid},
+	      </if>
+	      <if test="handlerid != null" >
+	        #{handlerid},
+	      </if>
+	      <if test="paytype != null" >
+	        #{paytype},
+	      </if>
+	      <if test="bank != null" >
+	        #{bank},
+	      </if>
+	      <if test="bankdeptid != null" >
+	        #{bankdeptid},
+	      </if>
+	      <if test="invoiceno != null" >
+	        #{invoiceno},
+	      </if>
+	      <if test="initamount != null" >
+	        #{initamount},
+	      </if>
+	      <if test="amount != null" >
+	        #{amount},
+	      </if>
+	      <if test="writeoffamount != null" >
+	        #{writeoffamount},
+	      </if>
+	      <if test="remainderamount != null" >
+	        #{remainderamount},
+	      </if>
+	      <if test="iscustomer != null" >
+	        #{iscustomer},
+	      </if>
+	      <if test="source != null" >
+	        #{source},
+	      </if>
+	      <if test="sourceno != null" >
+	        #{sourceno},
+	      </if>
+			<if test="oaid != null" >
+				#{oaid},
+			</if>
+			<if test="version != null" >
+				#{version},
+			</if>
+	    </trim>
+	  </insert>
+	  <select id="getCollectionOrderInfo" parameterType="java.lang.String" resultType="com.hd.agent.account.model.CollectionOrder">
+	  	select <include refid="collectionOrder_Column_List"/>
+	  	from t_account_collection_order where id=#{id}
+	  </select>
+      <select id="getCollectionBySourceno"  parameterType="java.lang.String" resultType="com.hd.agent.account.model.CollectionOrder">
+          select <include refid="collectionOrder_Column_List"/>
+          from t_account_collection_order where sourceno=#{sourceno}
+      </select>
+	  <select id="getCollectionOrderListByCustomerid" parameterType="java.lang.String" resultType="com.hd.agent.account.model.CollectionOrder">
+	  	select <include refid="collectionOrder_Column_List"/>
+	  	from t_account_collection_order where iswriteoff!='1' and status='3' and customerid=#{customerid}
+	  </select>
+      <sql id="selectCollectionOrderList_sql">
+          <if test="condition.salesdeptid != null">
+              left join t_base_sales_customer c on c.id = t.customerid
+          </if>
+          <trim prefix="where" prefixOverrides="and|or" >
+              <include refid="common.Page_querySql"/>
+              <include refid="common.Page_dataSql"/>
+              <if test="condition.salesdeptid != null">
+                  and FIND_IN_SET(c.salesdeptid,#{condition.salesdeptid})
+              </if>
+              <if test="condition.auditdate1 != null">
+                  and t.audittime >= #{condition.auditdate1}
+              </if>
+              <if test="condition.auditdate2 != null">
+                  <![CDATA[and t.audittime <= DATE_ADD(STR_TO_DATE(#{condition.auditdate2},'%Y-%m-%d'),INTERVAL '1' day)]]>
+              </if>
+              <if test="condition.businessdate1 != null">
+                  and t.businessdate >= #{condition.businessdate1}
+              </if>
+              <if test="condition.businessdate2 != null">
+                  <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+              </if>
+              <if test="condition.id != null" >
+                  and t.id like CONCAT('%',#{condition.id},'%')
+              </if>
+              <if test="condition.exportids != null" >
+                  and FIND_IN_SET(t.id,#{condition.exportids})
+              </if>
+              <if test="condition.bank != null" >
+                  and FIND_IN_SET(t.bank,#{condition.bank})
+              </if>
+              <if test="condition.adduserid != null" >
+                  and FIND_IN_SET(t.adduserid,#{condition.adduserid})
+              </if>
+			  <if test="condition.customerid != null" >
+				  and FIND_IN_SET(t.customerid,#{condition.customerid})
+			  </if>
+              <if test="condition.collectiondept != null" >
+                  and t.collectiondept = #{condition.collectiondept}
+              </if>
+              <if test="condition.status != null" >
+                  and t.status = #{condition.status}
+              </if>
+              <if test="condition.statement != null" >
+                  and (t.status = '3' or status='4')
+              </if>
+              <if test="condition.iscustomer != null" >
+                  and t.iscustomer = #{condition.iscustomer}
+              </if>
+              <choose>
+                  <when test="condition.isClose ==0 ">
+                      and t.status !='4'
+                  </when>
+                  <when test="condition.isClose ==1 ">
+                      and t.status ='4'
+                  </when>
+                  <when test="condition.isClose ==2 ">
+                      and t.status ='2'
+                  </when>
+              </choose>
+          </trim>
+      </sql>
+	  <select id="showCollectionOrderList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.account.model.CollectionOrder">
+	  	select t.id, t.businessdate, t.status, t.remark, t.adduserid, t.addusername, t.adddeptid, t.adddeptname,
+          t.addtime, t.modifyuserid, t.modifyusername, t.modifytime, t.audituserid, t.auditusername, t.audittime,
+          t.stopuserid, t.stopusername, t.stoptime, t.closetime, t.printtimes, t.field01, t.field02, t.field03,
+          t.field04, t.field05, t.field06, t.field07, t.field08, t.collectiontype, t.collectiondept, t.collectionuser,
+          t.customerid, t.handlerid, t.paytype,t.bank,t.bankdeptid, t.invoiceno, t.initamount,t.amount, t.writeoffamount, t.remainderamount,t.iswriteoff,t.iscustomer,
+          t.source,t.sourceno,t.oaid,t.version,t.vouchertimes
+  		from t_account_collection_order t
+        <include refid="selectCollectionOrderList_sql"/>
+	    <if test="condition.isflag == null" >
+	    <include refid="common.Page_limit" />
+	    </if>
+	  </select>
+	  <select id="showCollectionOrderCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+	  	select count(1) from t_account_collection_order t
+        <include refid="selectCollectionOrderList_sql"/>
+	  </select>
+	  <select id="showCollectionOrderSumList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.account.model.CollectionOrder">
+	  	select sum(t.amount) as amount, sum(t.writeoffamount) as writeoffamount, sum(t.remainderamount) as remainderamount
+  		from t_account_collection_order t
+  		<trim prefix="where" prefixOverrides="and|or" >
+  		  <include refid="common.Page_querySql"/>
+	      <include refid="common.Page_dataSql"/>
+	      <if test="condition.auditdate1 != null">
+			 and t.audittime >= STR_TO_DATE(#{condition.auditdate1},'%Y-%m-%d')
+		  </if>
+		  <if test="condition.auditdate2 != null">
+			  <![CDATA[and t.audittime <= DATE_ADD(STR_TO_DATE(#{condition.auditdate2},'%Y-%m-%d'),INTERVAL '1' day)]]>
+		  </if>
+	      <if test="condition.businessdate1 != null">
+			 and t.businessdate >= #{condition.businessdate1}
+		  </if>
+		  <if test="condition.businessdate2 != null">
+			 <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+		  </if>
+		  <if test="condition.id != null" >
+	         and t.id like CONCAT('%',#{condition.id},'%')
+	      </if>
+	      <if test="condition.bank != null" >
+	         and FIND_IN_SET(t.bank,#{condition.bank})
+	      </if>
+	      <if test="condition.customerid != null" >
+	         and t.customerid = #{condition.customerid}
+	      </if>
+	      <if test="condition.collectiondept != null" >
+	         and t.collectiondept = #{condition.collectiondept}
+	      </if>
+	      <if test="condition.status != null" >
+	         and t.status = #{condition.status}
+	      </if>
+	      <if test="condition.statement != null" >
+	         and (t.status = '3' or t.status='4')
+	      </if>
+	      <if test="condition.iscustomer != null" >
+	         and t.iscustomer = #{condition.iscustomer}
+	      </if>
+		<if test="condition.adduserid != null" >
+			and FIND_IN_SET(t.adduserid,#{condition.adduserid})
+		</if>
+	      <choose>
+	      	<when test="condition.isClose ==0 ">
+	      		and t.status !='4'
+	      	</when>
+	      	<when test="condition.isClose ==1 ">
+	      		and t.status ='4'
+	      	</when>
+	      </choose>
+	    </trim>
+	  </select>
+	  <delete id="deleteCollectionOrder" parameterType="java.lang.String">
+	  	delete from t_account_collection_order where (status='1' or status='2') and id=#{id}
+	  </delete>
+	  <update id="editCollectionOrder" parameterType="com.hd.agent.account.model.CollectionOrder">
+	    update t_account_collection_order
+	    <set >
+	      <if test="businessdate != null" >
+	        businessdate = #{businessdate},
+	      </if>
+	      <if test="status != null" >
+	        status = #{status},
+	      </if>
+	      <if test="remark != null" >
+	        remark = #{remark},
+	      </if>
+	      <if test="modifyuserid != null" >
+	        modifyuserid = #{modifyuserid},
+	      </if>
+	      <if test="modifyusername != null" >
+	        modifyusername = #{modifyusername},
+	      </if>
+	      <if test="1==1" >
+	        modifytime = now(),
+	      </if>
+	      <if test="audituserid != null" >
+	        audituserid = #{audituserid},
+	      </if>
+	      <if test="auditusername != null" >
+	        auditusername = #{auditusername},
+	      </if>
+	      <if test="audittime != null" >
+	        audittime = #{audittime},
+	      </if>
+	      <if test="field01 != null" >
+	        field01 = #{field01},
+	      </if>
+	      <if test="field02 != null" >
+	        field02 = #{field02},
+	      </if>
+	      <if test="field03 != null" >
+	        field03 = #{field03},
+	      </if>
+	      <if test="field04 != null" >
+	        field04 = #{field04},
+	      </if>
+	      <if test="field05 != null" >
+	        field05 = #{field05},
+	      </if>
+	      <if test="field06 != null" >
+	        field06 = #{field06},
+	      </if>
+	      <if test="field07 != null" >
+	        field07 = #{field07},
+	      </if>
+	      <if test="field08 != null" >
+	        field08 = #{field08},
+	      </if>
+	      <if test="collectiontype != null" >
+	        collectiontype = #{collectiontype},
+	      </if>
+	      <if test="collectiondept != null" >
+	        collectiondept = #{collectiondept},
+	      </if>
+	      <if test="collectionuser != null" >
+	        collectionuser = #{collectionuser},
+	      </if>
+	      <if test="customerid != null" >
+	        customerid = #{customerid},
+	      </if>
+	      <if test="handlerid != null" >
+	        handlerid = #{handlerid},
+	      </if>
+	      <if test="paytype != null" >
+	        paytype = #{paytype},
+	      </if>
+	      <if test="bank != null" >
+	        bank = #{bank},
+	      </if>
+	      <if test="bankdeptid != null" >
+	        bankdeptid = #{bankdeptid},
+	      </if>
+	      <if test="invoiceno != null" >
+	        invoiceno = #{invoiceno},
+	      </if>
+	      <if test="initamount != null" >
+	        initamount = #{initamount},
+	      </if>
+	      <if test="amount != null" >
+	        amount = #{amount},
+	      </if>
+	      <if test="writeoffamount != null" >
+	        writeoffamount = #{writeoffamount},
+	      </if>
+	      <if test="remainderamount != null" >
+	        remainderamount = #{remainderamount},
+	      </if>
+	      <if test="iscustomer != null" >
+	         iscustomer = #{iscustomer}
+	      </if>
+	      <if test="source != null" >
+	         source = #{source}
+	      </if>
+	      <if test="sourceno != null" >
+	         sourceno = #{sourceno}
+	      </if>
+		  <if test="vouchertimes != null">
+			vouchertimes = #{vouchertimes}
+		  </if>
+	    </set>
+	    where id = #{id}
+	  </update>
+	  <update id="auditCollectionOrder">
+	  	update t_account_collection_order set status=#{status},businessdate=#{businessdate},audituserid=#{userid},auditusername=#{username},audittime=now() ,version=version+1
+  		where id=#{id} and (status='2' or status='6') and version=#{version}
+	  </update>
+	  <update id="oppauditCollectionOrder">
+	  	update t_account_collection_order set status='2',audituserid=#{userid},auditusername=#{username},audittime=now() ,version=version+1
+  		where id=#{id} and status='3' and version=#{version}
+	  </update>
+	  <update id="writeOffCollectionOrder">
+	  	update t_account_collection_order 
+	  	set writeoffamount=#{writeoffamount},remainderamount=#{remainderamount},iswriteoff=#{iswriteoff},version=version+1
+	  	<choose>
+	  		<when test="iswriteoff == 1">,status='4',closetime=now()</when>
+	  		<otherwise>,status='3'</otherwise>
+	  	</choose>
+  		where id=#{id} and version=#{version}
+	  </update>
+	  <update id="updateCollectionOrderBankdept">
+	  	update t_account_collection_order set
+	  		bankdeptid = #{newbankdeptid}
+	  	where bankdeptid = #{oldbankdeptid}
+	  </update>
+	  <insert id="addCollectionOrderAssign" parameterType="com.hd.agent.account.model.CollectionOrderAssign">
+	  	insert into t_account_collection_order_assign (sourceid,assignid,customerid,bankid,totalamount,amount,addtime)
+	  	values(#{sourceid},#{assignid},#{customerid},#{bankid},#{totalamount},#{amount},now())
+	  </insert>
+	  <!-- 根据客户编码，业务日期获取审核通过、关闭的所有收款金额 -->
+	  <select id="getCollectionOrderAmountSum" parameterType="java.util.Map" resultType="java.math.BigDecimal">
+	  	select sum(amount) as amount from t_account_collection_order
+	  	where customerid = #{customerid}
+	  		and businessdate >= #{businessdate1}
+	  		<![CDATA[and businessdate <= #{businessdate2}]]>
+	  		and (status = '3' || status ='4')
+	  </select>
+	<select id="selectCollectionOrderByOaid" parameterType="java.lang.String" resultType="com.hd.agent.account.model.CollectionOrder">
+		select <include refid="collectionOrder_Column_List"/>
+		from t_account_collection_order
+		where oaid = #{oaid }
+		and source in ('11', '12', '13', '14')
+		order by addtime DESC, id DESC
+	</select>
+    <select id="getCollectionAmountData" resultType="java.util.Map">
+        select t.businessdate,sum(t.amount) as taxamount,t.customerid,t.id,t.bank
+        from t_account_collection_order t
+        where (t.status='3' or t.status='4')
+        <if test="list != null">
+            and t.id in
+            <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="list == null">
+            1>2
+        </if>
+        GROUP BY t.id
+    </select>
+	<select id="getCollectionOrderBySource" parameterType="java.lang.String" resultType="com.hd.agent.account.model.CollectionOrder">
+		select <include refid="collectionOrder_Column_List"/>
+		from t_account_collection_order
+		where sourceno = #{sourceno } and source = #{source }
+		order by addtime desc limit 0, 1
+	</select>
+
+	<select id="showCollectionOrderListBy" parameterType="java.util.Map" resultType="com.hd.agent.account.model.CollectionOrder">
+		select
+		<include refid="collectionOrder_Column_List" />
+		from t_account_collection_order
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="dataSql != null">
+				and ${dataSql}
+			</if>
+			<if test="idarrs!=null">
+				and find_in_set(id,#{idarrs})
+			</if>
+			<if test="status!=null">
+				and status=#{status}
+			</if>
+			<if test="statusarr!=null">
+				and FIND_IN_SET(status,#{statusarr})
+			</if>
+			<if test="notprint != null and notprint == 1">
+				and (printtimes is null or printtimes=0)
+			</if>
+		</trim>
+	</select>
+
+	<update id="updateOrderPrinttimes" parameterType="com.hd.agent.account.model.CollectionOrder">
+		update t_account_collection_order
+		<set>
+			<if test="printtimes != null">
+				printtimes = IFNULL(printtimes,0)+1,
+			</if>
+			<if test="vouchertimes != null">
+				vouchertimes = IFNULL(vouchertimes,0)+1,
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+</mapper>

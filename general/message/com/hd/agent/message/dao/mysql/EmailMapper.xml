@@ -1,0 +1,1646 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.message.dao.EmailMapper">
+	<resultMap id="emlReceive_QueryResultMap" type="com.hd.agent.message.model.EmailReceive">		
+	    <id column="id" property="id" />
+	    <result column="emailid" property="emailid" />
+	    <result column="recvuserid" property="recvuserid" />
+	    <result column="recvtime" property="recvtime" />
+	    <result column="viewflag" property="viewflag" />
+	    <result column="viewtime" property="viewtime" />
+	    <result column="delflag" property="delflag" />
+	    <result column="deltime" property="deltime" />
+	    <result column="receiptflag" property="receiptflag" />
+	    <result column="signflag" property="signflag" />
+	    <result column="boxid" property="boxid" />
+	    <result column="senduserid" property="senduserid" />	    
+		<association property="emailContent" column="emailid"
+			javaType="com.hd.agent.message.model.EmailContent">
+			<id column="emlc_id" property="id"></id>
+			<result column="emlc_adduserid" property="adduserid" />
+			<result column="emlc_addusername" property="addusername" />
+			<result column="emlc_addtime" property="addtime" />
+			<result column="emlc_title" property="title" />
+			<result column="emlc_attach" property="attach" />
+			<result column="emlc_ismsg" property="ismsg" />
+			<result column="emlc_isreceipt" property="isreceipt" />
+			<result column="emlc_importantflag" property="importantflag" />
+			<result column="emlc_sendflag" property="sendflag" />
+			<result column="emlc_fromwebmailid" property="fromwebmailid" />
+			<result column="emlc_fromwebmail" property="fromwebmail" />
+			<result column="emlc_webmailflag" property="webmailflag" />
+			<result column="emlc_mailtype" property="mailtype" />
+			<result column="emlc_keyword" property="keyword" />
+			<result column="emlc_delflag" property="delflag" />
+			<result column="emlc_deltime" property="deltime" />
+			<result column="emlc_receiveuser" property="receiveuser" />
+			<result column="emlc_copytouser" property="copytouser" />
+			<result column="emlc_secrettouser" property="secrettouser" />
+			<result column="emlc_towebmail" property="towebmail" />
+		</association>
+	</resultMap>
+	<resultMap id="emlDrop_QueryResultMap" type="com.hd.agent.message.model.EmailReceive">		
+	    <id column="emlr_id" property="id" />
+	    <result column="emlr_emailid" property="emailid" />
+	    <result column="emlr_recvuserid" property="recvuserid" />
+	    <result column="emlr_recvtime" property="recvtime" />
+	    <result column="emlr_viewflag" property="viewflag" />
+	    <result column="emlr_viewtime" property="viewtime" />
+	    <result column="emlr_delflag" property="delflag" />
+	    <result column="emlr_deltime" property="deltime" />
+	    <result column="emlr_receiptflag" property="receiptflag" />
+	    <result column="emlr_signflag" property="signflag" />
+	    <result column="emlr_boxid" property="boxid" />
+		<result column="emlr_senduserid" property="senduserid" />
+		<association property="emailContent" column="emailid"
+			javaType="com.hd.agent.message.model.EmailContent">
+			<id column="emlc_id" property="id"></id>
+			<result column="emlc_adduserid" property="adduserid" />
+			<result column="emlc_addusername" property="addusername" />
+			<result column="emlc_addtime" property="addtime" />
+			<result column="emlc_title" property="title" />
+			<result column="emlc_attach" property="attach" />
+			<result column="emlc_ismsg" property="ismsg" />
+			<result column="emlc_isreceipt" property="isreceipt" />
+			<result column="emlc_importantflag" property="importantflag" />
+			<result column="emlc_sendflag" property="sendflag" />
+			<result column="emlc_fromwebmailid" property="fromwebmailid" />
+			<result column="emlc_fromwebmail" property="fromwebmail" />
+			<result column="emlc_webmailflag" property="webmailflag" />
+			<result column="emlc_mailtype" property="mailtype" />
+			<result column="emlc_keyword" property="keyword" />
+			<result column="emlc_delflag" property="delflag" />
+			<result column="emlc_deltime" property="deltime" />
+			<result column="emlc_receiveuser" property="receiveuser" />
+			<result column="emlc_copytouser" property="copytouser" />
+			<result column="emlc_secrettouser" property="secrettouser" />
+			<result column="emlc_towebmail" property="towebmail" />
+		</association>
+	</resultMap>
+	
+  <resultMap id="emlBoxBaseResultMap" type="com.hd.agent.message.model.EmailBox">
+		<id column="id" property="id" />
+		<result column="boxorderno" property="boxorderno" />
+		<result column="title" property="title" />
+		<result column="adduserid" property="adduserid" />
+		<result column="addtime" property="addtime" />
+  </resultMap>
+  <sql id="emlReceive_Query_Where_Clause">
+      <if test="condition.emailid != null" >
+         and emlr.emailid = #{condition.emailid}
+      </if>
+      <if test="condition.recvuserid != null" >
+         and emlr.recvuserid = #{condition.recvuserid}
+      </if>
+      <if test="condition.viewflag != null" >
+         and emlr.viewflag = #{condition.viewflag}
+      </if>
+      <if test="condition.delflag != null" >
+         and emlr.delflag = #{condition.delflag}
+      </if>
+      <if test="condition.receiptflag != null" >
+         and emlr.receiptflag = #{condition.receiptflag}
+      </if>
+      <if test="condition.signflag != null" >
+         and emlr.signflag = #{condition.signflag}
+      </if>
+      <if test="condition.boxid != null" >
+         and emlr.boxid = #{condition.boxid}
+      </if>
+      <if test="condition.msgctitle != null" >
+       	 and emlc.title like CONCAT('%', #{condition.msgctitle} ,'%')
+      </if>
+      <if test="condition.msgctlecont!= null" >
+          and ( emlc.title like CONCAT('%', #{condition.msgctlecont} ,'%')
+          or emlc.content like CONCAT('%', #{condition.msgctlecont} ,'%')
+          )
+      </if>
+      <if test="condition.senduserid != null" >
+          and emlr.senduserid = #{condition.senduserid}
+      </if>
+      <if test="condition.recvtimestart != null" >
+          <![CDATA[ and date_format(emlr.recvtime,'%Y-%m-%d') >=  #{condition.recvtimestart} ]]>
+      </if>
+      <if test="condition.recvtimeend != null" >
+          <![CDATA[ and date_format(emlr.recvtime,'%Y-%m-%d') <= #{condition.recvtimeend}  ]]>
+      </if>
+  </sql>
+  <sql id="emlSend_Query_Where_Clause">
+  	<if test="condition.adduserid != null" >
+         and adduserid = #{condition.adduserid}
+      </if>
+      <if test="condition.title != null" >
+         and title like CONCAT('%', #{condition.title} ,'%')
+      </if>
+      <if test="condition.attach != null" >
+         and attach = #{condition.attach}
+      </if>
+      <if test="condition.ismsg != null" >
+         and ismsg = #{condition.ismsg}
+      </if>
+      <if test="condition.isreceipt != null" >
+         and isreceipt = #{condition.isreceipt}
+      </if>
+      <if test="condition.importantflag != null" >
+         and importantflag = #{condition.importantflag}
+      </if>
+      <if test="condition.sendflag != null" >
+         and sendflag = #{condition.sendflag}
+      </if>
+      <if test="condition.webmailflag != null" >
+         and webmailflag = #{condition.webmailflag}
+      </if>
+      <if test="condition.mailtype != null" >
+         and mailtype = #{condition.mailtype}
+      </if>
+      <if test="condition.keyword != null" >
+         and keyword = #{condition.keyword}
+      </if>
+      <if test="condition.delflag != null" >
+         and delflag = #{condition.delflag}
+      </if>
+      <if test="condition.tlecont!= null" >
+          and ( title like CONCAT('%', #{condition.tlecont} ,'%')
+          or content like CONCAT('%', #{condition.tlecont} ,'%')
+          )
+      </if>
+  </sql>
+    <sql id="emlcEMLSend_Query_Where_Clause">
+        <if test="condition.adduserid != null" >
+            and emlc.adduserid = #{condition.adduserid}
+        </if>
+        <if test="condition.title != null" >
+            and emlc.title like CONCAT('%', #{condition.title} ,'%')
+        </if>
+        <if test="condition.attach != null" >
+            and emlc.attach = #{condition.attach}
+        </if>
+        <if test="condition.ismsg != null" >
+            and emlc.ismsg = #{condition.ismsg}
+        </if>
+        <if test="condition.isreceipt != null" >
+            and emlc.isreceipt = #{condition.isreceipt}
+        </if>
+        <if test="condition.importantflag != null" >
+            and emlc.importantflag = #{condition.importantflag}
+        </if>
+        <if test="condition.sendflag != null" >
+            and emlc.sendflag = #{condition.sendflag}
+        </if>
+        <if test="condition.webmailflag != null" >
+            and emlc.webmailflag = #{condition.webmailflag}
+        </if>
+        <if test="condition.mailtype != null" >
+            and emlc.mailtype = #{condition.mailtype}
+        </if>
+        <if test="condition.keyword != null" >
+            and emlc.keyword = #{condition.keyword}
+        </if>
+        <if test="condition.delflag != null" >
+            and emlc.delflag = #{condition.delflag}
+        </if>
+        <if test="condition.tlecont!= null" >
+            and ( emlc.title like CONCAT('%', #{condition.tlecont} ,'%')
+              or emlc.content like CONCAT('%', #{condition.tlecont} ,'%')
+            )
+        </if>
+        <if test="condition.addtimestart != null" >
+            <![CDATA[ and date_format(emlc.addtime,'%Y-%m-%d') >=  #{condition.addtimestart} ]]>
+        </if>
+        <if test="condition.addtimeend != null" >
+            <![CDATA[ and date_format(emlc.addtime,'%Y-%m-%d') <= #{condition.addtimeend}  ]]>
+        </if>
+        <if test="condition.queryreceiverArr!=null ">
+            and
+            <foreach collection="condition.queryreceiverArr" item="item" open="("  separator="or" close=")">
+                <![CDATA[ find_in_set(#{item}, emlc.receiveuser )  ]]>
+            </foreach>
+        </if>
+    </sql>
+  <sql id="emlReceiveDrop_Query_Where_Clause">
+      <if test="condition.recvuserid != null" >
+         and emlr.recvuserid = #{condition.recvuserid}
+      </if>
+      <if test="condition.viewflag != null" >
+         and emlr.viewflag = #{condition.viewflag}
+      </if>
+      <if test="condition.emlr_delflag != null" >
+         and emlr.delflag = #{condition.emlr_delflag}
+      </if>
+      <if test="condition.boxid != null" >
+         and emlr.boxid = #{condition.boxid}
+      </if>
+      <if test="condition.title != null" >
+         and emlc.title like CONCAT('%', #{condition.title} ,'%')
+      </if>
+      <if test="condition.tlecont!= null" >
+          and ( emlc.title like CONCAT('%', #{condition.tlecont} ,'%')
+          or emlc.content like CONCAT('%', #{condition.tlecont} ,'%')
+          )
+      </if>
+      <if test="condition.recvtimestart != null" >
+          <![CDATA[ and date_format(emlr.recvtime,'%Y-%m-%d') >=  #{condition.recvtimestart} ]]>
+      </if>
+      <if test="condition.recvtimeend != null" >
+          <![CDATA[ and date_format(emlr.recvtime,'%Y-%m-%d') <= #{condition.recvtimeend}  ]]>
+      </if>
+      <if test="condition.queryreceiverArr!=null ">
+          and
+          <foreach collection="condition.queryreceiverArr" item="item" open="("  separator="or" close=")">
+              <![CDATA[ find_in_set(#{item}, emlc.receiveuser )  ]]>
+          </foreach>
+      </if>
+  </sql>
+  <sql id="emlSendDrop_Query_Where_Clause">
+  	  <if test="condition.adduserid != null" >
+         and emlc.adduserid = #{condition.adduserid}
+      </if>
+      <if test="condition.title != null" >
+         and emlc.title like CONCAT('%', #{condition.title} ,'%')
+      </if>
+      <if test="condition.sendflag != null" >
+         and emlc.sendflag = #{condition.sendflag}
+      </if>
+      <if test="condition.webmailflag != null" >
+         and emlc.webmailflag = #{condition.webmailflag}
+      </if>
+      <if test="condition.mailtype != null" >
+         and emlc.mailtype = #{condition.mailtype}
+      </if>
+      <if test="condition.emlc_delflag != null" >
+         and emlc.delflag = #{condition.emlc_delflag}
+      </if>
+      <if test="condition.tlecont!= null" >
+          and ( emlc.title like CONCAT('%', #{condition.tlecont} ,'%')
+          or emlc.content like CONCAT('%', #{condition.tlecont} ,'%')
+          )
+      </if>
+  </sql>
+  <sql id="emlBox_Where_Clause">
+      <if test="condition.boxorderno != null">
+         and boxorderno = #{condition.boxorderno}
+      </if>
+      <if test="condition.title != null">
+         and title like CONCAT('%', #{condition.title} ,'%')
+      </if>
+      <if test="condition.adduserid != null">
+         and adduserid = #{condition.adduserid}
+      </if>
+      <if test="condition.addtime != null">
+         and addtime = #{condition.addtime}
+      </if>
+      <if test="condition.tlecont!= null" >
+          and ( title like CONCAT('%', #{condition.tlecont} ,'%')
+          or content like CONCAT('%', #{condition.tlecont} ,'%')
+          )
+      </if>
+  </sql>
+  <sql id="webMailConfig_Where_Clause">
+      <if test="condition.email != null" >
+         and email like CONCAT('%',#{condition.email},'%')
+      </if>
+      <if test="condition.popserver != null" >
+         and popserver = #{condition.popserver}
+      </if>
+      <if test="condition.ispopssl != null" >
+         and ispopssl = #{condition.ispopssl}
+      </if>
+      <if test="condition.smtpserver != null" >
+         and smtpserver = #{condition.smtpserver}
+      </if>
+      <if test="condition.issmtpssl != null" >
+         and issmtpssl = #{condition.issmtpssl}
+      </if>
+      <if test="condition.emailuser != null" >
+         and emailuser = #{condition.emailuser}
+      </if>
+      <if test="condition.emailpwd != null" >
+         and emailpwd = #{condition.emailpwd}
+      </if>
+      <if test="condition.issmtppass != null" >
+         and issmtppass = #{condition.issmtppass}
+      </if>
+      <if test="condition.autorecvflag != null" >
+         and autorecvflag = #{condition.autorecvflag}
+      </if>
+      <if test="condition.quotalimit != null" >
+         and quotalimit = #{condition.quotalimit}
+      </if>
+      <if test="condition.isdefault != null" >
+         and isdefault = #{condition.isdefault}
+      </if>
+      <if test="condition.isrecvdel != null" >
+         and isrecvdel = #{condition.isrecvdel}
+      </if>
+      <if test="condition.isrecvmsg != null" >
+         and isrecvmsg = #{condition.isrecvmsg}
+      </if>
+      <if test="condition.adduserid != null" >
+         and adduserid = #{condition.adduserid}
+      </if>
+      <if test="condition.emailuid != null" >
+         and emailuid = #{condition.emailuid}
+      </if>
+  </sql>
+  <sql id="email_Base_Column_List" >
+    id, adduserid, addtime, title, attach, ismsg, isreceipt, importantflag, sendflag,
+    fromwebmailid, fromwebmail, webmailflag, mailtype, keyword, delflag, deltime,
+    receiveuser, copytouser, secrettouser, content, towebmail
+  </sql>
+    <sql id="emlcPrefix_email_Base_Column_List" >
+        emlc.id, emlc.adduserid, emlc.addtime, emlc.title, emlc.attach, emlc.ismsg, emlc.isreceipt, emlc.importantflag, emlc.sendflag,
+        emlc.fromwebmailid, emlc.fromwebmail, emlc.webmailflag, emlc.mailtype, emlc.keyword, emlc.delflag, emlc.deltime,
+        emlc.receiveuser, emlc.copytouser, emlc.secrettouser, emlc.content, emlc.towebmail
+    </sql>
+  <sql id="emlReceive_Base_Column_List" >
+    id, emailid, recvuserid, recvtime, viewflag, viewtime, delflag, deltime, receiptflag, 
+    signflag, boxid,senduserid
+  </sql>
+  <sql id="emlBox_Base_Column_List">
+    id, boxorderno, title, adduserid, addtime
+  </sql>
+  <sql id="webMailConfig_Base_Column_List" >
+    id, email, popserver, ispopssl, smtpserver, issmtpssl, emailuser, emailpwd, issmtppass, 
+    autorecvflag, quotalimit, isdefault, isrecvdel, isrecvmsg, adduserid, addtime
+  </sql>
+  <sql id="webMailConfig_NOPWD_Column_List" >
+    id, email, popserver,popport, ispopssl, smtpserver,smtpport, issmtpssl, emailuser, issmtppass, 
+    autorecvflag, quotalimit, isdefault, isrecvdel, isrecvmsg, adduserid, addtime
+  </sql>
+  <sql id="emlReceiveList_column_List">  	
+    emlr.id, emlr.emailid, emlr.recvuserid, emlr.recvtime, emlr.viewflag, emlr.viewtime, emlr.delflag, emlr.deltime, emlr.receiptflag, 
+    emlr.signflag, emlr.boxid,emlr.senduserid,
+    emlc.id emlc_id, emlc.adduserid emlc_adduserid, emlc.addtime emlc_addtime, emlc.title emlc_title, emlc.attach emlc_attach, emlc.ismsg emlc_ismsg,
+    emlc.isreceipt emlc_isreceipt, emlc.importantflag emlc_importantflag, emlc.sendflag emlc_sendflag,emlc.fromwebmailid emlc_fromwebmailid, emlc.fromwebmail emlc_fromwebmail, 
+    emlc.webmailflag emlc_webmailflag, emlc.mailtype emlc_mailtype, emlc.keyword emlc_keyword, emlc.delflag emlc_delflag, emlc.deltime emlc_deltime,
+    emlc.receiveuser emlc_receiveuser, emlc.copytouser emlc_copytouser, emlc.secrettouser emlc_secrettouser, emlc.towebmail emlc_towebmail,suser.name emlc_addusername
+  </sql>  
+  <sql id="emlSendList_column_List">  	
+    emlc.id, emlc.adduserid, emlc.addtime, emlc.title, emlc.attach, emlc.ismsg, emlc.isreceipt, emlc.importantflag, emlc.sendflag, 
+    emlc.fromwebmailid, emlc.fromwebmail, emlc.webmailflag, emlc.mailtype, emlc.keyword, emlc.delflag, emlc.deltime,
+    emlc.receiveuser, emlc.copytouser, emlc.secrettouser, emlc.towebmail
+  </sql>
+  <sql id="emlReceiveDropList_column_List">  	
+    emlr.id emlr_id, emlr.emailid emlr_emailid, '1' emlr_recvuserid, emlr.recvtime emlr_recvtime,emlr.delflag emlr_delflag, emlr.deltime emlr_deltime,'' emlr_senduserid,      
+    emlc.id emlc_id, '' emlc_adduserid, emlc.addtime emlc_addtime, emlc.title emlc_title, emlc.attach emlc_attach,
+    emlc.sendflag emlc_sendflag,emlc.fromwebmailid emlc_fromwebmailid, emlc.fromwebmail emlc_fromwebmail, 
+    emlc.webmailflag emlc_webmailflag, emlc.delflag emlc_delflag, emlc.deltime emlc_deltime,suser.name emlc_addusername
+  </sql>  
+  <sql id="emlSendDropList_column_List">  	
+    emlc.id emlr_id, emlc.id emlr_emailid, '2' emlr_recvuserid,now() emlr_recvtime,emlc.delflag emlr_delflag, now() emlr_deltime, '' emlr_senduserid,     
+    emlc.id emlc_id, '' emlc_adduserid, emlc.addtime emlc_addtime, emlc.title emlc_title, emlc.attach emlc_attach,
+    emlc.sendflag emlc_sendflag,emlc.fromwebmailid emlc_fromwebmailid, emlc.fromwebmail emlc_fromwebmail, 
+    emlc.webmailflag emlc_webmailflag, emlc.delflag emlc_delflag, emlc.deltime emlc_deltime,suser.name emlc_addusername
+  </sql>
+  
+  <select id="showEmailContentList" parameterType="java.util.HashMap" resultType="com.hd.agent.message.model.EmailContent" >
+  	select  	
+    id, adduserid, addtime, title, ismsg, isreceipt, importantflag, sendflag, 
+    fromwebmailid, fromwebmail, webmailflag, mailtype, keyword, delflag, deltime
+    <if test="showcontentcol == 1">
+    	,content
+    </if>
+    <if test="showreceivecol == 1">
+    	,receiveuser, copytouser, secrettouser
+    </if>
+    <if test="showtowebmailcol == 1">
+    	, towebmail
+    </if>
+    <if test="showattachment == 1">
+    	, attach
+    </if>    
+  	from t_msg_emailcontent  	 	
+  	<trim prefix="where" prefixOverrides="and|or" >
+  	  <if test="adduserid != null" >
+         and adduserid = #{adduserid}
+      </if>
+      <if test="ismsg != null" >
+         and ismsg = #{ismsg}
+      </if>
+      <if test="isreceipt != null" >
+         and isreceipt = #{isreceipt}
+      </if>
+      <if test="importantflag != null" >
+         and importantflag = #{importantflag}
+      </if>
+      <if test="sendflag != null" >
+         and sendflag = #{sendflag}
+      </if>
+      <if test="webmailflag != null" >
+         and webmailflag = #{webmailflag}
+      </if>
+      <if test="mailtype != null" >
+         and mailtype = #{mailtype}
+      </if>
+      <if test="delflag != null" >
+         and delflag = #{delflag}
+      </if>
+      <if test="idarr!=null">   			
+         and FIND_IN_SET(id,#{idarr})
+      </if>
+  	</trim>
+  </select>  
+  <insert id="insertEmailContent" parameterType="com.hd.agent.message.model.EmailContent" >
+    insert into t_msg_emailcontent
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="adduserid != null" >
+        adduserid,
+      </if>
+      <if test="1==1" >
+        addtime,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="attach != null" >
+        attach,
+      </if>
+      <if test="ismsg != null" >
+        ismsg,
+      </if>
+      <if test="isreceipt != null" >
+        isreceipt,
+      </if>
+      <if test="importantflag != null" >
+        importantflag,
+      </if>
+      <if test="sendflag != null" >
+        sendflag,
+      </if>
+      <if test="fromwebmailid != null" >
+        fromwebmailid,
+      </if>
+      <if test="fromwebmail != null" >
+        fromwebmail,
+      </if>
+      <if test="webmailflag != null" >
+        webmailflag,
+      </if>
+      <if test="mailtype != null" >
+        mailtype,
+      </if>
+      <if test="keyword != null" >
+        keyword,
+      </if>
+      <if test="delflag != null" >
+        delflag,
+      </if>
+      <if test="deltime != null" >
+        deltime,
+      </if>
+      <if test="receiveuser != null" >
+        receiveuser,
+      </if>
+      <if test="copytouser != null" >
+        copytouser,
+      </if>
+      <if test="secrettouser != null" >
+        secrettouser,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="towebmail != null" >
+        towebmail,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="adduserid != null" >
+        #{adduserid},
+      </if>
+      <choose>
+	      <when test="addtime != null" >
+	        #{addtime},
+	      </when>
+	      <otherwise>
+	      now(),
+	      </otherwise>
+      </choose>
+      <if test="title != null" >
+        #{title},
+      </if>
+      <if test="attach != null" >
+        #{attach},
+      </if>
+      <if test="ismsg != null" >
+        #{ismsg},
+      </if>
+      <if test="isreceipt != null" >
+        #{isreceipt},
+      </if>
+      <if test="importantflag != null" >
+        #{importantflag},
+      </if>
+      <if test="sendflag != null" >
+        #{sendflag},
+      </if>
+      <if test="fromwebmailid != null" >
+        #{fromwebmailid},
+      </if>
+      <if test="fromwebmail != null" >
+        #{fromwebmail},
+      </if>
+      <if test="webmailflag != null" >
+        #{webmailflag},
+      </if>
+      <if test="mailtype != null" >
+        #{mailtype},
+      </if>
+      <if test="keyword != null" >
+        #{keyword},
+      </if>
+      <if test="delflag != null" >
+        #{delflag},
+      </if>
+      <if test="deltime != null" >
+        #{deltime},
+      </if>
+      <if test="receiveuser != null" >
+        #{receiveuser},
+      </if>
+      <if test="copytouser != null" >
+        #{copytouser},
+      </if>
+      <if test="secrettouser != null" >
+        #{secrettouser},
+      </if>
+      <if test="content != null" >
+        #{content},
+      </if>
+      <if test="towebmail != null" >
+        #{towebmail},
+      </if>
+    </trim>      
+	<selectKey resultType="int" keyProperty="id"
+		order="AFTER">
+		select LAST_INSERT_ID() as id
+    </selectKey>
+  </insert>
+  <update id="updateEmailContent" parameterType="com.hd.agent.message.model.EmailContent">
+	update t_msg_emailcontent
+	<set >
+	  <if test="adduserid != null" >
+	    adduserid = #{adduserid},
+	  </if>
+	  <if test="addtime != null" >
+	    addtime = #{addtime},
+	  </if>
+	  <if test="title != null" >
+	    title = #{title},
+	  </if>
+	  <if test="attach != null" >
+	    attach = #{attach},
+	  </if>
+	  <if test="ismsg != null" >
+	    ismsg = #{ismsg},
+	  </if>
+	  <if test="isreceipt != null" >
+	    isreceipt = #{isreceipt},
+	  </if>
+	  <if test="importantflag != null" >
+	    importantflag = #{importantflag},
+	  </if>
+	  <if test="sendflag != null" >
+	    sendflag = #{sendflag},
+	  </if>
+	  <if test="fromwebmailid != null" >
+	    fromwebmailid = #{fromwebmailid},
+	  </if>
+	  <if test="fromwebmail != null" >
+	    fromwebmail = #{fromwebmail},
+	  </if>
+	  <if test="webmailflag != null" >
+	    webmailflag = #{webmailflag},
+	  </if>
+	  <if test="mailtype != null" >
+	    mailtype = #{mailtype},
+	  </if>
+	  <if test="keyword != null" >
+	    keyword = #{keyword},
+	  </if>
+	  <if test="delflag != null" >
+	    delflag = #{delflag},
+	  </if>
+	  <if test="deltime != null" >
+	    deltime = #{deltime},
+	  </if>
+	  <if test="receiveuser != null" >
+	    receiveuser = #{receiveuser},
+	  </if>
+	  <if test="copytouser != null" >
+	    copytouser = #{copytouser},
+	  </if>
+	  <if test="secrettouser != null" >
+	    secrettouser = #{secrettouser},
+	  </if>
+	  <if test="content != null" >
+	    content = #{content},
+	  </if>
+	  <if test="towebmail != null" >
+	    towebmail = #{towebmail},
+	  </if>
+	</set>
+	where id = #{id}
+  </update>
+  <update id="updateEmailContentBy" parameterType="java.util.HashMap">
+	update t_msg_emailcontent
+	<set>
+	  <if test="delflag != null" >
+	    delflag = #{delflag},
+	  </if>
+	  <if test="deltime != null" >
+	    deltime = #{deltime},
+	  </if>
+	</set>	
+	where
+	<trim prefixOverrides="and|or" >
+		<if test="id !=null ">
+			and id = #{id}
+		</if>
+	  	<if test="adduserid != null" >
+	  		and adduserid=#{adduserid}
+	  	</if>
+		<if test="wdelflag!=null">
+			and delflag=#{wdelflag}
+		</if>
+	</trim>
+  </update>
+  <delete id="deleteEmailContent" parameterType="java.lang.String">
+  	delete from t_msg_emailcontent where id= #{id}
+  </delete>
+  <select id="showEmailContent" parameterType="java.lang.String" resultType="com.hd.agent.message.model.EmailContent" useCache="false">
+  	select
+  	<include refid="email_Base_Column_List"></include>
+  	from t_msg_emailcontent where id= #{id}
+  </select>  
+  
+  <select id="showEmailContentBy" parameterType="java.util.HashMap" resultType="com.hd.agent.message.model.EmailContent" useCache="false">
+  	select
+  	<choose>
+  		<when test="certaincols!=null">${certaincols}</when>
+  		<otherwise>
+  			<include refid="email_Base_Column_List"></include>
+  		</otherwise>
+  	</choose>
+  	from t_msg_emailcontent 
+  	where
+  	<trim prefixOverrides="and|or" >
+		<if test="id !=null ">
+			and id = #{id}
+		</if>
+	  	<if test="adduserid != null" >
+	  		and adduserid=#{adduserid}
+	  	</if>
+		<if test="wdelflag!=null">
+			and delflag=#{wdelflag}
+		</if>
+		<if test="cureceiverid !=null ">
+			and (FIND_IN_SET(cureceiverid,#{receiveuser}) or FIND_IN_SET(cureceiverid,#{copytouser}) or FIND_IN_SET(cureceiverid,#{secrettouser}) ) 
+		</if>
+	</trim>
+  </select>
+  
+  <!-- *******************邮件收件人************************ -->
+  <select id="showEmailReceiveList" parameterType="java.util.HashMap" resultType="com.hd.agent.message.model.EmailReceive" >
+  	select  	
+  	<include refid="emlReceive_Base_Column_List"/>
+  	from t_msg_emailreceive  	 	
+  	<trim prefix="where" prefixOverrides="and|or" >
+      <if test="emailid != null" >
+         and emailid = #{emailid}
+      </if>
+      <if test="recvuserid != null" >
+         and recvuserid = #{recvuserid}
+      </if>
+      <if test="viewflag != null" >
+         and viewflag = #{viewflag}
+      </if>
+      <if test="delflag != null" >
+         and delflag = #{delflag}
+      </if>
+      <if test="receiptflag != null" >
+         and receiptflag = #{receiptflag}
+      </if>
+      <if test="signflag != null" >
+         and signflag = #{signflag}
+      </if>
+      <if test="boxid != null" >
+         and boxid = #{boxid}
+      </if>
+      <if test="notdelflag != null" >
+         and delflag != #{notdelflag}
+      </if>      
+      <if test="idarr!=null">	      			
+         and FIND_IN_SET(id,#{idarr})
+      </if>
+  	</trim>
+  </select>
+  <select id="getEmailReceiveCountBy" parameterType="java.util.HashMap" resultType="int" useCache="false" >
+  	select count(1)
+  	from t_msg_emailreceive  	 	
+  	<trim prefix="where" prefixOverrides="and|or" >
+      <if test="emailid != null" >
+         and emailid = #{emailid}
+      </if>
+      <if test="recvuserid != null" >
+         and recvuserid = #{recvuserid}
+      </if>
+      <if test="viewflag != null" >
+         and viewflag = #{viewflag}
+      </if>
+		<if test="notviewflag != null" >
+		  	and ( length(viewflag)=0 or viewflag != #{notviewflag} )
+		</if>
+      <if test="delflag != null" >
+         and delflag = #{delflag}
+      </if>
+      <if test="receiptflag != null" >
+         and receiptflag = #{receiptflag}
+      </if>
+      <if test="signflag != null" >
+         and signflag = #{signflag}
+      </if>
+      <if test="boxid != null" >
+         and boxid = #{boxid}
+      </if>
+      <if test="notdelflag != null" >
+         and delflag != #{notdelflag}
+      </if>      
+      <if test="idarr!=null">	      			
+         and FIND_IN_SET(id,#{idarr})
+      </if>
+  	</trim>
+  </select>
+  <insert id="insertEmailReceive" parameterType="com.hd.agent.message.model.EmailReceive" >
+  	insert into t_msg_emailreceive
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="emailid != null" >
+        emailid,
+      </if>
+      <if test="recvuserid != null" >
+        recvuserid,
+      </if>
+      <if test="1==1" >
+        recvtime,
+      </if>
+      <if test="viewflag != null" >
+        viewflag,
+      </if>
+      <if test="viewtime != null" >
+        viewtime,
+      </if>
+      <if test="delflag != null" >
+        delflag,
+      </if>
+      <if test="deltime != null" >
+        deltime,
+      </if>
+      <if test="receiptflag != null" >
+        receiptflag,
+      </if>
+      <if test="signflag != null" >
+        signflag,
+      </if>
+      <if test="boxid != null" >
+        boxid,
+      </if>
+      <if test="senduserid != null" >
+        senduserid,
+      </if>      
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="emailid != null" >
+        #{emailid},
+      </if>
+      <if test="recvuserid != null" >
+        #{recvuserid},
+      </if>      
+      <choose>
+	      <when test="recvtime != null" >
+	        #{recvtime},
+	      </when>
+	      <otherwise>
+	      now(),
+	      </otherwise>
+      </choose>
+      <if test="viewflag != null" >
+        #{viewflag},
+      </if>
+      <if test="viewtime != null" >
+        #{viewtime},
+      </if>
+      <if test="delflag != null" >
+        #{delflag},
+      </if>
+      <if test="deltime != null" >
+        #{deltime},
+      </if>
+      <if test="receiptflag != null" >
+        #{receiptflag},
+      </if>
+      <if test="signflag != null" >
+        #{signflag},
+      </if>
+      <if test="boxid != null" >
+        #{boxid},
+      </if>
+      <if test="senduserid != null" >
+        #{senduserid},
+      </if>      
+    </trim>
+  </insert>
+  <update id="updateEmailReceive" parameterType="com.hd.agent.message.model.EmailReceive">
+  	update t_msg_emailreceive
+    <set >
+      <if test="emailid != null" >
+        emailid = #{emailid},
+      </if>
+      <if test="recvuserid != null" >
+        recvuserid = #{recvuserid},
+      </if>
+      <if test="recvtime != null" >
+        recvtime = #{recvtime},
+      </if>
+      <if test="viewflag != null" >
+        viewflag = #{viewflag},
+      </if>
+      <if test="viewtime != null" >
+        viewtime = #{viewtime},
+      </if>
+      <if test="delflag != null" >
+        delflag = #{delflag},
+      </if>
+      <if test="deltime != null" >
+        deltime = #{deltime},
+      </if>
+      <if test="receiptflag != null" >
+        receiptflag = #{receiptflag},
+      </if>
+      <if test="signflag != null" >
+        signflag = #{signflag},
+      </if>
+      <if test="boxid != null" >
+        boxid = #{boxid},
+      </if>
+      <if test="senduserid != null" >
+        senduserid = #{senduserid},
+      </if>      
+    </set>
+    where id = #{id}
+  </update>
+  <update id="updateEmailReceiveBy" parameterType="java.util.HashMap">
+  	update t_msg_emailreceive
+    <set >
+      <if test="recvtime != null" >
+        recvtime = #{recvtime},
+      </if>
+      <if test="viewflag != null" >
+        viewflag = #{viewflag},
+      </if>
+      <if test="viewtime != null" >
+        viewtime = #{viewtime},
+      </if>
+      <if test="delflag != null" >
+        delflag = #{delflag},
+      </if>
+      <if test="deltime != null" >
+        deltime = #{deltime},
+      </if>
+      <if test="receiptflag != null" >
+        receiptflag = #{receiptflag},
+      </if>
+      <if test="signflag != null" >
+        signflag = #{signflag},
+      </if>
+      <if test="boxid != null" >
+        boxid = #{boxid},
+      </if>
+    </set>
+    where
+    <trim prefixOverrides="and|or" >
+		<if test="id != null" >
+			and id = #{id}
+		</if>
+		<if test="widarrs !=null">
+		  	and FIND_IN_SET(id,#{widarrs})
+		</if>
+		<if test="wemailid != null" >
+			and emailid = #{wemailid}
+		</if>
+		<if test="wemlidarrs != null" >
+			and FIND_IN_SET(emailid,#{wemlidarrs})
+		</if>
+		<if test="wrecvuserid != null" >
+		  	and recvuserid = #{wrecvuserid}
+		</if>
+		<if test="wdelflag != null" >
+		  	and delflag = #{wdelflag}
+		</if>
+		<if test="wnotdelflag != null" >
+		  	and delflag != #{wnotdelflag}
+		</if>
+		<if test="wboxid != null" >
+		  	and boxid = #{wboxid}
+		</if>
+		<if test="wviewflag != null" >
+		  	and viewflag = #{wviewflag}
+		</if>
+		<if test="wnotviewflag != null" >
+		  	and ( length(viewflag)=0 or viewflag != #{wnotviewflag} )
+		</if>
+		<if test="wsenduserid !=null">
+		  	and senduserid = #{wsenduserid}
+		</if>		
+	      <if test="wreceiptflag != null" >
+	        receiptflag = #{wreceiptflag},
+	      </if>
+     </trim>
+  </update>
+  <delete id="deleteEmailReceive" parameterType="com.hd.agent.message.model.EmailReceive">
+  	delete from t_msg_emailreceive where id = #{id}
+  </delete>
+  <select id="showEmailReceive" parameterType="java.lang.String" resultType="com.hd.agent.message.model.EmailReceive" useCache="false">
+  	select
+  	<include refid="emlReceive_Base_Column_List"></include>
+  	from t_msg_emailreceive where id= #{id}
+  </select>  
+  <select id="showEmailReceiveBy" parameterType="java.util.HashMap" useCache="false" resultType="com.hd.agent.message.model.EmailReceive">
+  	select
+  	<include refid="emlReceive_Base_Column_List"></include>
+  	from t_msg_emailreceive
+  	where
+    <trim prefixOverrides="and|or" >
+		<if test="id != null" >
+			and id = #{id}
+		</if>
+		<if test="emailid != null" >
+			and emailid = #{emailid}
+		</if>
+		<if test="recvuserid != null" >
+		  	and recvuserid = #{recvuserid}
+		</if>
+		<if test="delflag != null" >
+		  	and delflag = #{delflag}
+		</if>
+		<if test="notdelflag != null" >
+		  	and delflag != #{notdelflag}
+		</if>
+		<if test="boxid != null" >
+		  	and boxid = #{boxid}
+		</if>
+		<if test="viewflag != null" >
+		  	and viewflag = #{viewflag}
+		</if>
+		<if test="notviewflag != null" >
+		  	and viewflag != #{notviewflag}
+		</if>
+		<if test="senduserid !=null">
+		  	and senduserid = #{senduserid}
+		</if>
+		<if test="receiptflag !=null">
+		  	and receiptflag = #{receiptflag}
+		</if>
+     </trim>
+  </select>
+  
+  <!-- *******************邮件收发列表************************ -->
+  <select id="getEmailReceivePageList" parameterType="com.hd.agent.common.util.PageMap" resultMap="emlReceive_QueryResultMap" useCache="false">
+    select * from (
+        select
+        <include refid="emlReceiveList_column_List" />
+        from t_msg_emailreceive emlr
+        inner join t_msg_emailcontent emlc on emlr.emailid=emlc.id
+        left join t_sys_user suser on emlc.adduserid = suser.userid
+        <trim prefix="where" prefixOverrides="and|or" >
+            <include refid="emlReceive_Query_Where_Clause"></include>
+            <include refid="common.Page_querySql"/>
+            <if test="condition.emcDataAuthSQL != null">
+                and ${condition.emcDataAuthSQL}
+            </if>
+        </trim>
+     )t
+	<include refid="common.Page_limit" />
+  </select>
+  
+  <select id="getEmailReceiveCount" parameterType="com.hd.agent.common.util.PageMap"
+		resultType="int" useCache="false">
+		select count(1) from  (
+			select distinct emlr.id
+			from t_msg_emailreceive emlr 
+			inner join t_msg_emailcontent emlc	on emlr.emailid=emlc.id
+            left join t_sys_user suser on emlc.adduserid = suser.userid
+		  	<trim prefix="where" prefixOverrides="and|or" >
+		  		<include refid="emlReceive_Query_Where_Clause"></include>
+                <include refid="common.Page_querySql"/>
+                <if test="condition.emcDataAuthSQL != null">
+                    and ${condition.emcDataAuthSQL}
+                </if>
+			</trim>
+		) t
+  </select>
+  <select id="getEmailSendPageList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.message.model.EmailContent" useCache="false">
+    SELECT * from (
+  	select
+  	<include refid="emlSendList_column_List" />
+	from t_msg_emailcontent emlc
+    <trim prefix="where" prefixOverrides="and|or" >
+        <include refid="emlcEMLSend_Query_Where_Clause"></include>
+        <if test="condition.emcDataAuthSQL != null">
+            and ${condition.emcDataAuthSQL}
+        </if>
+    </trim>
+    )t
+    <include refid="common.Page_limit" />
+  </select>
+  
+  <select id="getEmailSendCount" parameterType="com.hd.agent.common.util.PageMap"
+		resultType="int" useCache="false">
+		select count(1) from (
+			select distinct emlc.id
+              from t_msg_emailcontent emlc
+              <trim prefix="where" prefixOverrides="and|or" >
+                  <include refid="emlcEMLSend_Query_Where_Clause"></include>
+                  <if test="condition.emcDataAuthSQL != null">
+                      and ${condition.emcDataAuthSQL}
+                  </if>
+              </trim>
+		) t
+  </select>
+  
+  <select id="getEmailDropPageList" parameterType="com.hd.agent.common.util.PageMap" resultMap="emlDrop_QueryResultMap" useCache="false">
+  	select * from (
+  	 	(select
+	  	<include refid="emlReceiveDropList_column_List"></include>
+	  	from t_msg_emailreceive emlr 
+	  	left join t_msg_emailcontent emlc
+	  	on emlr.emailid=emlc.id left join t_sys_user suser on emlc.adduserid = suser.userid 	
+	  	<trim prefix="where" prefixOverrides="and|or" >
+	  		<include refid="emlReceiveDrop_Query_Where_Clause"></include>
+            <if test="condition.emcDataAuthSQL != null">
+                and ${condition.emcDataAuthSQL}
+            </if>
+		</trim>
+		) 
+	union all
+		(select
+	  	<include refid="emlSendDropList_column_List"></include>
+	  	from t_msg_emailcontent  emlc
+		 left join t_sys_user suser on emlc.adduserid = suser.userid 	
+	  	<trim prefix="where" prefixOverrides="and|or" >
+	  		<include refid="emlSendDrop_Query_Where_Clause"></include>
+            <if test="condition.emcDataAuthSQL != null">
+                and ${condition.emcDataAuthSQL}
+            </if>
+		</trim>
+		) 
+	) t
+	<include refid="common.Page_limit" />
+  </select>
+  
+  <select id="getEmailDropCount" parameterType="com.hd.agent.common.util.PageMap"
+		resultType="int" useCache="false">
+	select count(1) from  (
+  	 	(select
+	  	 emlr.id emlr_id,emlr.emailid
+	  	from t_msg_emailreceive emlr 
+	  	left join t_msg_emailcontent emlc on emlr.emailid=emlc.id
+	  	<trim prefix="where" prefixOverrides="and|or" >
+	  		<include refid="emlReceiveDrop_Query_Where_Clause"></include>
+            <if test="condition.emcDataAuthSQL != null">
+                and ${condition.emcDataAuthSQL}
+            </if>
+		</trim>
+		) 
+	union all
+		(select
+	  	'' emlr_id,emlc.id emlailid
+	  	from t_msg_emailcontent emlc
+	  	<trim prefix="where" prefixOverrides="and|or" >
+	  		<include refid="emlSendDrop_Query_Where_Clause"></include>
+		</trim>
+		) 
+	) t
+  </select>
+  <select id="getEmailUserReadPageList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.message.model.EmailReceive" useCache="false">
+    SELECT * FROM (
+        select
+            emlr.id, emlr.emailid, emlr.recvuserid, emlr.recvtime, emlr.viewflag, emlr.viewtime, emlr.delflag, emlr.deltime,
+            emlr.receiptflag,emlr.signflag, emlr.boxid,suser.name recvusername,suser.departmentname deptname
+            from t_msg_emailreceive emlr left join t_sys_user suser on emlr.recvuserid=suser.userid
+
+            <trim prefix="where" prefixOverrides="and|or" >
+                <if test="condition.emailid != null" >
+                    and emlr.emailid = #{condition.emailid}
+                </if>
+                <if test="condition.recvuserid != null" >
+                    and emlr.recvuserid = #{condition.recvuserid}
+                </if>
+                <if test="condition.delflag != null" >
+                    and emlr.delflag = #{condition.delflag}
+                </if>
+                <if test="condition.notdelflag != null" >
+                    and emlr.delflag != #{condition.notdelflag}
+                </if>
+                <if test="condition.recvuseridarrs != null" >
+                    and FIND_IN_SET( emlr.recvuserid ,#{condition.recvuseridarrs})
+                </if>
+            </trim>
+      ) t
+	<include refid="common.Page_limit" />
+  </select>
+  <select id="getEmailUserReadCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int" useCache="false">
+      select
+      count(emlr.id)
+      from t_msg_emailreceive emlr left join t_sys_user suser on emlr.recvuserid=suser.userid
+
+      <trim prefix="where" prefixOverrides="and|or" >
+          <if test="condition.emailid != null" >
+              and emlr.emailid = #{condition.emailid}
+          </if>
+          <if test="condition.recvuserid != null" >
+              and emlr.recvuserid = #{condition.recvuserid}
+          </if>
+          <if test="condition.delflag != null" >
+              and emlr.delflag = #{condition.delflag}
+          </if>
+          <if test="condition.notdelflag != null" >
+              and emlr.delflag != #{condition.notdelflag}
+          </if>
+          <if test="condition.recvuseridarrs != null" >
+              and FIND_IN_SET( emlr.recvuserid ,#{condition.recvuseridarrs})
+          </if>
+      </trim>
+  </select>
+  
+  <!-- *******************邮件收件箱************************ -->
+  <insert id="insertEmailBox" parameterType="com.hd.agent.message.model.EmailBox" >
+    insert into t_msg_emailbox
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="boxorderno != null" >
+        boxorderno,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="adduserid != null" >
+        adduserid,
+      </if>
+      <if test="addtime != null" >
+        addtime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="boxorderno != null" >
+        #{boxorderno},
+      </if>
+      <if test="title != null" >
+        #{title},
+      </if>
+      <if test="adduserid != null" >
+        #{adduserid},
+      </if>
+      <if test="addtime != null" >
+        #{addtime},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateEmailBox" parameterType="com.hd.agent.message.model.EmailBox" >
+    update t_msg_emailbox
+    <set >
+      <if test="boxorderno != null" >
+        boxorderno = #{boxorderno},
+      </if>
+      <if test="title != null" >
+        title = #{title},
+      </if>
+      <if test="adduserid != null" >
+        adduserid = #{adduserid},
+      </if>
+      <if test="addtime != null" >
+        addtime = #{addtime},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  <delete id="deleteEmailBox" parameterType="java.lang.String" >
+    delete from t_msg_emailbox
+    where id = #{id}
+  </delete>
+  <select id="showEmailBox" parameterType="java.lang.String"  resultType="com.hd.agent.message.model.EmailBox" useCache="false">
+  	select 
+  	<include refid="emlBox_Base_Column_List"></include>
+  	from t_msg_emailbox
+  	where id=#{id}
+  </select>
+  <select id="showEmailBoxList" parameterType="java.lang.String" resultType="com.hd.agent.message.model.EmailBox" useCache="false">
+  	select 
+  	<include refid="emlBox_Base_Column_List"></include>
+  	from t_msg_emailbox
+  	where adduserid=#{adduserid}
+  </select>
+    <select id="getEmailBoxPageList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.message.model.EmailBox" useCache="false">
+	   select 
+	 	<include refid="emlBox_Base_Column_List"/>
+	    from t_msg_emailbox
+	   	<trim prefix="where" prefixOverrides="and|or" >
+			<include refid="emlBox_Where_Clause"/>
+			<include refid="common.Page_querySql"/>
+		</trim>
+		<include refid="common.Page_limit" />
+    </select>
+    <select id="getEmailBoxCount" parameterType="com.hd.agent.common.util.PageMap"
+        resultType="int" useCache="false">
+        select count(1) from t_msg_emailbox
+        <trim prefix="where" prefixOverrides="and|or" >
+            <include refid="emlBox_Where_Clause"/>
+            <include refid="common.Page_querySql"/>
+        </trim>
+    </select>
+  
+  <!-- *******************外部邮件收件箱设置************************ -->
+  <insert id="insertWebMailConfig" parameterType="com.hd.agent.message.model.WebMailConfig" >
+    insert into t_msg_webmailconfig
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="popserver != null" >
+        popserver,
+      </if>
+      <if test="popport != null" >
+        popport,
+      </if>
+      <if test="ispopssl != null" >
+        ispopssl,
+      </if>
+      <if test="smtpserver != null" >
+        smtpserver,
+      </if>
+      <if test="smtpport != null" >
+        smtpport,
+      </if>
+      <if test="issmtpssl != null" >
+        issmtpssl,
+      </if>
+      <if test="emailuser != null" >
+        emailuser,
+      </if>
+      <if test="emailpwd != null" >
+        emailpwd,
+      </if>
+      <if test="issmtppass != null" >
+        issmtppass,
+      </if>
+      <if test="autorecvflag != null" >
+        autorecvflag,
+      </if>
+      <if test="quotalimit != null" >
+        quotalimit,
+      </if>
+      <if test="isdefault != null" >
+        isdefault,
+      </if>
+      <if test="isrecvdel != null" >
+        isrecvdel,
+      </if>
+      <if test="isrecvmsg != null" >
+        isrecvmsg,
+      </if>
+      <if test="adduserid != null" >
+        adduserid,
+      </if>
+      <if test="1==1" >
+        addtime,
+      </if>
+      <if test="emailuid !=null" >
+        emailuid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="email != null" >
+        #{email},
+      </if>
+      <if test="popserver != null" >
+        #{popserver},
+      </if>
+      <if test="popport != null" >
+        #{popport},
+      </if>
+      <if test="ispopssl != null" >
+        #{ispopssl},
+      </if>
+      <if test="smtpserver != null" >
+        #{smtpserver},
+      </if>
+      <if test="smtpport != null" >
+        #{smtpport},
+      </if>
+      <if test="issmtpssl != null" >
+        #{issmtpssl},
+      </if>
+      <if test="emailuser != null" >
+        #{emailuser},
+      </if>
+      <if test="emailpwd != null" >
+        #{emailpwd},
+      </if>
+      <if test="issmtppass != null" >
+        #{issmtppass},
+      </if>
+      <if test="autorecvflag != null" >
+        #{autorecvflag},
+      </if>
+      <if test="quotalimit != null" >
+        #{quotalimit},
+      </if>
+      <if test="isdefault != null" >
+        #{isdefault},
+      </if>
+      <if test="isrecvdel != null" >
+        #{isrecvdel},
+      </if>
+      <if test="isrecvmsg != null" >
+        #{isrecvmsg},
+      </if>
+      <if test="adduserid != null" >
+        #{adduserid},
+      </if>
+      <if test="1==1" >
+        now(),
+      </if>
+      <if test="emailuid != null" >
+        #{emailuid},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateWebMailConfig" parameterType="com.hd.agent.message.model.WebMailConfig" >
+    update t_msg_webmailconfig
+    <set >
+      <if test="email != null" >
+        email = #{email},
+      </if>
+      <if test="popserver != null" >
+        popserver = #{popserver},
+      </if>
+      <if test="popport != null" >
+        popport = #{popport},
+      </if>
+      <if test="ispopssl != null" >
+        ispopssl = #{ispopssl},
+      </if>
+      <if test="smtpserver != null" >
+        smtpserver = #{smtpserver},
+      </if>
+      <if test="smtpport != null" >
+        smtpport = #{smtpport},
+      </if>
+      <if test="issmtpssl != null" >
+        issmtpssl = #{issmtpssl},
+      </if>
+      <if test="emailuser != null" >
+        emailuser = #{emailuser},
+      </if>
+      <if test="emailpwd != null" >
+        emailpwd = #{emailpwd},
+      </if>
+      <if test="issmtppass != null" >
+        issmtppass = #{issmtppass},
+      </if>
+      <if test="autorecvflag != null" >
+        autorecvflag = #{autorecvflag},
+      </if>
+      <if test="quotalimit != null" >
+        quotalimit = #{quotalimit},
+      </if>
+      <if test="isdefault != null" >
+        isdefault = #{isdefault},
+      </if>
+      <if test="isrecvdel != null" >
+        isrecvdel = #{isrecvdel},
+      </if>
+      <if test="isrecvmsg != null" >
+        isrecvmsg = #{isrecvmsg},
+      </if>
+      <if test="adduserid != null" >
+        adduserid = #{adduserid},
+      </if>
+      <if test="addtime != null" >
+        addtime = #{addtime},
+      </if>
+      <if test="emailuid != null" >
+        emailuid = #{emailuid},
+      </if>
+    </set>
+    where id = #{id}
+  </update>  
+  <delete id="deleteWebMailConfig" parameterType="java.lang.String" >
+    delete from t_msg_webmailconfig
+    where id = #{id}
+  </delete>
+  <select id="showWebMailConfig" parameterType="java.lang.String" resultType="com.hd.agent.message.model.WebMailConfig" useCache="false">
+  	select 
+  	<include refid="webMailConfig_Base_Column_List"/>
+  	from t_msg_webmailconfig
+  	where id= #{id}
+  </select>
+  <select id="showWebMailConfigList" resultType="com.hd.agent.message.model.WebMailConfig" parameterType="java.util.Map">
+  select
+    <include refid="webMailConfig_NOPWD_Column_List"/>
+    <if test="showmailpasscol!=null and showmailpasscol==1">
+    	,emailpwd 
+    </if>
+  	from t_msg_webmailconfig  	
+  	<trim prefix="where" prefixOverrides="and|or" >
+		<if test="email != null" >
+			and email = #{email}
+		</if>
+		<if test="emailmh != null" >
+			and email like CONCAT('%',#{emailmh},'%')
+		</if>
+		<if test="ispopssl != null" >
+			and ispopssl = #{ispopssl}
+		</if>
+		<if test="issmtpssl != null" >
+			and issmtpssl = #{issmtpssl}
+		</if>
+		<if test="emailuser != null" >
+			and emailuser = #{emailuser}
+		</if>
+		<if test="issmtppass != null" >
+			and issmtppass = #{issmtppass}
+		</if>
+		<if test="autorecvflag != null" >
+			and autorecvflag = #{autorecvflag}
+		</if>
+		<if test="isdefault != null" >
+			and isdefault = #{isdefault}
+		</if>
+		<if test="isrecvdel != null" >
+			and isrecvdel = #{isrecvdel}
+		</if>
+		<if test="isrecvmsg != null" >
+			and isrecvmsg = #{isrecvmsg}
+		</if>
+		<if test="adduserid != null" >
+			and adduserid = #{adduserid}
+		</if>
+		<if test="emailuid != null" >
+			and emailuid = #{emailuid}
+		</if>
+  	</trim>
+  	<trim prefix="order by" >
+  		<if test="orderbysql != null">
+  			${orderbysql}
+  		</if>
+  	</trim>
+  </select>  	
+	<select id="getWebMailConfigPageList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.message.model.WebMailConfig" useCache="false">	
+	   select 
+	 		<include refid="webMailConfig_NOPWD_Column_List"/>
+	    <if test="condition.showmailpasscol!=null and condition.showmailpasscol==1">
+	    	,emailpwd 
+	    </if>
+	    from t_msg_webmailconfig
+	   	<trim prefix="where" prefixOverrides="and|or" >
+			<include refid="webMailConfig_Where_Clause"/>
+			<include refid="common.Page_querySql"/>
+		</trim>
+		<include refid="common.Page_limit" />
+	</select>	
+	<select id="getWebMailConfigCount" parameterType="com.hd.agent.common.util.PageMap"
+		resultType="int" useCache="false">
+		select count(1) from t_msg_webmailconfig
+	   	<trim prefix="where" prefixOverrides="and|or" >
+			<include refid="webMailConfig_Where_Clause"/>
+			<include refid="common.Page_querySql"/>
+		</trim>
+	</select>
+	
+	<select id="getMailItemCountForPhone" parameterType="map" resultType="map" useCache="false">
+		select sum(sendcount) as sendcount,sum(recvcount) as recvcount,sum(dropcount) as dropcount
+		from (
+			select count(1) as sendcount,0 as recvcount,0 as dropcount from t_msg_emailcontent 
+			where
+			<trim prefixOverrides="and|or" >
+				<if test="1==1">
+					and delflag='1'
+				</if>				
+				<if test="userid != null" >
+					and adduserid = #{userid}
+				</if>
+			</trim>
+			union ALL
+			select 0 as sendcount,count(1) as recvcount,0 as dropcount from t_msg_emailreceive 
+			where 
+			<trim prefixOverrides="and|or" >
+				<if test="1==1">
+					and delflag='1' and viewflag='1'
+				</if>				
+				<if test="userid != null" >
+					and recvuserid = #{userid}
+				</if>
+			</trim>
+			union ALL
+			select 0 as sendcount,0 as recvcount,count(1) as dropcount from t_msg_emailcontent 
+			where 
+			<trim prefixOverrides="and|or" >
+				<if test="1==1">
+					and delflag='2'
+				</if>				
+				<if test="userid != null" >
+					and adduserid = #{userid}
+				</if>
+			</trim>
+			union ALL
+			select 0 as sendcount,0 as recvcount,count(1) as dropcount from t_msg_emailreceive 
+			where 
+			<trim prefixOverrides="and|or" >
+				<if test="1==1">
+					and delflag='2'
+				</if>				
+				<if test="userid != null" >
+					and recvuserid = #{userid}
+				</if>
+			</trim>
+		)t
+	</select>	
+	<select id="getEmailContentSimplePageList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.message.model.EmailContent" useCache="false">
+        SELECT * FROM (
+            select
+            <include refid="emlcPrefix_email_Base_Column_List" />
+            ,suser.name as addusername
+            from  t_sys_user suser
+            right join t_msg_emailcontent emlc on emlc.adduserid = suser.userid
+            <trim prefix="where" prefixOverrides="and|or" >
+                <include refid="emlcEMLSend_Query_Where_Clause"></include>
+                <if test="condition.emcDataAuthSQL != null">
+                    and ${condition.emcDataAuthSQL}
+                </if>
+                <if test="condition.queryByReceiveUser!=null">
+                    and exists(
+                    select emlr.id from t_msg_emailreceive emlr where
+                    <trim prefixOverrides="and|or">
+                        <if test="1==1">
+                            and emlr.emailid=emlc.id and emlr.recvuserid = #{condition.queryByReceiveUser} and emlr.delflag='1'
+                        </if>
+                        <if test="condition.viewflag!=null">
+                            and emlr.viewflag=#{condition.viewflag}
+                        </if>
+                    </trim>
+                    )
+                </if>
+            </trim>
+      ) t
+	  <include refid="common.Page_limit" />
+  </select>
+  
+  <select id="getEmailContentSimplePageCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int" useCache="false">
+      select
+      count(emlc.id)
+      from  t_sys_user suser
+      right join t_msg_emailcontent emlc on emlc.adduserid = suser.userid
+      <trim prefix="where" prefixOverrides="and|or" >
+          <include refid="emlcEMLSend_Query_Where_Clause"></include>
+          <if test="condition.emcDataAuthSQL != null">
+              and ${condition.emcDataAuthSQL}
+          </if>
+          <if test="condition.queryByReceiveUser!=null">
+              and exists(
+              select emlr.id from t_msg_emailreceive emlr where
+              <trim prefixOverrides="and|or">
+                  <if test="1==1">
+                      and emlr.emailid=emlc.id and emlr.recvuserid = #{condition.queryByReceiveUser} and emlr.delflag='1'
+                  </if>
+                  <if test="condition.viewflag!=null">
+                      and emlr.viewflag=#{condition.viewflag}
+                  </if>
+              </trim>
+              )
+          </if>
+      </trim>
+  </select>
+</mapper>

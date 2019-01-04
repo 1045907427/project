@@ -1,0 +1,249 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>宏控件</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" >
+    <meta name="generator" content="www.leipi.org" />
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+    <!--[if lte IE 6]>
+    <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-ie6.css">
+    <![endif]-->
+    <!--[if lte IE 7]>
+    <link rel="stylesheet" type="text/css" href="bootstrap/css/ie.css">
+    <![endif]-->
+    <link rel="stylesheet" href="agent.style.css">
+    <script type="text/javascript" src="../dialogs/internal.js"></script>
+    <script type="text/ecmascript" src="../../../../js/sha1.js"></script>
+    <script type="text/ecmascript" src="../../../../js/jquery.js"></script>
+    <script type="text/javascript">
+function createElement(type, name)
+{     
+    var element = null;     
+    try {        
+        element = document.createElement('<'+type+' name="'+name+'">');     
+    } catch (e) {}   
+    if(element==null) {     
+        element = document.createElement(type);     
+        element.name = name;     
+    } 
+    return element;     
+}
+    </script>
+</head>
+<body>
+<div class="content">
+    <table class="table table-bordered table-striped table-hover">
+    <thead>
+        <tr>
+            <th><span>控件名称</span><span class="label label-important">*</span></th>
+            <th><span>类型</span></th>
+        </tr>
+        <tr>
+            <td>
+                <input id="orgname" type="text" placeholder="必填项"/>
+            </td>
+            <td>
+                <select  id="orgtype" class="span7">
+                    <optgroup label="----常用日期宏控件----">
+                        <option value="sys_datetime">当前日期+时间 [ 2015-01-01 12:30 ]</option>
+                        <option value="sys_date">当前日期 [ 2015-01-01 ]</option>
+                        <option value="sys_date_cn">当前日期 [ 2015年1月1日 ]</option>
+                        <option value="sys_date_cn_short1">当前日期 [ 2015年1月 ]</option>
+                        <option value="sys_date_cn_short4">当前年份 [ 2015 ]</option>
+                        <option value="sys_date_cn_short3">当前年份 [ 2015年 ]</option>
+                        <option value="sys_date_cn_short2">当前日期 [ 1月1日 ]</option>
+                        <option value="sys_time">当前时间 [ 12:30 ]</option>
+                        <option value="sys_week">当前星期 [ 星期一 ]</option>
+                    </optgroup>
+                    <optgroup label="----签名----">
+                        <option value="sys_signature_name">当前处理工作用户，如 张三</option>
+                        <option value="sys_signature_date">当前处理工作日期，如 2015-01-01</option>
+                    </optgroup>
+                    <optgroup label="----扩展定义----">
+                        <option value="sys_userid">当前用户ID，如 9527</option>
+                        <option value="sys_username">当前用户姓名，如 张三</option>
+                        <option value="sys_deptid">当前用户部门编号，如 1003</option>
+                        <option value="sys_deptname">当前用户部门，如 人事部</option>
+                    </optgroup>
+                </select>
+            </td>
+        </tr>
+    </thead>
+    <tbody id='itemAttr'>
+        <tr>
+            <th><span>控件样式</span></th>
+            <th><!--<span>可见性</span>--></th>
+        </tr>
+        <tr>
+            <td>
+                宽 <input id="orgwidth" type="text" value="150" class="input-small span1" placeholder="auto"/> px
+                &nbsp;&nbsp;
+                字体大小 <input id="orgfontsize" type="text" value="" class="input-small span1" placeholder="auto"/> px
+                
+            </td>
+            <td>
+                <label class="checkbox" style="display: none;"> <input id="orghide" type="checkbox"> 隐藏 </label>
+            </td>
+        </tr>
+    </tbody>
+    
+    </table>
+</div>
+<script type="text/javascript">
+var oNode = null,thePlugins = 'macros';
+window.onload = function() {
+    if( UE.plugins[thePlugins].editdom ) {
+        oNode = UE.plugins[thePlugins].editdom;
+        var gTitle=oNode.getAttribute('title').replace(/&quot;/g,"\""),gHidden=oNode.getAttribute('orghide'),gFontSize=oNode.getAttribute('orgfontsize'),gWidth=oNode.getAttribute('orgwidth'),gType=oNode.getAttribute('orgtype');
+        gTitle = gTitle==null ? '' : gTitle;
+        $G('orgname').value = gTitle;
+        //if( oNode.tagName == 'INPUT' ) {}
+        if(oNode.getAttribute('orghide')=='1'){
+            $G('orghide').checked = true;
+        }
+        $G('orgname').value     = gTitle;
+        $G('orgtype').value     = gType;
+        $G('orgwidth').value    = gWidth;
+        $G('orgfontsize').value = gFontSize;
+    }
+
+    // 去除控件名称中的半角字符
+    // 验证名称是否重复
+    $('#orgname').change(function() {
+
+        // 去除控件名称中的半角字符
+        var orgname = $('#orgname').val();
+        orgname = orgname.replace(/[\u0000-\u002F]/gi, '').replace(/[\u003a-\u0040]/gi, '').replace(/[\u005b-\u0060]/gi, '').replace(/[\u007b-\u00ff]/gi, '');
+        $('#orgname').val(orgname);
+
+        // 验证名称是否重复
+        if (orgname != '') {
+
+            for (var i = 0; i < UE.controls.length; i++) {
+                var name = UE.controls[i];
+                if(name == orgname) {
+                    alert('控件名称重复，请重新输入！');
+                    $(this).val('');
+                    return false;
+                }
+            }
+        }
+    });
+
+    if(null != null) {
+        var orgname = oNode.getAttribute('title').replace(/&quot;/g, "\"");
+        for (var i = 0; i < UE.controls.length; i++) {
+
+            var name = UE.controls[i];
+            if (name == orgname) {
+                UE.controls.splice(i, 1, '');
+                break;
+            }
+        }
+    }
+}
+
+dialog.oncancel = function () {
+    if( UE.plugins[thePlugins].editdom ) {
+        delete UE.plugins[thePlugins].editdom;
+    }
+};
+dialog.onok = function (){
+    if ( $G('orgname').value == '' ) {
+        alert('控件名称不能为空');
+        return false;
+    }
+    var gTitle=$G('orgname').value.replace(/\"/g,"&quot;"),gFontSize=$G('orgfontsize').value,gWidth=$G('orgwidth').value,gType=$G('orgtype').value;
+    if( !oNode ) {
+        try {
+                /*
+                if ( $G('orgtype').value.indexOf('sys_list')>0 ) {
+                    oNode = document.createElement("select");
+                    var objOption = new Option('{macros}', '');
+                    oNode.options[oNode.options.length] = objOption;
+                } else {
+                    //input
+                }*/
+                oNode = createElement('input','NEWFIELD');
+                oNode.setAttribute('type','text');
+                // oNode.setAttribute('value','{macros}');
+                oNode.setAttribute('value','{macro.' + gType + '}');
+                oNode.setAttribute('init','editor.macro.' + gType + '');
+                
+                oNode.setAttribute('title',gTitle);
+                oNode.setAttribute('agentitemid',hex_sha1(gTitle));
+                oNode.setAttribute('name','NEWFIELD');
+                oNode.setAttribute('leipiPlugins',thePlugins);
+                oNode.setAttribute('plugins',thePlugins);
+                oNode.setAttribute('orgtype',gType);
+                oNode.setAttribute('data', 'editor.macro.' + gType);
+                if( $G('orghide').checked ) {
+                    oNode.setAttribute('orghide', '1' ) ;
+                } else {
+                    oNode.setAttribute('orghide', '0' ) ;
+                }
+                if( gFontSize != '' ) {
+                    oNode.style.fontSize = gFontSize + 'px';
+                    oNode.setAttribute('orgfontsize',gFontSize );
+                }
+                if( gWidth != '' ) {
+                    oNode.style.width = gWidth + 'px';
+                    oNode.setAttribute('orgwidth',gWidth );
+                }
+                editor.execCommand('insertHtml',oNode.outerHTML);
+                return true;
+            } catch ( e ) {
+                try {
+                    editor.execCommand('error');
+                } catch ( e ) {
+                    alert('控件异常，如果一直出现该提示，请联系系统管理员！');
+                }
+                return false;
+            }
+    } else {
+        var norgname = oNode.getAttribute('name').replace(/\"/g,"&quot;");
+        var oNewNode = null;
+        domUtils.remove(oNode,false);  //删除当前控件，再创建一个新的
+        /*
+        if ( $G('orgtype').value.indexOf('sys_list') > 0 ) {
+            oNewNode = document.createElement("select");
+            var objOption = new Option('{macros}', '');
+            oNewNode.options[oNewNode.options.length] = objOption;
+        }*/
+        oNewNode = createElement('input','NEWFIELD');
+        oNewNode.setAttribute('type','text');
+        //oNewNode.setAttribute('value','{macros}');
+        oNewNode.setAttribute('value','{macro.' + gType + '}');
+        oNewNode.setAttribute('init','editor.macro.' + gType + '');
+        oNewNode.setAttribute('title',gTitle);
+        oNewNode.setAttribute('agentitemid',hex_sha1(gTitle));
+        oNewNode.setAttribute('name',norgname);
+        oNewNode.setAttribute('leipiPlugins',thePlugins );
+        oNewNode.setAttribute('plugins',thePlugins );
+        oNewNode.setAttribute('orgtype',gType);
+        oNewNode.setAttribute('data', 'editor.macro.' + gType);
+        if( $G('orghide').checked ) {
+            oNewNode.setAttribute('orghide', '1' ) ;
+        } else {
+            oNewNode.setAttribute('orghide', '0' ) ;
+        }
+        if( gFontSize != '' ) {
+            oNewNode.style.fontSize = gFontSize + 'px';
+            oNewNode.setAttribute('orgfontsize',gFontSize );
+        }else{
+            oNewNode.setAttribute('orgfontsize', '');
+        }
+        if( gWidth != '' ) {
+            oNewNode.style.width = gWidth + 'px';
+            oNewNode.setAttribute('orgwidth',gWidth );
+        }else{
+            oNewNode.setAttribute('orgwidth', '');
+        }
+        editor.execCommand('insertHtml',oNewNode.outerHTML);
+        delete UE.plugins[thePlugins].editdom;
+    }
+};
+</script>
+</body>
+</html>

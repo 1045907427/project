@@ -1,0 +1,645 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.sales.dao.OweOrderMapper" >
+  <sql id="Example_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.businessdate != null" >
+         and businessdate = #{condition.businessdate}
+      </if>
+      <if test="condition.status != null" >
+         and status = #{condition.status}
+      </if>
+      <if test="condition.remark != null" >
+         and remark = #{condition.remark}
+      </if>
+      <if test="condition.adduserid != null" >
+         and adduserid = #{condition.adduserid}
+      </if>
+      <if test="condition.addusername != null" >
+         and addusername = #{condition.addusername}
+      </if>
+      <if test="condition.adddeptid != null" >
+         and adddeptid = #{condition.adddeptid}
+      </if>
+      <if test="condition.adddeptname != null" >
+         and adddeptname = #{condition.adddeptname}
+      </if>
+      <if test="condition.addtime != null" >
+         and addtime = #{condition.addtime}
+      </if>
+      <if test="condition.modifyuserid != null" >
+         and modifyuserid = #{condition.modifyuserid}
+      </if>
+      <if test="condition.modifyusername != null" >
+         and modifyusername = #{condition.modifyusername}
+      </if>
+      <if test="condition.modifytime != null" >
+         and modifytime = #{condition.modifytime}
+      </if>
+      <if test="condition.audituserid != null" >
+         and audituserid = #{condition.audituserid}
+      </if>
+      <if test="condition.auditusername != null" >
+         and auditusername = #{condition.auditusername}
+      </if>
+      <if test="condition.audittime != null" >
+         and audittime = #{condition.audittime}
+      </if>
+      <if test="condition.stopuserid != null" >
+         and stopuserid = #{condition.stopuserid}
+      </if>
+      <if test="condition.stopusername != null" >
+         and stopusername = #{condition.stopusername}
+      </if>
+      <if test="condition.stoptime != null" >
+         and stoptime = #{condition.stoptime}
+      </if>
+      <if test="condition.closetime != null" >
+         and closetime = #{condition.closetime}
+      </if>
+      <if test="condition.printtimes != null" >
+         and printtimes = #{condition.printtimes}
+      </if>
+      <if test="condition.customerid != null" >
+         and customerid = #{condition.customerid}
+      </if>
+      <if test="condition.pcustomerid != null" >
+         and pcustomerid = #{condition.pcustomerid}
+      </if>
+      <if test="condition.customersort != null" >
+         and customersort = #{condition.customersort}
+      </if>
+      <if test="condition.handlerid != null" >
+         and handlerid = #{condition.handlerid}
+      </if>
+      <if test="condition.salesarea != null" >
+         and salesarea = #{condition.salesarea}
+      </if>
+      <if test="condition.salesdept != null" >
+         and salesdept = #{condition.salesdept}
+      </if>
+      <if test="condition.salesuser != null" >
+         and salesuser = #{condition.salesuser}
+      </if>
+      <if test="condition.storageid != null" >
+         and storageid = #{condition.storageid}
+      </if>
+      <if test="condition.billno != null" >
+        and billno = #{condition.billno}
+      </if>
+      <if test="condition.seq != null" >
+         and seq = #{condition.seq}
+      </if>
+      <if test="condition.indooruserid != null" >
+         and indooruserid = #{condition.indooruserid}
+      </if>
+    </trim>
+  </sql>
+  <sql id="OweOrder_Column_List" >
+    id, businessdate, status, remark, adduserid, addusername, adddeptid, adddeptname, 
+    addtime, modifyuserid, modifyusername, modifytime, audituserid, auditusername, audittime, 
+    stopuserid, stopusername, stoptime, closetime, printtimes, customerid, pcustomerid, 
+    customersort, handlerid, salesarea, salesdept, salesuser, storageid, billno,seq, indooruserid
+  </sql>
+  <sql id="OweOrderDetail_Column_List">
+    id, orderid, goodsid, groupid, goodssort, brandid, branduser, branddept, supplierid, 
+    supplieruser, unitid, unitname, fixnum, unitnum, auxunitid, auxunitname, auxnum, 
+    overnum, auxnumdetail, totalbox, fixprice, offprice, taxprice, taxamount, notaxprice, 
+    notaxamount, costprice, taxtype, tax, remark, deliverytype, deliverydate, billno, 
+    billdetailno, seq, oldprice, storageid, demandprice, demandamount,ordernum
+  </sql>
+  <insert id="addOweOrder" parameterType="com.hd.agent.sales.model.OweOrder" >
+    insert into t_sales_owe_order
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="businessdate != null" >
+        businessdate,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="adduserid != null" >
+        adduserid,
+      </if>
+      <if test="addusername != null" >
+        addusername,
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid,
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname,
+      </if>
+      <if test="addtime != null" >
+        addtime,
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid,
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername,
+      </if>
+      <if test="modifytime != null" >
+        modifytime,
+      </if>
+      <if test="audituserid != null" >
+        audituserid,
+      </if>
+      <if test="auditusername != null" >
+        auditusername,
+      </if>
+      <if test="audittime != null" >
+        audittime,
+      </if>
+      <if test="stopuserid != null" >
+        stopuserid,
+      </if>
+      <if test="stopusername != null" >
+        stopusername,
+      </if>
+      <if test="stoptime != null" >
+        stoptime,
+      </if>
+      <if test="closetime != null" >
+        closetime,
+      </if>
+      <if test="printtimes != null" >
+        printtimes,
+      </if>
+      <if test="customerid != null" >
+        customerid,
+      </if>
+      <if test="pcustomerid != null" >
+        pcustomerid,
+      </if>
+      <if test="customersort != null" >
+        customersort,
+      </if>
+      <if test="handlerid != null" >
+        handlerid,
+      </if>
+      <if test="salesarea != null" >
+        salesarea,
+      </if>
+      <if test="salesdept != null" >
+        salesdept,
+      </if>
+      <if test="salesuser != null" >
+        salesuser,
+      </if>
+      <if test="storageid != null" >
+        storageid,
+      </if>
+      <if test="billno != null" >
+        billno,
+      </if>
+      <if test="seq != null" >
+        seq,
+      </if>
+      <if test="indooruserid != null" >
+        indooruserid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="businessdate != null" >
+        #{businessdate},
+      </if>
+      <if test="status != null" >
+        #{status},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+      <if test="adduserid != null" >
+        #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        #{adddeptname},
+      </if>
+      <if test="addtime != null" >
+        #{addtime},
+      </if>
+      <if test="modifyuserid != null" >
+        #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        #{modifyusername},
+      </if>
+      <if test="modifytime != null" >
+        #{modifytime},
+      </if>
+      <if test="audituserid != null" >
+        #{audituserid},
+      </if>
+      <if test="auditusername != null" >
+        #{auditusername},
+      </if>
+      <if test="audittime != null" >
+        #{audittime},
+      </if>
+      <if test="stopuserid != null" >
+        #{stopuserid},
+      </if>
+      <if test="stopusername != null" >
+        #{stopusername},
+      </if>
+      <if test="stoptime != null" >
+        #{stoptime},
+      </if>
+      <if test="closetime != null" >
+        #{closetime},
+      </if>
+      <if test="printtimes != null" >
+        #{printtimes},
+      </if>
+      <if test="customerid != null" >
+        #{customerid},
+      </if>
+      <if test="pcustomerid != null" >
+        #{pcustomerid},
+      </if>
+      <if test="customersort != null" >
+        #{customersort},
+      </if>
+      <if test="handlerid != null" >
+        #{handlerid},
+      </if>
+      <if test="salesarea != null" >
+        #{salesarea},
+      </if>
+      <if test="salesdept != null" >
+        #{salesdept},
+      </if>
+      <if test="salesuser != null" >
+        #{salesuser},
+      </if>
+      <if test="storageid != null" >
+        #{storageid},
+      </if>
+      <if test="billno != null" >
+        #{billno},
+      </if>
+      <if test="seq != null" >
+        #{seq},
+      </if>
+      <if test="indooruserid != null" >
+        #{indooruserid},
+      </if>
+    </trim>
+   </insert>
+   <insert id="addOweOrderDetail" parameterType="com.hd.agent.sales.model.OweOrderDetail">
+    insert into t_sales_owe_order_detail
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="orderid != null">
+        orderid,
+      </if>
+      <if test="goodsid != null">
+        goodsid,
+      </if>
+      <if test="groupid != null">
+        groupid,
+      </if>
+      <if test="goodssort != null">
+        goodssort,
+      </if>
+      <if test="brandid != null">
+        brandid,
+      </if>
+      <if test="branduser != null">
+        branduser,
+      </if>
+      <if test="branddept != null">
+        branddept,
+      </if>
+      <if test="supplierid != null">
+        supplierid,
+      </if>
+      <if test="supplieruser != null">
+        supplieruser,
+      </if>
+      <if test="unitid != null">
+        unitid,
+      </if>
+      <if test="unitname != null">
+        unitname,
+      </if>
+      <if test="fixnum != null">
+        fixnum,
+      </if>
+      <if test="unitnum != null">
+        unitnum,
+      </if>
+      <if test="auxunitid != null">
+        auxunitid,
+      </if>
+      <if test="auxunitname != null">
+        auxunitname,
+      </if>
+      <if test="auxnum != null">
+        auxnum,
+      </if>
+      <if test="overnum != null">
+        overnum,
+      </if>
+      <if test="auxnumdetail != null">
+        auxnumdetail,
+      </if>
+      <if test="totalbox != null">
+        totalbox,
+      </if>
+      <if test="fixprice != null">
+        fixprice,
+      </if>
+      <if test="offprice != null">
+        offprice,
+      </if>
+      <if test="taxprice != null">
+        taxprice,
+      </if>
+      <if test="taxamount != null">
+        taxamount,
+      </if>
+      <if test="notaxprice != null">
+        notaxprice,
+      </if>
+      <if test="notaxamount != null">
+        notaxamount,
+      </if>
+      <if test="costprice != null">
+        costprice,
+      </if>
+      <if test="taxtype != null">
+        taxtype,
+      </if>
+      <if test="tax != null">
+        tax,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="deliverytype != null">
+        deliverytype,
+      </if>
+      <if test="deliverydate != null">
+        deliverydate,
+      </if>
+      <if test="billno != null">
+        billno,
+      </if>
+      <if test="billdetailno != null">
+        billdetailno,
+      </if>
+      <if test="seq != null">
+        seq,
+      </if>
+      <if test="oldprice != null">
+        oldprice,
+      </if>
+      <if test="storageid != null">
+        storageid,
+      </if>
+      <if test="demandprice != null">
+        demandprice,
+      </if>
+      <if test="demandamount != null">
+        demandamount,
+      </if>
+      <if test="ordernum != null">
+        ordernum,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id},
+      </if>
+      <if test="orderid != null">
+        #{orderid},
+      </if>
+      <if test="goodsid != null">
+        #{goodsid},
+      </if>
+      <if test="groupid != null">
+        #{groupid},
+      </if>
+      <if test="goodssort != null">
+        #{goodssort},
+      </if>
+      <if test="brandid != null">
+        #{brandid},
+      </if>
+      <if test="branduser != null">
+        #{branduser},
+      </if>
+      <if test="branddept != null">
+        #{branddept},
+      </if>
+      <if test="supplierid != null">
+        #{supplierid},
+      </if>
+      <if test="supplieruser != null">
+        #{supplieruser},
+      </if>
+      <if test="unitid != null">
+        #{unitid},
+      </if>
+      <if test="unitname != null">
+        #{unitname},
+      </if>
+      <if test="fixnum != null">
+        #{fixnum},
+      </if>
+      <if test="unitnum != null">
+        #{unitnum},
+      </if>
+      <if test="auxunitid != null">
+        #{auxunitid},
+      </if>
+      <if test="auxunitname != null">
+        #{auxunitname},
+      </if>
+      <if test="auxnum != null">
+        #{auxnum},
+      </if>
+      <if test="overnum != null">
+        #{overnum},
+      </if>
+      <if test="auxnumdetail != null">
+        #{auxnumdetail},
+      </if>
+      <if test="totalbox != null">
+        #{totalbox},
+      </if>
+      <if test="fixprice != null">
+        #{fixprice},
+      </if>
+      <if test="offprice != null">
+        #{offprice},
+      </if>
+      <if test="taxprice != null">
+        #{taxprice},
+      </if>
+      <if test="taxamount != null">
+        #{taxamount},
+      </if>
+      <if test="notaxprice != null">
+        #{notaxprice},
+      </if>
+      <if test="notaxamount != null">
+        #{notaxamount},
+      </if>
+      <if test="costprice != null">
+        #{costprice},
+      </if>
+      <if test="taxtype != null">
+        #{taxtype},
+      </if>
+      <if test="tax != null">
+        #{tax},
+      </if>
+      <if test="remark != null">
+        #{remark},
+      </if>
+      <if test="deliverytype != null">
+        #{deliverytype},
+      </if>
+      <if test="deliverydate != null">
+        #{deliverydate},
+      </if>
+      <if test="billno != null">
+        #{billno},
+      </if>
+      <if test="billdetailno != null">
+        #{billdetailno},
+      </if>
+      <if test="seq != null">
+        #{seq},
+      </if>
+      <if test="oldprice != null">
+        #{oldprice},
+      </if>
+      <if test="storageid != null">
+        #{storageid},
+      </if>
+      <if test="demandprice != null">
+        #{demandprice},
+      </if>
+      <if test="demandamount != null">
+        #{demandamount},
+      </if>
+      <if test="ordernum != null">
+        #{ordernum},
+      </if>
+    </trim>
+  </insert>
+
+ <select id="getSalesOweOrderList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.sales.model.OweOrder">
+      select  t.id, t.businessdate, t.status, t.remark, t.adduserid, t.addusername, t.adddeptid, t.adddeptname, t.addtime, t.modifyuserid, t.modifyusername,
+       t.modifytime, t.audituserid, t.auditusername, t.audittime, t.stopuserid, t.stopusername, t.stoptime, t.closetime, t.printtimes, t.customerid,
+       t.pcustomerid, t.customersort, t.handlerid, t.salesarea, t.salesdept, t.salesuser, t.storageid,t.billno, t.seq, t.indooruserid
+      from t_sales_owe_order t
+      <trim prefix="where" prefixOverrides="and|or">
+        <if test="condition.businessdate1 != null">
+           and businessdate >= #{condition.businessdate1}
+        </if>
+        <if test="condition.businessdate2 != null">
+           <![CDATA[and businessdate <= #{condition.businessdate2}]]>
+        </if>
+        <if test="condition.id != null" >
+           and id like CONCAT('%',#{condition.id},'%')
+        </if>
+        <if test="condition.goodsid != null">
+           and EXISTS (select t1.goodsid from t_sales_owe_order_detail t1 where t.id=t1.orderid and t1.goodsid = #{condition.goodsid})
+        </if>
+        <if test="condition.status != null">
+           and status = #{condition.status}
+        </if>
+        <if test="condition.customerid != null">
+           and customerid = #{condition.customerid}
+        </if>
+        <include refid="common.Page_querySql"/>
+        <include refid="common.Page_dataSql"/>
+      </trim>
+      <include refid="common.Page_limit" />
+  </select>
+  <select id="getSalesOweOrderCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  	    select count(1) from t_sales_owe_order t
+  	    <trim prefix="where" prefixOverrides="and|or">
+		  <if test="condition.businessdate1 != null">
+			 and businessdate >= #{condition.businessdate1}
+		  </if>
+		  <if test="condition.businessdate2 != null">
+			 <![CDATA[and businessdate <= #{condition.businessdate2}]]>
+		  </if>
+		  <if test="condition.id != null" >
+	         and id like CONCAT('%',#{condition.id},'%')
+	      </if>
+	      <if test="condition.goodsid != null">
+	         and EXISTS (select t1.goodsid from t_sales_owe_order_detail t1 where t.id=t1.orderid and t1.goodsid = #{condition.goodsid})
+	      </if>
+	      <if test="condition.status != null">
+	         and status = #{condition.status}
+	      </if>
+	      <if test="condition.customerid != null">
+	         and customerid = #{condition.customerid}
+	      </if>
+	      <include refid="common.Page_querySql"/>
+	      <include refid="common.Page_dataSql"/>
+	    </trim>
+  </select>
+   <select id="getOweOrder" parameterType="java.lang.String" resultType="com.hd.agent.sales.model.OweOrder">
+    select 
+    <include refid="OweOrder_Column_List" />
+    from t_sales_owe_order
+    where id = #{id}
+  </select>
+   <select id="getOweOrderDetail" parameterType="java.lang.String" resultType="com.hd.agent.sales.model.OweOrderDetail">
+  	select 
+  	<include refid="OweOrderDetail_Column_List"/>
+  	from t_sales_owe_order_detail
+  	where orderid = #{id}
+  	ORDER BY id asc
+  </select>
+  <update id="auditOweOrder" parameterType="java.lang.String">
+  		update t_sales_owe_order set audittime = #{date},status='1',audituserid=#{userid},auditusername=#{username},businessdate=#{businessdate}
+  		where id=#{id}
+  	</update>
+  	<delete id="deleteOweOrder" parameterType="java.lang.String">
+  		delete from t_sales_owe_order where id = #{id}
+  	</delete>
+  	<delete id="deleteOweOrderDetail" parameterType="java.lang.String">
+  		delete from t_sales_owe_order_detail where orderid = #{id}
+  	</delete>
+  	<select id="getOweOrderDetailByBillno" parameterType="java.lang.String" resultType="int">
+  	    select count(1) from t_sales_owe_order_detail where billno=#{id}
+  </select>
+   <update id="closeOweOrder" parameterType="java.lang.String">
+  		update t_sales_owe_order set closetime = #{date},status='4'
+  		where id=#{id}
+  	</update>
+  	<select id="getAllSalesOweOrderList" resultType="com.hd.agent.sales.model.OweOrder">
+	    select  <include refid="OweOrder_Column_List"/> 
+	    from t_sales_owe_order
+    </select>
+
+  <update id="editOrdernumById" >
+    update t_sales_owe_order_detail set ordernum = #{ordernum}
+    where id=#{id}
+  </update>
+</mapper>

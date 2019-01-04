@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.common.dao.SysLogMapper" >
+  	
+  	<insert id="addSysLog" parameterType="com.hd.agent.common.model.SysLog">
+  		insert into t_sys_log
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="id != null" >
+	        id,
+	      </if>
+	      <if test="type != null" >
+	        type,
+	      </if>
+	      <if test="content != null" >
+	        content,
+	      </if>
+	      <if test="keyname != null" >
+	        keyname,
+	      </if>
+	      <if test="1==1" >
+	        addtime,
+	      </if>
+	      <if test="userid != null" >
+	        userid,
+	      </if>
+	      <if test="name != null" >
+	        name,
+	      </if>
+	      <if test="ip != null" >
+	        ip,
+	      </if>
+            <if test="dataid != null" >
+                dataid,
+            </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="id != null" >
+	        #{id},
+	      </if>
+	      <if test="type != null" >
+	        #{type},
+	      </if>
+	      <if test="content != null" >
+	        #{content},
+	      </if>
+	      <if test="keyname != null" >
+	        #{keyname},
+	      </if>
+	      <if test="1==1" >
+	        now(),
+	      </if>
+	      <if test="userid != null" >
+	        #{userid},
+	      </if>
+	      <if test="name != null" >
+	        #{name},
+	      </if>
+	      <if test="ip != null" >
+	        #{ip},
+	      </if>
+            <if test="dataid != null" >
+                #{dataid},
+            </if>
+
+	    </trim>
+  	</insert>
+  	<select id="searchSysLog" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.common.model.SysLog">
+  		select id,type,content,keyname,addtime,userid,name,ip,dataid
+  		from t_sys_log
+  		<trim prefix="where" prefixOverrides="and|or" >
+	      <if test="condition.keyname != null" >
+	         and keyname like CONCAT('%',#{condition.keyname},'%')
+	      </if>
+	      <if test="condition.content != null" >
+	         and content like CONCAT('%',#{condition.content},'%')
+	      </if>
+	      <if test="condition.name != null" >
+	         and name = #{condition.name}
+	      </if>
+	      <if test="condition.begintime != null">
+			 and ADDTIME >= #{condition.begintime}
+		  </if>
+		  <if test="condition.endtime != null">
+			 <![CDATA[and ADDTIME <= #{condition.endtime}]]>
+		  </if>
+		  <if test="condition.type != null" >
+	         and type = #{condition.type}
+	      </if>
+	      <if test="condition.ip != null" >
+	         and ip = #{condition.ip}
+	      </if>
+	    </trim>
+	    <include refid="common.Page_limit"/>
+  	</select>
+  	<select id="getSysLogCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+		select count(1) from t_sys_log
+		<trim prefix="where" prefixOverrides="and|or" >
+	      <if test="condition.keyname != null" >
+	         and keyname like CONCAT('%',#{condition.keyname},'%')
+	      </if>
+	      <if test="condition.content != null" >
+	         and content like CONCAT('%',#{condition.content},'%')
+	      </if>
+	      <if test="condition.name != null" >
+	         and name = #{condition.name}
+	      </if>
+	      <if test="condition.begintime != null">
+			 and ADDTIME >= #{condition.begintime}
+		  </if>
+		  <if test="condition.endtime != null">
+			 <![CDATA[and ADDTIME <= #{condition.endtime}]]>
+		  </if>
+		  <if test="condition.type != null" >
+	         and type = #{condition.type}
+	      </if>
+	      <if test="condition.ip != null" >
+	         and ip = #{condition.ip}
+	      </if>
+	    </trim>
+	</select>
+	<select id="getSysLogInfoData" resultType="com.hd.agent.common.model.SysLog" parameterType="java.lang.String">
+		select a.type,a.content,a.keyname,a.addtime,a.userid,a.name,a.ip,a.dataid,t.olddata,t.newdata,t.changedata
+		from t_sys_log a
+		left join t_sys_log_data t on a.dataid = t.id
+		where a.id=#{id}
+	</select>
+    <select id="getSysLogInfo" resultType="com.hd.agent.common.model.SysLog" parameterType="java.lang.String">
+        select type,content,keyname,addtime,userid,name,ip,dataid
+        from t_sys_log
+        where id=#{id}
+    </select>
+	<delete id="deleteSysLog" parameterType="java.lang.String">
+		delete from t_sys_log
+		where id=#{id}
+	</delete>
+	<delete id="clearSysLog">
+		delete from t_sys_log
+		<![CDATA[ where addtime <=date_add(NOW(), interval -12 MONTH) ;]]>
+
+		delete from t_sys_log_data
+		<![CDATA[ where addtime <=date_add(NOW(), interval -3 MONTH) ]]>
+	</delete>
+    <insert id="insertSysLogData" >
+        insert into t_sys_log_data
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="olddata != null" >
+                olddata,
+            </if>
+            <if test="newdata != null" >
+                newdata,
+            </if>
+            <if test="changedata != null" >
+                changedata,
+            </if>
+            <if test="1==1" >
+                addtime,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id},
+            </if>
+            <if test="olddata != null" >
+                #{olddata},
+            </if>
+            <if test="newdata != null" >
+                #{newdata},
+            </if>
+            <if test="changedata != null" >
+                #{changedata},
+            </if>
+            <if test="1==1" >
+                now(),
+            </if>
+        </trim>
+    </insert>
+</mapper>

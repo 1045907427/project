@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.report.dao.PaymentdaysSetMapper" >
+    <insert id="addPaymentdays" parameterType="com.hd.agent.report.model.PaymentdaysSet" >
+        insert into t_report_paymentdays_set
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="days != null" >
+                days,
+            </if>
+            <if test="detail != null" >
+                detail,
+            </if>
+            <if test="beginday != null" >
+                beginday,
+            </if>
+            <if test="endday != null" >
+                endday,
+            </if>
+            <if test="seq != null" >
+                seq,
+            </if>
+            <if test="type != null" >
+                type,
+            </if>
+            <if test="adduserid != null" >
+                adduserid,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id},
+            </if>
+            <if test="days != null" >
+                #{days},
+            </if>
+            <if test="detail != null" >
+                #{detail},
+            </if>
+            <if test="beginday != null" >
+                #{beginday},
+            </if>
+            <if test="endday != null" >
+                #{endday},
+            </if>
+            <if test="seq != null" >
+                #{seq},
+            </if>
+            <if test="type != null" >
+                #{type},
+            </if>
+            <if test="adduserid != null" >
+                #{adduserid},
+            </if>
+        </trim>
+    </insert>
+    <delete id="deletePaymentdays" parameterType="java.lang.String">
+  	delete from t_report_paymentdays_set where adduserid=#{userid} and type=#{type}
+  </delete>
+    <select id="getPaymentdaysSetByUserid" parameterType="java.lang.String" resultType="com.hd.agent.report.model.PaymentdaysSet">
+        select id, days, detail, beginday, endday, seq, type, adduserid from t_report_paymentdays_set
+        where adduserid=#{userid} and type=#{type}
+        order by seq
+    </select>
+    <select id="getPaymentdaysSetByUseridAndSeq" parameterType="java.lang.String" resultType="com.hd.agent.report.model.PaymentdaysSet">
+        select id, days, detail, beginday, endday, seq, type, adduserid from t_report_paymentdays_set
+        where adduserid=#{userid} and seq=#{seq} and type=#{type}
+    </select>
+    <select id="getInventoryAgedaysSetByUserid" parameterType="java.lang.String" resultType="com.hd.agent.report.model.PaymentdaysSet">
+        select id, days, detail, beginday, endday, seq, type, adduserid from t_report_paymentdays_set
+        where adduserid=#{userid} and type='3'
+        order by seq
+    </select>
+</mapper>

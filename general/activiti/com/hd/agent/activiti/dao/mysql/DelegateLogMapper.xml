@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.activiti.dao.DelegateLogMapper" >
+  <resultMap id="BaseResultMap" type="com.hd.agent.activiti.model.DelegateLog" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="processid" property="processid" jdbcType="VARCHAR" />
+    <result column="definitionkey" property="definitionkey" jdbcType="VARCHAR" />
+    <result column="definitionname" property="definitionname" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="taskid" property="taskid" jdbcType="VARCHAR" />
+    <result column="taskname" property="taskname" jdbcType="VARCHAR" />
+    <result column="userid" property="userid" jdbcType="VARCHAR" />
+    <result column="delegateuserid" property="delegateuserid" jdbcType="VARCHAR" />
+    <result column="adddate" property="adddate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, instanceid, definitionkey, definitionname, title, taskid, taskname, userid, delegateuserid, adddate
+  </sql>
+  <select id="getDelegateLog" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_act_delegate_log
+    where id = #{id}
+  </select>
+  <delete id="deleteDelegateLog" parameterType="java.lang.String" >
+    delete from t_act_delegate_log
+    where id = #{id}
+  </delete>
+  <insert id="addDelegateLog" parameterType="com.hd.agent.activiti.model.DelegateLog" >
+    <selectKey resultType="java.lang.String" order="AFTER" keyProperty="id">
+	  SELECT LAST_INSERT_ID() AS id
+	</selectKey>
+    insert into t_act_delegate_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="processid != null" >
+          processid,
+      </if>
+      <if test="definitionkey != null" >
+        definitionkey,
+      </if>
+      <if test="definitionname != null" >
+        definitionname,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="taskid != null" >
+        taskid,
+      </if>
+      <if test="taskname != null" >
+        taskname,
+      </if>
+      <if test="userid != null" >
+        userid,
+      </if>
+      <if test="delegateuserid != null" >
+        delegateuserid,
+      </if>
+        adddate,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="processid != null" >
+          (select id from t_act_process where instanceid = #{processid}),
+      </if>
+      <if test="definitionkey != null" >
+        #{definitionkey},
+      </if>
+      <if test="definitionname != null" >
+        #{definitionname},
+      </if>
+      <if test="title != null" >
+        #{title},
+      </if>
+      <if test="taskid != null" >
+        #{taskid},
+      </if>
+      <if test="taskname != null" >
+        #{taskname},
+      </if>
+      <if test="userid != null" >
+        #{userid},
+      </if>
+      <if test="delegateuserid != null" >
+        #{delegateuserid},
+      </if>
+        now(),
+    </trim>
+  </insert>
+  <update id="updateDelegateLog" parameterType="com.hd.agent.activiti.model.DelegateLog" >
+    update t_act_delegate_log
+    <set >
+      <if test="processid != null" >
+          processid = #{processid},
+      </if>
+      <if test="title != null" >
+        title = #{title},
+      </if>
+      <if test="taskid != null" >
+        taskid = #{taskid},
+      </if>
+      <if test="taskname != null" >
+        taskname = #{taskname},
+      </if>
+      <if test="userid != null" >
+        userid = #{userid},
+      </if>
+      <if test="delegateuserid != null" >
+        delegateuserid = #{delegateuserid},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  <select id="getDelegateLogList" resultType="com.hd.agent.activiti.model.DelegateLog" parameterType="com.hd.agent.common.util.PageMap">
+  	select 
+  	a.id, a.processid, a.definitionkey, a.definitionname, a.title, a.taskid, a.taskname, b.name username, c.name delegateusername, a.adddate
+  	from t_act_delegate_log a
+  	left join t_sys_user b on a.userid = b.userid 
+  	left join t_sys_user c on a.delegateuserid = c.userid 
+  	<trim prefix="where" prefixOverrides="and|or" >
+  		<if test="condition.definitionkey != null">
+  			and a.definitionkey = #{condition.definitionkey}
+  		</if>
+  		<if test="condition.type == 0">
+  			and a.userid = #{condition.userid}
+  		</if>
+  		<if test="condition.type == 1">
+  			and a.delegateuserid = #{condition.userid}
+  		</if>
+  		<if test="condition.starttime != null">
+	      	<![CDATA[ and a.adddate > str_to_date(#{condition.starttime}, '%Y-%m-%d')  ]]>
+	    </if>
+	    <if test="condition.endtime != null">
+	    	<![CDATA[ and a.adddate < date_add(str_to_date(#{condition.endtime}, '%Y-%m-%d'), interval '1' day)  ]]>
+	    </if>
+  	</trim>
+  	order by a.adddate desc
+  	<include refid="common.Page_LimitOnly" />
+  </select>
+  <select id="getDelegateLogCount" resultType="java.lang.Integer" parameterType="com.hd.agent.common.util.PageMap">
+  	select count(1) 
+  	from t_act_delegate_log a
+  	<trim prefix="where" prefixOverrides="and|or" >
+  		<if test="condition.definitionkey != null">
+  			and a.definitionkey = #{condition.definitionkey}
+  		</if>
+  		<if test="condition.type == 0">
+  			and a.userid = #{condition.userid}
+  		</if>
+  		<if test="condition.type == 1">
+  			and a.delegateuserid = #{condition.userid}
+  		</if>
+  		<if test="condition.starttime != null">
+	      	<![CDATA[ and a.adddate > str_to_date(#{condition.starttime}, '%Y-%m-%d')  ]]>
+	    </if>
+	    <if test="condition.endtime != null">
+	    	<![CDATA[ and a.adddate < date_add(str_to_date(#{condition.endtime}, '%Y-%m-%d'), interval '1' day)  ]]>
+	    </if>
+  	</trim>
+  </select>
+</mapper>

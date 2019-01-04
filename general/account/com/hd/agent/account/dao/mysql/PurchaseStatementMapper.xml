@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.account.dao.PurchaseStatementMapper" >
+	<resultMap id="PurchaseStatementResultMap" type="com.hd.agent.account.model.PurchaseStatement" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="supplierid" property="supplierid" jdbcType="VARCHAR" />
+    <result column="businessdate" property="businessdate" jdbcType="VARCHAR" />
+    <result column="billtype" property="billtype" jdbcType="VARCHAR" />
+    <result column="billid" property="billid" jdbcType="VARCHAR" />
+    <result column="amount" property="amount" jdbcType="DECIMAL" />
+    <result column="billamount" property="billamount" jdbcType="DECIMAL" />
+    <result column="writeoffamount" property="writeoffamount" jdbcType="DECIMAL" />
+    <result column="tailamount" property="tailamount" jdbcType="DECIMAL" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="adduserid" property="adduserid" jdbcType="VARCHAR" />
+    <result column="addusername" property="addusername" jdbcType="VARCHAR" />
+    <result column="addtime" property="addtime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="PurchaseStatement_Column_List" >
+    id, supplierid, businessdate, billtype, billid, amount, billamount, writeoffamount, 
+    tailamount, remark, adduserid, addusername, addtime
+  </sql>
+  <insert id="addPurchaseStatement" parameterType="com.hd.agent.account.model.PurchaseStatement" >
+    insert into t_account_purchase_statement
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="supplierid != null" >
+        supplierid,
+      </if>
+      <if test="businessdate != null" >
+        businessdate,
+      </if>
+      <if test="billtype != null" >
+        billtype,
+      </if>
+      <if test="billid != null" >
+        billid,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="billamount != null" >
+        billamount,
+      </if>
+      <if test="writeoffamount != null" >
+        writeoffamount,
+      </if>
+      <if test="tailamount != null" >
+        tailamount,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="adduserid != null" >
+        adduserid,
+      </if>
+      <if test="addusername != null" >
+        addusername,
+      </if>
+      <if test="1 == 1" >
+        addtime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="supplierid != null" >
+        #{supplierid},
+      </if>
+      <if test="businessdate != null" >
+        #{businessdate},
+      </if>
+      <if test="billtype != null" >
+        #{billtype},
+      </if>
+      <if test="billid != null" >
+        #{billid},
+      </if>
+      <if test="amount != null" >
+        #{amount},
+      </if>
+      <if test="billamount != null" >
+        #{billamount},
+      </if>
+      <if test="writeoffamount != null" >
+        #{writeoffamount},
+      </if>
+      <if test="tailamount != null" >
+        #{tailamount},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+      <if test="adduserid != null" >
+        #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        #{addusername},
+      </if>
+      <if test="1 == 1" >
+        now(),
+      </if>
+    </trim>
+  </insert>
+  <select id="getPurchaseStatementList" parameterType="java.lang.String" resultMap="PurchaseStatementResultMap">
+  	select <include refid="PurchaseStatement_Column_List"/>
+  	from t_account_purchase_statement where supplierid = #{supplierid} order by addtime asc
+  </select>
+  <select id="getPurchaseStatementListPage" parameterType="java.lang.String" resultMap="PurchaseStatementResultMap">
+  	select <include refid="PurchaseStatement_Column_List"/>
+  	from t_account_purchase_statement
+  	<trim prefix="where" prefixOverrides="and|or">
+	  <if test="condition.businessdate1 != null">
+		 and businessdate >= #{condition.businessdate1}
+	  </if>
+	  <if test="condition.businessdate2 != null">
+		 <![CDATA[and businessdate <= #{condition.businessdate2}]]>
+	  </if>
+	  <if test="condition.supplierid != null" >
+         and supplierid = #{condition.supplierid}
+      </if>
+      <if test="condition.billid != null">
+         and billid = #{condition.billid}
+      </if>
+    </trim>
+    order by addtime asc
+    <include refid="common.Page_limit" />
+  </select>
+  <select id="getPurchaseStatementCount" parameterType="java.lang.String" resultType="int">
+  	select count(1) from t_account_purchase_statement 
+  	<trim prefix="where" prefixOverrides="and|or">
+	  <if test="condition.businessdate1 != null">
+		 and businessdate >= #{condition.businessdate1}
+	  </if>
+	  <if test="condition.businessdate2 != null">
+		 <![CDATA[and businessdate <= #{condition.businessdate2}]]>
+	  </if>
+	  <if test="condition.supplierid != null" >
+         and supplierid = #{condition.supplierid}
+      </if>
+      <if test="condition.billid != null">
+         and billid = #{condition.billid}
+      </if>
+    </trim>
+  </select>
+  <delete id="deletePurchaseStatement" parameterType="java.lang.String">
+      delete from t_account_purchase_statement where billid=#{billid} and billtype=#{billtype} and supplierid=#{supplierid}
+  </delete>
+</mapper>

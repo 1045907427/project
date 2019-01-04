@@ -1,0 +1,609 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.account.dao.SalesBillCheckMapper">
+	<!-- 销售单据核对 -->
+	  <sql id="salesBillCheckSql">
+	  	(
+          SELECT t.id,t.businessdate,t.customerid,t.pcustomerid,t.customersort,t.salesarea,t.salesdept,t.salesuser,t1.goodsid,t1.brandid,t1.branduser,t1.branddept,
+          t1.unitnum AS initsendnum,t1.taxamount AS initsendamount,t1.notaxamount AS initsendnotaxamount,
+          0 AS sendnum,0 AS sendamount,0 AS sendnotaxamount,0 as sendcostamount,
+          0 AS returnnum,0 AS returnamount,0 AS returnnotaxamount,
+          0 AS directreturnnum,0 AS directreturnamount,0 AS directreturnnotaxamount,
+          0 AS checkreturnnum,0 AS checkreturnamount,0 AS checkreturnnotaxamount,
+          0 as costamount,0 as pushbalanceamount,t1.supplierid,t1.supplieruser
+          FROM t_sales_dispatchbill t
+          RIGHT JOIN t_sales_dispatchbill_detail t1 ON t.id = t1.billid
+          <trim prefix="where" prefixOverrides="and|or">
+              <if test="condition.businessdate1 != null">
+                  and t.businessdate >= #{condition.businessdate1}
+              </if>
+              <if test="condition.businessdate2 != null">
+                  <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+              </if>
+              <if test="condition.businessyearmonth != null">
+                  <![CDATA[and t.businessdate like '${condition.businessyearmonth}%']]>
+              </if>
+              <if test="condition.goodsid != null" >
+                  and t1.goodsid = #{condition.goodsid}
+              </if>
+              <if test="condition.brand != null" >
+                  and t1.brandid = #{condition.brand}
+              </if>
+              <if test="condition.customerid != null" >
+                  and t.customerid = #{condition.customerid}
+              </if>
+              <if test="condition.customersort != null" >
+                  and t.customersort = #{condition.customersort}
+              </if>
+              <if test="condition.salesuser != null" >
+                  and t.salesuser = #{condition.salesuser}
+              </if>
+              <if test="condition.branddept != null" >
+                  and t1.branddept = #{condition.branddept}
+              </if>
+              <if test="condition.branddeptlike != null" >
+                  and t1.branddept like '${condition.branddeptlike}%'
+              </if>
+              <if test="condition.branddeptarrs != null" >
+                  and FIND_IN_SET(t1.branddept, #{condition.branddept})
+              </if>
+              <if test="1==1" >
+                  and  t.status in('3','4')
+              </if>
+              <if test="condition.supplierid!=null">
+                  and t1.supplierid = #{condition.supplierid}
+              </if>
+          </trim>
+          UNION ALL
+	  		SELECT t.id,t.businessdate,t.customerid,t.pcustomerid,t.customersort,t.salesarea,t.salesdept,t.salesuser,t1.goodsid,t1.brandid,t1.branduser,t1.branddept,
+				0 as initsendnum,0 as initsendamount,0 as initsendnotaxamount,
+                t1.unitnum AS sendnum,t1.taxamount AS sendamount,t1.notaxamount AS sendnotaxamount,t1.unitnum*t1.costprice as sendcostamount,
+				0 AS returnnum,0 AS returnamount,0 AS returnnotaxamount,
+                0 AS directreturnnum,0 AS directreturnamount,0 AS directreturnnotaxamount,
+                0 AS checkreturnnum,0 AS checkreturnamount,0 AS checkreturnnotaxamount,
+                t1.unitnum*t1.costprice as costamount,0 as pushbalanceamount,t1.supplierid,t1.supplieruser
+			FROM t_storage_saleout t
+			RIGHT JOIN t_storage_saleout_detail t1 ON t1.saleoutid = t.id
+			<trim prefix="where" prefixOverrides="and|or">
+			  <if test="condition.businessdate1 != null">
+				 and t.businessdate >= #{condition.businessdate1}
+			  </if>
+			  <if test="condition.businessdate2 != null">
+				 <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+			  </if>
+			  <if test="condition.businessyearmonth != null">
+		 		  <![CDATA[and t.businessdate like '${condition.businessyearmonth}%']]>
+			  </if>
+			  <if test="condition.goodsid != null" >
+	         	and t1.goodsid = #{condition.goodsid}
+	      	  </if>
+			  <if test="condition.brand != null" >
+		         and t1.brandid = #{condition.brand}
+		      </if>
+		      <if test="condition.customerid != null" >
+		         and t.customerid = #{condition.customerid}
+		      </if>
+              <if test="condition.customersort != null" >
+                and t.customersort = #{condition.customersort}
+              </if>
+              <if test="condition.salesuser != null" >
+                and t.salesuser = #{condition.salesuser}
+              </if>
+			  <if test="condition.branddept != null" >
+	         	and t1.branddept = #{condition.branddept}
+	      	  </if>
+			  <if test="condition.branddeptlike != null" >
+	         	and t1.branddept like '${condition.branddeptlike}%'
+	      	  </if>
+			  <if test="condition.branddeptarrs != null" >
+	         	and FIND_IN_SET(t1.branddept, #{condition.branddept})
+	      	  </if>
+			  <if test="1==1" >
+		         and  t.status in('3','4')
+		      </if>
+              <if test="condition.supplierid!=null">
+                and t1.supplierid = #{condition.supplierid}
+              </if>
+		    </trim>
+			UNION ALL
+              SELECT t.id,t.businessdate,t.customerid,t.pcustomerid,t.customersort,t.salesarea,t.salesdept,t.salesuser,t1.goodsid,t1.brandid,t1.branduser,t1.branddept,
+              0 AS initsendnum,0 AS initsendamount,0 AS initsendnotaxamount,
+              0 AS sendnum,0 AS sendamount,0 AS sendnotaxamount,0 as sendcostamount,
+              t1.unitnum AS returnnum,t1.taxamount AS returnamount,t1.notaxamount AS returnnotaxamount,
+              t1.unitnum AS directreturnnum,t1.taxamount AS directreturnamount,t1.notaxamount AS directreturnnotaxamount,
+              0 AS checkreturnnum,0 AS checkreturnamount,0 AS checkreturnnotaxamount,
+              -t1.unitnum*t1.costprice as costamount,0 as pushbalanceamount,t1.supplierid,t1.supplieruser
+              FROM t_storage_salereject_enter t
+              RIGHT JOIN t_storage_salereject_enter_detail t1 ON t1.salerejectid = t.id
+              <trim prefix="where" prefixOverrides="and|or">
+                  <if test="condition.businessdate1 != null">
+                      and t.businessdate >= #{condition.businessdate1}
+                  </if>
+                  <if test="condition.businessdate2 != null">
+                      <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+                  </if>
+                  <if test="condition.businessyearmonth != null">
+                      <![CDATA[and t.businessdate like '${condition.businessyearmonth}%']]>
+                  </if>
+                  <if test="condition.goodsid != null" >
+                      and t1.goodsid = #{condition.goodsid}
+                  </if>
+                  <if test="condition.brand != null" >
+                      and t1.brandid = #{condition.brand}
+                  </if>
+                  <if test="condition.customerid != null" >
+                      and t.customerid = #{condition.customerid}
+                  </if>
+                  <if test="condition.customersort != null" >
+                      and t.customersort = #{condition.customersort}
+                  </if>
+                  <if test="condition.salesuser != null" >
+                      and t.salesuser = #{condition.salesuser}
+                  </if>
+                  <if test="condition.branddept != null" >
+                      and t1.branddept = #{condition.branddept}
+                  </if>
+                  <if test="condition.branddeptlike != null" >
+                      and t1.branddept like '${condition.branddeptlike}%'
+                  </if>
+                  <if test="condition.branddeptarrs != null" >
+                      and FIND_IN_SET(t1.branddept, #{condition.branddept})
+                  </if>
+                  <if test="1==1" >
+                      and  ischeck='1'AND t.sourcetype = '2' AND t.STATUS IN ('3', '4')
+                  </if>
+                  <if test="condition.supplierid!=null">
+                      and t1.supplierid = #{condition.supplierid}
+                  </if>
+              </trim>
+          UNION ALL
+          SELECT t.id,t.businessdate,t.customerid,t.pcustomerid,t.customersort,t.salesarea,t.salesdept,t.salesuser,t1.goodsid,t1.brandid,t1.branduser,t1.branddept,
+            0 AS initsendnum,0 AS initsendamount, 0 AS initsendnotaxamount,
+            0 AS sendnum, 0 AS sendamount, 0 AS sendnotaxamount, 0 as sendcostamount,
+            t1.unitnum AS returnnum,t1.taxamount AS returnamount, t1.notaxamount AS returnnotaxamount,
+            0 AS directreturnnum, 0 AS directreturnamount, 0 AS directreturnnotaxamount,
+            t1.unitnum AS checkreturnnum, t1.taxamount AS checkreturnamount, t1.notaxamount AS checkreturnnotaxamount,
+            -t1.unitnum*t1.costprice as costamount,0 as pushbalanceamount,t1.supplierid,t1.supplieruser
+          FROM t_storage_salereject_enter t
+          RIGHT JOIN t_storage_salereject_enter_detail t1 ON t1.salerejectid = t.id
+          <trim prefix="where" prefixOverrides="and|or">
+              <if test="condition.businessdate1 != null">
+                  and t.businessdate >= #{condition.businessdate1}
+              </if>
+              <if test="condition.businessdate2 != null">
+                  <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+              </if>
+              <if test="condition.businessyearmonth != null">
+                  <![CDATA[and t.businessdate like '${condition.businessyearmonth}%']]>
+              </if>
+              <if test="condition.goodsid != null" >
+                  and t1.goodsid = #{condition.goodsid}
+              </if>
+              <if test="condition.brand != null" >
+                  and t1.brandid = #{condition.brand}
+              </if>
+              <if test="condition.customerid != null" >
+                  and t.customerid = #{condition.customerid}
+              </if>
+              <if test="condition.customersort != null" >
+                  and t.customersort = #{condition.customersort}
+              </if>
+              <if test="condition.salesuser != null" >
+                  and t.salesuser = #{condition.salesuser}
+              </if>
+              <if test="condition.branddept != null" >
+                  and t1.branddept = #{condition.branddept}
+              </if>
+              <if test="condition.branddeptlike != null" >
+                  and t1.branddept like '${condition.branddeptlike}%'
+              </if>
+              <if test="condition.branddeptarrs != null" >
+                  and FIND_IN_SET(t1.branddept, #{condition.branddept})
+              </if>
+              <if test="1==1" >
+                  and  ischeck='1'AND t.sourcetype = '1' AND t.STATUS IN ('3', '4')
+              </if>
+              <if test="condition.supplierid!=null">
+                  and t1.supplierid = #{condition.supplierid}
+              </if>
+          </trim>
+		  UNION ALL
+            SELECT t.id,t.businessdate,t.customerid,t.pcustomerid,t.customersort,t.salesarea,t.salesdept,t.salesuser,t.brandid AS goodsid,t.brandid,t.branduser,t.branddept,
+                0 AS initsendnum,0 AS initsendamount, 0 AS initsendnotaxamount,
+                0 AS sendnum, 0 AS sendamount, 0 AS sendnotaxamount, 0 as sendcostamount,
+                0 AS returnnum,0 AS returnamount,0 AS returnnotaxamount,
+                0 AS directreturnnum,0 AS directreturnamount,0 AS directreturnnotaxamount,
+                0 AS checkreturnnum,0 AS checkreturnamount,0 AS checkreturnnotaxamount,
+                0 as costamount,t.amount as pushbalanceamount,t.supplierid,t.supplieruser
+            FROM t_account_customer_push_balance t
+            <trim prefix="where" prefixOverrides="and|or">
+              <if test="condition.businessdate1 != null">
+                 and t.businessdate >= #{condition.businessdate1}
+              </if>
+              <if test="condition.businessdate2 != null">
+                 <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+              </if>
+              <if test="condition.businessyearmonth != null">
+                  <![CDATA[and t.businessdate like '${condition.businessyearmonth}%']]>
+              </if>
+              <if test="condition.brand != null" >
+                 and brandid = #{condition.brand}
+              </if>
+              <if test="condition.customerid != null" >
+                 and customerid = #{condition.customerid}
+              </if>
+              <if test="condition.customersort != null" >
+                and t.customersort = #{condition.customersort}
+              </if>
+              <if test="condition.salesuser != null" >
+                and t.salesuser = #{condition.salesuser}
+              </if>
+              <if test="condition.branddept != null" >
+                and branddept = #{condition.branddept}
+              </if>
+              <if test="condition.branddeptlike != null" >
+                and branddept like '${condition.branddeptlike}%'
+              </if>
+              <if test="condition.branddeptarrs != null" >
+                and FIND_IN_SET(branddept, #{condition.branddept})
+              </if>
+              <if test="condition.isPush == 0">
+                and isinvoice != 0 and isinvoice != 1
+              </if>
+              <if test="1==1" >
+                 and  t.STATUS IN ('3', '4')
+              </if>
+                <if test="condition.supplierid!=null">
+                    and t.supplierid = #{condition.supplierid}
+                </if>
+            </trim>
+	  	)
+	  </sql>
+      <sql id="salesBillCheckNumSql">
+        (
+          SELECT t.id,t.businessdate,t.customerid,t.pcustomerid,t.customersort,t.salesarea,t.salesdept,t.salesuser,t1.goodsid,t1.brandid,t1.branduser,t1.branddept,t1.supplierid,t1.supplieruser
+          FROM t_storage_saleout t
+          RIGHT JOIN t_storage_saleout_detail t1 ON t1.saleoutid = t.id
+          <trim prefix="where" prefixOverrides="and|or">
+              <if test="condition.businessdate1 != null">
+                  and t.businessdate >= #{condition.businessdate1}
+              </if>
+              <if test="condition.businessdate2 != null">
+                  <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+              </if>
+              <if test="condition.businessyearmonth != null">
+                  <![CDATA[and t.businessdate like '${condition.businessyearmonth}%']]>
+              </if>
+              <if test="condition.goodsid != null" >
+                  and t1.goodsid = #{condition.goodsid}
+              </if>
+              <if test="condition.brand != null" >
+                  and t1.brandid = #{condition.brand}
+              </if>
+              <if test="condition.customerid != null" >
+                  and t.customerid = #{condition.customerid}
+              </if>
+              <if test="condition.branddept != null" >
+                  and t1.branddept = #{condition.branddept}
+              </if>
+              <if test="condition.branddeptlike != null" >
+                  and t1.branddept like '${condition.branddeptlike}%'
+              </if>
+              <if test="condition.branddeptarrs != null" >
+                  and FIND_IN_SET(t1.branddept, #{condition.branddept})
+              </if>
+              <if test="1==1" >
+                  and  t.status in('3','4')
+              </if>
+          </trim>
+          UNION ALL
+          SELECT t.id,t.businessdate,t.customerid,t.pcustomerid,t.customersort,t.salesarea,t.salesdept,t.salesuser,t1.goodsid,t1.brandid,t1.branduser,t1.branddept,t1.supplierid,t1.supplieruser
+          FROM t_storage_salereject_enter t
+          RIGHT JOIN t_storage_salereject_enter_detail t1 ON t1.salerejectid = t.id
+          <trim prefix="where" prefixOverrides="and|or">
+              <if test="condition.businessdate1 != null">
+                  and t.businessdate >= #{condition.businessdate1}
+              </if>
+              <if test="condition.businessdate2 != null">
+                  <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+              </if>
+              <if test="condition.businessyearmonth != null">
+                  <![CDATA[and t.businessdate like '${condition.businessyearmonth}%']]>
+              </if>
+              <if test="condition.goodsid != null" >
+                  and t1.goodsid = #{condition.goodsid}
+              </if>
+              <if test="condition.brand != null" >
+                  and t1.brandid = #{condition.brand}
+              </if>
+              <if test="condition.customerid != null" >
+                  and t.customerid = #{condition.customerid}
+              </if>
+              <if test="condition.branddept != null" >
+                  and t1.branddept = #{condition.branddept}
+              </if>
+              <if test="condition.branddeptlike != null" >
+                  and t1.branddept like '${condition.branddeptlike}%'
+              </if>
+              <if test="condition.branddeptarrs != null" >
+                  and FIND_IN_SET(t1.branddept, #{condition.branddept})
+              </if>
+              <if test="1==1" >
+                  and  ischeck='1' AND t.STATUS IN ('3', '4')
+              </if>
+          </trim>
+              UNION ALL
+              SELECT t.id,t.businessdate,t.customerid,t.pcustomerid,t.customersort,t.salesarea,t.salesdept,t.salesuser,t.brandid AS goodsid,t.brandid,t.branduser,t.branddept,t.supplierid,t.supplieruser
+              FROM t_account_customer_push_balance t
+              <trim prefix="where" prefixOverrides="and|or">
+                  <if test="condition.businessdate1 != null">
+                      and t.businessdate >= #{condition.businessdate1}
+                  </if>
+                  <if test="condition.businessdate2 != null">
+                      <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+                  </if>
+                  <if test="condition.businessyearmonth != null">
+                      <![CDATA[and t.businessdate like '${condition.businessyearmonth}%']]>
+                  </if>
+                  <if test="condition.brand != null" >
+                      and brandid = #{condition.brand}
+                  </if>
+                  <if test="condition.customerid != null" >
+                      and customerid = #{condition.customerid}
+                  </if>
+                  <if test="condition.branddept != null" >
+                      and branddept = #{condition.branddept}
+                  </if>
+                  <if test="condition.branddeptlike != null" >
+                      and branddept like '${condition.branddeptlike}%'
+                  </if>
+                  <if test="condition.branddeptarrs != null" >
+                      and FIND_IN_SET(branddept, #{condition.branddept})
+                  </if>
+                  <if test="condition.isPush == 0">
+                      and isinvoice != 0 and isinvoice != 1
+                  </if>
+                  <if test="1==1" >
+                      and  t.STATUS IN ('3', '4')
+                  </if>
+              </trim>
+        )
+      </sql>
+	  <select id="getSalesBillCheckList" parameterType="com.hd.agent.common.util.PageMap" resultType="java.util.Map">
+	  	SELECT z.businessdate,z.customerid,z.pcustomerid,z.salesarea,z.salesdept,z.salesuser, z.goodsid,z.brandid,z.branduser,z.branddept,
+            SUM(z.initsendnum) AS initsendnum,SUM(z.initsendamount) AS initsendamount,SUM(z.initsendnotaxamount) AS initsendnotaxamount,
+            SUM(z.sendnum) AS sendnum,SUM(z.sendamount) AS sendamount,SUM(z.sendnotaxamount) AS sendnotaxamount,sum(z.sendcostamount) as sendcostamount,
+            SUM(z.returnnum) AS returnnum,SUM(z.returnamount) AS returnamount,SUM(z.returnnotaxamount) AS returnnotaxamount,
+            SUM(z.directreturnnum) AS directreturnnum,SUM(z.directreturnamount) AS directreturnamount,SUM(z.directreturnnotaxamount) AS directreturnnotaxamount,
+            SUM(z.checkreturnnum) AS checkreturnnum,SUM(z.checkreturnamount) AS checkreturnamount,SUM(z.checkreturnnotaxamount) AS checkreturnnotaxamount,
+            sum(z.pushbalanceamount) as pushbalanceamount
+		FROM <include refid="salesBillCheckSql"/> z
+		<trim prefix="where" prefixOverrides="and|or" >
+			<include refid="common.Page_dataSql"/>
+		</trim>
+		<if test="condition.groupcols == null">
+			GROUP BY z.customerid
+		</if>
+		<if test="condition.isflag == null">
+	 		<include refid="common.Page_limit"/>
+	 	</if>
+	  </select>
+	  <select id="getSalesBillCheckCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+	  	select count(1) from (
+		  	SELECT z.businessdate,z.customerid,z.pcustomerid,z.salesarea,z.salesdept,z.salesuser, z.goodsid,z.brandid,z.branduser,z.branddept,
+              SUM(z.initsendnum) AS initsendnum,SUM(z.initsendamount) AS initsendamount,SUM(z.initsendnotaxamount) AS initsendnotaxamount,
+              SUM(z.sendnum) AS sendnum,SUM(z.sendamount) AS sendamount,SUM(z.sendnotaxamount) AS sendnotaxamount,sum(z.sendcostamount) as sendcostamount,
+              SUM(z.returnnum) AS returnnum,SUM(z.returnamount) AS returnamount,SUM(z.returnnotaxamount) AS returnnotaxamount,
+              SUM(z.directreturnnum) AS directreturnnum,SUM(z.directreturnamount) AS directreturnamount,SUM(z.directreturnnotaxamount) AS directreturnnotaxamount,
+              SUM(z.checkreturnnum) AS checkreturnnum,SUM(z.checkreturnamount) AS checkreturnamount,SUM(z.checkreturnnotaxamount) AS checkreturnnotaxamount,
+              sum(z.pushbalanceamount) as pushbalanceamount
+			FROM <include refid="salesBillCheckSql"/> z
+			<trim prefix="where" prefixOverrides="and|or" >
+				<include refid="common.Page_dataSql"/>
+			</trim>
+			<if test="condition.groupcols == null">
+				GROUP BY z.customerid
+			</if>
+	  	)y
+	  </select>
+	  <select id="getSalesBillCheckNum" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+	  	select count(1) from (
+		  	select z.id from <include refid="salesBillCheckNumSql"/> z
+		  	GROUP BY z.id
+	  	) y
+	  </select>
+	  <select id="getSalesBillCheckDetailNum" parameterType="com.hd.agent.common.util.PageMap" resultType="java.util.Map">	  
+	  	select z.id,z.supplierid,COUNT(z.id) as detailnum 
+	  	from  <include refid="salesBillCheckNumSql"/> z
+	  	<choose>
+	  		<when test="condition.sumAllDetailNum=='true'">
+	  		</when>
+	  		<when test="condition.groupCountBySupplierid == 'true'">
+		  		GROUP BY z.supplierid
+	  		</when>
+	  		<otherwise>
+	  			GROUP BY z.id
+	  		</otherwise>
+	  	</choose>
+	  </select>
+	  <select id="getSalesBillCheckInfo" parameterType="java.lang.String" resultType="com.hd.agent.account.model.SalesBillCheck">
+	  	select * from t_account_sales_bill_check
+	  	where customerid = #{customerid} and businessdate = #{businessdate}
+	  </select>
+	  <select id="repeatSalesBillCheck" parameterType="java.lang.String" resultType="int">
+	  	select count(1) from t_account_sales_bill_check
+	  	where customerid = #{customerid} and businessdate = #{businessdate}
+	  </select>
+	  <select id="getSalesBillCheckInfoByPageMap" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.account.model.SalesBillCheck">
+	  	select sum(salesamount) as salesamount,sum(billnums) as billnums,remark from t_account_sales_bill_check
+	  	<trim prefix="where" prefixOverrides="and|or">
+		  <if test="condition.businessdate1 != null">
+			 and businessdate >= #{condition.businessdate1}
+		  </if>
+		  <if test="condition.businessdate2 != null">
+			 <![CDATA[and businessdate <= #{condition.businessdate2}]]>
+		  </if>
+	      <if test="condition.customerid != null" >
+	         and customerid = #{condition.customerid}
+	      </if>
+	    </trim>
+	  </select>
+	  <insert id="addSalesBillCheck" parameterType="com.hd.agent.account.model.SalesBillCheck">
+	  	insert into t_account_sales_bill_check
+	  	<trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="customerid != null" >
+	        customerid,
+	      </if>
+	      <if test="businessdate != null" >
+	        businessdate,
+	      </if>
+	      <if test="salesamount != null" >
+	        salesamount,
+	      </if>
+	      <if test="billnums != null" >
+	        billnums,
+	      </if>
+	      <if test="remark != null" >
+	        remark,
+	      </if>
+	      <if test="adduserid != null" >
+	        adduserid,
+	      </if>
+	      <if test="addusername != null" >
+	        addusername,
+	      </if>
+	      <if test="1 == 1" >
+	        addtime,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="customerid != null" >
+	        #{customerid},
+	      </if>
+	      <if test="businessdate != null" >
+	        #{businessdate},
+	      </if>
+	      <if test="salesamount != null" >
+	        #{salesamount},
+	      </if>
+	      <if test="billnums != null" >
+	        #{billnums},
+	      </if>
+	      <if test="remark != null" >
+	        #{remark},
+	      </if>
+	      <if test="adduserid != null" >
+	        #{adduserid},
+	      </if>
+	      <if test="addusername != null" >
+	        #{addusername},
+	      </if>
+	      <if test="1 == 1" >
+	        now(),
+	      </if>
+	    </trim>
+	  </insert>
+	  <update id="editSalesBillCheck" parameterType="com.hd.agent.account.model.SalesBillCheck">
+	  	update t_account_sales_bill_check
+	    <set >
+	      <if test="customerid != null" >
+	        customerid = #{customerid},
+	      </if>
+	      <if test="businessdate != null" >
+	        businessdate = #{businessdate},
+	      </if>
+	      <if test="salesamount != null" >
+	        salesamount = #{salesamount},
+	      </if>
+	      <if test="billnums != null" >
+	        billnums = #{billnums},
+	      </if>
+	      <if test="remark != null" >
+	        remark = #{remark},
+	      </if>
+	      <if test="modifyuserid != null" >
+	        modifyuserid = #{modifyuserid},
+	      </if>
+	      <if test="modifyusername != null" >
+	        modifyusername = #{modifyusername},
+	      </if>
+	      <if test="1 == 1" >
+	        modifytime = now(),
+	      </if>
+	    </set>
+	    where id = #{id}
+	  </update>
+	  <select id="getSalesBillCheckDataSum" parameterType="java.util.Map" resultType="java.util.Map">
+	  	select sum(salesamount) as inputsalesamount,sum(billnums) as inputbillnums 
+	  	from t_account_sales_bill_check
+	  	<trim prefix="where" prefixOverrides="and|or" >
+		  <if test="businessdate1 != null">
+			 and businessdate >= STR_TO_DATE(#{businessdate1},'%Y-%m-%d')
+		  </if>
+		  <if test="businessdate2 != null">
+			 <![CDATA[and businessdate <= STR_TO_DATE(#{businessdate2},'%Y-%m-%d')]]>
+		  </if>
+		   <if test="customerid != null" >
+	       		and customerid = #{customerid}
+	       </if>
+		</trim>
+	  </select>
+	  <select id="getExportSalesBillCheckList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.account.model.SalesBillCheck">
+	  	select customerid,businessdate,salesamount,billnums,remark
+	  	from t_account_sales_bill_check
+	  	<trim prefix="where" prefixOverrides="and|or" >
+		  <if test="condition.businessdate1 != null">
+			 and businessdate >= #{condition.businessdate1}
+		  </if>
+		  <if test="condition.businessdate2 != null">
+			 <![CDATA[and businessdate <= #{condition.businessdate2}]]>
+		  </if>
+		   <if test="condition.customerid != null" >
+	       		and customerid = #{condition.customerid}
+	       </if>
+		</trim>
+	  </select>
+	  <select id="getSalesBillSalesAmountSum" parameterType="com.hd.agent.common.util.PageMap" resultType="java.util.Map">
+	  	SELECT z.businessdate,z.branddept,
+			SUM(z.sendamount) AS sendamount,
+			SUM(z.returnamount) AS returnamount,
+			SUM(z.pushbalanceamount) as pushbalanceamount,
+			SUM(z.sendamount)-SUM(z.returnamount)+SUM(z.pushbalanceamount) as salesamount,
+			SUM(z.sendcostamount) as sendcostamount,
+			SUM(z.sendamount)-SUM(z.returnamount)+SUM(z.pushbalanceamount)-SUM(z.costamount) as grossamount
+		FROM <include refid="salesBillCheckSql"/> z
+		<trim prefix="where" prefixOverrides="and|or" >
+			<include refid="common.Page_dataSql"/>
+		</trim>
+	  </select>
+	  <select id="getSalesBillSupplierSalesAmountSum" parameterType="com.hd.agent.common.util.PageMap" resultType="java.util.Map">
+	  	SELECT z.businessdate,z.branddept,b.supplierid,
+			SUM(z.sendamount) AS sendamount,
+			SUM(z.returnamount) AS returnamount,
+			SUM(z.pushbalanceamount) as pushbalanceamount,
+			SUM(z.sendamount)-SUM(z.returnamount)+SUM(z.pushbalanceamount) as salesamount
+		FROM
+		t_base_goods_brand b INNER JOIN 
+		<include refid="salesBillCheckSql"/> z
+		on b.id=z.brandid
+		<trim prefix="where" prefixOverrides="and|or" >
+			<include refid="common.Page_dataSql"/>
+		</trim>
+		GROUP BY b.supplierid
+	  </select>
+
+    <select id="getSalesBillSalesAmountSumForSalesTarget" parameterType="com.hd.agent.common.util.PageMap" resultType="java.util.Map">
+        SELECT z.businessdate,z.branddept,
+        SUM(z.sendamount) AS sendamount,
+        SUM(z.returnamount) AS returnamount,
+        SUM(z.pushbalanceamount) as pushbalanceamount,
+        SUM(z.sendamount)-SUM(z.returnamount)+SUM(z.pushbalanceamount) as salesamount,
+        SUM(z.sendcostamount) as sendcostamount,
+        SUM(z.sendamount)-SUM(z.returnamount)+SUM(z.pushbalanceamount)-SUM(z.costamount) as grossamount
+        FROM <include refid="salesBillCheckSql"/> z
+        <trim prefix="where" prefixOverrides="and|or" >
+            <include refid="common.Page_dataSql"/>
+        </trim>
+        GROUP BY customersort,brandid,salesuser
+    </select>
+</mapper>

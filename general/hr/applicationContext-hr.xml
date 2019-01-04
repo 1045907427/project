@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd 
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+	
+	<!-- 签到 -->
+    <bean id="signinMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.hr.dao.SigninMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="signinService" parent="baseTransactionProxy">
+        <property name="target" ref="signinServiceImpl"></property>
+    </bean>
+    <bean id="signinServiceImpl" class="com.hd.agent.hr.service.impl.SigninServiceImpl" parent="baseServiceImpl">
+        <property name="signinMapper" ref="signinMapper"></property>
+    </bean>
+    <bean id="signinAction" class="com.hd.agent.hr.action.SigninAction" scope="prototype" parent="baseAction">
+        <property name="signinService" ref="signinService"></property>
+    </bean>
+
+    <!-- 请假统计、加班统计 -->
+	<bean id="statisticMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.hd.agent.hr.dao.StatisticMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+	</bean>
+    <bean id="statisticService" parent="baseTransactionProxy">
+        <property name="target" ref="statisticServiceImpl"></property>
+    </bean>
+    <bean id="statisticServiceImpl" class="com.hd.agent.hr.service.impl.StatisticServiceImpl" parent="baseServiceImpl">
+        <property name="statisticMapper" ref="statisticMapper"></property>
+    </bean>
+    <bean id="statisticAction" class="com.hd.agent.hr.action.StatisticAction" scope="prototype" parent="baseAction">
+        <property name="statisticService" ref="statisticService"></property>
+    </bean>
+
+    <!-- 报表 -->
+    <bean id="hrReportMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.hd.agent.hr.dao.HrReportMapper" />
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="hrReportService" parent="baseTransactionProxy">
+        <property name="target" ref="hrReportServiceImpl"></property>
+    </bean>
+    <bean id="hrReportServiceImpl" class="com.hd.agent.hr.service.impl.HrReportServiceImpl" parent="baseServiceImpl">
+        <property name="hrReportMapper" ref="hrReportMapper"></property>
+    </bean>
+    <bean id="hrReportAction" class="com.hd.agent.hr.action.HrReportAction" scope="prototype" parent="baseAction">
+        <property name="hrReportService" ref="hrReportService"/>
+    </bean>
+    <!--车辆轨迹管理-->
+    <bean id="hrMapAction" class="com.hd.agent.hr.action.MapAction" scope="prototype" parent="baseAction">
+    </bean>
+    <bean id="mapService" parent="baseTransactionProxy">
+        <property name="target" ref="mapServiceImpl"></property>
+    </bean>
+    <bean id="mapServiceImpl" class="com.hd.agent.hr.service.impl.MapServiceImpl" parent="baseServiceImpl">
+        <property name="locationMapper" ref="phoneLocationMapper"></property>
+        <property name="sysParamService" ref="sysParamService"></property>
+        <property name="phoneService" ref="phoneService"></property>
+    </bean>
+</beans>

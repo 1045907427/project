@@ -1,0 +1,2073 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.sales.dao.RejectBillMapper" >
+  <resultMap id="BaseResultMap" type="com.hd.agent.sales.model.RejectBill" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="keyid" property="keyid" jdbcType="VARCHAR" />
+    <result column="businessdate" property="businessdate" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="adduserid" property="adduserid" jdbcType="VARCHAR" />
+    <result column="addusername" property="addusername" jdbcType="VARCHAR" />
+    <result column="adddeptid" property="adddeptid" jdbcType="VARCHAR" />
+    <result column="adddeptname" property="adddeptname" jdbcType="VARCHAR" />
+    <result column="addtime" property="addtime" jdbcType="TIMESTAMP" />
+    <result column="modifyuserid" property="modifyuserid" jdbcType="VARCHAR" />
+    <result column="modifyusername" property="modifyusername" jdbcType="VARCHAR" />
+    <result column="modifytime" property="modifytime" jdbcType="TIMESTAMP" />
+    <result column="audituserid" property="audituserid" jdbcType="VARCHAR" />
+    <result column="auditusername" property="auditusername" jdbcType="VARCHAR" />
+    <result column="audittime" property="audittime" jdbcType="TIMESTAMP" />
+    <result column="stopuserid" property="stopuserid" jdbcType="VARCHAR" />
+    <result column="stopusername" property="stopusername" jdbcType="VARCHAR" />
+    <result column="stoptime" property="stoptime" jdbcType="TIMESTAMP" />
+    <result column="closetime" property="closetime" jdbcType="TIMESTAMP" />
+    <result column="printtimes" property="printtimes" jdbcType="INTEGER" />
+    <result column="ysprinttimes" property="ysprinttimes" jdbcType="INTEGER" />
+    <result column="customerid" property="customerid" jdbcType="VARCHAR" />
+    <result column="pcustomerid" property="pcustomerid" jdbcType="VARCHAR" />
+    <result column="customersort" property="customersort" jdbcType="VARCHAR" />
+    <result column="handlerid" property="handlerid" jdbcType="VARCHAR" />
+    <result column="salesarea" property="salesarea" jdbcType="VARCHAR" />
+    <result column="salesdept" property="salesdept" jdbcType="VARCHAR" />
+    <result column="salesuser" property="salesuser" jdbcType="VARCHAR" />
+    <result column="settletype" property="settletype" jdbcType="VARCHAR" />
+    <result column="paytype" property="paytype" jdbcType="VARCHAR" />
+    <result column="source" property="source" jdbcType="VARCHAR" />
+    <result column="storageid" property="storageid" jdbcType="VARCHAR" />
+    <result column="field01" property="field01" jdbcType="VARCHAR" />
+    <result column="field02" property="field02" jdbcType="VARCHAR" />
+    <result column="field03" property="field03" jdbcType="VARCHAR" />
+    <result column="field04" property="field04" jdbcType="VARCHAR" />
+    <result column="field05" property="field05" jdbcType="VARCHAR" />
+    <result column="field06" property="field06" jdbcType="VARCHAR" />
+    <result column="field07" property="field07" jdbcType="VARCHAR" />
+    <result column="field08" property="field08" jdbcType="VARCHAR" />
+    <result column="billno" property="billno" jdbcType="VARCHAR" />
+    <result column="isrefer" property="isrefer" jdbcType="VARCHAR" />
+    <result column="isinvoice" property="isinvoice" jdbcType="VARCHAR" />
+    <result column="canceldate" property="canceldate" jdbcType="VARCHAR" />
+    <result column="billtype" property="billtype" jdbcType="VARCHAR" />
+    <result column="isincomplete" property="isincomplete" jdbcType="VARCHAR" />
+    <result column="indooruserid" property="indooruserid" jdbcType="VARCHAR" />
+    <result column="receiptid" property="receiptid" jdbcType="VARCHAR" />
+    <result column="checkdate" property="checkdate" jdbcType="VARCHAR" />
+    <result column="duefromdate" property="duefromdate" jdbcType="VARCHAR" />
+    <result column="driverid" property="driverid" jdbcType="VARCHAR" />
+    <result column="isinvoicebill" property="isinvoicebill" jdbcType="VARCHAR" />
+    <result column="storager" property="storager" jdbcType="VARCHAR" />
+    <result column="salestype" property="salestype" jdbcType="VARCHAR" />
+    <result column="version" property="version" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, businessdate, status, remark, adduserid, addusername, adddeptid, adddeptname, 
+    addtime, modifyuserid, modifyusername, modifytime, audituserid, auditusername, audittime, 
+    stopuserid, stopusername, stoptime, closetime, printtimes, ysprinttimes, customerid,pcustomerid,customersort, handlerid,
+    salesarea,salesdept, salesuser, settletype, paytype, source, storageid, field01, field02, field03, 
+    field04, field05, field06, field07, field08, billno, isrefer, isinvoice,sourceid, canceldate,billtype,isincomplete,
+    indooruserid,receiptid,checkdate,duefromdate,driverid,isinvoicebill,ishand,storager,salestype,version
+  </sql>
+  <select id="getRejectBill" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_sales_rejectbill
+    where id = #{id}
+  </select>
+  <select id="getRejectBillById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_sales_rejectbill
+    where id = #{id}
+  </select>
+  <select id="getRejectBillCountById" resultType="java.lang.Integer" parameterType="java.lang.String" >
+    select count(1) from t_sales_rejectbill
+    where id = #{id}
+  </select>
+  <select id="getRejectBillByReceipt" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_sales_rejectbill
+    where billno = #{id}
+  </select>
+  <sql id="getRejectBillList_Where_Clause">
+    <if test="condition.goodsid != null">
+      and EXISTS (select t1.goodsid from t_sales_rejectbill_detail t1 where t.id=t1.billid and t1.goodsid = #{condition.goodsid})
+    </if>
+    <if test="condition.exportids != null" >
+      and FIND_IN_SET(t.id , #{condition.exportids})
+    </if>
+    <if test="condition.id != null" >
+      and t.id like concat('%',#{condition.id},'%')
+    </if>
+    <if test="condition.businessdate != null" >
+      <![CDATA[ and t.businessdate >= #{condition.businessdate} ]]>
+    </if>
+    <if test="condition.businessdate1 != null" >
+      <![CDATA[ and t.businessdate <= #{condition.businessdate1} ]]>
+    </if>
+    <if test="condition.ysbusinessdate != null" >
+      <![CDATA[ and t.checkdate >= #{condition.ysbusinessdate} ]]>
+    </if>
+    <if test="condition.ysbusinessdate1 != null" >
+      <![CDATA[ and t.checkdate <= #{condition.ysbusinessdate1} ]]>
+    </if>
+    <if test="condition.customerid != null" >
+      and (t.customerid = #{condition.customerid} or t.pcustomerid = #{condition.customerid})
+    </if>
+    <if test="condition.adduserid != null" >
+      and t.adduserid = #{condition.adduserid}
+    </if>
+    <if test="condition.salesdept != null" >
+      and t.salesdept = #{condition.salesdept}
+    </if>
+    <if test="condition.storageid != null" >
+      and t.storageid = #{condition.storageid}
+    </if>
+    <if test="condition.salesuser != null" >
+      and t.salesuser = #{condition.salesuser}
+    </if>
+    <if test="condition.indooruserid != null" >
+      and t.indooruserid = #{condition.indooruserid}
+    </if>
+    <if test="condition.driverid != null" >
+      and t.driverid = #{condition.driverid}
+    </if>
+    <if test="condition.addtime != null" >
+      <![CDATA[ and t.addtime > #{condition.addtime}]]>
+    </if>
+    <if test="condition.addtime1 != null" >
+      <![CDATA[ and t.addtime <= date_add(str_to_date(#{condition.addtime1}, '%Y-%m-%d'), interval '1' day) ]]>
+    </if>
+    <if test="condition.billtype != null" >
+      and t.billtype = #{condition.billtype}
+    </if>
+    <if test="condition.source != null" >
+      and t.source = #{condition.source}
+    </if>
+    <if test="condition.sourceid != null" >
+      and t.sourceid = #{condition.sourceid}
+    </if>
+    <if test="condition.statusarr != null" >
+      and FIND_IN_SET(t.status,#{condition.statusarr})
+    </if>
+    <if test="condition.status != null" >
+      and t.status = #{condition.status}
+    </if>
+    <if test="condition.status == null" >
+      and t.status !='1'
+    </if>
+    <if test="condition.isrefer != null" >
+      and t.isrefer = #{condition.isrefer}
+    </if>
+    <choose>
+      <when test="condition.isinvoice == 0" >
+        and (t.isinvoice = #{condition.isinvoice} || (t.billtype = '1' and status != '4') ) and status != '2' and status != '9' and status != '4'
+      </when>
+      <when test="condition.isinvoice == 3 ">
+        and ( t.isinvoice IN ("1", "2", "3", "4", "5") || (t.billtype = '1' and status = '4') ) and status != '2' and status != '9'
+      </when>
+    </choose>
+    <if test="condition.isincomplete != null" >
+      and t.isincomplete = #{condition.isincomplete}
+    </if>
+    <choose>
+      <when test="condition.isClose ==0 ">
+        and t.status in("1","2")
+      </when>
+      <when test="condition.isClose ==1 ">
+        and t.status in("3","4")
+      </when>
+      <when test="condition.isClose ==2 ">
+        and t.status ='3'
+      </when>
+      <when test="condition.isClose ==3 ">
+        and t.status ='4'
+      </when>
+    </choose>
+    <if test="condition.doprintopt != null">
+      <choose>
+        <when test="condition.printstatus == null ">
+          and 1 != 1
+        </when>
+        <when test="condition.printstatus ==0 ">
+          and (t.printtimes is null or printtimes=0)
+        </when>
+        <when test="condition.printstatus ==1 ">
+          <![CDATA[and (t.printtimes > 0) ]]>
+        </when>
+        <when test="condition.printstatus == 2 ">
+          and 1 = 1
+        </when>
+      </choose>
+    </if>
+    <if test="condition.printsign != null and condition.queryprinttimes != null">
+      <choose>
+        <when test="condition.printsign == 1">
+          <![CDATA[and t.printtimes = #{condition.queryprinttimes} ]]>
+        </when>
+        <when test="condition.printsign == 2">
+          <![CDATA[and t.printtimes < #{condition.queryprinttimes} ]]>
+        </when>
+        <when test="condition.printsign == 3">
+          <![CDATA[and t.printtimes <= #{condition.queryprinttimes} ]]>
+        </when>
+        <when test="condition.printsign == 4">
+          <![CDATA[and t.printtimes > #{condition.queryprinttimes} ]]>
+        </when>
+        <when test="condition.printsign == 5">
+          <![CDATA[and t.printtimes >= #{condition.queryprinttimes} ]]>
+        </when>
+      </choose>
+    </if>
+    <if test="condition.ysprintsign != null and condition.queryysprinttimes != null">
+      <choose>
+        <when test="condition.ysprintsign == 1">
+          <![CDATA[and t.ysprinttimes = #{condition.queryysprinttimes} ]]>
+        </when>
+        <when test="condition.ysprintsign == 2">
+          <![CDATA[and t.ysprinttimes < #{condition.queryysprinttimes} ]]>
+        </when>
+        <when test="condition.ysprintsign == 3">
+          <![CDATA[and t.ysprinttimes <= #{condition.queryysprinttimes} ]]>
+        </when>
+        <when test="condition.ysprintsign == 4">
+          <![CDATA[and t.ysprinttimes > #{condition.queryysprinttimes} ]]>
+        </when>
+        <when test="condition.ysprintsign == 5">
+          <![CDATA[and t.ysprinttimes >= #{condition.queryysprinttimes} ]]>
+        </when>
+      </choose>
+    </if>
+  </sql>
+  <select id="getRejectBillList" resultMap="BaseResultMap" parameterType="com.hd.agent.common.util.PageMap">
+  	select t.id, t.businessdate, t.status, t.remark, t.adduserid, t.addusername, t.adddeptid, t.adddeptname, 
+    t.addtime, t.modifyuserid, t.modifyusername, t.modifytime, t.audituserid, t.auditusername, t.audittime,t.duefromdate, 
+    t.stopuserid, t.stopusername, t.stoptime, t.closetime, t.printtimes, t.ysprinttimes, t.customerid,t.pcustomerid,t.customersort, t.handlerid,
+    t.salesarea,t.salesdept, t.salesuser, t.settletype, t.paytype, t.source, t.sourceid , t.storageid, t.field01, t.field02, t.field03,
+    t.field04, t.field05, t.field06, t.field07, t.field08, t.billno, t.isrefer, t.isinvoice, t.canceldate,t.billtype,t.isincomplete,
+    t.indooruserid,t.receiptid,t.checkdate,t.driverid,t.isinvoicebill,t.storager
+  	from t_sales_rejectbill t
+	<trim prefix="where" prefixOverrides="and|or">
+		<include refid="common.Page_querySql"/>
+	  	<include refid="common.Page_dataSql"/>
+        <include refid="getRejectBillList_Where_Clause"/>
+	</trim>
+	<if test="condition.isflag == null" >
+         <include refid="common.Page_limit"/>
+     </if>
+  </select>
+  <select id="getRejectBillCount" resultType="java.lang.Integer" parameterType="com.hd.agent.common.util.PageMap">
+  	select count(1) from t_sales_rejectbill t
+	<trim prefix="where" prefixOverrides="and|or">
+		<include refid="common.Page_querySql"/>
+	  	<include refid="common.Page_dataSql"/>
+        <include refid="getRejectBillList_Where_Clause"/>
+	</trim>
+  </select>
+  <delete id="deleteRejectBill" parameterType="java.lang.String" >
+    delete from t_sales_rejectbill
+    where id = #{id}
+  </delete>
+  <insert id="addRejectBill" parameterType="com.hd.agent.sales.model.RejectBill" >
+    insert into t_sales_rejectbill
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="keyid != null" >
+        keyid,
+      </if>
+      <if test="businessdate != null" >
+        businessdate,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="adduserid != null" >
+        adduserid,
+      </if>
+      <if test="addusername != null" >
+        addusername,
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid,
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname,
+      </if>
+        addtime,
+      <if test="modifyuserid != null" >
+        modifyuserid,
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername,
+      </if>
+      <if test="modifytime != null" >
+        modifytime,
+      </if>
+      <if test="audituserid != null" >
+        audituserid,
+      </if>
+      <if test="auditusername != null" >
+        auditusername,
+      </if>
+      <if test="audittime != null" >
+        audittime,
+      </if>
+      <if test="stopuserid != null" >
+        stopuserid,
+      </if>
+      <if test="stopusername != null" >
+        stopusername,
+      </if>
+      <if test="stoptime != null" >
+        stoptime,
+      </if>
+      <if test="closetime != null" >
+        closetime,
+      </if>
+      <if test="printtimes != null" >
+        printtimes,
+      </if>
+      <if test="customerid != null" >
+        customerid,
+      </if>
+      <if test="pcustomerid != null" >
+        pcustomerid,
+      </if>
+      <if test="customersort != null" >
+        customersort,
+      </if>
+      <if test="handlerid != null" >
+        handlerid,
+      </if>
+      <if test="salesarea != null" >
+        salesarea,
+      </if>
+      <if test="salesdept != null" >
+        salesdept,
+      </if>
+      <if test="salesuser != null" >
+        salesuser,
+      </if>
+      <if test="settletype != null" >
+        settletype,
+      </if>
+      <if test="paytype != null" >
+        paytype,
+      </if>
+      <if test="source != null" >
+        source,
+      </if>
+      <if test="sourceid != null" >
+        sourceid,
+      </if>
+      <if test="storageid != null" >
+        storageid,
+      </if>
+      <if test="field01 != null" >
+        field01,
+      </if>
+      <if test="field02 != null" >
+        field02,
+      </if>
+      <if test="field03 != null" >
+        field03,
+      </if>
+      <if test="field04 != null" >
+        field04,
+      </if>
+      <if test="field05 != null" >
+        field05,
+      </if>
+      <if test="field06 != null" >
+        field06,
+      </if>
+      <if test="field07 != null" >
+        field07,
+      </if>
+      <if test="field08 != null" >
+        field08,
+      </if>
+      <if test="billno != null" >
+        billno,
+      </if>
+      <if test="isrefer != null" >
+        isrefer,
+      </if>
+      <if test="billtype != null" >
+        billtype,
+      </if>
+      <if test="isincomplete != null" >
+        isincomplete,
+      </if>
+      <if test="indooruserid != null" >
+        indooruserid,
+      </if>
+      <if test="receiptid != null" >
+        receiptid,
+      </if>
+      <if test="duefromdate != null" >
+        duefromdate,
+      </if>
+      <if test="driverid != null" >
+        driverid,
+      </if>
+      <if test="storager != null" >
+        storager,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="keyid != null" >
+        #{keyid},
+      </if>
+      <if test="businessdate != null" >
+        #{businessdate},
+      </if>
+      <if test="status != null" >
+        #{status},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+      <if test="adduserid != null" >
+        #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        #{adddeptname},
+      </if>
+        now(),
+      <if test="modifyuserid != null" >
+        #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        #{modifyusername},
+      </if>
+      <if test="modifytime != null" >
+        #{modifytime},
+      </if>
+      <if test="audituserid != null" >
+        #{audituserid},
+      </if>
+      <if test="auditusername != null" >
+        #{auditusername},
+      </if>
+      <if test="audittime != null" >
+        now(),
+      </if>
+      <if test="stopuserid != null" >
+        #{stopuserid},
+      </if>
+      <if test="stopusername != null" >
+        #{stopusername},
+      </if>
+      <if test="stoptime != null" >
+        #{stoptime},
+      </if>
+      <if test="closetime != null" >
+        #{closetime},
+      </if>
+      <if test="printtimes != null" >
+        #{printtimes},
+      </if>
+      <if test="customerid != null" >
+        #{customerid},
+      </if>
+      <if test="pcustomerid != null" >
+        #{pcustomerid},
+      </if>
+      <if test="customersort != null" >
+        #{customersort},
+      </if>
+      <if test="handlerid != null" >
+        #{handlerid},
+      </if>
+      <if test="salesarea != null" >
+        #{salesarea},
+      </if>
+      <if test="salesdept != null" >
+        #{salesdept},
+      </if>
+      <if test="salesuser != null" >
+        #{salesuser},
+      </if>
+      <if test="settletype != null" >
+        #{settletype},
+      </if>
+      <if test="paytype != null" >
+        #{paytype},
+      </if>
+      <if test="source != null" >
+        #{source},
+      </if>
+      <if test="sourceid != null" >
+        #{sourceid},
+      </if>
+      <if test="storageid != null" >
+        #{storageid},
+      </if>
+      <if test="field01 != null" >
+        #{field01},
+      </if>
+      <if test="field02 != null" >
+        #{field02},
+      </if>
+      <if test="field03 != null" >
+        #{field03},
+      </if>
+      <if test="field04 != null" >
+        #{field04},
+      </if>
+      <if test="field05 != null" >
+        #{field05},
+      </if>
+      <if test="field06 != null" >
+        #{field06},
+      </if>
+      <if test="field07 != null" >
+        #{field07},
+      </if>
+      <if test="field08 != null" >
+        #{field08},
+      </if>
+      <if test="billno != null" >
+        #{billno},
+      </if>
+      <if test="isrefer != null" >
+        #{isrefer},
+      </if>
+      <if test="billtype != null" >
+        #{billtype},
+      </if>
+      <if test="isincomplete != null" >
+        #{isincomplete},
+      </if>
+      <if test="indooruserid != null" >
+        #{indooruserid},
+      </if>
+      <if test="receiptid != null" >
+        #{receiptid},
+      </if>
+      <if test="duefromdate != null" >
+        #{duefromdate},
+      </if>
+      <if test="driverid != null" >
+        #{driverid},
+      </if>
+      <if test="storager != null" >
+        #{storager},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateRejectBill" parameterType="com.hd.agent.sales.model.RejectBill" >
+    update t_sales_rejectbill
+    <set >
+      <if test="businessdate != null" >
+        businessdate = #{businessdate},
+      </if>
+      <if test="status != null" >
+        status = #{status},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark},
+      </if>
+      <if test="adduserid != null" >
+        adduserid = #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        addusername = #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid = #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname = #{adddeptname},
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid = #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername = #{modifyusername},
+      </if>
+        modifytime = now(),
+      <if test="audituserid != null" >
+        audituserid = #{audituserid},
+      </if>
+      <if test="auditusername != null" >
+        auditusername = #{auditusername},
+      </if>
+      <if test="audittime != null" >
+        audittime = #{audittime},
+      </if>
+      <if test="stopuserid != null" >
+        stopuserid = #{stopuserid},
+      </if>
+      <if test="stopusername != null" >
+        stopusername = #{stopusername},
+      </if>
+      <choose>
+          <when test="stopuserid != '' and stopuserid != null">
+              stoptime = now(),
+          </when>
+          <otherwise>
+              stoptime = null,
+          </otherwise>
+      </choose>
+      <if test="closetime != null" >
+        closetime = #{closetime},
+      </if>
+      <if test="printtimes != null" >
+        printtimes = #{printtimes},
+      </if>
+      <if test="customerid != null" >
+        customerid = #{customerid},
+      </if>
+      <if test="pcustomerid != null" >
+        pcustomerid = #{pcustomerid},
+      </if>
+      <if test="customersort != null" >
+        customersort = #{customersort},
+      </if>
+      <if test="handlerid != null" >
+        handlerid = #{handlerid},
+      </if>
+      <if test="salesarea != null" >
+        salesarea = #{salesarea},
+      </if>
+      <if test="salesdept != null" >
+        salesdept = #{salesdept},
+      </if>
+      <if test="salesuser != null" >
+        salesuser = #{salesuser},
+      </if>
+      <if test="settletype != null" >
+        settletype = #{settletype},
+      </if>
+      <if test="paytype != null" >
+        paytype = #{paytype},
+      </if>
+      <if test="source != null" >
+        source = #{source},
+      </if>
+      <if test="storageid != null" >
+        storageid = #{storageid},
+      </if>
+      <if test="field01 != null" >
+        field01 = #{field01},
+      </if>
+      <if test="field02 != null" >
+        field02 = #{field02},
+      </if>
+      <if test="field03 != null" >
+        field03 = #{field03},
+      </if>
+      <if test="field04 != null" >
+        field04 = #{field04},
+      </if>
+      <if test="field05 != null" >
+        field05 = #{field05},
+      </if>
+      <if test="field06 != null" >
+        field06 = #{field06},
+      </if>
+      <if test="field07 != null" >
+        field07 = #{field07},
+      </if>
+      <if test="field08 != null" >
+        field08 = #{field08},
+      </if>
+      <if test="billno != null" >
+        billno = #{billno},
+      </if>
+      <if test="isrefer != null" >
+        isrefer = #{isrefer},
+      </if>
+      <if test="billtype != null" >
+        billtype = #{billtype},
+      </if>
+      <if test="isinvoice != null" >
+        isinvoice = #{isinvoice},
+      </if>
+      <if test="isincomplete != null" >
+        isincomplete = #{isincomplete},
+      </if>
+      <if test="indooruserid != null" >
+        indooruserid = #{indooruserid},
+      </if>
+      <if test="receiptid != null" >
+        receiptid = #{receiptid},
+      </if>
+      <if test="checkdate != null" >
+        checkdate = #{checkdate},
+      </if>
+      <if test="duefromdate != null" >
+        duefromdate = #{duefromdate},
+      </if>
+      <if test="driverid != null" >
+        driverid = #{driverid},
+      </if>
+      <if test="isinvoicebill != null" >
+        isinvoicebill = #{isinvoicebill},
+      </if>
+      <if test="storager != null" >
+        storager = #{storager},
+      </if>
+      <if test="salestype != null" >
+        salestype = #{salestype},
+      </if>
+      <if test="sourceid != null" >
+        sourceid = #{sourceid},
+      </if>
+        <if test="1==1" >
+        version = version+1,
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+    <update id="updateRejectBillVersion" parameterType="com.hd.agent.sales.model.RejectBill" >
+    update t_sales_rejectbill
+    <set >
+      <if test="businessdate != null" >
+        businessdate = #{businessdate},
+      </if>
+      <if test="status != null" >
+        status = #{status},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark},
+      </if>
+      <if test="adduserid != null" >
+        adduserid = #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        addusername = #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid = #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname = #{adddeptname},
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid = #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername = #{modifyusername},
+      </if>
+        modifytime = now(),
+      <if test="audituserid != null" >
+        audituserid = #{audituserid},
+      </if>
+      <if test="auditusername != null" >
+        auditusername = #{auditusername},
+      </if>
+      <if test="audittime != null" >
+        audittime = #{audittime},
+      </if>
+      <if test="stopuserid != null" >
+        stopuserid = #{stopuserid},
+      </if>
+      <if test="stopusername != null" >
+        stopusername = #{stopusername},
+      </if>
+      <choose>
+          <when test="stopuserid != '' and stopuserid != null">
+              stoptime = now(),
+          </when>
+          <otherwise>
+              stoptime = null,
+          </otherwise>
+      </choose>
+      <if test="closetime != null" >
+        closetime = #{closetime},
+      </if>
+      <if test="printtimes != null" >
+        printtimes = #{printtimes},
+      </if>
+      <if test="customerid != null" >
+        customerid = #{customerid},
+      </if>
+      <if test="pcustomerid != null" >
+        pcustomerid = #{pcustomerid},
+      </if>
+      <if test="customersort != null" >
+        customersort = #{customersort},
+      </if>
+      <if test="handlerid != null" >
+        handlerid = #{handlerid},
+      </if>
+      <if test="salesarea != null" >
+        salesarea = #{salesarea},
+      </if>
+      <if test="salesdept != null" >
+        salesdept = #{salesdept},
+      </if>
+      <if test="salesuser != null" >
+        salesuser = #{salesuser},
+      </if>
+      <if test="settletype != null" >
+        settletype = #{settletype},
+      </if>
+      <if test="paytype != null" >
+        paytype = #{paytype},
+      </if>
+      <if test="source != null" >
+        source = #{source},
+      </if>
+      <if test="storageid != null" >
+        storageid = #{storageid},
+      </if>
+      <if test="field01 != null" >
+        field01 = #{field01},
+      </if>
+      <if test="field02 != null" >
+        field02 = #{field02},
+      </if>
+      <if test="field03 != null" >
+        field03 = #{field03},
+      </if>
+      <if test="field04 != null" >
+        field04 = #{field04},
+      </if>
+      <if test="field05 != null" >
+        field05 = #{field05},
+      </if>
+      <if test="field06 != null" >
+        field06 = #{field06},
+      </if>
+      <if test="field07 != null" >
+        field07 = #{field07},
+      </if>
+      <if test="field08 != null" >
+        field08 = #{field08},
+      </if>
+      <if test="billno != null" >
+        billno = #{billno},
+      </if>
+      <if test="isrefer != null" >
+        isrefer = #{isrefer},
+      </if>
+      <if test="billtype != null" >
+        billtype = #{billtype},
+      </if>
+      <if test="isinvoice != null" >
+        isinvoice = #{isinvoice},
+      </if>
+      <if test="isincomplete != null" >
+        isincomplete = #{isincomplete},
+      </if>
+      <if test="indooruserid != null" >
+        indooruserid = #{indooruserid},
+      </if>
+      <if test="receiptid != null" >
+        receiptid = #{receiptid},
+      </if>
+      <if test="checkdate != null" >
+        checkdate = #{checkdate},
+      </if>
+      <if test="duefromdate != null" >
+        duefromdate = #{duefromdate},
+      </if>
+      <if test="driverid != null" >
+        driverid = #{driverid},
+      </if>
+      <if test="isinvoicebill != null" >
+        isinvoicebill = #{isinvoicebill},
+      </if>
+      <if test="storager != null" >
+        storager = #{storager},
+      </if>
+      <if test="salestype != null" >
+        salestype = #{salestype},
+      </if>
+      <if test="sourceid != null" >
+        sourceid = #{sourceid},
+      </if>
+        <if test="1==1" >
+        version = version+1,
+      </if>
+    </set>
+    where id = #{id} and version=#{version}
+  </update>
+  <update id="updateRejectBillStatus" parameterType="com.hd.agent.sales.model.RejectBill">
+  	 update t_sales_rejectbill
+    <set>
+      <if test="businessdate != null" >
+        businessdate = #{businessdate},
+      </if>
+      <if test="status != null" >
+        status = #{status},
+      </if>
+      <if test="audituserid != null" >
+        audituserid = #{audituserid},
+      </if>
+      <if test="auditusername != null" >
+        auditusername = #{auditusername},
+      </if>
+      <if test="audittime != null" >
+        audittime = now(),
+      </if>
+      <if test="stopuserid != null" >
+        stopuserid = #{stopuserid},
+      </if>
+      <if test="stopusername != null" >
+        stopusername = #{stopusername},
+      </if>
+      <if test="stoptime != null" >
+        stoptime = now(),
+      </if>
+      <choose>
+      	<when test="closetime != null">
+      		closetime = now(),
+      	</when>
+      	<otherwise>
+      		closetime = NULL,
+      	</otherwise>
+      </choose>
+      <if test="receiptid != null" >
+        receiptid = #{receiptid},
+      </if>
+      <if test="checkdate != null" >
+        checkdate = #{checkdate},
+      </if>
+      <if test="duefromdate != null" >
+        duefromdate = #{duefromdate},
+      </if>
+      <if test="storager != null" >
+        storager = #{storager},
+      </if>
+        <if test="1==1" >
+        version = version+1,
+      </if>
+    </set>
+    where id = #{id} and version=#{version}
+  </update>
+    <update id="updateRejectBillStatusWithNoVersion" parameterType="com.hd.agent.sales.model.RejectBill">
+  	 update t_sales_rejectbill
+    <set>
+      <if test="businessdate != null" >
+        businessdate = #{businessdate},
+      </if>
+      <if test="status != null" >
+        status = #{status},
+      </if>
+      <if test="audituserid != null" >
+        audituserid = #{audituserid},
+      </if>
+      <if test="auditusername != null" >
+        auditusername = #{auditusername},
+      </if>
+      <if test="audittime != null" >
+        audittime = now(),
+      </if>
+      <if test="stopuserid != null" >
+        stopuserid = #{stopuserid},
+      </if>
+      <if test="stopusername != null" >
+        stopusername = #{stopusername},
+      </if>
+      <if test="stoptime != null" >
+        stoptime = now(),
+      </if>
+      <choose>
+      	<when test="closetime != null">
+      		closetime = now(),
+      	</when>
+      	<otherwise>
+      		closetime = NULL,
+      	</otherwise>
+      </choose>
+      <if test="receiptid != null" >
+        receiptid = #{receiptid},
+      </if>
+      <if test="checkdate != null" >
+        checkdate = #{checkdate},
+      </if>
+      <if test="duefromdate != null" >
+        duefromdate = #{duefromdate},
+      </if>
+      <if test="storager != null" >
+        storager = #{storager},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+
+  <update id="updateRejectBillRefer" parameterType="java.lang.String">
+  	update t_sales_rejectbill set isrefer = #{0} where id = #{1}
+  </update>
+  <update id="updateRejectBillInvoice" parameterType="java.lang.String">
+  	update t_sales_rejectbill set isinvoice = #{0}, canceldate = #{1} where id = #{2}
+  </update>
+  <update id="updateRejectBillInvoicebill" parameterType="java.lang.String">
+  	update t_sales_rejectbill set isinvoicebill = #{0}, canceldate = #{1} where id = #{2}
+  </update>
+  <!-- 销售退货通知单明细 -->
+  <resultMap id="BaseResultMapDetail" type="com.hd.agent.sales.model.RejectBillDetail" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="billid" property="billid" jdbcType="VARCHAR" />
+    <result column="goodsid" property="goodsid" jdbcType="VARCHAR" />
+    <result column="goodssort" property="goodssort" jdbcType="VARCHAR" />
+    <result column="brandid" property="brandid" jdbcType="VARCHAR" />
+    <result column="branduser" property="branduser" jdbcType="VARCHAR" />
+    <result column="branddept" property="branddept" jdbcType="VARCHAR" />
+    <result column="supplierid" property="supplierid" jdbcType="VARCHAR" />
+    <result column="supplieruser" property="supplieruser" jdbcType="VARCHAR" />
+    <result column="unitid" property="unitid" jdbcType="VARCHAR" />
+    <result column="unitname" property="unitname" jdbcType="VARCHAR" />
+    <result column="unitnum" property="unitnum" jdbcType="DECIMAL" />
+    <result column="auxunitid" property="auxunitid" jdbcType="VARCHAR" />
+    <result column="auxunitname" property="auxunitname" jdbcType="VARCHAR" />
+    <result column="auxnum" property="auxnum" jdbcType="DECIMAL" />
+    <result column="auxremainder" property="auxremainder" jdbcType="DECIMAL" />
+    <result column="auxnumdetail" property="auxnumdetail" jdbcType="VARCHAR" />
+    <result column="totalbox" property="totalbox" jdbcType="DECIMAL" />
+    <result column="taxprice" property="taxprice" jdbcType="DECIMAL" />
+    <result column="taxamount" property="taxamount" jdbcType="DECIMAL" />
+    <result column="notaxprice" property="notaxprice" jdbcType="DECIMAL" />
+    <result column="notaxamount" property="notaxamount" jdbcType="DECIMAL" />
+    <result column="costprice" property="costprice" jdbcType="VARCHAR" />
+    <result column="taxtype" property="taxtype" jdbcType="VARCHAR" />
+    <result column="tax" property="tax" jdbcType="DECIMAL" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="rejecttype" property="rejecttype" jdbcType="VARCHAR" />
+    <result column="deliverytype" property="deliverytype" jdbcType="VARCHAR" />
+    <result column="deliverydate" property="deliverydate" jdbcType="VARCHAR" />
+    <result column="expirationdate" property="expirationdate" jdbcType="DATE" />
+    <result column="billno" property="billno" jdbcType="VARCHAR" />
+    <result column="billdetailno" property="billdetailno" jdbcType="VARCHAR" />
+    <result column="field01" property="field01" jdbcType="VARCHAR" />
+    <result column="field02" property="field02" jdbcType="VARCHAR" />
+    <result column="field03" property="field03" jdbcType="VARCHAR" />
+    <result column="field04" property="field04" jdbcType="VARCHAR" />
+    <result column="field05" property="field05" jdbcType="VARCHAR" />
+    <result column="field06" property="field06" jdbcType="VARCHAR" />
+    <result column="field07" property="field07" jdbcType="VARCHAR" />
+    <result column="field08" property="field08" jdbcType="VARCHAR" />
+    <result column="innummain" property="innummain" jdbcType="DECIMAL" />
+    <result column="innumaux" property="innumaux" jdbcType="DECIMAL" />
+    <result column="noinnummain" property="noinnummain" jdbcType="DECIMAL" />
+    <result column="noinnumaux" property="noinnumaux" jdbcType="DECIMAL" />
+    <result column="inamountnotax" property="inamountnotax" jdbcType="DECIMAL" />
+    <result column="inamounttax" property="inamounttax" jdbcType="DECIMAL" />
+    <result column="noinamountnotax" property="noinamountnotax" jdbcType="DECIMAL" />
+    <result column="noinamounttax" property="noinamounttax" jdbcType="DECIMAL" />
+    <result column="relatenum" property="relatenum" jdbcType="DECIMAL" />
+    <result column="seq" property="seq" jdbcType="INTEGER" />
+    <result column="isinvoice" property="isinvoice" jdbcType="VARCHAR" />
+    <result column="iswriteoff" property="iswriteoff" jdbcType="VARCHAR" />
+    <result column="isrefer" property="isrefer" jdbcType="VARCHAR" />
+    <result column="isinvoicebill" property="isinvoicebill" jdbcType="VARCHAR" />
+    <result column="summarybatchid" property="summarybatchid" jdbcType="VARCHAR" />
+    <result column="storageid" property="storageid" jdbcType="VARCHAR" />
+    <result column="storagelocationid" property="storagelocationid" jdbcType="VARCHAR" />
+    <result column="batchno" property="batchno" jdbcType="VARCHAR" />
+    <result column="produceddate" property="produceddate" jdbcType="VARCHAR" />
+    <result column="deadline" property="deadline" jdbcType="VARCHAR" />
+    <result column="duefromdate" property="duefromdate" jdbcType="VARCHAR" />
+      <result column="rejectcategory" property="rejectcategory" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List_Detail" >
+    id, billid, goodsid,goodssort,brandid,branduser,branddept,supplierid,supplieruser, unitid, unitname, unitnum, auxunitid, auxunitname, auxnum,auxremainder, auxnumdetail,totalbox, 
+    taxprice, taxamount, notaxprice, notaxamount,costprice, taxtype, tax, remark, rejecttype, deliverytype,deliverydate, 
+    storageid,summarybatchid,storagelocationid,batchno,produceddate,deadline, expirationdate, billno, billdetailno, field01, field02, field03, field04, 
+    field05, field06, field07, field08, innummain, innumaux, noinnummain, noinnumaux, 
+    inamountnotax, inamounttax, noinamountnotax, noinamounttax,relatenum, seq,isinvoice,iswriteoff,isrefer,isinvoicebill,duefromdate, rejectcategory
+  </sql>
+  <select id="getRejectBillDetailListByBill" resultMap="BaseResultMapDetail" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List_Detail" />
+    from t_sales_rejectbill_detail
+    where billid = #{id}
+  </select>
+    <select id="getRejectBillDetailListByBillidsForRel" resultMap="BaseResultMapDetail" parameterType="java.lang.String" >
+        select t1.id, t1.billid, t1.goodsid,t1.goodssort,t1.brandid,t1.branduser,t1.branddept,t1.supplierid,t1.supplieruser, t1.unitid, t1.unitname, t1.unitnum, t1.auxunitid, t1.auxunitname, t1.auxnum,t1.auxremainder, t1.auxnumdetail,t1.totalbox,
+        t1.taxprice, t1.taxamount, t1.notaxprice,t1.notaxamount,t1.costprice, t1.taxtype, t1.tax, t1.remark, t1.rejecttype, t1.deliverytype,t1.deliverydate,
+        t1.storageid,t1.summarybatchid,t1.storagelocationid,t1.batchno,t1.produceddate,t1.deadline, t1.expirationdate, t1.billno, t1.billdetailno, t1.field01, t1.field02, t1.field03, t1.field04,
+        t1.field05, t1.field06, t1.field07, t1.field08, t1.innummain, t1.innumaux, t1.noinnummain, t1.noinnumaux,
+        t1.inamountnotax, t1.inamounttax, t1.noinamountnotax, t1.noinamounttax,t1.relatenum, t1.seq,t1.isinvoice,t1.iswriteoff,t1.isrefer,t1.isinvoicebill,t1.duefromdate, t1.rejectcategory
+        from t_sales_rejectbill t
+        RIGHT JOIN t_sales_rejectbill_detail t1 on t.id =t1.billid
+        where
+        <foreach collection="billArr" index="index" item="item" open="(" separator="or " close=")">
+            billid =#{item}
+        </foreach>
+        and t.status='3' and t.customerid=#{customerid}
+        order by t1.goodsid asc,t1.unitnum asc
+    </select>
+  <select id="getRejectBillDetailListNoInvoiceByBill" resultMap="BaseResultMapDetail" parameterType="java.lang.String">
+  	select 
+    <include refid="Base_Column_List_Detail" />
+    from t_sales_rejectbill_detail
+    where isinvoice='0' and billid = #{id}
+  </select>
+    <select id="getRejectBillDetailListNoInvoiceBillByBill" resultMap="BaseResultMapDetail" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List_Detail" />
+        from t_sales_rejectbill_detail
+        where isinvoicebill='0' and billid = #{id}
+    </select>
+  <select id="getRejectBillDetailListByBills" resultMap="BaseResultMapDetail" parameterType="java.lang.String">
+  	select 
+	    t1.goodsid,t1.brandid,t1.branduser,t1.branddept, t1.unitid, t1.unitname, sum(t1.unitnum) as unitnum, t1.auxunitid, 
+	    t1.auxunitname, sum(t1.auxnum) as auxnum,SUM(t1.auxremainder) as auxremainder, t1.auxnumdetail, 
+	    MAX(t1.taxprice) as taxprice, SUM(t1.taxamount) as taxamount, MAX(t1.notaxprice) as notaxprice, SUM(t1.notaxamount) as notaxamount,
+		MAX(t1.costprice) as costprice, t1.taxtype, SUM(t1.tax) as tax, t1.rejecttype,t1.deliverytype, t1.deliverydate, 
+	    t1.batchno, t1.expirationdate, t1.billno, t1.billdetailno,SUM(t1.innummain) as innummain, SUM(t1.innumaux) as innumaux, SUM(t1.noinnummain) as noinnummain,
+		SUM(t1.noinnumaux) as noinnumaux, SUM(t1.inamountnotax) as inamountnotax, SUM(t1.inamounttax) as inamounttax, SUM(t1.noinamountnotax) as noinamountnotax,
+		SUM(t1.noinamounttax) as noinamounttax,SUM(t1.relatenum) as relatenum
+    from t_sales_rejectbill_detail t1
+	LEFT JOIN t_sales_rejectbill t ON t.id = t1.billid AND t.status = '2'
+    where FIND_IN_SET(t1.billid,#{ids})
+    group by t1.goodsid
+  </select>
+  <select id="getRejectBillDetail" resultMap="BaseResultMapDetail" parameterType="java.lang.String">
+  	select 
+  	<include refid="Base_Column_List_Detail" />
+  	from t_sales_rejectbill_detail 
+  	where id = #{id}
+  </select>
+  <select id="getRejectBillDetailByBillidAndId" resultMap="BaseResultMapDetail" parameterType="java.lang.String">
+  	select 
+  	<include refid="Base_Column_List_Detail" />
+  	from t_sales_rejectbill_detail 
+  	where billid=#{billid} and id = #{id}
+  </select>
+  <select id="getRejectBillDetailTotal" parameterType="java.lang.String" resultType="map">
+  	select sum(taxamount) taxamount, sum(notaxamount) notaxamount, sum(tax) tax from t_sales_rejectbill_detail where billid = #{id}
+  </select>
+  <select id="getRejectBillUninvoiceAmount" parameterType="java.lang.String" resultType="java.math.BigDecimal">
+  	select sum(taxamount) taxamount, sum(notaxamount) notaxamount, sum(tax) tax 
+  	from t_sales_rejectbill_detail where isinvoice='0' and billid = #{id}
+  </select>
+  <delete id="deleteRejectBillDetailByBill" parameterType="java.lang.String" >
+    delete from t_sales_rejectbill_detail
+    where billid = #{id}
+  </delete>
+  <insert id="addRejectBillDetail" parameterType="com.hd.agent.sales.model.RejectBillDetail" >
+    insert into t_sales_rejectbill_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="billid != null" >
+        billid,
+      </if>
+      <if test="goodsid != null" >
+        goodsid,
+      </if>
+      <if test="goodssort != null" >
+        goodssort,
+      </if>
+      <if test="brandid != null" >
+        brandid,
+      </if>
+      <if test="branduser != null" >
+        branduser,
+      </if>
+      <if test="branddept != null" >
+        branddept,
+      </if>
+      <if test="supplierid != null" >
+        supplierid,
+      </if>
+      <if test="supplieruser != null" >
+        supplieruser,
+      </if>
+      <if test="unitid != null" >
+        unitid,
+      </if>
+      <if test="unitname != null" >
+        unitname,
+      </if>
+      <if test="unitnum != null" >
+        unitnum,
+      </if>
+      <if test="auxunitid != null" >
+        auxunitid,
+      </if>
+      <if test="auxunitname != null" >
+        auxunitname,
+      </if>
+      <if test="auxnum != null" >
+        auxnum,
+      </if>
+      <if test="auxremainder != null" >
+        auxremainder,
+      </if>
+      <if test="auxnumdetail != null" >
+        auxnumdetail,
+      </if>
+      <if test="totalbox != null" >
+        totalbox,
+      </if>
+      <if test="taxprice != null" >
+        taxprice,
+      </if>
+      <if test="taxamount != null" >
+        taxamount,
+      </if>
+      <if test="notaxprice != null" >
+        notaxprice,
+      </if>
+      <if test="notaxamount != null" >
+        notaxamount,
+      </if>
+      <if test="costprice != null" >
+        costprice,
+      </if>
+      <if test="taxtype != null" >
+        taxtype,
+      </if>
+      <if test="tax != null" >
+        tax,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="rejecttype != null" >
+        rejecttype,
+      </if>
+      <if test="deliverytype != null" >
+        deliverytype,
+      </if>
+      <if test="deliverydate != null" >
+        deliverydate,
+      </if>
+      <if test="summarybatchid != null" >
+        summarybatchid,
+      </if>
+      <if test="storageid != null" >
+        storageid,
+      </if>
+      <if test="storagelocationid != null" >
+        storagelocationid,
+      </if>
+      <if test="batchno != null" >
+        batchno,
+      </if>
+      <if test="produceddate != null" >
+        produceddate,
+      </if>
+      <if test="deadline != null" >
+        deadline,
+      </if>
+      <if test="expirationdate != null" >
+        expirationdate,
+      </if>
+      <if test="billno != null" >
+        billno,
+      </if>
+      <if test="billdetailno != null" >
+        billdetailno,
+      </if>
+      <if test="field01 != null" >
+        field01,
+      </if>
+      <if test="field02 != null" >
+        field02,
+      </if>
+      <if test="field03 != null" >
+        field03,
+      </if>
+      <if test="field04 != null" >
+        field04,
+      </if>
+      <if test="field05 != null" >
+        field05,
+      </if>
+      <if test="field06 != null" >
+        field06,
+      </if>
+      <if test="field07 != null" >
+        field07,
+      </if>
+      <if test="field08 != null" >
+        field08,
+      </if>
+      <if test="innummain != null" >
+        innummain,
+      </if>
+      <if test="innumaux != null" >
+        innumaux,
+      </if>
+      <if test="noinnummain != null" >
+        noinnummain,
+      </if>
+      <if test="noinnumaux != null" >
+        noinnumaux,
+      </if>
+      <if test="inamountnotax != null" >
+        inamountnotax,
+      </if>
+      <if test="inamounttax != null" >
+        inamounttax,
+      </if>
+      <if test="noinamountnotax != null" >
+        noinamountnotax,
+      </if>
+      <if test="noinamounttax != null" >
+        noinamounttax,
+      </if>
+      <if test="relatenum != null" >
+        relatenum,
+      </if>
+      <if test="seq != null" >
+        seq,
+      </if>
+      <if test="isinvoice != null" >
+        isinvoice,
+      </if>
+      <if test="iswriteoff != null" >
+        iswriteoff,
+      </if>
+      <if test="isrefer != null" >
+        isrefer,
+      </if>
+        <if test="rejectcategory != null" >
+            rejectcategory,
+        </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="billid != null" >
+        #{billid},
+      </if>
+      <if test="goodsid != null" >
+        #{goodsid},
+      </if>
+      <if test="goodssort != null" >
+        #{goodssort},
+      </if>
+      <if test="brandid != null" >
+        #{brandid},
+      </if>
+      <if test="branduser != null" >
+        #{branduser},
+      </if>
+      <if test="branddept != null" >
+        #{branddept},
+      </if>
+      <if test="supplierid != null" >
+        #{supplierid},
+      </if>
+      <if test="supplieruser != null" >
+        #{supplieruser},
+      </if>
+      <if test="unitid != null" >
+        #{unitid},
+      </if>
+      <if test="unitname != null" >
+        #{unitname},
+      </if>
+      <if test="unitnum != null" >
+        #{unitnum},
+      </if>
+      <if test="auxunitid != null" >
+        #{auxunitid},
+      </if>
+      <if test="auxunitname != null" >
+        #{auxunitname},
+      </if>
+      <if test="auxnum != null" >
+        #{auxnum},
+      </if>
+      <if test="auxremainder != null" >
+        #{auxremainder},
+      </if>
+      <if test="auxnumdetail != null" >
+        #{auxnumdetail},
+      </if>
+      <if test="totalbox != null" >
+        #{totalbox},
+      </if>
+      <if test="taxprice != null" >
+        #{taxprice},
+      </if>
+      <if test="taxamount != null" >
+        #{taxamount},
+      </if>
+      <if test="notaxprice != null" >
+        #{notaxprice},
+      </if>
+      <if test="notaxamount != null" >
+        #{notaxamount},
+      </if>
+      <if test="costprice != null" >
+        #{costprice},
+      </if>
+      <if test="taxtype != null" >
+        #{taxtype},
+      </if>
+      <if test="tax != null" >
+        #{tax},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+      <if test="rejecttype != null" >
+        #{rejecttype},
+      </if>
+      <if test="deliverytype != null" >
+        #{deliverytype},
+      </if>
+      <if test="deliverydate != null" >
+        #{deliverydate},
+      </if>
+      <if test="summarybatchid != null" >
+        #{summarybatchid},
+      </if>
+      <if test="storageid != null" >
+        #{storageid},
+      </if>
+      <if test="storagelocationid != null" >
+        #{storagelocationid},
+      </if>
+      <if test="batchno != null" >
+        #{batchno},
+      </if>
+      <if test="produceddate != null" >
+        #{produceddate},
+      </if>
+      <if test="deadline != null" >
+        #{deadline},
+      </if>
+      <if test="expirationdate != null" >
+        #{expirationdate},
+      </if>
+      <if test="billno != null" >
+        #{billno},
+      </if>
+      <if test="billdetailno != null" >
+        #{billdetailno},
+      </if>
+      <if test="field01 != null" >
+        #{field01},
+      </if>
+      <if test="field02 != null" >
+        #{field02},
+      </if>
+      <if test="field03 != null" >
+        #{field03},
+      </if>
+      <if test="field04 != null" >
+        #{field04},
+      </if>
+      <if test="field05 != null" >
+        #{field05},
+      </if>
+      <if test="field06 != null" >
+        #{field06},
+      </if>
+      <if test="field07 != null" >
+        #{field07},
+      </if>
+      <if test="field08 != null" >
+        #{field08},
+      </if>
+      <if test="innummain != null" >
+        #{innummain},
+      </if>
+      <if test="innumaux != null" >
+        #{innumaux},
+      </if>
+      <if test="noinnummain != null" >
+        #{noinnummain},
+      </if>
+      <if test="noinnumaux != null" >
+        #{noinnumaux},
+      </if>
+      <if test="inamountnotax != null" >
+        #{inamountnotax},
+      </if>
+      <if test="inamounttax != null" >
+        #{inamounttax},
+      </if>
+      <if test="noinamountnotax != null" >
+        #{noinamountnotax},
+      </if>
+      <if test="noinamounttax != null" >
+        #{noinamounttax},
+      </if>
+      <if test="relatenum != null" >
+        #{relatenum},
+      </if>
+      <if test="seq != null" >
+        #{seq},
+      </if>
+      <if test="isinvoice != null" >
+        #{isinvoice},
+      </if>
+      <if test="iswriteoff != null" >
+        #{iswriteoff},
+      </if>
+      <if test="isrefer != null" >
+        #{isrefer},
+      </if>
+        <if test="rejectcategory != null" >
+            #{rejectcategory},
+        </if>
+    </trim>
+  </insert>
+  
+  <update id="updateRejectBillDetailBack" parameterType="com.hd.agent.sales.model.RejectBillDetail">
+  	update t_sales_rejectbill_detail
+    <set>
+      <if test="branduser != null">
+        branduser = #{branduser},
+      </if>
+      <if test="supplierid != null">
+        supplierid = #{supplierid},
+      </if>
+      <if test="supplieruser != null">
+        supplieruser = #{supplieruser},
+      </if>
+      <if test="unitnum != null">
+        unitnum = #{unitnum},
+      </if>
+      <if test="auxnum != null">
+        auxnum = #{auxnum},
+      </if>
+      <if test="auxremainder != null">
+        auxremainder = #{auxremainder},
+      </if>
+      <if test="auxnumdetail != null">
+        auxnumdetail = #{auxnumdetail},
+      </if>
+      <if test="totalbox != null">
+        totalbox = #{totalbox},
+      </if>
+      <if test="taxprice != null">
+        taxprice = #{taxprice},
+      </if>
+      <if test="taxamount != null">
+        taxamount = #{taxamount},
+      </if>
+      <if test="notaxprice != null">
+        notaxprice = #{notaxprice},
+      </if>
+      <if test="notaxamount != null">
+        notaxamount = #{notaxamount},
+      </if>
+      <if test="tax != null">
+        tax = #{tax},
+      </if>
+      <if test="costprice != null">
+            costprice = #{costprice},
+      </if>
+      <if test="innummain != null">
+        innummain = #{innummain},
+      </if>
+      <if test="innumaux != null">
+        innumaux = #{innumaux},
+      </if>
+      <if test="noinnummain != null">
+        noinnummain = #{noinnummain},
+      </if>
+      <if test="noinnumaux != null">
+        noinnumaux = #{noinnumaux},
+      </if>
+      <if test="inamountnotax != null">
+        inamountnotax = #{inamountnotax},
+      </if>
+      <if test="inamounttax != null">
+        inamounttax = #{inamounttax},
+      </if>
+      <if test="noinamountnotax != null">
+        noinamountnotax = #{noinamountnotax},
+      </if>
+      <if test="noinamounttax != null">
+        noinamounttax = #{noinamounttax},
+      </if>
+      <if test="relatenum != null">
+        relatenum = #{relatenum},
+      </if>
+      <if test="isrefer != null">
+        isrefer = #{isrefer},
+      </if>
+      <if test="deliverytype != null">
+        deliverytype = #{deliverytype},
+      </if>
+      <if test="duefromdate != null">
+            duefromdate = #{duefromdate},
+      </if>
+        <if test="rejectcategory != null">
+            rejectcategory = #{rejectcategory},
+        </if>
+    </set>
+    where billid = #{billid} and id = #{id} 
+  </update>
+  <update id="updateOrderPrinttimes" parameterType="com.hd.agent.sales.model.RejectBillDetail">
+		update t_sales_rejectbill
+	    <set>
+	      <if test="printtimes != null">
+	        printtimes = IFNULL(printtimes,0)+1,
+	      </if>
+          <if test="ysprinttimes != null">
+            ysprinttimes = IFNULL(ysprinttimes,0)+1,
+          </if>
+	    </set>
+	    where id = #{id}
+  </update>
+  <update id="updateRejectDetailIsinvoice" parameterType="java.lang.String">
+  	update t_sales_rejectbill_detail r1,t_account_sales_invoice_detail t1
+	set r1.isinvoice=#{isinvoice}
+	where r1.id=t1.sourcedetailid and r1.billid=t1.sourceid and t1.sourcetype='2' and t1.billid=#{id}
+  </update>
+  <!-- 更新退货通知单（直退）明细的开票状态 -->
+  <update id="updateRejectBillDetailIsinvoiceByInvoiceid" parameterType="java.lang.String">
+    update t_sales_rejectbill_detail r1,t_storage_salereject_enter_detail s1,t_account_sales_invoice_detail t1
+    set r1.isinvoice=#{isinvoice}
+    where t1.sourcetype = '1' and r1.billid = s1.rejectid and r1.id = s1.rejectdetailid and s1.billid=t1.sourceid and s1.billdetailid=t1.sourcedetailid and t1.billid=#{invoiceid}
+  </update>
+  <update id="updateRejectDetailIsinvoicebill" parameterType="java.lang.String">
+  	update t_sales_rejectbill_detail r1,t_account_sales_invoicebill_detail t1
+	set r1.isinvoicebill=#{isinvoicebill}
+	where r1.id=t1.sourcedetailid and r1.billid=t1.sourceid and t1.sourcetype='2' and t1.billid=#{id}
+  </update>
+  <update id="updateRejectBillDetailIsinvoicebillByInvoicebillid" parameterType="java.lang.String">
+    update t_sales_rejectbill_detail r1,t_storage_salereject_enter_detail s1,t_account_sales_invoicebill_detail t1
+    set r1.isinvoicebill=#{isinvoicebill}
+    where t1.sourcetype = '1' and r1.billid = s1.rejectid and r1.id = s1.rejectdetailid and s1.billid=t1.sourceid and s1.billdetailid=t1.sourcedetailid and t1.billid=#{invoicebillid}
+  </update>
+  <update id="updateRejectDetailWriteoff" >
+  	update t_sales_rejectbill_detail r1,t_account_sales_invoice_detail t1
+	set r1.iswriteoff='1',r1.canceldate=#{writeoffdate}
+	where r1.id=t1.sourcedetailid and r1.billid=t1.sourceid and t1.sourcetype='2' and t1.billid=#{id}
+  </update>
+  <update id="updateRejectDetailWriteoffInvoiceBill" parameterType="java.lang.String">
+  	update t_sales_rejectbill_detail r1,t_account_sales_invoicebill_detail t1
+	set r1.iswriteoff='1',r1.canceldate=DATE_FORMAT(now(),'%Y-%m-%d')
+	where r1.id=t1.sourcedetailid and r1.billid=t1.sourceid and t1.sourcetype='2' and t1.billid=#{id}
+  </update>
+  <update id="updateRejectBillDetailIsWriteoffByReceipt" parameterType="java.lang.String">
+    update t_sales_rejectbill_detail r1,t_storage_salereject_enter_detail s1,t_account_sales_invoice_detail t1
+    set r1.iswriteoff='1',r1.canceldate = #{writeoffdate}
+    where t1.sourcetype = '1' and r1.billid = s1.rejectid and r1.id = s1.rejectdetailid and s1.billid=t1.sourceid and s1.billdetailid=t1.sourcedetailid and t1.billid=#{invoiceid}
+  </update>
+  <update id="updateRejectBillDetailIsWriteoffByReceiptInvoiceBill" parameterType="java.lang.String">
+    update t_sales_rejectbill_detail r1,t_storage_salereject_enter_detail s1,t_account_sales_invoicebill_detail t1
+    set r1.iswriteoff='1',r1.canceldate = date_format(now(), '%Y-%m-%d')
+    where t1.sourcetype = '1' and r1.billid = s1.rejectid and r1.id = s1.rejectdetailid and s1.billid=t1.sourceid and s1.billdetailid=t1.sourcedetailid and t1.billid=#{invoicebillid}
+  </update>
+  <update id="updateRejectBillWriteoffByReceipt" parameterType="java.lang.String">
+    UPDATE t_sales_rejectbill t,(
+    SELECT t.billid,t.count ,t.num, case WHEN t.count = t.num THEN '2'
+    WHEN t.num > 0 and <![CDATA[t.num < t.count]]> then '5'
+    WHEN t.num = 0 THEN '1' END  as isinvoice
+    from (
+    SELECT t.billid, COUNT(t.billid) AS COUNT,
+    SUM(case when t.iswriteoff = '1' then 1 else 0 end) AS num
+    from t_sales_rejectbill_detail t
+    LEFT JOIN t_sales_rejectbill t1 ON t.billid = t1.id
+    where t1.receiptid = #{receiptid} and t1.billtype = '1'
+    GROUP BY t.billid
+    ) t ) t1
+    SET t.isinvoice = t1.isinvoice,
+    t.canceldate = if(t1.isinvoice = '2' or t1.isinvoice = '5',date_format(now(), '%Y-%m-%d'),'')
+    where t.id = t1.billid and t.receiptid = #{receiptid} and t.billtype = '1'
+  </update>
+  <!-- 反核销 -->
+  <update id="updateRejectDetailBackWriteoff" parameterType="java.lang.String">
+  	update t_sales_rejectbill_detail r1,t_account_sales_invoice_detail t1
+	set r1.iswriteoff='0',r1.canceldate=''
+	where r1.id=t1.sourcedetailid and r1.billid=t1.sourceid and t1.sourcetype='2' and t1.billid=#{id}
+  </update>
+  <update id="updateRejectBillDetailBackWriteoffByReceipt" parameterType="java.lang.String">
+    update t_sales_rejectbill_detail r1,t_storage_salereject_enter_detail s1,t_account_sales_invoice_detail t1
+    set r1.iswriteoff='0',r1.canceldate = ''
+    where t1.sourcetype = '1' and r1.billid = s1.rejectid and r1.id = s1.rejectdetailid and s1.billid=t1.sourceid and s1.billdetailid=t1.sourcedetailid and t1.billid=#{invoiceid}
+  </update>
+   <select id="getRejectBillListBy" resultType="com.hd.agent.sales.model.RejectBill" parameterType="java.util.Map">
+  	select 
+  	<include refid="Base_Column_List" />
+  	from t_sales_rejectbill 
+	<trim prefix="where" prefixOverrides="and|or">
+	  	<if test="dataSql!=null">	  		
+  			and ${dataSql} 
+	  	</if>
+		<if test="idarrs != null" >
+         	and find_in_set(id,#{idarrs})
+      	</if>
+      	<if test="status!=null">
+      		and status=#{status}
+      	</if>
+	  	<if test="notprint != null and notprint == 1">
+  			 and (printtimes is null or printtimes=0)	
+	  	</if>
+    </trim>
+   </select> 
+   <select id="getDirectRejectBillListByCustomerid" resultType="com.hd.agent.sales.model.RejectBill" parameterType="java.lang.String">
+   	select id, businessdate, status, remark, adduserid, addusername, adddeptid, adddeptname, 
+    addtime, modifyuserid, modifyusername, modifytime, audituserid, auditusername, audittime, 
+    stopuserid, stopusername, stoptime, closetime, printtimes, customerid, handlerid, 
+    salesdept, salesuser, settletype, paytype, source, storageid, field01, field02, field03, 
+    field04, field05, field06, field07, field08, billno, isrefer, isinvoice, canceldate,billtype,isincomplete,receiptid,checkdate
+  	from t_sales_rejectbill  where billtype='1' and customerid=#{customerid} and status='3'
+   </select>
+   <update id="updateDirectRejectBillDetailIsrefer" parameterType="java.lang.String">
+   	update t_sales_rejectbill_detail set isrefer=#{isrefer} where id=#{id}
+   </update>
+   <select id="getDirectRejectBillListUnreferCount" parameterType="java.lang.String" resultType="int">
+   	select count(1) from t_sales_rejectbill_detail where isrefer='0' and billid=#{billid} 
+   </select>
+   <select id="getDirectRejectBillListReferCount" parameterType="java.lang.String" resultType="int">
+   	select count(1) from t_sales_rejectbill_detail where isrefer='1' and billid=#{billid} 
+   </select>
+   <select id="getRejectBillByDetailid" parameterType="java.lang.String" resultMap="BaseResultMap">
+   	select t.id, t.businessdate, t.status, t.remark, t.adduserid, t.addusername, t.adddeptid, t.adddeptname, 
+    t.addtime, t.modifyuserid, t.modifyusername, t.modifytime, t.audituserid, t.auditusername, t.audittime, 
+    t.stopuserid, t.stopusername, t.stoptime, t.closetime, t.printtimes, t.customerid, t.handlerid, 
+    t.salesdept, t.salesuser, t.settletype, t.paytype, t.source, t.storageid, t.field01, t.field02, t.field03, 
+    t.field04, t.field05, t.field06, t.field07, t.field08, t.billno, t.isrefer, t.isinvoice, t.canceldate,t.billtype,t.isincomplete,t.receiptid,t.checkdate
+  	from t_sales_rejectbill t, t_sales_rejectbill_detail t1
+  	where t.id=t1.billid and t1.id=#{detailid}
+   </select>
+   <select id="isRejectBillDetailRelate" parameterType="java.lang.String" resultType="int">
+   	select count(1) from t_sales_rejectbill_detail t
+   	where t.unitnum!=t.relatenum and t.billid=#{billid}
+   </select>
+   <select id="getRejectBillByReceiptid" parameterType="java.lang.String" resultMap="BaseResultMap">
+   	select t.id, t.businessdate, t.status, t.remark, t.adduserid, t.addusername, t.adddeptid, t.adddeptname, 
+    t.addtime, t.modifyuserid, t.modifyusername, t.modifytime, t.audituserid, t.auditusername, t.audittime, 
+    t.stopuserid, t.stopusername, t.stoptime, t.closetime, t.printtimes, t.customerid, t.handlerid, 
+    t.salesdept, t.salesuser, t.settletype, t.paytype, t.source, t.storageid, t.field01, t.field02, t.field03, 
+    t.field04, t.field05, t.field06, t.field07, t.field08, t.billno, t.isrefer, t.isinvoice, t.canceldate,t.billtype,t.isincomplete,t.receiptid,t.checkdate
+  	from t_sales_rejectbill t
+  	where t.receiptid=#{receiptid}
+   </select>
+   <update id="updateRejectBillClearReceipt" parameterType="java.lang.String">
+   	update t_sales_rejectbill t
+   	set t.receiptid='' where t.receiptid=#{receiptid}
+   </update>
+   <update id="updateSaleRejectEnterClearReceipt" parameterType="java.lang.String">
+   	update t_storage_salereject_enter t
+   	set t.receiptid=''
+   	where t.receiptid=#{receiptid}
+   </update>
+   <update id="updateRejectBillDetailIsrefer" parameterType="java.lang.String">
+   	update t_sales_rejectbill_detail t,t_sales_rejectbill r
+   	set t.isrefer='0' where t.billid=r.id and r.receiptid=#{receiptid}
+   </update>
+   <delete id="deleteRejectBillDetailByDetailid" parameterType="java.lang.String">
+   	delete from t_sales_rejectbill_detail
+   	where id=#{id}
+   </delete>
+   <update id="auditRejectBillPhone" parameterType="java.util.Map">
+   	update t_sales_rejectbill
+     <set>
+       <if test=" 1== 1" >
+         status = '9',
+       </if>
+       <if test="audituserid != null" >
+         audituserid = #{audituserid},
+       </if>
+       <if test="auditusername != null" >
+         auditusername = #{auditusername},
+       </if>
+       <if test="audittime != null" >
+         audittime = now(),
+       </if>
+     </set>
+     where id=#{id}
+   </update>
+   <select id="checkRejectRepeat" parameterType="java.lang.String" resultType="map">
+	select GROUP_CONCAT(z.id) as id,z.storageid,z.date,z.customerid,z.amount,count(1) as count from (
+	select t.id,t.customerid,t.storageid,DATE_FORMAT(t.addtime,'%Y-%m-%d') as date,sum(t1.taxamount) as amount from t_sales_rejectbill t
+	RIGHT JOIN t_sales_rejectbill_detail t1 on t.id=t1.billid
+	where (t.status='2' or t.status='3' or t.status='4') and t.customerid=#{customerid}
+	GROUP BY t.id) z
+	GROUP BY z.storageid,z.date,z.customerid,z.amount
+	HAVING count(1)>1 and id like concat('%',#{id},'%')
+   </select>
+   <select id="getRejectBillByKeyid" parameterType="java.lang.String" resultType="int">
+   		select count(1) from t_sales_rejectbill where keyid=#{keyid}
+   </select>
+   <update id="updateRejectBillIsHand" parameterType="java.lang.String">
+   	update t_sales_rejectbill
+  	set ishand = #{ishand}
+  	where id = #{id}
+   </update>
+
+    <select id="getRejectBillListExport" parameterType="com.hd.agent.common.util.PageMap" resultType="map">
+        select t.id, t.businessdate, t.status,t.driverid,t.customerid,t.salesdept,t.salesuser,t.billtype, t.remark,t.storageid,t.sourceid,
+        t1.taxprice, t1.goodsid,t1.unitnum,t1.unitname,t1.auxnumdetail,t1.taxamount,t1.batchno,t1.produceddate,t1.deadline
+        from t_sales_rejectbill t
+        LEFT JOIN t_sales_rejectbill_detail t1 on t.id=t1.billid
+         <trim prefix="where" prefixOverrides="and|or">
+	      <include refid="common.Page_dataSql"/>
+           <if test="condition.goodsid != null">
+             and EXISTS (select t1.goodsid from t_sales_rejectbill_detail t1 where t.id=t1.billid and t1.goodsid = #{condition.goodsid})
+           </if>
+           <if test="condition.exportids != null" >
+             and FIND_IN_SET(t.id , #{condition.exportids})
+           </if>
+           <if test="condition.id != null" >
+             and t.id like concat('%',#{condition.id},'%')
+           </if>
+            <if test="condition.businessdate != null">
+               and t.businessdate >= #{condition.businessdate}
+            </if>
+            <if test="condition.businessdate1 != null">
+               <![CDATA[and t.businessdate <= #{condition.businessdate1}]]>
+            </if>
+             <if test="condition.customerid != null" >
+               and (t.customerid = #{condition.customerid} or t.pcustomerid = #{condition.customerid})
+             </if>
+             <if test="condition.adduserid != null" >
+               and t.adduserid = #{condition.adduserid}
+             </if>
+             <if test="condition.salesdept != null" >
+               and t.salesdept = #{condition.salesdept}
+             </if>
+             <if test="condition.storageid != null" >
+               and t.storageid = #{condition.storageid}
+             </if>
+             <if test="condition.salesuser != null" >
+               and t.salesuser = #{condition.salesuser}
+             </if>
+             <if test="condition.indooruserid != null" >
+               and t.indooruserid = #{condition.indooruserid}
+             </if>
+             <if test="condition.driverid != null" >
+               and t.driverid = #{condition.driverid}
+             </if>
+             <if test="condition.addtime != null" >
+               <![CDATA[ and t.addtime > #{condition.addtime}]]>
+             </if>
+             <if test="condition.addtime1 != null" >
+               <![CDATA[ and t.addtime <= date_add(str_to_date(#{condition.addtime1}, '%Y-%m-%d'), interval '1' day) ]]>
+             </if>
+             <if test="condition.billtype != null" >
+               and t.billtype = #{condition.billtype}
+             </if>
+             <if test="condition.source != null" >
+               and t.source = #{condition.source}
+             </if>
+             <if test="condition.status != null" >
+               and t.status = #{condition.status}
+             </if>
+             <if test="condition.status == null" >
+               and t.status !='1'
+             </if>
+             <if test="condition.isrefer != null" >
+               and t.isrefer = #{condition.isrefer}
+             </if>
+             <choose>
+               <when test="condition.isinvoice == 0" >
+                 and t.isinvoice = #{condition.isinvoice}
+               </when>
+               <when test="condition.isinvoice == 3" >
+                 and t.isinvoice in("1","3","4","5")
+               </when>
+             </choose>
+             <if test="condition.isincomplete != null" >
+               and t.isincomplete = #{condition.isincomplete}
+             </if>
+             <choose>
+               <when test="condition.isClose ==0 ">
+                 and t.status in("1","2")
+               </when>
+               <when test="condition.isClose ==1 ">
+                 and t.status in("3","4")
+               </when>
+               <when test="condition.isClose ==2 ">
+                 and t.status ='3'
+               </when>
+               <when test="condition.isClose ==3 ">
+                 and t.status ='4'
+               </when>
+             </choose>
+             <if test="condition.doprintopt != null">
+               <choose>
+                 <when test="condition.printstatus == null ">
+                   and 1 != 1
+                 </when>
+                 <when test="condition.printstatus ==0 ">
+                   and (t.printtimes is null or printtimes=0)
+                 </when>
+                 <when test="condition.printstatus ==1 ">
+                   <![CDATA[and (t.printtimes > 0) ]]>
+                 </when>
+                 <when test="condition.printstatus == 2 ">
+                   and 1 = 1
+                 </when>
+               </choose>
+             </if>
+             <if test="condition.printsign != null and condition.queryprinttimes != null">
+             <choose>
+               <when test="condition.printsign == 1">
+                 <![CDATA[and t.printtimes = #{condition.queryprinttimes} ]]>
+               </when>
+               <when test="condition.printsign == 2">
+                 <![CDATA[and t.printtimes < #{condition.queryprinttimes} ]]>
+               </when>
+               <when test="condition.printsign == 3">
+                 <![CDATA[and t.printtimes <= #{condition.queryprinttimes} ]]>
+               </when>
+               <when test="condition.printsign == 4">
+                 <![CDATA[and t.printtimes > #{condition.queryprinttimes} ]]>
+               </when>
+               <when test="condition.printsign == 5">
+                 <![CDATA[and t.printtimes >= #{condition.queryprinttimes} ]]>
+               </when>
+             </choose>
+             </if>
+	    </trim>
+    </select>
+
+    <select id="getRejectBillLowestPrice" parameterType="java.lang.String" resultType="java.math.BigDecimal">
+        select min(t1.taxprice) as taxprice
+        from t_sales_rejectbill t,t_sales_rejectbill_detail t1
+        where t.id=t1.billid and (t.status='3' or t.status='4') and t1.goodsid=#{goodsid} and t.customerid=#{customerid}
+        and t.businessdate>=#{lowestdate} and t1.taxprice>0
+    </select>
+    <select id="getRejectBillLastPrice" parameterType="java.lang.String" resultType="java.math.BigDecimal">
+        select t1.taxprice
+        from t_sales_rejectbill t,t_sales_rejectbill_detail t1
+        where t.id=t1.billid and (t.status='3' or t.status='4') and t1.goodsid=#{goodsid} and t.customerid=#{customerid}
+        and t1.taxprice>0
+        ORDER BY t.businessdate DESC
+        limit 1
+    </select>
+    <update id="updateSaleRejectBillDetailPrice" parameterType="com.hd.agent.sales.model.RejectBillDetail">
+        update t_sales_rejectbill_detail
+        set defaultprice = #{defaultprice},
+        lastprice = #{lastprice},
+        <if test="duefromdate != null" >
+        duefromdate = #{duefromdate},
+        </if>
+        lowestprice = #{lowestprice}
+        where id = #{id}
+    </update>
+  <update id="updateSaleRejectBillInvoicedate" parameterType="java.util.Map">
+    UPDATE t_sales_rejectbill
+    <set>
+      <choose>
+        <when test="hasinvoicedate == 1">
+          invoicebilldate=#{invoicebilldate}
+        </when>
+        <when test="hasinvoicedate == 0">
+          invoicebilldate=''
+        </when>
+      </choose>
+    </set>
+    WHERE id = #{id}
+  </update>
+  <update id="upageRejectBillInvoicedate" parameterType="java.lang.String">
+    UPDATE t_sales_rejectbill
+    <set>
+      <choose>
+        <when test="isinvoice == 1">
+          invoicedate=#{invoicedate}
+        </when>
+        <when test="isinvoice == 0">
+          invoicedate=''
+        </when>
+      </choose>
+    </set>
+    WHERE id = #{id}
+  </update>
+  <update id="updateRejectBillIsvoiceByBillid" parameterType="java.lang.String">
+    UPDATE t_sales_rejectbill t,(
+    SELECT t.billid,t.count ,t.num, case WHEN t.count = t.num THEN '3'
+    WHEN t.num > 0 and <![CDATA[t.num < t.count]]> then '4'
+    WHEN t.num = 0 THEN '1' END  as isinvoice
+    from (
+    SELECT t.billid, COUNT(t.billid) AS COUNT,
+    SUM(case when t.isinvoice = '0' then 1 else 0 end) AS num
+    from t_sales_rejectbill_detail t
+    LEFT JOIN t_sales_rejectbill t1 ON t.billid = t1.id
+    where t.billid = #{billid}
+    GROUP BY t.billid
+    ) t ) t1
+    SET t.isinvoice = t1.isinvoice,
+    t.invoicedate = if(t1.isinvoice = '1',date_format(now(),'%Y-%m-%d'),'')
+    where t.id = t1.billid and t.id = #{billid}
+  </update>
+  <update id="updateRejectBillIsvoicebillByBillid" parameterType="java.lang.String">
+    UPDATE t_sales_rejectbill t,(
+    SELECT t.billid,t.count ,t.num, case WHEN t.count = t.num THEN '3'
+    WHEN t.num > 0 and <![CDATA[t.num < t.count]]> then '4'
+    WHEN t.num = 0 THEN '1' END  as isinvoicebill
+    from (
+    SELECT t.billid, COUNT(t.billid) AS COUNT,
+    SUM(case when t.isinvoicebill = '0' then 1 else 0 end) AS num
+    from t_sales_rejectbill_detail t
+    LEFT JOIN t_sales_rejectbill t1 ON t.billid = t1.id
+    where t.billid = #{billid}
+    GROUP BY t.billid
+    ) t ) t1
+    SET t.isinvoicebill = t1.isinvoicebill,
+    t.invoicebilldate = if(t1.isinvoicebill = '1',date_format(now(),'%Y-%m-%d'),'')
+    where t.id = t1.billid and t.id = #{billid}
+  </update>
+  <update id="updateErectRejectBillIsvoiceByBillid" parameterType="java.lang.String">
+    UPDATE t_sales_rejectbill t,(
+    SELECT t.billid,t.count ,t.num, case WHEN t.count = t.num THEN '3'
+    WHEN t.num > 0 and <![CDATA[t.num < t.count]]> then '4'
+    WHEN t.num = 0 THEN '1' END  as isinvoice
+    from (
+    SELECT t.billid, COUNT(t.billid) AS COUNT,
+    SUM(case when t.isinvoice = '0' then 1 else 0 end) AS num
+    from t_sales_rejectbill_detail t
+    LEFT JOIN t_sales_rejectbill t1 ON t.billid = t1.id
+    where t1.receiptid = #{billid} and t1.billtype = '1'
+    GROUP BY t.billid
+    ) t ) t1
+    SET t.isinvoice = t1.isinvoice,
+    t.invoicedate = if(t1.isinvoice = '1',date_format(now(),'%Y-%m-%d'),'')
+    where t.id = t1.billid and t.receiptid = #{billid} and t.billtype = '1'
+  </update>
+  <update id="updateErectRejectBillIsvoicebillByBillid" parameterType="java.lang.String">
+    UPDATE t_sales_rejectbill t,(
+    SELECT t.billid,t.count ,t.num, case WHEN t.count = t.num THEN '3'
+    WHEN t.num > 0 and <![CDATA[t.num < t.count]]> then '4'
+    WHEN t.num = 0 THEN '1' END  as isinvoicebill
+    from (
+    SELECT t.billid, COUNT(t.billid) AS COUNT,
+    SUM(case when t.isinvoicebill = '0' then 1 else 0 end) AS num
+    from t_sales_rejectbill_detail t
+    LEFT JOIN t_sales_rejectbill t1 ON t.billid = t1.id
+    where t1.receiptid = #{billid} and t1.billtype = '1'
+    GROUP BY t.billid
+    ) t ) t1
+    SET t.isinvoicebill = t1.isinvoicebill,
+    t.invoicebilldate = if(t1.isinvoicebill = '1',date_format(now(),'%Y-%m-%d'),'')
+    where t.id = t1.billid and t.receiptid = #{billid} and t.billtype = '1'
+  </update>
+
+  <update id="editSalesRejectBillStorager" parameterType="java.lang.String">
+    update t_sales_rejectbill set storager =#{storager}
+    where id=#{id}
+  </update>
+
+  <select id="getRejectBillDetailListByMap" resultType="com.hd.agent.sales.model.RejectBillDetail" parameterType="map">
+    select
+    <include refid="Base_Column_List_Detail" />
+    from t_sales_rejectbill_detail
+    where
+    <trim prefixOverrides="and|or">
+      <if test="billid != null" >
+        and billid=#{billid}
+      </if>
+      <if test="billidarrs != null" >
+        and find_in_set(billid,#{billidarrs})
+      </if>
+      <if test="goodsid != null" >
+        and goodsid=#{goodsid}
+      </if>
+      <if test="taxtype != null" >
+        and taxtype=#{taxtype}
+      </if>
+    </trim>
+  </select>
+</mapper>

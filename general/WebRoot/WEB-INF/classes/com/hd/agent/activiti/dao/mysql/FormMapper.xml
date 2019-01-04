@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.activiti.dao.FormMapper" >
+  <sql id="Base_Column_List" >
+    id, unkey, name, type, intro, adduserid, addusername, adddeptid, adddeptname, adddate, 
+    modifyuserid, modifyusername, modifytime, fieldnum
+  </sql>
+  <sql id="Blob_Column_List" >
+    detail, template, phonehtml
+  </sql>
+  <select id="getForm" resultType="com.hd.agent.activiti.model.Form" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_act_form
+    where id = #{id}
+  </select>
+  <select id="getFormByKey" resultType="com.hd.agent.activiti.model.Form" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from t_act_form
+    where unkey = #{key}
+  </select>
+  <select id="getCountByKey" resultType="java.lang.Integer" parameterType="java.lang.String">
+  	select count(1) from t_act_form where unkey = #{key}
+  </select>
+  <select id="getFormList" resultType="com.hd.agent.activiti.model.Form" parameterType="com.hd.agent.common.util.PageMap">
+  	select 
+  	<include refid="Base_Column_List" />
+  	from t_act_form
+  	<trim prefix="where" prefixOverrides="and|or" >
+  		<if test="condition.type != null and condition.type != ''">
+  			type = #{condition.type}
+  		</if>
+  	</trim>
+    order by CONVERT( name USING gbk )
+    <choose>
+        <when test="condition.nopage">
+        </when>
+        <otherwise>
+            <include refid="common.Page_LimitOnly" />
+        </otherwise>
+    </choose>
+  </select>
+  <select id="getFormCount" resultType="java.lang.Integer" parameterType="com.hd.agent.common.util.PageMap">
+  	select count(1) from t_act_form
+  	<trim prefix="where" prefixOverrides="and|or" >
+  		<if test="condition.type != null and condition.type != ''">
+  			type = #{condition.type}
+  		</if>
+  	</trim>
+  </select>
+  <delete id="deleteForm" parameterType="java.lang.String" >
+    delete from t_act_form
+    where id = #{id}
+  </delete>
+  <insert id="addForm" parameterType="com.hd.agent.activiti.model.Form" >
+    insert into t_act_form
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="unkey != null" >
+        unkey,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="intro != null" >
+        intro,
+      </if>
+      <if test="adduserid != null" >
+        adduserid,
+      </if>
+      <if test="addusername != null" >
+        addusername,
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid,
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname,
+      </if>
+        adddate,
+      <if test="modifyuserid != null" >
+        modifyuserid,
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername,
+      </if>
+      <if test="modifytime != null" >
+        modifytime,
+      </if>
+      <if test="detail != null" >
+          detail,
+      </if>
+      <if test="fieldnum != null" >
+          fieldnum,
+      </if>
+      <if test="template != null" >
+          template,
+      </if>
+      <if test="phonehtml != null" >
+          phonehtml,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="unkey != null" >
+        #{unkey},
+      </if>
+      <if test="name != null" >
+        #{name},
+      </if>
+      <if test="type != null" >
+        #{type},
+      </if>
+      <if test="intro != null" >
+        #{intro},
+      </if>
+      <if test="adduserid != null" >
+        #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        #{adddeptname},
+      </if>
+        now(),
+      <if test="modifyuserid != null" >
+        #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        #{modifyusername},
+      </if>
+      <if test="modifytime != null" >
+        #{modifytime},
+      </if>
+      <if test="detail != null" >
+          #{detail},
+      </if>
+      <if test="fieldnum != null" >
+          #{fieldnum},
+      </if>
+      <if test="template != null" >
+          #{template},
+      </if>
+      <if test="phonehtml != null" >
+          #{phonehtml},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateForm" parameterType="com.hd.agent.activiti.model.Form" >
+    update t_act_form
+    <set >
+      <if test="unkey != null" >
+        unkey = #{unkey},
+      </if>
+      <if test="name != null" >
+        name = #{name},
+      </if>
+      <if test="type != null" >
+        type = #{type},
+      </if>
+      <if test="intro != null" >
+        intro = #{intro},
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid = #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername = #{modifyusername},
+      </if>
+      modifytime = now(),
+      <if test="detail != null" >
+          detail = #{detail},
+      </if>
+      <if test="template != null" >
+          template = #{template},
+      </if>
+      <if test="phonehtml != null" >
+          phonehtml = #{phonehtml},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  <update id="updateFormByKey" parameterType="com.hd.agent.activiti.model.Form" >
+    update t_act_form
+    <set >
+      <if test="unkey != null" >
+        unkey = #{unkey},
+      </if>
+      <if test="name != null" >
+        name = #{name},
+      </if>
+      <if test="type != null" >
+        type = #{type},
+      </if>
+      <if test="intro != null" >
+        intro = #{intro},
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid = #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername = #{modifyusername},
+      </if>
+      modifytime = now(),
+      <if test="detail != null" >
+          detail = #{detail},
+      </if>
+      <if test="fieldnum != null" >
+          fieldnum = #{fieldnum},
+      </if>
+      <if test="template != null" >
+          template = #{template},
+      </if>
+      <if test="phonehtml != null" >
+          phonehtml = #{phonehtml},
+      </if>
+    </set>
+    where unkey = #{unkey}
+  </update>
+  
+  <!-- 以下方法为表单调用方法 -->
+  <select id="getPersonnelList" parameterType="java.lang.String" resultType="com.hd.agent.basefiles.model.Personnel">
+		select id, name
+		from t_base_personnel
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="id != null and id != ''">
+				belongdeptid = #{id}
+			</if>
+		</trim>
+	</select>
+</mapper>

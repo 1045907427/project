@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.purchase.dao.ArrivalOrderChangeMapper" >
+    <insert id="insertArrivalOrderChange" parameterType="com.hd.agent.purchase.model.ArrivalOrderChange">
+        insert into t_purchase_arrivalorder_change
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="billid != null">
+                billid,
+            </if>
+            <if test="goodsid != null">
+                goodsid,
+            </if>
+            <if test="billno != null">
+                billno,
+            </if>
+            <if test="billdetailno != null">
+                billdetailno,
+            </if>
+            <if test="taxamount != null">
+                taxamount,
+            </if>
+            <if test="notaxamount != null">
+                notaxamount,
+            </if>
+            <if test="tax != null">
+                tax,
+            </if>
+            <if test="taxtype != null">
+                taxtype,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="adduserid != null">
+                adduserid,
+            </if>
+            <if test="addusername != null">
+                addusername,
+            </if>
+            <if test="1==1">
+                addtime,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="billid != null">
+                #{billid},
+            </if>
+            <if test="goodsid != null">
+                #{goodsid},
+            </if>
+            <if test="billno != null">
+                #{billno},
+            </if>
+            <if test="billdetailno != null">
+                #{billdetailno},
+            </if>
+            <if test="taxamount != null">
+                #{taxamount},
+            </if>
+            <if test="notaxamount != null">
+                #{notaxamount},
+            </if>
+            <if test="tax != null">
+                #{tax},
+            </if>
+            <if test="taxtype != null">
+                #{taxtype},
+            </if>
+            <if test="remark != null">
+                #{remark},
+            </if>
+            <if test="adduserid != null">
+                #{adduserid},
+            </if>
+            <if test="addusername != null">
+                #{addusername},
+            </if>
+            <if test="1==1">
+               now(),
+            </if>
+        </trim>
+    </insert>
+    <sql id="getPurchaseShareLog_sql">
+        SELECT goodsid,billno,billid,taxamount,remark FROM t_purchase_arrivalorder_change WHERE billid=#{condition.id}
+    </sql>
+    <select id="getPurchaseShareLogList" parameterType="com.hd.agent.common.util.PageMap" resultType="map">
+        <include refid="getPurchaseShareLog_sql" />
+        <include refid="common.Page_limit" />
+    </select>
+    <select id="getPurchaseShareLogCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+        select count(1) from (<include refid="getPurchaseShareLog_sql" />) t
+    </select>
+    <delete id="clearArrivalOrderChangeLog" parameterType="java.lang.String">
+        DELETE FROM t_purchase_arrivalorder_change where billid=#{id}
+    </delete>
+    <select id="getArrivalOrderNum" parameterType="java.lang.String" resultType="int">
+        SELECT count(1) FROM t_purchase_arrivalorder_change where billid=#{id}
+    </select>
+    <select id="getArrivalPurchaseChangeData" parameterType="com.hd.agent.purchase.model.ArrivalOrderDetail" resultType="map">
+        SELECT sum(ifnull(taxamount,0)) as taxamount FROM t_purchase_arrivalorder_change
+        WHERE billid=#{orderid} AND billno=#{billno} and billdetailno=#{billdetailno}
+    </select>
+</mapper>

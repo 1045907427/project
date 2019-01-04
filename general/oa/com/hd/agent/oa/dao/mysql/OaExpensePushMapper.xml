@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.oa.dao.OaExpensePushMapper" >
+  <resultMap id="BaseResultMap" type="com.hd.agent.oa.model.OaExpensePush" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="oaid" property="oaid" jdbcType="VARCHAR" />
+    <result column="businessdate" property="businessdate" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="adduserid" property="adduserid" jdbcType="VARCHAR" />
+    <result column="addusername" property="addusername" jdbcType="VARCHAR" />
+    <result column="adddeptid" property="adddeptid" jdbcType="VARCHAR" />
+    <result column="adddeptname" property="adddeptname" jdbcType="VARCHAR" />
+    <result column="addtime" property="addtime" jdbcType="TIMESTAMP" />
+    <result column="modifyuserid" property="modifyuserid" jdbcType="VARCHAR" />
+    <result column="modifyusername" property="modifyusername" jdbcType="VARCHAR" />
+    <result column="modifytime" property="modifytime" jdbcType="TIMESTAMP" />
+    <result column="printtimes" property="printtimes" jdbcType="INTEGER" />
+    <result column="customerid" property="customerid" jdbcType="VARCHAR" />
+    <result column="deptid" property="deptid" jdbcType="VARCHAR" />
+    <result column="ptype" property="ptype" jdbcType="CHAR" />
+    <result column="salesdeptid" property="salesdeptid" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, oaid, businessdate, remark, adduserid, addusername, adddeptid, adddeptname, addtime, 
+    modifyuserid, modifyusername, modifytime, printtimes, customerid, deptid, ptype, salesdeptid
+  </sql>
+  <select id="selectOaExpensePush" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_oa_expense_push
+    where id = #{id}
+  </select>
+  <delete id="deleteOaExpensePush" parameterType="java.lang.String" >
+    delete from t_oa_expense_push
+    where id = #{id}
+  </delete>
+  <insert id="insertOaExpensePush" parameterType="com.hd.agent.oa.model.OaExpensePush" >
+    insert into t_oa_expense_push
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="oaid != null" >
+        oaid,
+      </if>
+      <if test="businessdate != null" >
+        businessdate,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="adduserid != null" >
+        adduserid,
+      </if>
+      <if test="addusername != null" >
+        addusername,
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid,
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname,
+      </if>
+      addtime,
+      <if test="modifyuserid != null" >
+        modifyuserid,
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername,
+      </if>
+      <if test="modifytime != null" >
+        modifytime,
+      </if>
+      <if test="printtimes != null" >
+        printtimes,
+      </if>
+      <if test="customerid != null" >
+        customerid,
+      </if>
+      <if test="deptid != null" >
+        deptid,
+      </if>
+      <if test="ptype != null" >
+        ptype,
+      </if>
+      <if test="salesdeptid != null" >
+        salesdeptid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="oaid != null" >
+        #{oaid},
+      </if>
+      <if test="businessdate != null" >
+        #{businessdate},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+      <if test="adduserid != null" >
+        #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        #{adddeptname},
+      </if>
+      now(),
+      <if test="modifyuserid != null" >
+        #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        #{modifyusername},
+      </if>
+      <if test="modifytime != null" >
+        #{modifytime},
+      </if>
+      <if test="printtimes != null" >
+        #{printtimes},
+      </if>
+      <if test="customerid != null" >
+        #{customerid},
+      </if>
+      <if test="deptid != null" >
+        #{deptid},
+      </if>
+      <if test="ptype != null" >
+        #{ptype},
+      </if>
+      <if test="salesdeptid != null" >
+        #{salesdeptid},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateOaExpensePush" parameterType="com.hd.agent.oa.model.OaExpensePush" >
+    update t_oa_expense_push
+    set id = #{id},
+      oaid = #{oaid},
+      businessdate = #{businessdate},
+      remark = #{remark},
+      modifyuserid = #{modifyuserid},
+      modifyusername = #{modifyusername},
+      modifytime = now(),
+      printtimes = #{printtimes},
+      customerid = #{customerid},
+      deptid = #{deptid},
+      ptype = #{ptype},
+      salesdeptid = #{salesdeptid }
+    where id = #{id }
+  </update>
+</mapper>

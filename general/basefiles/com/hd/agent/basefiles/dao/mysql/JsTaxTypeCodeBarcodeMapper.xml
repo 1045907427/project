@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.basefiles.dao.JsTaxTypeCodeBarcodeMapper" >
+  <sql id="JsTypeBarcodeBase_Column_List">
+    id, jstypeid, barcode, addusername, adduserid, addtime, modifyuserid, modifyusername,
+    modifytime
+  </sql>
+  <sql id="JsTypeBarcodePageList_Where_Clause">
+    <if test="condition.jstypeid != null">
+      and t.jstypeid = #{condition.jstypeid}
+    </if>
+    <if test="condition.jstypeidlike != null">
+      and t.jstypeid like concat('%', #{condition.jstypeidlike} , '%')
+    </if>
+    <if test="condition.barcode != null">
+      and t.barcode like concat('%', #{condition.barcode} , '%')
+    </if>
+    <if test="condition.goodsname != null" >
+      and t1.goodsname like concat('%', #{condition.goodsname},'%')
+    </if>
+    <if test="condition.description != null" >
+      and t1.description  like concat('%', #{condition.description},'%')
+    </if>
+    <if test="condition.keyword != null" >
+      and t1.keyword   like concat('%', #{condition.keyword},'%')
+    </if>
+  </sql>
+  <select id="getJsTaxTypeCodeBarcodePageList" resultType="map" parameterType="com.hd.agent.common.util.PageMap" useCache="false">
+    SELECT
+    id,jstypeid,barcode,goodsname,description,keyword,adduserid,addusername,addtime,modifyuserid,modifyusername,modifytime
+    FROM (
+      select
+      t.id,t.jstypeid,t.barcode,t1.goodsname,t1.description,t1.keyword,t.adduserid,t.addusername,t.addtime,t.modifyuserid,t.modifyusername,t.modifytime
+      FROM
+      t_base_jstaxtypecode_barcode t LEFT JOIN t_base_jstaxtypecode t1 on t.jstypeid=t1.id
+      <trim prefix="where" prefixOverrides="and|or">
+        <include refid="JsTypeBarcodePageList_Where_Clause" />
+        <include refid="common.Page_querySql"/>
+        <include refid="common.Page_dataSql"/>
+      </trim>
+    )t
+    <if test="condition.isNoPageflag == null">
+      <include refid="common.Page_limit"/>
+    </if>
+  </select>
+  <select id="getJsTaxTypeCodeBarcodePageCount" resultType="int" parameterType="com.hd.agent.common.util.PageMap" useCache="false">
+    select
+    count(t.id)
+    FROM
+    t_base_jstaxtypecode_barcode t LEFT JOIN t_base_jstaxtypecode t1 on t.jstypeid=t1.id
+    <trim prefix="where" prefixOverrides="and|or">
+      <include refid="JsTypeBarcodePageList_Where_Clause" />
+      <include refid="common.Page_querySql"/>
+      <include refid="common.Page_dataSql"/>
+    </trim>
+  </select>
+  <insert id="insertJsTaxTypeCodeBarcode" parameterType="com.hd.agent.basefiles.model.JsTaxTypeCodeBarcode">
+    <selectKey resultType="java.lang.String" keyProperty="id" order="BEFORE" >
+      select UUID_SHORT()
+    </selectKey>
+    insert into t_base_jstaxtypecode_barcode
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="jstypeid != null">
+        jstypeid,
+      </if>
+      <if test="barcode != null">
+        barcode,
+      </if>
+      <if test="addusername != null">
+        addusername,
+      </if>
+      <if test="adduserid != null">
+        adduserid,
+      </if>
+      <if test="addtime != null">
+        addtime,
+      </if>
+      <if test="modifyuserid != null">
+        modifyuserid,
+      </if>
+      <if test="modifyusername != null">
+        modifyusername,
+      </if>
+      <if test="modifytime != null">
+        modifytime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id},
+      </if>
+      <if test="jstypeid != null">
+        #{jstypeid},
+      </if>
+      <if test="barcode != null">
+        #{barcode},
+      </if>
+      <if test="addusername != null">
+        #{addusername},
+      </if>
+      <if test="adduserid != null">
+        #{adduserid},
+      </if>
+      <if test="addtime != null">
+        #{addtime},
+      </if>
+      <if test="modifyuserid != null">
+        #{modifyuserid},
+      </if>
+      <if test="modifyusername != null">
+        #{modifyusername},
+      </if>
+      <if test="modifytime != null">
+        #{modifytime},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateJsTaxTypeCodeBarcode" parameterType="com.hd.agent.basefiles.model.JsTaxTypeCodeBarcode">
+    update t_base_jstaxtypecode_barcode
+    <set>
+      <if test="jstypeid != null">
+        jstypeid = #{jstypeid},
+      </if>
+      <if test="barcode != null">
+        barcode = #{barcode},
+      </if>
+      <if test="modifyuserid != null">
+        modifyuserid = #{modifyuserid},
+      </if>
+      <if test="modifyusername != null">
+        modifyusername = #{modifyusername},
+      </if>
+      <if test="modifytime != null">
+        modifytime = #{modifytime},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  <select id="getJsTaxTypeCodeBarcodeById" resultType="com.hd.agent.basefiles.model.JsTaxTypeCodeBarcode" parameterType="java.lang.String" >
+    select
+    <include refid="JsTypeBarcodeBase_Column_List" />
+    from t_base_jstaxtypecode_barcode
+    where id = #{id}
+  </select>
+  <delete id="deleteJsTaxTypeCodeBarcodeByJsId" parameterType="java.lang.String" >
+    delete from t_base_jstaxtypecode_barcode
+    where jstypeid = #{jstypeid}
+  </delete>
+  <delete id="deleteJsTaxTypeCodeBarcode" parameterType="java.lang.String" >
+    delete from t_base_jstaxtypecode_barcode
+    where id = #{id}
+  </delete>
+  <select id="getJsTaxTypeCodeBarcodeCountBy" parameterType="java.lang.String" resultType="int">
+    select count(1) from t_base_jstaxtypecode_barcode where
+    <trim prefixOverrides="and|or">
+      <if test="jstypeid!=null">
+        and jstypeid = #{jstypeid}
+      </if>
+      <if test="barcode!=null">
+        and barcode = #{barcode}
+      </if>
+      <if test="notCurId !=null">
+        and id!=#{notCurId}
+      </if>
+    </trim>
+  </select>
+  <insert id="insertJsTaxTypeCodeBarcodeBatch" parameterType="java.util.List" >
+    insert into t_base_jstaxtypecode_barcode (id, jstypeid, barcode, addusername, adduserid, addtime)
+    values
+    <foreach collection="list" index="index" item="item" separator="," >
+      (UUID_SHORT(), #{item.jstypeid}, #{item.barcode}, #{item.addusername},#{item.adduserid},#{item.addtime})
+    </foreach>
+  </insert>
+  <select id="getJsTaxTypeCodeBarcodeGoodsList" resultType="map">
+    SELECT
+    t.jstypeid,t1.id as goodsid,t.barcode
+    FROM
+    t_base_jstaxtypecode_barcode t INNER JOIN t_base_goods_info t1 on t.barcode = t1.barcode
+    GROUP BY t1.id
+    ORDER by t.addtime desc
+  </select>
+</mapper>

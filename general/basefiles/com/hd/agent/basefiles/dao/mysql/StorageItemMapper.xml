@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.basefiles.dao.StorageItemMapper" >
+    <sql id="StorageItem_Column_List">
+        id, storageid, itemno,goodsid
+    </sql>
+    <sql id="storageItemGoodsList_sql">
+        SELECT <include refid="StorageItem_Column_List"/> FROM t_base_storage_itemno_goods
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="condition.itemno != null">
+                and itemno like CONCAT('%',#{condition.itemno},'%')
+            </if>
+            <if test="condition.goodsid != null">
+                AND find_in_set(goodsid,#{condition.goodsid})
+            </if>
+            <if test="condition.storageid != null">
+                AND storageid=#{condition.storageid}
+            </if>
+        </trim>
+    </sql>
+    <select id="getStorageItemGoodsList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.basefiles.model.StorageItemGoods">
+        <include refid="storageItemGoodsList_sql" />
+        <if test="condition.isPageFlag==null">
+            <include refid="common.Page_limit"/>
+        </if>
+    </select>
+    <select id="getStorageItemGoodsCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+       SELECT count(1) FROM (<include refid="storageItemGoodsList_sql" />) z
+    </select>
+    <insert id="addStorageItemGoods" parameterType="com.hd.agent.basefiles.model.StorageItemGoods">
+        insert into t_base_storage_itemno_goods
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="itemno != null" >
+                itemno,
+            </if>
+            <if test="goodsid != null" >
+                goodsid,
+            </if>
+            <if test="storageid != null" >
+                storageid,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="itemno != null" >
+                #{itemno},
+            </if>
+            <if test="goodsid != null" >
+                #{goodsid},
+            </if>
+            <if test="storageid != null" >
+                #{storageid},
+            </if>
+        </trim>
+    </insert>
+    <select id="getStorageItemGoods" parameterType="java.lang.String" resultType="com.hd.agent.basefiles.model.StorageItemGoods">
+        SELECT <include refid="StorageItem_Column_List"/> FROM t_base_storage_itemno_goods WHERE goodsid=#{goodsid} AND storageid=#{storageid}
+    </select>
+    <update id="editStorageItemGoods" parameterType="com.hd.agent.basefiles.model.StorageItemGoods">
+        UPDATE t_base_storage_itemno_goods
+        <set >
+            <if test="itemno != null" >
+                itemno = #{itemno},
+            </if>
+        </set>
+        where goodsid = #{goodsid} and storageid=#{storageid}
+    </update>
+    <delete id="deleteStorageItemGoods" parameterType="java.lang.String">
+        DELETE FROM t_base_storage_itemno_goods where storageid=#{storageid} and find_in_set(goodsid,#{goodsid})
+    </delete>
+    <sql id="StorageInfo_sql">
+        SELECT t.id,t.name,t.storagetype FROM t_base_storage_info t
+        <trim prefix="where" prefixOverrides="and|or">
+            t.state='1'
+            <if test="condition.goodsid != null">
+                AND t.id IN (SELECT storageid FROM t_base_storage_itemno_goods WHERE goodsid=#{condition.goodsid})
+            </if>
+            <if test="condition.id != null">
+                AND t.id like CONCAT(#{condition.id },'%')
+            </if>
+            <include refid="common.Page_dataSql"/>
+        </trim>
+    </sql>
+    <select id="showStorageInfoList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.basefiles.model.StorageInfo">
+        <include refid="StorageInfo_sql"/>
+        <include refid="common.Page_limit" />
+    </select>
+    <select id="showStorageInfoCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+       SELECT count(1) FROM (<include refid="StorageInfo_sql"/>) t
+    </select>
+</mapper>

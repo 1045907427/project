@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.report.dao.StorageCheckListReportMapper" >
+	<sql id="Base_Column_List" >
+	    id, businessdate, billid, checklistid, checkno, checkuserid, checknum, truenum, addtime
+	</sql>
+	<insert id="addStorageCheckListReport" parameterType="com.hd.agent.report.model.StorageCheckListReport" >
+	    insert into t_report_storage_checklist
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="id != null" >
+	        id,
+	      </if>
+	      <if test="businessdate != null" >
+	        businessdate,
+	      </if>
+	      <if test="billid != null" >
+	        billid,
+	      </if>
+	      <if test="checklistid != null" >
+	        checklistid,
+	      </if>
+	      <if test="storageid != null" >
+	        storageid,
+	      </if>
+	      <if test="checkno != null" >
+	        checkno,
+	      </if>
+	      <if test="checkuserid != null" >
+	        checkuserid,
+	      </if>
+	      <if test="checknum != null" >
+	        checknum,
+	      </if>
+	      <if test="truenum != null" >
+	        truenum,
+	      </if>
+	      <if test="1==1" >
+	        addtime,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="id != null" >
+	        #{id},
+	      </if>
+	      <if test="businessdate != null" >
+	        #{businessdate},
+	      </if>
+	      <if test="billid != null" >
+	        #{billid},
+	      </if>
+	      <if test="checklistid != null" >
+	        #{checklistid},
+	      </if>
+	      <if test="storageid != null" >
+	        #{storageid},
+	      </if>
+	      <if test="checkno != null" >
+	        #{checkno},
+	      </if>
+	      <if test="checkuserid != null" >
+	        #{checkuserid},
+	      </if>
+	      <if test="checknum != null" >
+	        #{checknum},
+	      </if>
+	      <if test="truenum != null" >
+	        #{truenum},
+	      </if>
+	      <if test="1==1" >
+	        now(),
+	      </if>
+	    </trim>
+	  </insert>
+	  <delete id="deleteStorageCheckListReportByChecklistid" parameterType="java.lang.String">
+	  	delete from t_report_storage_checklist where checklistid=#{checklistid}
+	  </delete>
+	  <select id="getStorageCheckListReportByBillid" parameterType="java.lang.String" resultType="com.hd.agent.report.model.StorageCheckListReport">
+	  	select <include refid="Base_Column_List"/>
+	  	from t_report_storage_checklist where billid=#{billid} and checklistid=#{billid} and checkuserid=#{checkuserid}
+	  </select>
+	  <select id="getStorageCheckListReportByChecklistid" parameterType="java.lang.String" resultType="com.hd.agent.report.model.StorageCheckListReport">
+	  	select <include refid="Base_Column_List"/>
+	  	from t_report_storage_checklist where checkno=#{checkno} and billid=#{billid}
+	  </select>
+	  <update id="updateStorageCheckListReport" parameterType="com.hd.agent.report.model.StorageCheckListReport">
+	  	update t_report_storage_checklist
+	    <set>
+	      <if test="businessdate != null">
+	        businessdate = #{businessdate},
+	      </if>
+	      <if test="billid != null">
+	        billid = #{billid},
+	      </if>
+	      <if test="checklistid != null">
+	        checklistid = #{checklistid},
+	      </if>
+	      <if test="storageid != null">
+	        storageid = #{storageid},
+	      </if>
+	      <if test="checkno != null">
+	        checkno = #{checkno},
+	      </if>
+	      <if test="checkuserid != null">
+	        checkuserid = #{checkuserid},
+	      </if>
+	      <if test="checknum != null">
+	        checknum = #{checknum},
+	      </if>
+	      <if test="truenum != null">
+	        truenum = #{truenum},
+	      </if>
+	      <if test="addtime != null">
+	        addtime = now(),
+	      </if>
+	    </set>
+	    where id = #{id}
+	  </update>
+</mapper>

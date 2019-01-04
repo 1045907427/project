@@ -1,0 +1,691 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.journalsheet.dao.ContractMapper" >
+  <resultMap id="ContractResultMap" type="com.hd.agent.journalsheet.model.Contract" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="contractid" property="contractid" jdbcType="VARCHAR" />
+    <result column="contractname" property="contractname" jdbcType="VARCHAR" />
+    <result column="customertype" property="customertype" jdbcType="CHAR" />
+    <result column="customerid" property="customerid" jdbcType="VARCHAR" />
+    <result column="contacts" property="contacts" jdbcType="VARCHAR" />
+    <result column="contactstype" property="contactstype" jdbcType="VARCHAR" />
+    <result column="deptid" property="deptid" jdbcType="VARCHAR" />
+    <result column="personnelid" property="personnelid" jdbcType="VARCHAR" />
+    <result column="begindate" property="begindate" jdbcType="VARCHAR" />
+    <result column="enddate" property="enddate" jdbcType="VARCHAR" />
+    <result column="supplierid" property="supplierid" jdbcType="VARCHAR" />
+    <result column="brandid" property="brandid" jdbcType="VARCHAR" />
+    <result column="datasource" property="datasource" jdbcType="CHAR" />
+    <result column="status" property="status" jdbcType="CHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="adduserid" property="adduserid" jdbcType="VARCHAR" />
+    <result column="addusername" property="addusername" jdbcType="VARCHAR" />
+    <result column="adddeptid" property="adddeptid" jdbcType="VARCHAR" />
+    <result column="adddeptname" property="adddeptname" jdbcType="VARCHAR" />
+    <result column="addtime" property="addtime" jdbcType="TIMESTAMP" />
+    <result column="modifyuserid" property="modifyuserid" jdbcType="VARCHAR" />
+    <result column="modifyusername" property="modifyusername" jdbcType="VARCHAR" />
+    <result column="modifytime" property="modifytime" jdbcType="TIMESTAMP" />
+    <result column="audituserid" property="audituserid" jdbcType="VARCHAR" />
+    <result column="auditusername" property="auditusername" jdbcType="VARCHAR" />
+    <result column="audittime" property="audittime" jdbcType="TIMESTAMP" />
+    <result column="stopuserid" property="stopuserid" jdbcType="VARCHAR" />
+    <result column="stopusername" property="stopusername" jdbcType="VARCHAR" />
+    <result column="stoptime" property="stoptime" jdbcType="TIMESTAMP" />
+    <result column="closetime" property="closetime" jdbcType="TIMESTAMP" />
+    <result column="printtimes" property="printtimes" jdbcType="INTEGER" />
+    <result column="printdatetime" property="printdatetime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Contract_Column_List" >
+    id, contractid, contractname, customertype, customerid, contacts, contactstype, deptid, 
+    personnelid, begindate, enddate, supplierid, brandid, datasource, status, remark, 
+    adduserid, addusername, adddeptid, adddeptname, addtime, modifyuserid, modifyusername, 
+    modifytime, audituserid, auditusername, audittime, stopuserid, stopusername, stoptime, 
+    closetime, printtimes, printdatetime
+  </sql>
+  <sql id="Contract_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.id != null" >
+        and id like concat('%', #{condition.id} ,'%')
+      </if>
+      <if test="condition.contractid != null" >
+        and contractid like concat('%', #{condition.contractid} ,'%')
+      </if>
+      <if test="condition.contractname != null" >
+        and contractname   like concat('%', #{condition.contractname} ,'%')
+      </if>
+      <if test="condition.customertype != null" >
+        and customertype = #{condition.customertype}
+      </if>
+      <if test="condition.customerid != null" >
+        and customerid = #{condition.customerid}
+      </if>
+      <if test="condition.contacts != null" >
+        and contacts = #{condition.contacts}
+      </if>
+      <if test="condition.contactstype != null" >
+        and contactstype = #{condition.contactstype}
+      </if>
+      <if test="condition.deptid != null" >
+        and deptid = #{condition.deptid}
+      </if>
+      <if test="condition.personnelid != null" >
+        and personnelid = #{condition.personnelid}
+      </if>
+      <if test="condition.begindate != null" >
+        and begindate = #{condition.begindate}
+      </if>
+      <if test="condition.enddate != null" >
+        and enddate = #{condition.enddate}
+      </if>
+      <if test="condition.supplierid != null" >
+        and supplierid = #{condition.supplierid}
+      </if>
+      <if test="condition.brandid != null" >
+        and brandid = #{condition.brandid}
+      </if>
+      <if test="condition.datasource != null" >
+        and datasource = #{condition.datasource}
+      </if>
+      <if test="condition.status != null" >
+        and status = #{condition.status}
+      </if>
+      <if test="condition.remark != null" >
+        and remark = #{condition.remark}
+      </if>
+      <if test="condition.adduserid != null" >
+        and adduserid = #{condition.adduserid}
+      </if>
+      <if test="condition.addusername != null" >
+        and addusername = #{condition.addusername}
+      </if>
+      <if test="condition.adddeptid != null" >
+        and adddeptid = #{condition.adddeptid}
+      </if>
+      <if test="condition.adddeptname != null" >
+        and adddeptname = #{condition.adddeptname}
+      </if>
+      <if test="condition.addtime != null" >
+        and addtime = #{condition.addtime}
+      </if>
+      <if test="condition.modifyuserid != null" >
+        and modifyuserid = #{condition.modifyuserid}
+      </if>
+      <if test="condition.modifyusername != null" >
+        and modifyusername = #{condition.modifyusername}
+      </if>
+      <if test="condition.modifytime != null" >
+        and modifytime = #{condition.modifytime}
+      </if>
+      <if test="condition.audituserid != null" >
+        and audituserid = #{condition.audituserid}
+      </if>
+      <if test="condition.auditusername != null" >
+        and auditusername = #{condition.auditusername}
+      </if>
+      <if test="condition.audittime != null" >
+        and audittime = #{condition.audittime}
+      </if>
+      <if test="condition.stopuserid != null" >
+        and stopuserid = #{condition.stopuserid}
+      </if>
+      <if test="condition.stopusername != null" >
+        and stopusername = #{condition.stopusername}
+      </if>
+      <if test="condition.stoptime != null" >
+        and stoptime = #{condition.stoptime}
+      </if>
+      <if test="condition.closetime != null" >
+        and closetime = #{condition.closetime}
+      </if>
+      <if test="condition.printtimes != null" >
+        and printtimes = #{condition.printtimes}
+      </if>
+      <if test="condition.printdatetime != null" >
+        and printdatetime = #{condition.printdatetime}
+      </if>
+    </trim>
+  </sql>
+  <select id="getContractListData" resultType="com.hd.agent.journalsheet.model.Contract" parameterType="com.hd.agent.common.util.PageMap" useCache="false">
+    select
+    <include refid="Contract_Column_List"/>
+    from t_finance_customer_contract
+    <include refid="Contract_Where_Clause" />
+    <include refid="common.Page_dataSql"/>
+    <include refid="common.Page_limit"/>
+  </select>
+  <select id="getContractListDataCount" resultType="int" parameterType="com.hd.agent.common.util.PageMap" useCache="false">
+    select count(1) from t_finance_customer_contract
+    <include refid="Contract_Where_Clause" />
+    <include refid="common.Page_dataSql"/>
+  </select>
+
+  <select id="getAddContractReportData" resultType="com.hd.agent.journalsheet.model.Contract" parameterType="com.hd.agent.common.util.PageMap" useCache="false">
+    select t.customerid
+    from t_finance_customer_contract t
+    left  JOIN  t_finance_customer_contract_detail t1 on  t1.billid = t.id
+    <trim prefix="where" prefixOverrides="and|or">
+      <if test="condition.month != null">
+        <![CDATA[and t.begindate  <= #{condition.month} ]]>
+      </if>
+      <if test="condition.month != null">
+        <![CDATA[and t.enddate >= #{condition.month} ]]>
+      </if>
+      <if test="condition.customerid != null" >
+        and FIND_IN_SET(t.customerid,#{condition.customerid})
+      </if>
+      <if test="condition.deptid != null" >
+        and FIND_IN_SET(t.deptid,#{condition.deptid})
+      </if>
+      <if test="1 == 1">
+        and t.status='3' and ( t1.returntype= '0' or (t1.returntype = '1' and t1.returnmonthnum = #{condition.seasonmonthnum}) or (t1.returntype = '2' and t1.returnmonthnum = #{condition.yearmonthnum}) )
+        and  NOT EXISTS (SELECT * FROM t_report_finance_customer_contract t2 WHERE t2.customerid=t.customerid and t2.month = #{condition.month} and (t2.state IN ('1', '2') or (t2.state = '0' 	and t2.contractbillid = t.id and t2.contractcaluseid = t1.caluseid)))
+      </if>
+    </trim>
+    group by t.customerid
+  </select>
+  <select id="getAddContractReportDataCount" resultType="int" parameterType="com.hd.agent.common.util.PageMap" useCache="false">
+    select count(1)
+    from(
+      select t.customerid
+      from t_finance_customer_contract t
+      left  JOIN  t_finance_customer_contract_detail t1 on  t1.billid = t.id
+      <trim prefix="where" prefixOverrides="and|or">
+        <if test="condition.month != null">
+          <![CDATA[and t.begindate  <= #{condition.month} ]]>
+        </if>
+        <if test="condition.month != null">
+          <![CDATA[and t.enddate >= #{condition.month} ]]>
+        </if>
+        <if test="condition.customerid != null" >
+          and t.customerid = #{condition.customerid}
+        </if>
+        <if test="1 == 1">
+          and t.status='3' and ( t1.returntype= '0' or (t1.returntype = '1' and t1.returnmonthnum = #{condition.seasonmonthnum}) or (t1.returntype = '2' and t1.returnmonthnum = #{condition.yearmonthnum}) )
+          and  NOT EXISTS (SELECT * FROM t_report_finance_customer_contract t2 WHERE t2.customerid=t.customerid and t2.month = #{condition.month} and (t2.state IN ('1', '2') or (t2.state = '0' 	and t2.contractbillid = t.id and t2.contractcaluseid = t1.caluseid)))
+        </if>
+      </trim>
+      group by t.customerid
+    )z
+
+  </select>
+  <select id="getContractById" parameterType="java.lang.String" resultType="com.hd.agent.journalsheet.model.Contract">
+    select
+    <include refid="Contract_Column_List"/>
+    from t_finance_customer_contract
+    where id = #{id}
+  </select>
+
+  <select id="getAddContractReportDataListByMonthAndCustomerid" parameterType="map" resultType="map">
+    select t.id,t.contractid,t1.caluseid
+    from t_finance_customer_contract t
+    RIGHT  JOIN  t_finance_customer_contract_detail t1 on t1.billid = t.id
+    <trim prefix="where" prefixOverrides="and|or">
+      <if test="month != null">
+        <![CDATA[and t.begindate  <= #{month} ]]>
+      </if>
+      <if test="month != null">
+        <![CDATA[and  t.enddate >= #{month} ]]>
+      </if>
+      <if test="customerid != null" >
+        and t.customerid = #{customerid}
+      </if>
+      <if test="1 == 1">
+        and t.status='3' and ( t1.returntype= '0' or (t1.returntype = '1' and t1.returnmonthnum = #{seasonmonthnum}) or (t1.returntype = '2' and t1.returnmonthnum = #{yearmonthnum}) )
+        and  NOT EXISTS (SELECT * FROM t_report_finance_customer_contract t2 WHERE t2.customerid=t.customerid and t2.month = #{month} and (t2.state IN ('1', '2') or (t2.state = '0' 	and t2.contractbillid = t.id and t2.contractcaluseid = t1.caluseid)))
+      </if>
+    </trim>
+  </select>
+
+  <insert id="addContract" parameterType="com.hd.agent.journalsheet.model.Contract" >
+    insert into t_finance_customer_contract
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="contractid != null" >
+        contractid,
+      </if>
+      <if test="contractname != null" >
+        contractname,
+      </if>
+      <if test="customertype != null" >
+        customertype,
+      </if>
+      <if test="customerid != null" >
+        customerid,
+      </if>
+      <if test="contacts != null" >
+        contacts,
+      </if>
+      <if test="contactstype != null" >
+        contactstype,
+      </if>
+      <if test="deptid != null" >
+        deptid,
+      </if>
+      <if test="personnelid != null" >
+        personnelid,
+      </if>
+      <if test="begindate != null" >
+        begindate,
+      </if>
+      <if test="enddate != null" >
+        enddate,
+      </if>
+      <if test="supplierid != null" >
+        supplierid,
+      </if>
+      <if test="brandid != null" >
+        brandid,
+      </if>
+      <if test="datasource != null" >
+        datasource,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="adduserid != null" >
+        adduserid,
+      </if>
+      <if test="addusername != null" >
+        addusername,
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid,
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname,
+      </if>
+      <if test="1 == 1" >
+        addtime,
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid,
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername,
+      </if>
+      <if test="modifytime != null" >
+        modifytime,
+      </if>
+      <if test="audituserid != null" >
+        audituserid,
+      </if>
+      <if test="auditusername != null" >
+        auditusername,
+      </if>
+      <if test="audittime != null" >
+        audittime,
+      </if>
+      <if test="stopuserid != null" >
+        stopuserid,
+      </if>
+      <if test="stopusername != null" >
+        stopusername,
+      </if>
+      <if test="stoptime != null" >
+        stoptime,
+      </if>
+      <if test="closetime != null" >
+        closetime,
+      </if>
+      <if test="printtimes != null" >
+        printtimes,
+      </if>
+      <if test="printdatetime != null" >
+        printdatetime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="contractid != null" >
+        #{contractid},
+      </if>
+      <if test="contractname != null" >
+        #{contractname},
+      </if>
+      <if test="customertype != null" >
+        #{customertype},
+      </if>
+      <if test="customerid != null" >
+        #{customerid},
+      </if>
+      <if test="contacts != null" >
+        #{contacts},
+      </if>
+      <if test="contactstype != null" >
+        #{contactstype},
+      </if>
+      <if test="deptid != null" >
+        #{deptid},
+      </if>
+      <if test="personnelid != null" >
+        #{personnelid},
+      </if>
+      <if test="begindate != null" >
+        #{begindate},
+      </if>
+      <if test="enddate != null" >
+        #{enddate},
+      </if>
+      <if test="supplierid != null" >
+        #{supplierid},
+      </if>
+      <if test="brandid != null" >
+        #{brandid},
+      </if>
+      <if test="datasource != null" >
+        #{datasource},
+      </if>
+      <if test="status != null" >
+        #{status},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+      <if test="adduserid != null" >
+        #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        #{adddeptname},
+      </if>
+      <if test="1 == 1 " >
+        now(),
+      </if>
+      <if test="modifyuserid != null" >
+        #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        #{modifyusername},
+      </if>
+      <if test="modifytime != null" >
+        #{modifytime},
+      </if>
+      <if test="audituserid != null" >
+        #{audituserid},
+      </if>
+      <if test="auditusername != null" >
+        #{auditusername},
+      </if>
+      <if test="audittime != null" >
+        #{audittime},
+      </if>
+      <if test="stopuserid != null" >
+        #{stopuserid},
+      </if>
+      <if test="stopusername != null" >
+        #{stopusername},
+      </if>
+      <if test="stoptime != null" >
+        #{stoptime},
+      </if>
+      <if test="closetime != null" >
+        #{closetime},
+      </if>
+      <if test="printtimes != null" >
+        #{printtimes},
+      </if>
+      <if test="printdatetime != null" >
+        #{printdatetime},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="editContract" parameterType="com.hd.agent.journalsheet.model.Contract" >
+    update t_finance_customer_contract
+    <set >
+      <if test="contractid != null" >
+        contractid = #{contractid},
+      </if>
+      <if test="contractname != null" >
+        contractname = #{contractname},
+      </if>
+      <if test="customertype != null" >
+        customertype = #{customertype},
+      </if>
+      <if test="customerid != null" >
+        customerid = #{customerid},
+      </if>
+      <if test="contacts != null" >
+        contacts = #{contacts},
+      </if>
+      <if test="contactstype != null" >
+        contactstype = #{contactstype},
+      </if>
+      <if test="deptid != null" >
+        deptid = #{deptid},
+      </if>
+      <if test="personnelid != null" >
+        personnelid = #{personnelid},
+      </if>
+      <if test="begindate != null" >
+        begindate = #{begindate},
+      </if>
+      <if test="enddate != null" >
+        enddate = #{enddate},
+      </if>
+      <if test="supplierid != null" >
+        supplierid = #{supplierid},
+      </if>
+      <if test="brandid != null" >
+        brandid = #{brandid},
+      </if>
+      <if test="datasource != null" >
+        datasource = #{datasource},
+      </if>
+      <if test="status != null" >
+        status = #{status},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark},
+      </if>
+      <if test="adduserid != null" >
+        adduserid = #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        addusername = #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid = #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname = #{adddeptname},
+      </if>
+      <if test="addtime != null" >
+        addtime = #{addtime},
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid = #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername = #{modifyusername},
+      </if>
+      <if test="modifytime != null" >
+        modifytime = #{modifytime},
+      </if>
+      <if test="audituserid != null" >
+        audituserid = #{audituserid},
+      </if>
+      <if test="auditusername != null" >
+        auditusername = #{auditusername},
+      </if>
+      <if test="audittime != null" >
+        audittime = #{audittime},
+      </if>
+      <if test="stopuserid != null" >
+        stopuserid = #{stopuserid},
+      </if>
+      <if test="stopusername != null" >
+        stopusername = #{stopusername},
+      </if>
+      <if test="stoptime != null" >
+        stoptime = #{stoptime},
+      </if>
+      <if test="closetime != null" >
+        closetime = #{closetime},
+      </if>
+      <if test="printtimes != null" >
+        printtimes = #{printtimes},
+      </if>
+      <if test="printdatetime != null" >
+        printdatetime = #{printdatetime},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  <delete id="deleteContract" parameterType="java.lang.String" >
+    delete from t_finance_customer_contract
+    where id = #{id}
+  </delete>
+  <update id="auditContract" parameterType="java.lang.String" >
+    update t_finance_customer_contract
+    set status = '3'
+    where id = #{id}
+  </update>
+  <update id="oppauditContract" parameterType="java.lang.String" >
+    update t_finance_customer_contract
+    set status = '2'
+    where id = #{id}
+  </update>
+
+  <select id="getContractCountByCustomerid" resultType="int" parameterType="java.lang.String" >
+    select count(1) from t_finance_customer_contract
+    where customerid = #{customerid}
+  </select>
+
+
+  <!--客户费用合同明细-->
+  <resultMap id="ContractDetailResultMap" type="com.hd.agent.journalsheet.model.ContractDetail" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="billid" property="billid" jdbcType="VARCHAR" />
+    <result column="caluseid" property="caluseid" jdbcType="VARCHAR" />
+    <result column="costtype" property="costtype" jdbcType="CHAR" />
+    <result column="sharetype" property="sharetype" jdbcType="CHAR" />
+    <result column="returntype" property="returntype" jdbcType="CHAR" />
+    <result column="returnmonthnum" property="returnmonthnum" jdbcType="INTEGER" />
+    <result column="returnrequire" property="returnrequire" jdbcType="CHAR" />
+    <result column="subjectexpenses" property="subjectexpenses" jdbcType="VARCHAR" />
+    <result column="calculatetype" property="calculatetype" jdbcType="VARCHAR" />
+    <result column="calculateamount" property="calculateamount" jdbcType="DECIMAL" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="ContractDetail_Column_List" >
+    id, billid, caluseid, costtype, sharetype, returntype, returnmonthnum, returnrequire, subjectexpenses,
+    calculatetype, calculateamount, remark
+  </sql>
+  <select id="getContractDetailById" parameterType="java.lang.String" resultType="com.hd.agent.journalsheet.model.ContractDetail">
+    select
+    <include refid="ContractDetail_Column_List"/>
+    from t_finance_customer_contract_detail
+    where billid = #{billid}
+  </select>
+  <insert id="addContractDetail" parameterType="com.hd.agent.journalsheet.model.ContractDetail" >
+    insert into t_finance_customer_contract_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="billid != null" >
+        billid,
+      </if>
+      <if test="caluseid != null" >
+        caluseid,
+      </if>
+      <if test="costtype != null" >
+        costtype,
+      </if>
+      <if test="sharetype != null" >
+        sharetype,
+      </if>
+      <if test="returntype != null" >
+        returntype,
+      </if>
+      <if test="returnmonthnum != null" >
+        returnmonthnum,
+      </if>
+      <if test="returnrequire != null" >
+        returnrequire,
+      </if>
+      <if test="subjectexpenses != null" >
+        subjectexpenses,
+      </if>
+      <if test="calculatetype != null" >
+        calculatetype,
+      </if>
+      <if test="calculateamount != null" >
+        calculateamount,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="billid != null" >
+        #{billid},
+      </if>
+      <if test="caluseid != null" >
+        #{caluseid},
+      </if>
+      <if test="costtype != null" >
+        #{costtype},
+      </if>
+      <if test="sharetype != null" >
+        #{sharetype},
+      </if>
+      <if test="returntype != null" >
+        #{returntype},
+      </if>
+      <if test="returnmonthnum != null" >
+        #{returnmonthnum},
+      </if>
+      <if test="returnrequire != null" >
+        #{returnrequire},
+      </if>
+      <if test="subjectexpenses != null" >
+        #{subjectexpenses},
+      </if>
+      <if test="calculatetype != null" >
+        #{calculatetype},
+      </if>
+      <if test="calculateamount != null" >
+        #{calculateamount},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+    </trim>
+  </insert>
+  <delete id="deleteContractDetail" parameterType="java.lang.String" >
+    delete from t_finance_customer_contract_detail
+    where billid = #{billid}
+  </delete>
+  <select id="getContractDetailByBillidAndCaluseid" parameterType="java.lang.String" resultType="com.hd.agent.journalsheet.model.ContractDetail">
+    select
+    <include refid="ContractDetail_Column_List"/>
+    from t_finance_customer_contract_detail
+    where billid = #{billid}  and caluseid = #{caluseid}
+  </select>
+
+
+  <select id="getContractDetailNumByCaluseid" resultType="int" parameterType="java.lang.String" >
+    select count(1) from t_finance_customer_contract_detail
+    where caluseid = #{caluseid}
+  </select>
+
+</mapper>

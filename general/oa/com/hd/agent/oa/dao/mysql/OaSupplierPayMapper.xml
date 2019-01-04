@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hd.agent.oa.dao.OaSupplierPayMapper">
+  <resultMap id="BaseResultMap" type="com.hd.agent.oa.model.OaSupplierPay">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="businessdate" jdbcType="VARCHAR" property="businessdate" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="adduserid" jdbcType="VARCHAR" property="adduserid" />
+    <result column="addusername" jdbcType="VARCHAR" property="addusername" />
+    <result column="adddeptid" jdbcType="VARCHAR" property="adddeptid" />
+    <result column="adddeptname" jdbcType="VARCHAR" property="adddeptname" />
+    <result column="addtime" jdbcType="TIMESTAMP" property="addtime" />
+    <result column="modifyuserid" jdbcType="VARCHAR" property="modifyuserid" />
+    <result column="modifyusername" jdbcType="VARCHAR" property="modifyusername" />
+    <result column="modifytime" jdbcType="TIMESTAMP" property="modifytime" />
+    <result column="printtimes" jdbcType="INTEGER" property="printtimes" />
+    <result column="oaid" jdbcType="VARCHAR" property="oaid" />
+    <result column="supplierid" jdbcType="VARCHAR" property="supplierid" />
+    <result column="collectionname" jdbcType="VARCHAR" property="collectionname" />
+    <result column="collectionbank" jdbcType="VARCHAR" property="collectionbank" />
+    <result column="collectionbankno" jdbcType="VARCHAR" property="collectionbankno" />
+    <result column="paybank" jdbcType="VARCHAR" property="paybank" />
+    <result column="paydate" jdbcType="VARCHAR" property="paydate" />
+    <result column="payamount" jdbcType="DECIMAL" property="payamount" />
+    <result column="upperpayamount" jdbcType="VARCHAR" property="upperpayamount" />
+    <result column="payuse" jdbcType="VARCHAR" property="payuse" />
+    <result column="paymargin" jdbcType="DECIMAL" property="paymargin" />
+    <result column="arrivalamount" jdbcType="DECIMAL" property="arrivalamount" />
+    <result column="arrivaldate" jdbcType="VARCHAR" property="arrivaldate" />
+    <result column="billamount" jdbcType="DECIMAL" property="billamount" />
+    <result column="expenseamount" jdbcType="DECIMAL" property="expenseamount" />
+    <result column="writeoffamount" jdbcType="DECIMAL" property="writeoffamount" />
+    <result column="writeoffdate" jdbcType="VARCHAR" property="writeoffdate" />
+    <result column="orderamount" jdbcType="DECIMAL" property="orderamount" />
+    <result column="advanceamount" jdbcType="DECIMAL" property="advanceamount" />
+    <result column="stockamount" jdbcType="DECIMAL" property="stockamount" />
+    <result column="receivableamount" jdbcType="DECIMAL" property="receivableamount" />
+    <result column="actingmatamount" jdbcType="DECIMAL" property="actingmatamount" />
+    <result column="payableamount" jdbcType="DECIMAL" property="payableamount" />
+    <result column="totalamount" jdbcType="DECIMAL" property="totalamount" />
+    <result column="isprepay" jdbcType="VARCHAR" property="isprepay" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, businessdate, remark, adduserid, addusername, adddeptid, adddeptname, addtime, 
+    modifyuserid, modifyusername, modifytime, printtimes, oaid, supplierid, collectionname, 
+    collectionbank, collectionbankno, paybank, paydate, payamount, upperpayamount, payuse, 
+    paymargin, arrivalamount, arrivaldate, billamount, expenseamount, writeoffamount, 
+    writeoffdate, orderamount, advanceamount, stockamount, receivableamount, actingmatamount, 
+    payableamount, totalamount, isprepay
+  </sql>
+  <select id="selectOaSupplierPay" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_oa_supplierpay
+    where id = #{id}
+  </select>
+  <delete id="deleteOaSupplierPay" parameterType="java.lang.String">
+    delete from t_oa_supplierpay
+    where id = #{id}
+  </delete>
+  <insert id="insertOaSupplierPay" parameterType="com.hd.agent.oa.model.OaSupplierPay">
+    insert into t_oa_supplierpay
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="businessdate != null">
+        businessdate,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="adduserid != null">
+        adduserid,
+      </if>
+      <if test="addusername != null">
+        addusername,
+      </if>
+      <if test="adddeptid != null">
+        adddeptid,
+      </if>
+      <if test="adddeptname != null">
+        adddeptname,
+      </if>
+      addtime,
+      <if test="modifyuserid != null">
+        modifyuserid,
+      </if>
+      <if test="modifyusername != null">
+        modifyusername,
+      </if>
+      <if test="modifytime != null">
+        modifytime,
+      </if>
+      <if test="printtimes != null">
+        printtimes,
+      </if>
+      <if test="oaid != null">
+        oaid,
+      </if>
+      <if test="supplierid != null">
+        supplierid,
+      </if>
+      <if test="collectionname != null">
+        collectionname,
+      </if>
+      <if test="collectionbank != null">
+        collectionbank,
+      </if>
+      <if test="collectionbankno != null">
+        collectionbankno,
+      </if>
+      <if test="paybank != null">
+        paybank,
+      </if>
+      <if test="paydate != null">
+        paydate,
+      </if>
+      <if test="payamount != null">
+        payamount,
+      </if>
+      <if test="upperpayamount != null">
+        upperpayamount,
+      </if>
+      <if test="payuse != null">
+        payuse,
+      </if>
+      <if test="paymargin != null">
+        paymargin,
+      </if>
+      <if test="arrivalamount != null">
+        arrivalamount,
+      </if>
+      <if test="arrivaldate != null">
+        arrivaldate,
+      </if>
+      <if test="billamount != null">
+        billamount,
+      </if>
+      <if test="expenseamount != null">
+        expenseamount,
+      </if>
+      <if test="writeoffamount != null">
+        writeoffamount,
+      </if>
+      <if test="writeoffdate != null">
+        writeoffdate,
+      </if>
+      <if test="orderamount != null">
+        orderamount,
+      </if>
+      <if test="advanceamount != null">
+        advanceamount,
+      </if>
+      <if test="stockamount != null">
+        stockamount,
+      </if>
+      <if test="receivableamount != null">
+        receivableamount,
+      </if>
+      <if test="actingmatamount != null">
+        actingmatamount,
+      </if>
+      <if test="payableamount != null">
+        payableamount,
+      </if>
+      <if test="totalamount != null">
+        totalamount,
+      </if>
+      <if test="isprepay != null">
+        isprepay,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id},
+      </if>
+      <if test="businessdate != null">
+        #{businessdate},
+      </if>
+      <if test="remark != null">
+        #{remark},
+      </if>
+      <if test="adduserid != null">
+        #{adduserid},
+      </if>
+      <if test="addusername != null">
+        #{addusername},
+      </if>
+      <if test="adddeptid != null">
+        #{adddeptid},
+      </if>
+      <if test="adddeptname != null">
+        #{adddeptname},
+      </if>
+      now(),
+      <if test="modifyuserid != null">
+        #{modifyuserid},
+      </if>
+      <if test="modifyusername != null">
+        #{modifyusername},
+      </if>
+      <if test="modifytime != null">
+        #{modifytime},
+      </if>
+      <if test="printtimes != null">
+        #{printtimes},
+      </if>
+      <if test="oaid != null">
+        #{oaid},
+      </if>
+      <if test="supplierid != null">
+        #{supplierid},
+      </if>
+      <if test="collectionname != null">
+        #{collectionname},
+      </if>
+      <if test="collectionbank != null">
+        #{collectionbank},
+      </if>
+      <if test="collectionbankno != null">
+        #{collectionbankno},
+      </if>
+      <if test="paybank != null">
+        #{paybank},
+      </if>
+      <if test="paydate != null">
+        #{paydate},
+      </if>
+      <if test="payamount != null">
+        #{payamount},
+      </if>
+      <if test="upperpayamount != null">
+        #{upperpayamount},
+      </if>
+      <if test="payuse != null">
+        #{payuse},
+      </if>
+      <if test="paymargin != null">
+        #{paymargin},
+      </if>
+      <if test="arrivalamount != null">
+        #{arrivalamount},
+      </if>
+      <if test="arrivaldate != null">
+        #{arrivaldate},
+      </if>
+      <if test="billamount != null">
+        #{billamount},
+      </if>
+      <if test="expenseamount != null">
+        #{expenseamount},
+      </if>
+      <if test="writeoffamount != null">
+        #{writeoffamount},
+      </if>
+      <if test="writeoffdate != null">
+        #{writeoffdate},
+      </if>
+      <if test="orderamount != null">
+        #{orderamount},
+      </if>
+      <if test="advanceamount != null">
+        #{advanceamount},
+      </if>
+      <if test="stockamount != null">
+        #{stockamount},
+      </if>
+      <if test="receivableamount != null">
+        #{receivableamount},
+      </if>
+      <if test="actingmatamount != null">
+        #{actingmatamount},
+      </if>
+      <if test="payableamount != null">
+        #{payableamount},
+      </if>
+      <if test="totalamount != null">
+        #{totalamount},
+      </if>
+      <if test="isprepay != null">
+        #{isprepay},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateOaSupplierPay" parameterType="com.hd.agent.oa.model.OaSupplierPay">
+    update t_oa_supplierpay
+    set
+      businessdate = #{businessdate},
+      remark = #{remark},
+      modifyuserid = #{modifyuserid},
+      modifyusername = #{modifyusername},
+      modifytime = now(),
+      printtimes = #{printtimes},
+      oaid = #{oaid},
+      supplierid = #{supplierid},
+      collectionname = #{collectionname},
+      collectionbank = #{collectionbank},
+      collectionbankno = #{collectionbankno},
+      paybank = #{paybank},
+      paydate = #{paydate},
+      payamount = #{payamount},
+      upperpayamount = #{upperpayamount},
+      payuse = #{payuse},
+      paymargin = #{paymargin},
+      arrivalamount = #{arrivalamount},
+      arrivaldate = #{arrivaldate},
+      billamount = #{billamount},
+      expenseamount = #{expenseamount},
+      writeoffamount = #{writeoffamount},
+      writeoffdate = #{writeoffdate},
+      orderamount = #{orderamount},
+      advanceamount = #{advanceamount},
+      stockamount = #{stockamount},
+      receivableamount = #{receivableamount},
+      actingmatamount = #{actingmatamount},
+      payableamount = #{payableamount},
+      totalamount = #{totalamount},
+      isprepay = #{isprepay}
+    where id = #{id }
+  </update>
+</mapper>

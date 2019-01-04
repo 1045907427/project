@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+	
+	<!-- dao配置 -->
+	<bean id="journalSheetMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.journalsheet.dao.JournalSheetMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+	<bean id="deptCostsSubjectMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.journalsheet.dao.DeptCostsSubjectMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+	<bean id="customerCostPayableMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.journalsheet.dao.CustomerCostPayableMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="costsFeeMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.journalsheet.dao.CostsFeeMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="deptDailyCostMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.journalsheet.dao.DeptDailyCostMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="deptIncomeMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.journalsheet.dao.DeptIncomeMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    
+    <bean id="bugetAnalyzerMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.journalsheet.dao.BugetAnalyzerMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="salesAreaReportMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+    	<property name="mapperInterface" value="com.hd.agent.journalsheet.dao.SalesAreaReportMapper" />  
+    	<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+	<bean id="contractMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.hd.agent.journalsheet.dao.ContractMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+	</bean>
+	<bean id="contractCaluseMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.hd.agent.journalsheet.dao.ContractCaluseMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+	</bean>
+
+	<bean id="contractReportMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.hd.agent.journalsheet.dao.ContractReportMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+	</bean>
+	<bean id="contractLiabilityMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.hd.agent.journalsheet.dao.ContractLiabilityMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+	</bean>
+    <!-- service配置 -->
+    <bean id="journalSheetService" parent="baseTransactionProxy">
+    	<property name="target" ref="journalSheetServiceImpl"></property>   
+    </bean>
+    <bean id="journalSheetServiceImpl" class="com.hd.agent.journalsheet.service.impl.JournalSheetServiceImpl" parent="baseFilesServiceImpl">
+    	<property name="journalSheetMapper" ref="journalSheetMapper"></property>
+    	<property name="departMentMapper" ref="departMentMapper"></property>
+    	<property name="buySupplierMapper" ref="buySupplierMapper"></property>
+    	<property name="goodsMapper" ref="goodsMapper"></property>
+    	<property name="customerCostPayableMapper" ref="customerCostPayableMapper"></property>
+    </bean>
+    
+    <bean id="costsFeeService" parent="baseTransactionProxy">
+    	<property name="target" ref="costsFeeServiceImpl"></property>   
+    </bean>
+    <bean id="costsFeeServiceImpl" class="com.hd.agent.journalsheet.service.impl.CostsFeeServiceImpl" parent="filesLevelServiceImpl">
+    	<property name="costsFeeMapper" ref="costsFeeMapper"></property>
+    	<property name="deptCostsSubjectMapper" ref="deptCostsSubjectMapper"></property>
+    	<property name="departMentMapper" ref="departMentMapper"></property>
+    	<property name="salesBillCheckMapper" ref="salesBillCheckMapper"></property>
+    	<property name="journalSheetMapper" ref="journalSheetMapper"></property>    	
+    </bean>
+    
+    <bean id="customerCostPayableService" parent="baseTransactionProxy">
+    	<property name="target" ref="customerCostPayableServiceImpl"></property>   
+    </bean>
+    <bean id="customerCostPayableServiceImpl" class="com.hd.agent.journalsheet.service.impl.CustomerCostPayableServiceImpl" parent="baseFilesServiceImpl">
+		<property name="customerCostPayableMapper" ref="customerCostPayableMapper"></property>
+		<property name="bankAmountService" ref="bankAmountService"></property>
+    </bean>
+    
+    <bean id="deptDailyCostService" parent="baseTransactionProxy">
+    	<property name="target" ref="deptDailyCostServiceImpl"></property>   
+    </bean>
+    <bean id="deptDailyCostServiceImpl" class="com.hd.agent.journalsheet.service.impl.DeptDailyCostServiceImpl" parent="baseFilesServiceImpl">
+    	<property name="deptDailyCostMapper" ref="deptDailyCostMapper"></property>
+    	<property name="deptCostsSubjectMapper" ref="deptCostsSubjectMapper"></property>
+    	<property name="salesReportService" ref="salesReportService"></property>
+    	<property name="accountForOAService" ref="accountForOAService"></property>
+    	<property name="departMentMapper" ref="departMentMapper"></property>
+    </bean>
+    
+    <bean id="deptIncomeService" parent="baseTransactionProxy">
+    	<property name="target" ref="deptIncomeServiceImpl"></property>   
+    </bean>
+    <bean id="deptIncomeServiceImpl" class="com.hd.agent.journalsheet.service.impl.DeptIncomeServiceImpl" parent="baseFilesServiceImpl">
+    	<property name="deptIncomeMapper" ref="deptIncomeMapper"></property>
+    	<property name="salesReportService" ref="salesReportService"></property>
+    	<property name="accountForOAService" ref="accountForOAService"></property>
+    	<property name="departMentMapper" ref="departMentMapper"></property>
+    </bean>
+    
+    <bean id="bugetAnalyzerService" parent="baseTransactionProxy">
+    	<property name="target" ref="bugetAnalyzerServiceImpl"></property>   
+    </bean>
+    
+     <bean id="bugetAnalyzerServiceImpl" class="com.hd.agent.journalsheet.service.impl.BugetAnalyzerServiceImpl" parent="baseFilesServiceImpl">
+    	<property name="bugetAnalyzerMapper" ref="bugetAnalyzerMapper"></property>
+    </bean>
+    <bean id="salesAreaReportService" parent="baseTransactionProxy">
+    	<property name="target" ref="salesAreaReportServiceImpl"></property>   
+    </bean>
+    <bean id="salesAreaReportServiceImpl" class="com.hd.agent.journalsheet.service.impl.SalesAreaReportServiceImpl" parent="baseFilesServiceImpl">
+    	<property name="salesAreaReportMapper" ref="salesAreaReportMapper"></property>  
+    </bean>
+	<bean id="contractService" parent="baseTransactionProxy">
+		<property name="target" ref="contractServiceImpl"></property>
+	</bean>
+	<bean id="contractServiceImpl" class="com.hd.agent.journalsheet.service.impl.ContractServiceImpl" parent="baseFilesServiceImpl">
+		<property name="contractMapper" ref="contractMapper"></property>
+		<property name="contractCaluseMapper" ref="contractCaluseMapper"></property>
+		<property name="contractReportMapper" ref="contractReportMapper"></property>
+		<property name="contractLiabilityMapper" ref="contractLiabilityMapper"></property>
+		<property name="journalSheetService" ref="journalSheetService"></property>
+		<property name="customerCostPayableService" ref="customerCostPayableService"></property>
+	</bean>
+
+
+    <!-- action配置 -->
+    <bean id="journalSheetAction" class="com.hd.agent.journalsheet.action.JournalSheetAction" scope="prototype" parent="filesLevleAction">
+		<property name="journalSheetService" ref="journalSheetService"></property>
+		<property name="buyService" ref="buyService"></property>
+		<property name="departMentService" ref="departMentService"></property>
+        <property name="excelService" ref="excelService"></property>
+    </bean>
+    <bean id="costsFeeAction" class="com.hd.agent.journalsheet.action.CostsFeeAction" scope="prototype" parent="filesLevleAction">
+		<property name="costsFeeService" ref="costsFeeService"></property>
+    </bean>
+    <bean id="customerCostPayableAction" class="com.hd.agent.journalsheet.action.CustomerCostPayableAction" scope="prototype" parent="baseFilesAction">
+		<property name="customerCostPayableService" ref="customerCostPayableService"></property>
+    </bean>
+    <bean id="deptDailyCostAction" class="com.hd.agent.journalsheet.action.DeptDailyCostAction" scope="prototype" parent="baseFilesAction">
+		<property name="deptDailyCostService" ref="deptDailyCostService"></property>
+    </bean>
+    <bean id="deptIncomeAction" class="com.hd.agent.journalsheet.action.DeptIncomeAction" scope="prototype" parent="baseFilesAction">
+		<property name="deptIncomeService" ref="deptIncomeService"></property>
+    </bean>
+    
+     <bean id="bugetAnalyzerAction" class="com.hd.agent.journalsheet.action.BugetAnalyzerAction" scope="prototype" parent="baseFilesAction">
+		<property name="bugetAnalyzerService" ref="bugetAnalyzerService"></property>
+		<property name="sysCodeService" ref="sysCodeService"></property>
+    </bean>
+    <bean id="bugetAnalyzerGroupAction" class="com.hd.agent.journalsheet.action.BugetAnalyzerGroupAction" scope="prototype" parent="baseFilesAction">
+    	<property name="bugetAnalyzerService" ref="bugetAnalyzerService"></property>
+    	<property name="sysCodeService" ref="sysCodeService"></property>
+    </bean>
+    <bean id="salesAreaAction" class="com.hd.agent.journalsheet.action.SalesAreaAction" scope="prototype" parent="filesLevleAction">
+    	<property name="salesAreaReportService" ref="salesAreaReportService"></property>
+    </bean>
+	<bean id="contractAction" class="com.hd.agent.journalsheet.action.ContractAction" scope="prototype" parent="filesLevleAction">
+		<property name="contractService" ref="contractService"></property>
+	</bean>
+</beans>

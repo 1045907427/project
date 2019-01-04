@@ -1,0 +1,1532 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.account.dao.PurchaseInvoiceMapper" >
+  <resultMap id="PurchaseInvoiceResultMap" type="com.hd.agent.account.model.PurchaseInvoice" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="businessdate" property="businessdate" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="adduserid" property="adduserid" jdbcType="VARCHAR" />
+    <result column="addusername" property="addusername" jdbcType="VARCHAR" />
+    <result column="adddeptid" property="adddeptid" jdbcType="VARCHAR" />
+    <result column="adddeptname" property="adddeptname" jdbcType="VARCHAR" />
+    <result column="addtime" property="addtime" jdbcType="TIMESTAMP" />
+    <result column="modifyuserid" property="modifyuserid" jdbcType="VARCHAR" />
+    <result column="modifyusername" property="modifyusername" jdbcType="VARCHAR" />
+    <result column="modifytime" property="modifytime" jdbcType="TIMESTAMP" />
+    <result column="audituserid" property="audituserid" jdbcType="VARCHAR" />
+    <result column="auditusername" property="auditusername" jdbcType="VARCHAR" />
+    <result column="audittime" property="audittime" jdbcType="TIMESTAMP" />
+    <result column="stopuserid" property="stopuserid" jdbcType="VARCHAR" />
+    <result column="stopusername" property="stopusername" jdbcType="VARCHAR" />
+    <result column="stoptime" property="stoptime" jdbcType="TIMESTAMP" />
+    <result column="closetime" property="closetime" jdbcType="TIMESTAMP" />
+    <result column="printtimes" property="printtimes" jdbcType="INTEGER" />
+    <result column="field01" property="field01" jdbcType="VARCHAR" />
+    <result column="field02" property="field02" jdbcType="VARCHAR" />
+    <result column="field03" property="field03" jdbcType="VARCHAR" />
+    <result column="field04" property="field04" jdbcType="VARCHAR" />
+    <result column="field05" property="field05" jdbcType="VARCHAR" />
+    <result column="field06" property="field06" jdbcType="VARCHAR" />
+    <result column="field07" property="field07" jdbcType="VARCHAR" />
+    <result column="field08" property="field08" jdbcType="VARCHAR" />
+    <result column="supplierid" property="supplierid" jdbcType="VARCHAR" />
+    <result column="handlerid" property="handlerid" jdbcType="VARCHAR" />
+    <result column="buydept" property="buydept" jdbcType="VARCHAR" />
+    <result column="buyuser" property="buyuser" jdbcType="VARCHAR" />
+    <result column="sourcetype" property="sourcetype" jdbcType="CHAR" />
+    <result column="settletype" property="settletype" jdbcType="VARCHAR" />
+    <result column="paytype" property="paytype" jdbcType="VARCHAR" />
+    <result column="isdiscount" property="isdiscount" jdbcType="CHAR" />
+    <result column="invoicetype" property="invoicetype" jdbcType="CHAR" />
+    <result column="invoiceno" property="invoiceno" jdbcType="CHAR" />
+    <result column="invoicecode" property="invoicecode" jdbcType="CHAR" />
+    <result column="paydate" property="paydate" jdbcType="VARCHAR" />
+    <result column="iswriteoff" property="iswriteoff" jdbcType="VARCHAR" />
+    <result column="writeoffdate" property="writeoffdate" jdbcType="VARCHAR" />
+    <result column="taxamount" property="taxamount" jdbcType="DECIMAL" />
+    <result column="notaxamount" property="notaxamount" jdbcType="DECIMAL" />
+    <result column="invoiceamount" property="invoiceamount" jdbcType="DECIMAL" />
+    <result column="writeoffamount" property="writeoffamount" jdbcType="DECIMAL" />
+    <result column="tailamount" property="tailamount" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="PurchaseInvoice_Column_List" >
+  	id, businessdate, status, remark, adduserid, addusername, adddeptid, adddeptname, 
+    addtime, modifyuserid, modifyusername, modifytime, audituserid, auditusername, audittime, 
+    stopuserid, stopusername, stoptime, closetime, printtimes, field01, field02, field03, 
+    field04, field05, field06, field07, field08, supplierid, handlerid, buydept, buyuser, 
+    sourcetype, sourceid, settletype, paytype, isdiscount, invoicetype,invoiceno,invoicecode, paydate, iswriteoff, writeoffdate, 
+    taxamount, notaxamount, invoiceamount, writeoffamount, tailamount,vouchertimes
+  </sql>
+  <resultMap id="PurchaseInvoiceDetailResultMap" type="com.hd.agent.account.model.PurchaseInvoiceDetail" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="billid" property="billid" jdbcType="VARCHAR" />
+    <result column="sourceid" property="sourceid" jdbcType="VARCHAR" />
+    <result column="sourcetype" property="sourcetype" jdbcType="CHAR" />
+    <result column="sourcedetailid" property="sourcedetailid" jdbcType="VARCHAR" />
+    <result column="goodsid" property="goodsid" jdbcType="VARCHAR" />
+    <result column="unitid" property="unitid" jdbcType="VARCHAR" />
+    <result column="unitname" property="unitname" jdbcType="VARCHAR" />
+    <result column="unitnum" property="unitnum" jdbcType="DECIMAL" />
+    <result column="auxunitid" property="auxunitid" jdbcType="VARCHAR" />
+    <result column="auxunitname" property="auxunitname" jdbcType="VARCHAR" />
+    <result column="auxnum" property="auxnum" jdbcType="DECIMAL" />
+    <result column="auxnumdetail" property="auxnumdetail" jdbcType="VARCHAR" />
+    <result column="taxprice" property="taxprice" jdbcType="DECIMAL" />
+    <result column="taxamount" property="taxamount" jdbcType="DECIMAL" />
+    <result column="notaxprice" property="notaxprice" jdbcType="DECIMAL" />
+    <result column="notaxamount" property="notaxamount" jdbcType="DECIMAL" />
+    <result column="taxtype" property="taxtype" jdbcType="VARCHAR" />
+    <result column="tax" property="tax" jdbcType="DECIMAL" />
+    <result column="paydate" property="paydate" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="field01" property="field01" jdbcType="VARCHAR" />
+    <result column="field02" property="field02" jdbcType="VARCHAR" />
+    <result column="field03" property="field03" jdbcType="VARCHAR" />
+    <result column="field04" property="field04" jdbcType="VARCHAR" />
+    <result column="field05" property="field05" jdbcType="VARCHAR" />
+    <result column="field06" property="field06" jdbcType="VARCHAR" />
+    <result column="field07" property="field07" jdbcType="VARCHAR" />
+    <result column="field08" property="field08" jdbcType="VARCHAR" />
+    <result column="seq" property="seq" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="PurchaseInvoice_Detail_Column_List" >
+    id, billid, sourceid,sourcetype, sourcedetailid, goodsid, unitid, unitname, unitnum, auxunitid, 
+    auxunitname, auxnum, auxnumdetail, taxprice, taxamount, notaxprice, notaxamount, 
+    taxtype, tax, paydate, remark, field01, field02, field03, field04, field05, field06, 
+    field07, field08, seq
+  </sql>
+  <!-- 新增采购发票 -->
+  <insert id="addPurchaseInvoice" parameterType="com.hd.agent.account.model.PurchaseInvoice" >
+    insert into t_account_purchase_invoice
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="businessdate != null" >
+        businessdate,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="adduserid != null" >
+        adduserid,
+      </if>
+      <if test="addusername != null" >
+        addusername,
+      </if>
+      <if test="adddeptid != null" >
+        adddeptid,
+      </if>
+      <if test="adddeptname != null" >
+        adddeptname,
+      </if>
+      <if test="1 == 1" >
+        addtime,
+      </if>
+      <if test="audituserid != null" >
+        audituserid,
+      </if>
+      <if test="auditusername != null" >
+        auditusername,
+      </if>
+      <if test="audittime != null" >
+        audittime,
+      </if>
+      <if test="stopuserid != null" >
+        stopuserid,
+      </if>
+      <if test="stopusername != null" >
+        stopusername,
+      </if>
+      <if test="stoptime != null" >
+        stoptime,
+      </if>
+      <if test="closetime != null" >
+        closetime,
+      </if>
+      <if test="printtimes != null" >
+        printtimes,
+      </if>
+      <if test="field01 != null" >
+        field01,
+      </if>
+      <if test="field02 != null" >
+        field02,
+      </if>
+      <if test="field03 != null" >
+        field03,
+      </if>
+      <if test="field04 != null" >
+        field04,
+      </if>
+      <if test="field05 != null" >
+        field05,
+      </if>
+      <if test="field06 != null" >
+        field06,
+      </if>
+      <if test="field07 != null" >
+        field07,
+      </if>
+      <if test="field08 != null" >
+        field08,
+      </if>
+      <if test="supplierid != null" >
+        supplierid,
+      </if>
+      <if test="handlerid != null" >
+        handlerid,
+      </if>
+      <if test="buydept != null" >
+        buydept,
+      </if>
+      <if test="buyuser != null" >
+        buyuser,
+      </if>
+      <if test="sourcetype != null" >
+        sourcetype,
+      </if>
+      <if test="settletype != null" >
+        settletype,
+      </if>
+      <if test="paytype != null" >
+        paytype,
+      </if>
+      <if test="isdiscount != null" >
+        isdiscount,
+      </if>
+      <if test="invoicetype != null" >
+        invoicetype,
+      </if>
+      <if test="invoiceno != null" >
+        invoiceno,
+      </if>
+      <if test="invoicecode != null" >
+        invoicecode,
+      </if>
+      <if test="paydate != null" >
+        paydate,
+      </if>
+      <if test="iswriteoff != null" >
+        iswriteoff,
+      </if>
+      <if test="writeoffdate != null" >
+        writeoffdate,
+      </if>
+      <if test="taxamount != null" >
+        taxamount,
+      </if>
+      <if test="notaxamount != null" >
+        notaxamount,
+      </if>
+      <if test="invoiceamount != null" >
+        invoiceamount,
+      </if>
+      <if test="writeoffamount != null" >
+        writeoffamount,
+      </if>
+      <if test="tailamount != null" >
+        tailamount,
+      </if>
+      <if test="sourceid != null" >
+        sourceid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="businessdate != null" >
+        #{businessdate},
+      </if>
+      <if test="status != null" >
+        #{status},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+      <if test="adduserid != null" >
+        #{adduserid},
+      </if>
+      <if test="addusername != null" >
+        #{addusername},
+      </if>
+      <if test="adddeptid != null" >
+        #{adddeptid},
+      </if>
+      <if test="adddeptname != null" >
+        #{adddeptname},
+      </if>
+      <if test="1 == 1" >
+        now(),
+      </if>
+      <if test="audituserid != null" >
+        #{audituserid},
+      </if>
+      <if test="auditusername != null" >
+        #{auditusername},
+      </if>
+      <if test="audittime != null" >
+        #{audittime},
+      </if>
+      <if test="stopuserid != null" >
+        #{stopuserid},
+      </if>
+      <if test="stopusername != null" >
+        #{stopusername},
+      </if>
+      <if test="stoptime != null" >
+        #{stoptime},
+      </if>
+      <if test="closetime != null" >
+        #{closetime},
+      </if>
+      <if test="printtimes != null" >
+        #{printtimes},
+      </if>
+      <if test="field01 != null" >
+        #{field01},
+      </if>
+      <if test="field02 != null" >
+        #{field02},
+      </if>
+      <if test="field03 != null" >
+        #{field03},
+      </if>
+      <if test="field04 != null" >
+        #{field04},
+      </if>
+      <if test="field05 != null" >
+        #{field05},
+      </if>
+      <if test="field06 != null" >
+        #{field06},
+      </if>
+      <if test="field07 != null" >
+        #{field07},
+      </if>
+      <if test="field08 != null" >
+        #{field08},
+      </if>
+      <if test="supplierid != null" >
+        #{supplierid},
+      </if>
+      <if test="handlerid != null" >
+        #{handlerid},
+      </if>
+      <if test="buydept != null" >
+        #{buydept},
+      </if>
+      <if test="buyuser != null" >
+        #{buyuser},
+      </if>
+      <if test="sourcetype != null" >
+        #{sourcetype},
+      </if>
+      <if test="settletype != null" >
+        #{settletype},
+      </if>
+      <if test="paytype != null" >
+        #{paytype},
+      </if>
+      <if test="isdiscount != null" >
+        #{isdiscount},
+      </if>
+      <if test="invoicetype != null" >
+        #{invoicetype},
+      </if>
+      <if test="invoiceno != null" >
+        #{invoiceno},
+      </if>
+      <if test="invoicecode != null" >
+        #{invoicecode},
+      </if>
+      <if test="paydate != null" >
+        #{paydate},
+      </if>
+      <if test="iswriteoff != null" >
+        #{iswriteoff},
+      </if>
+      <if test="writeoffdate != null" >
+        #{writeoffdate},
+      </if>
+      <if test="taxamount != null" >
+        #{taxamount},
+      </if>
+      <if test="notaxamount != null" >
+        #{notaxamount},
+      </if>
+      <if test="invoiceamount != null" >
+        #{invoiceamount},
+      </if>
+      <if test="writeoffamount != null" >
+        #{writeoffamount},
+      </if>
+      <if test="tailamount != null" >
+        #{tailamount},
+      </if>
+      <if test="sourceid != null" >
+        #{sourceid},
+      </if>
+    </trim>
+  </insert>
+  <!-- 新增采购发票细则 -->
+  <insert id="addPurchaseInvoiceDetail" parameterType="com.hd.agent.account.model.PurchaseInvoiceDetail" >
+    insert into t_account_purchase_invoice_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="billid != null" >
+        billid,
+      </if>
+      <if test="sourceid != null" >
+        sourceid,
+      </if>
+      <if test="sourcetype != null" >
+        sourcetype,
+      </if>
+      <if test="sourcedetailid != null" >
+        sourcedetailid,
+      </if>
+      <if test="goodsid != null" >
+        goodsid,
+      </if>
+      <if test="unitid != null" >
+        unitid,
+      </if>
+      <if test="unitname != null" >
+        unitname,
+      </if>
+      <if test="unitnum != null" >
+        unitnum,
+      </if>
+      <if test="auxunitid != null" >
+        auxunitid,
+      </if>
+      <if test="auxunitname != null" >
+        auxunitname,
+      </if>
+      <if test="auxnum != null" >
+        auxnum,
+      </if>
+      <if test="auxnumdetail != null" >
+        auxnumdetail,
+      </if>
+      <if test="taxprice != null" >
+        taxprice,
+      </if>
+      <if test="taxamount != null" >
+        taxamount,
+      </if>
+      <if test="notaxprice != null" >
+        notaxprice,
+      </if>
+      <if test="notaxamount != null" >
+        notaxamount,
+      </if>
+      <if test="taxtype != null" >
+        taxtype,
+      </if>
+      <if test="tax != null" >
+        tax,
+      </if>
+      <if test="paydate != null" >
+        paydate,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="field01 != null" >
+        field01,
+      </if>
+      <if test="field02 != null" >
+        field02,
+      </if>
+      <if test="field03 != null" >
+        field03,
+      </if>
+      <if test="field04 != null" >
+        field04,
+      </if>
+      <if test="field05 != null" >
+        field05,
+      </if>
+      <if test="field06 != null" >
+        field06,
+      </if>
+      <if test="field07 != null" >
+        field07,
+      </if>
+      <if test="field08 != null" >
+        field08,
+      </if>
+      <if test="seq != null" >
+        seq,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="billid != null" >
+        #{billid},
+      </if>
+      <if test="sourceid != null" >
+        #{sourceid},
+      </if>
+      <if test="sourcetype != null" >
+        #{sourcetype},
+      </if>
+      <if test="sourcedetailid != null" >
+        #{sourcedetailid},
+      </if>
+      <if test="goodsid != null" >
+        #{goodsid},
+      </if>
+      <if test="unitid != null" >
+        #{unitid},
+      </if>
+      <if test="unitname != null" >
+        #{unitname},
+      </if>
+      <if test="unitnum != null" >
+        #{unitnum},
+      </if>
+      <if test="auxunitid != null" >
+        #{auxunitid},
+      </if>
+      <if test="auxunitname != null" >
+        #{auxunitname},
+      </if>
+      <if test="auxnum != null" >
+        #{auxnum},
+      </if>
+      <if test="auxnumdetail != null" >
+        #{auxnumdetail},
+      </if>
+      <if test="taxprice != null" >
+        #{taxprice},
+      </if>
+      <if test="taxamount != null" >
+        #{taxamount},
+      </if>
+      <if test="notaxprice != null" >
+        #{notaxprice},
+      </if>
+      <if test="notaxamount != null" >
+        #{notaxamount},
+      </if>
+      <if test="taxtype != null" >
+        #{taxtype},
+      </if>
+      <if test="tax != null" >
+        #{tax},
+      </if>
+      <if test="paydate != null" >
+        #{paydate},
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+      <if test="field01 != null" >
+        #{field01},
+      </if>
+      <if test="field02 != null" >
+        #{field02},
+      </if>
+      <if test="field03 != null" >
+        #{field03},
+      </if>
+      <if test="field04 != null" >
+        #{field04},
+      </if>
+      <if test="field05 != null" >
+        #{field05},
+      </if>
+      <if test="field06 != null" >
+        #{field06},
+      </if>
+      <if test="field07 != null" >
+        #{field07},
+      </if>
+      <if test="field08 != null" >
+        #{field08},
+      </if>
+      <if test="seq != null" >
+        #{seq},
+      </if>
+    </trim>
+  </insert>
+  <select id="getTotalWriteoffamountBySourceid" parameterType="java.lang.String" resultType="java.math.BigDecimal">
+  	SELECT SUM(writeoffamount) AS totalwriteoffamount FROM t_account_purchase_invoice WHERE sourceid = #{sourceid}
+  </select>
+  <!-- 根据编码获取采购发票详情 -->
+  <select id="getPurchaseInvoiceInfo" parameterType="java.lang.String" resultMap="PurchaseInvoiceResultMap">
+  	select <include refid="PurchaseInvoice_Column_List"/>
+  	from t_account_purchase_invoice where id = #{id}
+  </select>
+  <!-- 根据单据编码获取采购发票细则列表 -->
+  <select id="getPurchaseInvoiceDetailList" parameterType="java.lang.String" resultMap="PurchaseInvoiceDetailResultMap">
+  	select <include refid="PurchaseInvoice_Detail_Column_List"/>
+  	from t_account_purchase_invoice_detail where billid = #{billid}
+  </select>
+    <select id="getPurchaseInvoiceDetailListByGoodsid" parameterType="java.lang.String" resultType="com.hd.agent.account.model.PurchaseInvoiceDetail">
+        select id, billid, sourceid,sourcetype, sourcedetailid, goodsid, unitid, unitname, unitnum,unitnum as initunitnum, auxunitid,
+        auxunitname, auxnum, auxnumdetail, taxprice, taxamount, notaxprice, notaxamount,
+        taxtype, tax, paydate, remark, field01, field02, field03, field04, field05, field06,
+        field07, field08, seq,'0' as isedit,remark,remark as initremark
+        from t_account_purchase_invoice_detail where billid = #{billid} and goodsid = #{goodsid}
+    </select>
+    <select id="getPurchaseInvoiceGoodsByGoodsidSourceid" parameterType="java.lang.String" resultType="com.hd.agent.account.model.PurchaseInvoiceDetail">
+        select id, billid, sourceid,sourcetype, sourcedetailid, goodsid, unitid, unitname, unitnum,unitnum as initunitnum, auxunitid,
+        auxunitname, auxnum, auxnumdetail, taxprice, taxamount, notaxprice, notaxamount,
+        taxtype, tax, paydate, remark, field01, field02, field03, field04, field05, field06,
+        field07, field08, seq,'0' as isedit,remark,remark as initremark
+        from t_account_purchase_invoice_detail where billid = #{billid} and goodsid = #{goodsid} and sourceid = #{sourceid}
+    </select>
+  <select id="getPurchaseInvoiceDetailListGroupGoodsid" parameterType="java.lang.String" resultType="com.hd.agent.account.model.PurchaseInvoiceDetail">
+      select sourcetype,goodsid, unitid, unitname,sum(unitnum) as initunitnum, sum(unitnum) as unitnum, auxunitid,sourceid,
+        auxunitname, sum(auxnum) as auxnum,taxprice, sum(taxamount) as taxamount, notaxprice, sum(notaxamount) as notaxamount,
+        taxtype, sum(tax) as tax, GROUP_CONCAT(DISTINCT if(remark='',null,remark) separator ';') as remark,'0' as isedit
+       from t_account_purchase_invoice_detail where billid = #{billid}
+       group by goodsid
+  </select>
+  <select id="getPurchaseInvoiceSouceidList" parameterType="java.lang.String" resultType="java.lang.String">
+    select DISTINCT t.sourceid from t_account_purchase_invoice_detail t where t.billid=#{billid}
+  </select>
+  <select id="getPurchaseInvoiceDetailListBySourceid" parameterType="java.lang.String" resultMap="PurchaseInvoiceDetailResultMap">
+  	select <include refid="PurchaseInvoice_Detail_Column_List"/>
+  	from t_account_purchase_invoice_detail where sourceid = #{sourceid}
+  </select>
+  <!-- 根据单据编码和来源编号获取采购发票细则列表 -->
+  <select id="getPurchaseInvoiceDetailListWithSourceid" parameterType="java.lang.String" resultMap="PurchaseInvoiceDetailResultMap">
+  	select <include refid="PurchaseInvoice_Detail_Column_List"/>
+  	from t_account_purchase_invoice_detail where billid = #{billid} and sourceid = #{sourceid}
+  </select>
+    <!-- 获取采购发票列表分页 -->
+    <sql id="getPurchaseInvoiceListPage_query_sql">
+        <trim prefix="where" prefixOverrides="and|or">
+            <include refid="common.Page_querySql"/>
+            <include refid="common.Page_dataSql"/>
+            <if test="condition.businessdate1 != null">
+                and businessdate >= #{condition.businessdate1}
+            </if>
+            <if test="condition.businessdate2 != null">
+                <![CDATA[and businessdate <= #{condition.businessdate2}]]>
+            </if>
+            <if test="condition.id != null" >
+                and id like CONCAT('%',#{condition.id},'%')
+            </if>
+            <if test="condition.exportids != null" >
+                and FIND_IN_SET(id,#{condition.exportids})
+            </if>
+            <if test="condition.status != null">
+                and status = #{condition.status}
+            </if>
+            <if test="condition.invoiceno != null">
+                and invoiceno like CONCAT('%',#{condition.invoiceno},'%')
+            </if>
+            <if test="condition.sourceid != null">
+                and sourceid like CONCAT('%',#{condition.sourceid},'%')
+            </if>
+            <if test="condition.supplierid != null">
+                and supplierid = #{condition.supplierid}
+            </if>
+            <if test="condition.buydept != null">
+                and buydept = #{condition.buydept}
+            </if>
+            <choose>
+                <when test="condition.isClose ==0 ">
+                    and (status ='2' or status ='1')
+                </when>
+                <when test="condition.isClose ==1 ">
+                    and iswriteoff = '0'
+                </when>
+                <when test="condition.isClose ==2 ">
+                    and iswriteoff = '1'
+                </when>
+                <when test="condition.isClose ==3 ">
+                    and status = '3'
+                </when>
+                <when test="condition.isClose ==4 ">
+                    and status = '4'
+                </when>
+            </choose>
+            <if test="condition.doprintopt != null">
+                and status='3'
+                <choose>
+                    <when test="condition.printstatus == null ">
+                        and 1 != 1
+                    </when>
+                    <when test="condition.printstatus ==0 ">
+                        and (printtimes is null or printtimes=0)
+                    </when>
+                    <when test="condition.printstatus ==1 ">
+                        <![CDATA[and (printtimes > 0) ]]>
+                    </when>
+                    <when test="condition.printstatus == 2 ">
+                        and 1 = 1
+                    </when>
+                </choose>
+            </if>
+            <if test="condition.printsign != null and condition.queryprinttimes != null">
+                <choose>
+                    <when test="condition.printsign == 1">
+                        <![CDATA[and printtimes = #{condition.queryprinttimes} ]]>
+                    </when>
+                    <when test="condition.printsign == 2">
+                        <![CDATA[and printtimes < #{condition.queryprinttimes} ]]>
+                    </when>
+                    <when test="condition.printsign == 3">
+                        <![CDATA[and printtimes <= #{condition.queryprinttimes} ]]>
+                    </when>
+                    <when test="condition.printsign == 4">
+                        <![CDATA[and printtimes > #{condition.queryprinttimes} ]]>
+                    </when>
+                    <when test="condition.printsign == 5">
+                        <![CDATA[and printtimes >= #{condition.queryprinttimes} ]]>
+                    </when>
+                </choose>
+            </if>
+        </trim>
+    </sql>
+    <select id="getPurchaseInvoiceListPage" parameterType="com.hd.agent.common.util.PageMap" resultMap="PurchaseInvoiceResultMap">
+        select <include refid="PurchaseInvoice_Column_List"/>
+        from t_account_purchase_invoice
+        <include refid="getPurchaseInvoiceListPage_query_sql"/>
+        <include refid="common.Page_limit" />
+    </select>
+    <!-- 获取采购发票列表分页数量 -->
+    <select id="getPurchaseInvoiceListCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+        select count(1) from t_account_purchase_invoice
+        <include refid="getPurchaseInvoiceListPage_query_sql"/>
+    </select>
+    <!-- 获取采购发票合计 -->
+    <select id="getPurchaseInvoiceDataSum" parameterType="com.hd.agent.common.util.PageMap" resultMap="PurchaseInvoiceResultMap">
+        select sum(taxamount) as taxamount, sum(notaxamount) as notaxamount, sum(invoiceamount) as invoiceamount,
+        sum(writeoffamount) as writeoffamount, sum(tailamount) as tailamount
+        from t_account_purchase_invoice
+        <include refid="getPurchaseInvoiceListPage_query_sql"/>
+    </select>
+  <!-- 删除状态为暂存或保存的采购发票 -->
+  <delete id="deletePurchaseInvoice" parameterType="java.lang.String">
+  	delete from t_account_purchase_invoice
+    where id = #{id} and (status='1' or status='2')
+  </delete>
+  <delete id="deletePurchaseInvoiceBySourceid" parameterType="java.lang.String">
+    delete from t_account_purchase_invoice_detail where sourceid = #{sourceid} and billid = #{billid}
+  </delete>
+  <!-- 根据单据编码删除所有采购发票细则 -->
+  <delete id="deletePurchaseInvoiceDetail" parameterType="java.lang.String">
+  	delete from t_account_purchase_invoice_detail where billid = #{billid}
+  </delete>
+    <!-- 根据采购发票细则编号删除对应的采购发票细则 -->
+    <delete id="deletePurchaseInvoiceDetailById" parameterType="java.lang.Integer">
+        delete from t_account_purchase_invoice_detail where id = #{id}
+    </delete>
+  <!-- 修改采购发票 -->
+  <update id="editPurchaseInvoice" parameterType="com.hd.agent.account.model.PurchaseInvoice" >
+    update t_account_purchase_invoice
+    <set >
+      <if test="businessdate != null" >
+        businessdate = #{businessdate},
+      </if>
+      <if test="status != null" >
+        status = #{status},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark},
+      </if>
+      <if test="modifyuserid != null" >
+        modifyuserid = #{modifyuserid},
+      </if>
+      <if test="modifyusername != null" >
+        modifyusername = #{modifyusername},
+      </if>
+      <if test="1 == 1" >
+        modifytime = now(),
+      </if>
+      <if test="audituserid != null" >
+        audituserid = #{audituserid},
+      </if>
+      <if test="auditusername != null" >
+        auditusername = #{auditusername},
+      </if>
+      <if test="audittime != null" >
+        audittime = #{audittime},
+      </if>
+      <if test="stopuserid != null" >
+        stopuserid = #{stopuserid},
+      </if>
+      <if test="stopusername != null" >
+        stopusername = #{stopusername},
+      </if>
+      <if test="stoptime != null" >
+        stoptime = #{stoptime},
+      </if>
+      <if test="closetime != null" >
+        closetime = #{closetime},
+      </if>
+      <if test="printtimes != null" >
+        printtimes = #{printtimes},
+      </if>
+      <if test="field01 != null" >
+        field01 = #{field01},
+      </if>
+      <if test="field02 != null" >
+        field02 = #{field02},
+      </if>
+      <if test="field03 != null" >
+        field03 = #{field03},
+      </if>
+      <if test="field04 != null" >
+        field04 = #{field04},
+      </if>
+      <if test="field05 != null" >
+        field05 = #{field05},
+      </if>
+      <if test="field06 != null" >
+        field06 = #{field06},
+      </if>
+      <if test="field07 != null" >
+        field07 = #{field07},
+      </if>
+      <if test="field08 != null" >
+        field08 = #{field08},
+      </if>
+      <if test="supplierid != null" >
+        supplierid = #{supplierid},
+      </if>
+      <if test="handlerid != null" >
+        handlerid = #{handlerid},
+      </if>
+      <if test="buydept != null" >
+        buydept = #{buydept},
+      </if>
+      <if test="buyuser != null" >
+        buyuser = #{buyuser},
+      </if>
+      <if test="sourcetype != null" >
+        sourcetype = #{sourcetype},
+      </if>
+      <if test="settletype != null" >
+        settletype = #{settletype},
+      </if>
+      <if test="paytype != null" >
+        paytype = #{paytype},
+      </if>
+      <if test="isdiscount != null" >
+        isdiscount = #{isdiscount},
+      </if>
+      <if test="invoicetype != null" >
+        invoicetype = #{invoicetype},
+      </if>
+      <if test="invoiceno != null" >
+        invoiceno = #{invoiceno},
+      </if>
+      <if test="invoicecode != null" >
+        invoicecode = #{invoicecode},
+      </if>
+      <if test="paydate != null" >
+        paydate = #{paydate},
+      </if>
+      <if test="iswriteoff != null" >
+        iswriteoff = #{iswriteoff},
+      </if>
+      <if test="writeoffdate != null" >
+        writeoffdate = #{writeoffdate},
+      </if>
+      <if test="taxamount != null" >
+        taxamount = #{taxamount},
+      </if>
+      <if test="notaxamount != null" >
+        notaxamount = #{notaxamount},
+      </if>
+      <if test="invoiceamount != null" >
+        invoiceamount = #{invoiceamount},
+      </if>
+      <if test="writeoffamount != null" >
+        writeoffamount = #{writeoffamount},
+      </if>
+      <if test="tailamount != null" >
+        tailamount = #{tailamount},
+      </if>
+      <if test="sourceid != null" >
+        sourceid = #{sourceid},
+      </if>
+      <if test="vouchertimes != null">
+        vouchertimes = #{vouchertimes},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  <!-- 采购发票审核 -->
+  <update id="auditPurchaseInvoice" parameterType="java.util.Map">
+  	update t_account_purchase_invoice 
+  	set status='3',
+  	    businessdate = date_format(now(), '%Y-%m-%d'),
+  		audituserid = #{audituserid},
+  		auditusername = #{auditusername},
+  		audittime = now()
+  	where id = #{id} and (status = '2' or status='6')
+  </update>
+  <!-- 采购发票反审 -->
+  <update id="oppauditPurchaseInvoice" parameterType="java.util.Map">
+  	update t_account_purchase_invoice 
+  	set status='2',
+  		audituserid = #{audituserid},
+  		auditusername = #{auditusername},
+  		audittime = now()
+  	where id = #{id} and status = '3'
+  </update>
+  <!-- 采购发票核销 -->
+  <update id="writeOffPurchaseInvoice">
+  	update t_account_purchase_invoice 
+  	set status = '4',
+  		iswriteoff = '1',
+  		writeoffdate = #{writeoffdate},
+  		closetime = now(),
+	  	writeoffamount = #{writeoffamount},
+	  	tailamount = #{tailamount}
+  	where id=#{id} and status='3'
+  </update>
+  <update id="updatePurchaseInvoiceVouchertimes" parameterType="com.hd.agent.account.model.PurchaseInvoice" >
+    update t_account_purchase_invoice
+    <set>
+      <if test="vouchertimes != null">
+        vouchertimes = IFNULL(vouchertimes,0)+1,
+      </if>
+    </set>
+    where id=#{id}
+  </update>
+    <update id="uncancelPurchaseInvoice" parameterType="java.lang.String">
+        update t_account_purchase_invoice
+        set status = '3',
+        iswriteoff = '0',
+        writeoffdate = '',
+        closetime = null,
+        writeoffamount = 0,
+        tailamount = 0
+        where id=#{id} and status='4'
+    </update>
+  <!-- 根据供应商编码获取未核销的采购发票列表 -->
+  <select id="getPurchaseInvoiceListBySupplierid" parameterType="java.lang.String" resultMap="PurchaseInvoiceResultMap">
+  	select <include refid="PurchaseInvoice_Column_List"/>
+  	from t_account_purchase_invoice
+  	where supplierid = #{supplierid} and iswriteoff = '0' and status = '3'
+  	order by businessdate desc,id desc
+  </select>
+  <select id="getPurchaseInvoiceListDataBySupplierid" parameterType="java.lang.String" resultMap="PurchaseInvoiceResultMap">
+  	select <include refid="PurchaseInvoice_Column_List"/>
+  	from t_account_purchase_invoice
+  	where (status = '1' or status = '2') and supplierid = #{supplierid}
+  	order by businessdate,id desc
+  </select>
+  <select id="getPurchaseInvoiceDetailInfo" parameterType="java.lang.String" resultType="com.hd.agent.account.model.PurchaseInvoiceDetail">
+  	SELECT * FROM t_account_purchase_invoice_detail WHERE billid = #{billid} AND goodsid = #{goodsid} and sourceid=#{sourceid}
+  </select>
+  <select id="getPurchaseInvoiceDetailInfoBySource" parameterType="java.lang.String" resultType="com.hd.agent.account.model.PurchaseInvoiceDetail">
+  	SELECT * FROM t_account_purchase_invoice_detail WHERE billid = #{billid} AND sourceid=#{sourceid} AND sourcedetailid = #{sourcedetailid} 
+  </select>
+  <select id="getPurchaseInvoiceDetailListBySourceidAndGoodsid"  parameterType="java.lang.String" resultType="com.hd.agent.account.model.PurchaseInvoiceDetail">
+  	SELECT * FROM t_account_purchase_invoice_detail WHERE sourceid = #{sourceid} AND goodsid = #{goodsid}
+  </select>
+  <select id="getPurchaseInvoiceDetailListBySourceidAndGoodsidAndStatus"  parameterType="java.lang.String" resultType="com.hd.agent.account.model.PurchaseInvoiceDetail">
+  	SELECT d.* FROM t_account_purchase_invoice_detail d
+  	left join t_account_purchase_invoice p on p.id = d.billid
+  	WHERE d.sourceid = #{sourceid} AND d.goodsid = #{goodsid} and ( p.status='3' or p.status='4')
+  </select>
+  <select id="getPurchaseInvoiceListBySourceidAndStatus"  parameterType="java.lang.String" resultType="com.hd.agent.account.model.PurchaseInvoice">
+  	 SELECT * FROM t_account_purchase_invoice 
+  	 WHERE sourceid like CONCAT('%', #{sourceid},'%') AND status = #{status}
+  </select>
+  <select id="getPurchaseInvoiceListBySourceidWithStatus"  parameterType="java.lang.String" resultType="com.hd.agent.account.model.PurchaseInvoice">
+  	 SELECT * FROM t_account_purchase_invoice 
+  	 WHERE sourceid like CONCAT('%', #{sourceid},'%') AND status = '2' or status = '3' or status = '1'
+  </select>
+  <select id="getPurchaseInvoiceSumBySourceidGroup" parameterType="java.lang.String" resultType="com.hd.agent.account.model.PurchaseInvoiceDetail">
+  	SELECT a.id,a.billid,a.sourceid,a.sourcedetailid,goodsid,SUM(a.unitnum) unitnum,SUM(a.taxamount) taxamount,SUM(a.notaxamount) notaxamount,SUM(a.tax) tax
+	FROM t_account_purchase_invoice b
+	RIGHT JOIN t_account_purchase_invoice_detail a ON a.billid = b.id
+	WHERE a.sourceid = #{sourceid} AND b.status = '4'
+	GROUP BY a.sourceid, a.sourcedetailid
+  </select>
+  <select id="getPurchaseOrderList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.account.model.PurchaseOrder">
+  		SELECT z.id,z.businessdate,z.supplierid,z.handlerid,z.buydeptid,z.buyuserid,z.adduserid,z.addusername,
+			z.remark,SUM(z.taxamount) as totalamount,z.ordertype
+		FROM (
+  			select a.id,a.businessdate,a.supplierid,a.handlerid,a.buydeptid,a.buyuserid,a.adduserid,a.addusername,
+				a.remark,c.taxamount,'1' as ordertype
+			from t_purchase_arrivalorder a
+			left join t_purchase_arrivalorder_detail c on c.orderid = a.id
+	    	<trim prefix="where" prefixOverrides="and|or">
+	    		<if test="condition.ordertype == 2">
+	    			and 1 = 2
+	    		</if>
+	    		<if test="condition.arivalAuthSql != null">
+	    			and ${condition.arivalAuthSql}
+	    		</if>
+				<if test="condition.businessdatestart != null" >
+		         	<![CDATA[ and a.businessdate>= #{condition.businessdatestart} ]]>
+		      	</if>
+				<if test="condition.businessdateend != null" >
+		         	<![CDATA[ and a.businessdate <= #{condition.businessdateend} ]]>
+		      	</if>
+		      	<if test="condition.id != null" >
+			         and a.id = #{condition.id}
+			    </if>
+		      	 <if test="condition.supplierid != null" >
+			         and a.supplierid = #{condition.supplierid}
+			      </if>
+			      <if test="condition.suppliername != null" >
+			         and a.suppliername = #{condition.suppliername}
+			      </if>
+			      <if test="condition.buydeptid != null" >
+			         and a.buydeptid = #{condition.buydeptid}
+			      </if>
+			      <if test="condition.buyuserid != null" >
+			         and a.buyuserid = #{condition.buyuserid}
+			      </if>
+			      <if test="condition.shownotisinvoice != null">
+			          and (a.isinvoice='0' or a.isinvoice='3' ) and a.status='3' and c.invoicerefer=0
+			      </if> 
+		      	<choose>
+			      	<when test="condition.isClose ==0 ">
+			      		and a.status='2'
+			      	</when>
+			      	<when test="condition.isClose ==1 ">
+			      		and a.status='3'
+			      	</when>
+			      	<when test="condition.isClose ==2 ">
+			      		and a.status='4'
+			      	</when>
+			    </choose>		    
+		      	<if test="condition.doprintopt != null">
+		      		and a.status='3'
+			      	<choose>
+			      		<when test="condition.printstatus == null ">
+			      			and 1 != 1
+			      		</when>
+			      		<when test="condition.printstatus ==0 ">
+			      			and (a.printtimes is null or printtimes=0)
+			      		</when>      		
+			      		<when test="condition.printstatus ==1 ">
+			      		 	<![CDATA[and (a.printtimes > 0) ]]>
+			      		</when>
+			      		<when test="condition.printstatus == 2 ">
+			      			and 1 = 1 
+			      		</when>
+			      	</choose>
+		      	</if>
+			</trim>
+			UNION ALL
+			select b.id,b.businessdate,b.supplierid,b.handlerid,b.buydeptid,b.buyuserid,b.adduserid,b.addusername,
+					b.remark,d.taxamount,'2' as ordertype
+			from t_purchase_returnorder b
+			left join t_purchase_returnorder_detail d on d.orderid = b.id
+	    	<trim prefix="where" prefixOverrides="and|or">	    		
+	    		<if test="condition.ordertype == 1">
+	    			and 1 = 2
+	    		</if>
+	    		<if test="condition.returnAuthSql != null">
+	    			and ${condition.returnAuthSql}
+	    		</if>
+				<if test="condition.businessdatestart != null" >
+		         	<![CDATA[ and b.businessdate >= #{condition.businessdatestart} ]]>
+		      	</if>
+				<if test="condition.businessdateend != null" >
+		         	<![CDATA[ and b.businessdate <= #{condition.businessdateend} ]]>
+		      	</if>		      	
+		      	<if test="condition.id != null" >
+			         and b.id = #{condition.id}
+			    </if>
+		      	 <if test="condition.supplierid != null" >
+			         and b.supplierid = #{condition.supplierid}
+			      </if>
+			      <if test="condition.suppliername != null" >
+			         and b.suppliername = #{condition.suppliername}
+			      </if>
+			      <if test="condition.buydeptid != null" >
+			         and b.buydeptid = #{condition.buydeptid}
+			      </if>
+			      <if test="condition.buyuserid != null" >
+			         and b.buyuserid = #{condition.buyuserid}
+			      </if>
+			      <if test="condition.shownotisinvoice != null">
+			         and (b.isinvoice='3' or b.isinvoice='4' ) and b.status='3' and d.invoicerefer=0 and b.ischeck='1'
+			      </if>
+		      	<choose>
+			      	<when test="condition.isClose ==0 ">
+			      		and b.status='2'
+			      	</when>
+			      	<when test="condition.isClose ==1 ">
+			      		and b.status='3'
+			      	</when>
+			      	<when test="condition.isClose ==2 ">
+			      		and b.status='4'
+			      	</when>
+			    </choose>
+			</trim>
+		) z
+		GROUP BY z.id
+		order by z.businessdate DESC,z.id DESC
+		<include refid="common.Page_limit" />
+  </select>
+  <select id="getPurchaseOrderCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  	select count(1) from (
+  		SELECT z.id,z.businessdate,z.supplierid,z.handlerid,z.buydeptid,z.buyuserid,z.adduserid,z.addusername,
+			z.remark,SUM(z.taxamount) as totalamount,z.ordertype 
+		FROM (
+  			select a.id,a.businessdate,a.supplierid,a.handlerid,a.buydeptid,a.buyuserid,a.adduserid,a.addusername,
+				a.remark,c.taxamount,'1' as ordertype
+			from t_purchase_arrivalorder a
+			left join t_purchase_arrivalorder_detail c on c.orderid = a.id
+	    	<trim prefix="where" prefixOverrides="and|or">
+	    		<if test="condition.ordertype == 2">
+	    			and 1 = 2
+	    		</if>
+	    		<if test="condition.arivalAuthSql != null">
+	    			and ${condition.arivalAuthSql}
+	    		</if>
+				<if test="condition.businessdatestart != null" >
+		         	<![CDATA[ and a.businessdate >= #{condition.businessdatestart} ]]>
+		      	</if>
+				<if test="condition.businessdateend != null" >
+		         	<![CDATA[ and a.businessdate <= #{condition.businessdateend} ]]>
+		      	</if>
+		      	<if test="condition.id != null" >
+			         and a.id = #{condition.id}
+			    </if>
+		      	 <if test="condition.supplierid != null" >
+			         and a.supplierid = #{condition.supplierid}
+			      </if>
+			      <if test="condition.suppliername != null" >
+			         and a.suppliername = #{condition.suppliername}
+			      </if>
+			      <if test="condition.buydeptid != null" >
+			         and a.buydeptid = #{condition.buydeptid}
+			      </if>
+			      <if test="condition.buyuserid != null" >
+			         and a.buyuserid = #{condition.buyuserid}
+			      </if>
+			      <if test="condition.shownotisinvoice != null">
+			         and (a.isinvoice='0' or a.isinvoice='3' ) and a.status='3' and c.invoicerefer=0
+			      </if> 
+		      	<choose>
+			      	<when test="condition.isClose ==0 ">
+			      		and a.status='2'
+			      	</when>
+			      	<when test="condition.isClose ==1 ">
+			      		and a.status='3'
+			      	</when>
+			      	<when test="condition.isClose ==2 ">
+			      		and a.status='4'
+			      	</when>
+			    </choose>		    
+		      	<if test="condition.doprintopt != null">
+		      		and a.status='3'
+			      	<choose>
+			      		<when test="condition.printstatus == null ">
+			      			and 1 != 1
+			      		</when>
+			      		<when test="condition.printstatus ==0 ">
+			      			and (a.printtimes is null or printtimes=0)
+			      		</when>      		
+			      		<when test="condition.printstatus ==1 ">
+			      		 	<![CDATA[and (a.printtimes > 0) ]]>
+			      		</when>
+			      		<when test="condition.printstatus == 2 ">
+			      			and 1 = 1 
+			      		</when>
+			      	</choose>
+		      	</if>
+			</trim>
+			UNION ALL
+			select b.id,b.businessdate,b.supplierid,b.handlerid,b.buydeptid,b.buyuserid,b.adduserid,b.addusername,
+					b.remark,d.taxamount,'2' as ordertype
+			from t_purchase_returnorder b
+			left join t_purchase_returnorder_detail d on d.orderid = b.id
+	    	<trim prefix="where" prefixOverrides="and|or">
+	    		<if test="condition.ordertype == 1">
+	    			and 1 = 2
+	    		</if>
+				<if test="condition.returnAuthSql != null">
+	    			and ${condition.returnAuthSql}
+	    		</if>
+				<if test="condition.businessdatestart != null" >
+		         	<![CDATA[ and b.businessdate >= #{condition.businessdatestart} ]]>
+		      	</if>
+				<if test="condition.businessdateend != null" >
+		         	<![CDATA[ and b.businessdate <= #{condition.businessdateend} ]]>
+		      	</if>		      	
+		      	<if test="condition.id != null" >
+			         and b.id = #{condition.id}
+			    </if>
+		      	 <if test="condition.supplierid != null" >
+			         and b.supplierid = #{condition.supplierid}
+			      </if>
+			      <if test="condition.suppliername != null" >
+			         and b.suppliername = #{condition.suppliername}
+			      </if>
+			      <if test="condition.buydeptid != null" >
+			         and b.buydeptid = #{condition.buydeptid}
+			      </if>
+			      <if test="condition.buyuserid != null" >
+			         and b.buyuserid = #{condition.buyuserid}
+			      </if>
+			      <if test="condition.shownotisinvoice != null">
+			         and (b.isinvoice='3' or b.isinvoice='4' ) and b.status='3' and d.invoicerefer=0 and b.ischeck='1'
+			      </if>
+		      	<choose>
+			      	<when test="condition.isClose ==0 ">
+			      		and b.status='2'
+			      	</when>
+			      	<when test="condition.isClose ==1 ">
+			      		and b.status='3'
+			      	</when>
+			      	<when test="condition.isClose ==2 ">
+			      		and b.status='4'
+			      	</when>
+			    </choose>
+			</trim>
+		) z
+		GROUP BY z.id
+  	)y
+  </select>
+  <sql id="sourceBillList_sql">
+  	(
+  		select '1' as ordertype,t.id,t.businessdate,t.supplierid,t.handlerid,t.buydeptid,t.buyuserid,t.adduserid,t.addusername,
+			t.remark,sum(t1.taxamount) as totalamount,sum(t1.uninvoicetaxamount) as uninvoiceamount
+		from t_purchase_arrivalorder t
+		left join t_purchase_arrivalorder_detail t1 on t1.orderid = t.id
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="condition.ordertype!= null and condition.ordertype!=1" >
+	         	and 1!=1
+	      	</if>
+			<if test="condition.arivalAuthSql != null">
+    			and ${condition.arivalAuthSql}
+    		</if>
+    		<if test="condition.businessdatestart != null" >
+	         	<![CDATA[ and t.businessdate>= #{condition.businessdatestart} ]]>
+	      	</if>
+			<if test="condition.businessdateend != null" >
+	         	<![CDATA[ and t.businessdate <= #{condition.businessdateend} ]]>
+	      	</if>
+	      	<if test="condition.id != null" >
+		         and t.id like concat('%',#{condition.id},'%')
+		    </if>
+	      	<if test="condition.supplierid != null" >
+		         and t.supplierid = #{condition.supplierid}
+		    </if>
+		    <if test="condition.buydeptid != null" >
+		         and t.buydeptid = #{condition.buydeptid}
+		    </if>
+		    <if test="condition.buyuserid != null" >
+		         and t.buyuserid = #{condition.buyuserid}
+		    </if>
+		    <if test="condition.isdelivery != null" >
+		      		<if test=" condition.isdelivery==1">
+		      			 and t.source != '2'
+		      		</if>
+		      		<if test="condition.isdelivery==2">
+		      			 and t.source = '2'
+		      		</if>
+			 </if>
+		    <if test="condition.shownotisinvoice != null">
+		         and (t.isinvoice='0' or t.isinvoice='3' ) and t.status='3' and t1.invoicerefer=0
+		    </if> 
+	      	<choose>
+		      	<when test="condition.isClose ==0 ">
+		      		and t.status='2'
+		      	</when>
+		      	<when test="condition.isClose ==1 ">
+		      		and t.status='3'
+		      	</when>
+		      	<when test="condition.isClose ==2 ">
+		      		and t.status='4'
+		      	</when>
+		    </choose>		    
+	      	<if test="condition.doprintopt != null">
+	      		and t.status='3'
+		      	<choose>
+		      		<when test="condition.printstatus == null ">
+		      			and 1 != 1
+		      		</when>
+		      		<when test="condition.printstatus ==0 ">
+		      			and (t.printtimes is null or printtimes=0)
+		      		</when>      		
+		      		<when test="condition.printstatus ==1 ">
+		      		 	<![CDATA[and (t.printtimes > 0) ]]>
+		      		</when>
+		      		<when test="condition.printstatus == 2 ">
+		      			and 1 = 1 
+		      		</when>
+		      	</choose>
+	      	</if>
+		</trim>
+		GROUP BY t.id
+		UNION ALL
+		select '2' as ordertype,t.id,t.businessdate,t.supplierid,t.handlerid,t.buydeptid,t.buyuserid,t.adduserid,t.addusername,
+				t.remark,sum(-t1.taxamount) as totalamount,sum(-t1.uninvoicetaxamount) as uninvoiceamount
+		from t_purchase_returnorder t
+		left join t_purchase_returnorder_detail t1 on t1.orderid = t.id
+    	<trim prefix="where" prefixOverrides="and|or">	    		
+    		<if test="condition.ordertype!= null and condition.ordertype!=2" >
+	         	and 1!=1
+	      	</if>
+    		<if test="condition.returnAuthSql != null">
+    			and ${condition.returnAuthSql}
+    		</if>
+			<if test="condition.businessdatestart != null" >
+	         	<![CDATA[ and t.businessdate>= #{condition.businessdatestart}]]>
+	      	</if>
+			<if test="condition.businessdateend != null" >
+	         	<![CDATA[ and t.businessdate <= #{condition.businessdateend} ]]>
+	      	</if>		      	
+	      	<if test="condition.id != null" >
+		         and t.id like concat('%',#{condition.id},'%')
+		    </if>
+	        <if test="condition.supplierid != null" >
+		         and t.supplierid = #{condition.supplierid}
+		    </if>
+		    <if test="condition.buydeptid != null" >
+		         and t.buydeptid = #{condition.buydeptid}
+		    </if>
+		    <if test="condition.buyuserid != null" >
+		         and t.buyuserid = #{condition.buyuserid}
+		    </if>
+		    <if test="condition.shownotisinvoice != null">
+		         and (t.isinvoice='3' or t.isinvoice='4' ) and t.status='3' and t1.invoicerefer=0 and t.ischeck='1'
+		    </if>
+		     <if test="condition.isdelivery != null" >
+		      		<if test="condition.isdelivery==1">
+		      		<!-- t_purchase_returnorder这张表 source没有默认值 -->
+		      			 and ISNULL(t.source)
+		      		</if>
+		      		<if test="condition.isdelivery==2">
+		      			 and t.source = '2'
+		      		</if>
+			 </if>
+	      	<choose>
+		      	<when test="condition.isClose ==0 ">
+		      		and t.status='2'
+		      	</when>
+		      	<when test="condition.isClose ==1 ">
+		      		and t.status='3'
+		      	</when>
+		      	<when test="condition.isClose ==2 ">
+		      		and t.status='4'
+		      	</when>
+		    </choose>
+		</trim>
+		GROUP BY t.id
+        UNION ALL
+        select '3' as ordertype,t.id,t.businessdate,t.supplierid,'' as handlerid,t.buydeptid,t.buyuserid,t.adduserid,t.addusername,
+        t.remark,sum(t.amount) as totalamount,sum(t.amount) as uninvoiceamount
+        from t_account_begin_due t
+        <trim prefix="where" prefixOverrides="and|or">
+          <if test="condition.ordertype!= null and condition.ordertype!=3" >
+            and 1!=1
+          </if>
+          <if test="condition.duesql != null">
+            and ${condition.duesql}
+          </if>
+          <if test="condition.businessdatestart != null" >
+            <![CDATA[ and t.businessdate>= #{condition.businessdatestart}]]>
+          </if>
+          <if test="condition.businessdateend != null" >
+            <![CDATA[ and t.businessdate <= #{condition.businessdateend} ]]>
+          </if>
+          <if test="condition.id != null" >
+            and t.id like concat('%',#{condition.id},'%')
+          </if>
+          <if test="condition.supplierid != null" >
+            and t.supplierid = #{condition.supplierid}
+          </if>
+          <if test="condition.buydeptid != null" >
+            and t.buydeptid = #{condition.buydeptid}
+          </if>
+          <if test="condition.buyuserid != null" >
+            and t.buyuserid = #{condition.buyuserid}
+          </if>
+          <if test="condition.shownotisinvoice != null">
+            and t.isinvoice='0'and t.status='3' and t.invoicerefer = '0'
+          </if>
+          <if test="condition.isdelivery != null" >
+            <if test="condition.isdelivery==1">
+              and 1 = 1
+            </if>
+            <if test="condition.isdelivery==2">
+              <![CDATA[ and 1 <> 1]]>
+            </if>
+          </if>
+          <choose>
+            <when test="condition.isClose ==0 ">
+              and t.status='2'
+            </when>
+            <when test="condition.isClose ==1 ">
+              and t.status='3'
+            </when>
+            <when test="condition.isClose ==2 ">
+              and t.status='4'
+            </when>
+          </choose>
+        </trim>
+        GROUP BY t.id
+  	)
+  </sql>
+  <select id="getPurchaseInvoiceSourceOfBillList" parameterType="com.hd.agent.common.util.PageMap" resultType="java.util.Map">
+  	SELECT z.ordertype,z.id,z.businessdate,z.supplierid,z.handlerid,z.buydeptid,z.buyuserid,z.adduserid,z.addusername,
+		z.remark,z.totalamount,z.uninvoiceamount
+	FROM <include refid="sourceBillList_sql"/> z
+	<include refid="common.Page_limit"/>
+  </select>
+  <select id="getPurchaseInvoiceSourceOfBillCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  	select count(1) from (
+  		SELECT z.ordertype,z.id,z.businessdate,z.supplierid,z.handlerid,z.buydeptid,z.buyuserid,z.adduserid,z.addusername,
+			z.remark,z.totalamount,z.uninvoiceamount
+		FROM <include refid="sourceBillList_sql"/> z
+  	)z
+  </select>
+  <select id="getPurchaseInvoiceSourceOfBillSumData" parameterType="com.hd.agent.common.util.PageMap" resultType="java.util.Map">
+  	select sum(z.totalamount) as totalamount,sum(z.uninvoiceamount) as uninvoiceamount from <include refid="sourceBillList_sql"/> z
+  </select>
+  
+  <insert id="addPurchaseInvoiceDetailList" parameterType="java.util.ArrayList">
+  	insert into t_account_purchase_invoice_detail (billid, sourceid, sourcetype,sourcedetailid,goodsid,unitid, 
+	      unitname, unitnum, auxunitid, auxunitname, auxnum, auxnumdetail, 
+	      taxprice, taxamount, notaxprice, notaxamount, taxtype, tax,paydate,remark, seq)
+      values 
+      <foreach collection="list" item="item" separator=",">
+  		(#{item.billid}, #{item.sourceid},#{item.sourcetype}, #{item.sourcedetailid},#{item.goodsid},#{item.unitid}, 
+	      #{item.unitname}, #{item.unitnum}, #{item.auxunitid}, #{item.auxunitname}, #{item.auxnum}, #{item.auxnumdetail}, 
+	      #{item.taxprice}, #{item.taxamount}, #{item.notaxprice}, #{item.notaxamount}, #{item.taxtype}, #{item.tax},
+	      #{item.paydate}, #{item.remark}, #{item.seq})
+	  </foreach>
+  </insert>
+  
+  <select id="getPurchaseInvoiceListBySourceid" parameterType="java.lang.String" resultMap="PurchaseInvoiceResultMap">
+  	select <include refid="PurchaseInvoice_Column_List"/>
+  	from t_account_purchase_invoice
+  	where FIND_IN_SET(#{sourceid},sourceid)
+  </select>
+   <select id="getPurchaseInvoiceDetailSumListBySourceidGroup" parameterType="map" resultType="com.hd.agent.account.model.PurchaseInvoiceDetail">
+  	SELECT a.id,a.billid,a.sourcetype,a.sourceid,a.sourcedetailid,goodsid,SUM(a.unitnum) unitnum,SUM(a.taxamount) taxamount,SUM(a.notaxamount) notaxamount,SUM(a.tax) tax,a.remark
+	FROM t_account_purchase_invoice b
+	RIGHT JOIN t_account_purchase_invoice_detail a ON a.billid = b.id
+	<trim prefix="where" prefixOverrides="and|or">
+		<choose>
+			<when test="sourceid != null">a.sourceid = #{sourceid} </when>
+			<otherwise> and 1=2</otherwise>
+		</choose>
+      <if test="billid != null " >
+        and a.billid= #{billid}
+      </if>
+      <if test="status != null " >
+			and b.status= #{status}
+	    </if>	    
+		<if test="statusarr != null " >
+			and FIND_IN_SET(b.status,#{statusarr})
+	    </if>	    
+		<if test="sourcetype != null " >
+			and a.sourcetype=#{sourcetype}
+	    </if>
+    </trim>
+	GROUP BY a.sourceid, a.sourcedetailid
+  </select>
+  <select id="getPurchaseInvoiceDetailListByBillAndGoodsid" parameterType="java.lang.String" resultType="com.hd.agent.account.model.PurchaseInvoiceDetail">
+    SELECT a.id,a.billid,a.sourcetype,a.sourceid,a.sourcedetailid,goodsid,a.unitnum,a.taxamount,a.notaxamount,a.tax,a.remark
+    from t_account_purchase_invoice_detail a where a.billid = #{billid} and a.goodsid = #{goodsid}
+  </select>
+  <select id="getPurchaseInvoiceDetailSum" parameterType="java.lang.String" resultType="com.hd.agent.account.model.PurchaseInvoiceDetail">
+      select sum(t.taxamount) as taxamount,sum(t.notaxamount) as notaxamount,sum(t.tax) as tax,sum(t.auditnum) as auditnum
+      from t_account_purchase_invoice_detail t
+      where t.billid = #{invoiceid}
+  </select>
+    
+    <select id="getPurchaseInvoiceDetailSourcetypeList" parameterType="java.lang.String" resultType="com.hd.agent.account.model.PurchaseInvoiceDetail">
+  	SELECT DISTINCT sourcetype,sourceid
+	FROM t_account_purchase_invoice_detail
+	where billid=#{billid}
+  </select>  
+  <select id="getPurchaseInvoiceBrandList"  parameterType="java.lang.String" resultType="Map">
+  	select d.billid,g.brand as brandid,sum(d.taxamount) as amount
+	from 
+	t_account_purchase_invoice_detail d
+	INNER JOIN t_base_goods_info g
+	on g.id=d.goodsid
+	where d.billid=#{invoiceid}
+	GROUP BY d.billid,g.brand
+  </select>
+  <select id="getPurchaseInvoiceListByMap" parameterType="Map" resultType="com.hd.agent.account.model.PurchaseInvoice">
+	select <include refid="PurchaseInvoice_Column_List"/>
+  	from t_account_purchase_invoice
+  		<trim prefix="where" prefixOverrides="and|or">
+		  	<if test="dataSql != null">
+		  		and ${dataSql}
+		  	</if>
+  			<if test="idarrs!=null">
+  				and find_in_set(id,#{idarrs})
+  			</if>
+  			<if test="status!=null">
+  				and status=#{status}
+  			</if>
+  			<if test="statusarr!=null">
+			   and FIND_IN_SET(status,#{statusarr})
+  			</if>
+			<if test="notprint != null and notprint == 1">
+	  			 and (printtimes is null or printtimes=0)
+			</if>
+  		</trim>
+  </select>
+  	<update id="updateOrderPrinttimes" parameterType="com.hd.agent.account.model.PurchaseInvoice">
+		update t_account_purchase_invoice
+	    <set>
+	      <if test="printtimes != null">
+	        printtimes = IFNULL(printtimes,0)+1,
+	      </if>
+	    </set>
+	    where id = #{id}
+	</update>
+    <select id="getSupplierRejectSumData" resultType="java.util.Map">
+        select t.businessdate,t.supplierid,t.invoiceamount,sum(t1.taxamount) as taxamount,sum(t1.notaxamount) as notaxamount,sum(t1.tax) as tax,count(t.id) as billnums,t.id
+        from t_account_purchase_invoice t
+        RIGHT JOIN t_account_purchase_invoice_detail t1 on t.id=t1.billid
+        where (t.status='3' or t.status='4')
+        <if test="list != null">
+            and t.id in
+            <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="list == null">
+            1>2
+        </if>
+        GROUP BY t.id
+    </select>
+  <select id="getSupplierRejectSumDataForThird" resultType="java.util.Map">
+    select t.businessdate,t.supplierid,t.invoiceamount,sum(t1.taxamount) as taxamount,sum(t1.notaxamount) as notaxamount,sum(t1.tax) as tax,count(t.id) as billnums,t.id,t1.taxtype,
+    t1.goodsid,'' as brandid,sum(t1.unitnum) as unitnum
+    from t_account_purchase_invoice t
+    RIGHT JOIN t_account_purchase_invoice_detail t1 on t.id=t1.billid
+    where (t.status='3' or t.status='4')
+    <if test="list != null">
+      and t.id in
+      <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+        #{item}
+      </foreach>
+    </if>
+    <if test="list == null">
+      1>2
+    </if>
+    GROUP BY t.id
+  </select>
+  <select id="getPurchaseInvoicePushSumData" parameterType="java.lang.String" resultType="map">
+    SELECT sum(amount) as amount,taxtype FROM t_account_purchase_invoice_push WHERE invoiceid=#{id} GROUP BY taxtype
+  </select>
+</mapper>

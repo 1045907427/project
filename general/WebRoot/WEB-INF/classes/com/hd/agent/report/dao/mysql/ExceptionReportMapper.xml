@@ -1,0 +1,725 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hd.agent.report.dao.ExceptionReportMapper">
+	<sql id="Goods_Out_Column_List">
+		id, orderid, businessdate, customerid, saleuserid, goodsid, fixnum, sendnum, outnum, adddate
+	</sql>
+	<sql id="Goods_Not_Sales_Column_List">
+		id, name, brand, defaultsaler, newsaledate
+	</sql>
+	<select id="getGoodsOutReportReal" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.report.model.GoodsOut">
+		SELECT z.* FROM (
+			SELECT a.id,b.id orderid, b.customerid, b.businessdate, b.salesuser salesuserid, a.goodsid, a.brandid,b.sourceid,
+            a.fixnum,a.taxprice*a.fixnum as fixamount, floor(a.fixnum / m.rate) AS fixauxnum,MOD (a.fixnum, m.rate) AS fixnumint,
+            a.sendnummain sendnum,a.taxprice*a.sendnummain as sendamount,floor(a.sendnummain / m.rate) AS sendauxnum,MOD (a.sendnummain, m.rate) AS sendnumint,
+            (a.fixnum - a.sendnummain) outnum,a.taxprice*(a.fixnum - a.sendnummain) as outamount, floor((a.fixnum - a.sendnummain) / m.rate) AS outauxnum,MOD ((a.fixnum - a.sendnummain), m.rate) AS outnumint,
+            a.auxunitid,a.issupply, c.pid
+			FROM t_sales_order_detail a 
+			INNER JOIN t_sales_order b ON b.id = a.orderid
+            INNER JOIN t_base_sales_customer c ON b.customerid = c.id
+            LEFT JOIN t_base_goods_info_meteringunit m on a.goodsid=m.goodsid and m.isdefault='1'
+        <trim prefix="where" prefixOverrides="and|or">
+				<if test="condition.customerid != null">
+					and b.customerid = #{condition.customerid}
+				</if>
+				<if test="condition.goodsid != null">
+					and a.goodsid = #{condition.goodsid}
+				</if>
+				<if test="condition.brandid != null">
+					and a.brandid = #{condition.brandid}
+				</if>
+				<if test="condition.branddept != null">
+					and a.branddept like concat(#{condition.branddept},'%')
+				</if>
+				<if test="condition.issupply != null">
+					and a.issupply=#{condition.issupply}
+				</if>
+                <if test="condition.supplierid != null">
+                    and a.supplierid=#{condition.supplierid}
+                </if>
+                <if test="condition.salesuser != null">
+                    and b.salesuser=#{condition.salesuser}
+                </if>
+				<if test="condition.salesdept != null">
+					and b.salesdept=#{condition.salesdept}
+				</if>
+				<if test="condition.salesarea != null">
+					and b.salesarea=#{condition.salesarea}
+				</if>
+                <if test="condition.pid != null">
+                    and c.pid=#{condition.pid}
+                </if>
+				<if test="condition.begindate != null">
+					<![CDATA[and b.businessdate >= #{condition.begindate}]]>
+				</if>
+				<if test="condition.enddate != null">
+					<![CDATA[and b.businessdate<= #{condition.enddate}]]>
+				</if>
+				<if test="condition.isDispatchProcessUse == 0">
+					and (b.status = '4' or b.status='3')
+				</if>
+				<if test="condition.isDispatchProcessUse == 1">
+					and b.status = '4'
+				</if>
+			</trim>
+			ORDER BY b.businessdate DESC
+		) z WHERE outnum>0
+		<if test="condition.isflag == null">
+	 		<include refid="common.Page_limit"/>
+	 	</if>
+	</select>
+	<select id="getGoodsOutReportRealCount" parameterType="com.hd.agent.common.util.PageMap" resultType="java.lang.Integer">
+		SELECT count(1) FROM (
+			SELECT b.id orderid, b.customerid, b.businessdate, b.salesuser salesuserid, a.goodsid, a.fixnum, a.sendnummain sendnum, (a.fixnum - a.sendnummain) outnum FROM t_sales_order_detail a 
+			INNER JOIN t_sales_order b ON b.id = a.orderid
+			INNER JOIN t_base_sales_customer c ON b.customerid = c.id
+			<trim prefix="where" prefixOverrides="and|or">
+				<if test="condition.customerid != null">
+					and b.customerid = #{condition.customerid}
+				</if>
+				<if test="condition.goodsid != null">
+					and a.goodsid = #{condition.goodsid}
+				</if>
+				<if test="condition.brandid != null">
+					and a.brandid = #{condition.brandid}
+				</if>
+				<if test="condition.branddept != null">
+					and a.branddept like concat(#{condition.branddept},'%')
+				</if>
+				<if test="condition.issupply != null">
+					and a.issupply=#{condition.issupply}
+				</if>
+				<if test="condition.supplierid != null">
+					and a.supplierid=#{condition.supplierid}
+				</if>
+				<if test="condition.salesuser != null">
+					and b.salesuser=#{condition.salesuser}
+				</if>
+				<if test="condition.salesdept != null">
+					and b.salesdept=#{condition.salesdept}
+				</if>
+				<if test="condition.salesarea != null">
+					and b.salesarea=#{condition.salesarea}
+				</if>
+				<if test="condition.pid != null">
+					and c.pid=#{condition.pid}
+				</if>
+				<if test="condition.begindate != null">
+					<![CDATA[and b.businessdate >= #{condition.begindate}]]>
+				</if>
+				<if test="condition.enddate != null">
+					<![CDATA[and b.businessdate<= #{condition.enddate}]]>
+				</if>
+				<if test="condition.isDispatchProcessUse == 0">
+					and (b.status = '4' or b.status='3')
+				</if>
+				<if test="condition.isDispatchProcessUse == 1">
+					and b.status = '4'
+				</if>
+			</trim>
+		) z WHERE outnum>0
+	</select>
+    <select id="getGoodsOutReportRealSum" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.report.model.GoodsOut">
+        SELECT sum(z.fixnum) as fixnum,sum(z.fixamount) as fixamount,sum(z.fixnumint) as fixnumint,sum(z.fixauxnum) as fixauxnum,
+        sum(z.sendnum) as sendnum,sum(z.sendamount) as sendamount,sum(z.sendnumint) as sendnumint,sum(z.sendauxnum) as sendauxnum,
+        sum(z.outnum) as outnum,sum(z.outamount) as outamount,sum(z.outnumint) as outnumint,sum(z.outauxnum) as outauxnum
+        FROM (
+        SELECT a.id,b.id orderid, b.customerid, b.businessdate, b.salesuser salesuserid, a.goodsid, a.brandid,
+        a.fixnum,a.taxprice*a.fixnum as fixamount, floor(a.fixnum / m.rate) AS fixauxnum,MOD (a.fixnum, m.rate) AS fixnumint,
+        a.sendnummain sendnum,a.taxprice*a.sendnummain as sendamount,floor(a.sendnummain / m.rate) AS sendauxnum,MOD (a.sendnummain, m.rate) AS sendnumint,
+        (a.fixnum - a.sendnummain) outnum,a.taxprice*(a.fixnum - a.sendnummain) as outamount, floor((a.fixnum - a.sendnummain) / m.rate) AS outauxnum,MOD ((a.fixnum - a.sendnummain), m.rate) AS outnumint,
+        a.auxunitid,a.issupply, c.pid
+        FROM t_sales_order_detail a
+        INNER JOIN t_sales_order b ON b.id = a.orderid
+        INNER JOIN t_base_sales_customer c ON b.customerid = c.id
+        LEFT JOIN t_base_goods_info_meteringunit m on a.goodsid=m.goodsid and m.isdefault='1'
+        <trim prefix="where" prefixOverrides="and|or">
+			<if test="condition.customerid != null">
+				and b.customerid = #{condition.customerid}
+			</if>
+			<if test="condition.goodsid != null">
+				and a.goodsid = #{condition.goodsid}
+			</if>
+			<if test="condition.brandid != null">
+				and a.brandid = #{condition.brandid}
+			</if>
+			<if test="condition.branddept != null">
+				and a.branddept like concat(#{condition.branddept},'%')
+			</if>
+			<if test="condition.issupply != null">
+				and a.issupply=#{condition.issupply}
+			</if>
+			<if test="condition.supplierid != null">
+				and a.supplierid=#{condition.supplierid}
+			</if>
+			<if test="condition.salesuser != null">
+				and b.salesuser=#{condition.salesuser}
+			</if>
+			<if test="condition.salesdept != null">
+				and b.salesdept=#{condition.salesdept}
+			</if>
+			<if test="condition.salesarea != null">
+				and b.salesarea=#{condition.salesarea}
+			</if>
+			<if test="condition.pid != null">
+				and c.pid=#{condition.pid}
+			</if>
+			<if test="condition.begindate != null">
+				<![CDATA[and b.businessdate >= #{condition.begindate}]]>
+			</if>
+			<if test="condition.enddate != null">
+				<![CDATA[and b.businessdate<= #{condition.enddate}]]>
+			</if>
+			<if test="condition.isDispatchProcessUse == 0">
+				and (b.status = '4' or b.status='3')
+			</if>
+			<if test="condition.isDispatchProcessUse == 1">
+				and b.status = '4'
+			</if>
+            and a.fixnum >a.sendnummain
+        </trim>
+        ) z
+    </select>
+    <select id="getGoodsNotSalesInStorage" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.basefiles.model.GoodsInfo">
+        select t.storageid as field01 ,t.existingnum as field02 ,s.name from t_storage_summary t
+         left join t_base_storage_info s on s.id = t.storageid
+        <trim prefix="where" prefixOverrides="and|or">
+         <if test="condition.id != null">
+            and  t.goodsid = #{condition.id}
+         </if>
+         <if test="condition.storageid != null">
+            and  t.storageid = #{condition.storageid}
+         </if>
+        </trim>
+
+    </select>
+	<select id="getGoodsNotSalesReport" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.basefiles.model.GoodsInfo">
+		select a.id, a.name, a.brand,a.barcode, a.defaultsaler, a.newsaledate,a.newstorageprice,a.existingnum as field02,a.ndate as field01 from (
+			select g.id, g.NAME, g.brand,g.barcode, g.defaultsaler, g.newsaledate,g.newstorageprice,
+             <choose>
+                 <when test="condition.storageid != null">
+                     s.existingnum,
+                 </when>
+                 <otherwise>
+                     sum(s.existingnum) as  existingnum,
+                 </otherwise>
+             </choose>
+                TO_DAYS(STR_TO_DATE(DATE_FORMAT(NOW(), '%Y-%m-%d'), '%Y-%m-%d')) - TO_DAYS(STR_TO_DATE(newsaledate, '%Y-%m-%d')) as ndate
+            from t_base_goods_info g
+            left join t_storage_summary s on g.id = s.goodsid
+			<trim prefix="where" prefixOverrides="and|or">
+				<if test="condition.goodsid != null">
+					and g.id = #{condition.goodsid}
+				</if>
+				<if test="condition.brandid != null">
+					and g.brand = #{condition.brandid}
+				</if>
+                <if test="condition.storageid != null">
+                    and FIND_IN_SET( s.storageid, #{condition.storageid})
+                </if>
+			</trim>
+            <if test="condition.storageid == null">
+                group by g.id
+            </if>
+		) a
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="condition.beginnum != null">
+				<![CDATA[and a.ndate >= CAST(#{condition.beginnum} as UNSIGNED)]]>
+			</if>
+			<if test="condition.endnum != null">
+				<![CDATA[and a.ndate <= CAST(#{condition.endnum} as UNSIGNED)]]>
+			</if>
+            <if test="condition.unitnum1 != null">
+                <![CDATA[and  a.existingnum >= #{condition.unitnum1}]]>
+            </if>
+            <if test="condition.unitnum2 != null">
+                <![CDATA[and  a.existingnum <= #{condition.unitnum2}]]>
+            </if>
+		</trim>
+		<if test="condition.isflag == null">
+	 		<include refid="common.Page_limit"/>
+	 	</if>
+	</select>
+	<select id="getGoodsNotSalesReportCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+		select count(1) from (
+			select g.id, g.name, g.brand,g.barcode, g.defaultsaler, g.newsaledate,g.newstorageprice,
+                <choose>
+                    <when test="condition.storageid != null">
+                        s.existingnum,
+                    </when>
+                    <otherwise>
+                        sum(s.existingnum) as  existingnum,
+                    </otherwise>
+                </choose>
+            TO_DAYS(STR_TO_DATE(DATE_FORMAT(NOW(), '%Y-%m-%d'), '%Y-%m-%d')) - TO_DAYS(STR_TO_DATE(g.newsaledate, '%Y-%m-%d')) as ndate
+            from t_base_goods_info g
+            left join t_storage_summary s on g.id = s.goodsid
+			<trim prefix="where" prefixOverrides="and|or">
+				<if test="condition.goodsid != null">
+					and g.id = #{condition.goodsid}
+				</if>
+				<if test="condition.brandid != null">
+					and g.brand = #{condition.brandid}
+				</if>
+                <if test="condition.storageid != null">
+                    and FIND_IN_SET( s.storageid, #{condition.storageid})
+                </if>
+			</trim>
+        <if test="condition.storageid == null">
+            group by g.id
+        </if>
+		) a
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="condition.beginnum != null">
+				<![CDATA[and a.ndate >= CAST(#{condition.beginnum} as UNSIGNED)]]>
+			</if>
+			<if test="condition.endnum != null">
+				<![CDATA[and a.ndate <= CAST(#{condition.endnum} as UNSIGNED)]]>
+			</if>
+            <if test="condition.unitnum1 != null">
+                <![CDATA[and  a.existingnum >= #{condition.unitnum1}]]>
+            </if>
+            <if test="condition.unitnum2 != null">
+                <![CDATA[and  a.existingnum <= #{condition.unitnum2}]]>
+            </if>
+        </trim>
+	</select>
+	<select id="getCustomerNotStockReport" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.basefiles.model.Customer">
+		select a.id, a.name, a.salesuserid, a.newsalesdate, a.ndate field01 from (
+			SELECT id, NAME, salesuserid, newsalesdate, TO_DAYS(STR_TO_DATE(DATE_FORMAT(NOW(), '%Y-%m-%d'), '%Y-%m-%d')) - TO_DAYS(STR_TO_DATE(newsalesdate, '%Y-%m-%d')) AS ndate FROM t_base_sales_customer
+			<trim prefix="where" prefixOverrides="and|or">
+				<if test="condition.customerid != null">
+					and id = #{condition.customerid}
+				</if>
+			</trim>
+		) a
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="condition.beginnum != null">
+				<![CDATA[and ( a.ndate >= CAST(#{condition.beginnum} as UNSIGNED) or a.ndate is null )]]>
+			</if>
+			<if test="condition.endnum != null">
+				<![CDATA[and a.ndate <= CAST(#{condition.endnum} as UNSIGNED)]]>
+			</if>
+			<if test="condition.salesuserid != null">
+				and FIND_IN_SET(a.salesuserid,#{condition.salesuserid})
+			</if>
+		</trim>
+		<if test="condition.isflag == null">
+	 		<include refid="common.Page_limit"/>
+	 	</if>
+	</select>
+	<select id="getCustomerNotStockReportCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+		select count(1) from (
+			SELECT id, NAME, salesuserid, newsalesdate, TO_DAYS(STR_TO_DATE(DATE_FORMAT(NOW(), '%Y-%m-%d'), '%Y-%m-%d')) - TO_DAYS(STR_TO_DATE(newsalesdate, '%Y-%m-%d')) AS ndate FROM t_base_sales_customer
+			<trim prefix="where" prefixOverrides="and|or">
+				<if test="condition.customerid != null">
+					and id = #{condition.customerid}
+				</if>
+			</trim>
+		) a
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="condition.beginnum != null">
+				<![CDATA[and ( a.ndate >= CAST(#{condition.beginnum} as UNSIGNED) or a.ndate is null )]]>
+			</if>
+			<!-- <if test="condition.endnum != null">
+				<![CDATA[and a.ndate <= CAST(#{condition.endnum} as UNSIGNED)]]>
+			</if> -->
+			<if test="condition.salesuserid != null">
+				and FIND_IN_SET(a.salesuserid,#{condition.salesuserid})
+			</if>
+		</trim>
+	</select>
+  	<select id="showSalesOutBalanceReportData" parameterType="com.hd.agent.common.util.PageMap" resultType="map">
+  		select t.id,t.billno,t.businessdate,t.customerid,t1.goodsid,t1.brandid,t1.branddept,t1.branduser,t1.taxprice,t1.costprice,
+		t1.unitnum,t1.taxamount,t1.outnummain,t1.outamounttax,
+		(t1.unitnum-t1.outnummain) as balancenum,(t1.taxamount-t1.outamounttax) as balanceamount
+		from t_sales_dispatchbill t
+		RIGHT JOIN t_sales_dispatchbill_detail t1 on t.id=t1.billid
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="condition.begindate != null">
+				<![CDATA[and t.businessdate >= #{condition.begindate}]]>
+			</if>
+			<if test="condition.enddate != null">
+				<![CDATA[and t.businessdate <= #{condition.enddate}]]>
+			</if>
+			<if test="condition.goodsid != null">
+				and t1.goodsid = #{condition.goodsid}
+			</if>
+			<if test="condition.branduser != null">
+				and t1.branduser = #{condition.branduser}
+			</if>
+			<if test="condition.branddept != null">
+				and t1.branddept = #{condition.branddept}
+			</if>
+			<if test="condition.brandid != null">
+				and t1.brandid = #{condition.brandid}
+			</if>
+			<if test="condition.customerid != null">
+				and t.customerid = #{condition.customerid}
+			</if>
+			<if test="1==1">
+				<![CDATA[and t1.taxamount<>t1.outamounttax and t.status='4']]>
+			</if>
+		</trim>
+		<if test="condition.isflag == null">
+	 		<include refid="common.Page_limit"/>
+	 	</if>
+  	</select>
+  	<select id="showSalesOutBalanceReportDataCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  		select count(1)
+		from t_sales_dispatchbill t
+		RIGHT JOIN t_sales_dispatchbill_detail t1 on t.id=t1.billid
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="condition.begindate != null">
+				<![CDATA[and t.businessdate >= #{condition.begindate}]]>
+			</if>
+			<if test="condition.enddate != null">
+				<![CDATA[and t.businessdate <= #{condition.enddate}]]>
+			</if>
+			<if test="condition.goodsid != null">
+				and t1.goodsid = #{condition.goodsid}
+			</if>
+			<if test="condition.branduser != null">
+				and t1.branduser = #{condition.branduser}
+			</if>
+			<if test="condition.branddept != null">
+				and t1.branddept = #{condition.branddept}
+			</if>
+			<if test="condition.brandid != null">
+				and t1.brandid = #{condition.brandid}
+			</if>
+			<if test="condition.customerid != null">
+				and t.customerid = #{condition.customerid}
+			</if>
+			<if test="1==1">
+				<![CDATA[and t1.taxamount<>t1.outamounttax and t.status='4']]>
+			</if>
+		</trim>
+  	</select>
+  	<select id="showSalesOutBalanceReportSumData" parameterType="com.hd.agent.common.util.PageMap" resultType="map">
+  		select sum(t1.unitnum) as unitnum,sum(t1.taxamount) as taxamount,sum(t1.outnummain) as outnummain,sum(t1.outamounttax) as outamounttax,
+		(sum(t1.unitnum)-sum(t1.outnummain)) as balancenum,(sum(t1.taxamount)-sum(t1.outamounttax)) as balanceamount
+		from t_sales_dispatchbill t
+		RIGHT JOIN t_sales_dispatchbill_detail t1 on t.id=t1.billid
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="condition.begindate != null">
+				<![CDATA[and t.businessdate >= #{condition.begindate}]]>
+			</if>
+			<if test="condition.enddate != null">
+				<![CDATA[and t.businessdate <= #{condition.enddate}]]>
+			</if>
+			<if test="condition.goodsid != null">
+				and t1.goodsid = #{condition.goodsid}
+			</if>
+			<if test="condition.branduser != null">
+				and t1.branduser = #{condition.branduser}
+			</if>
+			<if test="condition.branddept != null">
+				and t1.branddept = #{condition.branddept}
+			</if>
+			<if test="condition.brandid != null">
+				and t1.brandid = #{condition.brandid}
+			</if>
+			<if test="condition.customerid != null">
+				and t.customerid = #{condition.customerid}
+			</if>
+			<if test="1==1">
+				<![CDATA[and t1.taxamount<>t1.outamounttax and t.status='4']]>
+			</if>
+		</trim>
+  	</select>
+
+    <sql id="getBillUnAuditReportList_sql">
+        (
+        select '1' as billtype,'' as billbactype,t.id,t.saleorderid,t.businessdate,t.customerid,t.pcustomerid,t.handlerid,t.salesdept,t.salesuser,
+            SUM(t1.receipttaxamount) as amount,SUM(t1.receiptnotaxamount) as noamount,t.duefromdate,t.canceldate,
+            t.status,t.isinvoice,t.indooruserid,t.addusername,t.addtime,t.auditusername,t.audittime,t.remark
+        from t_sales_receipt t
+        LEFT JOIN t_sales_receipt_detail t1 ON t.id = t1.billid
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="1 == 1">
+                and t.status = '2'
+            </if>
+            <if test="condition.dataSql1 != null">
+                and ${condition.dataSql1}
+            </if>
+            <if test="condition.uncheckday != null" >
+                <![CDATA[ and t.businessdate <= str_to_date(DATE_ADD(now(),INTERVAL - #{condition.uncheckday} DAY), '%Y-%m-%d') ]]>
+            </if>
+            <if test="condition.customerid != null" >
+                and t.customerid = #{condition.customerid}
+            </if>
+            <if test="condition.pcustomerid != null" >
+                and t.pcustomerid = #{condition.pcustomerid}
+            </if>
+            <if test="condition.salesdept != null" >
+                and t.salesdept = #{condition.salesdept}
+            </if>
+            <if test="condition.salesuser != null" >
+                and t.salesuser = #{condition.salesuser}
+            </if>
+            <if test="condition.indooruserid != null" >
+                and t.indooruserid = #{condition.indooruserid}
+            </if>
+        </trim>
+        GROUP BY t.id
+        UNION ALL
+        SELECT '2' as billtype,t.billtype as billbactype,t.id,'' as saleorderid,t.businessdate,t.customerid,t.pcustomerid,t.handlerid,t.salesdept,t.salesuser,
+        SUM(t1.taxamount) as amount,SUM(t1.notaxamount) as noamount,t.duefromdate,t.canceldate,
+        t.status,t.isinvoice,t.indooruserid,t.addusername,t.addtime,t.auditusername,t.audittime,t.remark
+        from t_sales_rejectbill t
+        LEFT JOIN t_sales_rejectbill_detail t1 ON t.id = t1.billid
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="1 == 1">
+                and t.status = '3' and t.isinvoice = '0'
+            </if>
+            <if test="condition.dataSql2 != null">
+                and ${condition.dataSql2}
+            </if>
+            <if test="condition.uncheckday != null" >
+                <![CDATA[ and t.businessdate <= str_to_date(DATE_ADD(now(),INTERVAL - #{condition.uncheckday} DAY), '%Y-%m-%d') ]]>
+            </if>
+            <if test="condition.customerid != null" >
+                and t.customerid = #{condition.customerid}
+            </if>
+            <if test="condition.pcustomerid != null" >
+                and t.pcustomerid = #{condition.pcustomerid}
+            </if>
+            <if test="condition.salesdept != null" >
+                and t.salesdept = #{condition.salesdept}
+            </if>
+            <if test="condition.salesuser != null" >
+                and t.salesuser = #{condition.salesuser}
+            </if>
+            <if test="condition.indooruserid != null" >
+                and t.indooruserid = #{condition.indooruserid}
+            </if>
+        </trim>
+        GROUP BY t.id
+        )
+    </sql>
+    <select id="getBillUnAuditReportList" parameterType="com.hd.agent.common.util.PageMap" resultType="java.util.Map">
+      select z.* from <include refid="getBillUnAuditReportList_sql"/> z
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="condition.billtype != null" >
+                and z.billtype = #{condition.billtype}
+            </if>
+            <if test="condition.billbactype != null" >
+                and z.billbactype = #{condition.billbactype}
+            </if>
+            <if test="condition.idsArr != null">
+                and z.id in
+                <foreach collection="condition.idsArr" index="index" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="condition.id != null" >
+                and (z.id like CONCAT('%',#{condition.id},'%') or
+                z.saleorderid like CONCAT('%',#{condition.id},'%') )
+            </if>
+        </trim>
+        <if test="condition.isflag == null">
+            <include refid="common.Page_limit"/>
+        </if>
+    </select>
+    <select id="getBillUnAuditReportCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+        select count(1) from <include refid="getBillUnAuditReportList_sql"/> z
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="condition.billtype != null" >
+                and z.billtype = #{condition.billtype}
+            </if>
+            <if test="condition.billbactype != null" >
+                and z.billbactype = #{condition.billbactype}
+            </if>
+            <if test="condition.idsArr != null">
+                and z.id in
+                <foreach collection="condition.idsArr" index="index" item="item" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="condition.id != null" >
+                and (z.id like CONCAT('%',#{condition.id},'%') or
+                z.saleorderid like CONCAT('%',#{condition.id},'%') )
+            </if>
+        </trim>
+    </select>
+
+    <sql id="getSalePriceReportList_query_sql">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="condition.businessdate1 != null">
+                <![CDATA[and t.businessdate >= #{condition.businessdate1}]]>
+            </if>
+            <if test="condition.businessdate2 != null">
+                <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+            </if>
+            <if test="condition.saleorderid != null" >
+                and t.saleorderid like CONCAT('%',#{condition.saleorderid},'%')
+            </if>
+            <if test="condition.goodsidorbarcode != null" >
+                and (t1.goodsid like CONCAT('%',#{condition.goodsidorbarcode},'%') or
+                g.barcode like CONCAT('%',#{condition.goodsidorbarcode},'%'))
+            </if>
+            <if test="condition.customerid != null" >
+                and t.customerid = #{condition.customerid}
+            </if>
+            <if test="condition.brandid != null" >
+                and t1.brandid = #{condition.brandid}
+            </if>
+            <if test="condition.pcustomerid != null" >
+                and t.pcustomerid = #{condition.pcustomerid}
+            </if>
+            <if test="condition.supplierid != null" >
+                and t1.supplierid = #{condition.supplierid}
+            </if>
+            <if test="condition.pricecompare != null" >
+                <choose>
+                    <when test="condition.pricecompare == 0">
+                       and t1.taxprice = t1.costprice
+                    </when>
+                    <when test="condition.pricecompare == 1">
+                        and t1.taxprice > t1.costprice
+                    </when>
+                    <when test="condition.pricecompare == 2">
+                        <![CDATA[and t1.taxprice < t1.costprice]]>
+                    </when>
+                </choose>
+            </if>
+            <if test="1 == 1" >
+                and (t.status = '3' OR t.status = '4')
+            </if>
+        </trim>
+    </sql>
+    <select id="getSalePriceReportList" parameterType="com.hd.agent.common.util.PageMap" resultType="java.util.Map">
+        SELECT t.saleorderid, t.id as receiptid,t.businessdate,t1.goodsid,g.barcode,t1.brandid,t1.unitid,t1.unitname,
+        t1.taxprice,t1.unitnum,t1.taxamount,t1.costprice, t.customerid
+        from t_sales_receipt t
+        LEFT JOIN t_sales_receipt_detail t1 ON  t.id = t1.billid
+        LEFT JOIN t_base_goods_info g ON t1.goodsid = g.id
+        <include refid="getSalePriceReportList_query_sql"/>
+        <if test="condition.isflag == null">
+            <include refid="common.Page_limit"/>
+        </if>
+    </select>
+    <select id="getSalePriceReportListCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+        select count(1) from (
+            SELECT t.saleorderid, t.id as receiptid,t.businessdate,t1.goodsid,g.barcode,t1.brandid,t1.unitid,t1.unitname,
+            t1.taxprice,t1.unitnum,t1.taxamount,t1.costprice
+            from t_sales_receipt t
+            LEFT JOIN t_sales_receipt_detail t1 ON  t.id = t1.billid
+            LEFT JOIN t_base_goods_info g ON t1.goodsid = g.id
+            <include refid="getSalePriceReportList_query_sql"/>
+        )z
+    </select>
+    <select id="getSalePriceReportListSum" parameterType="com.hd.agent.common.util.PageMap" resultType="java.util.Map">
+        select sum(t1.unitnum) as unitnum,sum(t1.taxamount) as taxamount
+        from t_sales_receipt t
+        LEFT JOIN t_sales_receipt_detail t1 ON  t.id = t1.billid
+        LEFT JOIN t_base_goods_info g ON t1.goodsid = g.id
+        <include refid="getSalePriceReportList_query_sql"/>
+    </select>
+
+    <sql id="getRejectPriceReportList_query_sql">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="condition.businessdate1 != null">
+                <![CDATA[and t.businessdate >= #{condition.businessdate1}]]>
+            </if>
+            <if test="condition.businessdate2 != null">
+                <![CDATA[and t.businessdate <= #{condition.businessdate2}]]>
+            </if>
+            <if test="condition.billid != null" >
+                and (t1.rejectid like CONCAT('%',#{condition.billid},'%') or
+                t.id like CONCAT('%',#{condition.billid},'%'))
+            </if>
+            <if test="condition.goodsidorbarcode != null" >
+                and (t1.goodsid like CONCAT('%',#{condition.goodsidorbarcode},'%') or
+                g.barcode like CONCAT('%',#{condition.goodsidorbarcode},'%'))
+            </if>
+            <if test="condition.customerid != null" >
+                and t.customerid = #{condition.customerid}
+            </if>
+            <if test="condition.brandid != null" >
+                and t1.brandid = #{condition.brandid}
+            </if>
+            <if test="condition.pcustomerid != null" >
+                and t.pcustomerid = #{condition.pcustomerid}
+            </if>
+            <if test="condition.supplierid != null" >
+                and t1.supplierid = #{condition.supplierid}
+            </if>
+			<if test="condition.pricecompare != null" >
+				<choose>
+					<when test="condition.salesRejectCustomerGoodsPrice == 0">
+						<choose>
+							<when test="condition.pricecompare == 0">
+								and t1.taxprice = t1.defaultprice
+							</when>
+							<when test="condition.pricecompare == 1">
+								and t1.taxprice > t1.defaultprice
+							</when>
+							<when test="condition.pricecompare == 2">
+								<![CDATA[and t1.taxprice < t1.defaultprice]]>
+							</when>
+						</choose>
+					</when>
+					<when test="condition.salesRejectCustomerGoodsPrice == 1">
+						<choose>
+							<when test="condition.pricecompare == 0">
+								and t1.taxprice = t1.lastprice
+							</when>
+							<when test="condition.pricecompare == 1">
+								and t1.taxprice > t1.lastprice
+							</when>
+							<when test="condition.pricecompare == 2">
+								<![CDATA[and t1.taxprice < t1.lastprice]]>
+							</when>
+						</choose>
+					</when>
+					<when test="condition.salesRejectCustomerGoodsPrice == 2">
+						<choose>
+							<when test="condition.pricecompare == 0">
+								and t1.taxprice = t1.lowestprice
+							</when>
+							<when test="condition.pricecompare == 1">
+								and t1.taxprice > t1.lowestprice
+							</when>
+							<when test="condition.pricecompare == 2">
+								<![CDATA[and t1.taxprice < t1.lowestprice]]>
+							</when>
+						</choose>
+					</when>
+				</choose>
+			</if>
+            <if test="1 == 1" >
+                and t.status = '4'
+            </if>
+        </trim>
+    </sql>
+    <select id="getRejectPriceReportList" parameterType="com.hd.agent.common.util.PageMap" resultType="java.util.Map">
+        SELECT t.id, t.customerid,t1.rejectid,t.businessdate,t1.goodsid,g.barcode,t1.brandid,t1.unitid,t1.unitname,
+          t1.taxprice,t1.unitnum,t1.taxamount,t1.defaultprice,t1.lastprice,t1.lowestprice
+        from t_storage_salereject_enter t
+        LEFT JOIN t_storage_salereject_enter_detail t1 ON t.id = t1.salerejectid
+        LEFT JOIN t_base_goods_info g ON t1.goodsid = g.id
+        <include refid="getRejectPriceReportList_query_sql"/>
+        <if test="condition.isflag == null">
+            <include refid="common.Page_limit"/>
+        </if>
+    </select>
+    <select id="getRejectPriceReportListCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+        select count(1) from (
+            SELECT t.id, t1.rejectid,t.businessdate,t1.goodsid,g.barcode,t1.brandid,t1.unitid,t1.unitname,
+            t1.taxprice,t1.unitnum,t1.taxamount,t1.defaultprice,t1.lastprice,t1.lowestprice
+            from t_storage_salereject_enter t
+            LEFT JOIN t_storage_salereject_enter_detail t1 ON t.id = t1.salerejectid
+            LEFT JOIN t_base_goods_info g ON t1.goodsid = g.id
+            <include refid="getRejectPriceReportList_query_sql"/>
+        )z
+    </select>
+    <select id="getRejectPriceReportListSum" parameterType="com.hd.agent.common.util.PageMap" resultType="java.util.Map">
+        SELECT sum(t1.unitnum) as unitnum,sum(t1.taxamount) as taxamount
+        from t_storage_salereject_enter t
+        LEFT JOIN t_storage_salereject_enter_detail t1 ON t.id = t1.salerejectid
+        LEFT JOIN t_base_goods_info g ON t1.goodsid = g.id
+        <include refid="getRejectPriceReportList_query_sql"/>
+    </select>
+</mapper>

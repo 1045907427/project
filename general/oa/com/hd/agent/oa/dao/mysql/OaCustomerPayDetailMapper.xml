@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.oa.dao.OaCustomerPayDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.hd.agent.oa.model.OaCustomerPayDetail" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="billid" property="billid" jdbcType="VARCHAR" />
+    <result column="brandid" property="brandid" jdbcType="VARCHAR" />
+    <result column="expensesort" property="expensesort" jdbcType="VARCHAR" />
+    <result column="executedate" property="executedate" jdbcType="VARCHAR" />
+    <result column="deptid" property="deptid" jdbcType="VARCHAR" />
+    <result column="amount" property="amount" jdbcType="DECIMAL" />
+    <result column="salesamount" property="salesamount" jdbcType="DECIMAL" />
+    <result column="rate" property="rate" jdbcType="DECIMAL" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, billid, brandid, expensesort, executedate, deptid, amount, salesamount, rate, 
+    remark
+  </sql>
+  <sql id="Base_Column_List2" >
+    a.id, a.billid, a.brandid, a.expensesort, a.executedate, a.deptid, a.amount, a.salesamount, a.rate,
+    a.remark
+  </sql>
+  <select id="selectCustomerPayDetailInfo" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select
+  		<include refid="Base_Column_List"/>
+  	from t_oa_customerpay_detail
+  	where billid = #{billid }
+  </select>
+  <select id="selectOaCustomerPayDetailList" parameterType="com.hd.agent.common.util.PageMap" resultMap="BaseResultMap">
+  	select
+  		<include refid="Base_Column_List2"/>,
+  		b.name brandname,
+  		c.name expensesortname,
+  		d.name deptname
+  	from t_oa_customerpay_detail a
+  	left join t_base_goods_brand b on a.brandid = b.id
+  	left join t_base_finance_expenses_sort c on a.expensesort = c.id
+  	left join t_base_department d on a.deptid = d.id
+	<trim prefix="where" prefixOverrides="and|or">
+		a.billid = #{condition.billid }
+	    <include refid="common.Page_querySql"/>
+	  	<include refid="common.Page_dataSql"/>
+	</trim>
+	order by a.id 
+	<include refid="common.Page_limit"/>
+  </select>
+  <select id="selectOaCustomerPayDetailListCnt" parameterType="com.hd.agent.common.util.PageMap" resultType="java.lang.Integer">
+   	select count(1)
+  	from t_oa_customerpay_detail a
+	<trim prefix="where" prefixOverrides="and|or">
+		a.billid = #{condition.billid }
+	    <include refid="common.Page_querySql"/>
+	  	<include refid="common.Page_dataSql"/>
+	</trim>
+  </select>
+  <delete id="deleteOaCustomerPayDetail" parameterType="java.lang.String">
+  	delete from t_oa_customerpay_detail where billid = #{billid }
+  </delete>
+  <insert id="insertOaCustomerPayDetail" parameterType="com.hd.agent.oa.model.OaCustomerPayDetail">
+  	insert into t_oa_customerpay_detail
+  	<trim prefix="(" suffix=")" suffixOverrides=",">
+		<if test="#{billid != null }">
+			billid,
+		</if>
+		<if test="#{brandid != null }">
+			brandid,
+		</if>
+		<if test="#{expensesort != null }">
+			expensesort,
+		</if>
+		<if test="#{executedate != null }">
+			executedate,
+		</if>
+		<if test="#{deptid != null }">
+			deptid,
+		</if>
+		<if test="#{amount != null }">
+			amount,
+		</if>
+		<if test="#{salesamount != null }">
+			salesamount,
+		</if>
+		<if test="#{rate != null }">
+			rate,
+		</if>
+		<if test="#{remark != null }">
+			remark,
+		</if>
+  	</trim>
+  	<trim prefix="values (" suffix=")" suffixOverrides=",">
+		<if test="#{billid != null }">
+			#{billid },
+		</if>
+		<if test="#{brandid != null }">
+			#{brandid },
+		</if>
+		<if test="#{expensesort != null }">
+			#{expensesort },
+		</if>
+		<if test="#{executedate != null }">
+			#{executedate },
+		</if>
+		<if test="#{deptid != null }">
+			#{deptid },
+		</if>
+		<if test="#{amount != null }">
+			#{amount },
+		</if>
+		<if test="#{salesamount != null }">
+			#{salesamount },
+		</if>
+		<if test="#{rate != null }">
+			#{rate },
+		</if>
+		<if test="#{remark != null }">
+			#{remark },
+		</if>
+  	</trim>
+  </insert>
+</mapper>

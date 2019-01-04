@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.system.dao.NetLockMapper" >
+	<insert id="addNetLock" parameterType="com.hd.agent.system.model.NetLock" >
+    insert into t_sys_lock
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="tablename != null" >
+        tablename,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="lockid != null" >
+        lockid,
+      </if>
+      <if test="1==1" >
+        locktime,
+      </if>
+      <if test="lockuserid != null" >
+        lockuserid,
+      </if>
+      <if test="lockname != null" >
+        lockname,
+      </if>
+      <if test="lockdeptid != null" >
+        lockdeptid,
+      </if>
+      <if test="lockdeptname != null" >
+        lockdeptname,
+      </if>
+      <if test="lockmins != null" >
+        lockmins,
+      </if>
+      <if test="isovertime != null" >
+        isovertime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="tablename != null" >
+        #{tablename},
+      </if>
+      <if test="name != null" >
+        #{name},
+      </if>
+      <if test="lockid != null" >
+        #{lockid},
+      </if>
+      <if test="1==1" >
+        now(),
+      </if>
+      <if test="lockuserid != null" >
+        #{lockuserid},
+      </if>
+      <if test="lockname != null" >
+        #{lockname},
+      </if>
+      <if test="lockdeptid != null" >
+        #{lockdeptid},
+      </if>
+      <if test="lockdeptname != null" >
+        #{lockdeptname},
+      </if>
+      <if test="lockmins != null" >
+        #{lockmins},
+      </if>
+      <if test="isovertime != null" >
+        #{isovertime},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateNetLock" parameterType="java.lang.String">
+  	update t_sys_lock set locktime=now()
+  	where tablename=#{tablename} and lockid=#{lockid} and lockuserid=#{userid}
+  </update>
+  <select id="getNetLock" parameterType="java.lang.String" resultType="com.hd.agent.system.model.NetLock">
+  	select id, tablename,name, lockid, locktime, lockuserid, lockname, lockdeptid, lockdeptname, 
+    lockmins, isovertime from t_sys_lock where tablename=#{tablename} and lockid=#{lockid}
+  </select>
+  <delete id="deleteNetLock" parameterType="java.lang.String">
+  	delete from t_sys_lock where tablename=#{tablename} and lockid=#{lockid} 
+  </delete>
+  <delete id="clearNetLock">
+  	delete from t_sys_lock 
+	where TIMESTAMPDIFF(MINUTE ,locktime,now()) >= lockmins
+  </delete>
+  <select id="showNetLockList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.system.model.NetLock">
+  	select id, tablename,name, lockid, locktime, lockuserid, lockname, lockdeptid, lockdeptname, 
+    lockmins, isovertime from t_sys_lock
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.tablename != null" >
+         and tablename = #{condition.tablename}
+      </if>
+      <if test="condition.lockid != null" >
+         and lockid = #{condition.lockid}
+      </if>
+      <if test="condition.lockname != null" >
+         and lockname like CONCAT('%',#{condition.lockname},'%')
+      </if>
+      <if test="condition.lockdeptname != null" >
+         and lockdeptname like CONCAT('%',#{condition.lockdeptname},'%')
+      </if>
+      <if test="condition.isovertime != null" >
+         and isovertime = #{condition.isovertime}
+      </if>
+    </trim>
+    <include refid="common.Page_limit" />
+  </select>
+  <select id="showNetLockCount" parameterType="com.hd.agent.common.util.PageMap" resultType="int">
+  	select count(1) from t_sys_lock
+  	<trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.tablename != null" >
+         and tablename = #{condition.tablename}
+      </if>
+      <if test="condition.lockid != null" >
+         and lockid = #{condition.lockid}
+      </if>
+      <if test="condition.lockname != null" >
+         and lockname like CONCAT('%',#{condition.lockname},'%')
+      </if>
+      <if test="condition.lockdeptname != null" >
+         and lockdeptname like CONCAT('%',#{condition.lockdeptname},'%')
+      </if>
+      <if test="condition.isovertime != null" >
+         and isovertime = #{condition.isovertime}
+      </if>
+    </trim>
+  </select>
+  <delete id="deleteNetLocks">
+  	delete from t_sys_lock where id =#{id}
+  </delete>
+</mapper>

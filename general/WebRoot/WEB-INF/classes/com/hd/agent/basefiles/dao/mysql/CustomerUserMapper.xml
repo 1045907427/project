@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.basefiles.dao.CustomerUserMapper" >
+  <resultMap id="BaseResultMap" type="com.hd.agent.basefiles.model.CustomerUser" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="mobilephone" property="mobilephone" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="customerid" property="customerid" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
+    <result column="addtime" property="addtime" jdbcType="TIMESTAMP" />
+    <result column="wechatserid" property="wechatserid" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="selectCustomerUserQuery_sql" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.mobilephone != null" >
+        and mobilephone = #{condition.mobilephone}
+      </if>
+      <if test="condition.password != null" >
+        and password = #{condition.password}
+      </if>
+      <if test="condition.customerid != null" >
+        and customerid = #{condition.customerid}
+      </if>
+      <if test="condition.wechatserid != null" >
+        and wechatserid = #{condition.wechatserid}
+      </if>
+      <if test="condition.addtime != null" >
+        and addtime = #{condition.addtime}
+      </if>
+      <if test="condition.remark != null" >
+        and remark = #{condition.remark}
+      </if>
+      <if test="condition.state != null" >
+        and state = #{condition.state}
+      </if>
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, mobilephone, password, customerid,state,remark,addtime,wechatserid
+  </sql>
+  <!-- 显示客户用户详情 -->
+  <select id="showCustomerUserInfo" parameterType="java.lang.String" resultType="com.hd.agent.basefiles.model.CustomerUser" useCache="false">
+    select
+    <include refid="Base_Column_List"/>
+    from t_base_sales_customer_user
+    where mobilephone = #{mobilephone}
+  </select>
+  <select id="SelectCustomerUserList"  parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.basefiles.model.CustomerUser">
+    select
+    <include refid="Base_Column_List" />
+    from t_base_sales_customer_user
+    <include refid="selectCustomerUserQuery_sql" />
+    <include refid="common.Page_limit"/>
+  </select>
+
+  <select id="SelectCustomerUserListCount" resultType="java.lang.Integer" parameterType="com.hd.agent.common.util.PageMap">
+    select count(1) from t_base_sales_customer_user t
+    <include refid="selectCustomerUserQuery_sql" />
+  </select>
+  <update id="addCustomerUserAddCustomer" parameterType="java.lang.String">
+    update t_base_sales_customer_user set customerid = #{customerid}
+    where mobilephone = #{mobilephone}
+  </update>
+  <!-- 手机号码唯一性检验 -->
+  <select id="checkRepeatPhone" parameterType="java.lang.String" resultType="int">
+    select count(1) from t_base_sales_customer_user where mobilephone = #{phone}
+  </select>
+
+  <insert id="addCustomerUser" parameterType="com.hd.agent.basefiles.model.CustomerUser" >
+    insert into t_base_sales_customer_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="mobilephone != null" >
+        mobilephone,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="customerid != null" >
+        customerid,
+      </if>
+      <if test="wechatserid != null" >
+        wechatserid,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="1 == 1" >
+        addtime,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="mobilephone != null" >
+        #{mobilephone},
+      </if>
+      <if test="password != null" >
+        #{password},
+      </if>
+      <if test="customerid != null" >
+        #{customerid},
+      </if>
+      <if test="wechatserid != null" >
+        #{wechatserid},
+      </if>
+      <if test="state != null" >
+        #{state},
+      </if>
+      <if test="1 == 1" >
+        now(),
+      </if>
+      <if test="remark != null" >
+        #{remark},
+      </if>
+    </trim>
+  </insert>
+
+  <!-- 启用客户用户 -->
+  <update id="enableCustomerUser" parameterType="java.lang.String">
+    update t_base_sales_customer_user set state = '1'
+    where mobilephone = #{mobilephone}
+  </update>
+  <!-- 禁用客户用户 -->
+  <update id="disableCustomerUser" parameterType="java.lang.String">
+    update t_base_sales_customer_user set state = '0'
+    where mobilephone = #{mobilephone}
+  </update>
+</mapper>

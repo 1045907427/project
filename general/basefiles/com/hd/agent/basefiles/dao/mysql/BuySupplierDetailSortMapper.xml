@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.basefiles.dao.BuySupplierDetailSortMapper" >
+	<cache type="org.mybatis.caches.ehcache.EhcacheCache"></cache>
+	<sql id="Example_Where_Clause" >
+	  <trim prefix="where" prefixOverrides="and|or" >
+	    <if test="condition.supplierid != null" >
+	       and supplierid = #{condition.supplierid}
+	    </if>
+	    <if test="condition.suppliersort != null" >
+	       and suppliersort = #{condition.suppliersort}
+	    </if>
+	    <if test="condition.suppliersortname != null" >
+	       and suppliersortname = #{condition.suppliersortname}
+	    </if>
+	    <if test="condition.isdefault != null" >
+	       and isdefault = #{condition.isdefault}
+	    </if>
+	    <if test="condition.remark != null" >
+	       and remark = #{condition.remark}
+	    </if>
+	  </trim>
+	</sql>
+	<sql id="Base_Column_List" >
+	  	id, supplierid, suppliersort, suppliersortname, isdefault, remark
+	</sql>
+  	<insert id="insertBuySupplierDetailSort" parameterType="com.hd.agent.basefiles.model.BuySupplierDetailsort" >
+	    insert into t_base_buy_supplier_detailsort
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	      <if test="id != null" >
+	        id,
+	      </if>
+	      <if test="supplierid != null" >
+	        supplierid,
+	      </if>
+	      <if test="suppliersort != null" >
+	        suppliersort,
+	      </if>
+	      <if test="suppliersortname != null" >
+	        suppliersortname,
+	      </if>
+	      <if test="isdefault != null" >
+	        isdefault,
+	      </if>
+	      <if test="remark != null" >
+	        remark,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	      <if test="id != null" >
+	        #{id},
+	      </if>
+	      <if test="supplierid != null" >
+	        #{supplierid},
+	      </if>
+	      <if test="suppliersort != null" >
+	        #{suppliersort},
+	      </if>
+	      <if test="suppliersortname != null" >
+	        #{suppliersortname},
+	      </if>
+	      <if test="isdefault != null" >
+	        #{isdefault},
+	      </if>
+	      <if test="remark != null" >
+	        #{remark},
+	      </if>
+	    </trim>
+  	</insert>
+  	<update id="updateBuySupplierDetailSort" parameterType="com.hd.agent.basefiles.model.BuySupplierDetailsort" >
+	    update t_base_buy_supplier_detailsort
+	    <set >
+	      <if test="supplierid != null" >
+	        supplierid = #{supplierid},
+	      </if>
+	      <if test="suppliersort != null" >
+	        suppliersort = #{suppliersort},
+	      </if>
+	      <if test="suppliersortname != null" >
+	        suppliersortname = #{suppliersortname},
+	      </if>
+	      <if test="isdefault != null" >
+	        isdefault = #{isdefault},
+	      </if>
+	      <if test="remark != null" >
+	        remark = #{remark},
+	      </if>
+	    </set>
+	    where id = #{id}
+   	</update>
+	<delete id="deleteBuySupplierDetailSort" parameterType="java.lang.String" >
+	    delete from t_base_buy_supplier_detailsort
+	    where id = #{id}
+  	</delete>
+	<delete id="deleteBuySupplierDetailSortBySupplier" parameterType="java.lang.String" >
+	    delete from t_base_buy_supplier_detailsort
+	    where supplierid = #{supplierid}
+  	</delete>
+  	<select id="showBuySupplierDetailSortListBy" parameterType="java.util.Map" resultType="com.hd.agent.basefiles.model.BuySupplierDetailsort">
+  		select
+  		* from (
+	  		select
+	  		 ds.id,ds.supplierid, ds.suppliersort, s.name suppliersortname, ds.isdefault, ds.remark
+	  		from t_base_buy_supplier_detailsort ds inner join t_base_buy_supplier_sort s on ds.suppliersort = s.id
+	  		where
+	  			<trim prefixOverrides="and|or" >
+	  				<if test="supplierid!=null">
+	  					and ds.supplierid = #{supplierid}
+	  				</if>
+	  				<if test="state!=null">
+	  					and s.state = #{state}
+	  				</if>
+	  				<if test="statearrs!=null">
+	  					and FIND_IN_SET(s.state,#{statearrs})
+	  				</if>
+	  			</trim>
+  		) t 
+		<trim prefix="order by"  >
+			<if test="orderby!=null">
+				#{orderby}
+			</if>
+			<if test="orderby!=null and ordersort!=null">
+				#{ordersort}
+			</if>
+		</trim>
+  	</select> 
+  	<select id="getBuySupplierDetailsortInfo" parameterType="java.lang.String" resultType="com.hd.agent.basefiles.model.BuySupplierDetailsort">
+  		select * from t_base_buy_supplier_detailsort where id = #{id}
+  	</select>
+</mapper>

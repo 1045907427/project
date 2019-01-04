@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.basefiles.dao.FilesLevelMapper" >
+	
+	<select id="showFilesLevelList" parameterType="java.lang.String" resultType="com.hd.agent.basefiles.model.FilesLevel">
+		select id, tablename, len, level, adduserid, addtime, modifyuserid, modifytime
+		from t_base_fileslevel where tablename=#{tablename} order by level
+	</select>
+	
+	<delete id="deleteFilesLevel" parameterType="java.lang.String">
+		delete from t_base_fileslevel where tablename=#{tablename}
+	</delete>
+	
+	<insert id="addFilesLevel" parameterType="com.hd.agent.basefiles.model.FilesLevel">
+		<selectKey resultType="java.lang.String" keyProperty="id" order="BEFORE" >
+	      select uuid_short()
+	    </selectKey>
+	    insert into t_base_fileslevel
+	    <trim prefix="(" suffix=")" suffixOverrides="," >
+	        id,
+	      <if test="tablename != null" >
+	        tablename,
+	      </if>
+	      <if test="len != null" >
+	        len,
+	      </if>
+	      <if test="level != null" >
+	        level,
+	      </if>
+	      <if test="adduserid != null" >
+	        adduserid,
+	      </if>
+	      <if test="1==1" >
+	        addtime,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides="," >
+	       #{id},
+	      <if test="tablename != null" >
+	        #{tablename},
+	      </if>
+	      <if test="len != null" >
+	        #{len},
+	      </if>
+	      <if test="level != null" >
+	        #{level},
+	      </if>
+	      <if test="adduserid != null" >
+	        #{adduserid},
+	      </if>
+	      <if test="1==1" >
+	        now(),
+	      </if>
+	    </trim>
+	</insert>
+	
+	<select id="getTableFieldMaxLength" parameterType="java.lang.String" resultType="int">
+		SELECT IF(MAX(LENGTH(${column})) IS NULL,0,MAX(length(${column}))) FROM ${tablename} WHERE ${column} IS NOT NULL
+	</select>
+	
+	<select id="getFilesLevel" parameterType="java.lang.String" resultType="com.hd.agent.basefiles.model.FilesLevel">
+		select id, tablename, len, level, adduserid, addtime, modifyuserid, modifytime
+		from t_base_fileslevel where tablename=#{tablename} and level=#{level}
+	</select>
+</mapper>

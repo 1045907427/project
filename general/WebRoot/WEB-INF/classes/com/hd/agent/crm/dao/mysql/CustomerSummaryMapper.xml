@@ -1,0 +1,598 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hd.agent.crm.dao.CustomerSummaryMapper" >
+  <resultMap id="BaseResultMap" type="com.hd.agent.crm.model.CustomerSummary" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="businessdate" property="businessdate" jdbcType="VARCHAR" />
+    <result column="customerid" property="customerid" jdbcType="VARCHAR" />
+    <result column="goodsid" property="goodsid" jdbcType="VARCHAR" />
+    <result column="goodssort" property="goodssort" jdbcType="VARCHAR" />
+    <result column="brandid" property="brandid" jdbcType="VARCHAR" />
+    <result column="supplierid" property="supplierid" jdbcType="VARCHAR" />
+    <result column="unitid" property="unitid" jdbcType="VARCHAR" />
+    <result column="unitname" property="unitname" jdbcType="VARCHAR" />
+    <result column="auxunitid" property="auxunitid" jdbcType="VARCHAR" />
+    <result column="auxunitname" property="auxunitname" jdbcType="VARCHAR" />
+    <result column="unitnum" property="unitnum" jdbcType="DECIMAL" />
+    <result column="totalbox" property="totalbox" jdbcType="DECIMAL" />
+    <result column="auxnumdetail" property="auxnumdetail" jdbcType="VARCHAR" />
+    <result column="addtime" property="addtime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="CustomerSummary_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="id != null" >
+        and t.id  like CONCAT('%', CONCAT(#{id}, '%'))
+      </if>
+      <if test="customerid != null" >
+         and customerid = #{customerid}
+      </if>
+      <if test="goodsid != null" >
+         and goodsid = #{goodsid}
+      </if>
+      <if test="goodssort != null" >
+         and goodssort = #{goodssort}
+      </if>
+      <if test="brandid != null" >
+         and brandid = #{brandid}
+      </if>
+      <if test="supplierid != null" >
+         and supplierid = #{supplierid}
+      </if>
+      <if test="unitid != null" >
+         and unitid = #{unitid}
+      </if>
+      <if test="unitname != null" >
+         and unitname = #{unitname}
+      </if>
+      <if test="auxunitid != null" >
+         and auxunitid = #{auxunitid}
+      </if>
+      <if test="auxunitname != null" >
+         and auxunitname = #{auxunitname}
+      </if>
+      <if test="unitnum != null" >
+         and unitnum = #{unitnum}
+      </if>
+      <if test="totalbox != null" >
+         and totalbox = #{totalbox}
+      </if>
+      <if test="auxnumdetail != null" >
+         and auxnumdetail = #{auxnumdetail}
+      </if>
+      <if test="addtime != null" >
+         and addtime = #{addtime}
+      </if>
+    </trim>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, businessdate, customerid, goodsid, goodssort, brandid, supplierid, unitid, unitname, 
+    auxunitid, auxunitname, unitnum, totalbox, auxnumdetail, addtime
+  </sql>
+  <delete id="deleteCustomerSummary" parameterType="java.lang.Integer" >
+    delete from t_crm_customer_summary where id = #{id}
+  </delete>
+  <delete id="deleteSummaryListByCustomer" parameterType="java.lang.String" >
+    delete from t_crm_customer_summary where customerid = #{customerid}
+  </delete>
+  <delete id="deleteSummaryHistoryListByCustomer" parameterType="java.lang.String" >
+    delete from t_crm_customer_summary_h where customerid = #{customerid}
+  </delete>
+  <delete id="deleteSummaryByCustomerAndGoods" parameterType="java.lang.String" >
+    delete from t_crm_customer_summary where customerid = #{customerid} and goodsid = #{goodsid}
+  </delete>
+  <delete id="deleteSummaryHistoryByCustomerAndGoods" parameterType="java.lang.String" >
+    delete from t_crm_customer_summary_h where customerid = #{customerid} and goodsid = #{goodsid}
+  </delete>
+  <insert id="addCustomerSummary" parameterType="com.hd.agent.crm.model.CustomerSummary" >
+    insert into t_crm_customer_summary
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="businessdate != null" >
+        businessdate,
+      </if>
+      <if test="customerid != null" >
+        customerid,
+      </if>
+      <if test="goodsid != null" >
+        goodsid,
+      </if>
+      <if test="goodssort != null" >
+        goodssort,
+      </if>
+      <if test="brandid != null" >
+        brandid,
+      </if>
+      <if test="supplierid != null" >
+        supplierid,
+      </if>
+      <if test="unitid != null" >
+        unitid,
+      </if>
+      <if test="unitname != null" >
+        unitname,
+      </if>
+      <if test="auxunitid != null" >
+        auxunitid,
+      </if>
+      <if test="auxunitname != null" >
+        auxunitname,
+      </if>
+      <if test="unitnum != null" >
+        unitnum,
+      </if>
+      <if test="totalbox != null" >
+        totalbox,
+      </if>
+      <if test="auxnumdetail != null" >
+        auxnumdetail,
+      </if>
+      <if test="addtime != null" >
+        addtime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="businessdate != null" >
+        #{businessdate},
+      </if>
+      <if test="customerid != null" >
+        #{customerid},
+      </if>
+      <if test="goodsid != null" >
+        #{goodsid},
+      </if>
+      <if test="goodssort != null" >
+        #{goodssort},
+      </if>
+      <if test="brandid != null" >
+        #{brandid},
+      </if>
+      <if test="supplierid != null" >
+        #{supplierid},
+      </if>
+      <if test="unitid != null" >
+        #{unitid},
+      </if>
+      <if test="unitname != null" >
+        #{unitname},
+      </if>
+      <if test="auxunitid != null" >
+        #{auxunitid},
+      </if>
+      <if test="auxunitname != null" >
+        #{auxunitname},
+      </if>
+      <if test="unitnum != null" >
+        #{unitnum},
+      </if>
+      <if test="totalbox != null" >
+        #{totalbox},
+      </if>
+      <if test="auxnumdetail != null" >
+        #{auxnumdetail},
+      </if>
+      <if test="addtime != null" >
+        #{addtime},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateCustomerSummary" parameterType="com.hd.agent.crm.model.CustomerSummary" >
+    update t_crm_customer_summary
+    <set >
+      <if test="businessdate != null" >
+        businessdate = #{businessdate},
+      </if>
+      <if test="customerid != null" >
+        customerid = #{customerid},
+      </if>
+      <if test="goodsid != null" >
+        goodsid = #{goodsid},
+      </if>
+      <if test="goodssort != null" >
+        goodssort = #{goodssort},
+      </if>
+      <if test="brandid != null" >
+        brandid = #{brandid},
+      </if>
+      <if test="supplierid != null" >
+        supplierid = #{supplierid},
+      </if>
+      <if test="unitid != null" >
+        unitid = #{unitid},
+      </if>
+      <if test="unitname != null" >
+        unitname = #{unitname},
+      </if>
+      <if test="auxunitid != null" >
+        auxunitid = #{auxunitid},
+      </if>
+      <if test="auxunitname != null" >
+        auxunitname = #{auxunitname},
+      </if>
+      <if test="unitnum != null" >
+        unitnum = #{unitnum},
+      </if>
+      <if test="totalbox != null" >
+        totalbox = #{totalbox},
+      </if>
+      <if test="auxnumdetail != null" >
+        auxnumdetail = #{auxnumdetail},
+      </if>
+      <if test="addtime != null" >
+        addtime = #{addtime},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+  <insert id="addCustomerSummary_h" parameterType="com.hd.agent.crm.model.CustomerSummary" >
+    insert into t_crm_customer_summary_h
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="businessdate != null" >
+        businessdate,
+      </if>
+      <if test="customerid != null" >
+        customerid,
+      </if>
+      <if test="goodsid != null" >
+        goodsid,
+      </if>
+      <if test="goodssort != null" >
+        goodssort,
+      </if>
+      <if test="brandid != null" >
+        brandid,
+      </if>
+      <if test="supplierid != null" >
+        supplierid,
+      </if>
+      <if test="unitid != null" >
+        unitid,
+      </if>
+      <if test="unitname != null" >
+        unitname,
+      </if>
+      <if test="auxunitid != null" >
+        auxunitid,
+      </if>
+      <if test="auxunitname != null" >
+        auxunitname,
+      </if>
+      <if test="unitnum != null" >
+        unitnum,
+      </if>
+      <if test="totalbox != null" >
+        totalbox,
+      </if>
+      <if test="auxnumdetail != null" >
+        auxnumdetail,
+      </if>
+      <if test="addtime != null" >
+        addtime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id},
+      </if>
+      <if test="businessdate != null" >
+        #{businessdate},
+      </if>
+      <if test="customerid != null" >
+        #{customerid},
+      </if>
+      <if test="goodsid != null" >
+        #{goodsid},
+      </if>
+      <if test="goodssort != null" >
+        #{goodssort},
+      </if>
+      <if test="brandid != null" >
+        #{brandid},
+      </if>
+      <if test="supplierid != null" >
+        #{supplierid},
+      </if>
+      <if test="unitid != null" >
+        #{unitid},
+      </if>
+      <if test="unitname != null" >
+        #{unitname},
+      </if>
+      <if test="auxunitid != null" >
+        #{auxunitid},
+      </if>
+      <if test="auxunitname != null" >
+        #{auxunitname},
+      </if>
+      <if test="unitnum != null" >
+        #{unitnum},
+      </if>
+      <if test="totalbox != null" >
+        #{totalbox},
+      </if>
+      <if test="auxnumdetail != null" >
+        #{auxnumdetail},
+      </if>
+      <if test="addtime != null" >
+        #{addtime},
+      </if>
+    </trim>
+  </insert>
+  <sql id="Report_Where_Clause" >
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.businessdate != null" >
+        <![CDATA[ and t.businessdate >= #{condition.businessdate} ]]>
+      </if>
+      <if test="condition.businessdate1 != null" >
+        <![CDATA[ and t.businessdate <= #{condition.businessdate1} ]]>
+      </if>
+      <if test="condition.customerid != null" >
+        and FIND_IN_SET(t.customerid,#{condition.customerid})
+      </if>
+      <if test="condition.goodsid != null" >
+        and FIND_IN_SET(t.goodsid,#{condition.goodsid})
+      </if>
+      <if test="condition.brandid != null" >
+        and FIND_IN_SET(t.brandid,#{condition.brandid})
+      </if>
+      <if test="condition.supplierid != null" >
+        and FIND_IN_SET(t.supplierid,#{condition.supplierid})
+      </if>
+    </trim>
+  </sql>
+  <select id="getCustomerSummaryReportData"  resultType="java.util.Map" parameterType="com.hd.agent.common.util.PageMap" >
+    select t.*,g.barcode from t_crm_customer_summary t
+    LEFT JOIN t_base_goods_info g on g.id = t.goodsid
+    <include refid="Report_Where_Clause" />
+    <if test="condition.ispageflag != 'true' " >
+      <include refid="common.Page_limit"/>
+    </if>
+  </select>
+  <select id="getCustomerSummaryReportDataCount"  resultType="int" parameterType="com.hd.agent.common.util.PageMap" >
+    select count(*) from (
+    select * from t_crm_customer_summary t
+    <include refid="Report_Where_Clause" />
+    ) z
+  </select>
+  <select id="getCustomerSummaryReportDataSum"  resultType="java.util.Map" parameterType="com.hd.agent.common.util.PageMap" >
+    select sum(z.unitnum) as unitnum ,sum(z.totalbox) as totalbox from (
+    select <include refid="Base_Column_List" /> from t_crm_customer_summary t
+    <include refid="Report_Where_Clause" />
+    ) z
+  </select>
+  <sql id="CustomerSummary_CrmSales_sql">
+    select t.businessdate, t.customerid, t.goodsid, t.goodssort, t.brandid, t.supplierid,g.barcode,
+    t.unitnum as stocknum,t.totalbox as stockbox,'' as salesnum ,'' as salesbox,
+    c.salesdeptid,c.salesuserid,c.salesdeptname,c.salesusername,'' as salesamount
+    from t_crm_customer_summary t
+    LEFT JOIN t_base_sales_customer c on t.customerid = c.id
+    LEFT JOIN t_base_goods_info g on g.id = t.goodsid
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.businessdate != null" >
+        <![CDATA[ and t.businessdate >= #{condition.businessdate} ]]>
+      </if>
+      <if test="condition.businessdate1 != null" >
+        <![CDATA[ and t.businessdate <= #{condition.businessdate1} ]]>
+      </if>
+      <if test="condition.customerid != null" >
+        and FIND_IN_SET(t.customerid,#{condition.customerid})
+      </if>
+      <if test="condition.goodsid != null" >
+        and FIND_IN_SET(t.goodsid,#{condition.goodsid})
+      </if>
+      <if test="condition.brandid != null" >
+        and FIND_IN_SET(t.brandid,#{condition.brandid})
+      </if>
+      <if test="condition.supplierid != null" >
+        and FIND_IN_SET(t.supplierid,#{condition.supplierid})
+      </if>
+    </trim>
+    union all
+    select t1.businessdate, t1.customerid, t.goodsid, t.goodssort, t.brandid, t.supplierid,g.barcode,
+    '' as stocknum,'' as stockbox,t.unitnum as salesnum , t.totalbox as salesbox,
+    c.salesdeptid,c.salesuserid,c.salesdeptname,c.salesusername,t.taxamount as salesamount
+    from t_crm_sales_order_detail t
+    left join t_crm_sales_order t1 on t.orderid = t1.id
+    LEFT JOIN t_base_sales_customer c on t1.customerid = c.id
+    LEFT JOIN t_base_goods_info g on g.id = t.goodsid
+    <trim prefix="where" prefixOverrides="and|or" >
+      <if test="condition.businessdate != null" >
+        <![CDATA[ and t1.businessdate >= #{condition.businessdate} ]]>
+      </if>
+      <if test="condition.businessdate1 != null" >
+        <![CDATA[ and t1.businessdate <= #{condition.businessdate1} ]]>
+      </if>
+      <if test="condition.customerid != null" >
+        and FIND_IN_SET(t1.customerid,#{condition.customerid})
+      </if>
+      <if test="condition.goodsid != null" >
+        and FIND_IN_SET(t.goodsid,#{condition.goodsid})
+      </if>
+      <if test="condition.brandid != null" >
+        and FIND_IN_SET(t.brandid,#{condition.brandid})
+      </if>
+      <if test="condition.supplierid != null" >
+        and FIND_IN_SET(t.supplierid,#{condition.supplierid})
+      </if>
+    </trim>
+  </sql>
+  <select id="getCustomerSummaryReportGroupData"  resultType="java.util.Map" parameterType="com.hd.agent.common.util.PageMap" >
+    select z.businessdate, z.customerid, z.goodsid, z.goodssort, z.brandid, z.supplierid,z.barcode,z.salesdeptid,z.salesuserid,z.salesdeptname,z.salesusername,
+        sum(z.stocknum) as stocknum, sum(z.stockbox) as stockbox,sum(z.salesnum) as salesnum,sum(z.salesbox) as salesbox,sum(salesamount) as salesamount
+    from (
+      <include refid="CustomerSummary_CrmSales_sql"/>
+    ) z
+    <if test="condition.groupcols != null " >
+      group by ${condition.groupcols}
+    </if>
+    <if test="condition.ispageflag != 'true' " >
+      <include refid="common.Page_limit"/>
+    </if>
+  </select>
+  <select id="getCustomerSummaryReportGroupCount" resultType="int" parameterType="com.hd.agent.common.util.PageMap" >
+    SELECT count(1) from (
+      select z.businessdate, z.customerid, z.goodsid, z.goodssort, z.brandid, z.supplierid,
+      sum(z.stocknum) as stocknum, sum(z.stockbox) as stockbox,sum(z.salesnum) as salesnum,sum(z.salesbox) as salesbox
+      from (
+      <include refid="CustomerSummary_CrmSales_sql"/>
+      ) z
+      <if test="condition.groupcols != null " >
+        group by ${condition.groupcols}
+      </if>
+    ) t
+  </select>
+  <select id="getCustomerSummaryReportGroupSum"  resultType="java.util.Map" parameterType="com.hd.agent.common.util.PageMap" >
+    select sum(z.stocknum) as stocknum, sum(z.stockbox) as stockbox,sum(z.salesnum) as salesnum,sum(z.salesbox) as salesbox
+    from (
+    <include refid="CustomerSummary_CrmSales_sql"/>
+    ) z
+  </select>
+  <select id="getLastSummaryDayByCustomerid" resultType="java.lang.String" parameterType="java.lang.String">
+    select max(businessdate) from t_crm_customer_summary where customerid = #{customerid}
+  </select>
+  <select id="getLastSummaryDayFromHistory" resultType="java.lang.String" parameterType="java.lang.String">
+    select max(businessdate) from t_crm_customer_summary_h where customerid = #{customerid}
+  </select>
+  <select id="getCustomerSummaryFromSalesReport" resultType="java.util.Map" parameterType="com.hd.agent.common.util.PageMap">
+    select sum(z.unitnum) as unitnum,z.goodsid from (
+        select t1.unitnum,t1.goodsid FROM t_storage_saleout t
+        RIGHT JOIN t_storage_saleout_detail t1  ON t1.saleoutid = t.id
+        <trim prefix="WHERE" prefixOverrides="and|or" >
+          t.STATUS IN ('3', '4') and t1.unitnum != '0'
+          <if test="condition.begindate != null">
+            <![CDATA[ and t.businessdate >= #{condition.begindate} ]]>
+          </if>
+          <if test="condition.begindate1 != null">
+            <![CDATA[ and t.businessdate >= #{condition.begindate1} ]]>
+          </if>
+          <if test="condition.enddate != null">
+            <![CDATA[ and t.businessdate <= #{condition.enddate} ]]>
+          </if>
+          <if test="condition.enddate1 != null">
+            <![CDATA[ and t.businessdate <= #{condition.enddate1} ]]>
+          </if>
+          <if test="condition.customerid != null">
+            and t.customerid = #{condition.customerid}
+          </if>
+        </trim>
+        UNION ALL
+        select -t1.unitnum,t1.goodsid FROM t_storage_salereject_enter t
+        RIGHT JOIN t_storage_salereject_enter_detail t1 ON t1.salerejectid = t.id
+        <trim prefix="WHERE" prefixOverrides="and|or" >
+           t.STATUS IN ('3', '4') and t1.unitnum != '0'
+          <if test="condition.begindate != null">
+            <![CDATA[ and t.businessdate >= #{condition.begindate} ]]>
+          </if>
+          <if test="condition.begindate1 != null">
+            <![CDATA[ and t.businessdate >= #{condition.begindate1} ]]>
+          </if>
+          <if test="condition.enddate != null">
+            <![CDATA[ and t.businessdate <= #{condition.enddate} ]]>
+          </if>
+          <if test="condition.enddate1 != null">
+            <![CDATA[ and t.businessdate <= #{condition.enddate1} ]]>
+          </if>
+          <if test="condition.customerid != null">
+            and t.customerid = #{condition.customerid}
+          </if>
+        </trim>
+        UNION ALL
+        SELECT -t1.unitnum as unitnum,t1.goodsid as goodsid from t_crm_sales_order t
+        LEFT JOIN  t_crm_sales_order_detail t1 on t.id = t1.orderid
+        <trim prefix="where" prefixOverrides="and|or" >
+          <if test="condition.begindate != null">
+            <![CDATA[ and t.businessdate >= #{condition.begindate} ]]>
+          </if>
+          <if test="condition.begindate1 != null">
+            <![CDATA[ and t.businessdate >= #{condition.begindate1} ]]>
+          </if>
+          <if test="condition.enddate != null">
+            <![CDATA[ and t.businessdate <= #{condition.enddate} ]]>
+          </if>
+          <if test="condition.enddate1 != null">
+            <![CDATA[ and t.businessdate <= #{condition.enddate1} ]]>
+          </if>
+          <if test="condition.customerid != null">
+            and t.customerid = #{condition.customerid}
+          </if>
+        </trim>
+        <if test="condition.customer != null">
+            UNION ALL
+            SELECT unitnum,goodsid from t_crm_customer_summary where businessdate
+            in (
+            SELECT max(businessdate) from t_crm_customer_summary
+            <trim prefix="where" prefixOverrides="and|or" >
+                <if test="condition.begindate != null">
+                    <![CDATA[ and businessdate = #{condition.begindate} ]]>
+                </if>
+                <if test="condition.begindate1 != null">
+                    <![CDATA[ and businessdate = #{condition.begindate1} ]]>
+                </if>
+            </trim>
+            )
+            <if test="condition.customerid != null">
+                and customerid = #{condition.customerid}
+            </if>
+         </if>
+         <if test="condition.crmSalesSync != null">
+         UNION ALL
+         SELECT -unitnum,goodsid from t_crm_customer_summary
+         <trim prefix="where" prefixOverrides="and|or" >
+             <if test="condition.enddate != null">
+                 <![CDATA[ and businessdate = #{condition.enddate} ]]>
+             </if>
+             <if test="condition.enddate1 != null">
+               <![CDATA[ and businessdate <= #{condition.enddate1} ]]>
+             </if>
+             <if test="condition.customerid != null">
+                 and customerid = #{condition.customerid}
+             </if>
+         </trim>
+          UNION ALL
+          SELECT unitnum,goodsid from t_crm_customer_summary_h where businessdate
+          in (
+          SELECT max(businessdate) from t_crm_customer_summary_h
+          <trim prefix="where" prefixOverrides="and|or" >
+              <if test="condition.begindate != null">
+                  <![CDATA[ and businessdate <= #{condition.begindate} ]]>
+              </if>
+            <if test="condition.customerid != null">
+              and customerid = #{condition.customerid}
+            </if>
+          </trim>
+          )
+          <if test="condition.customerid != null">
+              and customerid = #{condition.customerid}
+          </if>
+      </if>
+    ) z GROUP BY goodsid
+  </select>
+  <select id="validateGoodsForCustomer" resultType="com.hd.agent.crm.model.CustomerSummary" parameterType="java.lang.String">
+    select * from t_crm_customer_summary  where goodsid = #{goodsid} and customerid = #{customerid}
+  </select>
+  <select id="validateGoodsForCustomer_h" resultType="int" parameterType="java.lang.String">
+  select count(*) from t_crm_customer_summary_h  where goodsid = #{goodsid} and customerid = #{customerid} and businessdate = #{businessdate}
+</select>
+  <select id="getCustomerSummaryByCustomerid" resultType="com.hd.agent.crm.model.CustomerSummary" parameterType="java.lang.String">
+     select * from t_crm_customer_summary  where customerid = #{customerid}
+  </select>
+  <select id="getCustomerSummaryHistoryByCustomerid" resultType="com.hd.agent.crm.model.CustomerSummary" parameterType="java.lang.String">
+    select * from t_crm_customer_summary_h  where customerid = #{customerid}
+  </select>
+  <select id="getCustomerSummaryForGoodsHistoryList" resultType="com.hd.agent.crm.model.CustomerSummary" parameterType="java.util.Map">
+    select * from t_crm_customer_summary_h  where goodsid = #{goodsid} and customerid = #{customerid}
+  </select>
+  <select id="validateGoodsHistoryForDate" resultType="int" parameterType="java.lang.String">
+     select count(*) from t_crm_customer_summary_h  where goodsid = #{goodsid} and customerid = #{customerid} and businessdate = #{businessdate}
+  </select>
+  <select id="getCustomerFromStorage" resultType="java.util.Map" >
+     select DISTINCT customerid,businessdate  from t_crm_customer_summary
+  </select>
+</mapper>

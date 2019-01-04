@@ -1,0 +1,376 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>商品参照窗口</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" >
+    <meta name="generator" content="www.leipi.org" />
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+    <!--[if lte IE 6]>
+    <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-ie6.css">
+    <![endif]-->
+    <!--[if lte IE 7]>
+    <link rel="stylesheet" type="text/css" href="bootstrap/css/ie.css">
+    <![endif]-->
+    <link rel="stylesheet" href="agent.style.css">
+    <script type="text/javascript" src="../dialogs/internal.js"></script>
+    <script type="text/ecmascript" src="../../../../js/sha1.js"></script>
+    <script type="text/ecmascript" src="../../../../js/jquery.js"></script>
+    <script type="text/javascript">
+        function createElement(type, name)
+        {
+            var element = null;
+            try {
+                element = document.createElement('<'+type+' name="'+name+'">');
+            } catch (e) {}
+            if(element==null) {
+                element = document.createElement(type);
+                element.name = name;
+            }
+            return element;
+        }
+    </script>
+</head>
+<body>
+<div class="content">
+    <table class="table table-bordered table-striped table-hover">
+        <tr>
+            <th style="width: 300px;"><span>控件名称</span><span class="label label-important">*</span></th>
+            <th><span>文本框显示内容</span><span class="label label-important">*</span></th>
+        </tr>
+        <tr>
+            <td><input type="text" id="orgname" placeholder="必填项"></td>
+            <td>
+                <select class="box-show-col" id="orgshow">
+                    <option value="id">商品编码</option>
+                    <option value="name">商品名称</option>
+                    <option value="brand">商品品牌</option>
+                    <option value="barcode">条形码</option>
+                </select>
+            </td>
+        </tr>
+        <tr style="display:none;">
+        </tr>
+        <!--
+        <tr>
+            <td></td>
+            <td id="refname"></td>
+        </tr>
+        -->
+        <tr style="display: none;">
+            <td>编号(键值)</td>
+            <td class="widgetCols">
+                <select disabled="disabled">
+                    <option value="id">商品编号</option>
+                </select>
+            </td>
+        </tr>
+        <tr style="display: none;">
+            <td>内容</td>
+            <td class="widgetCols">
+                <select disabled="disabled">
+                    <option value="name">商品名称</option>
+                </select>
+            </td>
+        </tr>
+        <tr id="map-set-title" class="map-set-title">
+            <th colspan="2" style=""><span>设定映射关系</span></th>
+        </tr>
+        <tr>
+            <th><span>&nbsp;&nbsp;&nbsp;&nbsp;长&nbsp;&nbsp;X&nbsp;&nbsp;宽&nbsp;&nbsp;&nbsp;&&nbsp;&nbsp;&nbsp;字体大小</span> </th>
+            <th><!--<span>可见性</span> --></th>
+        </tr>
+        <tr>
+            <td>
+                <input id="orgwidth" type="text" value="150" class="input-small span1" placeholder="auto"/>
+                X
+                <input id="orgheight" type="text" value="" class="input-small span1" placeholder="auto"/>
+                &
+                <input id="orgfontsize" type="text"  value="" class="input-small span1" placeholder="auto"/> px
+
+            </td>
+            <td>
+                <label class="checkbox inline" style="display: none;"><input id="orghide" type="checkbox"/> 隐藏 </label>
+            </td>
+        </tr>
+
+    </table>
+</div>
+<script type="text/javascript">
+var oNode = null,thePlugins = 'goods';
+
+var widgetCols = new Array();           // 参照窗口列
+var DEFAULT_COLS = [
+    {
+        col: 'id',
+        colname: '商品编码'
+    },
+    {
+        col: 'name',
+        colname: '商品名称'
+    },
+    {
+        col: 'brand',
+        colname: '商品品牌'
+    },
+    {
+        col: 'barcode',
+        colname: '条形码'
+    }
+];
+widgetCols = DEFAULT_COLS;
+var controls = new Array();             // 所有控件
+var originalMapSet = new Array();       // 映射规则设定
+
+(function() {
+    $.each(UE.controls, function(index, item) {
+        controls.push({
+            itemid: hex_sha1(item),
+            title: item
+        });
+    });
+})();
+
+function initColMapSetBlock() {
+
+    var colHtml = new Array();
+    var controlHtml = new Array();
+    var html = new Array();
+
+    colHtml.push('<select class="map-set-col">');
+    colHtml.push('<option></option>');
+    $.each(widgetCols, function(index, item) {
+        colHtml.push('<option value="' + item.col + '">' + item.colname + '</option>');
+    });
+    controlHtml.push('</select>');
+
+    controlHtml.push('<select class="map-set-control">');
+    controlHtml.push('<option></option>');
+    $.each(controls, function(index, item) {
+        if(item.title != $('#orgname').val()) {
+            controlHtml.push('<option value="' + item.itemid + '">' + item.title + '</option>');
+        }
+    });
+    controlHtml.push('</select>');
+
+    $.each(widgetCols, function(index, item) {
+        html.push('<tr class="map-set-content"><td>' + colHtml.join('') + '</td><td>' + controlHtml.join('') + '</td></tr>')
+    });
+
+    $('.map-set-title').show();
+    $('#map-set-title').after(html.join(''));
+
+    $.each(originalMapSet, function(index, item) {
+
+        $('.map-set-col:eq(' + index + ')').find('[value=' + item.split('=')[0] + ']').attr('selected', 'selected');
+        $('.map-set-control:eq(' + index + ')').find('[value=' + item.split('=')[1] + ']').attr('selected', 'selected');
+    });
+    originalMapSet = new Array();
+}
+
+$(function(){
+
+    // 去除控件名称中的半角字符
+    // 验证名称是否重复
+    $('#orgname').change(function() {
+
+        // 去除控件名称中的半角字符
+        var orgname = $('#orgname').val();
+        orgname = orgname.replace(/[\u0000-\u002F]/gi, '').replace(/[\u003a-\u0040]/gi, '').replace(/[\u005b-\u0060]/gi, '').replace(/[\u007b-\u00ff]/gi, '');
+        $('#orgname').val(orgname);
+
+        // 验证名称是否重复
+        if (orgname != '') {
+
+            for (var i = 0; i < UE.controls.length; i++) {
+                var name = UE.controls[i];
+                if(name == orgname) {
+                    alert('控件名称重复，请重新输入！');
+                    $(this).val('');
+                    return false;
+                }
+            }
+        }
+    });
+
+    if(null != null) {
+        var orgname = oNode.getAttribute('title').replace(/&quot;/g, "\"");
+        for (var i = 0; i < UE.controls.length; i++) {
+
+            var name = UE.controls[i];
+            if (name == orgname) {
+                UE.controls.splice(i, 1, '');
+                break;
+            }
+        }
+    }
+});
+
+// 初始化
+window.onload = function() {
+    if( UE.plugins[thePlugins].editdom ){
+        oNode = UE.plugins[thePlugins].editdom;
+        var gValue = '';
+        var gTitle=oNode.getAttribute('title').replace(/\"/g,"&quot;");
+        var gFontSize=oNode.getAttribute('orgfontsize');
+        var gWidth=oNode.getAttribute('orgwidth');
+        var gHeight=oNode.getAttribute('orgheight');
+        var gWidgetValue = oNode.getAttribute('widgetvaluecol');
+        var gWidgetText = oNode.getAttribute('widgettextcol');
+        var gWidgetMap = oNode.getAttribute('widgetmap') || '';
+        var gShow = oNode.getAttribute('show') || '';
+
+        var gHidden=oNode.getAttribute('orghide');
+        gValue = gValue==null ? '' : gValue;
+        gTitle = gTitle==null ? '' : gTitle;
+        //$G('orgvalue').value = gValue;
+        $G('orgname').value = gTitle;
+        if (gHidden == '1')
+        {
+            $G('orghide').checked = true;
+        }
+        $G('orgfontsize').value = gFontSize;
+        $G('orgwidth').value = gWidth;
+        $G('orgheight').value = gHeight;
+        if(gShow != '') {
+
+            $G('orgshow').value = gShow;
+        }
+
+        if(gWidgetMap != '') {
+
+            originalMapSet = gWidgetMap.split(',');
+        }
+
+    }
+
+    initColMapSetBlock();
+};
+dialog.oncancel = function () {
+    if( UE.plugins[thePlugins].editdom ) {
+        delete UE.plugins[thePlugins].editdom;
+    }
+};
+dialog.onok = function (){
+    if($G('orgname').value==''){
+        alert('请输入控件名称');
+        return false;
+    }
+
+    var gTitle=$G('orgname').value.replace(/\"/g,"&quot;");
+    var gFontSize=$G('orgfontsize').value;
+    var gWidth=$G('orgwidth').value;
+    var gHeight=$G('orgheight').value;
+    var gWidgetval = $($('select[name=col]')[0]).val();
+    var gWidgettext = $($('select[name=col]')[1]).val();
+    var gShow = $G('orgshow').value;
+
+    // 获取 参照窗口列→项目 映射关系
+    var mapSet = new Array();   // 映射关系
+
+    $('select.map-set-col').each(function(index, item) {
+
+        var colVal = $(this).val() || '';
+        var controlVal = $('select.map-set-control:eq(' + index + ')').val() || '';
+
+        if(colVal != '' && controlVal != '') {
+
+            mapSet.push(colVal + '=' + controlVal);
+        }
+    });
+
+    if(!oNode) {
+        try {
+            oNode = createElement('input', 'NEWFIELD');
+            oNode.setAttribute('type', 'text');
+            oNode.setAttribute('title', gTitle);
+            oNode.setAttribute('agentitemid', hex_sha1(gTitle));
+            oNode.setAttribute('value', '{goods}');
+            oNode.setAttribute('name', 'agentFormItem');
+            oNode.setAttribute('plugins', thePlugins);
+            oNode.setAttribute('readonly', 'readonly'); //参照窗口设为readonly，防止手动修改内容
+            oNode.setAttribute('widgetvaluecol', gWidgetval);
+            oNode.setAttribute('widgettextcol', gWidgettext);
+            oNode.setAttribute('widgetmap', mapSet.join(','));
+            oNode.setAttribute('show', gShow);
+
+            if ($G('orghide').checked) {
+                oNode.setAttribute('orghide', 1);
+            } else {
+                oNode.setAttribute('orghide', 0);
+            }
+            if (gFontSize != '') {
+                oNode.style.fontSize = gFontSize + 'px';
+                oNode.setAttribute('orgfontsize', gFontSize);
+            }
+            if (gWidth != '') {
+                oNode.style.width = gWidth + 'px';
+                //style += 'width:' + gWidth + 'px;';
+                oNode.setAttribute('orgwidth', gWidth);
+            }
+            if (gHeight != '') {
+                oNode.style.height = gHeight + 'px';
+                //style += 'height:' + gHeight + 'px;';
+                oNode.setAttribute('orgheight', gHeight);
+            }
+            if ( $G('orghide').checked ) {
+                oNode.setAttribute('orghide',1);
+            } else {
+                oNode.setAttribute('orghide',0);
+            }
+
+            editor.execCommand('insertHtml', oNode.outerHTML);
+        } catch (e) {
+            try {
+                editor.execCommand('error');
+            } catch ( e ) {
+                alert('控件异常，如果一直出现该提示，请联系系统管理员！');
+            }
+            return false;
+        }
+
+    } else {
+
+        oNode.setAttribute('type', 'text');
+        oNode.setAttribute('title', gTitle);
+        oNode.setAttribute('agentitemid', hex_sha1(gTitle));
+        oNode.setAttribute('name', 'agentFormItem');
+        oNode.setAttribute('plugins', thePlugins);
+        oNode.setAttribute('readonly', 'readonly'); //参照窗口设为readonly，防止手动修改内容
+        oNode.setAttribute('widgetvaluecol', gWidgetval);
+        oNode.setAttribute('widgettextcol', gWidgettext);
+        oNode.setAttribute('widgetmap', mapSet.join(','));
+        oNode.setAttribute('show', gShow);
+
+        if ($G('orghide').checked) {
+            oNode.setAttribute('orghide', 1);
+        } else {
+            oNode.setAttribute('orghide', 0);
+        }
+        if (gFontSize != '') {
+            oNode.style.fontSize = gFontSize + 'px';
+            oNode.setAttribute('orgfontsize', gFontSize);
+        }
+        if (gWidth != '') {
+            oNode.style.width = gWidth + 'px';
+            //style += 'width:' + gWidth + 'px;';
+            oNode.setAttribute('orgwidth', gWidth);
+        }
+        if (gHeight != '') {
+            oNode.style.height = gHeight + 'px';
+            //style += 'height:' + gHeight + 'px;';
+            oNode.setAttribute('orgheight', gHeight);
+        }
+        if ( $G('orghide').checked ) {
+            oNode.setAttribute('orghide',1);
+        } else {
+            oNode.setAttribute('orghide',0);
+        }
+
+        delete UE.plugins[thePlugins].editdom;
+    }
+
+};
+</script>
+</body>
+</html>
