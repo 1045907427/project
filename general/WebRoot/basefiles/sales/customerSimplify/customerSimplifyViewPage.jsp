@@ -130,12 +130,11 @@
 										</c:choose>
 									</c:forEach>
 								</select></td>
-		    			<td align="right">是否现款:</td>
-				    	<td align="left"><select name="customer.iscash" style="width: 130px;" disabled="disabled">
-						    		<option></option>
-						    		<option <c:if test="${customer.iscash == '0' }">selected="selected"</c:if> value="0">否</option>
-					    			<option <c:if test="${customer.iscash == '1' }">selected="selected"</c:if> value="1">是</option>
-						    	</select><c:if test="${colMap.iscash == 'iscash' }"><font color="red">*</font></c:if></td>
+						<td align="right">超账期控制：</td>
+						<td align="left"><select id="customerShortcut-select-overcontrol" name="customer.overcontrol" style="width: 130px;"  disabled="disabled">
+							<option <c:if test="${customer.overcontrol == '1'}">selected="selected"</c:if> value="1">是</option>
+							<option <c:if test="${customer.overcontrol == '0'}">selected="selected"</c:if> value="0">否</option>
+						</select></td>
 		    			<td align="right">是否账期:</td>
 				    	<td align="left"><select name="customer.islongterm" style="width: 130px;" disabled="disabled">
 						    		<option></option>

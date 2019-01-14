@@ -82,12 +82,11 @@
 										<option value="${day }">${day }</option>
 									</c:forEach>
 								</select></td>
-		    			<td align="right">是否现款:</td>
-				    	<td align="left"><select id="customer-combobox-iscash" name="customer.iscash" style="width: 130px;">
-						    		<option></option>
-						    		<option value="0">否</option>
-						    		<option value="1">是</option>
-						    	</select><c:if test="${colMap.iscash == 'iscash' }"><font color="red">*</font></c:if></td>
+						<td align="right">超账期控制：</td>
+						<td><select id="customerShortcut-select-overcontrol" name="customer.overcontrol" style="width: 130px;">
+							<option value="1">是</option>
+							<option value="0" selected="selected">否</option>
+						</select></td>
 		    			<td align="right">是否账期:</td>
 				    	<td align="left"><select id="customer-combobox-islongterm" name="customer.islongterm" style="width: 130px;">
 						    		<option></option>

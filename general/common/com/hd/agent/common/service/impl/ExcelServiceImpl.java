@@ -138,33 +138,8 @@ public class ExcelServiceImpl extends BaseServiceImpl implements IExcelService {
 				}
 				GoodsInfo goodsInfo = getBaseGoodsMapper().getGoodsInfo(eso.getGoodsid());
 				if(null != goodsInfo){
-                    //获取商品箱装量
-                    List<GoodsInfo_MteringUnitInfo> muInfo = getBaseGoodsMapper().getMUListByGoodsId(eso.getGoodsid()); //获取商品的辅助计量单位列表
-                    if(muInfo.size() > 0 ){
-                        eso.setBoxnum(muInfo.get(0).getRate());
-                    }else if(null != goodsInfo.getBoxnum()){
-                        eso.setBoxnum(goodsInfo.getBoxnum());
-                    }
-
-					eso.setGoodsname(goodsInfo.getName());
+                    eso.setGoodsname(goodsInfo.getName());
                     eso.setModel(goodsInfo.getModel());
-                    BigDecimal unitnum = eso.getUnitnum();
-                    if(null != goodsInfo.getSinglevolume()){
-                        BigDecimal volume = unitnum.multiply(goodsInfo.getSinglevolume()).setScale(6,BigDecimal.ROUND_HALF_UP);
-                        eso.setVolume(volume.toString());
-                    }else{
-                        eso.setVolume("0.000000");
-                    }
-                    if(null != goodsInfo.getGrossweight()){
-                        BigDecimal grossweight = unitnum.multiply(goodsInfo.getGrossweight()).setScale(6, BigDecimal.ROUND_HALF_UP);
-                        eso.setGrossweight(grossweight.toString());
-                    }else{
-                        eso.setGrossweight("0.000000");
-                    }
-				}
-				Personnel personnel = getBasePersonnelMapper().getPersonnelInfo(eso.getSalesuser());
-				if(null != personnel){
-					eso.setSalesusername(personnel.getName());
 				}
 			}
 		}

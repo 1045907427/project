@@ -1391,30 +1391,14 @@ public class OrderAction extends BaseSalesAction {
 
 		List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
 		Map<String, Object> firstMap = new LinkedHashMap<String, Object>();
-		firstMap.put("id", "编号");
 		firstMap.put("businessdate", "业务日期");
-		firstMap.put("customerid", "客户编码");
 		firstMap.put("customername", "客户名称");
-        firstMap.put("salesusername","客户业务员");
-		firstMap.put("salesdept", "销售部门编码");
-		firstMap.put("salesdeptname", "销售部门名称");
-		firstMap.put("sourceid", "来源单号/客户单号");
-		firstMap.put("goodsid", "商品编码");
-		firstMap.put("customergoodsid", "店内码");
 		firstMap.put("goodsname", "商品名称");
-		firstMap.put("spell", "商品助记符");
-		firstMap.put("barcode", "商品条形码");
-        firstMap.put("boxnum", "箱装量");
-        firstMap.put("model","规格型号");
-        firstMap.put("volume","体积(立方米)");
-        firstMap.put("grossweight","重量（千克）");
+		firstMap.put("batchno", "商品批次号");
 		firstMap.put("unitnum", "数量");
-		firstMap.put("auxnumdetail", "辅数量");
 		firstMap.put("taxprice", "单价");
 		firstMap.put("taxamount", "金额");
-        firstMap.put("addusername","制单人");
 		firstMap.put("remark", "单据备注");
-		firstMap.put("remark1", "备注");
 		result.add(firstMap);
 
 		List<ExportSalesOrder> list = excelService.getBillList(pageMap);

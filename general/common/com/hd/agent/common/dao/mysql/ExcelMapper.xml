@@ -317,7 +317,7 @@
   </select>
   <select id="getSaleOrderList" parameterType="com.hd.agent.common.util.PageMap" resultType="com.hd.agent.sales.model.ExportSalesOrder">
   	SELECT a.id,a.customerid,a.businessdate,a.salesdept,a.salesuser, b.goodsid,c.spell,c.barcode,b.unitnum,b.auxnumdetail,b.taxprice,b.taxamount,
-  		b.notaxamount,b.tax,d.shopid as customergoodsid,a.remark as remark,b.remark as remark1,a.addusername ,a.sourceid
+  		b.notaxamount,b.tax,d.shopid as customergoodsid,a.remark as remark,b.remark as remark1,a.addusername ,a.sourceid,b.batchno as batchno
 	FROM t_sales_order a 
 	RIGHT JOIN t_sales_order_detail b ON a.id = b.orderid
 	RIGHT join t_base_goods_info c on c.id = b.goodsid

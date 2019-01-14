@@ -3105,6 +3105,7 @@ public class BaseStorageServiceImpl extends BaseFilesServiceImpl implements
 				batchno+="Y"+shelflife.intValue();
 				calendar.add(Calendar.YEAR,+shelflife.intValue());
 			}*/
+			calendar.add(Calendar.DATE,15);
 			deadline = CommonUtils.dataToStr(calendar.getTime(),"yyyy-MM-dd");
 			if(produceddate.equals(deadline)){
 				deadline = "";

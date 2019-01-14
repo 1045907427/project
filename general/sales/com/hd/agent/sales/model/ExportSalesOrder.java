@@ -146,6 +146,15 @@ public class ExportSalesOrder implements Serializable{
 	 */
 	private String sourceid ;
 
+	private String batchno;
+
+	public String getBatchno() {
+		return batchno;
+	}
+
+	public void setBatchno(String batchno) {
+		this.batchno = batchno;
+	}
 
 	public String getCustomerid() {
 		return customerid;

@@ -10,12 +10,7 @@
 package com.hd.agent.common.util;
 
 import org.apache.log4j.Logger;
-import org.artofsolving.jodconverter.OfficeDocumentConverter;
-import org.artofsolving.jodconverter.office.DefaultOfficeManagerConfiguration;
-import org.artofsolving.jodconverter.office.ExternalOfficeManagerConfiguration;
-import org.artofsolving.jodconverter.office.OfficeManager;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
